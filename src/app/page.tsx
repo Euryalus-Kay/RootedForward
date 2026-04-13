@@ -46,6 +46,22 @@ export default function Home() {
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-cream-dark">
                 {/* Placeholder for hero image */}
                 <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
+                {/* Diagonal line pattern */}
+                <svg className="absolute inset-0 h-full w-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="hero-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="16" stroke="#1A1A1A" strokeWidth="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#hero-diag)" />
+                </svg>
+                {/* Camera icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="h-16 w-16 text-warm-gray-light">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+                  </svg>
+                </div>
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/60 to-transparent px-5 py-4">
                   <p className="font-body text-xs tracking-wide text-cream/90">
                     Youth tour guide in Bronzeville, Chicago
@@ -191,6 +207,21 @@ export default function Home() {
               {/* Right: placeholder image */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cream-dark">
                 <div className="absolute inset-0 bg-gradient-to-br from-cream-dark to-border" />
+                {/* Diagonal line pattern */}
+                <svg className="absolute inset-0 h-full w-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="featured-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="16" stroke="#1A1A1A" strokeWidth="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#featured-diag)" />
+                </svg>
+                {/* Image icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="h-14 w-14 text-warm-gray-light">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Zm5.25-12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>

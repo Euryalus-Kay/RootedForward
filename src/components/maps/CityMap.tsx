@@ -17,9 +17,10 @@ export default function CityMap({ city, stops, center, zoom }: CityMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  const isValidToken = token && token !== 'placeholder' && token.startsWith('pk.');
 
   useEffect(() => {
-    if (!token || !mapContainer.current) return;
+    if (!isValidToken || !mapContainer.current) return;
 
     mapboxgl.accessToken = token;
 
@@ -94,17 +95,35 @@ export default function CityMap({ city, stops, center, zoom }: CityMapProps) {
       map.remove();
       mapRef.current = null;
     };
-  }, [token, city, stops, center, zoom]);
+  }, [isValidToken, city, stops, center, zoom]);
 
-  if (!token) {
+  if (!isValidToken) {
     return (
-      <div className="flex aspect-video items-center justify-center rounded-lg border border-border bg-cream-dark">
-        <div className="text-center px-6">
-          <p className="font-display text-lg text-forest">
-            Map requires Mapbox configuration
+      <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-lg border border-border bg-cream-dark">
+        {/* Grid pattern background */}
+        <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1B3A2D" strokeWidth="1" />
+            </pattern>
+            <pattern id="map-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="16" stroke="#1B3A2D" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#map-grid)" />
+          <rect width="100%" height="100%" fill="url(#map-diag)" />
+        </svg>
+        <div className="relative z-10 text-center px-6">
+          {/* Map pin icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="mx-auto h-12 w-12 text-forest/60">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+          </svg>
+          <p className="mt-3 font-display text-lg text-forest">
+            Interactive Map
           </p>
           <p className="mt-2 font-body text-sm text-warm-gray">
-            Set <code className="rounded bg-cream px-1.5 py-0.5 text-xs">NEXT_PUBLIC_MAPBOX_TOKEN</code> in your environment to enable the interactive map.
+            Set <code className="rounded bg-cream px-1.5 py-0.5 text-xs">NEXT_PUBLIC_MAPBOX_TOKEN</code> to enable the map.
           </p>
         </div>
       </div>

@@ -84,6 +84,19 @@ export default async function ToursPage() {
                   {/* Placeholder image area */}
                   <div className="relative aspect-[3/4] w-full bg-cream-dark">
                     <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
+                    {/* Large watermark letter */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="select-none font-display text-[12rem] leading-none text-warm-gray-light/20">
+                        {city.name.charAt(0)}
+                      </span>
+                    </div>
+                    {/* Map pin icon */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="h-14 w-14 text-warm-gray-light">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                      </svg>
+                    </div>
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/50 to-transparent px-6 py-5">
                       <h2 className="font-display text-2xl text-cream md:text-3xl">
                         {city.name}
