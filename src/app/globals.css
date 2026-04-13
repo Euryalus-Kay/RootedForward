@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream: #F5F0E8;
+  --color-cream-dark: #EDE6D8;
+  --color-forest: #1B3A2D;
+  --color-forest-light: #2A5440;
+  --color-ink: #1A1A1A;
+  --color-ink-light: #3A3A3A;
+  --color-rust: #C45D3E;
+  --color-rust-light: #D4765C;
+  --color-rust-dark: #A8462A;
+  --color-warm-gray: #8A8578;
+  --color-warm-gray-light: #B5AFA4;
+  --color-border: #DDD6C8;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+:root {
+  --background: #F5F0E8;
+  --foreground: #1A1A1A;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paper texture overlay */
+.paper-texture {
+  position: relative;
+}
+.paper-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-gray-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-warm-gray);
+}
+
+/* Mapbox overrides */
+.mapboxgl-popup-content {
+  background: var(--color-cream) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 4px !important;
+  padding: 16px !important;
+  font-family: var(--font-body) !important;
+  color: var(--color-ink) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: var(--color-cream) !important;
+}
+.mapboxgl-popup-close-button {
+  color: var(--color-ink) !important;
+  font-size: 18px !important;
+  padding: 4px 8px !important;
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-rust);
+  color: white;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 2px;
+}
+
+/* Heading defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-forest);
+}
