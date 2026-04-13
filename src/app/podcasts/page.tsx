@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import { createClient } from "@/lib/supabase/server";
+import MediaEmbed from "@/components/podcasts/MediaEmbed";
 import { PLACEHOLDER_PODCASTS } from "@/lib/constants";
 import type { Podcast } from "@/lib/types/database";
 
@@ -23,6 +23,13 @@ function padEpisode(num: number): string {
   return String(num).padStart(2, "0");
 }
 
+function isSupabaseConfigured(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
+
 export default async function PodcastsPage() {
   let podcasts: Pick<
     Podcast,
@@ -34,24 +41,29 @@ export default async function PodcastsPage() {
     | "guests"
   >[] = [];
 
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("podcasts")
-      .select(
-        "title, description, embed_url, episode_number, publish_date, guests"
-      )
-      .eq("published", true)
-      .order("episode_number", { ascending: true });
+  if (!isSupabaseConfigured()) {
+    podcasts = PLACEHOLDER_PODCASTS;
+  } else {
+    try {
+      const { createClient } = await import("@/lib/supabase/server");
+      const supabase = await createClient();
+      const { data, error } = await supabase
+        .from("podcasts")
+        .select(
+          "title, description, embed_url, episode_number, publish_date, guests"
+        )
+        .eq("published", true)
+        .order("episode_number", { ascending: true });
 
-    if (error) throw error;
-    if (data && data.length > 0) {
-      podcasts = data;
-    } else {
+      if (error) throw error;
+      if (data && data.length > 0) {
+        podcasts = data;
+      } else {
+        podcasts = PLACEHOLDER_PODCASTS;
+      }
+    } catch {
       podcasts = PLACEHOLDER_PODCASTS;
     }
-  } catch {
-    podcasts = PLACEHOLDER_PODCASTS;
   }
 
   return (
@@ -117,23 +129,10 @@ export default async function PodcastsPage() {
 
                     {/* Embed Area */}
                     <div className="mt-6">
-                      {episode.embed_url ? (
-                        <iframe
-                          src={episode.embed_url}
-                          width="100%"
-                          height="152"
-                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                          loading="lazy"
-                          className="rounded-sm"
-                          title={`Listen to ${episode.title}`}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center rounded-sm border border-border bg-cream px-6 py-8">
-                          <p className="font-body text-sm tracking-wide text-warm-gray">
-                            Episode coming soon
-                          </p>
-                        </div>
-                      )}
+                      <MediaEmbed
+                        url={episode.embed_url ?? ""}
+                        title={episode.title}
+                      />
                     </div>
                   </div>
                 </div>

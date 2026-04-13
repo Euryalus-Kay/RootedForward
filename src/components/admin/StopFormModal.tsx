@@ -468,8 +468,12 @@ export default function StopFormModal({
                       value={form.video_url}
                       onChange={(e) => updateField("video_url", e.target.value)}
                       className={inputClass()}
-                      placeholder="https://youtube.com/embed/..."
+                      placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/..."
                     />
+                    <p className="mt-1 text-xs text-warm-gray">
+                      Paste any YouTube or Vimeo URL — it will be converted to an embed automatically.
+                      Supports: youtube.com/watch?v=..., youtu.be/..., vimeo.com/...
+                    </p>
                   </div>
 
                   {/* Image uploader */}

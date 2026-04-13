@@ -1,7 +1,6 @@
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
 import StatsSection from "@/components/home/StatsSection";
-import TestimonialsSection from "@/components/home/TestimonialsSection";
 import TimelineSection from "@/components/home/TimelineSection";
 
 export default function Home() {
@@ -294,11 +293,6 @@ export default function Home() {
           STATS SECTION
           ============================================================ */}
       <StatsSection />
-
-      {/* ============================================================
-          TESTIMONIALS SECTION
-          ============================================================ */}
-      <TestimonialsSection />
 
       {/* ============================================================
           TIMELINE SECTION

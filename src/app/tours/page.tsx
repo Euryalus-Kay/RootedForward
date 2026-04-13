@@ -17,6 +17,13 @@ const STOP_COUNTS: Record<string, number> = {
   "san-francisco": 2,
 };
 
+function isSupabaseConfigured(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
+
 async function getCities(): Promise<
   Array<{
     name: string;
@@ -25,21 +32,23 @@ async function getCities(): Promise<
     stopCount: number;
   }>
 > {
-  try {
-    const { createClient } = await import("@/lib/supabase/server");
-    const supabase = await createClient();
-    const { data: cities } = await supabase.from("cities").select("*");
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import("@/lib/supabase/server");
+      const supabase = await createClient();
+      const { data: cities } = await supabase.from("cities").select("*");
 
-    if (cities && cities.length > 0) {
-      return cities.map((city: City) => ({
-        name: city.name,
-        slug: city.slug,
-        tagline: city.description,
-        stopCount: STOP_COUNTS[city.slug] ?? 0,
-      }));
+      if (cities && cities.length > 0) {
+        return cities.map((city: City) => ({
+          name: city.name,
+          slug: city.slug,
+          tagline: city.description,
+          stopCount: STOP_COUNTS[city.slug] ?? 0,
+        }));
+      }
+    } catch {
+      // Supabase query failed — fall through to constants
     }
-  } catch {
-    // Supabase not configured — fall through to constants
   }
 
   return CITIES.map((city) => ({
@@ -82,7 +91,7 @@ export default async function ToursPage() {
               >
                 <article className="overflow-hidden rounded-sm border border-border transition-shadow hover:shadow-lg">
                   {/* Placeholder image area */}
-                  <div className="relative aspect-[3/4] w-full bg-cream-dark">
+                  <div className="relative aspect-[4/3] w-full bg-cream-dark">
                     <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
                     {/* Large watermark letter */}
                     <div className="absolute inset-0 flex items-center justify-center">

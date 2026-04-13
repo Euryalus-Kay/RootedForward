@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, detectEmbedPlatform, toEmbedUrl, toApplePodcastsEmbedUrl } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -367,6 +367,97 @@ function CustomAudioPlayer({
 /*  Main PodcastPlayer component                                       */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/*  YouTube embed                                                      */
+/* ------------------------------------------------------------------ */
+
+function YouTubeEmbed({
+  embedUrl,
+  title,
+  episodeNumber,
+}: {
+  embedUrl: string;
+  title: string;
+  episodeNumber: number;
+}) {
+  const src = toEmbedUrl(embedUrl);
+  return (
+    <div className="rounded-xl border border-border bg-white/60 p-5">
+      <div className="mb-4 flex items-center gap-3">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-rust/10 font-display text-xs font-bold text-rust">
+          {episodeNumber}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+            Episode {episodeNumber}
+          </p>
+          <p className="truncate font-display text-sm font-semibold text-forest">
+            {title}
+          </p>
+        </div>
+      </div>
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-ink">
+        <iframe
+          src={src}
+          title={`Watch Episode ${episodeNumber}: ${title}`}
+          className="absolute inset-0 h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ border: "none" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Apple Podcasts embed                                               */
+/* ------------------------------------------------------------------ */
+
+function ApplePodcastsEmbed({
+  embedUrl,
+  title,
+  episodeNumber,
+}: {
+  embedUrl: string;
+  title: string;
+  episodeNumber: number;
+}) {
+  const src = toApplePodcastsEmbedUrl(embedUrl);
+  return (
+    <div className="rounded-xl border border-border bg-white/60 p-5">
+      <div className="mb-4 flex items-center gap-3">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-rust/10 font-display text-xs font-bold text-rust">
+          {episodeNumber}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+            Episode {episodeNumber}
+          </p>
+          <p className="truncate font-display text-sm font-semibold text-forest">
+            {title}
+          </p>
+        </div>
+      </div>
+      <iframe
+        src={src}
+        width="100%"
+        height="175"
+        allow="autoplay; clipboard-write; encrypted-media"
+        loading="lazy"
+        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+        className="rounded-lg"
+        title={`Listen to Episode ${episodeNumber}: ${title}`}
+        style={{ border: "none", borderRadius: "12px" }}
+      />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main PodcastPlayer component                                       */
+/* ------------------------------------------------------------------ */
+
 export default function PodcastPlayer({
   title,
   episodeNumber,
@@ -382,26 +473,40 @@ export default function PodcastPlayer({
     );
   }
 
-  // Detect Spotify embed URL
-  const isSpotify =
-    embedUrl.includes("spotify.com") || embedUrl.includes("spotify");
+  const platform = detectEmbedPlatform(embedUrl);
 
-  if (isSpotify) {
-    return (
-      <SpotifyEmbed
-        embedUrl={embedUrl}
-        title={title}
-        episodeNumber={episodeNumber}
-      />
-    );
+  switch (platform) {
+    case "spotify":
+      return (
+        <SpotifyEmbed
+          embedUrl={toEmbedUrl(embedUrl)}
+          title={title}
+          episodeNumber={episodeNumber}
+        />
+      );
+    case "youtube":
+      return (
+        <YouTubeEmbed
+          embedUrl={embedUrl}
+          title={title}
+          episodeNumber={episodeNumber}
+        />
+      );
+    case "apple-podcasts":
+      return (
+        <ApplePodcastsEmbed
+          embedUrl={embedUrl}
+          title={title}
+          episodeNumber={episodeNumber}
+        />
+      );
+    default:
+      return (
+        <CustomAudioPlayer
+          embedUrl={embedUrl}
+          title={title}
+          episodeNumber={episodeNumber}
+        />
+      );
   }
-
-  // Otherwise, render custom HTML audio player
-  return (
-    <CustomAudioPlayer
-      embedUrl={embedUrl}
-      title={title}
-      episodeNumber={episodeNumber}
-    />
-  );
 }

@@ -44,9 +44,22 @@ function buildFallbackStops(citySlug: string): TourStop[] {
   );
 }
 
+function isSupabaseConfigured(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
+
 async function getCityData(
   citySlug: string
 ): Promise<{ city: City; stops: TourStop[] } | null> {
+  if (!isSupabaseConfigured()) {
+    const fallbackCity = buildFallbackCity(citySlug);
+    if (!fallbackCity) return null;
+    return { city: fallbackCity, stops: buildFallbackStops(citySlug) };
+  }
+
   try {
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
@@ -58,7 +71,6 @@ async function getCityData(
       .single();
 
     if (cityError || !city) {
-      // Try fallback
       const fallbackCity = buildFallbackCity(citySlug);
       if (!fallbackCity) return null;
       return { city: fallbackCity, stops: buildFallbackStops(citySlug) };
@@ -72,7 +84,6 @@ async function getCityData(
 
     return { city, stops: stops ?? buildFallbackStops(citySlug) };
   } catch {
-    // Supabase not configured
     const fallbackCity = buildFallbackCity(citySlug);
     if (!fallbackCity) return null;
     return { city: fallbackCity, stops: buildFallbackStops(citySlug) };
