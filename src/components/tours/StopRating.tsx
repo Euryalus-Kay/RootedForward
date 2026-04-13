@@ -61,6 +61,7 @@ export default function StopRating({ stopId }: StopRatingProps) {
   useEffect(() => {
     async function loadRating() {
       try {
+        if (!supabase) throw new Error("not configured");
         const { data: { user } } = await supabase.auth.getUser();
         if (user) setIsLoggedIn(true);
 
@@ -116,7 +117,7 @@ export default function StopRating({ stopId }: StopRatingProps) {
 
   const handleRate = useCallback(
     async (rating: number) => {
-      if (!isLoggedIn) return;
+      if (!isLoggedIn || !supabase) return;
 
       try {
         // Try Supabase first

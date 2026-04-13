@@ -34,6 +34,7 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
   /* ---- Auth state ---- */
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) return;
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);

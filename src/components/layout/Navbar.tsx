@@ -27,6 +27,7 @@ export default function Navbar() {
   /* ---- Auth listener ---- */
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) return;
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -51,6 +52,7 @@ export default function Navbar() {
 
   async function fetchRole(userId: string) {
     const supabase = createClient();
+    if (!supabase) return;
     const { data } = await supabase
       .from("users")
       .select("role")

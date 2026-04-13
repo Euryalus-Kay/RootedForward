@@ -2,7 +2,20 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { Database } from "@/lib/types/database";
 
+function isSupabaseConfigured() {
+  return (
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_URL !== "https://placeholder.supabase.co" &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "placeholder-anon-key"
+  );
+}
+
 export async function createClient() {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
@@ -29,6 +42,10 @@ export async function createClient() {
 }
 
 export async function createAdminClient() {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
   const cookieStore = await cookies();
 
   return createServerClient<Database>(

@@ -66,6 +66,7 @@ export default function StopActions({ stopId, stopTitle, stopDescription, city }
   useEffect(() => {
     async function loadUserState() {
       try {
+        if (!supabase) { setLoading(false); return; }
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
           setLoading(false);
@@ -94,7 +95,7 @@ export default function StopActions({ stopId, stopTitle, stopDescription, city }
 
   const toggleArray = useCallback(
     async (field: "saved_stops" | "visited_stops", current: boolean) => {
-      if (!userId) return;
+      if (!userId || !supabase) return;
       try {
         const { data: profile } = await supabase
           .from("users")

@@ -133,6 +133,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       setLoading(true);
       try {
         const supabase = createClient();
+        if (!supabase) { setLoading(false); return; }
         const searchTerm = `%${query.trim()}%`;
 
         // Run three queries in parallel

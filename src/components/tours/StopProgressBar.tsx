@@ -20,6 +20,7 @@ export default function StopProgressBar({ city, totalStops }: StopProgressBarPro
   useEffect(() => {
     async function loadProgress() {
       try {
+        if (!supabase) { setLoading(false); return; }
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
           setLoading(false);

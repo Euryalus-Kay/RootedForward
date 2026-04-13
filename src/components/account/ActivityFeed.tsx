@@ -76,6 +76,7 @@ export default function ActivityFeed() {
   useEffect(() => {
     async function loadActivity() {
       try {
+        if (!supabase) { setLoading(false); return; }
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
           setLoading(false);
