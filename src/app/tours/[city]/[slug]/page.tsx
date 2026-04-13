@@ -2,6 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import StopActions from "@/components/tours/StopActions";
+import CommentsSection from "@/components/tours/CommentsSection";
+import RelatedStops from "@/components/tours/RelatedStops";
 import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import type { TourStop } from "@/lib/types/database";
 
@@ -38,10 +41,29 @@ function buildFallbackStop(
   };
 }
 
+function getAllFallbackStops(citySlug: string): TourStop[] {
+  return PLACEHOLDER_STOPS.filter((s) => s.city === citySlug).map(
+    (s, index) => ({
+      id: `placeholder-${index}`,
+      city: s.city,
+      slug: s.slug,
+      title: s.title,
+      lat: s.lat,
+      lng: s.lng,
+      video_url: s.video_url,
+      description: s.description,
+      images: s.images,
+      sources: s.sources,
+      published: true,
+      created_at: new Date().toISOString(),
+    })
+  );
+}
+
 async function getStopData(
   citySlug: string,
   stopSlug: string
-): Promise<{ stop: TourStop; cityName: string } | null> {
+): Promise<{ stop: TourStop; cityName: string; allStops: TourStop[] } | null> {
   let cityName = getCityName(citySlug);
 
   try {
@@ -69,18 +91,23 @@ async function getStopData(
       .single();
 
     if (error || !stop) {
-      // Try fallback
       const fallback = buildFallbackStop(citySlug, stopSlug);
       if (!fallback) return null;
-      return { stop: fallback, cityName };
+      return { stop: fallback, cityName, allStops: getAllFallbackStops(citySlug) };
     }
 
-    return { stop, cityName };
+    // Fetch all stops in city for related stops
+    const { data: allStopsData } = await supabase
+      .from("tour_stops")
+      .select("*")
+      .eq("city", citySlug)
+      .eq("published", true);
+
+    return { stop, cityName, allStops: allStopsData ?? getAllFallbackStops(citySlug) };
   } catch {
-    // Supabase not configured
     const fallback = buildFallbackStop(citySlug, stopSlug);
     if (!fallback) return null;
-    return { stop: fallback, cityName };
+    return { stop: fallback, cityName, allStops: getAllFallbackStops(citySlug) };
   }
 }
 
@@ -108,7 +135,7 @@ export default async function StopDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const { stop, cityName } = data;
+  const { stop, cityName, allStops } = data;
 
   return (
     <PageTransition>
@@ -213,6 +240,27 @@ export default async function StopDetailPage({ params }: PageProps) {
                   </li>
                 ))}
               </ol>
+            </div>
+          )}
+
+          {/* User actions (save, visit, share) */}
+          <div className="mt-10">
+            <StopActions stopId={stop.id} stopTitle={stop.title} stopDescription={stop.description} city={citySlug} />
+          </div>
+
+          {/* Comments */}
+          <div className="mt-14 border-t border-border pt-10">
+            <CommentsSection stopId={stop.id} />
+          </div>
+
+          {/* Related stops */}
+          {allStops.length > 1 && (
+            <div className="mt-14 border-t border-border pt-10">
+              <RelatedStops
+                currentStopId={stop.id}
+                city={citySlug}
+                allStops={allStops}
+              />
             </div>
           )}
 

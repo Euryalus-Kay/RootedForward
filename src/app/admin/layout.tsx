@@ -13,6 +13,7 @@ import {
   FileText,
   Inbox,
   Users,
+  MessageSquare,
   LogOut,
   Menu,
   X,
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/admin/content", label: "Site Content", icon: FileText },
   { href: "/admin/submissions", label: "Submissions", icon: Inbox },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/comments", label: "Comments", icon: MessageSquare },
 ];
 
 export default function AdminLayout({

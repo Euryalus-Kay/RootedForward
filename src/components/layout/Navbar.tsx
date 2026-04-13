@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, User, LogOut, LayoutDashboard, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/lib/supabase/auth-helpers";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
@@ -181,12 +181,28 @@ export default function Navbar() {
           ) : (
             /* Login / Sign up */
             <Link
-              href="/login"
+              href="/auth/login"
               className="hidden rounded-full bg-rust px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-rust-dark md:inline-block"
             >
               Log in
             </Link>
           )}
+
+          {/* Search button (desktop) */}
+          <button
+            onClick={() => {
+              const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
+              document.dispatchEvent(event);
+            }}
+            className="hidden items-center gap-2 rounded-full border border-border bg-cream-dark/50 px-3 py-1.5 text-sm text-warm-gray transition-colors hover:border-warm-gray-light hover:text-ink md:flex"
+            aria-label="Search"
+          >
+            <Search className="h-3.5 w-3.5" />
+            <span className="text-xs">Search</span>
+            <kbd className="ml-1 rounded border border-border bg-cream px-1.5 py-0.5 text-[10px] font-medium text-warm-gray-light">
+              ⌘K
+            </kbd>
+          </button>
 
           {/* Mobile hamburger */}
           <button
