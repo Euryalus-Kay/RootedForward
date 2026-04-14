@@ -17,7 +17,8 @@ interface PageProps {
 
 async function getCampaign(slug: string): Promise<Campaign | null> {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("campaigns")
@@ -33,7 +34,8 @@ async function getCampaign(slug: string): Promise<Campaign | null> {
 
 async function getApprovedComments(campaignId: string): Promise<ApprovedComment[]> {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("public_comments")

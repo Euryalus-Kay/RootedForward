@@ -20,7 +20,8 @@ export const metadata: Metadata = {
 
 async function getCampaigns(): Promise<Campaign[]> {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) return PLACEHOLDER_CAMPAIGNS;
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("campaigns")
@@ -308,7 +309,7 @@ export default async function PolicyPage() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="mt-5 font-display text-lg leading-snug text-cream">
+                  <h3 className="mt-5 font-display text-lg leading-snug text-rust-light">
                     {resource.title}
                   </h3>
 
@@ -390,55 +391,68 @@ export default async function PolicyPage() {
           ============================================================ */}
       {pastCampaigns.length > 0 && (
         <section className="border-t border-border bg-cream py-16 md:py-24">
-          <div className="mx-auto max-w-6xl px-6">
+          <div className="mx-auto max-w-4xl px-6">
             <h2 className="font-display text-2xl text-forest md:text-3xl">
               Past Campaigns
             </h2>
-            <p className="mt-3 font-body text-base text-ink/60">
-              Completed initiatives and their outcomes.
-            </p>
 
-            <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {pastCampaigns.map((campaign) => {
-                const year = new Date(campaign.created_at).getFullYear();
-                return (
-                  <Link
-                    key={campaign.id}
-                    href={`/policy/campaigns/${campaign.slug}`}
-                    className="group block rounded-sm border border-border p-6 transition-all hover:border-warm-gray hover:shadow-md"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <p className="font-body text-xs text-warm-gray">
-                          {year} &middot; {campaign.category}
-                        </p>
-                        <h3 className="mt-1 font-display text-lg text-forest transition-colors group-hover:text-rust">
-                          {campaign.title}
-                        </h3>
-                        {campaign.outcome && (
-                          <p className="mt-2 font-body text-sm leading-relaxed text-ink/60">
-                            {campaign.outcome.replace(
-                              /^(Won|Partial|Closed)\s*—?\s*/i,
-                              ""
-                            )}
-                          </p>
-                        )}
-                        <p className="mt-3 font-body text-xs text-warm-gray">
-                          {campaign.signature_count.toLocaleString()} signatures
-                        </p>
+            <div className="relative mt-12">
+              {/* Vertical timeline line */}
+              <div
+                className="absolute left-3 top-2 h-[calc(100%-16px)] w-px bg-border"
+                aria-hidden="true"
+              />
+
+              <div className="flex flex-col gap-8">
+                {pastCampaigns.map((campaign) => {
+                  const year = new Date(campaign.created_at).getFullYear();
+                  return (
+                    <Link
+                      key={campaign.id}
+                      href={`/policy/campaigns/${campaign.slug}`}
+                      className="group relative pl-12"
+                    >
+                      {/* Timeline dot */}
+                      <div className="absolute left-0 top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-border bg-cream transition-colors group-hover:border-rust">
+                        <div className="h-2 w-2 rounded-full bg-warm-gray transition-colors group-hover:bg-rust" />
                       </div>
-                      <span
-                        className={`mt-1 flex-shrink-0 rounded-full px-2.5 py-0.5 font-body text-xs font-semibold uppercase tracking-wider ${getOutcomeColor(campaign.outcome)}`}
-                      >
-                        {getOutcomeTag(campaign.outcome)}
-                      </span>
-                    </div>
-                    <span className="mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust opacity-0 transition-opacity group-hover:opacity-100">
-                      View details &rarr;
-                    </span>
-                  </Link>
-                );
-              })}
+
+                      {/* Card */}
+                      <div className="rounded-sm border border-border p-5 transition-all group-hover:border-warm-gray group-hover:shadow-md md:p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <p className="font-body text-xs text-warm-gray">
+                              {year} &middot; {campaign.category}
+                            </p>
+                            <h3 className="mt-1 font-display text-lg text-forest transition-colors group-hover:text-rust">
+                              {campaign.title}
+                            </h3>
+                            {campaign.outcome && (
+                              <p className="mt-2 font-body text-sm leading-relaxed text-ink/60">
+                                {campaign.outcome.replace(
+                                  /^(Won|Partial|Closed)\s*—?\s*/i,
+                                  ""
+                                )}
+                              </p>
+                            )}
+                            <p className="mt-3 font-body text-xs text-warm-gray">
+                              {campaign.signature_count.toLocaleString()} signatures
+                            </p>
+                          </div>
+                          <span
+                            className={`mt-1 flex-shrink-0 rounded-full px-2.5 py-0.5 font-body text-xs font-semibold uppercase tracking-wider ${getOutcomeColor(campaign.outcome)}`}
+                          >
+                            {getOutcomeTag(campaign.outcome)}
+                          </span>
+                        </div>
+                        <span className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust opacity-0 transition-opacity group-hover:opacity-100">
+                          View details &rarr;
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>

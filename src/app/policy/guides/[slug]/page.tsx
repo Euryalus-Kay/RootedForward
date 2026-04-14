@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import DraftingArea from "@/components/policy/DraftingArea";
 import { PLACEHOLDER_GUIDES, PLACEHOLDER_CAMPAIGNS } from "@/lib/policy-constants";
 import type { Guide } from "@/lib/policy-constants";
 
@@ -11,7 +12,8 @@ interface PageProps {
 
 async function getGuide(slug: string): Promise<Guide | null> {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("guides")
@@ -172,6 +174,9 @@ export default async function GuideDetailPage({ params }: PageProps) {
               <div className="max-w-[65ch]">
                 <RenderGuideContent markdown={guide.content_markdown} />
               </div>
+
+              {/* Drafting area */}
+              <DraftingArea guideTitle={guide.title} />
 
               {/* Related campaigns */}
               {activeCampaigns.length > 0 && (

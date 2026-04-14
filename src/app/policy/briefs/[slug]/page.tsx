@@ -21,7 +21,8 @@ export default async function BriefDetailPage({ params }: PageProps) {
   // Try to fetch from Supabase
   let brief = null;
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("policy_briefs")

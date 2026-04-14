@@ -67,7 +67,8 @@ async function getStopData(
   let cityName = getCityName(citySlug);
 
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
 
     // Fetch city name from Supabase if available

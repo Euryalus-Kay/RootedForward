@@ -24,7 +24,8 @@ function padEpisode(num: number): string {
 
 async function getPodcasts() {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("podcasts")

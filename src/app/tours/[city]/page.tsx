@@ -48,7 +48,8 @@ async function getCityData(
   citySlug: string
 ): Promise<{ city: City; stops: TourStop[] } | null> {
   try {
-    const { createClient } = await import("@/lib/supabase/server");
+    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
+    if (!isSupabaseConfigured()) throw new Error("skip");
     const supabase = await createClient();
 
     const { data: city, error: cityError } = await supabase
