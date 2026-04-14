@@ -177,32 +177,18 @@ export default async function PolicyPage() {
                   {featured.summary}
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href={`/policy/campaigns/${featured.slug}`}
-                    className="inline-flex items-center justify-center rounded-sm bg-rust px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                  >
-                    Add Your Signature
-                  </Link>
-                  <Link
-                    href={`/policy/campaigns/${featured.slug}#comment`}
-                    className="inline-flex items-center justify-center rounded-sm border-2 border-forest px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
-                  >
-                    Submit Public Comment
-                  </Link>
-                </div>
-
-                <p className="mt-5 font-body text-sm text-warm-gray">
-                  {featured.signature_count.toLocaleString()} Chicagoans have
-                  signed
-                </p>
-
                 <Link
                   href={`/policy/campaigns/${featured.slug}`}
-                  className="mt-6 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                  className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
                 >
-                  Read the full brief &rarr;
+                  Read More &amp; Take Action &rarr;
                 </Link>
+
+                <p className="mt-5 font-body text-sm leading-relaxed text-ink/55">
+                  {featured.signature_count.toLocaleString()} Chicagoans have
+                  signed. You can add your signature or submit a public comment
+                  on the campaign page.
+                </p>
               </div>
             </div>
           </div>
