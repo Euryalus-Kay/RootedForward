@@ -269,15 +269,15 @@ export default async function PolicyPage() {
       {/* ============================================================
           SECTION 4: POLICY LEARNING ZONE
           ============================================================ */}
-      <section className="border-t border-border bg-ink py-20 md:py-28">
+      <section className="border-t border-border bg-forest py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray-light">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
             Policy Learning Zone
           </p>
           <h2 className="mt-3 font-display text-3xl text-cream md:text-4xl">
             Learn, Draft, Act
           </h2>
-          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-cream/60">
+          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-cream/70">
             Tools and guides for engaging with Chicago policy. Draft a public
             comment, write a proposal, find your alderperson, or learn how
             zoning, legislation, and public testimony actually work.
@@ -295,14 +295,14 @@ export default async function PolicyPage() {
                 <Tag
                   key={resource.id}
                   {...(linkProps as Record<string, string>)}
-                  className="group flex flex-col rounded-sm border border-cream/10 bg-cream-dark/[0.06] p-6 transition-all hover:bg-cream-dark/[0.12] hover:border-cream/20"
+                  className="group flex flex-col rounded-sm border border-cream/15 bg-cream/[0.05] p-6 transition-all hover:bg-cream/[0.10] hover:border-cream/25"
                 >
                   {/* Icon + type badge */}
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-rust/30 text-rust">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-rust/50 text-rust">
                       <ResourceIcon icon={resource.icon} />
                     </div>
-                    <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-cream/40">
+                    <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-cream/50">
                       {TYPE_LABELS[resource.type]}
                     </span>
                   </div>
@@ -313,7 +313,7 @@ export default async function PolicyPage() {
                   </h3>
 
                   {/* Description */}
-                  <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-warm-gray-light/80">
+                  <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-cream/65">
                     {resource.description}
                   </p>
 
@@ -327,8 +327,8 @@ export default async function PolicyPage() {
           </div>
 
           {/* Quick reference links */}
-          <div className="mt-16 border-t border-cream/10 pt-10">
-            <h3 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
+          <div className="mt-16 border-t border-cream/15 pt-10">
+            <h3 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/45">
               Chicago Quick Reference
             </h3>
             <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
@@ -338,7 +338,7 @@ export default async function PolicyPage() {
                   href={ref.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-body text-sm text-cream/50 underline decoration-cream/20 underline-offset-2 transition-colors hover:text-rust hover:decoration-rust"
+                  className="font-body text-sm text-cream/60 underline decoration-cream/25 underline-offset-2 transition-colors hover:text-rust hover:decoration-rust"
                 >
                   {ref.name}
                 </a>
