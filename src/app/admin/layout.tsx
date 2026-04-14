@@ -14,6 +14,7 @@ import {
   Inbox,
   Users,
   MessageSquare,
+  Scale,
   LogOut,
   Menu,
   X,
@@ -29,6 +30,7 @@ const navItems = [
   { href: "/admin/submissions", label: "Submissions", icon: Inbox },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
+  { href: "/admin/policy", label: "Policy", icon: Scale },
 ];
 
 export default function AdminLayout({
