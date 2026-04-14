@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import { createClient } from "@/lib/supabase/server";
 import { PLACEHOLDER_PODCASTS } from "@/lib/constants";
 import type { Podcast } from "@/lib/types/database";
 
 export const metadata: Metadata = {
   title: "Podcasts | Rooted Forward",
   description:
-    "Hear the stories behind the stops. Long-form audio storytelling that amplifies community voices, archival recordings, and original reporting on racial inequity.",
+    "Conversations with historians, residents, and organizers about the places our walking tours visit.",
 };
 
 function formatDate(dateString: string): string {
@@ -23,18 +22,9 @@ function padEpisode(num: number): string {
   return String(num).padStart(2, "0");
 }
 
-export default async function PodcastsPage() {
-  let podcasts: Pick<
-    Podcast,
-    | "title"
-    | "description"
-    | "embed_url"
-    | "episode_number"
-    | "publish_date"
-    | "guests"
-  >[] = [];
-
+async function getPodcasts() {
   try {
+    const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("podcasts")
@@ -44,15 +34,26 @@ export default async function PodcastsPage() {
       .eq("published", true)
       .order("episode_number", { ascending: true });
 
-    if (error) throw error;
-    if (data && data.length > 0) {
-      podcasts = data;
-    } else {
-      podcasts = PLACEHOLDER_PODCASTS;
+    if (!error && data && data.length > 0) {
+      return data as Pick<
+        Podcast,
+        | "title"
+        | "description"
+        | "embed_url"
+        | "episode_number"
+        | "publish_date"
+        | "guests"
+      >[];
     }
   } catch {
-    podcasts = PLACEHOLDER_PODCASTS;
+    // Supabase not configured — fall through
   }
+
+  return PLACEHOLDER_PODCASTS;
+}
+
+export default async function PodcastsPage() {
+  const podcasts = await getPodcasts();
 
   return (
     <PageTransition>
@@ -63,17 +64,15 @@ export default async function PodcastsPage() {
             Podcasts
           </p>
           <h1 className="mt-3 font-display text-4xl leading-tight text-forest md:text-5xl lg:text-6xl">
-            Hear the Stories Behind the Stops
+            The Podcast
           </h1>
           <hr className="mt-8 border-border" />
 
-          {/* Intro Paragraph */}
           <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-ink/75">
-            Each episode of the Rooted Forward podcast takes you deeper into the
-            places our walking tours visit. We sit down with historians, lifelong
-            residents, urban planners, and organizers to unpack the policies and
-            decisions that shaped American neighborhoods along racial lines.
-            Listen wherever you get your podcasts.
+            Each episode goes deeper into the places our walking tours visit.
+            We talk to historians, lifelong residents, urban planners, and
+            organizers about the policies and decisions that shaped
+            Chicago&rsquo;s neighborhoods along racial lines.
           </p>
         </div>
       </section>

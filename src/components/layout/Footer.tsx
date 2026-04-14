@@ -7,11 +7,12 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Tours", href: "/tours" },
   { label: "Podcasts", href: "/podcasts" },
+  { label: "Policy", href: "/policy" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
-const CHAPTERS = ["Chicago", "New York", "Dallas", "San Francisco"] as const;
+const CHAPTERS = ["Chicago"] as const;
 
 /* Inline SVG social icons (lucide-react doesn't include TikTok) */
 function InstagramIcon() {
