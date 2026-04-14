@@ -62,6 +62,16 @@ export interface ReferenceLink {
   annotation: string;
 }
 
+export interface LearningResource {
+  id: string;
+  title: string;
+  description: string;
+  type: "tool" | "guide" | "reference" | "interactive";
+  icon: "pen" | "book" | "compass" | "megaphone" | "scale" | "search" | "lightbulb" | "users";
+  href: string;
+  cta_label: string;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Campaigns                                                          */
 /* ------------------------------------------------------------------ */
@@ -392,6 +402,93 @@ Publish the letter and signer list on your website or social media. Notify local
 
 If the issue is something Rooted Forward is already working on, submit signatures through our campaign pages instead of running a separate letter. Our platform tracks counts in real time, lets signers add personal comments, and compiles everything into a formatted delivery document. Check our [active campaigns](/policy) to see if there is already an effort underway.`,
     last_updated: "2026-01-15",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Policy Learning Zone                                               */
+/* ------------------------------------------------------------------ */
+
+export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
+  {
+    id: "lr1",
+    title: "Draft a Public Comment",
+    description:
+      "Step-by-step walkthrough that helps you write a public comment for Chicago City Council, a zoning hearing, or a state committee. Explains what makes comments effective and what gets ignored.",
+    type: "interactive",
+    icon: "pen",
+    href: "/policy/guides/submit-public-comment-city-council",
+    cta_label: "Start drafting",
+  },
+  {
+    id: "lr2",
+    title: "Write a Policy Proposal",
+    description:
+      "Structure a problem statement, proposed solution, and evidence section that a legislative office will actually read. Includes the format Chicago alderpersons expect.",
+    type: "tool",
+    icon: "lightbulb",
+    href: "/policy/guides/write-policy-proposal",
+    cta_label: "Start writing",
+  },
+  {
+    id: "lr3",
+    title: "Find Your Alderperson",
+    description:
+      "Look up your ward, your alderperson, their office address, and their voting record. Know who represents you before you try to get their attention.",
+    type: "reference",
+    icon: "search",
+    href: "https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html",
+    cta_label: "Look up your ward",
+  },
+  {
+    id: "lr4",
+    title: "How Zoning Works in Chicago",
+    description:
+      "What zoning classes mean, how rezoning applications work, and how to weigh in before a developer changes what can be built on your block.",
+    type: "guide",
+    icon: "compass",
+    href: "/policy/guides/submit-comment-zoning-change",
+    cta_label: "Read the guide",
+  },
+  {
+    id: "lr5",
+    title: "File an Illinois Witness Slip",
+    description:
+      "Register your position on any state bill in committee. Takes two minutes, counts in the official record, and legislators track the numbers.",
+    type: "interactive",
+    icon: "megaphone",
+    href: "/policy/guides/written-testimony-illinois-general-assembly",
+    cta_label: "Learn how",
+  },
+  {
+    id: "lr6",
+    title: "Organize a Sign-On Campaign",
+    description:
+      "How to draft a coalition letter, collect organizational and individual signatures, and deliver it to a decision-maker who has to respond.",
+    type: "guide",
+    icon: "users",
+    href: "/policy/guides/organize-sign-on-letter",
+    cta_label: "Read the guide",
+  },
+  {
+    id: "lr7",
+    title: "Track Chicago Legislation",
+    description:
+      "Real-time tracker for every ordinance, resolution, and committee action in City Council. See what your alderperson voted on this month.",
+    type: "reference",
+    icon: "scale",
+    href: "https://chicago.legistar.com",
+    cta_label: "Open tracker",
+  },
+  {
+    id: "lr8",
+    title: "Get an Ordinance Introduced",
+    description:
+      "What it takes to get an alderperson to put their name on your proposal and move it through committee. The real process, not the civics textbook version.",
+    type: "guide",
+    icon: "book",
+    href: "/policy/guides/get-alderperson-to-sponsor-ordinance",
+    cta_label: "Read the guide",
   },
 ];
 

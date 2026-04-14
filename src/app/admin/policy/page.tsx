@@ -75,6 +75,60 @@ export default function AdminPolicyDashboard() {
           ))}
         </div>
       )}
+
+      {/* Quick actions */}
+      <div className="mt-10">
+        <h2 className="font-display text-lg font-semibold text-forest">
+          Manage Content
+        </h2>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <Link
+            href="/admin/policy/campaigns"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Campaigns</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              Create, edit, and manage active and past campaigns
+            </p>
+          </Link>
+          <Link
+            href="/admin/policy/resources"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Learning Zone</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              Add, edit, and reorder tools, guides, and references
+            </p>
+          </Link>
+          <Link
+            href="/admin/policy/comments"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Moderate Comments</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              Approve, reject, and compile public comments
+            </p>
+          </Link>
+          <Link
+            href="/admin/policy/proposals"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Review Proposals</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              Community-submitted policy proposals inbox
+            </p>
+          </Link>
+          <Link
+            href="/admin/policy/signatures"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Signatures</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              View, export, and manage campaign signatures
+            </p>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
