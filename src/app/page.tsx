@@ -18,12 +18,15 @@ export default function Home() {
 
         {/* Content */}
         <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-32">
-          <h1 className="font-display text-6xl leading-[0.95] tracking-tight text-cream md:text-7xl lg:text-8xl">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-rust">
+            Chicago
+          </p>
+          <h1 className="mt-3 font-display text-6xl leading-[0.95] tracking-tight text-white md:text-7xl lg:text-8xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
             Rooted
             <br />
             Forward
           </h1>
-          <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-cream/80">
+          <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-cream/85">
             A youth-led nonprofit in Chicago documenting how redlining,
             urban renewal, and disinvestment shaped the neighborhoods we
             live in. Walking tours. Podcasts. Policy campaigns. All
