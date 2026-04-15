@@ -248,3 +248,7 @@ export type SiteContent = Database["public"]["Tables"]["site_content"]["Row"];
 export type Submission = Database["public"]["Tables"]["submissions"]["Row"];
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type UserProfile = Database["public"]["Tables"]["users"]["Row"];
+
+// Policy section types (defined in policy-constants.ts for now,
+// will move to Database interface when Supabase schema is applied)
+export type { Campaign, Guide, PolicyBrief, ApprovedComment, ReferenceLink } from "@/lib/policy-constants";
