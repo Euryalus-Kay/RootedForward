@@ -4,7 +4,8 @@ import { notifyAdmin } from "@/lib/notify";
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const { createAdminClient } = await import("@/lib/supabase/server");
+    const supabase = await createAdminClient();
     const body = await request.json();
 
     if (

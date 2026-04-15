@@ -65,7 +65,8 @@ export async function GET(request: NextRequest) {
 /* ------------------------------------------------------------------ */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const { createAdminClient } = await import("@/lib/supabase/server");
+    const supabase = await createAdminClient();
     const body = await request.json();
 
     // Validate required fields
