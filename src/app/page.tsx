@@ -61,7 +61,7 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-forest py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
+          <p className="font-body text-sm font-semibold uppercase tracking-[0.25em]" style={{ color: "#C45D3E" }}>
             Our Mission
           </p>
           <p className="mt-6 font-display text-2xl leading-relaxed text-cream md:text-3xl">
