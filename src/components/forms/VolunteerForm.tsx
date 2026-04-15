@@ -21,19 +21,21 @@ export default function VolunteerForm() {
     setLoading(true);
 
     try {
-      const supabase = createClient();
-      const { error } = await supabase.from("submissions").insert({
-        type: "volunteer" as const,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || null,
-        chapter: formData.chapter || null,
-        message: formData.message || null,
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "volunteer",
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          chapter: formData.chapter || null,
+          message: formData.message || null,
+        }),
       });
+      if (!res.ok) throw new Error("Failed");
 
-      if (error) throw error;
-
-      toast.success("Thank you for volunteering! We'll be in touch soon.");
+      toast.success("Thank you! We'll be in touch soon.");
       setFormData({ name: "", email: "", phone: "", chapter: "", message: "" });
     } catch {
       toast.error(

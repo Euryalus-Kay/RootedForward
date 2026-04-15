@@ -40,24 +40,27 @@ function ChapterForm() {
 
     setLoading(true);
     try {
-      const supabase = createClient();
       const isStart = form.interest === "start";
 
-      const { error } = await supabase.from("submissions").insert({
-        type: "volunteer" as const,
-        name: form.name.trim(),
-        email: form.email.trim().toLowerCase(),
-        phone: form.phone.trim() || null,
-        chapter: isStart ? form.city.trim() : form.chapter,
-        message: [
-          isStart ? "[NEW CHAPTER REQUEST]" : "[JOIN CHAPTER]",
-          isStart && form.school ? `School/Org: ${form.school}` : null,
-          form.message.trim() || null,
-        ]
-          .filter(Boolean)
-          .join("\n"),
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "volunteer",
+          name: form.name.trim(),
+          email: form.email.trim().toLowerCase(),
+          phone: form.phone.trim() || null,
+          chapter: isStart ? form.city.trim() : form.chapter,
+          message: [
+            isStart ? "[NEW CHAPTER REQUEST]" : "[JOIN CHAPTER]",
+            isStart && form.school ? `School/Org: ${form.school}` : null,
+            form.message.trim() || null,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+        }),
       });
-      if (error) throw error;
+      if (!res.ok) throw new Error("Failed");
       setDone(true);
       toast.success("Submitted successfully.");
     } catch {

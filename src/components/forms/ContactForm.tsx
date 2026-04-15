@@ -17,21 +17,23 @@ export default function ContactForm() {
     setLoading(true);
 
     try {
-      const supabase = createClient();
-      const { error } = await supabase.from("submissions").insert({
-        type: "contact" as const,
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
       });
-
-      if (error) throw error;
+      if (!res.ok) throw new Error("Failed");
 
       toast.success("Message sent! We'll get back to you soon.");
       setFormData({ name: "", email: "", message: "" });
     } catch {
       toast.error(
-        "Something went wrong sending your message. Please try again or email us directly."
+        "Something went wrong. Please try again or email us directly."
       );
     } finally {
       setLoading(false);
