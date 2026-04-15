@@ -309,7 +309,10 @@ export default async function PolicyPage() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-rust">
+                  <h3
+                    className="mt-5 font-display text-lg font-semibold leading-snug"
+                    style={{ color: "#C45D3E" }}
+                  >
                     {resource.title}
                   </h3>
 
