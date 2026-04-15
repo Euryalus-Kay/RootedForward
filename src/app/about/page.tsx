@@ -306,21 +306,20 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-cream">
-      {/* Header */}
-      <section className="bg-cream pb-0 pt-28 md:pt-36">
+      {/* Banner */}
+      <section className="bg-forest pt-24 pb-12 md:pt-32 md:pb-16">
         <div className="mx-auto max-w-4xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
             About
           </p>
-          <h1 className="mt-4 font-display text-4xl text-forest md:text-6xl">
+          <h1 className="mt-3 font-display text-4xl text-cream md:text-5xl lg:text-6xl">
             {tab === "organization" ? "The Organization" : "People"}
           </h1>
-          <p className="mt-4 max-w-[60ch] font-body text-lg text-ink/65">
+          <p className="mt-4 max-w-[50ch] font-body text-base text-cream/65">
             {tab === "organization"
               ? "A youth-led nonprofit using history to change the cities we live in."
               : "The students and advisors who lead Rooted Forward."}
           </p>
-          <hr className="mt-10 border-border" />
         </div>
       </section>
 
