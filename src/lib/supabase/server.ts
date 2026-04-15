@@ -6,17 +6,24 @@ import { cookies } from "next/headers";
  * When using placeholder credentials, skip DB calls entirely to avoid
  * slow timeouts on every page load.
  */
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
+
 export function isSupabaseConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  return url.length > 0 && !url.includes("placeholder");
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    !SUPABASE_URL.includes("placeholder")
+  );
 }
 
 export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -40,9 +47,12 @@ export async function createClient() {
 export async function createAdminClient() {
   const cookieStore = await cookies();
 
+  const SERVICE_ROLE_KEY =
+    process.env.SUPABASE_SERVICE_ROLE_KEY || "placeholder-service-role-key";
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    SUPABASE_URL,
+    SERVICE_ROLE_KEY,
     {
       cookies: {
         getAll() {
