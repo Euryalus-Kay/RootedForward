@@ -30,6 +30,7 @@ const navItems = [
   { href: "/admin/submissions", label: "Submissions", icon: Inbox },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
+  { href: "/admin/about/board", label: "Board", icon: Users },
   { href: "/admin/policy", label: "Policy", icon: Scale },
 ];
 

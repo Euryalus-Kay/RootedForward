@@ -201,3 +201,33 @@ CREATE POLICY "Users can view comments on own drafts" ON draft_comments
   );
 CREATE POLICY "Admins full access draft comments" ON draft_comments
   FOR ALL USING (EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'));
+
+-- ============================================================
+-- Board Members
+-- ============================================================
+
+CREATE TABLE board_members (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug text UNIQUE NOT NULL,
+  full_name text NOT NULL,
+  role text NOT NULL,
+  city text,
+  affiliation text,
+  bio text NOT NULL,
+  photo_url text,
+  board_type text NOT NULL CHECK (board_type IN ('student', 'advisory')),
+  display_order int DEFAULT 0,
+  is_active boolean DEFAULT true,
+  pillar_lead text CHECK (pillar_lead IN ('education', 'policy', 'research')),
+  socials jsonb,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE INDEX idx_board_members_type_active ON board_members(board_type, is_active, display_order);
+
+ALTER TABLE board_members ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public can view active board members" ON board_members
+  FOR SELECT USING (is_active = true);
+CREATE POLICY "Admins full access board" ON board_members
+  FOR ALL USING (EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'));
