@@ -17,33 +17,33 @@ export default function Home() {
         <div className="absolute inset-0 bg-forest/75" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32 sm:px-10 md:pb-24 lg:px-16">
-          <p className="font-body text-sm font-semibold uppercase tracking-[0.3em] text-rust">
-            Chicago
-          </p>
-          <h1 className="mt-4 font-display text-7xl leading-[0.9] tracking-tight text-white md:text-8xl lg:text-[10rem] drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
-            Rooted
-            <br />
-            Forward
-          </h1>
-          <p className="mt-8 max-w-xl font-body text-lg leading-relaxed text-cream/85 md:text-xl">
-            A youth-led nonprofit documenting how redlining, urban renewal,
-            and disinvestment shaped Chicago. Walking tours. Podcasts.
-            Policy campaigns. All led by young people.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Link
-              href="/tours"
-              className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Explore Tours
-            </Link>
-            <Link
-              href="/policy"
-              className="inline-flex items-center rounded-sm border-2 border-cream/40 px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
-            >
-              Policy Work
-            </Link>
+        {/* Bottom gradient for text area */}
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent z-[5]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-12 pt-32 sm:px-10 md:pb-16 lg:px-16">
+          <div>
+            <h1 className="font-display text-7xl leading-[0.88] tracking-tight text-white md:text-8xl lg:text-9xl">
+              Rooted Forward
+            </h1>
+            <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-white/80 md:text-lg">
+              A youth-led nonprofit documenting how redlining, urban renewal,
+              and disinvestment shaped Chicago. Walking tours. Podcasts.
+              Policy campaigns. All led by young people.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/tours"
+                className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              >
+                Explore Tours
+              </Link>
+              <Link
+                href="/policy"
+                className="inline-flex items-center rounded-sm border-2 border-white/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:border-white hover:bg-white/10"
+              >
+                Policy Work
+              </Link>
+            </div>
           </div>
         </div>
       </section>
