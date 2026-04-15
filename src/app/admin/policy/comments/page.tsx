@@ -53,6 +53,19 @@ export default function AdminCommentsPage() {
     }
   }
 
+  async function deleteComment(id: string) {
+    if (!confirm("Delete this comment permanently?")) return;
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from("public_comments").delete().eq("id", id);
+      if (error) throw error;
+      toast.success("Deleted");
+      fetchComments();
+    } catch {
+      toast.error("Failed to delete");
+    }
+  }
+
   async function approveComment(id: string) {
     try {
       const supabase = createClient();
@@ -129,8 +142,11 @@ export default function AdminCommentsPage() {
                   >
                     Approve
                   </button>
-                  <button className="rounded bg-rust/10 px-3 py-1 font-body text-xs font-medium text-rust transition-colors hover:bg-rust/20">
-                    Reject
+                  <button
+                    onClick={() => deleteComment(c.id)}
+                    className="rounded bg-rust/10 px-3 py-1 font-body text-xs font-medium text-rust transition-colors hover:bg-rust/20"
+                  >
+                    Delete
                   </button>
                 </div>
               )}

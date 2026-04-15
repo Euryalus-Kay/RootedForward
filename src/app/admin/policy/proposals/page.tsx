@@ -60,6 +60,19 @@ export default function AdminProposalsPage() {
     }
   }
 
+  async function deleteProposal(id: string) {
+    if (!confirm("Delete this proposal permanently?")) return;
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from("proposal_submissions").delete().eq("id", id);
+      if (error) throw error;
+      setProposals((prev) => prev.filter((p) => p.id !== id));
+      toast.success("Deleted");
+    } catch {
+      toast.error("Failed to delete");
+    }
+  }
+
   const statusOptions = ["new", "reviewing", "developing", "declined", "became_campaign"];
 
   return (
@@ -154,6 +167,12 @@ export default function AdminProposalsPage() {
                       {p.submitter_email && (
                         <span>Contact: {p.submitter_email}</span>
                       )}
+                      <button
+                        onClick={() => deleteProposal(p.id)}
+                        className="rounded bg-rust/10 px-2 py-0.5 text-rust hover:bg-rust/20"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>

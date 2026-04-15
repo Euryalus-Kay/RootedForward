@@ -10,6 +10,9 @@ import {
   ChevronUp,
   Loader2,
   Inbox,
+  Trash2,
+  Archive,
+  CheckCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -20,6 +23,7 @@ export default function SubmissionsViewer() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchSubmissions();
@@ -50,22 +54,90 @@ export default function SubmissionsViewer() {
     setExpandedId((prev) => (prev === id ? null : id));
   };
 
+  const toggleSelect = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAll = () => {
+    if (selected.size === filteredSubmissions.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filteredSubmissions.map((s) => s.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0) return;
+    if (!confirm(`Delete ${selected.size} submission(s)? This cannot be undone.`)) return;
+
+    try {
+      const supabase = createClient();
+      const ids = Array.from(selected);
+      const { error } = await supabase
+        .from("submissions")
+        .delete()
+        .in("id", ids);
+      if (error) throw error;
+      setSubmissions((prev) => prev.filter((s) => !selected.has(s.id)));
+      setSelected(new Set());
+      toast.success(`Deleted ${ids.length} submission(s)`);
+    } catch {
+      toast.error("Failed to delete");
+    }
+  };
+
+  const deleteSingle = async (id: string) => {
+    if (!confirm("Delete this submission?")) return;
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from("submissions").delete().eq("id", id);
+      if (error) throw error;
+      setSubmissions((prev) => prev.filter((s) => s.id !== id));
+      setSelected((prev) => { const next = new Set(prev); next.delete(id); return next; });
+      toast.success("Deleted");
+    } catch {
+      toast.error("Failed to delete");
+    }
+  };
+
+  const clearAll = async () => {
+    const target = activeTab === "all" ? "all" : activeTab;
+    if (!confirm(`Delete ALL ${target} submissions? This cannot be undone.`)) return;
+
+    try {
+      const supabase = createClient();
+      let query = supabase.from("submissions").delete();
+      if (activeTab !== "all") {
+        query = query.eq("type", activeTab);
+      } else {
+        query = query.gte("created_at", "2000-01-01");
+      }
+      const { error } = await query;
+      if (error) throw error;
+      if (activeTab === "all") {
+        setSubmissions([]);
+      } else {
+        setSubmissions((prev) => prev.filter((s) => s.type !== activeTab));
+      }
+      setSelected(new Set());
+      toast.success(`Cleared ${target} submissions`);
+    } catch {
+      toast.error("Failed to clear");
+    }
+  };
+
   const exportCSV = () => {
     if (filteredSubmissions.length === 0) {
       toast.error("No submissions to export");
       return;
     }
 
-    const headers = [
-      "Type",
-      "Name",
-      "Email",
-      "Phone",
-      "Chapter",
-      "Message",
-      "Date",
-    ];
-
+    const headers = ["Type", "Name", "Email", "Phone", "Chapter", "Message", "Date"];
     const escapeCSV = (value: string | null | undefined): string => {
       if (value === null || value === undefined) return "";
       const str = String(value);
@@ -102,16 +174,8 @@ export default function SubmissionsViewer() {
 
   const tabs: { key: TabFilter; label: string; count: number }[] = [
     { key: "all", label: "All", count: submissions.length },
-    {
-      key: "volunteer",
-      label: "Volunteer",
-      count: submissions.filter((s) => s.type === "volunteer").length,
-    },
-    {
-      key: "contact",
-      label: "Contact",
-      count: submissions.filter((s) => s.type === "contact").length,
-    },
+    { key: "volunteer", label: "Volunteer", count: submissions.filter((s) => s.type === "volunteer").length },
+    { key: "contact", label: "Contact", count: submissions.filter((s) => s.type === "contact").length },
   ];
 
   if (loading) {
@@ -127,20 +191,25 @@ export default function SubmissionsViewer() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-forest">
-            Submissions
-          </h1>
-          <p className="text-sm text-warm-gray">
-            View volunteer sign-ups and contact messages
-          </p>
+          <h1 className="font-display text-2xl font-bold text-forest">Submissions</h1>
+          <p className="text-sm text-warm-gray">View volunteer sign-ups and contact messages</p>
         </div>
-        <button
-          onClick={exportCSV}
-          className="flex items-center gap-2 rounded-lg bg-forest px-4 py-2.5 text-sm font-medium text-cream transition-colors hover:bg-forest-light"
-        >
-          <Download className="h-4 w-4" />
-          Export CSV
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={exportCSV}
+            className="flex items-center gap-2 rounded-lg bg-forest px-4 py-2.5 text-sm font-medium text-cream transition-colors hover:bg-forest-light"
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </button>
+          <button
+            onClick={clearAll}
+            className="flex items-center gap-2 rounded-lg bg-rust/10 px-4 py-2.5 text-sm font-medium text-rust transition-colors hover:bg-rust/20"
+          >
+            <Trash2 className="h-4 w-4" />
+            Clear All
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -148,7 +217,7 @@ export default function SubmissionsViewer() {
         {tabs.map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
+            onClick={() => { setActiveTab(tab.key); setSelected(new Set()); }}
             className={cn(
               "flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors",
               activeTab === tab.key
@@ -157,19 +226,37 @@ export default function SubmissionsViewer() {
             )}
           >
             {tab.label}
-            <span
-              className={cn(
-                "rounded-full px-2 py-0.5 text-xs",
-                activeTab === tab.key
-                  ? "bg-forest/10 text-forest"
-                  : "bg-warm-gray-light/30 text-warm-gray"
-              )}
-            >
+            <span className={cn(
+              "rounded-full px-2 py-0.5 text-xs",
+              activeTab === tab.key ? "bg-forest/10 text-forest" : "bg-warm-gray-light/30 text-warm-gray"
+            )}>
               {tab.count}
             </span>
           </button>
         ))}
       </div>
+
+      {/* Bulk actions bar */}
+      {selected.size > 0 && (
+        <div className="flex items-center gap-4 rounded-lg bg-forest/5 px-4 py-3">
+          <span className="font-body text-sm font-medium text-forest">
+            {selected.size} selected
+          </span>
+          <button
+            onClick={deleteSelected}
+            className="flex items-center gap-1 rounded bg-rust/10 px-3 py-1.5 font-body text-xs font-medium text-rust transition-colors hover:bg-rust/20"
+          >
+            <Trash2 className="h-3 w-3" />
+            Delete Selected
+          </button>
+          <button
+            onClick={() => setSelected(new Set())}
+            className="font-body text-xs text-warm-gray hover:text-ink"
+          >
+            Clear selection
+          </button>
+        </div>
+      )}
 
       {/* Submissions Table */}
       {filteredSubmissions.length === 0 ? (
@@ -182,77 +269,78 @@ export default function SubmissionsViewer() {
       ) : (
         <div className="rounded-xl border border-border bg-white/60 shadow-sm overflow-hidden">
           {/* Table Header */}
-          <div className="hidden md:grid md:grid-cols-[100px_1fr_1fr_120px_130px_40px] gap-4 border-b border-border bg-cream-dark/50 px-6 py-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Type
+          <div className="hidden md:grid md:grid-cols-[40px_90px_1fr_1fr_100px_120px_80px] gap-4 border-b border-border bg-cream-dark/50 px-4 py-3">
+            <span>
+              <input
+                type="checkbox"
+                checked={selected.size === filteredSubmissions.length && filteredSubmissions.length > 0}
+                onChange={selectAll}
+                className="h-4 w-4 rounded border-border text-rust focus:ring-rust/30"
+              />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Name
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Email
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Chapter
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Date
-            </span>
-            <span className="sr-only">Expand</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Type</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Name</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Email</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Chapter</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Date</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Actions</span>
           </div>
 
           {filteredSubmissions.map((sub) => {
             const isExpanded = expandedId === sub.id;
             return (
-              <div
-                key={sub.id}
-                className="border-b border-border/40 last:border-b-0"
-              >
-                <button
-                  onClick={() => toggleExpand(sub.id)}
-                  className="flex w-full flex-col md:grid md:grid-cols-[100px_1fr_1fr_120px_130px_40px] gap-2 md:gap-4 items-start md:items-center px-6 py-4 text-left transition-colors hover:bg-cream-dark/30"
-                >
+              <div key={sub.id} className="border-b border-border/40 last:border-b-0">
+                <div className="flex w-full flex-col md:grid md:grid-cols-[40px_90px_1fr_1fr_100px_120px_80px] gap-2 md:gap-4 items-start md:items-center px-4 py-4">
+                  {/* Checkbox */}
+                  <span className="hidden md:block">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(sub.id)}
+                      onChange={() => toggleSelect(sub.id)}
+                      className="h-4 w-4 rounded border-border text-rust focus:ring-rust/30"
+                    />
+                  </span>
+
                   {/* Type Badge */}
-                  <span
-                    className={cn(
-                      "rounded-full px-2.5 py-0.5 text-xs font-medium",
-                      sub.type === "volunteer"
-                        ? "bg-forest/10 text-forest"
-                        : "bg-rust/10 text-rust"
-                    )}
-                  >
+                  <span className={cn(
+                    "rounded-full px-2.5 py-0.5 text-xs font-medium",
+                    sub.type === "volunteer" ? "bg-forest/10 text-forest" : "bg-rust/10 text-rust"
+                  )}>
                     {sub.type}
                   </span>
 
                   {/* Name */}
-                  <span className="text-sm font-medium text-ink truncate w-full">
+                  <button onClick={() => toggleExpand(sub.id)} className="text-sm font-medium text-ink truncate w-full text-left hover:text-forest">
                     {sub.name}
-                  </span>
+                  </button>
 
                   {/* Email */}
-                  <span className="text-sm text-ink-light truncate w-full">
-                    {sub.email}
-                  </span>
+                  <span className="text-sm text-ink-light truncate w-full">{sub.email}</span>
 
                   {/* Chapter */}
-                  <span className="text-sm text-warm-gray truncate">
-                    {sub.chapter || "---"}
-                  </span>
+                  <span className="text-sm text-warm-gray truncate">{sub.chapter || "-"}</span>
 
                   {/* Date */}
-                  <span className="text-xs text-warm-gray">
-                    {formatDate(sub.created_at)}
-                  </span>
+                  <span className="text-xs text-warm-gray">{formatDate(sub.created_at)}</span>
 
-                  {/* Expand Icon */}
-                  <span className="hidden md:flex justify-end">
-                    {isExpanded ? (
-                      <ChevronUp className="h-4 w-4 text-warm-gray" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 text-warm-gray" />
-                    )}
-                  </span>
-                </button>
+                  {/* Actions */}
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => toggleExpand(sub.id)}
+                      className="rounded p-1 text-warm-gray hover:bg-cream-dark hover:text-ink"
+                      title="Expand"
+                    >
+                      {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </button>
+                    <button
+                      onClick={() => deleteSingle(sub.id)}
+                      className="rounded p-1 text-warm-gray hover:bg-rust/10 hover:text-rust"
+                      title="Delete"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
 
                 {/* Expanded Message */}
                 {isExpanded && (
@@ -260,14 +348,11 @@ export default function SubmissionsViewer() {
                     <div className="space-y-2">
                       {sub.phone && (
                         <p className="text-sm text-ink-light">
-                          <span className="font-medium text-ink">Phone:</span>{" "}
-                          {sub.phone}
+                          <span className="font-medium text-ink">Phone:</span> {sub.phone}
                         </p>
                       )}
                       <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-warm-gray">
-                          Message
-                        </p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-warm-gray">Message</p>
                         <p className="whitespace-pre-wrap text-sm text-ink-light leading-relaxed">
                           {sub.message || "No message provided."}
                         </p>
