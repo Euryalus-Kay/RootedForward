@@ -287,18 +287,9 @@ export default async function PolicyPage() {
           <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {learningResources.map((resource) => {
               const isExternal = resource.href.startsWith("http");
-              const Tag = isExternal ? "a" : Link;
-              const linkProps = isExternal
-                ? { href: resource.href, target: "_blank", rel: "noopener noreferrer" }
-                : { href: resource.href };
-
-              return (
-                <Tag
-                  key={resource.id}
-                  {...(linkProps as Record<string, string>)}
-                  className="group flex flex-col rounded-sm border border-cream/15 bg-cream/[0.05] p-6 transition-all hover:bg-cream/[0.10] hover:border-cream/25"
-                >
-                  {/* Icon + type badge */}
+              const cardCls = "group flex flex-col rounded-sm border border-cream/15 bg-cream/[0.05] p-6 transition-all hover:bg-cream/[0.10] hover:border-cream/25";
+              const cardContent = (
+                <>
                   <div className="flex items-center justify-between">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full border border-rust/50 text-rust">
                       <ResourceIcon icon={resource.icon} />
@@ -307,22 +298,26 @@ export default async function PolicyPage() {
                       {TYPE_LABELS[resource.type]}
                     </span>
                   </div>
-
-                  {/* Title */}
                   <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-rust">
                     {resource.title}
                   </h3>
-
-                  {/* Description */}
                   <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-cream/65">
                     {resource.description}
                   </p>
-
-                  {/* CTA */}
                   <span className="mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-transform group-hover:translate-x-1">
                     {resource.cta_label} &rarr;
                   </span>
-                </Tag>
+                </>
+              );
+
+              return isExternal ? (
+                <a key={resource.id} href={resource.href} target="_blank" rel="noopener noreferrer" className={cardCls}>
+                  {cardContent}
+                </a>
+              ) : (
+                <Link key={resource.id} href={resource.href} className={cardCls}>
+                  {cardContent}
+                </Link>
               );
             })}
           </div>

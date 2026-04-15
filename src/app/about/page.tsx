@@ -294,8 +294,8 @@ export default function AboutPage() {
         const { createClient } = await import("@/lib/supabase/client");
         const supabase = createClient();
         const [s, a] = await Promise.all([
-          supabase.from("board_members").select("*").eq("board_type", "student").eq("is_active", true).order("display_order"),
-          supabase.from("board_members").select("*").eq("board_type", "advisory").eq("is_active", true).order("display_order"),
+          (supabase as any).from("board_members").select("*").eq("board_type", "student").eq("is_active", true).order("display_order"),
+          (supabase as any).from("board_members").select("*").eq("board_type", "advisory").eq("is_active", true).order("display_order"),
         ]);
         if (s.data && s.data.length > 0) setStudentBoard(s.data as unknown as BoardMember[]);
         if (a.data && a.data.length > 0) setAdvisoryBoard(a.data as unknown as BoardMember[]);
