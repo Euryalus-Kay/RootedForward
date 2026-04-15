@@ -5,56 +5,52 @@ export default function Home() {
   return (
     <PageTransition>
       {/* ============================================================
-          HERO
+          HERO — split layout: text left, photo right
           ============================================================ */}
-      <section className="relative min-h-[85vh]">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-forest/75" />
-
-        {/* Content */}
-        {/* Bottom gradient for text area */}
-        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent z-[5]" />
-
-        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-12 pt-32 sm:px-10 md:pb-16 lg:px-16">
-          <div>
-            <h1 className="font-display text-7xl leading-[0.88] tracking-tight text-white md:text-8xl lg:text-9xl">
-              Rooted Forward
-            </h1>
-            <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-white/80 md:text-lg">
-              A youth-led nonprofit documenting how redlining, urban renewal,
-              and disinvestment shaped Chicago. Walking tours. Podcasts.
-              Policy campaigns. All led by young people.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/tours"
-                className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Explore Tours
-              </Link>
-              <Link
-                href="/policy"
-                className="inline-flex items-center rounded-sm border-2 border-white/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:border-white hover:bg-white/10"
-              >
-                Policy Work
-              </Link>
-            </div>
+      <section className="grid min-h-[90vh] grid-cols-1 lg:grid-cols-2">
+        {/* Left: text on solid forest background */}
+        <div className="flex flex-col justify-center bg-forest px-6 py-24 sm:px-10 lg:px-16 lg:py-0">
+          <h1 className="font-display text-6xl leading-[0.88] tracking-tight text-cream md:text-7xl xl:text-8xl">
+            Rooted
+            <br />
+            Forward
+          </h1>
+          <p className="mt-8 max-w-md font-body text-base leading-relaxed text-cream/75 md:text-lg">
+            A youth-led nonprofit documenting how redlining, urban renewal,
+            and disinvestment shaped Chicago. Walking tours. Podcasts.
+            Policy campaigns. All led by young people.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link
+              href="/tours"
+              className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Explore Tours
+            </Link>
+            <Link
+              href="/policy"
+              className="inline-flex items-center rounded-sm border-2 border-cream/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+            >
+              Policy Work
+            </Link>
           </div>
+        </div>
+
+        {/* Right: photo */}
+        <div
+          className="relative hidden bg-cover bg-center lg:block"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-forest/15" />
         </div>
       </section>
 
       {/* ============================================================
-          WHAT WE DO
+          WHAT WE DO — three cards
           ============================================================ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            {/* Tours */}
             <Link href="/tours" className="group">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cream-dark">
                 <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
@@ -77,7 +73,6 @@ export default function Home() {
               </span>
             </Link>
 
-            {/* Podcast */}
             <Link href="/podcasts" className="group">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cream-dark">
                 <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
@@ -99,7 +94,6 @@ export default function Home() {
               </span>
             </Link>
 
-            {/* Policy */}
             <Link href="/policy" className="group">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cream-dark">
                 <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
@@ -130,21 +124,11 @@ export default function Home() {
       <section className="border-t border-border bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            {/* Image placeholder */}
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cream-dark">
               <div className="absolute inset-0 bg-gradient-to-br from-cream-dark to-border" />
-              <svg
-                className="absolute inset-0 h-full w-full opacity-[0.05]"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg className="absolute inset-0 h-full w-full opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <pattern
-                    id="stop-diag"
-                    width="16"
-                    height="16"
-                    patternUnits="userSpaceOnUse"
-                    patternTransform="rotate(45)"
-                  >
+                  <pattern id="stop-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                     <line x1="0" y1="0" x2="0" y2="16" stroke="#1A1A1A" strokeWidth="1" />
                   </pattern>
                 </defs>
@@ -157,7 +141,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Text */}
             <div className="flex flex-col justify-center">
               <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
                 Featured Stop
