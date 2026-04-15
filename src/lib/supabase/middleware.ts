@@ -38,8 +38,18 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Check if user has admin role
-    const { data: profile } = await supabase
+    // Check if user has admin role (use service role to bypass RLS)
+    const adminClient = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        cookies: {
+          getAll() { return request.cookies.getAll(); },
+          setAll() {},
+        },
+      }
+    );
+    const { data: profile } = await adminClient
       .from("users")
       .select("role")
       .eq("id", user.id)
