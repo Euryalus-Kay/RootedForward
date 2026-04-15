@@ -184,7 +184,7 @@ export const PLACEHOLDER_PODCASTS = [
     episode_number: 1,
     publish_date: "2025-09-15",
     guests: ["Dr. LaShonda Hicks", "Marcus Williams"],
-    embed_url: "https://open.spotify.com/embed/episode/placeholder1",
+    embed_url: "https://open.spotify.com/embed/episode/33iDOkYfD3XutfCLHTV1DC?utm_source=generator",
   },
   {
     title: "Concrete Walls: The Expressways That Divided Us",
