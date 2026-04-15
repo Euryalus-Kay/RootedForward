@@ -5,22 +5,63 @@ export default function Home() {
   return (
     <PageTransition>
       {/* ============================================================
-          HERO — split layout: text left, photo right
+          HERO — full screen photo with giant title
           ============================================================ */}
-      <section className="grid min-h-[90vh] grid-cols-1 lg:grid-cols-2">
-        {/* Left: text on solid forest background */}
-        <div className="flex flex-col justify-center bg-forest px-6 py-24 sm:px-10 lg:px-16 lg:py-0">
-          <h1 className="font-display text-6xl leading-[0.88] tracking-tight text-cream md:text-7xl xl:text-8xl">
+      <section className="relative h-screen">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-ink/50" />
+
+        {/* Giant title stretching across */}
+        <div className="relative z-10 flex h-full items-center justify-center px-6">
+          <h1 className="text-center font-display text-[4rem] leading-[0.85] tracking-tight text-white sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
             Rooted
             <br />
             Forward
           </h1>
-          <p className="mt-8 max-w-md font-body text-base leading-relaxed text-cream/75 md:text-lg">
-            A youth-led nonprofit documenting how redlining, urban renewal,
-            and disinvestment shaped Chicago. Walking tours. Podcasts.
-            Policy campaigns. All led by young people.
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute inset-x-0 bottom-8 z-10 flex justify-center">
+          <div className="flex flex-col items-center gap-2">
+            <span className="font-body text-xs uppercase tracking-widest text-white/50">
+              Scroll
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-5 w-5 animate-bounce text-white/50"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m19.5 8.25-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          ABOUT — what this is
+          ============================================================ */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-6">
+          <p className="max-w-[60ch] font-body text-xl leading-relaxed text-ink/80 md:text-2xl md:leading-relaxed">
+            A youth-led nonprofit in Chicago documenting how redlining, urban
+            renewal, and disinvestment shaped the neighborhoods we live in.
+            We run walking tours, make a podcast, and organize policy campaigns
+            so people can see the history that is still built into the streets
+            and do something about it.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
+
+          <div className="mt-12 flex flex-wrap gap-4">
             <Link
               href="/tours"
               className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
@@ -28,27 +69,25 @@ export default function Home() {
               Explore Tours
             </Link>
             <Link
+              href="/podcasts"
+              className="inline-flex items-center rounded-sm border-2 border-forest px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
+            >
+              Listen to the Podcast
+            </Link>
+            <Link
               href="/policy"
-              className="inline-flex items-center rounded-sm border-2 border-cream/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+              className="inline-flex items-center rounded-sm border-2 border-forest px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
             >
               Policy Work
             </Link>
           </div>
-        </div>
-
-        {/* Right: photo */}
-        <div
-          className="relative hidden bg-cover bg-center lg:block"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        >
-          <div className="absolute inset-0 bg-forest/15" />
         </div>
       </section>
 
       {/* ============================================================
           WHAT WE DO — three cards
           ============================================================ */}
-      <section className="bg-cream py-20 md:py-28">
+      <section className="border-t border-border bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
             <Link href="/tours" className="group">
