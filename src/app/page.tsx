@@ -17,31 +17,30 @@ export default function Home() {
         <div className="absolute inset-0 bg-forest/75" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-32">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-rust">
+        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32 sm:px-10 md:pb-24 lg:px-16">
+          <p className="font-body text-sm font-semibold uppercase tracking-[0.3em] text-rust">
             Chicago
           </p>
-          <h1 className="mt-3 font-display text-6xl leading-[0.95] tracking-tight text-white md:text-7xl lg:text-8xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
+          <h1 className="mt-4 font-display text-7xl leading-[0.9] tracking-tight text-white md:text-8xl lg:text-[10rem] drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
             Rooted
             <br />
             Forward
           </h1>
-          <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-cream/85">
-            A youth-led nonprofit in Chicago documenting how redlining,
-            urban renewal, and disinvestment shaped the neighborhoods we
-            live in. Walking tours. Podcasts. Policy campaigns. All
-            researched and led by young people.
+          <p className="mt-8 max-w-xl font-body text-lg leading-relaxed text-cream/85 md:text-xl">
+            A youth-led nonprofit documenting how redlining, urban renewal,
+            and disinvestment shaped Chicago. Walking tours. Podcasts.
+            Policy campaigns. All led by young people.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/tours"
-              className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
             >
               Explore Tours
             </Link>
             <Link
               href="/policy"
-              className="inline-flex items-center rounded-sm border-2 border-cream/40 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+              className="inline-flex items-center rounded-sm border-2 border-cream/40 px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
             >
               Policy Work
             </Link>
