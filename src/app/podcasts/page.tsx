@@ -1,145 +1,122 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import { PLACEHOLDER_PODCASTS } from "@/lib/constants";
-import type { Podcast } from "@/lib/types/database";
 
 export const metadata: Metadata = {
-  title: "Podcasts | Rooted Forward",
+  title: "Podcast | Rooted Forward",
   description:
-    "Conversations with historians, residents, and organizers about the places our walking tours visit.",
+    "The Rooted Forward podcast. Conversations about the policies and decisions that shaped Chicago neighborhoods along racial lines.",
 };
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString + "T00:00:00");
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
+/*
+  Spotify show ID for Rooted Forward.
+  The full show embed auto-updates when new episodes are published.
+  To find your show ID: open your podcast in Spotify, click Share,
+  copy the link. The ID is the string after /show/.
+*/
+const SPOTIFY_SHOW_ID = ""; // TODO: Add your Spotify show ID here
 
-function padEpisode(num: number): string {
-  return String(num).padStart(2, "0");
-}
+/*
+  Individual episode embeds. Add new episodes to the top of this array.
+  To get an episode embed URL: open the episode in Spotify, click Share,
+  click "Embed episode", copy the src from the iframe.
+*/
+const EPISODES = [
+  {
+    id: "33iDOkYfD3XutfCLHTV1DC",
+    embed_url:
+      "https://open.spotify.com/embed/episode/33iDOkYfD3XutfCLHTV1DC?utm_source=generator&theme=0",
+  },
+  // Add more episodes here as they are published:
+  // {
+  //   id: "YOUR_EPISODE_ID",
+  //   embed_url: "https://open.spotify.com/embed/episode/YOUR_EPISODE_ID?utm_source=generator&theme=0",
+  // },
+];
 
-async function getPodcasts() {
-  try {
-    const { isSupabaseConfigured, createClient } = await import("@/lib/supabase/server");
-    if (!isSupabaseConfigured()) throw new Error("skip");
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("podcasts")
-      .select(
-        "title, description, embed_url, episode_number, publish_date, guests"
-      )
-      .eq("published", true)
-      .order("episode_number", { ascending: true });
-
-    if (!error && data && data.length > 0) {
-      return data as Pick<
-        Podcast,
-        | "title"
-        | "description"
-        | "embed_url"
-        | "episode_number"
-        | "publish_date"
-        | "guests"
-      >[];
-    }
-  } catch {
-    // Supabase not configured — fall through
-  }
-
-  return PLACEHOLDER_PODCASTS;
-}
-
-export default async function PodcastsPage() {
-  const podcasts = await getPodcasts();
+export default function PodcastsPage() {
+  const hasShowEmbed = SPOTIFY_SHOW_ID.length > 0;
 
   return (
     <PageTransition>
-      <section className="bg-cream py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-6">
-          {/* Page Header */}
+      {/* Header */}
+      <section className="bg-cream pb-8 pt-28 md:pt-36">
+        <div className="mx-auto max-w-3xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Podcasts
+            Podcast
           </p>
-          <h1 className="mt-3 font-display text-4xl leading-tight text-forest md:text-5xl lg:text-6xl">
+          <h1 className="mt-4 font-display text-4xl leading-[1.1] text-forest md:text-6xl">
             The Podcast
           </h1>
-          <hr className="mt-8 border-border" />
-
-          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-ink/75">
+          <p className="mt-8 max-w-[60ch] font-body text-lg leading-relaxed text-ink/75">
             Each episode goes deeper into the places our walking tours visit.
             We talk to historians, lifelong residents, urban planners, and
             organizers about the policies and decisions that shaped
             Chicago&rsquo;s neighborhoods along racial lines.
           </p>
+          <hr className="mt-10 border-border" />
         </div>
       </section>
 
-      {/* Episode List */}
-      <section className="bg-cream pb-24 md:pb-32">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="flex flex-col gap-8">
-            {podcasts.map((episode) => (
-              <article
-                key={episode.episode_number}
-                className="rounded-sm border border-border bg-cream-dark p-8 md:p-10 lg:p-12"
+      {/* Full show player (auto-updates from Spotify) */}
+      {hasShowEmbed && (
+        <section className="bg-cream py-10">
+          <div className="mx-auto max-w-3xl px-6">
+            <iframe
+              src={`https://open.spotify.com/embed/show/${SPOTIFY_SHOW_ID}?utm_source=generator&theme=0`}
+              width="100%"
+              height="352"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              className="rounded-lg"
+              title="Rooted Forward Podcast on Spotify"
+            />
+            <p className="mt-4 font-body text-xs text-warm-gray">
+              New episodes appear here automatically from Spotify.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Individual episodes */}
+      <section className="bg-cream pb-20 pt-8 md:pb-28">
+        <div className="mx-auto max-w-3xl px-6">
+          {!hasShowEmbed && (
+            <p className="mb-8 font-body text-sm text-warm-gray">
+              Listen on{" "}
+              <a
+                href="https://open.spotify.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-forest underline underline-offset-2"
               >
-                <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-                  {/* Episode Number */}
-                  <div className="flex-shrink-0">
-                    <span className="font-display text-6xl font-light leading-none text-rust md:text-7xl">
-                      {padEpisode(episode.episode_number)}
-                    </span>
-                  </div>
+                Spotify
+              </a>{" "}
+              or wherever you get your podcasts.
+            </p>
+          )}
 
-                  {/* Episode Content */}
-                  <div className="flex-1">
-                    <h2 className="font-display text-2xl leading-snug text-forest">
-                      {episode.title}
-                    </h2>
-
-                    {episode.guests && episode.guests.length > 0 && (
-                      <p className="mt-2 font-body italic text-warm-gray">
-                        with {episode.guests.join(", ")}
-                      </p>
-                    )}
-
-                    <p className="mt-1 font-body text-sm text-warm-gray-light">
-                      {formatDate(episode.publish_date)}
-                    </p>
-
-                    <p className="mt-4 font-body leading-relaxed text-ink/75">
-                      {episode.description}
-                    </p>
-
-                    {/* Embed Area */}
-                    <div className="mt-6">
-                      {episode.embed_url ? (
-                        <iframe
-                          src={episode.embed_url}
-                          width="100%"
-                          height="152"
-                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                          loading="lazy"
-                          className="rounded-sm"
-                          title={`Listen to ${episode.title}`}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center rounded-sm border border-border bg-cream px-6 py-8">
-                          <p className="font-body text-sm tracking-wide text-warm-gray">
-                            Episode coming soon
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </article>
+          <div className="flex flex-col gap-6">
+            {EPISODES.map((episode, index) => (
+              <div key={episode.id}>
+                {index > 0 && <hr className="mb-6 border-border" />}
+                <iframe
+                  src={episode.embed_url}
+                  width="100%"
+                  height="352"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="rounded-lg"
+                  title={`Episode ${EPISODES.length - index}`}
+                />
+              </div>
             ))}
           </div>
+
+          {EPISODES.length === 0 && (
+            <p className="py-12 text-center font-body text-base text-warm-gray">
+              Episodes coming soon.
+            </p>
+          )}
         </div>
       </section>
     </PageTransition>

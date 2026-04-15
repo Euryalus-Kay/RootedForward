@@ -275,10 +275,10 @@ export default async function PolicyPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
             Policy Learning Zone
           </p>
-          <h2 className="mt-3 font-display text-3xl text-cream md:text-4xl">
+          <h2 className="mt-3 font-display text-4xl text-cream md:text-6xl">
             Learn, Draft, Act
           </h2>
-          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-cream/70">
+          <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-cream/70">
             Tools and guides for engaging with Chicago policy. Draft a public
             comment, write a proposal, find your alderperson, or learn how
             zoning, legislation, and public testimony actually work.
