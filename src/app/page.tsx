@@ -61,7 +61,10 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-forest py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="font-display text-3xl leading-relaxed text-cream md:text-4xl lg:text-5xl lg:leading-snug">
+          <p className="font-body text-sm font-semibold uppercase tracking-[0.25em]" style={{ color: "#C45D3E" }}>
+            Our Mission
+          </p>
+          <p className="mt-6 font-display text-2xl leading-relaxed text-cream md:text-3xl">
             A youth-led nonprofit in Chicago tracing what redlining, urban
             renewal, and highway construction did to the neighborhoods people
             live in today. We organize the response through education, policy,
@@ -71,7 +74,7 @@ export default function Home() {
             href="/about"
             className="mt-10 inline-flex items-center font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light"
           >
-            About Us &rarr;
+            Learn More About Us &rarr;
           </Link>
         </div>
       </section>
