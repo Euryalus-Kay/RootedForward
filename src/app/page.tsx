@@ -51,35 +51,48 @@ export default function Home() {
       {/* ============================================================
           ABOUT — what this is
           ============================================================ */}
-      <section className="bg-cream py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="max-w-[60ch] font-body text-xl leading-relaxed text-ink/80 md:text-2xl md:leading-relaxed">
-            A youth-led nonprofit in Chicago documenting how redlining, urban
-            renewal, and disinvestment shaped the neighborhoods we live in.
-            We run walking tours, make a podcast, and organize policy campaigns
-            so people can see the history that is still built into the streets
-            and do something about it.
-          </p>
-
-          <div className="mt-12 flex flex-wrap gap-4">
-            <Link
-              href="/tours"
-              className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Explore Tours
-            </Link>
-            <Link
-              href="/podcasts"
-              className="inline-flex items-center rounded-sm border-2 border-forest px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
-            >
-              Listen to the Podcast
-            </Link>
-            <Link
-              href="/policy"
-              className="inline-flex items-center rounded-sm border-2 border-forest px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
-            >
-              Policy Work
-            </Link>
+      <section className="bg-forest py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
+                Our Work
+              </p>
+              <h2 className="mt-3 font-display text-3xl text-cream md:text-4xl">
+                Documenting What
+                <br />
+                <span style={{ color: "#C45D3E" }}>Policy Built</span>
+              </h2>
+            </div>
+            <div>
+              <p className="font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                Redlining drew the lines. Urban renewal demolished the
+                neighborhoods. Highways cut through what was left. Those
+                decisions are still visible in every block of Chicago&rsquo;s
+                South and West sides. We document them through walking tours,
+                a podcast, and policy campaigns run entirely by young people.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/tours"
+                  className="inline-flex items-center rounded-sm bg-rust px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Tours
+                </Link>
+                <Link
+                  href="/podcasts"
+                  className="inline-flex items-center rounded-sm border-2 border-cream/25 px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+                >
+                  Podcast
+                </Link>
+                <Link
+                  href="/policy"
+                  className="inline-flex items-center rounded-sm border-2 border-cream/25 px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+                >
+                  Policy
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -87,7 +100,7 @@ export default function Home() {
       {/* ============================================================
           WHAT WE DO — three cards
           ============================================================ */}
-      <section className="border-t border-border bg-cream py-20 md:py-28">
+      <section className="bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
             <Link href="/tours" className="group">
