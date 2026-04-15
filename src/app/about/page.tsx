@@ -120,8 +120,8 @@ export default function AboutPage() {
             </div>
             <div className="md:col-span-9">
               <p className="font-body text-xl leading-relaxed text-ink/80 md:text-2xl md:leading-relaxed">
-                Rooted Forward documents how policy decisions &mdash; redlining,
-                urban renewal, highway construction, gentrification &mdash;
+                Rooted Forward documents how policy decisions, including redlining,
+                urban renewal, highway construction, and gentrification,
                 shaped the neighborhoods we live in. We do this through walking
                 tours, podcasts, and original research, all led by young people
                 in Chicago.
@@ -150,7 +150,7 @@ export default function AboutPage() {
                 the boundaries they walked past every day.
               </p>
               <p className="font-body text-lg leading-relaxed text-ink/75">
-                Vacant lots, closed businesses, crumbling sidewalks &mdash; all
+                Vacant lots, closed businesses, crumbling sidewalks, all
                 on one side of a line a federal bureaucrat drew before their
                 grandparents were born. They decided to build a walking tour so
                 other people could see it too. That became Rooted Forward.
@@ -177,8 +177,8 @@ export default function AboutPage() {
                 <p className="font-body text-lg leading-relaxed text-ink/75">
                   Rooted Forward is run by young people between the ages of 16
                   and 24. We design tour routes, do the research, write podcast
-                  scripts, and conduct interviews. Adult advisors &mdash;
-                  historians, urban planners, educators &mdash; provide
+                  scripts, and conduct interviews. Adult advisors,
+                  including historians, urban planners, and educators, provide
                   mentorship but don&rsquo;t make decisions for us.
                 </p>
                 <p className="font-body text-lg leading-relaxed text-ink/75">

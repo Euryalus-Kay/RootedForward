@@ -92,11 +92,11 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
     hero_image_url: null,
     target_body: "Chicago Department of Housing",
     problem_markdown:
-      "## The Problem\n\nThe Obama Presidential Center broke ground in 2021 and is expected to open in 2026. The University of Chicago's own projections estimate the center will draw 750,000 visitors annually and generate billions in economic activity. That money flows into a neighborhood where the median household income is $24,000 and 60% of residents are renters.\n\nWoodlawn lost nearly 70% of its population between 1960 and 2010, largely due to urban renewal, redlining, and the disinvestment those policies caused. The residents who stayed — or who moved in during the decades when nobody else would invest — are now facing displacement by the very revitalization their neighborhood was promised.\n\nProperty values in Woodlawn have already increased 60% since the center was announced. Rents are following. The 2022 ordinance created a housing trust fund and right of first refusal for tenants, but it did not include the rent stabilization provisions that community groups requested during the public comment period.",
+      "## The Problem\n\nThe Obama Presidential Center broke ground in 2021 and is expected to open in 2026. The University of Chicago's own projections estimate the center will draw 750,000 visitors annually and generate billions in economic activity. That money flows into a neighborhood where the median household income is $24,000 and 60% of residents are renters.\n\nWoodlawn lost nearly 70% of its population between 1960 and 2010, largely due to urban renewal, redlining, and the disinvestment those policies caused. The residents who stayed, or who moved in during the decades when nobody else would invest, are now facing displacement by the very revitalization their neighborhood was promised.\n\nProperty values in Woodlawn have already increased 60% since the center was announced. Rents are following. The 2022 ordinance created a housing trust fund and right of first refusal for tenants, but it did not include the rent stabilization provisions that community groups requested during the public comment period.",
     proposal_markdown:
       "## What We're Proposing\n\nA binding affordable housing covenant attached to all residential properties within a half-mile of the Obama Presidential Center site. The covenant would:\n\n1. Cap annual rent increases at 3% or CPI (whichever is lower) for existing tenants for 15 years\n2. Require landlords receiving any city subsidy in the impact zone to maintain 30% of units at or below 60% AMI\n3. Establish an independent monitoring body with community representation\n4. Create an anti-displacement fund financed by a 1% transfer tax on property sales over $500,000 in the impact zone\n\nThis is not a blanket rent control proposal. It is a targeted protection for a specific geography facing a specific displacement pressure, modeled on protections other cities have adopted near major public investments.",
     comment_template:
-      "I am a Chicago resident writing to urge the Department of Housing to adopt a binding affordable housing covenant for the Woodlawn impact zone surrounding the Obama Presidential Center. The 2022 ordinance left out rent stabilization protections that community organizations requested during public comment. As development pressure increases, existing renters — many of whom stayed through decades of disinvestment — need binding protections against displacement. I support Rooted Forward's proposal for a 15-year covenant capping rent increases and requiring affordable unit set-asides in subsidized properties.",
+      "I am a Chicago resident writing to urge the Department of Housing to adopt a binding affordable housing covenant for the Woodlawn impact zone surrounding the Obama Presidential Center. The 2022 ordinance left out rent stabilization protections that community organizations requested during public comment. As development pressure increases, existing renters, many of whom stayed through decades of disinvestment, need binding protections against displacement. I support Rooted Forward's proposal for a 15-year covenant capping rent increases and requiring affordable unit set-asides in subsidized properties.",
     decision_makers: [
       { name: "Lissette Castañeda", role: "Commissioner, Chicago Department of Housing" },
       { name: "Jeanette Taylor", role: "Alderperson, 20th Ward" },
@@ -122,7 +122,7 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
       "Pushed Chicago Police Department to publish geocoded traffic stop data broken down by race, ward, and outcome. The data confirmed what residents already knew: stops were concentrated in Black neighborhoods with no proportional difference in contraband recovery rates.",
     full_brief_markdown: null,
     deadline: null,
-    outcome: "Partial — CPD began publishing quarterly stop data in 2025 but excluded officer badge numbers and GPS coordinates.",
+    outcome: "Partial. CPD began publishing quarterly stop data in 2025 but excluded officer badge numbers and GPS coordinates.",
     hero_image_url: null,
     target_body: "Chicago Police Department / City Council Public Safety Committee",
     problem_markdown: null,
@@ -145,7 +145,7 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
       "Organized public comment opposing the rezoning of parcels along the Pilsen Industrial Corridor from M2 manufacturing to B3 commercial, which would have allowed luxury residential development without affordable unit requirements.",
     full_brief_markdown: null,
     deadline: null,
-    outcome: "Won — Zoning Committee tabled the application after 340 public comments opposed the change. Parcels remain M2.",
+    outcome: "Won. Zoning Committee tabled the application after 340 public comments opposed the change. Parcels remain M2.",
     hero_image_url: null,
     target_body: "Chicago Zoning Board of Appeals",
     problem_markdown: null,
@@ -176,7 +176,7 @@ export const PLACEHOLDER_GUIDES: Guide[] = [
 
 When Chicago City Council votes on an ordinance, alderpeople are supposed to know what their constituents think. In practice, most of them hear from lobbyists, developers, and advocacy organizations. Public comment is the mechanism that puts your voice into the official record alongside theirs.
 
-Written comments submitted to the City Clerk's office are distributed to all 50 alderpeople before a vote. They are also entered into the Council Journal, which is the permanent legislative record of the city. This is not a suggestion box. It is a legal record, and elected officials are aware that their response to public comment — or lack of response — is documented.
+Written comments submitted to the City Clerk's office are distributed to all 50 alderpeople before a vote. They are also entered into the Council Journal, which is the permanent legislative record of the city. This is not a suggestion box. It is a legal record, and elected officials are aware that their response to public comment, or lack of response, is documented.
 
 ## When to submit
 
@@ -186,7 +186,7 @@ For maximum impact, submit at least **48 hours** before the committee hearing wh
 
 ## How to write it
 
-Keep it short. Three to five paragraphs. Open with who you are and where you live — your ward matters because alderpeople pay the most attention to their own constituents. State the ordinance number or title. Say whether you support or oppose it. Give one or two specific reasons why. Close by stating what you want your alderperson to do.
+Keep it short. Three to five paragraphs. Open with who you are and where you live. Your ward matters because alderpeople pay the most attention to their own constituents. State the ordinance number or title. Say whether you support or oppose it. Give one or two specific reasons why. Close by stating what you want your alderperson to do.
 
 Do not use form letters if you can avoid it. Staff can tell. A two-paragraph comment in your own words carries more weight than a five-page template.
 
@@ -194,7 +194,7 @@ Do not use form letters if you can avoid it. Staff can tell. A two-paragraph com
 
 **Email**: Send to your alderperson directly (find them at [Ward Office Finder](https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html)) and CC the City Clerk at officeofthecityclerk@cityofchicago.org.
 
-**In person**: You can also deliver written testimony at the committee hearing or full Council meeting. Sign up to speak during the public comment period — you will usually get two to three minutes.
+**In person**: You can also deliver written testimony at the committee hearing or full Council meeting. Sign up to speak during the public comment period, and you will usually get two to three minutes.
 
 ## What happens after
 
@@ -211,7 +211,7 @@ Your comment is entered into the Council Journal. If you emailed your alderperso
       "Use this when a developer or property owner has applied to rezone a parcel near you. Zoning changes affect what gets built, how tall it can be, and whether affordable housing is required.",
     content_markdown: `## Why zoning changes matter
 
-Zoning determines what can be built on a parcel of land. When a developer wants to build something the current zoning does not allow — say, a six-story residential building on a lot zoned for manufacturing — they file for a zoning change. If approved, the new zoning runs with the land permanently. It is not a one-time exception.
+Zoning determines what can be built on a parcel of land. When a developer wants to build something the current zoning does not allow, say a six-story residential building on a lot zoned for manufacturing, they file for a zoning change. If approved, the new zoning runs with the land permanently. It is not a one-time exception.
 
 Zoning changes in Chicago go through the Zoning Board of Appeals or the Committee on Zoning, Landmarks and Building Standards, depending on the type. Both hold public hearings. Both accept written comment.
 
@@ -234,7 +234,7 @@ You do not need to be a zoning expert. Describe the impact in concrete terms: ho
 
 ## Where to submit
 
-Written comments go to the Zoning Board of Appeals at zba@cityofchicago.org or to the Committee on Zoning at the City Clerk's office. Copy your alderperson. Attend the hearing in person if you can — spoken testimony is entered into the hearing record.
+Written comments go to the Zoning Board of Appeals at zba@cityofchicago.org or to the Committee on Zoning at the City Clerk's office. Copy your alderperson. Attend the hearing in person if you can. Spoken testimony is entered into the hearing record.
 
 ## Timing
 
@@ -263,7 +263,7 @@ Go to [my.ilga.gov](https://my.ilga.gov) and create an account. Search for the b
 - Whether you are a **proponent** (support), **opponent** (oppose), or registering **no position**
 - Whether you want to appear in person, submit written testimony, or just be counted as a record of appearance
 
-If you just want your position counted, select "Record of Appearance Only." This takes about two minutes and it matters — committee chairs look at slip counts before hearings.
+If you just want your position counted, select "Record of Appearance Only." This takes about two minutes and it matters. Committee chairs look at slip counts before hearings.
 
 ## If you want to submit written testimony
 
@@ -316,7 +316,7 @@ Not naming the decision-maker. Every proposal needs a target: a specific person 
 
 ## What to do with it
 
-Send it to your alderperson, the relevant committee chair, and any city department with jurisdiction. Rooted Forward also accepts community-submitted proposals through our [submit a proposal](/policy/submit-proposal) page — we develop the strongest ones into campaigns.`,
+Send it to your alderperson, the relevant committee chair, and any city department with jurisdiction. Rooted Forward also accepts community-submitted proposals through our [submit a proposal](/policy/submit-proposal) page, and we develop the strongest ones into campaigns.`,
     last_updated: "2026-01-15",
   },
   {
@@ -335,11 +335,11 @@ You cannot introduce an ordinance yourself. You need an alderperson to sponsor i
 
 ## Start with your own alderperson
 
-Your alderperson is the most likely sponsor because you are their constituent. Find yours using the [Ward Office Finder](https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html). Call their ward office and request a meeting. Do not email a cold pitch — call and ask for a scheduled sit-down.
+Your alderperson is the most likely sponsor because you are their constituent. Find yours using the [Ward Office Finder](https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html). Call their ward office and request a meeting. Do not email a cold pitch. Call and ask for a scheduled sit-down.
 
 ## What to bring to the meeting
 
-Bring a written policy proposal (see our [guide on writing one](/policy/guides/write-policy-proposal)). Bring evidence. Bring the names of other constituents who support it. If you have signatures or public comments, bring those too. The alderperson needs to see that this is not just your personal issue — it is a constituency issue.
+Bring a written policy proposal (see our [guide on writing one](/policy/guides/write-policy-proposal)). Bring evidence. Bring the names of other constituents who support it. If you have signatures or public comments, bring those too. The alderperson needs to see that this is not just your personal issue. It is a constituency issue.
 
 Be specific about what you are asking: "We would like you to introduce an ordinance that does X." Not "We would like you to look into the problem of Y."
 
@@ -366,7 +366,7 @@ Twenty-six votes passes an ordinance. You need to get there. That is the math.`,
       "Use this when you want to demonstrate broad support for a position by collecting organizational and individual endorsements on a single letter to a decision-maker.",
     content_markdown: `## What a sign-on letter does
 
-A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It says: this is not one person's opinion — this is a coalition position. The recipient sees fifty organizations and three hundred individuals who all agree on a specific ask. That is harder to dismiss than a single comment.
+A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It says: this is not one person's opinion. This is a coalition position. The recipient sees fifty organizations and three hundred individuals who all agree on a specific ask. That is harder to dismiss than a single comment.
 
 ## Write the letter first
 

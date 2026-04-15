@@ -102,7 +102,7 @@ export default function GetInvolvedPage() {
           <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-ink/75">
             Rooted Forward exists because young people decided the history of
             their neighborhoods deserved to be told. There are many ways to join
-            this effort — whether you want to walk, talk, organize, or give.
+            this effort, whether you want to walk, talk, organize, or give.
           </p>
         </div>
       </section>

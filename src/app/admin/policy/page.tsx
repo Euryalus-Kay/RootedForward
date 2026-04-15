@@ -101,6 +101,15 @@ export default function AdminPolicyDashboard() {
             </p>
           </Link>
           <Link
+            href="/admin/policy/drafts"
+            className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
+          >
+            <p className="font-body text-sm font-medium text-ink">Draft Reviews</p>
+            <p className="mt-1 font-body text-xs text-warm-gray">
+              Review user drafts and provide feedback
+            </p>
+          </Link>
+          <Link
             href="/admin/policy/comments"
             className="rounded-lg border border-border bg-cream p-4 transition-shadow hover:shadow-md"
           >

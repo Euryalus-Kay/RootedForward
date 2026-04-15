@@ -54,6 +54,28 @@ CREATE TABLE public_comments (
   UNIQUE (campaign_id, user_id)
 );
 
+-- Draft Reviews
+CREATE TABLE draft_reviews (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES users(id) ON DELETE CASCADE,
+  guide_slug text NOT NULL,
+  guide_title text NOT NULL,
+  draft_body text NOT NULL,
+  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in_review', 'reviewed', 'closed')),
+  reviewer_id uuid REFERENCES users(id),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE draft_comments (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  draft_id uuid REFERENCES draft_reviews(id) ON DELETE CASCADE,
+  author_id uuid REFERENCES users(id) ON DELETE CASCADE,
+  is_admin boolean DEFAULT false,
+  body text NOT NULL,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Policy Briefs
 CREATE TABLE policy_briefs (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -107,6 +129,9 @@ CREATE INDEX idx_public_comments_approved ON public_comments(campaign_id, is_app
 CREATE INDEX idx_guides_order ON guides(order_number);
 CREATE INDEX idx_policy_briefs_slug ON policy_briefs(slug);
 CREATE INDEX idx_proposals_status ON proposal_submissions(status);
+CREATE INDEX idx_draft_reviews_user ON draft_reviews(user_id);
+CREATE INDEX idx_draft_reviews_status ON draft_reviews(status);
+CREATE INDEX idx_draft_comments_draft ON draft_comments(draft_id);
 
 -- ============================================================
 -- Row Level Security
@@ -154,4 +179,25 @@ CREATE POLICY "Anyone can submit proposals" ON proposal_submissions
 CREATE POLICY "Users can view own proposals" ON proposal_submissions
   FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Admins full access proposals" ON proposal_submissions
+  FOR ALL USING (EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'));
+
+ALTER TABLE draft_reviews ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can submit drafts" ON draft_reviews
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can view own drafts" ON draft_reviews
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Admins full access drafts" ON draft_reviews
+  FOR ALL USING (EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'));
+
+ALTER TABLE draft_comments ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authors can comment on own drafts" ON draft_comments
+  FOR INSERT WITH CHECK (
+    auth.uid() = author_id AND
+    EXISTS (SELECT 1 FROM draft_reviews WHERE id = draft_id AND (user_id = auth.uid() OR EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')))
+  );
+CREATE POLICY "Users can view comments on own drafts" ON draft_comments
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM draft_reviews WHERE id = draft_id AND user_id = auth.uid())
+  );
+CREATE POLICY "Admins full access draft comments" ON draft_comments
   FOR ALL USING (EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'));

@@ -176,7 +176,7 @@ export default async function GuideDetailPage({ params }: PageProps) {
               </div>
 
               {/* Drafting area */}
-              <DraftingArea guideTitle={guide.title} />
+              <DraftingArea guideTitle={guide.title} guideSlug={guide.slug} />
 
               {/* Related campaigns */}
               {activeCampaigns.length > 0 && (

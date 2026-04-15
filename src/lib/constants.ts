@@ -58,7 +58,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 41.8565,
     lng: -87.6553,
     description:
-      "The murals along 16th Street in Pilsen are more than public art—they're declarations of resistance. As gentrification pressures mount in this historically Mexican-American neighborhood, local artists have painted building-sized responses documenting the community's history and its refusal to be erased. Each mural tells a story: of immigration, of labor, of belonging to a place that developers now see primarily as an investment opportunity.",
+      "The murals along 16th Street in Pilsen are more than public art. They are declarations of resistance. As gentrification pressures mount in this historically Mexican-American neighborhood, local artists have painted building-sized responses documenting the community's history and its refusal to be erased. Each mural tells a story: of immigration, of labor, of belonging to a place that developers now see primarily as an investment opportunity.",
     video_url: null,
     images: [],
     sources: [
@@ -73,7 +73,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 41.7943,
     lng: -87.5907,
     description:
-      "In the 1950s and 1960s, the University of Chicago led one of the nation's most aggressive urban renewal campaigns, demolishing hundreds of buildings and displacing thousands of Black residents from Hyde Park and neighboring Kenwood. Framed as 'slum clearance,' the program remade the neighborhood's demographics and built physical barriers—including the Midway Plaisance—between the university community and surrounding Black neighborhoods.",
+      "In the 1950s and 1960s, the University of Chicago led one of the nation's most aggressive urban renewal campaigns, demolishing hundreds of buildings and displacing thousands of Black residents from Hyde Park and neighboring Kenwood. Framed as 'slum clearance,' the program remade the neighborhood's demographics and built physical barriers, including the Midway Plaisance, between the university community and surrounding Black neighborhoods.",
     video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
@@ -89,7 +89,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 40.8448,
     lng: -73.8648,
     description:
-      "Robert Moses' Cross Bronx Expressway, completed in 1963, carved a seven-mile trench through densely populated neighborhoods, displacing over 60,000 residents—predominantly Black and Puerto Rican families. The highway didn't just demolish buildings; it severed communities, creating a physical wall that accelerated white flight and disinvestment in the South Bronx. Decades later, asthma rates along the expressway corridor remain among the highest in the nation.",
+      "Robert Moses' Cross Bronx Expressway, completed in 1963, carved a seven-mile trench through densely populated neighborhoods, displacing over 60,000 residents, predominantly Black and Puerto Rican families. The highway didn't just demolish buildings; it severed communities, creating a physical wall that accelerated white flight and disinvestment in the South Bronx. Decades later, asthma rates along the expressway corridor remain among the highest in the nation.",
     video_url: null,
     images: [],
     sources: [
@@ -104,7 +104,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 40.8116,
     lng: -73.9465,
     description:
-      "Along 125th Street and the surrounding blocks, real estate speculators in the mid-20th century practiced 'blockbusting'—deliberately stoking racial fears among white homeowners to buy properties cheaply, then selling them at inflated prices to Black families desperate for housing. This predatory cycle extracted wealth from both communities while reshaping Harlem's demographics and economics for generations.",
+      "Along 125th Street and the surrounding blocks, real estate speculators in the mid-20th century practiced 'blockbusting,' deliberately stoking racial fears among white homeowners to buy properties cheaply, then selling them at inflated prices to Black families desperate for housing. This predatory cycle extracted wealth from both communities while reshaping Harlem's demographics and economics for generations.",
     video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
@@ -120,7 +120,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 32.8023,
     lng: -96.7847,
     description:
-      "When Central Expressway (US 75) was built through Dallas, it wasn't just a highway—it was a racial barrier by design. The route deliberately reinforced the segregation line between white North Dallas and Black South Dallas, destroying homes and businesses in the State-Thomas neighborhood, once a thriving Black community. Today, the wealth gap between neighborhoods on either side of the expressway remains one of the starkest in any American city.",
+      "When Central Expressway (US 75) was built through Dallas, it was not just a highway. It was a racial barrier by design. The route deliberately reinforced the segregation line between white North Dallas and Black South Dallas, destroying homes and businesses in the State-Thomas neighborhood, once a thriving Black community. Today, the wealth gap between neighborhoods on either side of the expressway remains one of the starkest in any American city.",
     video_url: null,
     images: [],
     sources: [
@@ -135,7 +135,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 32.7942,
     lng: -96.7951,
     description:
-      "Freedman's Cemetery served as the primary burial ground for formerly enslaved people in Dallas from 1869 to 1907. Over 1,500 individuals were buried here. The site was paved over for Central Expressway construction in the 1940s, quite literally burying Black history under asphalt. Rediscovered during highway expansion in 1990, the cemetery is now a memorial—but the erasure it represents continues in how Dallas develops over historically Black land.",
+      "Freedman's Cemetery served as the primary burial ground for formerly enslaved people in Dallas from 1869 to 1907. Over 1,500 individuals were buried here. The site was paved over for Central Expressway construction in the 1940s, quite literally burying Black history under asphalt. Rediscovered during highway expansion in 1990, the cemetery is now a memorial, but the erasure it represents continues in how Dallas develops over historically Black land.",
     video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
@@ -151,7 +151,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 37.7842,
     lng: -122.4324,
     description:
-      "The Fillmore District was once called the 'Harlem of the West'—a vibrant Black cultural center with jazz clubs, businesses, and churches. In the 1960s and 70s, San Francisco's Redevelopment Agency razed 883 buildings and displaced over 10,000 Black residents under the banner of 'urban renewal.' The community called it what it was: Negro removal. Today, less than 5% of the Fillmore's residents are Black, down from over 40% before redevelopment.",
+      "The Fillmore District was once called the 'Harlem of the West,' a vibrant Black cultural center with jazz clubs, businesses, and churches. In the 1960s and 70s, San Francisco's Redevelopment Agency razed 883 buildings and displaced over 10,000 Black residents under the banner of 'urban renewal.' The community called it what it was: Negro removal. Today, less than 5% of the Fillmore's residents are Black, down from over 40% before redevelopment.",
     video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [

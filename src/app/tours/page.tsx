@@ -47,8 +47,8 @@ export default async function ToursPage() {
           </h1>
           <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-ink/70">
             Self-guided stops across Chicago&rsquo;s South and West sides.
-            Each one connects a specific place to the policy that shaped it
-            &mdash; redlining maps, urban renewal plans, highway routes. Walk
+            Each one connects a specific place to the policy that shaped it,
+            including redlining maps, urban renewal plans, and highway routes. Walk
             them in order or pick the ones closest to you.
           </p>
 

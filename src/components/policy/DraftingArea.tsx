@@ -1,21 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import toast from "react-hot-toast";
 
 interface DraftingAreaProps {
   guideTitle: string;
+  guideSlug: string;
   /** Optional starter template text */
   template?: string;
 }
 
-export default function DraftingArea({ guideTitle, template }: DraftingAreaProps) {
+export default function DraftingArea({ guideTitle, guideSlug, template }: DraftingAreaProps) {
+  const [user, setUser] = useState<User | null>(null);
   const [draft, setDraft] = useState(template ?? "");
+  const [draftId, setDraftId] = useState<string | null>(null);
   const [requestSent, setRequestSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const wordCount = draft.trim().split(/\s+/).filter(Boolean).length;
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+  }, []);
 
   async function handleCopy() {
     try {
@@ -24,7 +37,7 @@ export default function DraftingArea({ guideTitle, template }: DraftingAreaProps
       toast.success("Copied to clipboard");
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error("Failed to copy — try selecting the text manually");
+      toast.error("Failed to copy. Try selecting the text manually.");
     }
   }
 
@@ -35,23 +48,22 @@ export default function DraftingArea({ guideTitle, template }: DraftingAreaProps
     }
     setSending(true);
     try {
-      // Submit as a proposal-style submission for admin review
-      const res = await fetch("/api/policy/proposals", {
+      const res = await fetch("/api/policy/drafts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          proposal_title: `Draft review request: ${guideTitle}`,
-          problem_description: draft,
-          proposed_solution: "User is requesting a review of their draft from a Rooted Forward team member.",
-          evidence_sources: "",
-          wants_to_collaborate: true,
+          guide_slug: guideSlug,
+          guide_title: guideTitle,
+          draft_body: draft.trim(),
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
+      const data = await res.json();
+      setDraftId(data.draft?.id ?? null);
       setRequestSent(true);
-      toast.success("Review request sent. We'll get back to you.");
+      toast.success("Draft submitted for review.");
     } catch {
-      toast.error("Failed to send request. Try copying your draft and emailing us instead.");
+      toast.error("Failed to send. Try copying your draft and emailing us.");
     } finally {
       setSending(false);
     }
@@ -63,7 +75,7 @@ export default function DraftingArea({ guideTitle, template }: DraftingAreaProps
         Draft It Here
       </h2>
       <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
-        Use the space below to write your draft. When you&rsquo;re done, copy
+        Use the space below to write your draft. When you are done, copy
         it to send yourself or request a Rooted Forward member to review it
         before you submit.
       </p>
@@ -92,24 +104,46 @@ export default function DraftingArea({ guideTitle, template }: DraftingAreaProps
         </button>
 
         {requestSent ? (
-          <span className="inline-flex items-center px-5 py-2.5 font-body text-sm text-warm-gray">
-            Review requested &mdash; we&rsquo;ll be in touch
-          </span>
+          <div className="inline-flex flex-col gap-1">
+            <span className="inline-flex items-center px-5 py-2.5 font-body text-sm text-warm-gray">
+              Review requested. We will be in touch.
+            </span>
+            {draftId && (
+              <Link
+                href={`/policy/drafts/${draftId}`}
+                className="px-5 font-body text-xs text-rust underline underline-offset-2"
+              >
+                View your draft and feedback
+              </Link>
+            )}
+          </div>
         ) : (
           <button
             onClick={handleRequestReview}
-            disabled={!draft.trim() || sending}
+            disabled={!draft.trim() || sending || !user}
             className="inline-flex items-center rounded-sm bg-rust px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:opacity-40"
+            title={!user ? "Sign in to request a review" : undefined}
           >
             {sending ? "Sending\u2026" : "Request a Review"}
           </button>
         )}
       </div>
 
+      {!user && (
+        <p className="mt-3 font-body text-xs text-warm-gray">
+          <Link href="/auth/login" className="text-rust underline underline-offset-2">
+            Sign in
+          </Link>{" "}
+          to request a review from the Rooted Forward team.
+          You can still copy and email your draft without an account.
+        </p>
+      )}
+
       <p className="mt-4 font-body text-xs leading-relaxed text-ink/50">
         &ldquo;Request a Review&rdquo; sends your draft to a Rooted Forward
-        team member who can give feedback before you submit it officially. You
-        can also copy your draft and email it to{" "}
+        team member who can give feedback before you submit it officially.
+        You will be able to see their comments and reply on the draft page.
+        You can also copy your draft and email it to{" "}
         <a
           href="mailto:policy@rootedforward.org"
           className="text-rust underline underline-offset-2"

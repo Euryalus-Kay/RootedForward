@@ -39,7 +39,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "This isn\u2019t just history \u2014 it\u2019s happening right now. Rooted Forward helped me understand that.",
+      "This isn\u2019t just history. It\u2019s happening right now. Rooted Forward helped me understand that.",
     name: "Jaylen",
     age: 18,
     city: "New York",
@@ -142,7 +142,7 @@ export default function TestimonialsSection() {
                 <span className="font-body text-base font-medium text-ink-light">
                   {testimonial.name}, {testimonial.age}
                 </span>
-                <span className="mx-2 text-warm-gray-light">&mdash;</span>
+                <span className="mx-2 text-warm-gray-light">&middot;</span>
                 <span className="font-body text-base text-warm-gray">
                   {testimonial.city}
                 </span>

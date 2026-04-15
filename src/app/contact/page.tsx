@@ -42,7 +42,7 @@ export default function ContactPage() {
               </h2>
               <p className="mt-4 font-body leading-relaxed text-ink/75">
                 Whether you have a question about our tours, want to collaborate
-                on a project, or just want to say hello &mdash; we&rsquo;d love
+                on a project, or just want to say hello, we&rsquo;d love
                 to hear from you. Fill out the form and someone from our team
                 will get back to you within a few days.
               </p>

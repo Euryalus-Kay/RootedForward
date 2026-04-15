@@ -73,7 +73,7 @@ export default function Home() {
               <p className="mt-3 font-body text-sm leading-relaxed text-warm-gray-light">
                 Self-guided tours across Chicago&rsquo;s South and West sides.
                 Each stop connects a specific place to the policy that shaped
-                it &mdash; redlining maps, urban renewal demolitions, highway
+                it, including redlining maps, urban renewal demolitions, and highway
                 routes through Black neighborhoods.
               </p>
               <span className="mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-transform group-hover:translate-x-1">
@@ -122,8 +122,7 @@ export default function Home() {
 
             <p className="mt-6 max-w-3xl font-body text-lg leading-relaxed text-ink/75">
               Stand at the corner where the Home Owners&rsquo; Loan Corporation
-              drew a red line in 1938 and you can still see it today &mdash;
-              not on a map, but in the built environment. North of the line:
+              drew a red line in 1938 and you can still see it today. Not on a map, but in the built environment. North of the line:
               maintained sidewalks, mature trees, single-family homes. South of
               the line: disinvestment written into every vacant lot.
             </p>
