@@ -7,69 +7,41 @@ export default function Home() {
       {/* ============================================================
           HERO
           ============================================================ */}
-      <section className="relative bg-forest">
-        <div className="mx-auto grid min-h-[85vh] max-w-7xl grid-cols-1 lg:grid-cols-2">
-          {/* Left: text */}
-          <div className="flex flex-col justify-center px-6 py-20 sm:px-10 lg:px-16 lg:py-32">
-            <h1 className="font-display text-6xl leading-[0.95] tracking-tight text-cream md:text-7xl lg:text-8xl">
-              Rooted
-              <br />
-              Forward
-            </h1>
-            <p className="mt-8 max-w-md font-body text-lg leading-relaxed text-cream/75">
-              A youth-led nonprofit in Chicago documenting how redlining,
-              urban renewal, and disinvestment shaped the neighborhoods we
-              live in. Walking tours. Podcasts. Policy campaigns. All
-              researched and led by young people.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/tours"
-                className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Explore Tours
-              </Link>
-              <Link
-                href="/policy"
-                className="inline-flex items-center rounded-sm border-2 border-cream/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
-              >
-                Policy Work
-              </Link>
-            </div>
-          </div>
+      <section className="relative min-h-[85vh]">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-forest/75" />
 
-          {/* Right: image placeholder */}
-          <div className="relative hidden lg:block">
-            <div className="absolute inset-0 bg-gradient-to-r from-forest to-transparent z-10" />
-            <div className="absolute inset-0 bg-cream-dark">
-              <svg
-                className="absolute inset-0 h-full w-full opacity-[0.04]"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <defs>
-                  <pattern
-                    id="hero-grid"
-                    width="40"
-                    height="40"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M 40 0 L 0 0 0 40"
-                      fill="none"
-                      stroke="#1A1A1A"
-                      strokeWidth="0.5"
-                    />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#hero-grid)" />
-              </svg>
-              {/* Large watermark text */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="select-none font-display text-[20rem] leading-none text-forest/10">
-                  RF
-                </span>
-              </div>
-            </div>
+        {/* Content */}
+        <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-32">
+          <h1 className="font-display text-6xl leading-[0.95] tracking-tight text-cream md:text-7xl lg:text-8xl">
+            Rooted
+            <br />
+            Forward
+          </h1>
+          <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-cream/80">
+            A youth-led nonprofit in Chicago documenting how redlining,
+            urban renewal, and disinvestment shaped the neighborhoods we
+            live in. Walking tours. Podcasts. Policy campaigns. All
+            researched and led by young people.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link
+              href="/tours"
+              className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Explore Tours
+            </Link>
+            <Link
+              href="/policy"
+              className="inline-flex items-center rounded-sm border-2 border-cream/40 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+            >
+              Policy Work
+            </Link>
           </div>
         </div>
       </section>
