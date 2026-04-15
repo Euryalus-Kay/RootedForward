@@ -307,19 +307,16 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Banner */}
-      <section className="bg-forest pt-24 pb-12 md:pt-32 md:pb-16">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
-            About
-          </p>
-          <h1 className="mt-3 font-display text-4xl text-cream md:text-5xl lg:text-6xl">
+      <section className="relative pt-16 pb-12 md:pb-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-forest/70" />
+        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+          <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
             {tab === "organization" ? "The Organization" : "People"}
           </h1>
-          <p className="mt-4 max-w-[50ch] font-body text-base text-cream/65">
-            {tab === "organization"
-              ? "A youth-led nonprofit using history to change the cities we live in."
-              : "The students and advisors who lead Rooted Forward."}
-          </p>
         </div>
       </section>
 
