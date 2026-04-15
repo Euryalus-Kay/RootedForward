@@ -57,6 +57,29 @@ export default function Home() {
       </section>
 
       {/* ============================================================
+          MISSION — centered, clean
+          ============================================================ */}
+      <section className="bg-forest py-20 md:py-28">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
+            Our Mission
+          </p>
+          <p className="mt-6 font-display text-2xl leading-relaxed text-cream md:text-3xl">
+            Rooted Forward is a youth-led nonprofit in Chicago. We trace what
+            redlining, urban renewal, and highway construction did to the
+            neighborhoods people live in today, and we organize the response
+            to change the patterns that are still running.
+          </p>
+          <Link
+            href="/about"
+            className="mt-10 inline-flex items-center font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light"
+          >
+            Learn More About Us &rarr;
+          </Link>
+        </div>
+      </section>
+
+      {/* ============================================================
           WALKING TOURS — photo left, text right
           ============================================================ */}
       <section className="grid grid-cols-1 md:grid-cols-2">
