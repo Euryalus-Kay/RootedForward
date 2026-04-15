@@ -25,7 +25,16 @@ async function getCampaign(slug: string): Promise<Campaign | null> {
       .select("*")
       .eq("slug", slug)
       .single();
-    if (!error && data) return data as unknown as Campaign;
+    if (!error && data) {
+      const c = data as any;
+      return {
+        ...c,
+        signature_count: c.signature_count ?? 0,
+        decision_makers: c.decision_makers ?? null,
+        evidence_links: c.evidence_links ?? null,
+        related_tour_slugs: c.related_tour_slugs ?? [],
+      } as Campaign;
+    }
   } catch {
     // fallback
   }
