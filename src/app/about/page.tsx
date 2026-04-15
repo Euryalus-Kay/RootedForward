@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   PLACEHOLDER_STUDENT_BOARD,
   PLACEHOLDER_ADVISORY_BOARD,
@@ -281,11 +282,12 @@ function PeopleTab({
 /* ------------------------------------------------------------------ */
 
 export default function AboutPage() {
-  const [tab, setTab] = useState<"organization" | "people">("organization");
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab") === "people" ? "people" : "organization";
+
   const [studentBoard, setStudentBoard] = useState<BoardMember[]>(PLACEHOLDER_STUDENT_BOARD);
   const [advisoryBoard, setAdvisoryBoard] = useState<BoardMember[]>(PLACEHOLDER_ADVISORY_BOARD);
 
-  // Try to fetch from DB on mount
   useEffect(() => {
     async function fetchBoards() {
       try {
@@ -304,46 +306,25 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-cream">
-      {/* Header with tabs */}
+      {/* Header */}
       <section className="bg-cream pb-0 pt-28 md:pt-36">
         <div className="mx-auto max-w-4xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
             About
           </p>
           <h1 className="mt-4 font-display text-4xl text-forest md:text-6xl">
-            Rooted Forward
+            {tab === "organization" ? "The Organization" : "People"}
           </h1>
           <p className="mt-4 max-w-[60ch] font-body text-lg text-ink/65">
-            A youth-led nonprofit using history to change the cities we live in.
+            {tab === "organization"
+              ? "A youth-led nonprofit using history to change the cities we live in."
+              : "The students and advisors who lead Rooted Forward."}
           </p>
-
-          {/* Tabs */}
-          <div className="mt-10 flex gap-0 border-b border-border">
-            <button
-              onClick={() => setTab("organization")}
-              className={`px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest transition-colors ${
-                tab === "organization"
-                  ? "border-b-2 border-rust text-rust"
-                  : "text-warm-gray hover:text-forest"
-              }`}
-            >
-              The Organization
-            </button>
-            <button
-              onClick={() => setTab("people")}
-              className={`px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest transition-colors ${
-                tab === "people"
-                  ? "border-b-2 border-rust text-rust"
-                  : "text-warm-gray hover:text-forest"
-              }`}
-            >
-              People
-            </button>
-          </div>
+          <hr className="mt-10 border-border" />
         </div>
       </section>
 
-      {/* Tab content */}
+      {/* Content */}
       <div className="bg-cream">
         {tab === "organization" ? (
           <OrganizationTab />

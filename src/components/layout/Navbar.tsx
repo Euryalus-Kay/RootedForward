@@ -9,7 +9,14 @@ import { signOut } from "@/lib/supabase/auth-helpers";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const NAV_LINKS = [
-  { label: "About", href: "/about" },
+  {
+    label: "About",
+    href: "/about",
+    children: [
+      { label: "The Organization", href: "/about?tab=organization" },
+      { label: "People", href: "/about?tab=people" },
+    ],
+  },
   { label: "Tours", href: "/tours" },
   { label: "Podcasts", href: "/podcasts" },
   { label: "Policy", href: "/policy" },
@@ -115,13 +122,28 @@ export default function Navbar() {
         {/* Desktop links */}
         <ul className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className="relative group">
               <Link
                 href={link.href}
                 className="font-body text-sm text-ink transition-colors duration-200 hover:text-forest"
               >
                 {link.label}
               </Link>
+              {"children" in link && link.children && (
+                <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                  <div className="min-w-[180px] rounded-lg border border-border bg-cream p-1 shadow-lg">
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="block rounded-md px-3 py-2 font-body text-sm text-ink transition-colors hover:bg-forest/10 hover:text-forest"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -237,6 +259,21 @@ export default function Navbar() {
                   >
                     {link.label}
                   </Link>
+                  {"children" in link && link.children && (
+                    <ul className="ml-4 flex flex-col gap-1">
+                      {link.children.map((child) => (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block rounded-md px-3 py-2 font-body text-sm text-warm-gray transition-colors hover:bg-forest/10 hover:text-ink"
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
 
