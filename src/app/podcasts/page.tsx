@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   To find your show ID: open your podcast in Spotify, click Share,
   copy the link. The ID is the string after /show/.
 */
-const SPOTIFY_SHOW_ID = ""; // TODO: Add your Spotify show ID here
+const SPOTIFY_SHOW_ID = "6oekK4O4a23dQSNdLdQ3gA";
 
 /*
   Individual episode embeds. Add new episodes to the top of this array.

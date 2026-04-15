@@ -58,13 +58,17 @@ export default function Navbar() {
   }, []);
 
   async function fetchRole(userId: string) {
-    const supabase = createClient();
-    const { data } = await supabase
-      .from("users")
-      .select("role")
-      .eq("id", userId)
-      .single<{ role: string }>();
-    setUserRole(data?.role ?? null);
+    try {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", userId)
+        .single();
+      setUserRole((data as any)?.role ?? null);
+    } catch {
+      setUserRole(null);
+    }
   }
 
   /* ---- Scroll detection ---- */

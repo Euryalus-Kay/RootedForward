@@ -225,6 +225,16 @@ export default function AccountPage() {
         Your Account
       </h1>
 
+      {/* Admin link */}
+      {profile && (profile as any).role === "admin" && (
+        <Link
+          href="/admin"
+          className="mt-4 inline-flex items-center rounded-sm bg-forest px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+        >
+          Admin Dashboard &rarr;
+        </Link>
+      )}
+
       {/* Profile section */}
       <section className="mt-10">
         <div className="rounded-xl border border-border bg-cream-dark/40 px-6 py-8 shadow-sm">
