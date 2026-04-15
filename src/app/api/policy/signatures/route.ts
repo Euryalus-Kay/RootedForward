@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmin } from "@/lib/notify";
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,12 @@ export async function POST(request: NextRequest) {
       }
       throw error;
     }
+
+    await notifyAdmin({
+      subject: "New Campaign Signature",
+      body: `Someone signed a campaign.`,
+      link: "/admin/policy/signatures",
+    });
 
     return NextResponse.json(
       { signature: data, message: "Signature added" },

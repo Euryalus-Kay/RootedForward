@@ -360,10 +360,10 @@ export default function GetInvolvedPage() {
           <p className="font-body text-base text-cream/65">
             Questions? Reach us at{" "}
             <a
-              href="mailto:hello@rootedforward.org"
+              href="mailto:contact@rooted-forward.org"
               className="text-cream underline decoration-cream/30 underline-offset-2 transition-colors hover:decoration-cream"
             >
-              hello@rootedforward.org
+              contact@rooted-forward.org
             </a>
           </p>
         </div>

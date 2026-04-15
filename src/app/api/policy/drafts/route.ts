@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmin } from "@/lib/notify";
 
 export async function GET() {
   try {
@@ -52,6 +53,13 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) throw error;
+
+    await notifyAdmin({
+      subject: "New Draft Review Requested",
+      body: `Someone requested a review of their draft for: "${body.guide_title}"`,
+      link: "/admin/policy/drafts",
+    });
+
     return NextResponse.json(
       { draft: data, message: "Draft submitted for review" },
       { status: 201 }

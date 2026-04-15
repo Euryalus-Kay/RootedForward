@@ -145,10 +145,10 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
         You will be able to see their comments and reply on the draft page.
         You can also copy your draft and email it to{" "}
         <a
-          href="mailto:policy@rootedforward.org"
+          href="mailto:contact@rooted-forward.org"
           className="text-rust underline underline-offset-2"
         >
-          policy@rootedforward.org
+          contact@rooted-forward.org
         </a>
         .
       </p>

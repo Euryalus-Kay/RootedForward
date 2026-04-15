@@ -469,10 +469,10 @@ export default async function PolicyPage() {
             Working on Chicago policy? We share our research with journalists,
             researchers, and legislative offices on request.{" "}
             <a
-              href="mailto:policy@rootedforward.org"
+              href="mailto:contact@rooted-forward.org"
               className="text-forest underline decoration-border underline-offset-2 transition-colors hover:decoration-forest"
             >
-              policy@rootedforward.org
+              contact@rooted-forward.org
             </a>
           </p>
         </div>

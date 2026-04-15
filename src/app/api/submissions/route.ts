@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmin } from "@/lib/notify";
 
 /* ------------------------------------------------------------------ */
 /*  GET /api/submissions                                               */
@@ -111,6 +112,13 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    const isVolunteer = body.type === "volunteer";
+    await notifyAdmin({
+      subject: isVolunteer ? "New Volunteer Application" : "New Contact Form Submission",
+      body: `${body.name} (${body.email}) submitted a ${body.type} form.${body.chapter ? `\nChapter: ${body.chapter}` : ""}${body.message ? `\nMessage: ${body.message.substring(0, 200)}` : ""}`,
+      link: "/admin/submissions",
+    });
 
     return NextResponse.json(
       { submission: data, message: "Submission received" },

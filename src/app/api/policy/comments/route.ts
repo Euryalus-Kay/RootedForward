@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmin } from "@/lib/notify";
 
 export async function GET(request: NextRequest) {
   try {
@@ -82,6 +83,12 @@ export async function POST(request: NextRequest) {
       }
       throw error;
     }
+
+    await notifyAdmin({
+      subject: "New Public Comment Submitted",
+      body: `A new public comment was submitted on a campaign and needs review.`,
+      link: "/admin/policy/comments",
+    });
 
     return NextResponse.json(
       { comment: data, message: "Comment submitted for review" },

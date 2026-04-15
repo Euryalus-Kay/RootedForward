@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmin } from "@/lib/notify";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,6 +40,12 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) throw error;
+
+    await notifyAdmin({
+      subject: "New Policy Proposal Submitted",
+      body: `${body.name || "Anonymous"} submitted a policy proposal: "${body.proposal_title}"\n\nNeighborhood: ${body.neighborhood || "Not specified"}\nEmail: ${body.email || "Not provided"}`,
+      link: "/admin/policy/proposals",
+    });
 
     return NextResponse.json(
       { proposal: data, message: "Proposal submitted" },
