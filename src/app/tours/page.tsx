@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { PLACEHOLDER_STOPS } from "@/lib/constants";
 
@@ -57,9 +57,21 @@ async function fetchStops(): Promise<TourStop[]> {
 
 function ChicagoMap({ stops }: { stops: TourStop[] }) {
   const [hoveredStop, setHoveredStop] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setContainerWidth(el.getBoundingClientRect().width);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return (
-    <div className="relative mx-auto w-full max-w-md">
+    <div ref={containerRef} className="relative mx-auto w-full max-w-md">
       <svg viewBox="0 0 400 600" className="w-full" xmlns="http://www.w3.org/2000/svg">
         {/* Background */}
         <rect width="400" height="600" fill="#F5F0E8" opacity="0.3" />
@@ -404,11 +416,6 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           // Label positioning: place to the left for nodes near the right edge
           const labelX = x > 220 ? x - 26 : x + 26;
           const labelAnchor = x > 220 ? "end" : "start";
-          // Position tooltip above the node, not overlapping anything
-          const tooltipW = 240;
-          const tooltipH = 130;
-          const tooltipX = Math.max(10, Math.min(x - tooltipW / 2, 400 - tooltipW - 10));
-          const tooltipY = Math.max(10, y - tooltipH - 35);
           // Line from label pill to node
           const lineEndX = x > 220 ? x - 20 : x + 20;
 
@@ -522,29 +529,59 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
                 STOP {i + 1}
               </text>
 
-              {/* Tooltip on hover — positioned above the node */}
-              {isHovered && (
-                <foreignObject
-                  x={tooltipX}
-                  y={tooltipY}
-                  width={tooltipW}
-                  height={tooltipH}
-                  className="pointer-events-none"
-                >
-                  <div className="rounded-sm bg-forest p-4 shadow-xl">
-                    <p className="font-body text-sm font-semibold text-cream leading-snug">
-                      {stop.title}
-                    </p>
-                    <p className="mt-2 font-body text-xs leading-relaxed text-cream/70">
-                      {stop.description.substring(0, 120)}...
-                    </p>
-                  </div>
-                </foreignObject>
-              )}
+              {/* Tooltip rendered outside SVG via portal below */}
             </g>
           );
         })}
       </svg>
+
+      {/* Tooltip overlay — rendered as HTML on top of SVG for proper z-index and dynamic sizing */}
+      {hoveredStop && containerWidth > 0 && (() => {
+        const stop = stops.find(s => s.slug === hoveredStop);
+        if (!stop) return null;
+        const x = lngToX(stop.lng);
+        const y = latToY(stop.lat);
+        // Convert SVG coordinates (viewBox 400x600) to pixel coordinates
+        const scale = containerWidth / 400;
+        const svgHeight = containerWidth * (600 / 400);
+        const pixelX = x * scale;
+        const pixelY = y * scale;
+        const tooltipW = Math.min(240, containerWidth - 16);
+        // Clamp horizontal position within container
+        const left = Math.max(8, Math.min(pixelX - tooltipW / 2, containerWidth - tooltipW - 8));
+
+        return (
+          <div
+            className="pointer-events-none absolute z-50"
+            style={{
+              left: `${left}px`,
+              top: `${pixelY - 28 * scale}px`,
+              width: `${tooltipW}px`,
+              transform: 'translateY(-100%)',
+            }}
+          >
+            <div className="rounded-md bg-forest p-4 shadow-xl">
+              <p className="font-body text-sm font-semibold leading-snug text-cream">
+                {stop.title}
+              </p>
+              <p className="mt-2 font-body text-xs leading-relaxed text-cream/70">
+                {stop.description}
+              </p>
+            </div>
+            {/* Arrow pointing down to node */}
+            <div
+              className="mx-auto"
+              style={{
+                width: 0,
+                height: 0,
+                borderLeft: '8px solid transparent',
+                borderRight: '8px solid transparent',
+                borderTop: '8px solid #1B3A2D',
+              }}
+            />
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -713,78 +750,83 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* Cream spacer bar to separate from footer */}
-      <section className="bg-cream py-10">
-        <div className="mx-auto max-w-6xl px-6">
-          <hr className="border-border" />
-        </div>
-      </section>
+      {/* In-Person Tours — distinct standalone segment */}
+      <section className="relative bg-cream-dark py-20 md:py-28">
+        {/* Top decorative border */}
+        <div className="absolute inset-x-0 top-0 h-1 bg-rust" />
 
-      {/* In-Person Tours / Viator Section */}
-      <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/40">
-                In-Person Experience
-              </p>
-              <h2 className="mt-3 font-display text-3xl text-cream md:text-4xl">
-                Guided Walking Tours
-              </h2>
-              <p className="mt-6 max-w-[55ch] font-body text-base leading-relaxed text-cream/70">
-                In addition to our self-guided virtual stops, we offer
-                in-person guided walking tours in the Chicago area. Led by
-                trained youth guides, these tours take you through Hyde Park
-                and surrounding neighborhoods with live commentary on the
-                history of redlining, urban renewal, and community resistance
-                you can see in the built environment around you.
-              </p>
-              <a
-                href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Book on Viator
-              </a>
-              <p className="mt-3 font-body text-xs text-cream/40">
-                Booking and reviews managed through Viator / TripAdvisor
-              </p>
-            </div>
+          {/* Section header — centered, prominent */}
+          <div className="mb-12 text-center md:mb-16">
+            <span className="inline-block rounded-full bg-rust/10 px-5 py-1.5 font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+              In-Person Experience
+            </span>
+            <h2 className="mt-5 font-display text-4xl text-forest md:text-5xl">
+              Guided Walking Tours
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/60">
+              Go beyond the screen. Join trained youth guides for an immersive
+              walk through the neighborhoods shaped by the policies you&apos;ve
+              been exploring.
+            </p>
+          </div>
 
-            {/* Viator embed / info card */}
-            <div className="flex items-center justify-center">
-              <div className="w-full rounded-sm border border-cream/15 bg-cream/[0.05] p-8">
-                <h3 className="font-display text-xl text-cream">
+          {/* Content card — elevated with border and shadow */}
+          <div className="mx-auto max-w-5xl overflow-hidden rounded-lg border border-border bg-cream shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* Left: description on forest background */}
+              <div className="bg-forest p-8 md:p-12">
+                <h3 className="font-display text-2xl text-cream md:text-3xl">
                   Hyde Park Walking Tour
                 </h3>
-                <p className="mt-1 font-body text-sm text-cream/50">
+                <p className="mt-1 font-body text-sm font-medium text-cream/50">
                   History, Race, and Urban Change
                 </p>
-                <hr className="my-5 border-cream/10" />
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <span className="font-body text-xs font-semibold uppercase text-rust">Duration</span>
-                    <span className="font-body text-sm text-cream/70">2 hours</span>
+                <p className="mt-6 font-body text-base leading-relaxed text-cream/75">
+                  Led by trained youth guides, this tour takes you through
+                  Hyde Park and surrounding neighborhoods with live
+                  commentary on the history of redlining, urban renewal, and
+                  community resistance you can see in the built environment
+                  around you.
+                </p>
+                <a
+                  href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Book on Viator
+                </a>
+                <p className="mt-3 font-body text-xs text-cream/35">
+                  Booking and reviews managed through Viator / TripAdvisor
+                </p>
+              </div>
+
+              {/* Right: tour details on cream background */}
+              <div className="flex flex-col justify-center p-8 md:p-12">
+                <div className="space-y-5">
+                  <div>
+                    <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-rust">Duration</span>
+                    <p className="mt-1 font-body text-base text-forest">2 hours</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="font-body text-xs font-semibold uppercase text-rust">Location</span>
-                    <span className="font-body text-sm text-cream/70">Hyde Park, Chicago</span>
+                  <div>
+                    <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-rust">Location</span>
+                    <p className="mt-1 font-body text-base text-forest">Hyde Park, Chicago</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="font-body text-xs font-semibold uppercase text-rust">Guide</span>
-                    <span className="font-body text-sm text-cream/70">Youth-led, trained researchers</span>
+                  <div>
+                    <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-rust">Guide</span>
+                    <p className="mt-1 font-body text-base text-forest">Youth-led, trained researchers</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="font-body text-xs font-semibold uppercase text-rust">Covers</span>
-                    <span className="font-body text-sm text-cream/70">Redlining, urban renewal, University of Chicago expansion, community resistance</span>
+                  <div>
+                    <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-rust">Covers</span>
+                    <p className="mt-1 font-body text-base text-forest">Redlining, urban renewal, University of Chicago expansion, community resistance</p>
                   </div>
                 </div>
                 <a
                   href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex w-full items-center justify-center rounded-sm border-2 border-cream/30 px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+                  className="mt-8 inline-flex w-full items-center justify-center rounded-sm border-2 border-forest px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
                 >
                   Check Availability &amp; Book
                 </a>
