@@ -61,127 +61,369 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
   return (
     <div className="relative mx-auto w-full max-w-md">
       <svg viewBox="0 0 400 600" className="w-full" xmlns="http://www.w3.org/2000/svg">
-        {/* Lake Michigan — follows the real eastern shoreline of Chicago */}
-        <path
-          d="M295 0 C298 10, 305 20, 310 30 L318 50 L322 80 L320 100 C318 120, 322 140, 325 160
-             L328 180 C330 200, 325 220, 320 235 L315 250 C310 265, 308 280, 310 300
-             L315 320 C318 340, 322 355, 325 370 L328 390 C330 410, 328 430, 325 450
-             L320 480 C318 500, 322 520, 330 540 L340 560 L355 575 L370 585 L400 590
-             L400 0 Z"
-          fill="#1B3A2D"
-          opacity="0.06"
-        />
+        {/* Background */}
+        <rect width="400" height="600" fill="#F5F0E8" opacity="0.3" />
 
-        {/* Chicago city outline — based on real city shape:
-            Narrow at top (O'Hare arm), wide middle, jagged west edge,
-            Lake Michigan shoreline on east, narrowing at far south */}
+        {/* Decorative inner border frame */}
+        <rect x="8" y="8" width="384" height="584" rx="2" fill="none" stroke="#1B3A2D" strokeWidth="0.5" opacity="0.12" />
+        <rect x="12" y="12" width="376" height="576" rx="1" fill="none" stroke="#1B3A2D" strokeWidth="0.3" opacity="0.08" />
+
+        {/* Defs for gradients, patterns, and markers */}
+        <defs>
+          <linearGradient id="lakeGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#5B9AAD" stopOpacity="0.12" />
+            <stop offset="35%" stopColor="#5B9AAD" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#5B9AAD" stopOpacity="0.03" />
+          </linearGradient>
+          <pattern id="lakePattern" patternUnits="userSpaceOnUse" width="20" height="8" patternTransform="rotate(-5)">
+            <path d="M0 4 Q5 1.5, 10 4 Q15 6.5, 20 4" fill="none" stroke="#5B9AAD" strokeWidth="0.7" opacity="0.12" />
+          </pattern>
+          {/* Subtle dot pattern for land texture */}
+          <pattern id="landDots" patternUnits="userSpaceOnUse" width="12" height="12">
+            <circle cx="2" cy="2" r="0.5" fill="#1B3A2D" opacity="0.06" />
+          </pattern>
+          {/* Clip path for city land area */}
+          <clipPath id="cityClip">
+            <path d={`
+              M42 72 L38 65 L32 55 L26 42 L20 28 L14 14 L8 0
+              L22 0 L28 6 L32 14 L36 22 L40 30 L42 38 L44 46
+              L48 52 L54 50 L58 46 L64 42 L72 38 L80 36 L90 35
+              L102 36 L115 38 L130 40 L148 38 L168 36 L188 35
+              L210 37 L232 40 L252 44 L270 48 L286 52 L298 58 L308 50 L314 35 L318 20
+              L324 32 L328 48 L330 65 L332 85 L332 105 L331 125
+              L329 145 L327 165 L326 185 L326 205 L328 225 L330 245
+              L331 265 L330 285 L328 305 L326 325 L323 345 L321 365
+              L319 385 L318 405 L318 425 L320 445 L322 465 L325 485
+              L329 505 L334 522 L340 538 L348 555 L355 568 L362 578 L368 585
+              L355 588 L338 586 L318 583 L298 579 L280 576 L265 573
+              L250 571 L238 573 L225 575 L212 577 L200 575 L186 571
+              L172 565 L158 557 L146 548 L135 537 L126 525 L118 512
+              L112 498 L107 482 L103 465 L99 445 L96 425 L93 405
+              L90 382 L88 358 L82 340 L78 340 L78 310 L82 310
+              L82 286 L78 286 L78 262 L80 262 L78 238 L77 214 L76 192
+              L77 168 L72 168 L72 145 L78 145 L80 122 L76 122 L76 100
+              L82 100 L84 82 L72 75 L58 72 L42 72
+            `} />
+          </clipPath>
+          <marker id="routeArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#C45D3E" opacity="0.4" />
+          </marker>
+        </defs>
+
+        {/* Lake Michigan — eastern shoreline with realistic curve */}
         <path
-          d="M40 28 L55 25 L80 22 L95 18
-             L82 15 L75 10 L70 5 L68 0 L90 0 L95 5 L100 12
-             L120 15 L160 18 L200 20 L240 22 L270 25
-             L290 28 L305 35 L315 45
-             L320 65 L322 85 L320 105
-             L318 125 L322 145 L325 165
-             L328 185 L325 210 L318 235
-             L312 250 L310 270 L312 290
-             L318 310 L322 330 L325 350
-             L328 370 L325 395 L320 420
-             L318 445 L322 465 L328 485
-             L332 505 L338 525 L345 545
-             L355 560 L365 572 L372 580
-             L365 585 L345 582 L320 578
-             L295 572 L270 568 L245 565
-             L220 568 L195 572 L175 575
-             L158 572 L142 568 L125 562
-             L110 555 L95 548 L82 540
-             L72 530 L65 518 L60 505
-             L58 490 L55 475 L52 458
-             L48 440 L45 420 L42 400
-             L40 380 L38 358 L35 335
-             L32 310 L30 285 L28 260
-             L25 235 L22 210 L20 185
-             L22 160 L25 135 L28 110
-             L32 85 L35 60 L38 42 Z"
-          fill="#1B3A2D"
-          opacity="0.05"
+          d="M318 0 L400 0 L400 600 L368 585
+             C358 578, 348 560, 340 538
+             C334 520, 329 505, 325 485
+             C322 465, 320 445, 318 425
+             C318 405, 319 385, 321 365
+             C323 345, 326 325, 328 305
+             C330 285, 331 265, 330 245
+             C328 225, 326 205, 326 185
+             C327 165, 329 145, 331 125
+             C332 105, 332 85, 330 65
+             C328 48, 324 32, 318 20
+             Z"
+          fill="url(#lakeGradient)"
         />
+        {/* Lake water texture */}
         <path
-          d="M40 28 L55 25 L80 22 L95 18
-             L82 15 L75 10 L70 5 L68 0 L90 0 L95 5 L100 12
-             L120 15 L160 18 L200 20 L240 22 L270 25
-             L290 28 L305 35 L315 45
-             L320 65 L322 85 L320 105
-             L318 125 L322 145 L325 165
-             L328 185 L325 210 L318 235
-             L312 250 L310 270 L312 290
-             L318 310 L322 330 L325 350
-             L328 370 L325 395 L320 420
-             L318 445 L322 465 L328 485
-             L332 505 L338 525 L345 545
-             L355 560 L365 572 L372 580
-             L365 585 L345 582 L320 578
-             L295 572 L270 568 L245 565
-             L220 568 L195 572 L175 575
-             L158 572 L142 568 L125 562
-             L110 555 L95 548 L82 540
-             L72 530 L65 518 L60 505
-             L58 490 L55 475 L52 458
-             L48 440 L45 420 L42 400
-             L40 380 L38 358 L35 335
-             L32 310 L30 285 L28 260
-             L25 235 L22 210 L20 185
-             L22 160 L25 135 L28 110
-             L32 85 L35 60 L38 42 Z"
+          d="M318 20
+             C324 32, 328 48, 330 65
+             C332 85, 332 105, 331 125
+             C329 145, 327 165, 326 185
+             C326 205, 328 225, 330 245
+             C331 265, 330 285, 328 305
+             C326 325, 323 345, 321 365
+             C319 385, 318 405, 318 425
+             C320 445, 322 465, 325 485
+             C329 505, 334 520, 340 538
+             C348 560, 358 578, 368 585
+             L400 600 L400 0 L318 0 Z"
+          fill="url(#lakePattern)"
+        />
+        {/* Lake shoreline accent — solid line */}
+        <path
+          d="M318 20
+             C324 32, 328 48, 330 65
+             C332 85, 332 105, 331 125
+             C329 145, 327 165, 326 185
+             C326 205, 328 225, 330 245
+             C331 265, 330 285, 328 305
+             C326 325, 323 345, 321 365
+             C319 385, 318 405, 318 425
+             C320 445, 322 465, 325 485
+             C329 505, 334 520, 340 538
+             C348 560, 358 578, 368 585"
           fill="none"
-          stroke="#1B3A2D"
+          stroke="#5B9AAD"
           strokeWidth="1.5"
           opacity="0.25"
         />
 
-        {/* Subtle neighborhood labels */}
-        <text x="180" y="195" fill="#1B3A2D" opacity="0.12" fontSize="9" fontFamily="sans-serif" textAnchor="middle">The Loop</text>
-        <text x="130" y="245" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Pilsen</text>
-        <text x="260" y="310" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Bronzeville</text>
-        <text x="285" y="380" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Hyde Park</text>
-        <text x="120" y="140" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Logan Sq</text>
-        <text x="80" y="290" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Austin</text>
-        <text x="200" y="480" fill="#1B3A2D" opacity="0.12" fontSize="7" fontFamily="sans-serif" textAnchor="middle">Englewood</text>
+        {/* Chicago city outline — realistic shape:
+            O'Hare arm: narrow NW corridor (15px wide),
+            widens dramatically at North Side,
+            jagged western boundary with township jogs,
+            Lake Michigan shoreline on east,
+            narrowing southern tail toward state line */}
+        {(() => {
+          const chicagoOutline = `
+            M42 72 L38 65 L32 55 L26 42 L20 28 L14 14 L8 0
+            L22 0 L28 6 L32 14 L36 22
+            L40 30 L42 38 L44 46
+            L48 52 L54 50 L58 46 L64 42
+            L72 38 L80 36 L90 35
+            L102 36 L115 38 L130 40
+            L148 38 L168 36 L188 35
+            L210 37 L232 40 L252 44 L270 48
+            L286 52 L298 58 L308 50 L314 35 L318 20
+            L324 32 L328 48 L330 65
+            L332 85 L332 105 L331 125
+            L329 145 L327 165 L326 185
+            L326 205 L328 225 L330 245
+            L331 265 L330 285 L328 305
+            L326 325 L323 345 L321 365
+            L319 385 L318 405 L318 425
+            L320 445 L322 465 L325 485
+            L329 505 L334 522 L340 538
+            L348 555 L355 568 L362 578 L368 585
+            L355 588 L338 586 L318 583
+            L298 579 L280 576 L265 573
+            L250 571 L238 573 L225 575
+            L212 577 L200 575 L186 571
+            L172 565 L158 557 L146 548
+            L135 537 L126 525 L118 512
+            L112 498 L107 482 L103 465
+            L99 445 L96 425 L93 405
+            L90 382 L88 358 L82 340
+            L78 340 L78 310 L82 310
+            L82 286 L78 286 L78 262
+            L80 262 L78 238 L77 214 L76 192
+            L77 168 L72 168 L72 145 L78 145
+            L80 122 L76 122 L76 100
+            L82 100 L84 82 L72 75 L58 72 L42 72
+          `;
+          return (
+            <>
+              <path d={chicagoOutline} fill="#DDD6C8" opacity="0.2" />
+              <path d={chicagoOutline} fill="url(#landDots)" />
+              <path d={chicagoOutline} fill="none" stroke="#1B3A2D" strokeWidth="2.2" opacity="0.4" />
+            </>
+          );
+        })()}
+
+        {/* Chicago River — the distinctive Y shape */}
+        {/* Main stem — flowing east to Lake Michigan */}
+        <path
+          d="M328 172 C310 170, 290 174, 270 177
+             C250 180, 235 182, 220 180
+             C205 178, 190 174, 175 172
+             L155 170"
+          fill="none"
+          stroke="#5B9AAD"
+          strokeWidth="3"
+          opacity="0.3"
+          strokeLinecap="round"
+        />
+        {/* South Branch — flows southwest */}
+        <path
+          d="M220 180 C218 195, 215 210, 210 225
+             C205 242, 200 258, 195 275"
+          fill="none"
+          stroke="#5B9AAD"
+          strokeWidth="2.5"
+          opacity="0.25"
+          strokeLinecap="round"
+        />
+        {/* North Branch — flows north */}
+        <path
+          d="M220 180 C218 165, 215 148, 210 132
+             C205 118, 198 102, 190 88"
+          fill="none"
+          stroke="#5B9AAD"
+          strokeWidth="2.5"
+          opacity="0.25"
+          strokeLinecap="round"
+        />
+        <text x="164" y="166" fill="#5B9AAD" opacity="0.3" fontSize="6" fontFamily="serif" fontStyle="italic" textAnchor="middle">Chicago River</text>
+
+        {/* Expressways — thicker lines for major highways, clipped to city */}
+        <g clipPath="url(#cityClip)">
+          {/* Dan Ryan / I-90/94 — runs roughly N-S through the south side */}
+          <path
+            d="M220 170 C218 195, 215 220, 210 250
+               C205 280, 200 310, 195 340
+               C190 370, 185 400, 180 440
+               C175 480, 172 510, 170 540"
+            fill="none"
+            stroke="#1B3A2D"
+            strokeWidth="2.5"
+            opacity="0.1"
+            strokeLinecap="round"
+          />
+          <text x="182" y="290" fill="#1B3A2D" opacity="0.12" fontSize="4.5" fontFamily="sans-serif" fontWeight="600" transform="rotate(-82 182 290)">I-90/94</text>
+
+          {/* Eisenhower / I-290 — runs E-W through the West Side */}
+          <path
+            d="M80 215 C120 212, 160 210, 200 208 C230 207, 260 208, 290 210"
+            fill="none"
+            stroke="#1B3A2D"
+            strokeWidth="2"
+            opacity="0.08"
+            strokeLinecap="round"
+          />
+          <text x="110" y="210" fill="#1B3A2D" opacity="0.1" fontSize="4.5" fontFamily="sans-serif" fontWeight="600">I-290</text>
+        </g>
+
+        {/* Street grid — major N-S and E-W streets with labels, clipped to city */}
+        <g opacity="0.1" stroke="#1B3A2D" strokeWidth="0.5" clipPath="url(#cityClip)">
+          {/* N-S streets */}
+          <line x1="200" y1="60" x2="200" y2="560" strokeWidth="0.8" />
+          <line x1="250" y1="50" x2="250" y2="570" />
+          <line x1="150" y1="80" x2="150" y2="550" />
+          <line x1="300" y1="40" x2="300" y2="580" strokeWidth="0.8" />
+          <line x1="120" y1="90" x2="120" y2="535" />
+          <line x1="270" y1="45" x2="270" y2="575" />
+          <line x1="175" y1="75" x2="175" y2="555" />
+          <line x1="225" y1="55" x2="225" y2="565" />
+          {/* E-W streets */}
+          <line x1="60" y1="150" x2="330" y2="150" />
+          <line x1="60" y1="200" x2="330" y2="200" strokeWidth="0.8" />
+          <line x1="65" y1="250" x2="330" y2="250" />
+          <line x1="70" y1="300" x2="328" y2="300" />
+          <line x1="75" y1="350" x2="325" y2="350" strokeWidth="0.8" />
+          <line x1="80" y1="400" x2="320" y2="400" />
+          <line x1="85" y1="450" x2="322" y2="450" />
+          <line x1="90" y1="500" x2="330" y2="500" />
+          <line x1="65" y1="225" x2="330" y2="225" />
+          <line x1="70" y1="275" x2="328" y2="275" />
+          <line x1="75" y1="325" x2="326" y2="325" />
+          <line x1="78" y1="375" x2="322" y2="375" />
+          <line x1="82" y1="425" x2="320" y2="425" />
+          <line x1="86" y1="475" x2="326" y2="475" />
+        </g>
+
+        {/* Major street labels */}
+        <text x="202" y="570" fill="#1B3A2D" opacity="0.15" fontSize="5" fontFamily="sans-serif" textAnchor="middle">State St</text>
+        <text x="302" y="570" fill="#1B3A2D" opacity="0.15" fontSize="5" fontFamily="sans-serif" textAnchor="middle">Michigan Ave</text>
+        <text x="252" y="570" fill="#1B3A2D" opacity="0.12" fontSize="4.5" fontFamily="sans-serif" textAnchor="middle">King Dr</text>
+        <text x="152" y="568" fill="#1B3A2D" opacity="0.12" fontSize="4.5" fontFamily="sans-serif" textAnchor="middle">Ashland</text>
+
+        {/* Neighborhood labels — prominent and readable */}
+        {/* Major neighborhood labels — all-caps for key areas */}
+        <text x="225" y="192" fill="#1B3A2D" opacity="0.32" fontSize="12" fontFamily="sans-serif" fontWeight="800" textAnchor="middle" letterSpacing="3">THE LOOP</text>
+        <text x="140" y="264" fill="#1B3A2D" opacity="0.25" fontSize="9.5" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="1.5">PILSEN</text>
+        <text x="190" y="322" fill="#1B3A2D" opacity="0.2" fontSize="9" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="1.5">BRONZEVILLE</text>
+        <text x="240" y="415" fill="#1B3A2D" opacity="0.25" fontSize="9.5" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="1.5">HYDE PARK</text>
+
+        {/* Secondary neighborhood labels — mixed case */}
+        <text x="135" y="142" fill="#1B3A2D" opacity="0.22" fontSize="8" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.8">Logan Square</text>
+        <text x="95" y="300" fill="#1B3A2D" opacity="0.2" fontSize="7.5" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.5">Austin</text>
+        <text x="195" y="500" fill="#1B3A2D" opacity="0.2" fontSize="7.5" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.5">Englewood</text>
+        <text x="255" y="130" fill="#1B3A2D" opacity="0.22" fontSize="8" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.8">Lincoln Park</text>
+        <text x="155" y="350" fill="#1B3A2D" opacity="0.2" fontSize="7.5" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Back of the Yards</text>
+        <text x="140" y="430" fill="#1B3A2D" opacity="0.18" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Bridgeport</text>
+        <text x="275" y="458" fill="#1B3A2D" opacity="0.18" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Woodlawn</text>
+        <text x="175" y="112" fill="#1B3A2D" opacity="0.18" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Wicker Park</text>
+        <text x="280" y="90" fill="#1B3A2D" opacity="0.18" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Lakeview</text>
+        <text x="130" y="220" fill="#1B3A2D" opacity="0.18" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">Little Village</text>
+        <text x="245" y="540" fill="#1B3A2D" opacity="0.16" fontSize="7" fontFamily="sans-serif" fontWeight="500" textAnchor="middle" letterSpacing="0.5">South Shore</text>
 
         {/* Lake Michigan label */}
-        <text x="365" y="250" fill="#1B3A2D" opacity="0.10" fontSize="11" fontFamily="serif" fontStyle="italic" transform="rotate(90 365 250)" textAnchor="middle">Lake Michigan</text>
+        <text x="362" y="300" fill="#1B3A2D" opacity="0.18" fontSize="13" fontFamily="serif" fontStyle="italic" letterSpacing="4" transform="rotate(90 362 300)" textAnchor="middle">Lake Michigan</text>
 
-        {/* Tour stop nodes — bigger, with better tooltips */}
+        {/* Compass rose — elegant minimal design, bottom-left corner */}
+        <g transform="translate(32, 548)" opacity="0.4">
+          {/* Circle frame */}
+          <circle cx="0" cy="8" r="16" fill="none" stroke="#1B3A2D" strokeWidth="0.8" />
+          {/* N-S axis */}
+          <line x1="0" y1="22" x2="0" y2="-6" stroke="#1B3A2D" strokeWidth="1" />
+          {/* E-W axis */}
+          <line x1="-14" y1="8" x2="14" y2="8" stroke="#1B3A2D" strokeWidth="0.6" />
+          {/* North arrow head (filled) */}
+          <polygon points="0,-8 -3.5,2 3.5,2" fill="#1B3A2D" />
+          {/* South arrow head (open) */}
+          <polygon points="0,24 -3,16 3,16" fill="none" stroke="#1B3A2D" strokeWidth="0.6" />
+          {/* N label */}
+          <text x="0" y="-14" fill="#1B3A2D" fontSize="7" fontFamily="serif" fontWeight="700" textAnchor="middle">N</text>
+        </g>
+
+        {/* Scale bar — bottom right */}
+        <g transform="translate(340, 570)" opacity="0.3">
+          <line x1="0" y1="0" x2="40" y2="0" stroke="#1B3A2D" strokeWidth="1.5" />
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="#1B3A2D" strokeWidth="1" />
+          <line x1="40" y1="-3" x2="40" y2="3" stroke="#1B3A2D" strokeWidth="1" />
+          <text x="20" y="9" fill="#1B3A2D" fontSize="5" fontFamily="sans-serif" textAnchor="middle">2 mi</text>
+        </g>
+
+        {/* Tour route — curved dotted path connecting stops in order */}
+        {stops.length > 1 && (() => {
+          const coords = stops.map(s => ({ x: lngToX(s.lng), y: latToY(s.lat) }));
+          // Build a smooth curved path through the stops
+          let pathD = `M${coords[0].x} ${coords[0].y}`;
+          for (let i = 0; i < coords.length - 1; i++) {
+            const curr = coords[i];
+            const next = coords[i + 1];
+            const midX = (curr.x + next.x) / 2;
+            const midY = (curr.y + next.y) / 2;
+            // Offset the control point to create a nice curve
+            const cpX = midX - 20;
+            const cpY = midY;
+            pathD += ` Q${cpX} ${cpY} ${next.x} ${next.y}`;
+          }
+          return (
+            <path
+              d={pathD}
+              fill="none"
+              stroke="#C45D3E"
+              strokeWidth="2.5"
+              strokeDasharray="8 5"
+              opacity="0.4"
+              strokeLinecap="round"
+              markerMid="url(#routeArrow)"
+            />
+          );
+        })()}
+
+        {/* Tour stop nodes — large and prominent */}
         {stops.map((stop, i) => {
           const x = lngToX(stop.lng);
           const y = latToY(stop.lat);
           const isHovered = hoveredStop === stop.slug;
-          // Position tooltip to the left if node is on the right side
-          const tooltipX = x > 200 ? x - 215 : x + 20;
-          const tooltipY = y - 30;
+          // Label positioning: place to the left for nodes near the right edge
+          const labelX = x > 220 ? x - 26 : x + 26;
+          const labelAnchor = x > 220 ? "end" : "start";
+          const tooltipX = x > 200 ? x - 220 : x + 30;
+          const tooltipY = y - 35;
+          // Line from label pill to node
+          const lineEndX = x > 220 ? x - 20 : x + 20;
 
           return (
             <g key={stop.slug}>
-              {/* Outer glow */}
-              <circle cx={x} cy={y} r="18" fill="#C45D3E" opacity="0.12" />
+              {/* Outer glow rings */}
+              <circle cx={x} cy={y} r="28" fill="#C45D3E" opacity="0.06" />
+              <circle cx={x} cy={y} r="24" fill="#C45D3E" opacity="0.1" />
 
               {/* Pulse on hover */}
               {isHovered && (
-                <circle cx={x} cy={y} r="22" fill="#C45D3E" opacity="0.1">
-                  <animate attributeName="r" from="16" to="30" dur="1.2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.15" to="0" dur="1.2s" repeatCount="indefinite" />
+                <circle cx={x} cy={y} r="28" fill="#C45D3E" opacity="0.12">
+                  <animate attributeName="r" from="22" to="42" dur="1.4s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" from="0.2" to="0" dur="1.4s" repeatCount="indefinite" />
                 </circle>
               )}
 
-              {/* Main node */}
+              {/* Main node — large and bold */}
               <Link href={`/tours/chicago/${stop.slug}`}>
                 <circle
                   cx={x}
                   cy={y}
-                  r={isHovered ? "14" : "12"}
+                  r={isHovered ? "19" : "17"}
                   fill="#C45D3E"
                   stroke="#F5F0E8"
-                  strokeWidth="3"
+                  strokeWidth="4"
                   className="cursor-pointer transition-all duration-200"
+                  style={{ filter: 'drop-shadow(0 2px 6px rgba(196,93,62,0.35))' }}
                   onMouseEnter={() => setHoveredStop(stop.slug)}
                   onMouseLeave={() => setHoveredStop(null)}
                 />
@@ -190,15 +432,81 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
               {/* Number inside node */}
               <text
                 x={x}
-                y={y + 4}
+                y={y + 6}
                 fill="#F5F0E8"
-                fontSize="10"
+                fontSize="15"
                 fontFamily="sans-serif"
-                fontWeight="700"
+                fontWeight="800"
                 textAnchor="middle"
                 className="pointer-events-none"
               >
                 {i + 1}
+              </text>
+
+              {/* Connector line from node to label */}
+              <line
+                x1={x > 220 ? x - 19 : x + 19}
+                y1={y - 2}
+                x2={x > 220 ? x - 24 : x + 24}
+                y2={y - 8}
+                stroke="#8A8578"
+                strokeWidth="1"
+                opacity="0.3"
+                className="pointer-events-none"
+              />
+
+              {/* Label background pill — sized per label */}
+              {(() => {
+                const name = stop.title.includes('Bronzeville') ? 'Bronzeville' :
+                  stop.title.includes('Pilsen') ? 'Pilsen' :
+                  stop.title.includes('Hyde Park') ? 'Hyde Park' :
+                  stop.title.split(' ').slice(0, 2).join(' ');
+                const pillW = name.length * 6.5 + 16;
+                const pillX = x > 220 ? labelX - pillW + 4 : labelX - 4;
+                return (
+                  <rect
+                    x={pillX}
+                    y={y - 23}
+                    width={pillW}
+                    height="30"
+                    rx="5"
+                    fill="#F5F0E8"
+                    opacity="0.9"
+                    stroke="#DDD6C8"
+                    strokeWidth="0.5"
+                    className="pointer-events-none"
+                  />
+                );
+              })()}
+              {/* Stop name label next to node — short neighborhood name */}
+              <text
+                x={labelX}
+                y={y - 9}
+                fill="#1B3A2D"
+                fontSize="10"
+                fontFamily="sans-serif"
+                fontWeight="700"
+                textAnchor={labelAnchor}
+                letterSpacing="0.3"
+                className="pointer-events-none"
+              >
+                {stop.title.includes('Bronzeville') ? 'Bronzeville' :
+                 stop.title.includes('Pilsen') ? 'Pilsen' :
+                 stop.title.includes('Hyde Park') ? 'Hyde Park' :
+                 stop.title.split(' ').slice(0, 2).join(' ')}
+              </text>
+              <text
+                x={labelX}
+                y={y + 2}
+                fill="#8A8578"
+                fontSize="6.5"
+                fontFamily="sans-serif"
+                fontWeight="600"
+                textAnchor={labelAnchor}
+                letterSpacing="0.5"
+                className="pointer-events-none"
+              >
+                STOP {i + 1}
               </text>
 
               {/* Tooltip on hover — positioned to the side, not overlapping */}
@@ -206,16 +514,16 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
                 <foreignObject
                   x={tooltipX}
                   y={tooltipY}
-                  width="195"
-                  height="85"
+                  width="200"
+                  height="90"
                   className="pointer-events-none"
                 >
-                  <div className="rounded bg-forest p-3 shadow-lg">
-                    <p className="font-body text-[11px] font-semibold text-cream leading-tight">
+                  <div className="rounded-md bg-forest p-3 shadow-xl border border-cream/10">
+                    <p className="font-body text-[11px] font-bold text-cream leading-tight">
                       {stop.title}
                     </p>
-                    <p className="mt-1.5 font-body text-[9px] leading-snug text-cream/65">
-                      {stop.description.substring(0, 90)}...
+                    <p className="mt-1.5 font-body text-[9px] leading-snug text-cream/70">
+                      {stop.description.substring(0, 100)}...
                     </p>
                   </div>
                 </foreignObject>
@@ -324,16 +632,19 @@ export default function ToursPage() {
 
             {/* Right: interactive map */}
             <div className="flex items-start justify-center lg:sticky lg:top-24">
-              <div className="w-full rounded-sm border border-border bg-cream-dark p-6">
+              <div className="w-full rounded-sm border border-border bg-cream-dark p-6 shadow-md">
                 <p className="mb-4 text-center font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
                   Tour Map
                 </p>
                 <ChicagoMap stops={stops} />
-                <p className="mt-2 text-center font-display text-lg tracking-widest text-forest">
-                  C H I C A G O
+                <p className="mt-3 text-center font-display text-2xl font-bold tracking-[0.35em] text-forest">
+                  CHICAGO
                 </p>
-                <p className="mt-1 text-center font-body text-[9px] text-warm-gray">
-                  Click a stop to explore &middot; Map by Rooted Forward
+                <p className="mt-1.5 text-center font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-rust">
+                  Click a stop to explore
+                </p>
+                <p className="mt-0.5 text-center font-body text-[8px] text-warm-gray/60">
+                  Map by Rooted Forward
                 </p>
               </div>
             </div>
