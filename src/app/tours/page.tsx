@@ -333,13 +333,30 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         {/* Lake Michigan label */}
         <text x="362" y="300" fill="#1B3A2D" opacity="0.18" fontSize="13" fontFamily="serif" fontStyle="italic" letterSpacing="4" transform="rotate(90 362 300)" textAnchor="middle">Lake Michigan</text>
 
-        {/* Compass — clean, properly centered */}
-        <g transform="translate(35, 555)" opacity="0.5">
-          <circle cx="0" cy="0" r="14" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1" />
-          <line x1="0" y1="10" x2="0" y2="-10" stroke="#1B3A2D" strokeWidth="0.8" />
-          <line x1="-10" y1="0" x2="10" y2="0" stroke="#1B3A2D" strokeWidth="0.5" />
-          <polygon points="0,-10 -3,-2 3,-2" fill="#1B3A2D" />
-          <text x="0" y="-16" fill="#1B3A2D" fontSize="8" fontFamily="serif" fontWeight="700" textAnchor="middle">N</text>
+        {/* Full compass rose */}
+        <g transform="translate(38, 555)" opacity="0.45">
+          {/* Outer ring */}
+          <circle cx="0" cy="0" r="18" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1.2" />
+          <circle cx="0" cy="0" r="15" fill="none" stroke="#1B3A2D" strokeWidth="0.4" />
+          {/* Tick marks */}
+          <line x1="0" y1="-18" x2="0" y2="-15" stroke="#1B3A2D" strokeWidth="1" />
+          <line x1="0" y1="15" x2="0" y2="18" stroke="#1B3A2D" strokeWidth="0.6" />
+          <line x1="-18" y1="0" x2="-15" y2="0" stroke="#1B3A2D" strokeWidth="0.6" />
+          <line x1="15" y1="0" x2="18" y2="0" stroke="#1B3A2D" strokeWidth="0.6" />
+          {/* North arrow — filled dark */}
+          <polygon points="0,-13 -4,0 0,-3 4,0" fill="#1B3A2D" />
+          {/* South arrow — outline */}
+          <polygon points="0,13 -4,0 0,3 4,0" fill="none" stroke="#1B3A2D" strokeWidth="0.6" />
+          {/* East/West small arrows */}
+          <polygon points="13,0 0,-3 3,0 0,3" fill="none" stroke="#1B3A2D" strokeWidth="0.5" />
+          <polygon points="-13,0 0,-3 -3,0 0,3" fill="none" stroke="#1B3A2D" strokeWidth="0.5" />
+          {/* Center dot */}
+          <circle cx="0" cy="0" r="1.5" fill="#1B3A2D" />
+          {/* Cardinal labels */}
+          <text x="0" y="-22" fill="#1B3A2D" fontSize="7" fontFamily="serif" fontWeight="800" textAnchor="middle">N</text>
+          <text x="0" y="28" fill="#1B3A2D" fontSize="5" fontFamily="serif" textAnchor="middle">S</text>
+          <text x="24" y="2" fill="#1B3A2D" fontSize="5" fontFamily="serif" textAnchor="middle">E</text>
+          <text x="-24" y="2" fill="#1B3A2D" fontSize="5" fontFamily="serif" textAnchor="middle">W</text>
         </g>
 
         {/* Scale bar — clean, readable */}
@@ -387,11 +404,11 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           // Label positioning: place to the left for nodes near the right edge
           const labelX = x > 220 ? x - 26 : x + 26;
           const labelAnchor = x > 220 ? "end" : "start";
-          // Position tooltip above the node, centered
-          const tooltipW = 220;
-          const tooltipH = 100;
-          const tooltipX = Math.max(15, Math.min(x - tooltipW / 2, 400 - tooltipW - 15));
-          const tooltipY = y - tooltipH - 30;
+          // Position tooltip above the node, not overlapping anything
+          const tooltipW = 240;
+          const tooltipH = 130;
+          const tooltipX = Math.max(10, Math.min(x - tooltipW / 2, 400 - tooltipW - 10));
+          const tooltipY = Math.max(10, y - tooltipH - 35);
           // Line from label pill to node
           const lineEndX = x > 220 ? x - 20 : x + 20;
 
@@ -536,7 +553,15 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
+const CITIES = [
+  { slug: "chicago", name: "Chicago", active: true },
+  { slug: "new-york", name: "New York", active: false },
+  { slug: "dallas", name: "Dallas", active: false },
+  { slug: "san-francisco", name: "San Francisco", active: false },
+];
+
 export default function ToursPage() {
+  const [selectedCity, setSelectedCity] = useState("chicago");
   const [stops, setStops] = useState<TourStop[]>([]);
 
   useEffect(() => {
@@ -577,11 +602,42 @@ export default function ToursPage() {
         <div className="absolute inset-0 bg-forest/70" />
         <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
           <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-            Chicago Walking Tours
+            Walking Tours
           </h1>
         </div>
       </section>
 
+      {/* City selector tabs */}
+      <section className="border-b border-border bg-cream">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="flex gap-0 overflow-x-auto">
+            {CITIES.map((city) => (
+              <button
+                key={city.slug}
+                onClick={() => city.active && setSelectedCity(city.slug)}
+                className={`relative whitespace-nowrap px-6 py-4 font-body text-sm font-semibold uppercase tracking-widest transition-colors ${
+                  selectedCity === city.slug
+                    ? "border-b-2 border-rust text-rust"
+                    : city.active
+                      ? "text-warm-gray hover:text-forest"
+                      : "cursor-default text-warm-gray/40"
+                }`}
+              >
+                {city.name}
+                {!city.active && (
+                  <span className="ml-2 rounded-full bg-cream-dark px-2 py-0.5 font-body text-[9px] uppercase tracking-wider text-warm-gray">
+                    Soon
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* City content */}
+      {selectedCity === "chicago" ? (
+        <>
       {/* Intro + Map Section */}
       <section className="bg-cream py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
@@ -722,15 +778,28 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* Expansion note */}
-      <section className="bg-cream py-12">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <p className="font-body text-sm text-warm-gray">
-            More cities coming soon. Rooted Forward is expanding to New York,
-            Dallas, and San Francisco.
-          </p>
-        </div>
-      </section>
+        </>
+      ) : (
+        /* Placeholder for other cities */
+        <section className="bg-cream py-20 md:py-28">
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <h2 className="font-display text-3xl text-forest md:text-4xl">
+              {CITIES.find((c) => c.slug === selectedCity)?.name} Tours
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-ink/60">
+              We are building our {CITIES.find((c) => c.slug === selectedCity)?.name} chapter.
+              Tours, stops, and guides for this city are in development.
+              Check back soon or get involved to help us launch.
+            </p>
+            <Link
+              href="/get-involved"
+              className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Help Us Launch
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
