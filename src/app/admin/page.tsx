@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 
 interface Stats {
   stops: number;
-  podcasts: number;
+  campaigns: number;
   submissions: number;
   users: number;
 }
@@ -26,7 +26,7 @@ interface Stats {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats>({
     stops: 0,
-    podcasts: 0,
+    campaigns: 0,
     submissions: 0,
     users: 0,
   });
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
             .from("tour_stops")
             .select("id", { count: "exact", head: true }),
           supabase
-            .from("podcasts")
+            .from("campaigns")
             .select("id", { count: "exact", head: true }),
           supabase
             .from("submissions")
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
       setStats({
         stops: stopsRes.count ?? 0,
-        podcasts: podcastsRes.count ?? 0,
+        campaigns: podcastsRes.count ?? 0,
         submissions: submissionsRes.count ?? 0,
         users: usersRes.count ?? 0,
       });
@@ -88,8 +88,8 @@ export default function AdminDashboard() {
       bg: "bg-forest/10",
     },
     {
-      label: "Total Podcasts",
-      value: stats.podcasts,
+      label: "Campaigns",
+      value: stats.campaigns,
       icon: Headphones,
       color: "text-rust",
       bg: "bg-rust/10",
