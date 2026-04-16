@@ -118,9 +118,12 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="font-display text-xl font-semibold tracking-tight text-forest"
+          className="flex items-center gap-2.5"
         >
-          Rooted Forward
+          <img src="/logo.svg" alt="" className="h-8 w-8" />
+          <span className="font-display text-xl font-semibold tracking-tight text-forest">
+            Rooted Forward
+          </span>
         </Link>
 
         {/* Desktop links */}

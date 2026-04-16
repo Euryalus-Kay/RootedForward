@@ -117,8 +117,9 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         {/* Left column */}
         <div>
-          <Link href="/" className="font-display text-2xl font-semibold tracking-tight">
-            Rooted Forward
+          <Link href="/" className="flex items-center gap-2.5">
+            <img src="/logo.svg" alt="" className="h-8 w-8" />
+            <span className="font-display text-2xl font-semibold tracking-tight">Rooted Forward</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream/75">
             A youth-led nonprofit documenting racial inequity in American cities
