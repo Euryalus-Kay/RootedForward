@@ -756,19 +756,14 @@ export default function ToursPage() {
         <div className="absolute inset-x-0 top-0 h-1 bg-rust" />
 
         <div className="mx-auto max-w-6xl px-6">
-          {/* Section header — centered, prominent */}
-          <div className="mb-12 text-center md:mb-16">
-            <span className="inline-block rounded-full bg-rust/10 px-5 py-1.5 font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+          {/* Section header */}
+          <div className="mb-12 md:mb-16">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
               In-Person Experience
-            </span>
-            <h2 className="mt-5 font-display text-4xl text-forest md:text-5xl">
+            </p>
+            <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
               Guided Walking Tours
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/60">
-              Go beyond the screen. Join trained youth guides for an immersive
-              walk through the neighborhoods shaped by the policies you&apos;ve
-              been exploring.
-            </p>
           </div>
 
           {/* Content card — elevated with border and shadow */}
