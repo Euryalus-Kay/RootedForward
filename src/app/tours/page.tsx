@@ -754,15 +754,9 @@ export default function ToursPage() {
       <section className="bg-cream-dark py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="border-l-4 border-rust pl-8 md:pl-12">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-              Guided Tour
-            </p>
-            <h2 className="mt-3 font-display text-3xl text-forest md:text-5xl">
+            <h2 className="font-display text-3xl text-forest md:text-5xl">
               Hyde Park Walking Tour
             </h2>
-            <p className="mt-1 font-body text-base text-warm-gray md:text-lg">
-              History, Race, and Urban Change
-            </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-10 md:mt-16 md:grid-cols-2 md:gap-16">
@@ -803,7 +797,7 @@ export default function ToursPage() {
                 href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 inline-flex w-full items-center justify-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                className="mt-8 self-center inline-flex items-center justify-center rounded-sm bg-rust px-10 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
               >
                 Book on Viator
               </a>
