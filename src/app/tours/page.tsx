@@ -751,71 +751,38 @@ export default function ToursPage() {
       </section>
 
       {/* In-Person Tours */}
-      <section className="bg-forest py-20 md:py-28">
+      <section className="bg-ink py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            In-Person Experience
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray-light">
+            Walk With Us
           </p>
           <h2 className="mt-3 font-display text-3xl text-cream md:text-5xl">
             Hyde Park Walking Tour
           </h2>
-          <p className="mt-2 font-body text-base text-cream/45 md:text-lg">
-            History, Race, and Urban Change
+          <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-cream/65 md:text-lg">
+            A two-hour guided walk through Hyde Park and surrounding
+            neighborhoods, led by trained youth researchers. You will hear
+            the history of redlining, urban renewal, and community resistance
+            at the places where it happened — not in a classroom, but
+            standing on the blocks that were reshaped by policy.
           </p>
-
-          <div className="mt-10 grid grid-cols-1 gap-12 md:mt-14 lg:grid-cols-5 lg:gap-16">
-            {/* Description */}
-            <div className="lg:col-span-3">
-              <p className="max-w-[58ch] font-body text-base leading-relaxed text-cream/70 md:text-lg md:leading-relaxed">
-                Led by trained youth guides, this two-hour tour takes you through
-                Hyde Park and surrounding neighborhoods with live commentary on
-                the history of redlining, urban renewal, and community resistance
-                you can see in the built environment around you.
-              </p>
-              <p className="mt-5 max-w-[58ch] font-body text-base leading-relaxed text-cream/70 md:text-lg md:leading-relaxed">
-                The tour covers the redlining boundaries that shaped
-                Bronzeville, University of Chicago&rsquo;s urban renewal
-                campaigns, and the community organizing that fought back.
-                Every stop is a place you can stand in and see.
-              </p>
-
-              <a
-                href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Book on Viator
-              </a>
-              <p className="mt-3 font-body text-xs text-cream/30">
-                Booking and reviews managed through Viator&nbsp;/&nbsp;TripAdvisor
-              </p>
-            </div>
-
-            {/* Details */}
-            <div className="lg:col-span-2">
-              <div className="border-t border-cream/10 pt-6">
-                <dl className="space-y-6">
-                  <div className="flex items-baseline justify-between border-b border-cream/10 pb-4">
-                    <dt className="font-body text-sm text-cream/40">Duration</dt>
-                    <dd className="font-body text-sm font-medium text-cream">2 hours</dd>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-cream/10 pb-4">
-                    <dt className="font-body text-sm text-cream/40">Location</dt>
-                    <dd className="font-body text-sm font-medium text-cream">Hyde Park, Chicago</dd>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-cream/10 pb-4">
-                    <dt className="font-body text-sm text-cream/40">Guide</dt>
-                    <dd className="font-body text-sm font-medium text-cream">Youth-led</dd>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <dt className="font-body text-sm text-cream/40">Group size</dt>
-                    <dd className="font-body text-sm font-medium text-cream">Small groups</dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-          </div>
+          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-cream/65 md:text-lg">
+            The tour covers the University of Chicago&rsquo;s expansion
+            campaigns, Bronzeville&rsquo;s redlining boundaries, and the
+            organizing that fought back. Every stop is somewhere you can
+            see with your own eyes.
+          </p>
+          <p className="mt-6 font-body text-sm text-cream/40">
+            Hyde Park, Chicago &middot; 2 hours &middot; Small groups &middot; Youth-led
+          </p>
+          <a
+            href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Book on Viator
+          </a>
         </div>
       </section>
 
