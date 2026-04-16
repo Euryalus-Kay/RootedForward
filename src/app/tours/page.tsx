@@ -553,15 +553,23 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-const CITIES = [
-  { slug: "chicago", name: "Chicago", active: true },
-  { slug: "new-york", name: "New York", active: false },
-  { slug: "dallas", name: "Dallas", active: false },
-  { slug: "san-francisco", name: "San Francisco", active: false },
-];
+/*
+  MULTI-CITY SUPPORT:
+  To re-enable the city tab selector, uncomment the CITIES array below
+  and the city selector section in the JSX (search for "City selector tabs").
+  Then wrap the Chicago content in the selectedCity === "chicago" conditional
+  and uncomment the placeholder for other cities at the bottom.
+
+  const CITIES = [
+    { slug: "chicago", name: "Chicago", active: true },
+    { slug: "new-york", name: "New York", active: false },
+    { slug: "dallas", name: "Dallas", active: false },
+    { slug: "san-francisco", name: "San Francisco", active: false },
+  ];
+*/
 
 export default function ToursPage() {
-  const [selectedCity, setSelectedCity] = useState("chicago");
+  // const [selectedCity, setSelectedCity] = useState("chicago"); // Uncomment for multi-city
   const [stops, setStops] = useState<TourStop[]>([]);
 
   useEffect(() => {
@@ -607,7 +615,10 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* City selector tabs */}
+      {/*
+        MULTI-CITY: Uncomment this city selector section to enable tabs.
+        Also uncomment selectedCity state above and CITIES array.
+
       <section className="border-b border-border bg-cream">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex gap-0 overflow-x-auto">
@@ -634,10 +645,8 @@ export default function ToursPage() {
           </div>
         </div>
       </section>
+      */}
 
-      {/* City content */}
-      {selectedCity === "chicago" ? (
-        <>
       {/* Intro + Map Section */}
       <section className="bg-cream py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
@@ -704,8 +713,15 @@ export default function ToursPage() {
         </div>
       </section>
 
+      {/* Cream spacer bar to separate from footer */}
+      <section className="bg-cream py-10">
+        <div className="mx-auto max-w-6xl px-6">
+          <hr className="border-border" />
+        </div>
+      </section>
+
       {/* In-Person Tours / Viator Section */}
-      <section className="border-t border-border bg-forest py-16 md:py-24">
+      <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
             <div>
@@ -778,28 +794,24 @@ export default function ToursPage() {
         </div>
       </section>
 
-        </>
-      ) : (
-        /* Placeholder for other cities */
-        <section className="bg-cream py-20 md:py-28">
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <h2 className="font-display text-3xl text-forest md:text-4xl">
-              {CITIES.find((c) => c.slug === selectedCity)?.name} Tours
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-ink/60">
-              We are building our {CITIES.find((c) => c.slug === selectedCity)?.name} chapter.
-              Tours, stops, and guides for this city are in development.
-              Check back soon or get involved to help us launch.
-            </p>
-            <Link
-              href="/get-involved"
-              className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Help Us Launch
-            </Link>
-          </div>
-        </section>
-      )}
+      {/*
+        MULTI-CITY: Uncomment this block and wrap Chicago content above
+        in {selectedCity === "chicago" ? ( <> ... </> ) : ( this block )}
+
+      <section className="bg-cream py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <h2 className="font-display text-3xl text-forest md:text-4xl">
+            {CITIES.find((c) => c.slug === selectedCity)?.name} Tours
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-ink/60">
+            Tours for this city are in development. Check back soon.
+          </p>
+          <Link href="/get-involved" className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark">
+            Help Us Launch
+          </Link>
+        </div>
+      </section>
+      */}
     </div>
   );
 }
