@@ -150,66 +150,72 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         {/* Lake Michigan label */}
         <text x="365" y="250" fill="#1B3A2D" opacity="0.10" fontSize="11" fontFamily="serif" fontStyle="italic" transform="rotate(90 365 250)" textAnchor="middle">Lake Michigan</text>
 
-        {/* Tour stop nodes */}
-        {stops.map((stop) => {
+        {/* Tour stop nodes — bigger, with better tooltips */}
+        {stops.map((stop, i) => {
           const x = lngToX(stop.lng);
           const y = latToY(stop.lat);
           const isHovered = hoveredStop === stop.slug;
+          // Position tooltip to the left if node is on the right side
+          const tooltipX = x > 200 ? x - 215 : x + 20;
+          const tooltipY = y - 30;
 
           return (
             <g key={stop.slug}>
-              {/* Pulse ring on hover */}
+              {/* Outer glow */}
+              <circle cx={x} cy={y} r="18" fill="#C45D3E" opacity="0.12" />
+
+              {/* Pulse on hover */}
               {isHovered && (
-                <circle cx={x} cy={y} r="20" fill="#C45D3E" opacity="0.15">
-                  <animate attributeName="r" from="12" to="24" dur="1s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.2" to="0" dur="1s" repeatCount="indefinite" />
+                <circle cx={x} cy={y} r="22" fill="#C45D3E" opacity="0.1">
+                  <animate attributeName="r" from="16" to="30" dur="1.2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" from="0.15" to="0" dur="1.2s" repeatCount="indefinite" />
                 </circle>
               )}
 
-              {/* Node */}
+              {/* Main node */}
               <Link href={`/tours/chicago/${stop.slug}`}>
                 <circle
                   cx={x}
                   cy={y}
-                  r={isHovered ? "10" : "8"}
+                  r={isHovered ? "14" : "12"}
                   fill="#C45D3E"
                   stroke="#F5F0E8"
-                  strokeWidth="2.5"
+                  strokeWidth="3"
                   className="cursor-pointer transition-all duration-200"
                   onMouseEnter={() => setHoveredStop(stop.slug)}
                   onMouseLeave={() => setHoveredStop(null)}
                 />
               </Link>
 
-              {/* Label */}
+              {/* Number inside node */}
               <text
                 x={x}
-                y={y - 16}
-                fill="#1B3A2D"
-                fontSize="9"
+                y={y + 4}
+                fill="#F5F0E8"
+                fontSize="10"
                 fontFamily="sans-serif"
-                fontWeight="600"
+                fontWeight="700"
                 textAnchor="middle"
                 className="pointer-events-none"
               >
-                {stop.title.split(" ").slice(-1)[0]}
+                {i + 1}
               </text>
 
-              {/* Tooltip on hover */}
+              {/* Tooltip on hover — positioned to the side, not overlapping */}
               {isHovered && (
                 <foreignObject
-                  x={Math.min(x - 100, 200)}
-                  y={y + 18}
-                  width="200"
-                  height="80"
+                  x={tooltipX}
+                  y={tooltipY}
+                  width="195"
+                  height="85"
                   className="pointer-events-none"
                 >
-                  <div className="rounded-sm bg-forest p-3 shadow-lg">
-                    <p className="font-body text-xs font-semibold text-cream">
+                  <div className="rounded bg-forest p-3 shadow-lg">
+                    <p className="font-body text-[11px] font-semibold text-cream leading-tight">
                       {stop.title}
                     </p>
-                    <p className="mt-1 font-body text-[10px] leading-tight text-cream/70">
-                      {stop.description.substring(0, 100)}...
+                    <p className="mt-1.5 font-body text-[9px] leading-snug text-cream/65">
+                      {stop.description.substring(0, 90)}...
                     </p>
                   </div>
                 </foreignObject>
@@ -323,8 +329,11 @@ export default function ToursPage() {
                   Tour Map
                 </p>
                 <ChicagoMap stops={stops} />
-                <p className="mt-4 text-center font-body text-xs text-warm-gray">
-                  Click a stop to explore
+                <p className="mt-2 text-center font-display text-lg tracking-widest text-forest">
+                  C H I C A G O
+                </p>
+                <p className="mt-1 text-center font-body text-[9px] text-warm-gray">
+                  Click a stop to explore &middot; Map by Rooted Forward
                 </p>
               </div>
             </div>
