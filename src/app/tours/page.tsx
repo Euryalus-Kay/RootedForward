@@ -71,12 +71,12 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         {/* Defs for gradients, patterns, and markers */}
         <defs>
           <linearGradient id="lakeGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#5B9AAD" stopOpacity="0.12" />
-            <stop offset="35%" stopColor="#5B9AAD" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#5B9AAD" stopOpacity="0.03" />
+            <stop offset="0%" stopColor="#4A8FA3" stopOpacity="0.25" />
+            <stop offset="35%" stopColor="#4A8FA3" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#4A8FA3" stopOpacity="0.08" />
           </linearGradient>
           <pattern id="lakePattern" patternUnits="userSpaceOnUse" width="20" height="8" patternTransform="rotate(-5)">
-            <path d="M0 4 Q5 1.5, 10 4 Q15 6.5, 20 4" fill="none" stroke="#5B9AAD" strokeWidth="0.7" opacity="0.12" />
+            <path d="M0 4 Q5 1.5, 10 4 Q15 6.5, 20 4" fill="none" stroke="#4A8FA3" strokeWidth="0.8" opacity="0.22" />
           </pattern>
           {/* Subtle dot pattern for land texture */}
           <pattern id="landDots" patternUnits="userSpaceOnUse" width="12" height="12">
@@ -156,9 +156,9 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
              C329 505, 334 520, 340 538
              C348 560, 358 578, 368 585"
           fill="none"
-          stroke="#5B9AAD"
-          strokeWidth="1.5"
-          opacity="0.25"
+          stroke="#4A8FA3"
+          strokeWidth="2"
+          opacity="0.4"
         />
 
         {/* Chicago city outline — realistic shape:
@@ -221,7 +221,7 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
              C205 178, 190 174, 175 172
              L155 170"
           fill="none"
-          stroke="#5B9AAD"
+          stroke="#4A8FA3"
           strokeWidth="3"
           opacity="0.3"
           strokeLinecap="round"
@@ -231,7 +231,7 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           d="M220 180 C218 195, 215 210, 210 225
              C205 242, 200 258, 195 275"
           fill="none"
-          stroke="#5B9AAD"
+          stroke="#4A8FA3"
           strokeWidth="2.5"
           opacity="0.25"
           strokeLinecap="round"
@@ -241,7 +241,7 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           d="M220 180 C218 165, 215 148, 210 132
              C205 118, 198 102, 190 88"
           fill="none"
-          stroke="#5B9AAD"
+          stroke="#4A8FA3"
           strokeWidth="2.5"
           opacity="0.25"
           strokeLinecap="round"
@@ -333,28 +333,21 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         {/* Lake Michigan label */}
         <text x="362" y="300" fill="#1B3A2D" opacity="0.18" fontSize="13" fontFamily="serif" fontStyle="italic" letterSpacing="4" transform="rotate(90 362 300)" textAnchor="middle">Lake Michigan</text>
 
-        {/* Compass rose — elegant minimal design, bottom-left corner */}
-        <g transform="translate(32, 548)" opacity="0.4">
-          {/* Circle frame */}
-          <circle cx="0" cy="8" r="16" fill="none" stroke="#1B3A2D" strokeWidth="0.8" />
-          {/* N-S axis */}
-          <line x1="0" y1="22" x2="0" y2="-6" stroke="#1B3A2D" strokeWidth="1" />
-          {/* E-W axis */}
-          <line x1="-14" y1="8" x2="14" y2="8" stroke="#1B3A2D" strokeWidth="0.6" />
-          {/* North arrow head (filled) */}
-          <polygon points="0,-8 -3.5,2 3.5,2" fill="#1B3A2D" />
-          {/* South arrow head (open) */}
-          <polygon points="0,24 -3,16 3,16" fill="none" stroke="#1B3A2D" strokeWidth="0.6" />
-          {/* N label */}
-          <text x="0" y="-14" fill="#1B3A2D" fontSize="7" fontFamily="serif" fontWeight="700" textAnchor="middle">N</text>
+        {/* Compass — clean, properly centered */}
+        <g transform="translate(35, 555)" opacity="0.5">
+          <circle cx="0" cy="0" r="14" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1" />
+          <line x1="0" y1="10" x2="0" y2="-10" stroke="#1B3A2D" strokeWidth="0.8" />
+          <line x1="-10" y1="0" x2="10" y2="0" stroke="#1B3A2D" strokeWidth="0.5" />
+          <polygon points="0,-10 -3,-2 3,-2" fill="#1B3A2D" />
+          <text x="0" y="-16" fill="#1B3A2D" fontSize="8" fontFamily="serif" fontWeight="700" textAnchor="middle">N</text>
         </g>
 
-        {/* Scale bar — bottom right */}
-        <g transform="translate(340, 570)" opacity="0.3">
-          <line x1="0" y1="0" x2="40" y2="0" stroke="#1B3A2D" strokeWidth="1.5" />
-          <line x1="0" y1="-3" x2="0" y2="3" stroke="#1B3A2D" strokeWidth="1" />
-          <line x1="40" y1="-3" x2="40" y2="3" stroke="#1B3A2D" strokeWidth="1" />
-          <text x="20" y="9" fill="#1B3A2D" fontSize="5" fontFamily="sans-serif" textAnchor="middle">2 mi</text>
+        {/* Scale bar — clean, readable */}
+        <g transform="translate(320, 568)" opacity="0.4">
+          <line x1="0" y1="0" x2="50" y2="0" stroke="#1B3A2D" strokeWidth="2" />
+          <line x1="0" y1="-4" x2="0" y2="4" stroke="#1B3A2D" strokeWidth="1.5" />
+          <line x1="50" y1="-4" x2="50" y2="4" stroke="#1B3A2D" strokeWidth="1.5" />
+          <text x="25" y="12" fill="#1B3A2D" fontSize="7" fontFamily="sans-serif" textAnchor="middle">2 mi</text>
         </g>
 
         {/* Tour route — curved dotted path connecting stops in order */}
@@ -394,8 +387,11 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           // Label positioning: place to the left for nodes near the right edge
           const labelX = x > 220 ? x - 26 : x + 26;
           const labelAnchor = x > 220 ? "end" : "start";
-          const tooltipX = x > 200 ? x - 220 : x + 30;
-          const tooltipY = y - 35;
+          // Position tooltip above the node, centered
+          const tooltipW = 220;
+          const tooltipH = 100;
+          const tooltipX = Math.max(15, Math.min(x - tooltipW / 2, 400 - tooltipW - 15));
+          const tooltipY = y - tooltipH - 30;
           // Line from label pill to node
           const lineEndX = x > 220 ? x - 20 : x + 20;
 
@@ -509,21 +505,21 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
                 STOP {i + 1}
               </text>
 
-              {/* Tooltip on hover — positioned to the side, not overlapping */}
+              {/* Tooltip on hover — positioned above the node */}
               {isHovered && (
                 <foreignObject
                   x={tooltipX}
                   y={tooltipY}
-                  width="200"
-                  height="90"
+                  width={tooltipW}
+                  height={tooltipH}
                   className="pointer-events-none"
                 >
-                  <div className="rounded-md bg-forest p-3 shadow-xl border border-cream/10">
-                    <p className="font-body text-[11px] font-bold text-cream leading-tight">
+                  <div className="rounded-sm bg-forest p-4 shadow-xl">
+                    <p className="font-body text-sm font-semibold text-cream leading-snug">
                       {stop.title}
                     </p>
-                    <p className="mt-1.5 font-body text-[9px] leading-snug text-cream/70">
-                      {stop.description.substring(0, 100)}...
+                    <p className="mt-2 font-body text-xs leading-relaxed text-cream/70">
+                      {stop.description.substring(0, 120)}...
                     </p>
                   </div>
                 </foreignObject>
