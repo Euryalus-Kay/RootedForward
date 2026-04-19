@@ -18,7 +18,16 @@ const NAV_LINKS = [
     ],
   },
   { label: "Tours", href: "/tours" },
-  { label: "Podcasts", href: "/podcasts" },
+  {
+    label: "Education",
+    href: "/education",
+    children: [
+      { label: "Podcast", href: "/podcasts" },
+      { label: "Virtual Tours", href: "/virtual-tours" },
+      { label: "Build the Block", href: "/game" },
+      { label: "Curriculum", href: "/curriculum" },
+    ],
+  },
   { label: "Policy", href: "/policy" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
