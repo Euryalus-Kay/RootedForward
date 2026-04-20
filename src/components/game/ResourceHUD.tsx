@@ -82,8 +82,8 @@ export function ResourceHUD({
             <AnimatedTotal value={score} />
           </span>
           {percentile != null && (
-            <span className="font-body text-[10px] uppercase tracking-widest text-warm-gray">
-              Top {Math.max(1, 100 - percentile)}%
+            <span className="font-body text-[10px] uppercase tracking-widest text-warm-gray" title="How your current score compares to all finished runs in the leaderboard">
+              {percentile >= 50 ? `Top ${Math.max(1, 100 - percentile)}%` : `${percentile}th percentile`}
             </span>
           )}
         </div>

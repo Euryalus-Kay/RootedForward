@@ -7,6 +7,7 @@ import ParcelGrid, { ParcelLegend } from "./ParcelGrid";
 import { ACHIEVEMENT_BY_ID } from "@/lib/game/achievements";
 import { OBJECTIVES_BY_ID, completedObjectives } from "@/lib/game/objectives";
 import { ROLES, type RoleKey } from "@/lib/game/roles";
+import { clearSave } from "@/lib/game/save";
 
 export function EndScreen({
   state,
@@ -25,6 +26,9 @@ export function EndScreen({
 
   useEffect(() => {
     if (!final) return;
+    // Game has ended - clear the in-progress save so the menu won't
+    // offer to "continue" a finished game.
+    clearSave();
     let cancelled = false;
     const payload = {
       display_name: state.displayName || "Anonymous",

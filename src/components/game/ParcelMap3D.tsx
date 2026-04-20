@@ -271,14 +271,30 @@ function Building({ p, centerX, centerY, highlighted, protectedRing }: {
       {/* Roof */}
       {d.roofStyle === "peak" && (
         <>
+          {/* Eaves shadow under the overhang */}
           <polygon
-            points={`${centerX - hw},${topY} ${centerX},${topY - hh - 8} ${centerX + hw},${topY} ${centerX},${topY + hh}`}
+            points={`${centerX - hw - 2},${topY + 1} ${centerX + hw + 2},${topY + 1} ${centerX + hw},${topY + 4} ${centerX - hw},${topY + 4}`}
+            fill="#000"
+            opacity="0.18"
+          />
+          <polygon
+            points={`${centerX - hw - 2},${topY} ${centerX},${topY - hh - 9} ${centerX + hw + 2},${topY} ${centerX},${topY + hh + 1}`}
             fill={d.roofColor}
           />
           <polygon
-            points={`${centerX - hw},${topY} ${centerX},${topY + hh} ${centerX},${topY - hh - 8}`}
-            fill={shade(d.roofColor, -0.12)}
+            points={`${centerX - hw - 2},${topY} ${centerX},${topY + hh + 1} ${centerX},${topY - hh - 9}`}
+            fill={shade(d.roofColor, -0.15)}
             opacity="0.85"
+          />
+          {/* Roof ridge highlight */}
+          <line
+            x1={centerX}
+            y1={topY - hh - 9}
+            x2={centerX}
+            y2={topY + hh + 1}
+            stroke={shade(d.roofColor, 0.15)}
+            strokeWidth="0.6"
+            opacity="0.6"
           />
         </>
       )}
@@ -387,7 +403,22 @@ function Garden({ x, y, count, lush }: { x: number; y: number; count: number; lu
   return (
     <g>
       {lush && (
-        <ellipse cx={x} cy={y + 4} rx={TILE_W / 2 - 5} ry={TILE_H / 2 - 2} fill="#5FA85A" opacity="0.38" />
+        <>
+          <ellipse cx={x} cy={y + 4} rx={TILE_W / 2 - 5} ry={TILE_H / 2 - 2} fill="#5FA85A" opacity="0.42" />
+          {/* Diagonal park path */}
+          <line
+            x1={x - TILE_W / 2 + 6}
+            y1={y - 1}
+            x2={x + TILE_W / 2 - 6}
+            y2={y + 5}
+            stroke="#D0BC91"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            opacity="0.85"
+          />
+          {/* Tiny bench dot */}
+          <rect x={x - 5} y={y + 6} width="3" height="1.4" fill="#5B3312" />
+        </>
       )}
       {trees}
     </g>
@@ -694,20 +725,31 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
           {/* Lake */}
           <Lake bounds={bounds} shoreMinX={shoreMinX} sw={swIso} ne={neIso} />
 
-          {/* Parcel ground tiles */}
+          {/* Parcel ground tiles with sidewalk ring */}
           {parcels.map((p) => {
             const { x, y } = iso(p.col, p.row);
             return (
-              <Diamond
-                key={`g-${p.id}`}
-                x={x}
-                y={y}
-                hw={TILE_W / 2 - 2}
-                hh={TILE_H / 2 - 1}
-                fill={groundFill(p)}
-                stroke={groundStroke(p)}
-                strokeWidth={0.55}
-              />
+              <g key={`g-${p.id}`}>
+                {/* Sidewalk ring (lighter gray frame) */}
+                <Diamond
+                  x={x}
+                  y={y}
+                  hw={TILE_W / 2 - 1.5}
+                  hh={TILE_H / 2 - 1}
+                  fill="#C4B89E"
+                  stroke="none"
+                />
+                {/* Inner lawn / yard */}
+                <Diamond
+                  x={x}
+                  y={y}
+                  hw={TILE_W / 2 - 4.5}
+                  hh={TILE_H / 2 - 2.5}
+                  fill={groundFill(p)}
+                  stroke={groundStroke(p)}
+                  strokeWidth={0.55}
+                />
+              </g>
             );
           })}
 

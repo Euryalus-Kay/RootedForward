@@ -103,7 +103,13 @@ export default function GameRoot() {
   const handleResolveEvent = useCallback((idx: number) => dispatch({ type: "RESOLVE_EVENT", optionIndex: idx }), []);
   const handleReadNote = useCallback((term: string) => dispatch({ type: "READ_NOTE", term }), []);
   const handleDismissToast = useCallback((id: string) => dispatch({ type: "DISMISS_TOAST", id }), []);
-  const handleReturnMenu = useCallback(() => { clearSave(); dispatch({ type: "RETURN_TO_MENU" }); setPaused(false); }, []);
+  // Returning to menu does NOT clear the save - the player can continue from the menu's "Saved Run" banner.
+  // Only Restart explicitly wipes the current save.
+  const handleReturnMenu = useCallback(() => {
+    saveToLocal(state); // make sure latest is persisted
+    dispatch({ type: "RETURN_TO_MENU" });
+    setPaused(false);
+  }, [state]);
   const handleRestart = useCallback(() => { clearSave(); dispatch({ type: "RESTART_GAME" }); setPaused(false); }, []);
   const handleViewLeaderboard = useCallback(() => dispatch({ type: "VIEW_LEADERBOARD" }), []);
 
@@ -310,7 +316,14 @@ export default function GameRoot() {
               </div>
 
               {mapMode === "3d" ? (
-                <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
+                <>
+                  <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
+                  {hovered && (
+                    <div className="mt-3">
+                      <ParcelTooltip parcel={hovered} />
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="flex gap-2">
                   <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">

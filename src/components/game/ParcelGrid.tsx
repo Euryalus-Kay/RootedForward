@@ -3,6 +3,7 @@
 import type { Parcel, ParcelType, ParcelOwner } from "@/lib/game/types";
 import { COLS } from "@/lib/game/parcels";
 import { ParcelIcon } from "./icons";
+import { narrativeFor } from "@/lib/game/parcel-narrative";
 
 /* ------------------------------------------------------------------ */
 /*  Display helpers                                                    */
@@ -190,25 +191,35 @@ function Legend({ color, label }: { color: string; label: string }) {
 
 export function ParcelTooltip({ parcel }: { parcel: Parcel | null }) {
   if (!parcel) return null;
+  const n = narrativeFor(parcel);
   return (
-    <div className="rounded-sm border border-border bg-cream p-3 shadow-lg">
-      <div className="flex items-center gap-2">
+    <div className="rounded-md border border-border bg-cream p-4 shadow-lg">
+      <div className="flex items-start gap-3">
         <div
-          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[3px]"
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md"
           style={{ backgroundColor: fillFor(parcel), color: iconColorFor(parcel) }}
         >
-          <ParcelIcon type={parcel.type} size={16} />
+          <ParcelIcon type={parcel.type} size={18} />
         </div>
-        <p className="font-display text-sm font-semibold text-forest">{TYPE_LABEL[parcel.type]}</p>
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-sm font-semibold leading-tight text-forest">
+            {TYPE_LABEL[parcel.type]}
+          </p>
+          <p className="font-body text-[11px] text-warm-gray">{n.address}</p>
+        </div>
       </div>
-      <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 font-body text-[11px] text-ink/70">
-        <dt className="text-warm-gray">HOLC</dt><dd>{parcel.holc}</dd>
-        <dt className="text-warm-gray">Owner</dt><dd>{OWNER_LABEL[parcel.owner]}</dd>
-        <dt className="text-warm-gray">Residents</dt><dd>{parcel.residents}</dd>
-        <dt className="text-warm-gray">Condition</dt><dd>{parcel.condition}</dd>
-        <dt className="text-warm-gray">Value</dt><dd>{parcel.value}</dd>
-        <dt className="text-warm-gray">Memory</dt><dd>{parcel.memory}</dd>
-        <dt className="text-warm-gray">Protected</dt><dd>{parcel.protected ? "Yes" : "No"}</dd>
+
+      <p className="mt-3 font-body text-[12px] leading-snug text-ink/75">{n.primary}</p>
+
+      <p className="mt-2 font-body text-[11px] italic text-warm-gray">{n.ownership}</p>
+
+      <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-0.5 border-t border-border pt-2 font-body text-[11px] text-ink/70">
+        {n.vitalLines.map((v) => (
+          <div key={v.label} className="flex justify-between">
+            <dt className="text-warm-gray">{v.label}</dt>
+            <dd className="font-medium">{v.value}</dd>
+          </div>
+        ))}
       </dl>
     </div>
   );
