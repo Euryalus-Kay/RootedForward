@@ -109,7 +109,7 @@ export default function EducationPage() {
             </h2>
             <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
               Everything is free for classroom use. The curriculum kit is the
-              fastest way in &mdash; pair it with a podcast episode, run the
+              fastest way in. Pair it with a podcast episode, run the
               game in one period, and use the tour as a field-trip anchor.
             </p>
             <Link

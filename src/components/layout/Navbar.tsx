@@ -122,7 +122,7 @@ export default function Navbar() {
         scrolled ? "shadow-[0_1px_0_0_var(--color-border)]" : ""
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
@@ -134,8 +134,8 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-8 md:flex">
+        {/* Desktop links — centered as a group, pushed slightly right toward the account/search */}
+        <ul className="hidden items-center justify-end gap-7 md:flex md:pr-2 lg:pr-4">
           {NAV_LINKS.map((link) => (
             <li key={link.href} className="relative group">
               <Link
@@ -163,8 +163,8 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Right section */}
-        <div className="flex items-center gap-3">
+        {/* Right section — account, search */}
+        <div className="flex items-center justify-end gap-3">
           {user ? (
             /* User dropdown */
             <div ref={dropdownRef} className="relative">

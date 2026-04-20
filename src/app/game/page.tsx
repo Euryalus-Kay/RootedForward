@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import BuildTheBlock from "@/components/game/BuildTheBlock";
+import GameRoot from "@/components/game/GameRoot";
 
 export const metadata: Metadata = {
-  title: "The Game | Rooted Forward",
+  title: "Game | Rooted Forward",
   description:
-    "Build the Block — a 20-minute browser game where you make a century of decisions in a fictional Chicago ward. Real history, real consequences.",
+    "Build the Block. A strategy game about a hundred years of Chicago neighborhood policy. Real cards, real events, real history.",
 };
 
 export default function GamePage() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
-        <BuildTheBlock />
+        <GameRoot />
       </div>
     </PageTransition>
   );

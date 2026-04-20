@@ -57,7 +57,7 @@ const FORMATS = [
   {
     title: "Discussion guides",
     body:
-      "Harkness, Socratic, and small-group prompts &mdash; with sample student responses and follow-ups for the moments where conversations stall.",
+      "Harkness, Socratic, and small-group prompts, with sample student responses and follow-ups for the moments where conversations stall.",
   },
   {
     title: "Pre/post checks",
@@ -211,7 +211,7 @@ export default function CurriculumPage() {
                 in the hallway.&rdquo;
               </p>
               <p className="mt-6 font-body text-sm uppercase tracking-[0.2em] text-warm-gray">
-                &mdash; CPS social studies teacher, pilot cohort
+                CPS social studies teacher, pilot cohort
               </p>
             </div>
           </div>
@@ -229,10 +229,10 @@ export default function CurriculumPage() {
                   Tell us about your classroom.
                 </h2>
                 <p className="mt-6 max-w-[40ch] font-body text-base leading-relaxed text-ink/70">
-                  We send everything &mdash; lesson plans, slide decks,
-                  discussion guides, the assessment &mdash; over email. If
-                  you want, we&rsquo;ll set up a 20-minute call to walk
-                  through it with you.
+                  We send everything over email: lesson plans, slide
+                  decks, discussion guides, the assessment. If you want,
+                  we&rsquo;ll set up a 20-minute call to walk through it
+                  with you.
                 </p>
                 <p className="mt-6 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
                   We email back within a week. Usually faster.
