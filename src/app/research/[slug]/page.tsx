@@ -15,6 +15,7 @@ import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 import ResearchArticleBody from "@/components/research/ResearchArticleBody";
 import RelatedContent from "@/components/research/RelatedContent";
+import DownloadPDFButton from "@/components/research/DownloadPDFButton";
 import type { ResearchEntry } from "@/lib/types/database";
 import {
   PLACEHOLDER_RESEARCH_ENTRIES,
@@ -271,14 +272,16 @@ export default async function ResearchEntryPage({ params }: PageProps) {
             )}
           </div>
 
-          {/* PDF download */}
-          {entry.pdf_url && (
-            <p className="mt-6">
+          {/* PDF actions */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <DownloadPDFButton />
+            {entry.pdf_url && (
               <a
                 href={entry.pdf_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-body text-[14px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
+                data-print-hide="true"
+                className="inline-flex items-center gap-2 font-body text-[13.5px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -287,6 +290,7 @@ export default async function ResearchEntryPage({ params }: PageProps) {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="h-4 w-4"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -294,10 +298,10 @@ export default async function ResearchEntryPage({ params }: PageProps) {
                     d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
                   />
                 </svg>
-                Download PDF
+                Official typeset PDF
               </a>
-            </p>
-          )}
+            )}
+          </div>
 
           <hr className="mt-10 border-border" />
         </div>

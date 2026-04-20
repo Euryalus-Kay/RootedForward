@@ -95,3 +95,142 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Print styles — research detail page PDF export                     */
+/* ------------------------------------------------------------------ */
+/*                                                                     */
+/*  When a research article page is printed (or "Saved as PDF"), hide  */
+/*  all site chrome and format the article for a white paper layout.  */
+/*  The Download PDF button triggers window.print() and the user then  */
+/*  saves to PDF from the native print dialog.                         */
+/*                                                                     */
+/* ------------------------------------------------------------------ */
+
+@media print {
+  /* Page setup */
+  @page {
+    size: letter;
+    margin: 0.75in;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt;
+    line-height: 1.55;
+  }
+
+  /* Hide site chrome */
+  header[class*="sticky"],
+  nav,
+  footer,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+
+  /* Hide interactive / layout elements inside the research page */
+  aside,
+  [aria-label="Table of contents"],
+  [aria-labelledby="related-heading"],
+  [aria-label="Breadcrumb"] {
+    display: none !important;
+  }
+
+  /* Collapse multi-column article layout to single column */
+  .lg\:grid-cols-\[minmax\(0\,1fr\)_220px\],
+  .lg\:grid-cols-\[minmax\(0\,2\.5fr\)_minmax\(0\,1fr\)\] {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  section {
+    padding: 0 !important;
+    break-inside: avoid-page;
+  }
+
+  /* Typography for print */
+  h1 {
+    font-size: 22pt !important;
+    line-height: 1.1 !important;
+    color: #111 !important;
+    margin-bottom: 0.25in !important;
+    break-after: avoid-page;
+  }
+  h2 {
+    font-size: 15pt !important;
+    line-height: 1.2 !important;
+    color: #111 !important;
+    margin-top: 0.25in !important;
+    margin-bottom: 0.1in !important;
+    break-after: avoid-page;
+  }
+  h3 {
+    font-size: 12pt !important;
+    color: #222 !important;
+    margin-top: 0.15in !important;
+    break-after: avoid-page;
+  }
+  article p,
+  article li {
+    font-size: 11pt !important;
+    color: #222 !important;
+  }
+
+  /* Links print as underlined text without color */
+  a {
+    color: #111 !important;
+    text-decoration: underline !important;
+  }
+  /* External URLs printed after anchor text */
+  article a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+  }
+  /* Do not append URLs for in-document anchors (citations, TOC) */
+  article a[href^="#"]::after,
+  article sup a::after {
+    content: "";
+  }
+
+  /* Charts: ensure they fit the page width and do not break across pages */
+  figure {
+    break-inside: avoid-page;
+    margin: 0.2in 0 !important;
+    border: 1px solid #ddd !important;
+    background: #fff !important;
+    padding: 0.15in !important;
+  }
+  figure svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Citations section */
+  #citations ol {
+    break-inside: auto;
+  }
+  #citations li {
+    break-inside: avoid-page;
+    margin-bottom: 0.08in;
+  }
+
+  /* Avoid orphaned list items */
+  ul, ol {
+    break-inside: auto;
+  }
+  li {
+    break-inside: avoid-page;
+  }
+
+  /* Paragraph spacing */
+  article p {
+    orphans: 3;
+    widows: 3;
+  }
+}

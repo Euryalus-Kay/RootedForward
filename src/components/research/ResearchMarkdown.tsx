@@ -29,6 +29,10 @@
 import React from "react";
 import Link from "next/link";
 import type { Citation } from "@/lib/types/database";
+import ResearchChart, {
+  parseChartConfig,
+  type ChartConfig,
+} from "@/components/research/ResearchChart";
 
 export interface Heading {
   id: string;
@@ -157,6 +161,7 @@ function renderBlocks(
 
   let i = 0;
   const paragraphBuffer: string[] = [];
+  let figureCounter = 0;
 
   while (i < lines.length) {
     const line = lines[i];
@@ -166,6 +171,43 @@ function renderBlocks(
     if (!trimmed.trim()) {
       flushParagraph(paragraphBuffer);
       i++;
+      continue;
+    }
+
+    // Fenced chart code block: ```chart { ... } ```
+    if (/^```chart\s*$/.test(trimmed)) {
+      flushParagraph(paragraphBuffer);
+      const configLines: string[] = [];
+      i++;
+      while (i < lines.length && !/^```\s*$/.test(lines[i].trimEnd())) {
+        configLines.push(lines[i]);
+        i++;
+      }
+      // skip the closing ``` line
+      if (i < lines.length) i++;
+
+      const config: ChartConfig | null = parseChartConfig(
+        configLines.join("\n")
+      );
+      figureCounter += 1;
+      if (config) {
+        pushBlock(
+          <ResearchChart
+            key={`chart-${blockIdx}`}
+            config={config}
+            figureNumber={figureCounter}
+          />
+        );
+      } else {
+        pushBlock(
+          <pre
+            key={`chart-err-${blockIdx}`}
+            className="my-2 overflow-x-auto rounded-sm border border-rust/30 bg-rust/5 px-3 py-2 font-mono text-[12.5px] text-rust"
+          >
+            {configLines.join("\n")}
+          </pre>
+        );
+      }
       continue;
     }
 
