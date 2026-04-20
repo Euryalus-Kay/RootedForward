@@ -23,15 +23,17 @@ import type {
 } from "./types";
 
 const STARTING_RESOURCES: Resources = {
-  capital: 8,
-  power: 6,
-  trust: 4,
-  knowledge: 2,
+  capital: 12,
+  power: 8,
+  trust: 6,
+  knowledge: 3,
 };
 
-const STARTING_HAND_SIZE = 5;
-const DRAW_PER_YEAR = 2;
-const MAX_HAND = 8;
+const STARTING_HAND_SIZE = 6;
+const DRAW_PER_YEAR = 3;
+const MAX_HAND = 10;
+export const YEAR_STEP = 5;
+export const END_YEAR_FINAL = 2040;
 
 export function freshState(): GameState {
   const initFactions: Record<string, number> = {};
@@ -145,8 +147,8 @@ function maybeQueueEvent(state: GameState, rng: RNG): GameState {
   const resolvedSet = new Set(state.resolvedEvents.map((e) => e.eventId));
   const candidates = eligibleEvents(state.year, state.flags, resolvedSet);
   if (candidates.length === 0) return state;
-  // Roll for an event with chance based on era weight
-  if (!rng.chance(0.45)) return state;
+  // 35% per year. Across a 5-year turn that's roughly 85% chance of at least one event.
+  if (!rng.chance(0.35)) return state;
   const ev = rng.pickWeighted(candidates);
   if (!ev) return state;
   return { ...state, currentEvent: ev, phase: "event" };
@@ -266,18 +268,21 @@ export function reducer(state: GameState, action: GameAction): GameState {
 
     case "END_YEAR": {
       if (state.phase === "event") return state; // can't advance with active event
-      let next = { ...state, year: state.year + 1, yearAdvanced: true };
+      const newYear = state.year + YEAR_STEP;
+      let next: GameState = { ...state, year: newYear, yearAdvanced: true };
 
-      // End-of-year effects: simulate parcels
-      const simRng = new RNG(state.seed + ":sim:" + state.year);
-      next.parcels = simulateYear(next.parcels, next.year, simRng);
+      // End-of-turn effects: simulate parcels for each year that passed
+      for (let y = state.year + 1; y <= newYear; y++) {
+        const simRng = new RNG(state.seed + ":sim:" + y);
+        next.parcels = simulateYear(next.parcels, y, simRng);
+      }
 
-      // Era-based passive resource trickle
-      const eraTrickle = next.year < 1955 ? { capital: 1, power: 1 }
-        : next.year < 1975 ? { capital: 1, power: 2 }
-        : next.year < 1995 ? { capital: 2, power: 2 }
-        : next.year < 2015 ? { capital: 2, power: 2, trust: 1 }
-        : { capital: 3, power: 2, trust: 1 };
+      // Era-based passive resource trickle (multiplied for the 5-year step)
+      const eraTrickle = newYear < 1955 ? { capital: 4, power: 4 }
+        : newYear < 1975 ? { capital: 5, power: 6 }
+        : newYear < 1995 ? { capital: 6, power: 6, trust: 1 }
+        : newYear < 2015 ? { capital: 7, power: 6, trust: 2 }
+        : { capital: 9, power: 7, trust: 2 };
       next.resources = {
         capital: next.resources.capital + (eraTrickle.capital ?? 0),
         power: next.resources.power + (eraTrickle.power ?? 0),
@@ -286,15 +291,24 @@ export function reducer(state: GameState, action: GameAction): GameState {
       };
 
       // Draw new cards
-      const drawRng = new RNG(state.seed + ":draw:" + state.year);
+      const drawRng = new RNG(state.seed + ":draw:" + newYear);
       next = drawCards(next, state.drawPerYear, drawRng);
 
-      // Maybe roll an event
-      const eventRng = new RNG(state.seed + ":event:" + state.year);
-      next = maybeQueueEvent(next, eventRng);
+      // Roll for events at every year that passed in this jump
+      // (each year independently, so a 5-year jump can fire 0-2 events)
+      for (let y = state.year + 1; y <= newYear; y++) {
+        if (next.currentEvent) break; // already queued
+        const yearForRoll = y;
+        const tempState = { ...next, year: yearForRoll };
+        const eventRng = new RNG(state.seed + ":event:" + y);
+        const rolled = maybeQueueEvent(tempState, eventRng);
+        if (rolled.currentEvent) {
+          next = { ...next, currentEvent: rolled.currentEvent, phase: "event" };
+        }
+      }
 
       // Check end of game
-      if (next.year > 2040) {
+      if (newYear > END_YEAR_FINAL) {
         next = { ...next, phase: "ended", finalScore: computeFinalScore(next) };
       }
 

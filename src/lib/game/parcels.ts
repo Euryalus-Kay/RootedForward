@@ -7,6 +7,7 @@
 
 import type { Parcel, ParcelTransform, HOLCGrade } from "./types";
 import { RNG } from "./rng";
+export { RNG };
 
 export const COLS = 10;
 export const ROWS = 7;
@@ -198,6 +199,24 @@ export function selectParcels(
   if (sel === "unprotected") return parcels.filter((p) => !p.protected).map((p) => p.id);
 
   return [];
+}
+
+/** Preview which parcels a list of transforms would touch (ids only).
+ *  Uses a deterministic seed so the preview matches what would happen.
+ *  We accept a seed string so multiple previews of the same card stay
+ *  stable until the player actually plays it. */
+export function previewTargets(
+  parcels: Parcel[],
+  transforms: ParcelTransform[] | undefined,
+  seed: string
+): number[] {
+  if (!transforms || transforms.length === 0) return [];
+  const rng = new RNG(seed);
+  const out = new Set<number>();
+  for (const t of transforms) {
+    for (const id of selectParcels(parcels, t.selector, rng)) out.add(id);
+  }
+  return Array.from(out);
 }
 
 /** Apply all transforms in a card or event effect */

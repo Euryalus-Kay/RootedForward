@@ -32,8 +32,9 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
           </p>
           <p className="mt-3 font-body text-base leading-relaxed text-ink/80">
             The game starts in <span className="font-semibold">1940</span> and
-            runs to <span className="font-semibold">2040</span>. A century. You
-            make decisions year by year.
+            runs to <span className="font-semibold">2040</span>. A century, in
+            <span className="font-semibold"> 5-year turns</span>. You will make
+            roughly twenty decisions over a 20-minute run.
           </p>
           <div className="mt-6 rounded-md border border-border bg-cream-dark/50 p-4">
             <p className="font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
@@ -162,7 +163,7 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
             </li>
             <li className="flex gap-3">
               <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-rust text-xs font-bold text-white">5</span>
-              <span>Play as many cards as you can afford each year. Then click <span className="font-semibold text-forest">End year</span> to advance time.</span>
+              <span>Play as many cards as you can afford each turn. Then click <span className="font-semibold text-forest">Advance 5 years</span> to push time forward.</span>
             </li>
           </ol>
           <div className="mt-5 rounded-md border border-forest/25 bg-forest/5 p-4 font-body text-sm text-ink/75">

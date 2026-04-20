@@ -1,9 +1,10 @@
 "use client";
 
 import { useReducer, useState, useCallback, useEffect, useRef } from "react";
-import { reducer, freshState } from "@/lib/game/state";
+import { reducer, freshState, YEAR_STEP } from "@/lib/game/state";
 import { CARD_BY_ID } from "@/lib/game/cards";
 import { EVENT_BY_ID } from "@/lib/game/events";
+import { previewTargets } from "@/lib/game/parcels";
 import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
 import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
@@ -107,6 +108,12 @@ export default function GameRoot() {
 
   const era = eraName(state.year);
   const role = ROLES[state.roleKey as RoleKey] ?? ROLES.alderman;
+
+  /* ------------- preview targets for the selected card ------------- */
+  const selectedCard = state.selectedCard ? CARD_BY_ID.get(state.selectedCard) : undefined;
+  const previewTargetIds = selectedCard
+    ? previewTargets(state.parcels, selectedCard.effect.transformParcels, state.seed + ":card:" + state.playedCards.length)
+    : [];
 
   /* ========================================================== */
   /*  Phase: menu                                                */
@@ -261,11 +268,37 @@ export default function GameRoot() {
                   What am I looking at?
                 </button>
               </div>
-              <ParcelGrid parcels={state.parcels} onHover={setHovered} />
+
+              {/* Card preview banner */}
+              {selectedCard && previewTargetIds.length > 0 && (
+                <div className="mb-2 rounded-sm bg-rust/15 px-3 py-2 font-body text-xs text-rust-dark animate-pulse">
+                  <span className="font-semibold">{selectedCard.name}</span> would affect{" "}
+                  <span className="font-semibold">{previewTargetIds.length}</span>{" "}
+                  parcel{previewTargetIds.length === 1 ? "" : "s"} (highlighted in green ring).
+                </div>
+              )}
+              {selectedCard && previewTargetIds.length === 0 && (
+                <div className="mb-2 rounded-sm bg-cream-dark/60 px-3 py-2 font-body text-xs text-ink/70">
+                  <span className="font-semibold text-forest">{selectedCard.name}</span>{" "}
+                  affects scores and resources. No specific parcel changes.
+                </div>
+              )}
+
+              <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
+
+              {/* District labels overlay */}
+              <div className="mt-2 grid grid-cols-3 gap-1 font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray/70">
+                <span>North blocks</span>
+                <span className="text-center">Central</span>
+                <span className="text-right">South blocks</span>
+              </div>
             </div>
             <div className="mt-3">
               <ParcelLegend />
             </div>
+
+            {/* Ward stats strip */}
+            <WardStats parcels={state.parcels} />
             <div className="mt-4">
               <ContextPanel year={state.year} />
             </div>
@@ -295,9 +328,10 @@ export default function GameRoot() {
               </div>
               <button
                 onClick={handleEndYear}
-                className="inline-flex items-center justify-center rounded-sm bg-forest px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+                className="inline-flex flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
               >
-                End year &rarr;
+                <span className="text-sm">Advance {YEAR_STEP} years &rarr;</span>
+                <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>
               </button>
             </div>
 
@@ -400,6 +434,34 @@ export default function GameRoot() {
 /* ------------------------------------------------------------------ */
 /*  Objectives HUD (shows progress inline during the run)              */
 /* ------------------------------------------------------------------ */
+
+function WardStats({ parcels }: { parcels: import("@/lib/game/types").Parcel[] }) {
+  const housing = parcels.filter((p) => ["single-family", "two-flat", "three-flat", "courtyard", "tower", "rehab-tower", "land-trust"].includes(p.type)).length;
+  const civic = parcels.filter((p) => ["school", "church", "library", "clinic", "park", "community-garden", "mural"].includes(p.type)).length;
+  const protectedCount = parcels.filter((p) => p.protected).length;
+  const speculator = parcels.filter((p) => p.owner === "speculator").length;
+  const vacant = parcels.filter((p) => p.type === "vacant").length;
+  return (
+    <div className="mt-3 grid grid-cols-5 gap-1 rounded-sm border border-border bg-cream p-3 font-body text-[11px] shadow-sm">
+      <Stat label="Housing" value={housing} />
+      <Stat label="Civic" value={civic} />
+      <Stat label="Protected" value={protectedCount} highlight={protectedCount > 0} />
+      <Stat label="Speculator" value={speculator} negative={speculator > 0} />
+      <Stat label="Vacant" value={vacant} />
+    </div>
+  );
+}
+
+function Stat({ label, value, highlight, negative }: { label: string; value: number; highlight?: boolean; negative?: boolean }) {
+  return (
+    <div className="text-center">
+      <p className={`font-display text-base font-bold leading-none ${highlight ? "text-forest" : negative ? "text-rust" : "text-ink/80"}`}>
+        {value}
+      </p>
+      <p className="mt-1 text-[9px] uppercase tracking-widest text-warm-gray">{label}</p>
+    </div>
+  );
+}
 
 function ObjectivesHUD({ state }: { state: import("@/lib/game/types").GameState }) {
   return (
