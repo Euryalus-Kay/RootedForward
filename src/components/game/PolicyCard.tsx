@@ -56,7 +56,7 @@ export function PolicyCard({
   return (
     <div
       onClick={onClick}
-      className={`relative flex h-full w-56 cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 ${
+      className={`relative flex h-full w-60 cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 ${
         RARITY_RING[card.rarity]
       } ${selected ? "-translate-y-2 scale-[1.03] shadow-xl" : "hover:-translate-y-1 hover:shadow-lg"} ${
         !affordable ? "opacity-55" : ""
@@ -82,11 +82,21 @@ export function PolicyCard({
       </div>
 
       {/* Cost row */}
-      <div className="mt-2 flex flex-wrap gap-1 border-t border-border/60 px-3 pt-2">
-        {card.cost.capital ? <CostPip k="capital" value={card.cost.capital} have={resources.capital} /> : null}
-        {card.cost.power ? <CostPip k="power" value={card.cost.power} have={resources.power} /> : null}
-        {card.cost.trust ? <CostPip k="trust" value={card.cost.trust} have={resources.trust} /> : null}
-        {card.cost.knowledge ? <CostPip k="knowledge" value={card.cost.knowledge} have={resources.knowledge} /> : null}
+      <div className="mt-2 border-t border-border/60 px-3 pt-2">
+        <div className="flex items-baseline gap-1.5">
+          <span className="font-body text-[9px] font-bold uppercase tracking-widest text-warm-gray">
+            Costs
+          </span>
+          <div className="flex flex-wrap gap-1">
+            {card.cost.capital ? <CostPip k="capital" label="Capital" value={card.cost.capital} have={resources.capital} /> : null}
+            {card.cost.power ? <CostPip k="power" label="Power" value={card.cost.power} have={resources.power} /> : null}
+            {card.cost.trust ? <CostPip k="trust" label="Trust" value={card.cost.trust} have={resources.trust} /> : null}
+            {card.cost.knowledge ? <CostPip k="knowledge" label="Knowledge" value={card.cost.knowledge} have={resources.knowledge} /> : null}
+            {!card.cost.capital && !card.cost.power && !card.cost.trust && !card.cost.knowledge && (
+              <span className="font-body text-[10px] italic text-warm-gray">free</span>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Description */}
@@ -95,7 +105,10 @@ export function PolicyCard({
       </div>
 
       {/* Effect summary */}
-      <div className="mt-auto border-t border-border/60 bg-cream-dark/30 px-3 py-2">
+      <div className="mt-auto border-t border-border/60 bg-cream-dark/40 px-3 py-2">
+        <p className="mb-1 font-body text-[9px] font-bold uppercase tracking-widest text-warm-gray">
+          Effects
+        </p>
         <EffectSummary card={card} />
       </div>
 
@@ -125,53 +138,73 @@ export function PolicyCard({
   );
 }
 
-function CostPip({ k, value, have }: { k: "capital" | "power" | "trust" | "knowledge"; value: number; have: number }) {
+function CostPip({
+  k,
+  label,
+  value,
+  have,
+}: {
+  k: "capital" | "power" | "trust" | "knowledge";
+  label: string;
+  value: number;
+  have: number;
+}) {
   const ok = have >= value;
   const palette = {
-    capital: ok ? "text-amber-800" : "text-rust-dark",
-    power: ok ? "text-rust-dark" : "text-rust-dark",
-    trust: ok ? "text-forest" : "text-rust-dark",
-    knowledge: ok ? "text-indigo-700" : "text-rust-dark",
+    capital: ok ? "text-amber-900 bg-amber-100" : "text-rust-dark bg-rust/15",
+    power: ok ? "text-rust-dark bg-rust/15" : "text-rust-dark bg-rust/25",
+    trust: ok ? "text-forest bg-forest/15" : "text-rust-dark bg-rust/15",
+    knowledge: ok ? "text-indigo-800 bg-indigo-100" : "text-rust-dark bg-rust/15",
   };
   return (
     <span
-      className={`flex items-center gap-0.5 rounded-sm px-1.5 py-0.5 font-body text-[10px] font-bold ${
-        ok ? "bg-cream-dark/70" : "bg-rust/10"
-      } ${palette[k]}`}
+      className={`flex items-center gap-1 rounded-sm px-1.5 py-1 font-body text-[11px] font-semibold ${palette[k]}`}
+      title={`Costs ${value} ${label}`}
     >
-      <ResourceIcon resource={k} size={10} />
-      {value}
+      <ResourceIcon resource={k} size={12} />
+      <span className="font-bold">{value}</span>
+      <span className="text-[10px] opacity-80">{label}</span>
     </span>
   );
 }
 
 function EffectSummary({ card }: { card: Card }) {
   const e = card.effect;
-  const rows: { key: string; value: number; positive: boolean; icon: React.ReactNode }[] = [];
-  if (e.equity)         rows.push({ key: "Eq",  value: e.equity,         positive: e.equity > 0,         icon: <ScoreIcon score="equity" size={10} /> });
-  if (e.heritage)       rows.push({ key: "Hr",  value: e.heritage,       positive: e.heritage > 0,       icon: <ScoreIcon score="heritage" size={10} /> });
-  if (e.growth)         rows.push({ key: "Gr",  value: e.growth,         positive: e.growth > 0,         icon: <ScoreIcon score="growth" size={10} /> });
-  if (e.sustainability) rows.push({ key: "Sus", value: e.sustainability, positive: e.sustainability > 0, icon: <ScoreIcon score="sustainability" size={10} /> });
-  if (e.knowledge)      rows.push({ key: "Kn",  value: e.knowledge,      positive: e.knowledge > 0,      icon: <ResourceIcon resource="knowledge" size={10} /> });
-  if (e.trust)          rows.push({ key: "Tr",  value: e.trust,          positive: e.trust > 0,          icon: <ResourceIcon resource="trust" size={10} /> });
-  if (e.capital)        rows.push({ key: "Ca",  value: e.capital,        positive: e.capital > 0,        icon: <ResourceIcon resource="capital" size={10} /> });
-  if (e.power)          rows.push({ key: "Pw",  value: e.power,          positive: e.power > 0,          icon: <ResourceIcon resource="power" size={10} /> });
+  type Row = { label: string; value: number; positive: boolean; kind: "score" | "resource"; iconKey: string };
+  const rows: Row[] = [];
+  if (e.equity)         rows.push({ label: "Equity",         value: e.equity,         positive: e.equity > 0,         kind: "score",    iconKey: "equity" });
+  if (e.heritage)       rows.push({ label: "Heritage",       value: e.heritage,       positive: e.heritage > 0,       kind: "score",    iconKey: "heritage" });
+  if (e.growth)         rows.push({ label: "Growth",         value: e.growth,         positive: e.growth > 0,         kind: "score",    iconKey: "growth" });
+  if (e.sustainability) rows.push({ label: "Sustainability", value: e.sustainability, positive: e.sustainability > 0, kind: "score",    iconKey: "sustainability" });
+  if (e.knowledge)      rows.push({ label: "Knowledge",      value: e.knowledge,      positive: e.knowledge > 0,      kind: "resource", iconKey: "knowledge" });
+  if (e.trust)          rows.push({ label: "Trust",          value: e.trust,          positive: e.trust > 0,          kind: "resource", iconKey: "trust" });
+  if (e.capital)        rows.push({ label: "Capital",        value: e.capital,        positive: e.capital > 0,        kind: "resource", iconKey: "capital" });
+  if (e.power)          rows.push({ label: "Power",          value: e.power,          positive: e.power > 0,          kind: "resource", iconKey: "power" });
 
   if (rows.length === 0) {
-    return <p className="font-body text-[10px] text-warm-gray">No score change</p>;
+    return <p className="font-body text-[11px] italic text-warm-gray">No score change</p>;
   }
   return (
-    <div className="flex flex-wrap gap-x-2 gap-y-0.5">
+    <div className="flex flex-col gap-0.5">
       {rows.map((r, i) => (
-        <span
+        <div
           key={i}
-          className={`flex items-center gap-0.5 font-body text-[10px] font-semibold ${
+          className={`flex items-center justify-between font-body text-[12px] ${
             r.positive ? "text-forest" : "text-rust-dark"
           }`}
         >
-          {r.icon}
-          <span>{r.positive ? "+" : ""}{r.value}</span>
-        </span>
+          <span className="flex items-center gap-1.5">
+            <span className={r.positive ? "text-forest" : "text-rust-dark"}>
+              {r.kind === "score"
+                ? <ScoreIcon score={r.iconKey as never} size={12} />
+                : <ResourceIcon resource={r.iconKey as never} size={12} />}
+            </span>
+            <span className="font-medium">{r.label}</span>
+          </span>
+          <span className="font-display font-bold">
+            {r.positive ? "+" : ""}{r.value}
+          </span>
+        </div>
       ))}
     </div>
   );
