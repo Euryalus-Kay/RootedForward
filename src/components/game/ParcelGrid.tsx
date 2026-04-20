@@ -1,30 +1,12 @@
 "use client";
 
 import type { Parcel, ParcelType, ParcelOwner } from "@/lib/game/types";
-import { COLS, ROWS } from "@/lib/game/parcels";
+import { COLS } from "@/lib/game/parcels";
+import { ParcelIcon } from "./icons";
 
-const TYPE_GLYPH: Record<ParcelType, string> = {
-  vacant: " ",
-  "single-family": "h",
-  "two-flat": "H",
-  "three-flat": "B",
-  courtyard: "C",
-  tower: "T",
-  "rehab-tower": "R",
-  commercial: "$",
-  industrial: "I",
-  school: "S",
-  church: "+",
-  park: "P",
-  transit: "M",
-  expressway: "=",
-  "land-trust": "L",
-  demolished: "x",
-  mural: "*",
-  "community-garden": "G",
-  library: "L",
-  clinic: "C",
-};
+/* ------------------------------------------------------------------ */
+/*  Display helpers                                                    */
+/* ------------------------------------------------------------------ */
 
 const TYPE_LABEL: Record<ParcelType, string> = {
   vacant: "Vacant lot",
@@ -61,34 +43,50 @@ const OWNER_LABEL: Record<ParcelOwner, string> = {
   vacant: "Vacant",
 };
 
-function colorFor(p: Parcel): string {
-  // Owner overrides
-  if (p.owner === "speculator") return "bg-rust/40";
-  if (p.type === "expressway") return "bg-ink";
-  if (p.type === "transit") return "bg-rust";
-  if (p.type === "land-trust") return "bg-forest";
-  if (p.type === "tower") return "bg-warm-gray";
-  if (p.type === "rehab-tower") return "bg-forest-light";
-  if (p.type === "park") return "bg-green-700";
-  if (p.type === "school") return "bg-rust-dark";
-  if (p.type === "church") return "bg-amber-800";
-  if (p.type === "mural") return "bg-rust-light";
-  if (p.type === "community-garden") return "bg-green-600";
-  if (p.type === "library") return "bg-rust-dark";
-  if (p.type === "clinic") return "bg-rust-dark";
-  if (p.type === "commercial") return "bg-amber-700";
-  if (p.type === "industrial") return "bg-stone-600";
-  if (p.type === "vacant") return "bg-cream-dark";
+/** Tile background color (the HOLC base or building type overlay) */
+function fillFor(p: Parcel): string {
+  // Overrides
+  if (p.owner === "speculator") return "#C45D3E55"; // translucent rust
+  if (p.type === "expressway") return "#1A1A1A";
+  if (p.type === "transit") return "#C45D3E";
+  if (p.type === "land-trust") return "#1B3A2D";
+  if (p.type === "tower") return "#4A4A4A";
+  if (p.type === "rehab-tower") return "#2A5440";
+  if (p.type === "park") return "#3F7C3A";
+  if (p.type === "school") return "#A8462A";
+  if (p.type === "church") return "#854B1E";
+  if (p.type === "mural") return "#D4765C";
+  if (p.type === "community-garden") return "#4F8A4A";
+  if (p.type === "library") return "#8B3A16";
+  if (p.type === "clinic") return "#8B3A16";
+  if (p.type === "commercial") return "#B55F1A";
+  if (p.type === "industrial") return "#57564F";
+  if (p.type === "vacant") return "#E8DEC9";
 
-  // Default by HOLC
+  // HOLC base colors
   switch (p.holc) {
-    case "A": return "bg-[#4F8A4A]";
-    case "B": return "bg-[#4A79A8]";
-    case "C": return "bg-[#D4A83A]";
-    case "D": return "bg-[#B8373A]";
-    default: return "bg-cream-dark";
+    case "A": return "#4F8A4A";
+    case "B": return "#4A79A8";
+    case "C": return "#D4A83A";
+    case "D": return "#B8373A";
+    default: return "#E8DEC9";
   }
 }
+
+/** Icon color inside the tile */
+function iconColorFor(p: Parcel): string {
+  if (p.type === "vacant") return "#8A8578";
+  return "#F5F0E8";
+}
+
+/** Shows a building silhouette for non-trivial types */
+function hasIcon(type: ParcelType): boolean {
+  return type !== "vacant";
+}
+
+/* ------------------------------------------------------------------ */
+/*  Grid                                                               */
+/* ------------------------------------------------------------------ */
 
 export interface ParcelGridProps {
   parcels: Parcel[];
@@ -101,29 +99,47 @@ export default function ParcelGrid({ parcels, onHover, highlight, compact }: Par
   const highSet = new Set(highlight ?? []);
   return (
     <div
-      className="relative"
+      className={`relative rounded-sm ${compact ? "" : "bg-gradient-to-br from-forest/5 to-cream-dark/50 p-3"}`}
       onMouseLeave={() => onHover?.(null)}
     >
       <div
-        className={`grid gap-[2px] ${compact ? "" : "p-2"}`}
+        className="grid gap-[3px]"
         style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}
       >
         {parcels.map((p) => {
           const isHigh = highSet.has(p.id);
+          const showIcon = hasIcon(p.type);
           return (
             <div
               key={p.id}
-              className={`group relative aspect-square rounded-[2px] transition-all duration-300 ${colorFor(p)} ${
-                p.protected ? "ring-2 ring-rust ring-offset-1 ring-offset-cream" : ""
-              } ${isHigh ? "ring-2 ring-cream ring-offset-2 ring-offset-forest" : ""}`}
               onMouseEnter={() => onHover?.(p)}
-              title={`${TYPE_LABEL[p.type]}, HOLC ${p.holc}, ${p.residents} residents`}
+              title={`${TYPE_LABEL[p.type]} · HOLC ${p.holc} · ${p.residents} residents`}
+              className={`group relative aspect-square overflow-hidden rounded-[3px] shadow-sm transition-all duration-500 ${
+                p.protected ? "ring-2 ring-rust" : ""
+              } ${isHigh ? "ring-2 ring-forest ring-offset-1" : ""} hover:z-10 hover:scale-110 hover:shadow-lg`}
+              style={{ backgroundColor: fillFor(p) }}
             >
-              {/* Type glyph for non-empty */}
-              {p.type !== "vacant" && !compact && (
-                <span className="absolute inset-0 flex items-center justify-center font-display text-[10px] font-bold text-cream/80">
-                  {TYPE_GLYPH[p.type]}
-                </span>
+              {/* Subtle inner shadow for dimension */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/15" />
+              {/* Protected marker lock corner */}
+              {p.protected && (
+                <div className="absolute right-0.5 top-0.5 h-1 w-1 rounded-full bg-rust" />
+              )}
+              {/* Building icon */}
+              {showIcon && (
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center" style={{ color: iconColorFor(p) }}>
+                  <ParcelIcon type={p.type} size={compact ? 10 : 16} />
+                </div>
+              )}
+              {/* Speculator shimmer stripes */}
+              {p.owner === "speculator" && (
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-40"
+                  style={{
+                    backgroundImage:
+                      "repeating-linear-gradient(135deg, transparent 0 3px, #8B3A16 3px 4px)",
+                  }}
+                />
               )}
             </div>
           );
@@ -133,37 +149,59 @@ export default function ParcelGrid({ parcels, onHover, highlight, compact }: Par
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Legend                                                             */
+/* ------------------------------------------------------------------ */
+
 export function ParcelLegend() {
   return (
-    <div className="grid grid-cols-2 gap-x-3 gap-y-1 font-body text-[11px] text-ink/65 sm:grid-cols-3">
-      <Legend swatch="bg-[#4F8A4A]" label="HOLC A" />
-      <Legend swatch="bg-[#4A79A8]" label="HOLC B" />
-      <Legend swatch="bg-[#D4A83A]" label="HOLC C" />
-      <Legend swatch="bg-[#B8373A]" label="HOLC D" />
-      <Legend swatch="bg-ink" label="Expressway" />
-      <Legend swatch="bg-rust" label="Transit" />
-      <Legend swatch="bg-forest" label="Land trust" />
-      <Legend swatch="bg-warm-gray" label="CHA tower" />
-      <Legend swatch="bg-rust/40" label="Speculator" />
+    <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 font-body text-[11px] text-ink/65 sm:grid-cols-3">
+      <Legend color="#4F8A4A" label="HOLC A (best)" />
+      <Legend color="#4A79A8" label="HOLC B" />
+      <Legend color="#D4A83A" label="HOLC C" />
+      <Legend color="#B8373A" label="HOLC D (redlined)" />
+      <Legend color="#1A1A1A" label="Expressway" />
+      <Legend color="#C45D3E" label="Transit station" />
+      <Legend color="#1B3A2D" label="Land trust" />
+      <Legend color="#4A4A4A" label="CHA tower" />
+      <Legend color="#C45D3E55" label="Speculator" />
+      <Legend color="#3F7C3A" label="Park / garden" />
+      <Legend color="#D4765C" label="Mural" />
+      <Legend color="#E8DEC9" label="Vacant" />
     </div>
   );
 }
 
-function Legend({ swatch, label }: { swatch: string; label: string }) {
+function Legend({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className={`h-3 w-3 rounded-[2px] ${swatch}`} />
+      <span
+        className="h-3 w-3 rounded-[2px] shadow-sm"
+        style={{ backgroundColor: color }}
+      />
       <span>{label}</span>
     </div>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Tooltip                                                            */
+/* ------------------------------------------------------------------ */
+
 export function ParcelTooltip({ parcel }: { parcel: Parcel | null }) {
   if (!parcel) return null;
   return (
     <div className="rounded-sm border border-border bg-cream p-3 shadow-lg">
-      <p className="font-display text-sm font-semibold text-forest">{TYPE_LABEL[parcel.type]}</p>
-      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 font-body text-[11px] text-ink/70">
+      <div className="flex items-center gap-2">
+        <div
+          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[3px]"
+          style={{ backgroundColor: fillFor(parcel), color: iconColorFor(parcel) }}
+        >
+          <ParcelIcon type={parcel.type} size={16} />
+        </div>
+        <p className="font-display text-sm font-semibold text-forest">{TYPE_LABEL[parcel.type]}</p>
+      </div>
+      <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 font-body text-[11px] text-ink/70">
         <dt className="text-warm-gray">HOLC</dt><dd>{parcel.holc}</dd>
         <dt className="text-warm-gray">Owner</dt><dd>{OWNER_LABEL[parcel.owner]}</dd>
         <dt className="text-warm-gray">Residents</dt><dd>{parcel.residents}</dd>

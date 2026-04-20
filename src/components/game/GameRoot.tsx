@@ -18,7 +18,10 @@ import { Toasts } from "./Toasts";
 import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
+import { HowToPlay } from "./HowToPlay";
 import type { Parcel } from "@/lib/game/types";
+
+const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
 
 const ERAS = [
   { fromYear: 1940, toYear: 1955, name: "Lines on a Map" },
@@ -38,7 +41,23 @@ export default function GameRoot() {
   const [state, dispatch] = useReducer(reducer, undefined, freshState);
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
+  const [howToPlayOpen, setHowToPlayOpen] = useState(false);
   const lastSavedAt = useRef<number>(0);
+
+  /* ------------- first-time auto-open how-to-play ------------- */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (state.phase !== "playing") return;
+    try {
+      const seen = window.localStorage.getItem(HOW_TO_PLAY_SEEN_KEY);
+      if (!seen) {
+        setHowToPlayOpen(true);
+        window.localStorage.setItem(HOW_TO_PLAY_SEEN_KEY, "1");
+      }
+    } catch {
+      // ignore
+    }
+  }, [state.phase]);
 
   /* ------------- autosave ------------- */
   useEffect(() => {
@@ -208,19 +227,40 @@ export default function GameRoot() {
               {" · "}
               Seed <span className="text-forest">{state.seed}</span>
             </p>
-            <button
-              onClick={() => setPaused(true)}
-              className="rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-            >
-              Pause &middot; Esc
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setHowToPlayOpen(true)}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-cream font-display text-sm font-bold text-forest transition-colors hover:bg-cream-dark"
+                aria-label="How to play"
+                title="How to play"
+              >
+                ?
+              </button>
+              <button
+                onClick={() => setPaused(true)}
+                className="rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+              >
+                Pause &middot; Esc
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Left column: ward + context + score bar */}
           <aside className="lg:col-span-5">
-            <div className="rounded-sm border border-border bg-cream p-3 shadow-sm md:p-4">
+            <div className="rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-3 shadow-sm md:p-4">
+              <div className="mb-2 flex items-baseline justify-between">
+                <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                  Parkhaven &middot; {state.parcels.reduce((s, p) => s + p.residents, 0).toLocaleString()} residents
+                </p>
+                <button
+                  onClick={() => setHowToPlayOpen(true)}
+                  className="font-body text-[10px] font-semibold uppercase tracking-widest text-rust hover:text-rust-dark"
+                >
+                  What am I looking at?
+                </button>
+              </div>
               <ParcelGrid parcels={state.parcels} onHover={setHovered} />
             </div>
             <div className="mt-3">
@@ -261,27 +301,15 @@ export default function GameRoot() {
               </button>
             </div>
 
-            {/* First-time hint */}
-            {!state.hintsDismissed.has("play-cards") && state.playedCards.length === 0 && (
-              <div className="mt-4 rounded-sm border border-rust/30 bg-rust/5 p-4">
-                <p className="font-body text-sm leading-relaxed text-ink/80">
-                  <span className="font-semibold text-rust">How to play a card:</span>{" "}
-                  click a card to read it. Click the <span className="font-semibold">Play</span> button that appears.
-                  Each card costs resources (Capital, Power, Trust, Knowledge).
-                  When you are out of good moves or cannot afford more cards, click <span className="font-semibold">End year</span>.
-                </p>
-                <button
-                  onClick={() => dispatch({ type: "DISMISS_HINT", hintId: "play-cards" })}
-                  className="mt-2 font-body text-xs font-semibold uppercase tracking-widest text-rust hover:text-rust-dark"
-                >
-                  Got it, hide this
-                </button>
-              </div>
-            )}
-
             <p className="mt-3 max-w-[55ch] font-body text-sm text-ink/65">
-              Click a card to read it. Click again to play. You can play as
-              many cards as you can afford each year.
+              Click a card to read it. Click <span className="font-semibold text-forest">Play</span> when ready. You can play as
+              many cards as you can afford each year. Confused?{" "}
+              <button
+                onClick={() => setHowToPlayOpen(true)}
+                className="font-semibold text-rust underline underline-offset-2 hover:text-rust-dark"
+              >
+                Open the tutorial.
+              </button>
             </p>
 
             {/* Hand */}
@@ -359,6 +387,9 @@ export default function GameRoot() {
           onSave={() => { saveToLocal(state); setPaused(false); }}
         />
       )}
+
+      {/* How-to-play modal */}
+      {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
 
       {/* Toasts */}
       <Toasts messages={state.messages} onDismiss={handleDismissToast} />
