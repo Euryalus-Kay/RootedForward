@@ -4,13 +4,32 @@ import { createClient } from "@/lib/supabase/server";
 /* ------------------------------------------------------------------ */
 /*  GET /api/leaderboard                                               */
 /*  Public: top N runs by total_score                                  */
+/*  Or with ?percentile=N&year=Y: returns percentile rank for an       */
+/*  in-progress score at a given year (using completed runs that       */
+/*  reached at least that year as the comparison set).                  */
 /* ------------------------------------------------------------------ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const limit = Math.min(parseInt(searchParams.get("limit") ?? "25"), 100);
-
+    const percentileScore = searchParams.get("percentile");
     const supabase = await createClient();
+
+    if (percentileScore != null) {
+      const score = parseInt(percentileScore);
+      const { count: totalCount } = await (supabase as any)
+        .from("game_runs")
+        .select("id", { count: "exact", head: true });
+      const { count: belowCount } = await (supabase as any)
+        .from("game_runs")
+        .select("id", { count: "exact", head: true })
+        .lt("total_score", score);
+      const total = totalCount ?? 0;
+      const below = belowCount ?? 0;
+      const percentile = total > 0 ? Math.round((below / total) * 100) : 50;
+      return NextResponse.json({ percentile, total, below }, { status: 200 });
+    }
+
+    const limit = Math.min(parseInt(searchParams.get("limit") ?? "25"), 100);
     const { data, error } = await (supabase as any)
       .from("game_runs")
       .select(

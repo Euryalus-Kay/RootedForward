@@ -52,11 +52,13 @@ export function ResourceHUD({
   year,
   era,
   score,
+  percentile,
 }: {
   resources: Resources;
   year: number;
   era: string;
   score?: number;
+  percentile?: number;
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-4 shadow-sm md:flex-row md:items-center md:gap-5 md:p-5">
@@ -72,13 +74,18 @@ export function ResourceHUD({
         </div>
       </div>
 
-      {/* Running score */}
+      {/* Running score with percentile */}
       {typeof score === "number" && (
         <div className="flex flex-col border-b border-border pb-3 md:border-b-0 md:border-r md:pb-0 md:pr-5" title="Live running score. Plays out in full at year 2040.">
           <span className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-rust">Score</span>
           <span className="font-display text-2xl font-bold text-rust md:text-3xl">
             <AnimatedTotal value={score} />
           </span>
+          {percentile != null && (
+            <span className="font-body text-[10px] uppercase tracking-widest text-warm-gray">
+              Top {Math.max(1, 100 - percentile)}%
+            </span>
+          )}
         </div>
       )}
 

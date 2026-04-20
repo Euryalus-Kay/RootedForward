@@ -116,6 +116,24 @@ export default function GameRoot() {
   /* ------------- live running score ------------- */
   const liveScore = computeLiveScore(state);
 
+  /* ------------- percentile fetch (throttled) ------------- */
+  const [percentile, setPercentile] = useState<number | undefined>(undefined);
+  const lastFetchedScore = useRef<number>(-1);
+  useEffect(() => {
+    if (state.phase !== "playing" && state.phase !== "event") return;
+    if (Math.abs(liveScore.total - lastFetchedScore.current) < 10) return;
+    lastFetchedScore.current = liveScore.total;
+    let cancelled = false;
+    fetch(`/api/leaderboard?percentile=${liveScore.total}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        if (typeof d.percentile === "number") setPercentile(d.percentile);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [liveScore.total, state.phase]);
+
   /* ========================================================== */
   /*  Phase: menu                                                */
   /* ========================================================== */
@@ -209,7 +227,7 @@ export default function GameRoot() {
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Top HUD */}
         <div className="flex flex-col gap-3">
-          <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} />
+          <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} percentile={percentile} />
           <div className="flex items-center justify-between">
             <p className="font-body text-xs text-warm-gray">
               Playing as <span className="font-semibold text-forest">{role.name}</span>
