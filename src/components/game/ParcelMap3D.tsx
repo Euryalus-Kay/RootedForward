@@ -568,11 +568,14 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
     return true;
   };
 
+  // Bounds depend on rotation - recompute when the camera angle changes
   const bounds = useMemo(() => {
+    const step = Math.floor(rotation / 90);
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
-        const { x, y } = iso(c, r);
+        const rc = rotated(c, r, step);
+        const { x, y } = iso(rc.col, rc.row);
         minX = Math.min(minX, x - TILE_W / 2);
         maxX = Math.max(maxX, x + TILE_W / 2);
         minY = Math.min(minY, y - TILE_H / 2);
@@ -580,7 +583,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
       }
     }
     return { minX, maxX, minY, maxY };
-  }, []);
+  }, [rotation]);
 
   const padLeft = 50;
   const padRight = 320;

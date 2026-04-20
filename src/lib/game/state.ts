@@ -35,6 +35,47 @@ const MAX_HAND = 10;
 export const YEAR_STEP = 5;
 export const END_YEAR_FINAL = 2040;
 
+/** Lasting per-turn drift on scores from flags set by earlier decisions.
+ *  Returned as labeled lines so the UI can show the player exactly what
+ *  is happening to their scores each turn. */
+export interface DriftLine {
+  flag: string;
+  description: string;
+  equity: number;
+  heritage: number;
+  growth: number;
+  sustainability: number;
+}
+
+export function computeDrift(state: { flags: Set<string> }): DriftLine[] {
+  const out: DriftLine[] = [];
+  if (state.flags.has("expressway-built")) {
+    out.push({ flag: "expressway-built", description: "Expressway you approved is still polluting", equity: 0, heritage: -1, growth: 0, sustainability: -1 });
+  }
+  if (state.flags.has("tower-built")) {
+    out.push({ flag: "tower-built", description: "CHA towers you built keep deteriorating", equity: 0, heritage: -0.5, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("tax-abatement-active")) {
+    out.push({ flag: "tax-abatement-active", description: "Tax abatement is starving the school fund", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("fast-track-permits")) {
+    out.push({ flag: "fast-track-permits", description: "Fast-track luxury permits are pushing rents up", equity: -1, heritage: 0, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("policing-heavy")) {
+    out.push({ flag: "policing-heavy", description: "Heavy policing is eroding community trust", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("tif-active") && !state.flags.has("tif-affordable")) {
+    out.push({ flag: "tif-active", description: "TIF without affordable allocation", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("preservation-overlay")) {
+    out.push({ flag: "preservation-overlay", description: "Preservation overlays still working", equity: 0, heritage: 1, growth: 0, sustainability: 0 });
+  }
+  if (state.flags.has("transit-extension") && !state.flags.has("preservation-overlay")) {
+    out.push({ flag: "transit-extension", description: "Transit station displacing residents", equity: -1, heritage: 0, growth: 0, sustainability: 0 });
+  }
+  return out;
+}
+
 export function freshState(): GameState {
   const initFactions: Record<string, number> = {};
   for (const f of FACTION_LIST) initFactions[f.key] = 50;

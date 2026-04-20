@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducer, useState, useCallback, useEffect, useRef } from "react";
-import { reducer, freshState, YEAR_STEP } from "@/lib/game/state";
+import { reducer, freshState, YEAR_STEP, computeDrift } from "@/lib/game/state";
 import { CARD_BY_ID } from "@/lib/game/cards";
 import { EVENT_BY_ID } from "@/lib/game/events";
 import { previewTargets } from "@/lib/game/parcels";
@@ -21,6 +21,7 @@ import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
+import { LastingEffects } from "./LastingEffects";
 import type { Parcel } from "@/lib/game/types";
 
 const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
@@ -354,6 +355,7 @@ export default function GameRoot() {
             <div className="mt-4">
               <ScoreBar scores={state.scores} />
             </div>
+            <LastingEffects lines={computeDrift(state)} />
             {state.objectives.length > 0 && (
               <ObjectivesHUD state={state} />
             )}
