@@ -1,8 +1,34 @@
 "use client";
 
+/* ------------------------------------------------------------------ */
+/*  ContactForm                                                        */
+/* ------------------------------------------------------------------ */
+/*                                                                     */
+/*  Submits to /api/submissions, which tries to save to the database */
+/*  and send an admin notification email. The endpoint returns 2xx    */
+/*  if either channel succeeded.                                        */
+/*                                                                     */
+/*  If both channels fail (i.e. the server is misconfigured) the      */
+/*  endpoint returns 502 with a fallback_email field. We surface that */
+/*  to the user as a clickable mailto link that opens their email     */
+/*  client with the name, email, and message prefilled, so the user   */
+/*  can always deliver their message regardless of server state.       */
+/*                                                                     */
+/* ------------------------------------------------------------------ */
+
 import { useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
-import { createClient } from "@/lib/supabase/client";
+
+const FALLBACK_EMAIL = "contact@rooted-forward.org";
+
+interface SubmissionResponse {
+  message?: string;
+  saved?: boolean;
+  emailed?: boolean;
+  error?: string;
+  hint?: string;
+  fallback_email?: string;
+}
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,10 +37,25 @@ export default function ContactForm() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
+  const [failureMode, setFailureMode] = useState<null | {
+    hint: string;
+    mailto: string;
+  }>(null);
+
+  function buildMailto(): string {
+    const subject = encodeURIComponent(
+      `Message from ${formData.name || "a site visitor"}`
+    );
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
+    );
+    return `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setFailureMode(null);
 
     try {
       const res = await fetch("/api/submissions", {
@@ -27,13 +68,41 @@ export default function ContactForm() {
           message: formData.message,
         }),
       });
-      if (!res.ok) throw new Error("Failed");
 
-      toast.success("Message sent! We'll get back to you soon.");
-      setFormData({ name: "", email: "", message: "" });
-    } catch {
+      const payload: SubmissionResponse = await res
+        .json()
+        .catch(() => ({} as SubmissionResponse));
+
+      if (res.ok) {
+        toast.success("Message sent. We will get back to you soon.");
+        setFormData({ name: "", email: "", message: "" });
+        return;
+      }
+
+      if (res.status === 400) {
+        toast.error(payload.error ?? "Please check the form and try again.");
+        return;
+      }
+
+      // 502 or other: channel failure. Offer a mailto fallback.
+      setFailureMode({
+        hint:
+          payload.hint ??
+          "We could not deliver your message from the server. You can still send it by email.",
+        mailto: buildMailto(),
+      });
       toast.error(
-        "Something went wrong. Please try again or email us directly."
+        "Server delivery failed. Use the email link below to send your message directly."
+      );
+    } catch {
+      // Network error or JSON parse error on a truly broken response.
+      setFailureMode({
+        hint:
+          "Could not reach the server. You can still send your message by email.",
+        mailto: buildMailto(),
+      });
+      toast.error(
+        "Could not reach the server. Use the email link below to send your message directly."
       );
     } finally {
       setLoading(false);
@@ -109,6 +178,27 @@ export default function ContactForm() {
       >
         {loading ? "Sending..." : "Send Message"}
       </button>
+
+      {/* Mailto fallback surfaced after a delivery failure */}
+      {failureMode && (
+        <div
+          role="alert"
+          className="mt-2 rounded-sm border border-rust/40 bg-rust/5 p-4"
+        >
+          <p className="font-body text-sm leading-relaxed text-ink">
+            {failureMode.hint}
+          </p>
+          <a
+            href={failureMode.mailto}
+            className="mt-3 inline-flex items-center gap-2 font-body text-sm font-semibold text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
+          >
+            Open email client and send to {FALLBACK_EMAIL} &rarr;
+          </a>
+          <p className="mt-2 font-body text-xs text-warm-gray">
+            This will open your default mail app with your message prefilled.
+          </p>
+        </div>
+      )}
     </form>
   );
 }

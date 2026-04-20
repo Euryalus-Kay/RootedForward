@@ -7,6 +7,16 @@ const ROLES = ["Teacher", "Professor / Lecturer", "Curriculum coordinator", "Lib
 const SUBJECTS = ["U.S. History", "Civics / Government", "AP Human Geography", "Sociology", "Urban Planning", "Other"] as const;
 const TIMELINES = ["This semester", "Next semester", "Next school year", "Just exploring"] as const;
 
+const FALLBACK_EMAIL = "contact@rooted-forward.org";
+
+interface SubmissionResponse {
+  message?: string;
+  saved?: boolean;
+  emailed?: boolean;
+  error?: string;
+  hint?: string;
+}
+
 export default function CurriculumRequestForm() {
   const [form, setForm] = useState({
     name: "",
@@ -21,6 +31,35 @@ export default function CurriculumRequestForm() {
   });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [failureMode, setFailureMode] = useState<null | {
+    hint: string;
+    mailto: string;
+  }>(null);
+
+  function buildMessage(): string {
+    return [
+      "[CURRICULUM REQUEST]",
+      `Role: ${form.role}`,
+      `School / Org: ${form.school}`,
+      form.city ? `City: ${form.city}` : null,
+      form.subject ? `Subject: ${form.subject}` : null,
+      form.studentCount ? `Students: ${form.studentCount}` : null,
+      form.timeline ? `Timeline: ${form.timeline}` : null,
+      form.notes.trim() ? `\nNotes:\n${form.notes.trim()}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  function buildMailto(): string {
+    const subject = encodeURIComponent(
+      `Curriculum request from ${form.name || "a site visitor"}`
+    );
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\n\n${buildMessage()}`
+    );
+    return `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -30,20 +69,8 @@ export default function CurriculumRequestForm() {
     }
 
     setLoading(true);
+    setFailureMode(null);
     try {
-      const message = [
-        "[CURRICULUM REQUEST]",
-        `Role: ${form.role}`,
-        `School / Org: ${form.school}`,
-        form.city ? `City: ${form.city}` : null,
-        form.subject ? `Subject: ${form.subject}` : null,
-        form.studentCount ? `Students: ${form.studentCount}` : null,
-        form.timeline ? `Timeline: ${form.timeline}` : null,
-        form.notes.trim() ? `\nNotes:\n${form.notes.trim()}` : null,
-      ]
-        .filter(Boolean)
-        .join("\n");
-
       const res = await fetch("/api/submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,14 +79,43 @@ export default function CurriculumRequestForm() {
           name: form.name.trim(),
           email: form.email.trim().toLowerCase(),
           chapter: "Curriculum Request",
-          message,
+          message: buildMessage(),
         }),
       });
-      if (!res.ok) throw new Error("Failed");
-      setDone(true);
-      toast.success("Request received. We'll be in touch within a week.");
+
+      const payload: SubmissionResponse = await res
+        .json()
+        .catch(() => ({} as SubmissionResponse));
+
+      if (res.ok) {
+        setDone(true);
+        toast.success("Request received. We will be in touch within a week.");
+        return;
+      }
+
+      if (res.status === 400) {
+        toast.error(payload.error ?? "Please check the form and try again.");
+        return;
+      }
+
+      setFailureMode({
+        hint:
+          payload.hint ??
+          "We could not deliver your request from the server. You can still send it by email.",
+        mailto: buildMailto(),
+      });
+      toast.error(
+        "Server delivery failed. Use the email link below to send your request directly."
+      );
     } catch {
-      toast.error("Something went wrong. Try emailing us directly.");
+      setFailureMode({
+        hint:
+          "Could not reach the server. You can still send your request by email.",
+        mailto: buildMailto(),
+      });
+      toast.error(
+        "Could not reach the server. Use the email link below to send your request directly."
+      );
     } finally {
       setLoading(false);
     }
@@ -229,6 +285,26 @@ export default function CurriculumRequestForm() {
         >
           {loading ? "Sending..." : "Request the kit"}
         </button>
+
+        {failureMode && (
+          <div
+            role="alert"
+            className="mt-4 rounded-sm border border-rust/40 bg-rust/5 p-4"
+          >
+            <p className="font-body text-sm leading-relaxed text-ink">
+              {failureMode.hint}
+            </p>
+            <a
+              href={failureMode.mailto}
+              className="mt-3 inline-flex items-center gap-2 font-body text-sm font-semibold text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
+            >
+              Open email client and send to {FALLBACK_EMAIL} &rarr;
+            </a>
+            <p className="mt-2 font-body text-xs text-warm-gray">
+              This will open your default mail app with your request prefilled.
+            </p>
+          </div>
+        )}
       </div>
     </form>
   );

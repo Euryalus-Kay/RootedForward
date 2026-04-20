@@ -2,9 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
-import { createClient } from "@/lib/supabase/client";
 
 const CHAPTERS = ["Chicago", "New York", "Dallas", "San Francisco", "Other"];
+const FALLBACK_EMAIL = "contact@rooted-forward.org";
+
+interface SubmissionResponse {
+  message?: string;
+  saved?: boolean;
+  emailed?: boolean;
+  error?: string;
+  hint?: string;
+}
 
 export default function VolunteerForm() {
   const [formData, setFormData] = useState({
@@ -15,10 +23,34 @@ export default function VolunteerForm() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
+  const [failureMode, setFailureMode] = useState<null | {
+    hint: string;
+    mailto: string;
+  }>(null);
+
+  function buildMailto(): string {
+    const subject = encodeURIComponent(
+      `Volunteer application from ${formData.name || "a site visitor"}`
+    );
+    const body = encodeURIComponent(
+      [
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        formData.phone && `Phone: ${formData.phone}`,
+        formData.chapter && `Chapter: ${formData.chapter}`,
+        "",
+        formData.message,
+      ]
+        .filter(Boolean)
+        .join("\n")
+    );
+    return `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setFailureMode(null);
 
     try {
       const res = await fetch("/api/submissions", {
@@ -33,13 +65,45 @@ export default function VolunteerForm() {
           message: formData.message || null,
         }),
       });
-      if (!res.ok) throw new Error("Failed");
 
-      toast.success("Thank you! We'll be in touch soon.");
-      setFormData({ name: "", email: "", phone: "", chapter: "", message: "" });
-    } catch {
+      const payload: SubmissionResponse = await res
+        .json()
+        .catch(() => ({} as SubmissionResponse));
+
+      if (res.ok) {
+        toast.success("Thank you. We will be in touch soon.");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          chapter: "",
+          message: "",
+        });
+        return;
+      }
+
+      if (res.status === 400) {
+        toast.error(payload.error ?? "Please check the form and try again.");
+        return;
+      }
+
+      setFailureMode({
+        hint:
+          payload.hint ??
+          "We could not deliver your application from the server. You can still send it by email.",
+        mailto: buildMailto(),
+      });
       toast.error(
-        "Something went wrong submitting the form. Please try again or email us directly."
+        "Server delivery failed. Use the email link below to send your application directly."
+      );
+    } catch {
+      setFailureMode({
+        hint:
+          "Could not reach the server. You can still send your application by email.",
+        mailto: buildMailto(),
+      });
+      toast.error(
+        "Could not reach the server. Use the email link below to send your application directly."
       );
     } finally {
       setLoading(false);
@@ -156,6 +220,27 @@ export default function VolunteerForm() {
       >
         {loading ? "Submitting..." : "Submit Application"}
       </button>
+
+      {/* Mailto fallback on delivery failure */}
+      {failureMode && (
+        <div
+          role="alert"
+          className="mt-2 rounded-sm border border-rust/40 bg-rust/5 p-4"
+        >
+          <p className="font-body text-sm leading-relaxed text-ink">
+            {failureMode.hint}
+          </p>
+          <a
+            href={failureMode.mailto}
+            className="mt-3 inline-flex items-center gap-2 font-body text-sm font-semibold text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
+          >
+            Open email client and send to {FALLBACK_EMAIL} &rarr;
+          </a>
+          <p className="mt-2 font-body text-xs text-warm-gray">
+            This will open your default mail app with your application prefilled.
+          </p>
+        </div>
+      )}
     </form>
   );
 }
