@@ -33,6 +33,10 @@ import ResearchChart, {
   parseChartConfig,
   type ChartConfig,
 } from "@/components/research/ResearchChart";
+import ResearchMap, {
+  parseMapConfig,
+  type MapConfig,
+} from "@/components/research/ResearchMap";
 
 export interface Heading {
   id: string;
@@ -202,6 +206,40 @@ function renderBlocks(
         pushBlock(
           <pre
             key={`chart-err-${blockIdx}`}
+            className="my-2 overflow-x-auto rounded-sm border border-rust/30 bg-rust/5 px-3 py-2 font-mono text-[12.5px] text-rust"
+          >
+            {configLines.join("\n")}
+          </pre>
+        );
+      }
+      continue;
+    }
+
+    // Fenced map code block: ```map { ... } ```
+    if (/^```map\s*$/.test(trimmed)) {
+      flushParagraph(paragraphBuffer);
+      const configLines: string[] = [];
+      i++;
+      while (i < lines.length && !/^```\s*$/.test(lines[i].trimEnd())) {
+        configLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) i++;
+
+      const config: MapConfig | null = parseMapConfig(configLines.join("\n"));
+      figureCounter += 1;
+      if (config) {
+        pushBlock(
+          <ResearchMap
+            key={`map-${blockIdx}`}
+            config={config}
+            figureNumber={figureCounter}
+          />
+        );
+      } else {
+        pushBlock(
+          <pre
+            key={`map-err-${blockIdx}`}
             className="my-2 overflow-x-auto rounded-sm border border-rust/30 bg-rust/5 px-3 py-2 font-mono text-[12.5px] text-rust"
           >
             {configLines.join("\n")}

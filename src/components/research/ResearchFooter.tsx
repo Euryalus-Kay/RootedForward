@@ -16,10 +16,10 @@ export default function ResearchFooter() {
           Interested in collaborating on research or accessing our primary
           source collections? Reach us at{" "}
           <a
-            href="mailto:research@rootedforward.org"
+            href="mailto:contact@rooted-forward.org"
             className="text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
           >
-            research@rootedforward.org
+            contact@rooted-forward.org
           </a>
           .
         </p>

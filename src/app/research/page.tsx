@@ -2,18 +2,13 @@
 /*  /research                                                          */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  The main Rooted Forward research archive. Reads like a university */
-/*  press archive or think tank publications library — no explanatory */
-/*  paragraphs, no colored pills, no decorative flourishes. The work */
-/*  is what the page shows.                                            */
+/*  The main Rooted Forward research archive.                          */
 /*                                                                     */
 /*  Page sections, in order:                                           */
-/*   1. Header            — eyebrow + serif display title + rule.     */
-/*   2. Featured entry    — most recent published entry, big treatment.*/
-/*   3. Filter bar + list — client component, sticky filter, vertical */
-/*                          feed of every other entry.                 */
-/*   4. Industry Directors — separated by generous whitespace.         */
-/*   5. Quiet footer      — single email prompt.                       */
+/*   1. Banner             — hero image with Research title.           */
+/*   2. Featured entry     — most recent published entry.              */
+/*   3. Filter bar + list  — client side feed with sticky filter.      */
+/*   4. Quiet footer       — single email prompt.                      */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -22,27 +17,21 @@ import { Suspense } from "react";
 import PageTransition from "@/components/layout/PageTransition";
 import FeaturedEntry from "@/components/research/FeaturedEntry";
 import ResearchFeed from "@/components/research/ResearchFeed";
-import IndustryDirectorsSection from "@/components/research/IndustryDirectorsSection";
 import ResearchFooter from "@/components/research/ResearchFooter";
 import {
-  PLACEHOLDER_INDUSTRY_DIRECTORS,
   PLACEHOLDER_RESEARCH_ENTRIES,
   normalizeCitations,
 } from "@/lib/research-constants";
-import type {
-  IndustryDirector,
-  ResearchEntry,
-} from "@/lib/types/database";
+import type { ResearchEntry } from "@/lib/types/database";
 
 export const metadata: Metadata = {
   title: "Research | Rooted Forward",
   description:
-    "Published research by Rooted Forward — briefs, reports, primary source collections, data analyses, and oral histories on housing, displacement, zoning, education, policing, and economic development in American cities.",
+    "Published research by Rooted Forward covering housing, displacement, zoning, education, policing, and economic development in American cities.",
 };
 
 // Rebuild the page every hour so new admin-published entries appear
-// without a redeploy. Individual entries can be re-rendered on demand
-// via revalidateTag if we add that later.
+// without a redeploy.
 export const revalidate = 3600;
 
 /* ------------------------------------------------------------------ */
@@ -80,42 +69,12 @@ async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
   }
 }
 
-async function fetchActiveDirectors(): Promise<IndustryDirector[]> {
-  try {
-    const { isSupabaseConfigured, createClient } = await import(
-      "@/lib/supabase/server"
-    );
-    if (!isSupabaseConfigured()) return PLACEHOLDER_INDUSTRY_DIRECTORS;
-
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("industry_directors")
-      .select("*")
-      .eq("is_active", true)
-      .order("display_order", { ascending: true });
-
-    if (error || !data || data.length === 0) {
-      return PLACEHOLDER_INDUSTRY_DIRECTORS;
-    }
-
-    return data.map((row) => ({
-      ...row,
-      focus_areas: row.focus_areas ?? [],
-    })) as IndustryDirector[];
-  } catch {
-    return PLACEHOLDER_INDUSTRY_DIRECTORS;
-  }
-}
-
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
 export default async function ResearchPage() {
-  const [entries, directors] = await Promise.all([
-    fetchPublishedEntries(),
-    fetchActiveDirectors(),
-  ]);
+  const entries = await fetchPublishedEntries();
 
   // Most recent published entry is featured. Everything else goes in
   // the filterable feed.
@@ -123,53 +82,50 @@ export default async function ResearchPage() {
 
   return (
     <PageTransition>
-      {/* ============================================================
-          SECTION 1: PAGE HEADER
-          — eyebrow + serif display + thin rule, no paragraph.
-          ============================================================ */}
-      <section className="bg-cream pb-8 pt-28 md:pt-36">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-warm-gray">
-            Research
-          </p>
-          <h1 className="mt-4 font-display text-[44px] leading-[1.05] text-forest md:text-[72px]">
-            Published Work
-          </h1>
-          <hr className="mt-10 border-border" />
-        </div>
-      </section>
-
-      {/* ============================================================
-          SECTION 2: FEATURED ENTRY
-          ============================================================ */}
-      {featured && <FeaturedEntry entry={featured} />}
-
-      {/* ============================================================
-          SECTION 3: FILTER BAR + ENTRY LIST
-          — client-side feed. Suspense so the search-params reader
-          has a boundary for streaming.
-          ============================================================ */}
-      <Suspense
-        fallback={
-          <div className="mx-auto max-w-6xl px-6 py-20">
-            <p className="font-body text-[15px] text-warm-gray">
-              Loading archive…
-            </p>
+      <div className="min-h-screen bg-cream">
+        {/* ==========================================================
+            SECTION 1: BANNER
+            Hero image with a forest tint overlay, matching the
+            education, policy, and get-involved banner treatment.
+            ========================================================== */}
+        <section className="relative pt-16 pb-12 md:pb-16">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-forest/70" />
+          <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+            <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
+              Research
+            </h1>
           </div>
-        }
-      >
-        <ResearchFeed entries={rest.length > 0 ? rest : entries} />
-      </Suspense>
+        </section>
 
-      {/* ============================================================
-          SECTION 4: INDUSTRY DIRECTORS
-          ============================================================ */}
-      <IndustryDirectorsSection directors={directors} />
+        {/* ==========================================================
+            SECTION 2: FEATURED ENTRY
+            ========================================================== */}
+        {featured && <FeaturedEntry entry={featured} />}
 
-      {/* ============================================================
-          SECTION 5: FOOTER EMAIL BLOCK
-          ============================================================ */}
-      <ResearchFooter />
+        {/* ==========================================================
+            SECTION 3: FILTER BAR + ENTRY LIST
+            ========================================================== */}
+        <Suspense
+          fallback={
+            <div className="mx-auto max-w-6xl px-6 py-20">
+              <p className="font-body text-[15px] text-warm-gray">
+                Loading archive…
+              </p>
+            </div>
+          }
+        >
+          <ResearchFeed entries={rest.length > 0 ? rest : entries} />
+        </Suspense>
+
+        {/* ==========================================================
+            SECTION 4: QUIET FOOTER EMAIL BLOCK
+            ========================================================== */}
+        <ResearchFooter />
+      </div>
     </PageTransition>
   );
 }
