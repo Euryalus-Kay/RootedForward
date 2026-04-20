@@ -21,7 +21,7 @@ import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
-import { LastingEffects } from "./LastingEffects";
+import { LastingEffects, LastingEffectsStrip } from "./LastingEffects";
 import type { Parcel } from "@/lib/game/types";
 
 const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
@@ -249,6 +249,8 @@ export default function GameRoot() {
         {/* Top HUD */}
         <div className="flex flex-col gap-3">
           <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} percentile={percentile} />
+          {/* Always-visible strip showing per-turn drift from earlier decisions */}
+          <LastingEffectsStrip lines={computeDrift(state)} />
           <div className="flex items-center justify-between">
             <p className="font-body text-xs text-warm-gray">
               Playing as <span className="font-semibold text-forest">{role.name}</span>
@@ -366,7 +368,6 @@ export default function GameRoot() {
             <div className="mt-4">
               <ScoreBar scores={state.scores} />
             </div>
-            <LastingEffects lines={computeDrift(state)} />
             {state.objectives.length > 0 && (
               <ObjectivesHUD state={state} />
             )}
