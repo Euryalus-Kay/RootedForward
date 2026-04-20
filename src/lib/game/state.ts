@@ -6,7 +6,7 @@
  */
 
 import { availableCards, CARD_BY_ID, CARDS, effectiveCost } from "./cards";
-import { eligibleEvents, EVENT_BY_ID, EVENTS } from "./events";
+import { eligibleEvents, checkCrisisTriggers, EVENT_BY_ID, EVENTS } from "./events";
 import { generateInitialParcels, applyTransforms, simulateYear } from "./parcels";
 import { GLOSSARY } from "./glossary";
 import { checkNewAchievements, ACHIEVEMENT_BY_ID } from "./achievements";
@@ -392,16 +392,28 @@ export function reducer(state: GameState, action: GameAction): GameState {
       const drawRng = new RNG(state.seed + ":draw:" + newYear);
       next = drawCards(next, state.drawPerYear, drawRng);
 
-      // Roll for events at every year that passed in this jump
-      // (each year independently, so a 5-year jump can fire 0-2 events)
-      for (let y = state.year + 1; y <= newYear; y++) {
-        if (next.currentEvent) break; // already queued
-        const yearForRoll = y;
-        const tempState = { ...next, year: yearForRoll };
-        const eventRng = new RNG(state.seed + ":event:" + y);
-        const rolled = maybeQueueEvent(tempState, eventRng);
-        if (rolled.currentEvent) {
-          next = { ...next, currentEvent: rolled.currentEvent, phase: "event" };
+      // Priority 1: crisis events triggered by current state.
+      // These fire before random-pool events because they matter more.
+      const crises = checkCrisisTriggers(next);
+      if (crises.length > 0 && !next.currentEvent) {
+        const crisisRng = new RNG(state.seed + ":crisis:" + newYear);
+        const chosen = crisisRng.pick(crises);
+        next = { ...next, currentEvent: chosen, phase: "event" };
+      }
+
+      // Priority 2: roll for regular events at every year that passed
+      // (each year independently, so a 5-year jump can fire 0-1 events
+      // if no crisis already fired)
+      if (!next.currentEvent) {
+        for (let y = state.year + 1; y <= newYear; y++) {
+          if (next.currentEvent) break;
+          const yearForRoll = y;
+          const tempState = { ...next, year: yearForRoll };
+          const eventRng = new RNG(state.seed + ":event:" + y);
+          const rolled = maybeQueueEvent(tempState, eventRng);
+          if (rolled.currentEvent) {
+            next = { ...next, currentEvent: rolled.currentEvent, phase: "event" };
+          }
         }
       }
 
@@ -418,6 +430,23 @@ export function reducer(state: GameState, action: GameAction): GameState {
       if (!state.currentEvent) return state;
       const opt = state.currentEvent.options[action.optionIndex];
       if (!opt) return state;
+
+      // If option is stochastic, roll a random result
+      let resolvedOutcome = opt.outcome;
+      let resolvedEffect = opt.effect;
+      if (opt.stochastic && opt.stochastic.length > 0) {
+        const rollRng = new RNG(state.seed + ":stoch:" + state.resolvedEvents.length);
+        const totalWeight = opt.stochastic.reduce((s, r) => s + r.weight, 0);
+        let target = rollRng.next() * totalWeight;
+        let picked = opt.stochastic[0];
+        for (const r of opt.stochastic) {
+          target -= r.weight;
+          if (target <= 0) { picked = r; break; }
+        }
+        resolvedOutcome = `${opt.outcome}. ${picked.outcome}`;
+        resolvedEffect = picked.effect;
+      }
+
       let next: GameState = {
         ...state,
         currentEvent: null,
@@ -428,13 +457,13 @@ export function reducer(state: GameState, action: GameAction): GameState {
             eventId: state.currentEvent.id,
             year: state.year,
             optionIndex: action.optionIndex,
-            outcome: opt.outcome,
+            outcome: resolvedOutcome,
           },
         ],
       };
       const rng = new RNG(state.seed + ":evopt:" + state.resolvedEvents.length);
-      next = applyEffect(next, opt.effect, rng);
-      next = pushMessage(next, "info", `You ${opt.outcome}.`);
+      next = applyEffect(next, resolvedEffect, rng);
+      next = pushMessage(next, "info", `You ${resolvedOutcome}.`);
       next = unlockAchievements(next);
       return next;
     }

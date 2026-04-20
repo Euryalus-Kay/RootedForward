@@ -474,6 +474,7 @@ export default function GameRoot() {
       {state.phase === "event" && state.currentEvent && !paused && (
         <EventModal
           event={state.currentEvent}
+          playerRole={state.roleKey}
           onChoose={handleResolveEvent}
           onReadNote={handleReadNote}
         />

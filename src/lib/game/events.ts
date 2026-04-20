@@ -828,16 +828,339 @@ export const EVENTS: GameEvent[] = [
   },
 ];
 
+/* ============================================================== *
+ *  STOCHASTIC GRANT EVENTS                                          *
+ *  Applying for a grant is a gamble. The player chooses whether to  *
+ *  spend the time; the outcome is rolled.                           *
+ * ============================================================== */
+
+EVENTS.push(
+  {
+    id: "federal-housing-grant",
+    year: { from: 1965, to: 2040 },
+    title: "Federal housing grant opportunity",
+    headline: "HUD just opened a new competitive grant round.",
+    body:
+      "Writing the application takes staff time this quarter. You could also skip it and focus on the things already in motion.",
+    lore:
+      "Federal housing-grant cycles are competitive, political, and often unpredictable. Cities win or lose on the details of their applications.",
+    source: "HUD Notice of Funding Opportunity archives",
+    weight: 1,
+    options: [
+      {
+        label: "Apply. Commit the staff time.",
+        outcome: "applied for the federal grant",
+        effect: {}, // placeholder; stochastic handles everything
+        stochastic: [
+          { weight: 35, label: "Approved", outcome: "The full grant came through. $40M landed.", effect: { capital: 4, equity: 2, growth: 1 } },
+          { weight: 40, label: "Partial funding", outcome: "The application was funded at 30% of the request.", effect: { capital: 2, equity: 1 } },
+          { weight: 25, label: "Rejected", outcome: "The application was rejected. The staff time was a loss.", effect: { capital: -1, knowledge: 1 } },
+        ],
+      },
+      {
+        label: "Skip it. Focus on what's already in motion.",
+        outcome: "skipped the grant cycle",
+        effect: { capital: 0 },
+      },
+    ],
+  },
+  {
+    id: "foundation-grant",
+    year: { from: 2000, to: 2040 },
+    title: "Private foundation RFP",
+    headline: "A major foundation is accepting applications for its civic-innovation portfolio.",
+    body:
+      "The foundation's priorities shift year to year. Your pitch could land or miss depending on what they're chasing this cycle.",
+    lore:
+      "Chicago has a large philanthropic ecosystem (MacArthur, Polk Bros, Chicago Community Trust, Joyce). Their priorities cycle and shape municipal possibility.",
+    source: "Donors Forum / Forefront Chicago philanthropic reports",
+    weight: 1,
+    options: [
+      {
+        label: "Write a polished proposal",
+        outcome: "submitted a polished foundation proposal",
+        effect: {},
+        stochastic: [
+          { weight: 30, label: "Funded", outcome: "Funded at the ask. The foundation wants a write-up at year end.", effect: { capital: 3, knowledge: 2 } },
+          { weight: 40, label: "Partial", outcome: "They want to fund half of it, with reporting obligations.", effect: { capital: 2, knowledge: 1 } },
+          { weight: 30, label: "Pass", outcome: "The foundation passed, but kept you on the list for next cycle.", effect: { knowledge: 1 } },
+        ],
+      },
+      {
+        label: "Stay in the background",
+        outcome: "didn't apply for the foundation grant",
+        effect: {},
+      },
+    ],
+  },
+  {
+    id: "court-filing",
+    year: { from: 1990, to: 2040 },
+    title: "Fair housing lawsuit filed",
+    headline: "A civil-rights firm has filed an equal-credit-access suit against two Parkhaven lenders.",
+    body:
+      "Depositions will reach City Hall. Backing the plaintiffs costs political capital. Staying quiet preserves the banker relationships.",
+    lore:
+      "Fair-housing suits have been a significant driver of enforcement in the absence of vigorous federal action. The Chicago Lawyers' Committee for Civil Rights filed multiple such cases through the 2000s.",
+    source: "Chicago Lawyers' Committee for Civil Rights filings",
+    options: [
+      {
+        label: "Publicly back the plaintiffs",
+        outcome: "publicly backed the plaintiffs",
+        effect: {},
+        stochastic: [
+          { weight: 50, label: "Plaintiffs win", outcome: "The suit settles. Lenders agree to CRA-style concessions.", effect: { equity: 4, knowledge: 1 } },
+          { weight: 30, label: "Plaintiffs lose", outcome: "The suit is dismissed. You took the hit anyway.", effect: { equity: 1, power: -2 } },
+          { weight: 20, label: "Settled quietly", outcome: "A quiet settlement. Minor concessions, no publicity.", effect: { equity: 2 } },
+        ],
+      },
+      {
+        label: "Stay quiet",
+        outcome: "stayed quiet on the suit",
+        effect: { equity: -1, power: 1 },
+      },
+    ],
+  }
+);
+
+/* ============================================================== *
+ *  CRISIS EVENTS (state-triggered)                                  *
+ *  These fire automatically when scores or parcel counts cross a   *
+ *  threshold. Options are role-specific so a Developer and an      *
+ *  Organizer don't see the same menu.                              *
+ * ============================================================== */
+
+EVENTS.push(
+  {
+    id: "crisis-unrest",
+    year: { from: 1940, to: 2040 },
+    triggerSignal: "low-equity",
+    title: "Civil unrest",
+    headline: "Protests have grown into three nights of unrest.",
+    body:
+      "Parkhaven's inequality has boiled over. Storefronts on the commercial strip are broken glass. National news is asking who was in charge. You have to decide how to respond.",
+    lore:
+      "Chicago has seen civil unrest at multiple inflection points (1919, 1968, 2020). The response by local authorities has deeply shaped neighborhood trajectories after.",
+    source: "Chicago Tribune coverage of 1968 and 2020 unrest",
+    options: [
+      {
+        label: "Deploy police to clear the streets",
+        outcome: "deployed police to clear the streets",
+        effect: { growth: 1, equity: -3, heritage: -2, trust: -3, setFlag: "policing-heavy" },
+        roles: ["alderman", "developer", "technocrat"],
+      },
+      {
+        label: "Hire private security for the commercial strip",
+        outcome: "hired private security for commerce",
+        effect: { capital: -2, equity: -1, heritage: -1 },
+        roles: ["developer"],
+      },
+      {
+        label: "Organize a peace march through the affected blocks",
+        outcome: "organized a peace march",
+        effect: { trust: 3, equity: 2, heritage: 2, power: -2 },
+        roles: ["organizer", "preacher"],
+      },
+      {
+        label: "Negotiate directly with youth organizers",
+        outcome: "negotiated with youth organizers",
+        effect: { trust: 2, equity: 2, knowledge: 1, power: -1 },
+        roles: ["organizer", "scholar", "journalist"],
+      },
+      {
+        label: "Open the congregations as overnight shelter",
+        outcome: "opened the churches as overnight shelter",
+        effect: { trust: 3, heritage: 2, equity: 1, capital: -1 },
+        roles: ["preacher"],
+      },
+      {
+        label: "Publish a long-form explanation of what's happening",
+        outcome: "published a long-form explanation of the unrest",
+        effect: { knowledge: 2, equity: 1, trust: 1, power: -1 },
+        roles: ["journalist", "scholar"],
+      },
+      {
+        label: "Call a ward-wide community meeting",
+        outcome: "called a ward-wide community meeting",
+        effect: { trust: 2, equity: 1, power: -1 },
+      },
+    ],
+  },
+  {
+    id: "crisis-displacement",
+    year: { from: 1940, to: 2040 },
+    triggerSignal: "high-displacement",
+    title: "Displacement crisis",
+    headline: "Hundreds of families have been evicted in the last twelve months.",
+    body:
+      "The national press has picked up the story. City hall is calling. You have to respond and you have to do it fast.",
+    lore:
+      "Mass displacement events (CHA demolitions, Logan Square 2010s) have drawn national attention and forced municipal responses.",
+    source: "ProPublica and Block Club Chicago displacement coverage",
+    options: [
+      {
+        label: "Fast-track an emergency relocation fund",
+        outcome: "fast-tracked emergency relocation assistance",
+        effect: { capital: -3, equity: 4, trust: 2 },
+      },
+      {
+        label: "Block new demolition permits for a year",
+        outcome: "blocked new demolition permits for a year",
+        effect: { equity: 3, heritage: 3, growth: -2, power: -1 },
+        roles: ["alderman", "organizer", "preacher"],
+      },
+      {
+        label: "Fund new construction elsewhere to absorb the displaced",
+        outcome: "funded new construction elsewhere",
+        effect: { capital: -3, growth: 2, equity: 2 },
+        roles: ["developer", "technocrat"],
+      },
+      {
+        label: "File an emergency civil-rights petition",
+        outcome: "filed an emergency civil-rights petition",
+        effect: { knowledge: 2, equity: 2, power: -2 },
+        roles: ["journalist", "scholar", "organizer"],
+      },
+    ],
+  },
+  {
+    id: "crisis-tower-collapse",
+    year: { from: 1970, to: 2030 },
+    triggerSignal: "tower-deterioration",
+    title: "Tower elevator fire",
+    headline: "A second elevator fire at the CHA tower. Residents refuse to go home.",
+    body:
+      "The building isn't habitable this week. The press is asking if it will ever be again.",
+    lore:
+      "CHA tower fires and elevator failures through the 1980s and 1990s were chronic. The Plan for Transformation was the eventual federal-level response.",
+    source: "Hunt, Blueprint for Disaster (2009)",
+    options: [
+      {
+        label: "Emergency structural rehab",
+        outcome: "emergency-funded structural rehab",
+        effect: { capital: -3, equity: 3, heritage: 2 },
+      },
+      {
+        label: "Relocate residents and begin demolition planning",
+        outcome: "relocated residents and planned demolition",
+        effect: { equity: -2, heritage: -3, growth: 2, setFlag: "tower-demo-planning" },
+        roles: ["developer", "alderman", "technocrat"],
+      },
+      {
+        label: "Open the church basement for families that won't go home",
+        outcome: "opened the church as temporary shelter",
+        effect: { trust: 3, equity: 2, heritage: 1, capital: -1 },
+        roles: ["preacher"],
+      },
+      {
+        label: "Document every family's story",
+        outcome: "documented the families' stories",
+        effect: { knowledge: 2, heritage: 2, equity: 1 },
+        roles: ["journalist", "scholar"],
+      },
+    ],
+  },
+  {
+    id: "crisis-speculator-wave",
+    year: { from: 1990, to: 2040 },
+    triggerSignal: "many-speculators",
+    title: "Speculator wave",
+    headline: "Out-of-state LLCs now own a quarter of your vacant lots.",
+    body:
+      "They are holding and waiting for values to rise. Blocks are emptying. You have to do something.",
+    lore:
+      "Chicago's post-2008 tax-lien auctions funneled thousands of parcels into out-of-state LLCs. The Cook County Land Bank was established in 2013 partly to reverse this.",
+    source: "Cook County Land Bank Authority reports",
+    options: [
+      {
+        label: "Buy back 5 speculator-held lots with the Land Bank",
+        outcome: "bought back 5 parcels through the Land Bank",
+        effect: {
+          capital: -4,
+          equity: 3,
+          heritage: 3,
+          transformParcels: [
+            { selector: "owner:speculator", set: { owner: "land-trust", protected: true } },
+          ],
+        },
+      },
+      {
+        label: "Hit them with a vacant-property tax",
+        outcome: "passed a vacant-property tax",
+        effect: { equity: 2, sustainability: 1, capital: 1, power: -2 },
+        roles: ["alderman", "organizer"],
+      },
+      {
+        label: "Negotiate development deals with the biggest holders",
+        outcome: "negotiated development deals with speculators",
+        effect: { capital: 3, growth: 3, equity: -2 },
+        roles: ["developer"],
+      },
+      {
+        label: "Run an exposé on the worst LLCs",
+        outcome: "published an exposé on absentee speculators",
+        effect: { knowledge: 2, equity: 2, power: -1 },
+        roles: ["journalist", "scholar"],
+      },
+    ],
+  },
+  {
+    id: "crisis-flood",
+    year: { from: 2020, to: 2040 },
+    triggerSignal: "climate-flood",
+    title: "Neighborhood-scale flood",
+    headline: "Three days of rain. Basements flooded on every block south of the canal.",
+    body:
+      "Insurance carriers are pulling out. FEMA is asking if the city wants to declare a disaster. Federal money is on the table.",
+    lore:
+      "Chicago's combined sewer system, designed in the late 1800s, is increasingly overwhelmed by climate-intensified storms. South and West Side basements flood disproportionately.",
+    source: "Chicago Department of Water Management 2023 stormwater plan",
+    options: [
+      {
+        label: "Declare a disaster, apply for FEMA funds",
+        outcome: "applied for FEMA disaster funds",
+        effect: {},
+        stochastic: [
+          { weight: 45, label: "Declared", outcome: "Declaration granted. Federal funds arrive.", effect: { capital: 4, sustainability: 3, equity: 2 } },
+          { weight: 35, label: "Partial", outcome: "Partial declaration. Some help, not enough.", effect: { capital: 2, sustainability: 1 } },
+          { weight: 20, label: "Denied", outcome: "Declaration denied. The city is on its own.", effect: { capital: -1, sustainability: -1 } },
+        ],
+      },
+      {
+        label: "Pour capital into green infrastructure before the next storm",
+        outcome: "poured capital into green infrastructure",
+        effect: { capital: -4, sustainability: 5, equity: 2 },
+        roles: ["technocrat", "scholar", "alderman"],
+      },
+      {
+        label: "Hire private disaster-response contractors",
+        outcome: "hired private disaster-response contractors",
+        effect: { capital: -3, sustainability: 2 },
+        roles: ["developer"],
+      },
+      {
+        label: "Mobilize the congregation to help the flooded families",
+        outcome: "mobilized the congregation for flood relief",
+        effect: { trust: 3, heritage: 2, equity: 2 },
+        roles: ["preacher"],
+      },
+    ],
+  }
+);
+
 /** Map for fast lookup */
 export const EVENT_BY_ID: Map<string, GameEvent> = new Map(EVENTS.map((e) => [e.id, e]));
 
-/** Get events that can fire in a given year, optionally filtered by flags */
+/** Get events that can fire in a given year, optionally filtered by flags.
+ *  Excludes crisis events (those have triggerSignal and are fired by
+ *  state checks, not the normal year-window lottery). */
 export function eligibleEvents(
   year: number,
   flags: Set<string>,
   alreadyResolved: Set<string>
 ): GameEvent[] {
   return EVENTS.filter((e) => {
+    if (e.triggerSignal) return false; // crisis events don't appear in normal pool
     // Year window
     if (typeof e.year === "number") {
       if (e.year !== year) return false;
@@ -856,4 +1179,41 @@ export function eligibleEvents(
     if (alreadyResolved.has(e.id)) return false;
     return true;
   });
+}
+
+/** Check for crisis events that should fire given current state. Returns
+ *  matching event ids. The engine calls this each turn. */
+export function checkCrisisTriggers(state: {
+  scores: { equity: number; heritage: number; growth: number; sustainability: number };
+  parcels: Array<{ owner: string; type: string; displacementEvents: number }>;
+  flags: Set<string>;
+  resolvedEvents: Array<{ eventId: string }>;
+}): GameEvent[] {
+  const resolvedSet = new Set(state.resolvedEvents.map((e) => e.eventId));
+  const out: GameEvent[] = [];
+  for (const e of EVENTS) {
+    if (!e.triggerSignal) continue;
+    if (resolvedSet.has(e.id)) continue;
+    switch (e.triggerSignal) {
+      case "low-equity":
+        if (state.scores.equity <= -20) out.push(e);
+        break;
+      case "low-heritage":
+        if (state.scores.heritage <= -25) out.push(e);
+        break;
+      case "high-displacement":
+        if (state.parcels.filter((p) => p.displacementEvents > 0).length >= 15) out.push(e);
+        break;
+      case "tower-deterioration":
+        if (state.flags.has("tower-built") && state.scores.heritage < -10) out.push(e);
+        break;
+      case "many-speculators":
+        if (state.parcels.filter((p) => p.owner === "speculator").length >= 8) out.push(e);
+        break;
+      case "climate-flood":
+        if (state.scores.sustainability <= -15) out.push(e);
+        break;
+    }
+  }
+  return out;
 }

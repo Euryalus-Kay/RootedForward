@@ -5,13 +5,21 @@ import { GameText } from "./Glossary";
 
 export function EventModal({
   event,
+  playerRole,
   onChoose,
   onReadNote,
 }: {
   event: GameEvent;
+  playerRole: string;
   onChoose: (optionIndex: number) => void;
   onReadNote: (term: string) => void;
 }) {
+  // Filter options by player role. An option with no `roles` is shown to
+  // everyone; an option with `roles` is only shown if the player's role
+  // is in that list.
+  const visibleOptions = event.options
+    .map((opt, i) => ({ opt, i }))
+    .filter(({ opt }) => !opt.roles || opt.roles.includes(playerRole));
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 p-4 backdrop-blur-sm">
       <div className="w-full max-w-2xl overflow-hidden rounded-md border border-border bg-cream shadow-2xl">
@@ -50,7 +58,7 @@ export function EventModal({
           )}
 
           <div className="mt-6 flex flex-col gap-3">
-            {event.options.map((opt, i) => (
+            {visibleOptions.map(({ opt, i }, displayIdx) => (
               <button
                 key={i}
                 onClick={() => onChoose(i)}
@@ -58,11 +66,22 @@ export function EventModal({
               >
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-lg text-warm-gray group-hover:text-rust">
-                    {String.fromCharCode(65 + i)}
+                    {String.fromCharCode(65 + displayIdx)}
                   </span>
                   <span className="font-body text-base font-medium text-forest">{opt.label}</span>
+                  {opt.stochastic && (
+                    <span className="ml-auto rounded-sm bg-amber-100 px-1.5 py-0.5 font-body text-[9px] font-semibold uppercase tracking-widest text-amber-800">
+                      gamble
+                    </span>
+                  )}
                 </div>
-                <EffectPreview effect={opt.effect} />
+                {opt.stochastic ? (
+                  <div className="mt-2 pl-7 font-body text-[11px] italic text-warm-gray">
+                    Outcome depends on chance.
+                  </div>
+                ) : (
+                  <EffectPreview effect={opt.effect} />
+                )}
               </button>
             ))}
           </div>

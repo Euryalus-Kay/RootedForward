@@ -210,16 +210,36 @@ export interface Card {
 /*  Events                                                             */
 /* ------------------------------------------------------------------ */
 
+export interface StochasticResult {
+  /** Weight for random selection (higher = more likely) */
+  weight: number;
+  /** Short label shown when this result fires (e.g. "Application approved") */
+  label: string;
+  /** Past-tense description for the run log */
+  outcome: string;
+  effect: CardEffect;
+}
+
 export interface EventOption {
   label: string;
   /** What the player chose, in past tense */
   outcome: string;
   effect: CardEffect;
+  /** If present, only players in one of these roles see this option. */
+  roles?: string[];
+  /** If present, choosing this option rolls a random result instead of
+   *  applying a fixed effect. The player's choice is a gamble. */
+  stochastic?: StochasticResult[];
 }
 
 export interface GameEvent {
   id: string;
+  /** Year window for normal random events. Crisis events use a special
+   *  sentinel; the engine checks `triggerSignal` on those. */
   year: number | { from: number; to: number };
+  /** If set, this is a crisis event that fires only when a trigger
+   *  signal is met by current state. Checked each turn. */
+  triggerSignal?: "low-equity" | "low-heritage" | "high-displacement" | "tower-deterioration" | "many-speculators" | "climate-flood";
   /** Title of the event */
   title: string;
   /** The headline framing as it appears in the game */
