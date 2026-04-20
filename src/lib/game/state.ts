@@ -136,8 +136,17 @@ function drawCards(state: GameState, n: number, rng: RNG): GameState {
   const favored = new Set(role.favors);
   const avoided = new Set(role.avoids ?? []);
 
+  // Filter cards explicitly excluded for this role, and cards
+  // restricted to other roles
+  const eligible = candidates.filter((c) => {
+    if (c.excludeRoles && c.excludeRoles.includes(state.roleKey)) return false;
+    if (c.onlyRoles && c.onlyRoles.length > 0 && !c.onlyRoles.includes(state.roleKey)) return false;
+    return true;
+  });
+  if (eligible.length === 0) return state;
+
   // Weight by rarity * role-affinity
-  const weighted = candidates.flatMap((c) => {
+  const weighted = eligible.flatMap((c) => {
     let w = c.rarity === "common" ? 8
           : c.rarity === "uncommon" ? 4
           : c.rarity === "rare" ? 2

@@ -200,6 +200,13 @@ export interface Card {
   toYear?: number;
   /** Required flag (e.g., a card unlocks only after a certain event) */
   requiresFlag?: string;
+  /** Roles that should NEVER see this card naturally drawn. (Doesn't
+   *  apply to signature starting cards.) Used so e.g. the Developer
+   *  doesn't get "Add 300 police officers" in their hand - they would
+   *  hire private security instead. */
+  excludeRoles?: string[];
+  /** Roles this card is restricted TO. If set, only those roles draw it. */
+  onlyRoles?: string[];
   /** Effects when the player plays the card */
   effect: CardEffect;
   /** Glossary terms relevant to this card */
