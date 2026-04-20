@@ -10,6 +10,7 @@ import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
 import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
 import ParcelGrid, { ParcelLegend, ParcelTooltip } from "./ParcelGrid";
+import ParcelMap3D from "./ParcelMap3D";
 import { ResourceHUD, ScoreBar } from "./ResourceHUD";
 import { PolicyCard } from "./PolicyCard";
 import { EventModal } from "./EventModal";
@@ -43,6 +44,7 @@ export default function GameRoot() {
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
+  const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
   const lastSavedAt = useRef<number>(0);
 
   /* ------------- first-time auto-open how-to-play ------------- */
@@ -286,24 +288,44 @@ export default function GameRoot() {
                 </div>
               )}
 
-              {/* Grid with vertical district labels on the left */}
-              <div className="flex gap-2">
-                <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                  {/* North = top 2 of 7 rows */}
-                  <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
-                  <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
-                  <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
-                  {/* Vertical line to make it feel like a y-axis */}
-                  <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
-                </div>
-                <div className="flex-1">
-                  <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
-                </div>
+              {/* Map mode toggle */}
+              <div className="mb-2 flex justify-end gap-1">
+                <button
+                  onClick={() => setMapMode("3d")}
+                  className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+                    mapMode === "3d" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
+                  }`}
+                >
+                  3D city
+                </button>
+                <button
+                  onClick={() => setMapMode("classic")}
+                  className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+                    mapMode === "classic" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
+                  }`}
+                >
+                  Classic
+                </button>
               </div>
 
-              {/* East/west hint: lake is right side */}
+              {mapMode === "3d" ? (
+                <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
+              ) : (
+                <div className="flex gap-2">
+                  <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
+                    <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
+                    <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
+                    <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
+                    <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
+                  </div>
+                  <div className="flex-1">
+                    <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
+                  </div>
+                </div>
+              )}
+
               <p className="mt-2 text-right font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                Lake Michigan is to the east &rarr;
+                {mapMode === "3d" ? "Drag to pan · Scroll to zoom · Lake Michigan is to the east →" : "Lake Michigan is to the east →"}
               </p>
             </div>
             <div className="mt-3">
