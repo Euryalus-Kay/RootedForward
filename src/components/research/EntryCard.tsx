@@ -63,7 +63,7 @@ export default function EntryCard({ entry }: EntryCardProps) {
       </p>
 
       <p className="mt-4 font-body text-[13px] leading-relaxed text-warm-gray">
-        By {formatAuthorList(entry.authors)}
+        Published by {formatAuthorList(entry.authors)}
         <span className="mx-1.5">·</span>
         {formatPublishedDate(entry.published_date)}
       </p>

@@ -263,7 +263,7 @@ export default async function ResearchEntryPage({ params }: PageProps) {
 
           {/* Credits */}
           <div className="mt-6 flex flex-col gap-1 font-body text-[14.5px] text-ink/75">
-            <p>Research by {formatList(entry.authors)}</p>
+            <p>Published by {formatList(entry.authors)}</p>
             {hasReviewers && (
               <p className="text-warm-gray">
                 Reviewed by {formatList(entry.reviewers)}

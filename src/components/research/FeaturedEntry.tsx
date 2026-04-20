@@ -133,7 +133,7 @@ export default function FeaturedEntry({ entry }: FeaturedEntryProps) {
             </p>
 
             <p className="mt-6 font-body text-[14px] text-warm-gray">
-              By {formatAuthorList(entry.authors)}
+              Published by {formatAuthorList(entry.authors)}
             </p>
             <p className="mt-0.5 font-body text-[14px] text-warm-gray">
               {formatDate(entry.published_date)}
