@@ -193,8 +193,21 @@ export function reducer(state: GameState, action: GameAction): GameState {
       return next;
     }
 
-    case "RESTORE_STATE":
-      return { ...action.state, messages: [] };
+    case "RESTORE_STATE": {
+      let restored = { ...action.state, messages: [] };
+      // Defensive: if the save somehow has no parcels (corruption,
+      // schema mismatch from an older version), regenerate from seed
+      // so the player still has a playable ward.
+      if (!restored.parcels || restored.parcels.length === 0) {
+        const seed = restored.seed || generateSeed();
+        restored = {
+          ...restored,
+          seed,
+          parcels: generateInitialParcels(new RNG(seed)),
+        };
+      }
+      return restored;
+    }
 
     case "RESTART_GAME":
       return freshState();
@@ -276,6 +289,15 @@ export function reducer(state: GameState, action: GameAction): GameState {
         const simRng = new RNG(state.seed + ":sim:" + y);
         next.parcels = simulateYear(next.parcels, y, simRng);
       }
+
+      // Sweep cards from hand that no longer fit the new era window
+      next.hand = next.hand.filter((id) => {
+        const card = CARD_BY_ID.get(id);
+        if (!card) return false;
+        if (card.fromYear !== undefined && newYear < card.fromYear) return true; // not yet available is OK
+        if (card.toYear !== undefined && newYear > card.toYear) return false; // expired
+        return true;
+      });
 
       // Era-based passive resource trickle (multiplied for the 5-year step)
       const eraTrickle = newYear < 1955 ? { capital: 4, power: 4 }

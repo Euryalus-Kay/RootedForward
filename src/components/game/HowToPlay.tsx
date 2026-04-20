@@ -21,6 +21,71 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
 
   const sections: Section[] = [
     {
+      title: "Quick start",
+      render: () => (
+        <>
+          <p className="font-body text-base leading-relaxed text-ink/80">
+            You govern a fictional Chicago neighborhood from <span className="font-semibold text-forest">1940 to 2040</span>,
+            in 5-year turns. Each turn you play <span className="font-semibold text-forest">policy cards</span>{" "}
+            and react to <span className="font-semibold text-forest">historical events</span>. The choices add up to
+            an archetype and a leaderboard rank.
+          </p>
+
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="rounded-md border border-border bg-cream-dark/40 p-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-amber-100 text-amber-800">
+                  <ResourceIcon resource="capital" size={16} />
+                </div>
+                <p className="font-display text-sm font-semibold text-forest">Capital</p>
+              </div>
+              <p className="mt-2 font-body text-[12px] text-ink/70">Money. For grants and construction.</p>
+            </div>
+            <div className="rounded-md border border-border bg-cream-dark/40 p-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-rust/15 text-rust-dark">
+                  <ResourceIcon resource="power" size={16} />
+                </div>
+                <p className="font-display text-sm font-semibold text-forest">Power</p>
+              </div>
+              <p className="mt-2 font-body text-[12px] text-ink/70">Political muscle. For tough fights.</p>
+            </div>
+            <div className="rounded-md border border-border bg-cream-dark/40 p-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-forest/15 text-forest">
+                  <ResourceIcon resource="trust" size={16} />
+                </div>
+                <p className="font-display text-sm font-semibold text-forest">Trust</p>
+              </div>
+              <p className="mt-2 font-body text-[12px] text-ink/70">Community buy-in. For organizing.</p>
+            </div>
+            <div className="rounded-md border border-border bg-cream-dark/40 p-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-indigo-100 text-indigo-700">
+                  <ResourceIcon resource="knowledge" size={16} />
+                </div>
+                <p className="font-display text-sm font-semibold text-forest">Knowledge</p>
+              </div>
+              <p className="mt-2 font-body text-[12px] text-ink/70">Earned by reading glossary pop-ups.</p>
+            </div>
+          </div>
+
+          <div className="mt-5 rounded-md bg-forest/5 p-4">
+            <p className="font-display text-sm font-semibold text-forest">Each turn:</p>
+            <ol className="mt-2 space-y-1.5 font-body text-[13px] text-ink/75">
+              <li><span className="font-semibold text-rust">1.</span> Click cards to read them. Click again to play. Watch the ward map highlight where each card lands.</li>
+              <li><span className="font-semibold text-rust">2.</span> Resolve any pop-up event by picking one of its options.</li>
+              <li><span className="font-semibold text-rust">3.</span> Click <span className="font-semibold text-forest">Advance 5 years</span> to push time forward.</li>
+            </ol>
+          </div>
+
+          <p className="mt-4 font-body text-[12px] italic text-warm-gray">
+            The game autosaves. Press Esc any time to pause, save, or restart. Want the full story behind HOLC, redlining, and the rest? Use Next below.
+          </p>
+        </>
+      ),
+    },
+    {
       title: "Parkhaven",
       render: () => (
         <>

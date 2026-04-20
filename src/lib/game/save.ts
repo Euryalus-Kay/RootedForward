@@ -10,8 +10,8 @@
 import type { GameState, GamePhase, ToastMessage } from "./types";
 import { freshState } from "./state";
 
-const SAVE_KEY = "buildTheBlockSave:v2";
-const SAVE_VERSION = 2;
+const SAVE_KEY = "buildTheBlockSave:v3";
+const SAVE_VERSION = 3;
 
 export interface SerializedState {
   version: number;

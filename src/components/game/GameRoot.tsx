@@ -14,7 +14,6 @@ import { PolicyCard } from "./PolicyCard";
 import { EventModal } from "./EventModal";
 import { EndScreen } from "./EndScreen";
 import { IntroScreen } from "./IntroScreen";
-import { Tutorial } from "./Tutorial";
 import { Toasts } from "./Toasts";
 import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
@@ -92,9 +91,7 @@ export default function GameRoot() {
     const restored = loadFromLocal(lookupEvent);
     if (restored) dispatch({ type: "RESTORE_STATE", state: restored });
   }, []);
-  const handleTutorial = useCallback(() => dispatch({ type: "START_TUTORIAL" }), []);
-  const handleAdvanceTutorial = useCallback(() => dispatch({ type: "ADVANCE_TUTORIAL" }), []);
-  const handleSkipTutorial = useCallback(() => dispatch({ type: "SKIP_TUTORIAL" }), []);
+  const handleTutorial = useCallback(() => setHowToPlayOpen(true), []);
   const handlePlayCard = useCallback((cardId: string) => dispatch({ type: "PLAY_CARD", cardId }), []);
   const handleDiscardCard = useCallback((cardId: string) => dispatch({ type: "DISCARD_CARD", cardId }), []);
   const handleSelectCard = useCallback((cardId: string | null) => dispatch({ type: "SELECT_CARD", cardId }), []);
@@ -120,32 +117,15 @@ export default function GameRoot() {
   /* ========================================================== */
   if (state.phase === "menu") {
     return (
-      <IntroScreen
-        onStart={handleStart}
-        onContinue={handleContinue}
-        onTutorial={handleTutorial}
-        onLeaderboard={handleViewLeaderboard}
-      />
-    );
-  }
-
-  /* ========================================================== */
-  /*  Phase: tutorial                                            */
-  /* ========================================================== */
-  if (state.phase === "tutorial") {
-    return (
-      <Tutorial
-        step={state.tutorialStep}
-        onAdvance={() => {
-          if (state.tutorialStep >= 7) {
-            const name = prompt("Pick a display name for the leaderboard:") || "Anonymous";
-            handleStart({ displayName: name });
-          } else {
-            handleAdvanceTutorial();
-          }
-        }}
-        onSkip={handleSkipTutorial}
-      />
+      <>
+        <IntroScreen
+          onStart={handleStart}
+          onContinue={handleContinue}
+          onTutorial={handleTutorial}
+          onLeaderboard={handleViewLeaderboard}
+        />
+        {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
+      </>
     );
   }
 
