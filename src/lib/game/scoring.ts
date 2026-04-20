@@ -11,6 +11,7 @@ import type {
   GameState,
   ScoreRank,
 } from "./types";
+import { completedObjectives, totalObjectiveReward } from "./objectives";
 
 export const ARCHETYPES: Record<ArchetypeKey, Archetype> = {
   reformer: {
@@ -136,6 +137,10 @@ export function computeFinalScore(state: GameState): FinalScore {
   bonus -= towerCount * 2;
   bonus += state.notesRead.size * 1;
   bonus += state.achievements.size * 4;
+
+  // Objectives chosen at start grant their reward if completed
+  const objReward = totalObjectiveReward(state, state.objectives);
+  bonus += objReward;
 
   const total = baseEquity + baseHeritage + baseGrowth + baseSustainability + bonus;
 

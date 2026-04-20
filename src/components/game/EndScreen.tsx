@@ -5,6 +5,8 @@ import type { GameState } from "@/lib/game/types";
 import { ARCHETYPES } from "@/lib/game/scoring";
 import ParcelGrid, { ParcelLegend } from "./ParcelGrid";
 import { ACHIEVEMENT_BY_ID } from "@/lib/game/achievements";
+import { OBJECTIVES_BY_ID, completedObjectives } from "@/lib/game/objectives";
+import { ROLES, type RoleKey } from "@/lib/game/roles";
 
 export function EndScreen({
   state,
@@ -41,6 +43,9 @@ export function EndScreen({
       final_state: {
         scores: state.scores,
         flags: Array.from(state.flags),
+        role: state.roleKey,
+        objectives: state.objectives,
+        completedObjectives: completedObjectives(state, state.objectives).map((o) => o.id),
       },
     };
     fetch("/api/leaderboard", {
@@ -149,6 +154,51 @@ export function EndScreen({
               {final.summary}
             </p>
           </div>
+        </div>
+
+        {/* Objectives */}
+        {state.objectives.length > 0 && (
+          <div className="mt-12 border-t border-border pt-8">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              Your goals, settled
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+              {state.objectives.map((id) => {
+                const o = OBJECTIVES_BY_ID.get(id);
+                if (!o) return null;
+                const done = o.test(state);
+                return (
+                  <div
+                    key={id}
+                    className={`rounded-sm border p-3 ${
+                      done ? "border-forest bg-forest/5" : "border-border bg-cream-dark"
+                    }`}
+                  >
+                    <p className={`font-display text-sm font-semibold ${done ? "text-forest" : "text-ink/55"}`}>
+                      {done ? "Completed: " : "Missed: "}{o.name}
+                    </p>
+                    <p className="mt-1 font-body text-xs text-ink/65">{o.description}</p>
+                    <p className={`mt-2 font-body text-xs font-semibold uppercase tracking-widest ${done ? "text-rust" : "text-warm-gray"}`}>
+                      {done ? `+${o.reward} awarded` : `would have awarded +${o.reward}`}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Role played */}
+        <div className="mt-12 border-t border-border pt-8">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+            You played as
+          </p>
+          <p className="mt-2 font-display text-2xl text-forest">
+            {(ROLES[state.roleKey as RoleKey] ?? ROLES.alderman).name}
+          </p>
+          <p className="mt-1 font-body text-sm italic text-ink/65">
+            {(ROLES[state.roleKey as RoleKey] ?? ROLES.alderman).mottoLine}
+          </p>
         </div>
 
         {/* Achievements */}

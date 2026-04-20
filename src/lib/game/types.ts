@@ -306,6 +306,10 @@ export interface GameState {
   seed: string;
   /** The display name the player will appear under on the leaderboard */
   displayName: string;
+  /** Starting role (alderman, organizer, developer, etc.) */
+  roleKey: string;
+  /** Objectives chosen at game start */
+  objectives: string[];
   /** Current resource levels */
   resources: Resources;
   /** Hidden scores */
@@ -320,6 +324,8 @@ export interface GameState {
   playedCards: PlayedCard[];
   /** Events resolved so far */
   resolvedEvents: ResolvedEvent[];
+  /** Faction activity (0-100 each) */
+  factions: Record<string, number>;
   /** Active flags */
   flags: Set<string>;
   /** Currently active event waiting for player choice */
@@ -344,6 +350,8 @@ export interface GameState {
   finalScore?: FinalScore;
   /** When the game started (ms since epoch) */
   startedAt: number;
+  /** First-time hints dismissed */
+  hintsDismissed: Set<string>;
 }
 
 export interface ToastMessage {
@@ -394,7 +402,7 @@ export type ScoreRank =
 /* ------------------------------------------------------------------ */
 
 export type GameAction =
-  | { type: "START_GAME"; displayName: string; seed?: string }
+  | { type: "START_GAME"; displayName: string; seed?: string; roleKey?: string; objectives?: string[] }
   | { type: "START_TUTORIAL" }
   | { type: "ADVANCE_TUTORIAL" }
   | { type: "SKIP_TUTORIAL" }
@@ -405,5 +413,8 @@ export type GameAction =
   | { type: "RESOLVE_EVENT"; optionIndex: number }
   | { type: "READ_NOTE"; term: string }
   | { type: "DISMISS_TOAST"; id: string }
+  | { type: "DISMISS_HINT"; hintId: string }
+  | { type: "RESTORE_STATE"; state: GameState }
+  | { type: "RESTART_GAME" }
   | { type: "RETURN_TO_MENU" }
   | { type: "VIEW_LEADERBOARD" };

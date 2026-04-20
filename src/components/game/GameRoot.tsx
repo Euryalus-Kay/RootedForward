@@ -1,8 +1,12 @@
 "use client";
 
-import { useReducer, useState, useMemo, useCallback } from "react";
+import { useReducer, useState, useCallback, useEffect, useRef } from "react";
 import { reducer, freshState } from "@/lib/game/state";
 import { CARD_BY_ID } from "@/lib/game/cards";
+import { EVENT_BY_ID } from "@/lib/game/events";
+import { ROLES, type RoleKey } from "@/lib/game/roles";
+import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
+import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
 import ParcelGrid, { ParcelLegend, ParcelTooltip } from "./ParcelGrid";
 import { ResourceHUD, ScoreBar } from "./ResourceHUD";
 import { PolicyCard } from "./PolicyCard";
@@ -12,6 +16,8 @@ import { IntroScreen } from "./IntroScreen";
 import { Tutorial } from "./Tutorial";
 import { Toasts } from "./Toasts";
 import { Leaderboard } from "./Leaderboard";
+import { ContextPanel } from "./ContextPanel";
+import { PauseMenu } from "./PauseMenu";
 import type { Parcel } from "@/lib/game/types";
 
 const ERAS = [
@@ -26,16 +32,46 @@ function eraName(year: number): string {
   return "Modern Toolkit";
 }
 
+const lookupEvent = (id: string) => EVENT_BY_ID.get(id);
+
 export default function GameRoot() {
   const [state, dispatch] = useReducer(reducer, undefined, freshState);
   const [hovered, setHovered] = useState<Parcel | null>(null);
+  const [paused, setPaused] = useState(false);
+  const lastSavedAt = useRef<number>(0);
 
+  /* ------------- autosave ------------- */
+  useEffect(() => {
+    if (state.phase === "menu" || state.phase === "ended" || state.phase === "leaderboard") return;
+    // Debounce: save at most once every 300ms
+    const now = Date.now();
+    if (now - lastSavedAt.current < 300) return;
+    lastSavedAt.current = now;
+    saveToLocal(state);
+  }, [state]);
+
+  /* ------------- keyboard shortcut for pause ------------- */
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape" && (state.phase === "playing" || state.phase === "event")) {
+        setPaused((p) => !p);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [state.phase]);
+
+  /* ------------- action creators ------------- */
   const handleStart = useCallback(
-    (displayName: string, seed?: string) => {
-      dispatch({ type: "START_GAME", displayName, seed });
+    (cfg: { displayName: string; seed?: string; roleKey?: string; objectives?: string[] }) => {
+      dispatch({ type: "START_GAME", ...cfg });
     },
     []
   );
+  const handleContinue = useCallback(() => {
+    const restored = loadFromLocal(lookupEvent);
+    if (restored) dispatch({ type: "RESTORE_STATE", state: restored });
+  }, []);
   const handleTutorial = useCallback(() => dispatch({ type: "START_TUTORIAL" }), []);
   const handleAdvanceTutorial = useCallback(() => dispatch({ type: "ADVANCE_TUTORIAL" }), []);
   const handleSkipTutorial = useCallback(() => dispatch({ type: "SKIP_TUTORIAL" }), []);
@@ -46,36 +82,38 @@ export default function GameRoot() {
   const handleResolveEvent = useCallback((idx: number) => dispatch({ type: "RESOLVE_EVENT", optionIndex: idx }), []);
   const handleReadNote = useCallback((term: string) => dispatch({ type: "READ_NOTE", term }), []);
   const handleDismissToast = useCallback((id: string) => dispatch({ type: "DISMISS_TOAST", id }), []);
-  const handleReturnMenu = useCallback(() => dispatch({ type: "RETURN_TO_MENU" }), []);
+  const handleReturnMenu = useCallback(() => { clearSave(); dispatch({ type: "RETURN_TO_MENU" }); setPaused(false); }, []);
+  const handleRestart = useCallback(() => { clearSave(); dispatch({ type: "RESTART_GAME" }); setPaused(false); }, []);
   const handleViewLeaderboard = useCallback(() => dispatch({ type: "VIEW_LEADERBOARD" }), []);
 
   const era = eraName(state.year);
+  const role = ROLES[state.roleKey as RoleKey] ?? ROLES.alderman;
 
-  // ============================================================
-  // Phase: menu / intro
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: menu                                                */
+  /* ========================================================== */
   if (state.phase === "menu") {
     return (
       <IntroScreen
         onStart={handleStart}
+        onContinue={handleContinue}
         onTutorial={handleTutorial}
         onLeaderboard={handleViewLeaderboard}
       />
     );
   }
 
-  // ============================================================
-  // Phase: tutorial
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: tutorial                                            */
+  /* ========================================================== */
   if (state.phase === "tutorial") {
     return (
       <Tutorial
         step={state.tutorialStep}
         onAdvance={() => {
           if (state.tutorialStep >= 7) {
-            // last step, transition to playing - need name though
             const name = prompt("Pick a display name for the leaderboard:") || "Anonymous";
-            handleStart(name);
+            handleStart({ displayName: name });
           } else {
             handleAdvanceTutorial();
           }
@@ -85,16 +123,16 @@ export default function GameRoot() {
     );
   }
 
-  // ============================================================
-  // Phase: leaderboard (from main menu)
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: leaderboard (from menu)                             */
+  /* ========================================================== */
   if (state.phase === "leaderboard") {
     return <Leaderboard onClose={handleReturnMenu} />;
   }
 
-  // ============================================================
-  // Phase: ended
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: ended                                               */
+  /* ========================================================== */
   if (state.phase === "ended") {
     return (
       <EndScreen
@@ -106,29 +144,43 @@ export default function GameRoot() {
     );
   }
 
-  // ============================================================
-  // Phase: intro (already-started, first display)
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: intro (first playing view)                          */
+  /* ========================================================== */
   if (state.phase === "intro") {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-          1940 &middot; Parkhaven
+          1940 &middot; Parkhaven &middot; Playing as {role.name}
         </p>
-        <h2 className="mt-4 font-display text-5xl text-forest md:text-7xl">
-          You inherit the ward.
-        </h2>
+        <h2 className="mt-4 font-display text-5xl text-forest md:text-7xl">You inherit the ward.</h2>
         <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl md:leading-relaxed">
-          The Depression is just ending. Federal mortgage policy is being
+          The Depression is ending. Federal mortgage policy is being
           rewritten. The first wave of the Great Migration is arriving.
-          You are the new alderman, the new planner, the new neighborhood
-          association president, the new landlord, depending on which year
-          you stand in.
+          You hold a starting hand of {state.hand.length} cards.
         </p>
-        <p className="mt-4 max-w-[55ch] font-body text-base leading-relaxed text-ink/65">
-          You have a starting hand of five cards and a hundred years to
-          play them.
-        </p>
+
+        {state.objectives.length > 0 && (
+          <div className="mt-8 rounded-sm border border-rust/30 bg-rust/5 p-5">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+              Your goals
+            </p>
+            <ul className="mt-3 space-y-2 font-body text-sm text-ink/75">
+              {state.objectives.map((id) => {
+                const o = OBJECTIVES_BY_ID.get(id);
+                if (!o) return null;
+                return (
+                  <li key={id}>
+                    <span className="font-semibold text-forest">{o.name}</span>{" "}
+                    <span className="text-ink/55">&middot; {o.description}</span>{" "}
+                    <span className="text-rust">+{o.reward} bonus</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
         <button
           onClick={() => dispatch({ type: "ADVANCE_TUTORIAL" })}
           className="mt-10 inline-flex items-center justify-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
@@ -139,17 +191,34 @@ export default function GameRoot() {
     );
   }
 
-  // ============================================================
-  // Phase: playing or event
-  // ============================================================
+  /* ========================================================== */
+  /*  Phase: playing or event                                    */
+  /* ========================================================== */
   return (
     <div className="bg-cream pb-20 pt-6 md:pt-10">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Top HUD */}
-        <ResourceHUD resources={state.resources} year={state.year} era={era} />
+        <div className="flex flex-col gap-3">
+          <ResourceHUD resources={state.resources} year={state.year} era={era} />
+          <div className="flex items-center justify-between">
+            <p className="font-body text-xs text-warm-gray">
+              Playing as <span className="font-semibold text-forest">{role.name}</span>
+              {" · "}
+              <span className="text-forest">{state.displayName}</span>
+              {" · "}
+              Seed <span className="text-forest">{state.seed}</span>
+            </p>
+            <button
+              onClick={() => setPaused(true)}
+              className="rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+            >
+              Pause &middot; Esc
+            </button>
+          </div>
+        </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-          {/* Left: parcel grid + score bar + tooltip */}
+          {/* Left column: ward + context + score bar */}
           <aside className="lg:col-span-5">
             <div className="rounded-sm border border-border bg-cream p-3 shadow-sm md:p-4">
               <ParcelGrid parcels={state.parcels} onHover={setHovered} />
@@ -158,8 +227,14 @@ export default function GameRoot() {
               <ParcelLegend />
             </div>
             <div className="mt-4">
+              <ContextPanel year={state.year} />
+            </div>
+            <div className="mt-4">
               <ScoreBar scores={state.scores} />
             </div>
+            {state.objectives.length > 0 && (
+              <ObjectivesHUD state={state} />
+            )}
             {hovered && (
               <div className="mt-4">
                 <ParcelTooltip parcel={hovered} />
@@ -167,7 +242,7 @@ export default function GameRoot() {
             )}
           </aside>
 
-          {/* Right: card hand + actions */}
+          {/* Right column: hand */}
           <main className="lg:col-span-7">
             <div className="flex items-baseline justify-between border-b border-border pb-3">
               <div>
@@ -185,6 +260,24 @@ export default function GameRoot() {
                 End year &rarr;
               </button>
             </div>
+
+            {/* First-time hint */}
+            {!state.hintsDismissed.has("play-cards") && state.playedCards.length === 0 && (
+              <div className="mt-4 rounded-sm border border-rust/30 bg-rust/5 p-4">
+                <p className="font-body text-sm leading-relaxed text-ink/80">
+                  <span className="font-semibold text-rust">How to play a card:</span>{" "}
+                  click a card to read it. Click the <span className="font-semibold">Play</span> button that appears.
+                  Each card costs resources (Capital, Power, Trust, Knowledge).
+                  When you are out of good moves or cannot afford more cards, click <span className="font-semibold">End year</span>.
+                </p>
+                <button
+                  onClick={() => dispatch({ type: "DISMISS_HINT", hintId: "play-cards" })}
+                  className="mt-2 font-body text-xs font-semibold uppercase tracking-widest text-rust hover:text-rust-dark"
+                >
+                  Got it, hide this
+                </button>
+              </div>
+            )}
 
             <p className="mt-3 max-w-[55ch] font-body text-sm text-ink/65">
               Click a card to read it. Click again to play. You can play as
@@ -224,17 +317,17 @@ export default function GameRoot() {
                 </p>
                 <ul className="mt-3 space-y-2">
                   {[
-                    ...state.playedCards.slice(-3).reverse().map((p) => ({
+                    ...state.playedCards.slice(-4).reverse().map((p) => ({
                       year: p.year,
                       text: `played ${CARD_BY_ID.get(p.cardId)?.name ?? p.cardId}`,
                     })),
-                    ...state.resolvedEvents.slice(-3).reverse().map((e) => ({
+                    ...state.resolvedEvents.slice(-4).reverse().map((e) => ({
                       year: e.year,
                       text: e.outcome,
                     })),
                   ]
                     .sort((a, b) => b.year - a.year)
-                    .slice(0, 5)
+                    .slice(0, 6)
                     .map((entry, i) => (
                       <li key={i} className="border-l-2 border-rust/40 pl-4 font-body text-sm text-ink/65">
                         <span className="font-semibold text-forest">{entry.year}</span> &middot; you {entry.text}.
@@ -248,7 +341,7 @@ export default function GameRoot() {
       </div>
 
       {/* Event modal */}
-      {state.phase === "event" && state.currentEvent && (
+      {state.phase === "event" && state.currentEvent && !paused && (
         <EventModal
           event={state.currentEvent}
           onChoose={handleResolveEvent}
@@ -256,8 +349,47 @@ export default function GameRoot() {
         />
       )}
 
+      {/* Pause menu */}
+      {paused && (
+        <PauseMenu
+          state={state}
+          onResume={() => setPaused(false)}
+          onRestart={handleRestart}
+          onMenu={handleReturnMenu}
+          onSave={() => { saveToLocal(state); setPaused(false); }}
+        />
+      )}
+
       {/* Toasts */}
       <Toasts messages={state.messages} onDismiss={handleDismissToast} />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Objectives HUD (shows progress inline during the run)              */
+/* ------------------------------------------------------------------ */
+
+function ObjectivesHUD({ state }: { state: import("@/lib/game/types").GameState }) {
+  return (
+    <div className="mt-4 rounded-sm border border-border bg-cream p-4 shadow-sm">
+      <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+        Goals
+      </p>
+      <ul className="mt-3 space-y-2 font-body text-sm">
+        {state.objectives.map((id) => {
+          const o = OBJECTIVES_BY_ID.get(id);
+          if (!o) return null;
+          const done = o.test(state);
+          return (
+            <li key={id} className={done ? "text-forest" : "text-ink/70"}>
+              <span className={`mr-2 inline-block h-3 w-3 rounded-sm ${done ? "bg-forest" : "bg-cream-dark border border-border"}`} />
+              {o.name}
+              <span className="ml-2 font-body text-xs text-warm-gray">+{o.reward}</span>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

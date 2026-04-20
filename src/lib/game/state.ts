@@ -12,6 +12,8 @@ import { GLOSSARY } from "./glossary";
 import { checkNewAchievements, ACHIEVEMENT_BY_ID } from "./achievements";
 import { computeFinalScore } from "./scoring";
 import { RNG, generateSeed } from "./rng";
+import { ROLES, applyRoleBonus, type RoleKey } from "./roles";
+import { FACTION_LIST } from "./factions";
 import type {
   GameAction,
   GameEvent,
@@ -32,11 +34,15 @@ const DRAW_PER_YEAR = 2;
 const MAX_HAND = 8;
 
 export function freshState(): GameState {
+  const initFactions: Record<string, number> = {};
+  for (const f of FACTION_LIST) initFactions[f.key] = 50;
   return {
     phase: "menu",
     year: 1940,
     seed: "",
     displayName: "",
+    roleKey: "alderman",
+    objectives: [],
     resources: { ...STARTING_RESOURCES },
     scores: { equity: 0, heritage: 0, growth: 0, sustainability: 0 },
     parcels: [],
@@ -44,6 +50,7 @@ export function freshState(): GameState {
     drawnCards: [],
     playedCards: [],
     resolvedEvents: [],
+    factions: initFactions,
     flags: new Set(),
     currentEvent: null,
     achievements: new Set(),
@@ -55,6 +62,7 @@ export function freshState(): GameState {
     messages: [],
     yearAdvanced: false,
     startedAt: 0,
+    hintsDismissed: new Set(),
   };
 }
 
@@ -161,17 +169,36 @@ export function reducer(state: GameState, action: GameAction): GameState {
       const seed = action.seed || generateSeed();
       const rng = new RNG(seed);
       const parcels = generateInitialParcels(rng);
+      const roleKey = (action.roleKey ?? "alderman") as RoleKey;
+      const role = ROLES[roleKey] ?? ROLES.alderman;
+      const resources = applyRoleBonus(STARTING_RESOURCES, role);
       let next: GameState = {
         ...freshState(),
         phase: "intro",
         seed,
         displayName: action.displayName,
+        roleKey,
+        objectives: action.objectives ?? [],
+        resources,
         parcels,
+        drawPerYear: DRAW_PER_YEAR + (role.extraDraw ?? 0),
         startedAt: Date.now(),
+        hand: [...role.startingCards],
+        drawnCards: [...role.startingCards],
       };
-      next = drawCards(next, STARTING_HAND_SIZE, new RNG(seed + ":draw"));
+      // Fill out to starting hand size from the era-available pool
+      next = drawCards(next, Math.max(0, STARTING_HAND_SIZE - next.hand.length), new RNG(seed + ":draw"));
       return next;
     }
+
+    case "RESTORE_STATE":
+      return { ...action.state, messages: [] };
+
+    case "RESTART_GAME":
+      return freshState();
+
+    case "DISMISS_HINT":
+      return { ...state, hintsDismissed: new Set([...state.hintsDismissed, action.hintId]) };
 
     case "START_TUTORIAL": {
       return { ...state, phase: "tutorial", tutorialStep: 0 };
@@ -304,12 +331,14 @@ export function reducer(state: GameState, action: GameAction): GameState {
       if (state.notesRead.has(action.term)) return state;
       const term = GLOSSARY[action.term];
       if (!term) return state;
+      const role = ROLES[state.roleKey as RoleKey] ?? ROLES.alderman;
+      const gain = 1 + (role.noteBonus ?? 0);
       const next: GameState = {
         ...state,
         notesRead: new Set([...state.notesRead, action.term]),
-        resources: { ...state.resources, knowledge: state.resources.knowledge + 1 },
+        resources: { ...state.resources, knowledge: state.resources.knowledge + gain },
       };
-      return unlockAchievements(pushMessage(next, "good", `+1 Knowledge (${term.term})`));
+      return unlockAchievements(pushMessage(next, "good", `+${gain} Knowledge (${term.term})`));
     }
 
     case "DISMISS_TOAST": {
