@@ -211,6 +211,17 @@ export function ParcelTooltip({ parcel }: { parcel: Parcel | null }) {
 
       <p className="mt-3 font-body text-[12px] leading-snug text-ink/75">{n.primary}</p>
 
+      {n.stateLines.length > 0 && (
+        <ul className="mt-2 space-y-0.5">
+          {n.stateLines.map((line, i) => (
+            <li key={i} className="flex gap-1.5 font-body text-[11px] leading-snug text-rust-dark">
+              <span className="text-rust">·</span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
       <p className="mt-2 font-body text-[11px] italic text-warm-gray">{n.ownership}</p>
 
       <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-0.5 border-t border-border pt-2 font-body text-[11px] text-ink/70">

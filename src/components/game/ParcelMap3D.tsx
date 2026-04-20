@@ -608,25 +608,29 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
   const neIso = iso(COLS - 1, 0);
 
   return (
+    <div className="w-full">
+      {/* Filter row - sits ABOVE the map, doesn't overlap */}
+      <div className="mb-2 flex flex-wrap items-center gap-2 rounded-md border border-border bg-cream-dark/30 px-3 py-2">
+        <span className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">Show</span>
+        <div className="flex flex-wrap gap-1">
+          {(["all", "housing", "civic", "commerce", "protected", "land-trust"] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`rounded-full px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+                filter === f ? "bg-forest text-cream" : "bg-cream text-warm-gray hover:bg-cream"
+              }`}
+            >
+              {f === "land-trust" ? "Land trust" : f}
+            </button>
+          ))}
+        </div>
+      </div>
+
     <div className="relative w-full overflow-hidden rounded-md border border-border shadow-sm"
       style={{ background: "linear-gradient(180deg, #F5F0E8 0%, #EDE5D1 55%, #E2D7BD 100%)" }}
     >
-      {/* Filter pill bar */}
-      <div className="absolute left-1/2 top-2 z-10 -translate-x-1/2 flex flex-wrap gap-1 rounded-full bg-cream/90 p-1 shadow-sm">
-        {(["all", "housing", "civic", "commerce", "protected", "land-trust"] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-full px-2.5 py-0.5 font-body text-[9px] font-semibold uppercase tracking-widest transition-colors ${
-              filter === f ? "bg-forest text-cream" : "text-warm-gray hover:bg-cream-dark"
-            }`}
-          >
-            {f === "land-trust" ? "Land trust" : f}
-          </button>
-        ))}
-      </div>
-
-      {/* Controls */}
+      {/* Zoom controls (kept inside the map) */}
       <div className="absolute right-2 top-2 z-10 flex gap-1">
         <button
           onClick={() => setZoom((z) => Math.min(2.4, z * 1.12))}
@@ -813,6 +817,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
           })}
         </g>
       </svg>
+    </div>
     </div>
   );
 }

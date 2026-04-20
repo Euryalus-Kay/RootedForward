@@ -66,16 +66,49 @@ const OWNER_DESC: Record<ParcelOwner, string> = {
   vacant: "Vacant",
 };
 
+/** Build short state-derived sentences that reflect game-driven changes
+ *  to this parcel. Returns 0-3 lines depending on what's happened. */
+function stateNotes(p: Parcel): string[] {
+  const out: string[] = [];
+
+  // Condition / value extremes
+  if (p.condition >= 80) out.push("Recently renovated. The trim is fresh.");
+  else if (p.condition >= 60 && p.owner === "resident") out.push("Well maintained by the owners.");
+  else if (p.condition <= 30 && p.owner === "absentee") out.push("The landlord hasn't been by in months.");
+  else if (p.condition <= 25) out.push("The roof leaks. The boiler is on its last winter.");
+
+  // Value pressure
+  if (p.value >= 80 && p.owner !== "land-trust") out.push("Land values here have climbed sharply.");
+  else if (p.value <= 30) out.push("Property values have stayed flat for decades.");
+
+  // Memory
+  if (p.memory >= 80) out.push("Three generations of the same families on this block.");
+  else if (p.memory <= 25 && p.displacementEvents > 0) out.push("Most of the long-term residents are gone.");
+
+  // Owner-specific
+  if (p.owner === "speculator") out.push("Bought by an out-of-state LLC at a tax-lien auction.");
+  if (p.owner === "land-trust") out.push("In permanent trust. Resale capped by the bylaws.");
+  if (p.owner === "cha") out.push("Operated by the Chicago Housing Authority.");
+  if (p.owner === "developer") out.push("Held by a developer awaiting rezoning approval.");
+
+  // Protection status
+  if (p.protected) out.push("Protected by a community-preservation overlay.");
+
+  return out.slice(0, 3);
+}
+
 export function narrativeFor(p: Parcel): {
   address: string;
   primary: string;
   ownership: string;
   vitalLines: { label: string; value: string }[];
+  stateLines: string[];
 } {
   return {
     address: addressFor(p),
     primary: TYPE_DESC[p.type],
     ownership: OWNER_DESC[p.owner],
+    stateLines: stateNotes(p),
     vitalLines: [
       { label: "HOLC", value: p.holc },
       { label: "Residents", value: String(p.residents) },
