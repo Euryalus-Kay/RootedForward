@@ -2184,6 +2184,30 @@ export const CARDS: Card[] = [
 /** Map of card id to card for fast lookup */
 export const CARD_BY_ID: Map<string, Card> = new Map(CARDS.map((c) => [c.id, c]));
 
+/** Inflation multiplier on card costs.
+ *  In 1940 a dollar bought what it bought. By 2040, every project costs more.
+ *  This applies to every non-zero cost on the card.
+ *  Returns the ADDITIONAL cost to add to each non-zero cost field. */
+export function inflationForYear(year: number): number {
+  if (year < 1960) return 0;
+  if (year < 1980) return 1;
+  if (year < 2000) return 2;
+  if (year < 2020) return 3;
+  return 4;
+}
+
+/** Compute the effective cost a player would pay for a card right now,
+ *  accounting for inflation. */
+export function effectiveCost(card: Card, year: number): import("./types").CardCost {
+  const bump = inflationForYear(year);
+  const out: import("./types").CardCost = {};
+  if (card.cost.capital) out.capital = card.cost.capital + bump;
+  if (card.cost.power) out.power = card.cost.power + Math.ceil(bump / 2);
+  if (card.cost.trust) out.trust = card.cost.trust + Math.floor(bump / 2);
+  if (card.cost.knowledge) out.knowledge = card.cost.knowledge + Math.floor(bump / 2);
+  return out;
+}
+
 /** Get cards available in a given year, optionally filtered by required flags */
 export function availableCards(year: number, flags: Set<string>): Card[] {
   return CARDS.filter((c) => {

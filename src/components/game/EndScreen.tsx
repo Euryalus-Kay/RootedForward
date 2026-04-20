@@ -7,7 +7,7 @@ import ParcelGrid, { ParcelLegend } from "./ParcelGrid";
 import { ACHIEVEMENT_BY_ID } from "@/lib/game/achievements";
 import { OBJECTIVES_BY_ID, completedObjectives } from "@/lib/game/objectives";
 import { ROLES, type RoleKey } from "@/lib/game/roles";
-import { clearSave } from "@/lib/game/save";
+import { clearSave, appendLocalRun } from "@/lib/game/save";
 
 export function EndScreen({
   state,
@@ -29,6 +29,20 @@ export function EndScreen({
     // Game has ended - clear the in-progress save so the menu won't
     // offer to "continue" a finished game.
     clearSave();
+    // Always log to local leaderboard for personal history, regardless
+    // of whether the remote API call succeeds.
+    appendLocalRun({
+      display_name: state.displayName || "Anonymous",
+      total_score: final.total,
+      equity_score: final.equity,
+      heritage_score: final.heritage,
+      growth_score: final.growth,
+      sustainability_score: final.sustainability,
+      archetype: final.archetype,
+      decisions_made: state.playedCards.length,
+      events_survived: state.resolvedEvents.length,
+      notes_read: state.notesRead.size,
+    });
     let cancelled = false;
     const payload = {
       display_name: state.displayName || "Anonymous",

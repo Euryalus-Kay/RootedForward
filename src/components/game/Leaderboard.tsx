@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { readLocalLeaderboard } from "@/lib/game/save";
 
 interface LeaderboardEntry {
   id: string;
@@ -33,12 +34,26 @@ export function Leaderboard({
       .then((r) => r.json())
       .then((data) => {
         if (cancelled) return;
-        setEntries(data.leaderboard ?? []);
+        const remote: LeaderboardEntry[] = data.leaderboard ?? [];
+        const local = readLocalLeaderboard();
+        // Merge: local entries that aren't in remote get appended; sort
+        // combined by total_score desc, dedupe by id.
+        const combined = [...remote, ...local];
+        const seen = new Set<string>();
+        const merged: LeaderboardEntry[] = [];
+        for (const e of combined) {
+          if (seen.has(e.id)) continue;
+          seen.add(e.id);
+          merged.push(e);
+        }
+        merged.sort((a, b) => b.total_score - a.total_score);
+        setEntries(merged.slice(0, 50));
       })
       .catch(() => {
         if (cancelled) return;
-        setError("Could not load the leaderboard.");
-        setEntries([]);
+        // Remote unreachable: show local-only leaderboard
+        setEntries(readLocalLeaderboard());
+        setError("Showing your local runs (remote leaderboard unreachable).");
       });
     return () => {
       cancelled = true;

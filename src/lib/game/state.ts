@@ -5,7 +5,7 @@
  * action. All side effects (API calls, timers) live in the components.
  */
 
-import { availableCards, CARD_BY_ID, CARDS } from "./cards";
+import { availableCards, CARD_BY_ID, CARDS, effectiveCost } from "./cards";
 import { eligibleEvents, EVENT_BY_ID, EVENTS } from "./events";
 import { generateInitialParcels, applyTransforms, simulateYear } from "./parcels";
 import { GLOSSARY } from "./glossary";
@@ -63,6 +63,7 @@ export function freshState(): GameState {
     tutorialStep: -1,
     messages: [],
     yearAdvanced: false,
+    redrawsThisTurn: 0,
     startedAt: 0,
     hintsDismissed: new Set(),
   };
@@ -244,8 +245,8 @@ export function reducer(state: GameState, action: GameAction): GameState {
     case "PLAY_CARD": {
       const card = CARD_BY_ID.get(action.cardId);
       if (!card) return state;
-      // Check resources
-      const cost = card.cost;
+      // Apply inflation: card cost grows over time
+      const cost = effectiveCost(card, state.year);
       if ((cost.capital ?? 0) > state.resources.capital) {
         return pushMessage(state, "warn", "Not enough capital.");
       }
@@ -288,19 +289,25 @@ export function reducer(state: GameState, action: GameAction): GameState {
     }
 
     case "REDRAW_HAND": {
-      // Cost: 1 Power. Discard entire hand and redraw fresh.
-      if (state.resources.power < 1) {
-        return pushMessage(state, "warn", "Need 1 Power to redraw the hand.");
+      // Cost scales: 1, 2, 3 Power per use this turn (max 3 uses).
+      const cost = state.redrawsThisTurn + 1;
+      if (state.redrawsThisTurn >= 3) {
+        return pushMessage(state, "warn", "Already redrawn 3 times this turn.");
+      }
+      if (state.resources.power < cost) {
+        return pushMessage(state, "warn", `Need ${cost} Power to redraw (this turn's cost).`);
       }
       let next: GameState = {
         ...state,
         hand: [],
-        resources: { ...state.resources, power: state.resources.power - 1 },
+        resources: { ...state.resources, power: state.resources.power - cost },
+        redrawsThisTurn: state.redrawsThisTurn + 1,
         selectedCard: null,
       };
-      const rng = new RNG(state.seed + ":redraw:" + state.year + ":" + state.playedCards.length);
-      next = drawCards(next, state.handSize, rng);
-      return pushMessage(next, "good", "Redrew your hand. -1 Power.");
+      // Draw exactly 3 fresh cards, not refill to full hand
+      const rng = new RNG(state.seed + ":redraw:" + state.year + ":" + state.redrawsThisTurn);
+      next = drawCards(next, 3, rng);
+      return pushMessage(next, "good", `Drew 3 new cards. -${cost} Power.`);
     }
 
     case "SELECT_CARD": {
@@ -310,7 +317,7 @@ export function reducer(state: GameState, action: GameAction): GameState {
     case "END_YEAR": {
       if (state.phase === "event") return state; // can't advance with active event
       const newYear = state.year + YEAR_STEP;
-      let next: GameState = { ...state, year: newYear, yearAdvanced: true };
+      let next: GameState = { ...state, year: newYear, yearAdvanced: true, redrawsThisTurn: 0 };
 
       // End-of-turn effects: simulate parcels for each year that passed
       for (let y = state.year + 1; y <= newYear; y++) {
@@ -327,12 +334,53 @@ export function reducer(state: GameState, action: GameAction): GameState {
         return true;
       });
 
-      // Era-based passive resource trickle (multiplied for the 5-year step)
-      const eraTrickle = newYear < 1955 ? { capital: 4, power: 4 }
-        : newYear < 1975 ? { capital: 5, power: 6 }
-        : newYear < 1995 ? { capital: 6, power: 6, trust: 1 }
-        : newYear < 2015 ? { capital: 7, power: 6, trust: 2 }
-        : { capital: 9, power: 7, trust: 2 };
+      // Era-based passive resource trickle. Tighter than v1 so the
+      // player actually has to choose what to play and what to skip.
+      const eraTrickle = newYear < 1955 ? { capital: 2, power: 2 }
+        : newYear < 1975 ? { capital: 2, power: 3 }
+        : newYear < 1995 ? { capital: 3, power: 3, trust: 1 }
+        : newYear < 2015 ? { capital: 3, power: 3, trust: 1 }
+        : { capital: 4, power: 3, trust: 1 };
+
+      // Persistent score drift from flags set earlier. Early decisions
+      // bite throughout the rest of the run.
+      let driftEquity = 0;
+      let driftHeritage = 0;
+      let driftSustainability = 0;
+      let driftGrowth = 0;
+      if (next.flags.has("expressway-built")) {
+        driftHeritage -= 1;
+        driftSustainability -= 1;
+      }
+      if (next.flags.has("tower-built")) {
+        driftHeritage -= 0.5;
+      }
+      if (next.flags.has("tax-abatement-active")) {
+        driftEquity -= 0.5;
+      }
+      if (next.flags.has("fast-track-permits")) {
+        driftEquity -= 1;
+      }
+      if (next.flags.has("policing-heavy")) {
+        driftEquity -= 0.5;
+      }
+      if (next.flags.has("tif-active")) {
+        // TIF starves general fund; modest equity drag UNLESS player has
+        // explicitly used it for affordable housing (a separate flag).
+        if (!next.flags.has("tif-affordable")) driftEquity -= 0.5;
+      }
+      if (next.flags.has("preservation-overlay")) {
+        driftHeritage += 1;
+      }
+      if (next.flags.has("transit-extension") && !next.flags.has("preservation-overlay")) {
+        driftEquity -= 1; // displacement pressure without overlays
+      }
+      next.scores = {
+        equity: next.scores.equity + driftEquity,
+        heritage: next.scores.heritage + driftHeritage,
+        growth: next.scores.growth + driftGrowth,
+        sustainability: next.scores.sustainability + driftSustainability,
+      };
       next.resources = {
         capital: next.resources.capital + (eraTrickle.capital ?? 0),
         power: next.resources.power + (eraTrickle.power ?? 0),

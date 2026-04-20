@@ -2,10 +2,6 @@
 -- 003 — Build the Block: leaderboard, run history, achievement tracking
 -- ============================================================================
 
--- Each completed playthrough is recorded as one row. Players are identified
--- either by an authenticated supabase user_id or an anonymous display_name +
--- session_token combo so they can post a score without making an account.
-
 create table if not exists public.game_runs (
   id uuid default uuid_generate_v4() primary key,
   user_id uuid references public.users(id) on delete set null,
@@ -32,18 +28,20 @@ create index if not exists idx_game_runs_created on public.game_runs(created_at 
 
 alter table public.game_runs enable row level security;
 
--- Anyone can read the leaderboard
-create policy if not exists "Anyone can read game runs"
+-- Policies: drop and recreate so the migration is idempotent across
+-- Postgres versions (CREATE POLICY IF NOT EXISTS only works in PG 15+).
+drop policy if exists "Anyone can read game runs" on public.game_runs;
+create policy "Anyone can read game runs"
   on public.game_runs for select
   using (true);
 
--- Anyone can submit a run
-create policy if not exists "Anyone can submit a game run"
+drop policy if exists "Anyone can submit a game run" on public.game_runs;
+create policy "Anyone can submit a game run"
   on public.game_runs for insert
   with check (true);
 
--- Only admins can delete (e.g., to remove cheaters)
-create policy if not exists "Admins can delete game runs"
+drop policy if exists "Admins can delete game runs" on public.game_runs;
+create policy "Admins can delete game runs"
   on public.game_runs for delete
   using (
     exists (

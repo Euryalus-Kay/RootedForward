@@ -346,6 +346,9 @@ export interface GameState {
   messages: ToastMessage[];
   /** Whether the player has hit "end turn" once on the current year */
   yearAdvanced: boolean;
+  /** Number of times REDRAW has been used this turn. Reset on END_YEAR.
+   *  Each successive redraw costs more Power. */
+  redrawsThisTurn: number;
   /** Final score breakdown, only set when phase === 'ended' */
   finalScore?: FinalScore;
   /** When the game started (ms since epoch) */

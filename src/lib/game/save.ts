@@ -41,6 +41,7 @@ export interface SerializedState {
     handSize: number;
     tutorialStep: number;
     yearAdvanced: boolean;
+    redrawsThisTurn?: number;
     startedAt: number;
     finalScore?: GameState["finalScore"];
     hintsDismissed: string[];
@@ -77,6 +78,7 @@ export function serializeState(state: GameState): SerializedState {
       handSize: state.handSize,
       tutorialStep: state.tutorialStep,
       yearAdvanced: state.yearAdvanced,
+      redrawsThisTurn: state.redrawsThisTurn,
       startedAt: state.startedAt,
       finalScore: state.finalScore,
       hintsDismissed: Array.from(state.hintsDismissed),
@@ -112,6 +114,7 @@ export function deserializeState(payload: SerializedState, lookupEvent: (id: str
     handSize: s.handSize,
     tutorialStep: s.tutorialStep,
     yearAdvanced: s.yearAdvanced,
+    redrawsThisTurn: s.redrawsThisTurn ?? 0,
     startedAt: s.startedAt,
     finalScore: s.finalScore,
     hintsDismissed: new Set(s.hintsDismissed),
@@ -141,6 +144,52 @@ export function loadFromLocal(lookupEvent: (id: string) => import("./types").Gam
   } catch (err) {
     console.warn("Load failed:", err);
     return null;
+  }
+}
+
+/* ----------------------- Local best-scores log -----------------------
+ *  Even if the remote leaderboard is unreachable, we always log the
+ *  player's finished runs to localStorage so they can see their own
+ *  history. The Leaderboard component falls back to this list if the
+ *  /api/leaderboard call fails. */
+
+const LOCAL_LEADERBOARD_KEY = "buildTheBlock:localLeaderboard:v1";
+
+export interface LocalLeaderboardEntry {
+  id: string;
+  display_name: string;
+  total_score: number;
+  equity_score: number;
+  heritage_score: number;
+  growth_score: number;
+  sustainability_score: number;
+  archetype: string;
+  decisions_made: number;
+  events_survived: number;
+  notes_read: number;
+  created_at: string;
+}
+
+export function appendLocalRun(entry: Omit<LocalLeaderboardEntry, "id" | "created_at">): void {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = window.localStorage.getItem(LOCAL_LEADERBOARD_KEY);
+    const arr: LocalLeaderboardEntry[] = raw ? JSON.parse(raw) : [];
+    arr.push({ ...entry, id: `local-${Date.now()}`, created_at: new Date().toISOString() });
+    arr.sort((a, b) => b.total_score - a.total_score);
+    window.localStorage.setItem(LOCAL_LEADERBOARD_KEY, JSON.stringify(arr.slice(0, 50)));
+  } catch {
+    /* ignore */
+  }
+}
+
+export function readLocalLeaderboard(): LocalLeaderboardEntry[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_LEADERBOARD_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
   }
 }
 

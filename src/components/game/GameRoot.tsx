@@ -376,15 +376,22 @@ export default function GameRoot() {
                 </h3>
               </div>
               <div className="flex items-stretch gap-2">
-                <button
-                  onClick={handleRedraw}
-                  disabled={state.resources.power < 1}
-                  title="Discard your whole hand and draw fresh. Costs 1 Power."
-                  className="inline-flex flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <span className="text-[11px]">Redraw hand</span>
-                  <span className="text-[9px] opacity-70">−1 Power</span>
-                </button>
+                {(() => {
+                  const cost = state.redrawsThisTurn + 1;
+                  const tappedOut = state.redrawsThisTurn >= 3;
+                  const cantAfford = state.resources.power < cost;
+                  return (
+                    <button
+                      onClick={handleRedraw}
+                      disabled={tappedOut || cantAfford}
+                      title={tappedOut ? "Redrawn the max 3 times this turn." : `Discard your hand and draw 3 fresh cards. Costs ${cost} Power.`}
+                      className="inline-flex flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <span className="text-[11px]">Draw 3 cards</span>
+                      <span className="text-[9px] opacity-70">{tappedOut ? "max this turn" : `−${cost} Power`}</span>
+                    </button>
+                  );
+                })()}
                 <button
                   onClick={handleEndYear}
                   className="inline-flex flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
@@ -421,6 +428,7 @@ export default function GameRoot() {
                       key={cardId}
                       card={card}
                       resources={state.resources}
+                      year={state.year}
                       selected={state.selectedCard === cardId}
                       onClick={() => handleSelectCard(state.selectedCard === cardId ? null : cardId)}
                       onPlay={() => handlePlayCard(cardId)}

@@ -2,6 +2,7 @@
 
 import type { Card, CardCategory, CardRarity, Resources } from "@/lib/game/types";
 import { CategoryIcon, ResourceIcon, ScoreIcon } from "./icons";
+import { effectiveCost } from "@/lib/game/cards";
 
 const CATEGORY_COLOR: Record<CardCategory, string> = {
   zoning: "from-amber-700 to-amber-800",
@@ -35,6 +36,7 @@ const RARITY_LABEL: Record<CardRarity, string> = {
 export function PolicyCard({
   card,
   resources,
+  year,
   selected,
   onClick,
   onPlay,
@@ -42,16 +44,19 @@ export function PolicyCard({
 }: {
   card: Card;
   resources: Resources;
+  /** Current game year. Used to apply inflation to card cost. */
+  year: number;
   selected?: boolean;
   onClick?: () => void;
   onPlay?: () => void;
   onDiscard?: () => void;
 }) {
+  const cost = effectiveCost(card, year);
   const affordable =
-    (card.cost.capital ?? 0) <= resources.capital &&
-    (card.cost.power ?? 0) <= resources.power &&
-    (card.cost.trust ?? 0) <= resources.trust &&
-    (card.cost.knowledge ?? 0) <= resources.knowledge;
+    (cost.capital ?? 0) <= resources.capital &&
+    (cost.power ?? 0) <= resources.power &&
+    (cost.trust ?? 0) <= resources.trust &&
+    (cost.knowledge ?? 0) <= resources.knowledge;
 
   return (
     <div
@@ -88,11 +93,11 @@ export function PolicyCard({
             Costs
           </span>
           <div className="flex flex-wrap gap-1">
-            {card.cost.capital ? <CostPip k="capital" label="Capital" value={card.cost.capital} have={resources.capital} /> : null}
-            {card.cost.power ? <CostPip k="power" label="Power" value={card.cost.power} have={resources.power} /> : null}
-            {card.cost.trust ? <CostPip k="trust" label="Trust" value={card.cost.trust} have={resources.trust} /> : null}
-            {card.cost.knowledge ? <CostPip k="knowledge" label="Knowledge" value={card.cost.knowledge} have={resources.knowledge} /> : null}
-            {!card.cost.capital && !card.cost.power && !card.cost.trust && !card.cost.knowledge && (
+            {cost.capital ? <CostPip k="capital" label="Capital" value={cost.capital} have={resources.capital} /> : null}
+            {cost.power ? <CostPip k="power" label="Power" value={cost.power} have={resources.power} /> : null}
+            {cost.trust ? <CostPip k="trust" label="Trust" value={cost.trust} have={resources.trust} /> : null}
+            {cost.knowledge ? <CostPip k="knowledge" label="Knowledge" value={cost.knowledge} have={resources.knowledge} /> : null}
+            {!cost.capital && !cost.power && !cost.trust && !cost.knowledge && (
               <span className="font-body text-[10px] italic text-warm-gray">free</span>
             )}
           </div>
