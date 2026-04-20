@@ -44,7 +44,7 @@ export default function GameRoot() {
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
-  const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
+  const [mapMode, setMapMode] = useState<"classic" | "3d">("classic");
   const lastSavedAt = useRef<number>(0);
 
   /* ------------- first-time auto-open how-to-play ------------- */
@@ -97,6 +97,7 @@ export default function GameRoot() {
   const handleTutorial = useCallback(() => setHowToPlayOpen(true), []);
   const handlePlayCard = useCallback((cardId: string) => dispatch({ type: "PLAY_CARD", cardId }), []);
   const handleDiscardCard = useCallback((cardId: string) => dispatch({ type: "DISCARD_CARD", cardId }), []);
+  const handleRedraw = useCallback(() => dispatch({ type: "REDRAW_HAND" }), []);
   const handleSelectCard = useCallback((cardId: string | null) => dispatch({ type: "SELECT_CARD", cardId }), []);
   const handleEndYear = useCallback(() => dispatch({ type: "END_YEAR" }), []);
   const handleResolveEvent = useCallback((idx: number) => dispatch({ type: "RESOLVE_EVENT", optionIndex: idx }), []);
@@ -361,13 +362,24 @@ export default function GameRoot() {
                   {state.hand.length} card{state.hand.length === 1 ? "" : "s"}
                 </h3>
               </div>
-              <button
-                onClick={handleEndYear}
-                className="inline-flex flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
-              >
-                <span className="text-sm">Advance {YEAR_STEP} years &rarr;</span>
-                <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>
-              </button>
+              <div className="flex items-stretch gap-2">
+                <button
+                  onClick={handleRedraw}
+                  disabled={state.resources.power < 1}
+                  title="Discard your whole hand and draw fresh. Costs 1 Power."
+                  className="inline-flex flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <span className="text-[11px]">Redraw hand</span>
+                  <span className="text-[9px] opacity-70">−1 Power</span>
+                </button>
+                <button
+                  onClick={handleEndYear}
+                  className="inline-flex flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+                >
+                  <span className="text-sm">Advance {YEAR_STEP} years &rarr;</span>
+                  <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>
+                </button>
+              </div>
             </div>
 
             <p className="mt-3 max-w-[55ch] font-body text-sm text-ink/65">

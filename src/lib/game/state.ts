@@ -84,7 +84,9 @@ function pushMessage(state: GameState, kind: ToastMessage["kind"], text: string)
 function drawCards(state: GameState, n: number, rng: RNG): GameState {
   if (state.hand.length >= state.handSize) return state;
   const available = availableCards(state.year, state.flags);
-  const candidates = available.filter((c) => !state.hand.includes(c.id));
+  // Don't redraw cards already in hand OR already played this run
+  const playedIds = new Set(state.playedCards.map((p) => p.cardId));
+  const candidates = available.filter((c) => !state.hand.includes(c.id) && !playedIds.has(c.id));
   if (candidates.length === 0) return state;
 
   // Lookup the player's role to apply category weighting
@@ -283,6 +285,22 @@ export function reducer(state: GameState, action: GameAction): GameState {
         hand: state.hand.filter((id) => id !== action.cardId),
         selectedCard: null,
       };
+    }
+
+    case "REDRAW_HAND": {
+      // Cost: 1 Power. Discard entire hand and redraw fresh.
+      if (state.resources.power < 1) {
+        return pushMessage(state, "warn", "Need 1 Power to redraw the hand.");
+      }
+      let next: GameState = {
+        ...state,
+        hand: [],
+        resources: { ...state.resources, power: state.resources.power - 1 },
+        selectedCard: null,
+      };
+      const rng = new RNG(state.seed + ":redraw:" + state.year + ":" + state.playedCards.length);
+      next = drawCards(next, state.handSize, rng);
+      return pushMessage(next, "good", "Redrew your hand. -1 Power.");
     }
 
     case "SELECT_CARD": {

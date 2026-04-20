@@ -408,6 +408,7 @@ export type GameAction =
   | { type: "SKIP_TUTORIAL" }
   | { type: "PLAY_CARD"; cardId: string; targetParcel?: number }
   | { type: "DISCARD_CARD"; cardId: string }
+  | { type: "REDRAW_HAND" }
   | { type: "SELECT_CARD"; cardId: string | null }
   | { type: "END_YEAR" }
   | { type: "RESOLVE_EVENT"; optionIndex: number }
