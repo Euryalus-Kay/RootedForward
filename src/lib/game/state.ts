@@ -83,16 +83,26 @@ function pushMessage(state: GameState, kind: ToastMessage["kind"], text: string)
 
 function drawCards(state: GameState, n: number, rng: RNG): GameState {
   if (state.hand.length >= state.handSize) return state;
-  const available = availableCards(state.year, state.flags).map((c) => c.id);
-  const candidates = available.filter((id) => !state.hand.includes(id));
+  const available = availableCards(state.year, state.flags);
+  const candidates = available.filter((c) => !state.hand.includes(c.id));
   if (candidates.length === 0) return state;
-  // Weight by rarity
-  const weighted = candidates.flatMap((id) => {
-    const c = CARD_BY_ID.get(id);
-    if (!c) return [];
-    const w = c.rarity === "common" ? 8 : c.rarity === "uncommon" ? 4 : c.rarity === "rare" ? 2 : 1;
-    return Array(w).fill(id);
+
+  // Lookup the player's role to apply category weighting
+  const role = ROLES[state.roleKey as RoleKey] ?? ROLES.alderman;
+  const favored = new Set(role.favors);
+  const avoided = new Set(role.avoids ?? []);
+
+  // Weight by rarity * role-affinity
+  const weighted = candidates.flatMap((c) => {
+    let w = c.rarity === "common" ? 8
+          : c.rarity === "uncommon" ? 4
+          : c.rarity === "rare" ? 2
+          : 1;
+    if (favored.has(c.category)) w *= 3;
+    if (avoided.has(c.category)) w = Math.max(1, Math.floor(w / 4));
+    return Array(w).fill(c.id);
   });
+
   const drawn: string[] = [];
   for (let i = 0; i < n && state.hand.length + drawn.length < state.handSize && weighted.length > 0; i++) {
     const id = rng.pick(weighted);

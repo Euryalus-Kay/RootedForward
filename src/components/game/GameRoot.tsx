@@ -264,14 +264,25 @@ export default function GameRoot() {
                 </div>
               )}
 
-              <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
-
-              {/* District labels overlay */}
-              <div className="mt-2 grid grid-cols-3 gap-1 font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray/70">
-                <span>North blocks</span>
-                <span className="text-center">Central</span>
-                <span className="text-right">South blocks</span>
+              {/* Grid with vertical district labels on the left */}
+              <div className="flex gap-2">
+                <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
+                  {/* North = top 2 of 7 rows */}
+                  <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
+                  <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
+                  <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
+                  {/* Vertical line to make it feel like a y-axis */}
+                  <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
+                </div>
+                <div className="flex-1">
+                  <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
+                </div>
               </div>
+
+              {/* East/west hint: lake is right side */}
+              <p className="mt-2 text-right font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
+                Lake Michigan is to the east &rarr;
+              </p>
             </div>
             <div className="mt-3">
               <ParcelLegend />
