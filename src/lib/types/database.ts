@@ -6,6 +6,29 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+/* ------------------------------------------------------------------ */
+/*  Research section shared types                                      */
+/* ------------------------------------------------------------------ */
+
+export type ResearchFormat =
+  | "brief"
+  | "report"
+  | "primary_source_collection"
+  | "data_analysis"
+  | "oral_history";
+
+export type ResearchStatus = "draft" | "published" | "archived";
+
+export type CitationType = "primary" | "secondary";
+
+export interface Citation {
+  id: string;
+  text: string;
+  url: string | null;
+  accessed_date: string | null;
+  type: CitationType;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -231,6 +254,126 @@ export interface Database {
         };
         Relationships: [];
       };
+      research_entries: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          abstract: string;
+          full_content_markdown: string | null;
+          topic: string;
+          city: string;
+          format: ResearchFormat;
+          authors: string[];
+          reviewers: string[];
+          citations: Citation[];
+          pdf_url: string | null;
+          cover_image_url: string | null;
+          published_date: string;
+          status: ResearchStatus;
+          related_campaign_ids: string[];
+          related_tour_slugs: string[];
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          title: string;
+          abstract: string;
+          full_content_markdown?: string | null;
+          topic: string;
+          city?: string;
+          format: ResearchFormat;
+          authors?: string[];
+          reviewers?: string[];
+          citations?: Citation[];
+          pdf_url?: string | null;
+          cover_image_url?: string | null;
+          published_date: string;
+          status?: ResearchStatus;
+          related_campaign_ids?: string[];
+          related_tour_slugs?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          title?: string;
+          abstract?: string;
+          full_content_markdown?: string | null;
+          topic?: string;
+          city?: string;
+          format?: ResearchFormat;
+          authors?: string[];
+          reviewers?: string[];
+          citations?: Citation[];
+          pdf_url?: string | null;
+          cover_image_url?: string | null;
+          published_date?: string;
+          status?: ResearchStatus;
+          related_campaign_ids?: string[];
+          related_tour_slugs?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      industry_directors: {
+        Row: {
+          id: string;
+          slug: string;
+          full_name: string;
+          title: string;
+          affiliation: string;
+          bio: string;
+          photo_url: string | null;
+          website_url: string | null;
+          institutional_url: string | null;
+          linkedin_url: string | null;
+          focus_areas: string[];
+          display_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          full_name: string;
+          title: string;
+          affiliation: string;
+          bio: string;
+          photo_url?: string | null;
+          website_url?: string | null;
+          institutional_url?: string | null;
+          linkedin_url?: string | null;
+          focus_areas?: string[];
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          full_name?: string;
+          title?: string;
+          affiliation?: string;
+          bio?: string;
+          photo_url?: string | null;
+          website_url?: string | null;
+          institutional_url?: string | null;
+          linkedin_url?: string | null;
+          focus_areas?: string[];
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -248,6 +391,18 @@ export type SiteContent = Database["public"]["Tables"]["site_content"]["Row"];
 export type Submission = Database["public"]["Tables"]["submissions"]["Row"];
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type UserProfile = Database["public"]["Tables"]["users"]["Row"];
+export type ResearchEntry =
+  Database["public"]["Tables"]["research_entries"]["Row"];
+export type ResearchEntryInsert =
+  Database["public"]["Tables"]["research_entries"]["Insert"];
+export type ResearchEntryUpdate =
+  Database["public"]["Tables"]["research_entries"]["Update"];
+export type IndustryDirector =
+  Database["public"]["Tables"]["industry_directors"]["Row"];
+export type IndustryDirectorInsert =
+  Database["public"]["Tables"]["industry_directors"]["Insert"];
+export type IndustryDirectorUpdate =
+  Database["public"]["Tables"]["industry_directors"]["Update"];
 
 // Policy section types (defined in policy-constants.ts for now,
 // will move to Database interface when Supabase schema is applied)

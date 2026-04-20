@@ -15,6 +15,7 @@ import {
   Users,
   MessageSquare,
   Scale,
+  BookOpen,
   LogOut,
   Menu,
   X,
@@ -32,6 +33,7 @@ const navItems = [
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/about/board", label: "Board", icon: Users },
   { href: "/admin/policy", label: "Policy", icon: Scale },
+  { href: "/admin/research", label: "Research", icon: BookOpen },
 ];
 
 export default function AdminLayout({
