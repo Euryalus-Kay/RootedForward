@@ -16,7 +16,12 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-type TabFilter = "all" | "volunteer" | "contact";
+type TabFilter = "all" | "volunteer" | "contact" | "curriculum";
+
+/** Curriculum requests come in as type='contact' with chapter='Curriculum Request' */
+function isCurriculum(s: { type: string; chapter: string | null; message: string | null }): boolean {
+  return s.type === "contact" && (s.chapter === "Curriculum Request" || (s.message ?? "").includes("[CURRICULUM REQUEST]"));
+}
 
 export default function SubmissionsViewer() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
@@ -48,7 +53,11 @@ export default function SubmissionsViewer() {
   const filteredSubmissions =
     activeTab === "all"
       ? submissions
-      : submissions.filter((s) => s.type === activeTab);
+      : activeTab === "curriculum"
+        ? submissions.filter(isCurriculum)
+        : activeTab === "contact"
+          ? submissions.filter((s) => s.type === "contact" && !isCurriculum(s))
+          : submissions.filter((s) => s.type === activeTab);
 
   const toggleExpand = (id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -172,10 +181,12 @@ export default function SubmissionsViewer() {
     toast.success("CSV exported");
   };
 
+  const curriculumCount = submissions.filter(isCurriculum).length;
   const tabs: { key: TabFilter; label: string; count: number }[] = [
     { key: "all", label: "All", count: submissions.length },
     { key: "volunteer", label: "Volunteer", count: submissions.filter((s) => s.type === "volunteer").length },
-    { key: "contact", label: "Contact", count: submissions.filter((s) => s.type === "contact").length },
+    { key: "contact", label: "Contact", count: submissions.filter((s) => s.type === "contact" && !isCurriculum(s)).length },
+    { key: "curriculum", label: "Curriculum", count: curriculumCount },
   ];
 
   if (loading) {
@@ -302,12 +313,20 @@ export default function SubmissionsViewer() {
                   </span>
 
                   {/* Type Badge */}
-                  <span className={cn(
-                    "rounded-full px-2.5 py-0.5 text-xs font-medium",
-                    sub.type === "volunteer" ? "bg-forest/10 text-forest" : "bg-rust/10 text-rust"
-                  )}>
-                    {sub.type}
-                  </span>
+                  {(() => {
+                    const isCur = isCurriculum(sub);
+                    const label = isCur ? "curriculum" : sub.type;
+                    const cls = isCur
+                      ? "bg-warm-gray/15 text-forest"
+                      : sub.type === "volunteer"
+                        ? "bg-forest/10 text-forest"
+                        : "bg-rust/10 text-rust";
+                    return (
+                      <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", cls)}>
+                        {label}
+                      </span>
+                    );
+                  })()}
 
                   {/* Name */}
                   <button onClick={() => toggleExpand(sub.id)} className="text-sm font-medium text-ink truncate w-full text-left hover:text-forest">

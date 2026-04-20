@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
+import CurriculumRequestForm from "@/components/forms/CurriculumRequestForm";
 
 export const metadata: Metadata = {
   title: "Curriculum | Rooted Forward",
   description:
-    "Free, classroom-ready lesson plans, slide decks, and discussion guides built around our walking tours, podcast, and game. Aligned to high-school civics and U.S. history standards.",
+    "A free 12-session classroom unit on the policies that built American cities. Built around our walking tours, podcast, and game.",
 };
 
 const UNITS = [
@@ -14,7 +14,7 @@ const UNITS = [
     title: "Lines on the Map",
     sessions: "3 sessions",
     body:
-      "Students read a 1940 HOLC surveyor description, overlay it on a current census map of the same tract, and trace what stayed in place. Pairs with the podcast's Bronzeville episode and the first virtual tour.",
+      "Students read a 1940 HOLC surveyor description out loud, overlay it on a current census map of the same tract, and trace what stayed in place. Pairs with the Bronzeville podcast episode and the first walking tour.",
     standards: "C3 D2.His.4.9-12 · D2.Geo.6.9-12",
   },
   {
@@ -22,15 +22,15 @@ const UNITS = [
     title: "Contracts and the Color Tax",
     sessions: "2 sessions",
     body:
-      "Students model the wealth gap created by contract buying using real Cook Center markup figures, then analyze the Contract Buyers League's 1968 strike as a case study in collective action.",
+      "Students model the wealth gap created by contract buying with the actual Cook Center markup numbers, then read about the 1968 Contract Buyers League strike as a case in collective action.",
     standards: "C3 D2.Eco.10.9-12 · D4.7.9-12",
   },
   {
     n: "03",
-    title: "Public Housing and Gautreaux",
+    title: "The Towers and Gautreaux",
     sessions: "3 sessions",
     body:
-      "From the CHA towers to Hills v. Gautreaux to HOPE VI. Students debate the Plan for Transformation in a structured Harkness-style seminar.",
+      "From the CHA towers to Hills v. Gautreaux to HOPE VI. Students debate the Plan for Transformation in a structured Harkness seminar. We give you the prompts.",
     standards: "C3 D2.Civ.5.9-12 · D2.His.16.9-12",
   },
   {
@@ -38,7 +38,7 @@ const UNITS = [
     title: "Today's Toolkit",
     sessions: "4 sessions",
     body:
-      "TIF, ARO, and the Red Line Extension. Students play Build the Block in pairs, then write a 500-word policy memo recommending changes to one Chicago tool. We've used this with juniors and adult organizers alike.",
+      "TIF, ARO, the Red Line Extension. Students play the game in pairs, then write a 500-word memo recommending changes to one Chicago tool. We've used this with juniors and adult organizers and it works for both.",
     standards: "C3 D4.6.9-12 · D2.Civ.13.9-12",
   },
 ];
@@ -47,22 +47,22 @@ const FORMATS = [
   {
     title: "Lesson plans",
     body:
-      "45-minute and 90-minute versions of every unit, with timing, materials, and a printable facilitator script.",
+      "45-minute and 90-minute versions of every session, with timing, materials, and a printable script you can hand to a sub.",
   },
   {
     title: "Slide decks",
     body:
-      "Editable Google Slides and Keynote files for every session, designed to drop into your existing class without rebranding.",
+      "Editable Google Slides and Keynote files. Drop them into your existing class without rebranding.",
   },
   {
     title: "Discussion guides",
     body:
-      "Structured Harkness, Socratic, and small-group prompts &mdash; with sample student responses and follow-up questions.",
+      "Harkness, Socratic, and small-group prompts &mdash; with sample student responses and follow-ups for the moments where conversations stall.",
   },
   {
-    title: "Assessments",
+    title: "Pre/post checks",
     body:
-      "Pre/post knowledge checks on AMI, redlining, TIF, displacement, and inclusionary zoning. Validated for a +1.5-point average gain.",
+      "Five-question knowledge checks on AMI, redlining, TIF, displacement, and inclusionary zoning. The pilot cohort averaged a +1.5-question gain.",
   },
 ];
 
@@ -87,19 +87,13 @@ export default function CurriculumPage() {
         {/* Intro */}
         <section className="bg-cream pt-16 md:pt-24">
           <div className="mx-auto max-w-3xl px-6">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-              For teachers
-            </p>
-            <h2 className="mt-4 font-display text-3xl text-forest md:text-4xl">
-              A free unit on the policies that built American cities
-            </h2>
-            <p className="mt-6 max-w-[60ch] font-body text-lg leading-relaxed text-ink/75">
-              Twelve sessions of classroom-ready material covering redlining,
-              contract buying, public housing, urban renewal, and the modern
-              affordable-housing toolkit. Built for high-school U.S. history,
-              civics, and AP Human Geography &mdash; and used in three Chicago
-              Public Schools and a handful of college intro urban-planning
-              courses.
+            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl md:leading-relaxed">
+              Twelve sessions on how the federal government, the city of
+              Chicago, and private actors segregated American neighborhoods
+              between 1933 and now. Built for U.S. history, civics, and AP
+              Human Geography. Used in three Chicago Public Schools and a
+              handful of college courses. Free, and we will help you set it
+              up.
             </p>
           </div>
         </section>
@@ -143,8 +137,8 @@ export default function CurriculumPage() {
               The four units
             </h2>
             <p className="mt-3 max-w-[55ch] font-body text-base text-ink/60">
-              Teach them in sequence as a 12-session arc, or pull a single
-              unit into your existing course.
+              Run them as a 12-session arc, or pull a single unit into the
+              course you already teach.
             </p>
             <div className="mt-12 flex flex-col gap-px bg-border">
               {UNITS.map((u) => (
@@ -184,7 +178,7 @@ export default function CurriculumPage() {
               What teachers get
             </p>
             <h2 className="mt-4 font-display text-3xl text-forest md:text-5xl">
-              Ready to drop into your class
+              Drop-in materials, not a homework assignment
             </h2>
             <div className="mt-14 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2">
               {FORMATS.map((f, i) => (
@@ -212,9 +206,9 @@ export default function CurriculumPage() {
           <div className="mx-auto max-w-4xl px-6">
             <div className="border-l-4 border-rust pl-8 md:pl-12">
               <p className="font-display text-2xl leading-snug text-forest md:text-3xl md:leading-snug">
-                &ldquo;The pre/post on this unit was the cleanest gain I&rsquo;ve
-                ever seen. By the end my juniors were arguing about TIF in the
-                hallway.&rdquo;
+                &ldquo;The pre/post gain on this unit was the cleanest I&rsquo;ve
+                ever measured. By the end my juniors were arguing about TIF
+                in the hallway.&rdquo;
               </p>
               <p className="mt-6 font-body text-sm uppercase tracking-[0.2em] text-warm-gray">
                 &mdash; CPS social studies teacher, pilot cohort
@@ -223,23 +217,31 @@ export default function CurriculumPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-forest py-20 md:py-28">
-          <div className="mx-auto max-w-3xl px-6 text-center">
-            <h2 className="font-display text-3xl text-cream md:text-5xl">
-              Request the kit
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
-              Tell us a little about your classroom and we&rsquo;ll send the
-              full kit, including the slide decks and assessments. Free for
-              any educator, anywhere.
-            </p>
-            <Link
-              href="/contact"
-              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Email our education lead
-            </Link>
+        {/* Real request form */}
+        <section className="border-t border-border bg-cream py-20 md:py-28">
+          <div className="mx-auto max-w-4xl px-6">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-16">
+              <div className="md:col-span-5">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+                  Request the kit
+                </p>
+                <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
+                  Tell us about your classroom.
+                </h2>
+                <p className="mt-6 max-w-[40ch] font-body text-base leading-relaxed text-ink/70">
+                  We send everything &mdash; lesson plans, slide decks,
+                  discussion guides, the assessment &mdash; over email. If
+                  you want, we&rsquo;ll set up a 20-minute call to walk
+                  through it with you.
+                </p>
+                <p className="mt-6 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
+                  We email back within a week. Usually faster.
+                </p>
+              </div>
+              <div className="md:col-span-7">
+                <CurriculumRequestForm />
+              </div>
+            </div>
           </div>
         </section>
       </div>

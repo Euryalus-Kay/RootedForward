@@ -115,9 +115,18 @@ export async function POST(request: NextRequest) {
     }
 
     const isVolunteer = body.type === "volunteer";
+    const isCurriculum =
+      body.type === "contact" &&
+      (body.chapter === "Curriculum Request" ||
+        (body.message ?? "").includes("[CURRICULUM REQUEST]"));
+    const subject = isCurriculum
+      ? "New Curriculum Request"
+      : isVolunteer
+        ? "New Volunteer Application"
+        : "New Contact Form Submission";
     await notifyAdmin({
-      subject: isVolunteer ? "New Volunteer Application" : "New Contact Form Submission",
-      body: `${body.name} (${body.email}) submitted a ${body.type} form.${body.chapter ? `\nChapter: ${body.chapter}` : ""}${body.message ? `\nMessage: ${body.message.substring(0, 200)}` : ""}`,
+      subject,
+      body: `${body.name} (${body.email}) submitted a ${isCurriculum ? "curriculum request" : body.type + " form"}.${body.chapter ? `\nChapter: ${body.chapter}` : ""}${body.message ? `\nMessage: ${body.message.substring(0, 400)}` : ""}`,
       link: "/admin/submissions",
     });
 

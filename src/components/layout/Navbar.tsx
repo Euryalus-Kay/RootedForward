@@ -17,14 +17,13 @@ const NAV_LINKS = [
       { label: "People", href: "/about?tab=people" },
     ],
   },
-  { label: "Tours", href: "/tours" },
   {
     label: "Education",
     href: "/education",
     children: [
+      { label: "Walking Tours", href: "/tours" },
       { label: "Podcast", href: "/podcasts" },
-      { label: "Virtual Tours", href: "/virtual-tours" },
-      { label: "Build the Block", href: "/game" },
+      { label: "Game", href: "/game" },
       { label: "Curriculum", href: "/curriculum" },
     ],
   },
