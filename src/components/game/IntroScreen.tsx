@@ -48,6 +48,16 @@ export function IntroScreen({
 
   useEffect(() => {
     setSaveSummary(readSaveSummary());
+    // If the player clicked "Play this seed" from the leaderboard, the
+    // seed is stashed in sessionStorage. Prefill and jump to setup.
+    if (typeof window !== "undefined") {
+      const replay = window.sessionStorage.getItem("buildTheBlock:replaySeed");
+      if (replay) {
+        setSeed(replay);
+        window.sessionStorage.removeItem("buildTheBlock:replaySeed");
+        setMode("setup");
+      }
+    }
   }, []);
 
   function toggleObjective(id: string) {

@@ -29,9 +29,13 @@ const STARTING_RESOURCES: Resources = {
   knowledge: 3,
 };
 
-const STARTING_HAND_SIZE = 6;
+const STARTING_HAND_SIZE = 5;
 const DRAW_PER_YEAR = 3;
-const MAX_HAND = 10;
+const MAX_HAND = 7;
+/** End-of-year trim target: hand is auto-trimmed (oldest discarded) to
+ *  this size before the new draws come in. Prevents un-affordable cards
+ *  from piling up indefinitely. */
+const END_TURN_TRIM_TO = 4;
 export const YEAR_STEP = 5;
 export const END_YEAR_FINAL = 2040;
 
@@ -437,6 +441,18 @@ export function reducer(state: GameState, action: GameAction): GameState {
         trust: next.resources.trust + (eraTrickle.trust ?? 0),
         knowledge: next.resources.knowledge,
       };
+
+      // Auto-trim hand to make room for new draws. The OLDEST cards
+      // (front of hand) are discarded, leaving the most recent in hand.
+      // Prevents un-affordable cards from piling up across turns.
+      if (next.hand.length > END_TURN_TRIM_TO) {
+        const trimmed = next.hand.slice(-END_TURN_TRIM_TO);
+        const dropped = next.hand.length - trimmed.length;
+        next = { ...next, hand: trimmed };
+        if (dropped > 0) {
+          next = pushMessage(next, "info", `Discarded ${dropped} unplayed card${dropped === 1 ? "" : "s"} from earlier turns.`);
+        }
+      }
 
       // Draw new cards
       const drawRng = new RNG(state.seed + ":draw:" + newYear);

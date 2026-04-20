@@ -572,7 +572,7 @@ export const CARDS: Card[] = [
     id: "tree-canopy-program",
     name: "Plant 10,000 trees",
     flavor: "10,000 trees over five years.",
-    description: "Reduces summer heat, cleans air, raises adjacent property values.",
+    description: "Plants 10,000 trees across the ward, adding a community garden tile on the first available vacant lot and raising condition across the southern blocks. Reduces summer heat, cleans air, and gradually raises adjacent property values.",
     lore: "Chicago's tree canopy is heavily concentrated in wealthy North Side neighborhoods. South and West Side blocks have measurably hotter summer temperatures, contributing to higher emergency-department visits during heat waves.",
     source: "Chicago Region Trees Initiative tree canopy assessment",
     category: "environment",
@@ -580,7 +580,15 @@ export const CARDS: Card[] = [
     cost: { capital: 2, knowledge: 1 },
     fromYear: 1980,
     toYear: 2040,
-    effect: { sustainability: 4, equity: 2 },
+    effect: {
+      sustainability: 4,
+      equity: 2,
+      transformParcels: [
+        { selector: "first-vacant:south", set: { type: "community-garden" } },
+        { selector: "block:4", delta: { condition: 6 } },
+        { selector: "block:5", delta: { condition: 6 } },
+      ],
+    },
   },
 
   /* ============================================================== *

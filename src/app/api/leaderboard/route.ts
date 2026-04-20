@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await (supabase as any)
       .from("game_runs")
       .select(
-        "id, display_name, total_score, equity_score, heritage_score, growth_score, sustainability_score, archetype, decisions_made, events_survived, notes_read, created_at"
+        "id, display_name, seed, ended_year, total_score, equity_score, heritage_score, growth_score, sustainability_score, archetype, decisions_made, events_survived, notes_read, achievements, final_state, created_at"
       )
       .order("total_score", { ascending: false })
       .limit(limit);

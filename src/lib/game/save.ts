@@ -158,6 +158,8 @@ const LOCAL_LEADERBOARD_KEY = "buildTheBlock:localLeaderboard:v1";
 export interface LocalLeaderboardEntry {
   id: string;
   display_name: string;
+  seed?: string;
+  ended_year?: number;
   total_score: number;
   equity_score: number;
   heritage_score: number;

@@ -165,7 +165,18 @@ export default function GameRoot() {
   /*  Phase: leaderboard (from menu)                             */
   /* ========================================================== */
   if (state.phase === "leaderboard") {
-    return <Leaderboard onClose={handleReturnMenu} />;
+    return (
+      <Leaderboard
+        onClose={handleReturnMenu}
+        onReplaySeed={(seed) => {
+          // Stash the seed where the IntroScreen's setup flow can pick it up
+          if (typeof window !== "undefined") {
+            window.sessionStorage.setItem("buildTheBlock:replaySeed", seed);
+          }
+          handleReturnMenu();
+        }}
+      />
+    );
   }
 
   /* ========================================================== */

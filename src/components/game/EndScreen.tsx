@@ -33,6 +33,8 @@ export function EndScreen({
     // of whether the remote API call succeeds.
     appendLocalRun({
       display_name: state.displayName || "Anonymous",
+      seed: state.seed,
+      ended_year: state.year,
       total_score: final.total,
       equity_score: final.equity,
       heritage_score: final.heritage,
