@@ -20,6 +20,19 @@ function iso(col: number, row: number) {
   return { x: (col - row) * (TILE_W / 2), y: (col + row) * (TILE_H / 2) };
 }
 
+/** Rotate (col, row) around the grid center by `step` quarter-turns
+ *  (each step = 90 degrees clockwise from the camera's perspective).
+ *  Returns the effective (col, row) used for drawing. This moves the
+ *  ward so the player can see it from four different corners while
+ *  the buildings themselves stay upright. */
+function rotated(col: number, row: number, step: number): { col: number; row: number } {
+  const s = ((step % 4) + 4) % 4;
+  if (s === 0) return { col, row };
+  if (s === 1) return { col: ROWS - 1 - row, row: col };
+  if (s === 2) return { col: COLS - 1 - col, row: ROWS - 1 - row };
+  return { col: row, row: COLS - 1 - col };
+}
+
 /* ------------------ palette helpers ------------------ */
 function shade(hex: string, amt: number): string {
   const c = hex.replace("#", "");
@@ -604,7 +617,21 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
     setZoom((z) => Math.max(0.55, Math.min(2.4, z * delta)));
   }
 
-  const shoreMinX = iso(COLS - 1, 0).x + TILE_W / 2 + 12;
+  // After rotation the east-facing edge of the ward is a different set
+  // of parcels; compute shoreline position from the actual rightmost x
+  // of all rendered tiles.
+  const shoreMinX = useMemo(() => {
+    const step = Math.floor(rotation / 90);
+    let maxX = -Infinity;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const rc = rotated(c, r, step);
+        const { x } = iso(rc.col, rc.row);
+        if (x > maxX) maxX = x;
+      }
+    }
+    return maxX + TILE_W / 2 + 12;
+  }, [rotation]);
   const swIso = iso(0, ROWS - 1);
   const neIso = iso(COLS - 1, 0);
 
@@ -721,7 +748,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
           <ellipse cx="470" cy="36" rx="28" ry="4" />
         </g>
 
-        <g transform={`translate(${panX}, ${panY}) scale(${zoom}) translate(${offsetX}, ${offsetY}) rotate(${rotation}, ${(bounds.minX + bounds.maxX) / 2}, ${(bounds.minY + bounds.maxY) / 2})`}>
+        <g transform={`translate(${panX}, ${panY}) scale(${zoom}) translate(${offsetX}, ${offsetY})`}>
           {/* Base plate (street color under tiles) */}
           {(() => {
             const nw = iso(0, 0);
@@ -745,7 +772,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
 
           {/* Parcel ground tiles with sidewalk ring */}
           {parcels.map((p) => {
-            const { x, y } = iso(p.col, p.row);
+            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
             return (
               <g key={`g-${p.id}`}>
                 {/* Sidewalk ring (lighter gray frame) */}
@@ -796,7 +823,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
             const d = designFor(p);
             if (!d) return null;
             const totalH = d.stories * d.storyH;
-            const { x, y } = iso(p.col, p.row);
+            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
             const spread = Math.min(TILE_W * 0.65, totalH * 0.22);
             return (
               <ellipse
@@ -813,7 +840,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
 
           {/* Buildings */}
           {drawList.map((p) => {
-            const { x, y } = iso(p.col, p.row);
+            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
             const inFilter = isFilteredIn(p);
             return (
               <g
