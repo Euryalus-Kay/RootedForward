@@ -110,6 +110,45 @@ export function computeRank(total: number): ScoreRank {
   return "D";
 }
 
+/** Compute a live running score during play. Same math as the final
+ *  score minus the archetype summary. Useful for the HUD. */
+export function computeLiveScore(state: GameState): { total: number; equity: number; heritage: number; growth: number; sustainability: number; bonus: number } {
+  const { equity, heritage, growth, sustainability } = state.scores;
+
+  const baseEquity = Math.round(equity * 4 + 50);
+  const baseHeritage = Math.round(heritage * 4 + 50);
+  const baseGrowth = Math.round(growth * 4 + 50);
+  const baseSustainability = Math.round(sustainability * 4 + 50);
+
+  const ltCount = state.parcels.filter((p) => p.type === "land-trust").length;
+  const protectedCount = state.parcels.filter((p) => p.protected).length;
+  const muralCount = state.parcels.filter((p) => p.type === "mural").length;
+  const transitCount = state.parcels.filter((p) => p.type === "transit").length;
+  const speculatorCount = state.parcels.filter((p) => p.owner === "speculator").length;
+  const towerCount = state.parcels.filter((p) => p.type === "tower").length;
+
+  let bonus = 0;
+  bonus += ltCount * 3;
+  bonus += protectedCount * 2;
+  bonus += muralCount * 4;
+  bonus += transitCount * 5;
+  bonus -= speculatorCount * 3;
+  bonus -= towerCount * 2;
+  bonus += state.notesRead.size * 1;
+  bonus += state.achievements.size * 4;
+
+  const total = baseEquity + baseHeritage + baseGrowth + baseSustainability + bonus;
+
+  return {
+    total,
+    equity: baseEquity,
+    heritage: baseHeritage,
+    growth: baseGrowth,
+    sustainability: baseSustainability,
+    bonus,
+  };
+}
+
 /** Compute final score with all bonuses */
 export function computeFinalScore(state: GameState): FinalScore {
   const { equity, heritage, growth, sustainability } = state.scores;

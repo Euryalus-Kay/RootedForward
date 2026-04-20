@@ -5,6 +5,7 @@ import { reducer, freshState, YEAR_STEP } from "@/lib/game/state";
 import { CARD_BY_ID } from "@/lib/game/cards";
 import { EVENT_BY_ID } from "@/lib/game/events";
 import { previewTargets } from "@/lib/game/parcels";
+import { computeLiveScore } from "@/lib/game/scoring";
 import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
 import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
@@ -112,6 +113,9 @@ export default function GameRoot() {
     ? previewTargets(state.parcels, selectedCard.effect.transformParcels, state.seed + ":card:" + state.playedCards.length)
     : [];
 
+  /* ------------- live running score ------------- */
+  const liveScore = computeLiveScore(state);
+
   /* ========================================================== */
   /*  Phase: menu                                                */
   /* ========================================================== */
@@ -205,7 +209,7 @@ export default function GameRoot() {
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Top HUD */}
         <div className="flex flex-col gap-3">
-          <ResourceHUD resources={state.resources} year={state.year} era={era} />
+          <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} />
           <div className="flex items-center justify-between">
             <p className="font-body text-xs text-warm-gray">
               Playing as <span className="font-semibold text-forest">{role.name}</span>
