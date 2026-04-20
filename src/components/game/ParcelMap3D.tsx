@@ -540,6 +540,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
   const [zoom, setZoom] = useState(1.05);
+  const [rotation, setRotation] = useState(0); // 0, 90, 180, 270 degrees
   const [dragging, setDragging] = useState(false);
   const [filter, setFilter] = useState<"all" | "housing" | "civic" | "commerce" | "protected" | "land-trust">("all");
   const dragStart = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
@@ -630,7 +631,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
     <div className="relative w-full overflow-hidden rounded-md border border-border shadow-sm"
       style={{ background: "linear-gradient(180deg, #F5F0E8 0%, #EDE5D1 55%, #E2D7BD 100%)" }}
     >
-      {/* Zoom controls (kept inside the map) */}
+      {/* Zoom + rotate controls */}
       <div className="absolute right-2 top-2 z-10 flex gap-1">
         <button
           onClick={() => setZoom((z) => Math.min(2.4, z * 1.12))}
@@ -643,7 +644,18 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
           className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 font-display text-base font-bold text-forest shadow-sm hover:bg-cream-dark"
         >−</button>
         <button
-          onClick={() => { setPanX(0); setPanY(0); setZoom(1.05); }}
+          onClick={() => setRotation((r) => (r + 90) % 360)}
+          aria-label="Rotate"
+          title="Rotate the view 90°"
+          className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 text-forest shadow-sm hover:bg-cream-dark"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9" />
+            <polyline points="3 4 3 9 8 9" />
+          </svg>
+        </button>
+        <button
+          onClick={() => { setPanX(0); setPanY(0); setZoom(1.05); setRotation(0); }}
           className="h-8 rounded-sm border border-border bg-cream/90 px-2 font-body text-[10px] font-semibold uppercase tracking-widest text-forest shadow-sm hover:bg-cream-dark"
         >Reset</button>
       </div>
@@ -653,13 +665,15 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
         <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">Parkhaven</p>
       </div>
 
-      {/* Compass */}
+      {/* Compass — rotates with the map */}
       <div className="absolute bottom-2 left-2 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-cream/90 shadow-sm">
         <svg viewBox="0 0 32 32" className="h-9 w-9">
           <circle cx="16" cy="16" r="13" fill="none" stroke="#1B3A2D" strokeWidth="0.5" opacity="0.3" />
-          <polygon points="16,3 20,16 16,14 12,16" fill="#1B3A2D" />
-          <polygon points="16,29 20,16 16,18 12,16" fill="#1B3A2D" opacity="0.25" />
-          <text x="16" y="10" textAnchor="middle" fontSize="6" fontFamily="serif" fontWeight="800" fill="#1B3A2D">N</text>
+          <g transform={`rotate(${rotation}, 16, 16)`}>
+            <polygon points="16,3 20,16 16,14 12,16" fill="#1B3A2D" />
+            <polygon points="16,29 20,16 16,18 12,16" fill="#1B3A2D" opacity="0.25" />
+            <text x="16" y="10" textAnchor="middle" fontSize="6" fontFamily="serif" fontWeight="800" fill="#1B3A2D">N</text>
+          </g>
         </svg>
       </div>
 
@@ -707,7 +721,7 @@ export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: Pa
           <ellipse cx="470" cy="36" rx="28" ry="4" />
         </g>
 
-        <g transform={`translate(${panX}, ${panY}) scale(${zoom}) translate(${offsetX}, ${offsetY})`}>
+        <g transform={`translate(${panX}, ${panY}) scale(${zoom}) translate(${offsetX}, ${offsetY}) rotate(${rotation}, ${(bounds.minX + bounds.maxX) / 2}, ${(bounds.minY + bounds.maxY) / 2})`}>
           {/* Base plate (street color under tiles) */}
           {(() => {
             const nw = iso(0, 0);

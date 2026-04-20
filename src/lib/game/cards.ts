@@ -20,7 +20,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "downzone-northern-blocks",
-    name: "Single-family overlay",
+    name: "Ban apartments north of 22nd",
     flavor: "Property owners' association politely insistent.",
     description: "Lock the northern blocks to single-family only. Raises value, prevents density, signals exclusion.",
     lore: "Through the 1950s and 60s, white aldermen used single-family zoning to do what racial covenants no longer legally could. The overlay raised property values short term and prevented the construction of two-flats and small apartment buildings that working-class families could afford.",
@@ -43,7 +43,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "upzone-transit",
-    name: "Upzone the transit corridor",
+    name: "Allow apartments near the train",
     flavor: "More homes near the train, by right.",
     description: "Allow three-flats and courtyards near transit. Adds units, intensifies pressure on existing buildings.",
     lore: "Transit-oriented development upzoning has been a major Chicago debate since 2015. Supporters note that allowing more homes near trains reduces sprawl and lowers per-household carbon. Critics note that without affordability requirements, the new units rent at market rate and accelerate displacement.",
@@ -65,7 +65,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "legalize-adu",
-    name: "Legalize ADUs citywide",
+    name: "Legalize coach houses citywide",
     flavor: "Coach houses and basement apartments, again.",
     description: "Allow accessory dwelling units on every lot. Modest gain in housing supply.",
     lore: "Chicago banned new accessory dwelling units in 1957 as part of a wave of postwar zoning crackdowns. The 2021 pilot reintroduced them in five zones. Citywide legalization is scheduled for April 1, 2026.",
@@ -87,7 +87,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "form-based-code",
-    name: "Form-based code",
+    name: "Allow shops on every block",
     flavor: "Regulate the building shape, not the use.",
     description: "Replace use-based zoning with form-based code in the central blocks. Encourages mixed use.",
     lore: "Form-based codes regulate the physical form of buildings (height, setback, frontage) rather than what happens inside them. They allow mixed use by default, which can revive walkable commercial streets. Pioneered by Andrés Duany in Seaside, Florida.",
@@ -108,7 +108,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "preservation-overlay",
-    name: "Historic preservation overlay",
+    name: "Block demolitions in central blocks",
     flavor: "Plaques, restrictions, slow demolition.",
     description: "Block demolition in the central blocks. Protects what exists, slows new construction.",
     lore: "Chicago landmark designations require Commission on Chicago Landmarks approval before any demolition or major exterior alteration. The system saved the Reliance Building. It also gets criticized for protecting buildings while displacing people.",
@@ -128,7 +128,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "demolition-moratorium",
-    name: "Demolition moratorium",
+    name: "Pause all demolitions for 2 years",
     flavor: "Nothing comes down for two years.",
     description: "Pause all demolitions in the ward. Stops displacement, freezes the housing stock.",
     lore: "The 1980s anti-demolition ordinances in Cleveland and Pittsburgh demonstrated that municipal moratoriums could stop blockbusting in real time. Chicago has used short demolition holds during landmark review.",
@@ -150,7 +150,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "build-cha-tower",
-    name: "Build a CHA tower",
+    name: "Build a 16-story public housing tower",
     flavor: "16 stories, 200 units, federal money.",
     description: "Add a public-housing tower in the south blocks. Cheap, dense, and historically catastrophic.",
     lore: "The CHA built towers because Congress would only fund concentrated public housing on cheap land, and white aldermen blocked siting in their wards. By the 1990s most of the towers were uninhabitable. The Plan for Transformation demolished them starting in 1999.",
@@ -173,7 +173,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "scattered-site",
-    name: "Scattered-site low-rise",
+    name: "Build small apartments across the ward",
     flavor: "Smaller buildings, mixed across the ward.",
     description: "Build 30 units across 10 sites. Costs more, integrates better.",
     lore: "Scattered-site public housing was the remedy ordered in Hills v. Gautreaux (1976). The CHA fought it for years; lawsuits to enforce it ran through the 2000s.",
@@ -195,7 +195,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "mixed-income",
-    name: "Mixed-income redevelopment",
+    name: "Tear down a tower for mixed-income",
     flavor: "One-third public, one-third affordable, one-third market.",
     description: "Demolish a tower, build mixed-income. Cuts concentrated poverty, displaces existing residents.",
     lore: "The Plan for Transformation promised one-for-one replacement of public housing units. The actual rate ran around 60 percent. Tens of thousands of CHA residents were displaced and many never returned.",
@@ -218,7 +218,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "rehab-in-place",
-    name: "Rehab in place",
+    name: "Renovate the towers, keep the residents",
     flavor: "$90M federal grant. The towers stay.",
     description: "Major elevator and plumbing rehab. No displacement, ongoing maintenance burden.",
     lore: "HOPE VI funding could be used for rehab as well as demolition. Chicago chose demolition for almost every major site. Boston's Mission Main and Newark's Stella Wright were notable rehab successes.",
@@ -239,7 +239,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "section-8-vouchers",
-    name: "Expand Section 8 vouchers",
+    name: "Issue 200 rental vouchers",
     flavor: "Tenants pay 30% of income, vouchers cover the rest.",
     description: "Issue 200 new vouchers. Helps families afford rent. Landlords often refuse them.",
     lore: "The Housing Choice Voucher program was created by the 1974 Housing Act and expanded under Reagan. Voucher holders face widespread discrimination from landlords. Chicago passed source-of-income protection in 1990, but enforcement is uneven.",
@@ -254,7 +254,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "right-to-counsel",
-    name: "Right to counsel for tenants",
+    name: "Free lawyers for tenants in eviction court",
     flavor: "Every tenant gets a lawyer in eviction court.",
     description: "Pay for legal representation for tenants facing eviction. Cuts evictions sharply.",
     lore: "New York City passed the first universal right to counsel for housing court in 2017. Eviction filings fell roughly 40 percent within five years. Chicago has had pilot programs but no citywide right.",
@@ -268,7 +268,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "anti-flipping-tax",
-    name: "Anti-flipping tax",
+    name: "Tax fast property flips",
     flavor: "Sell a property within 2 years and pay a steep transfer tax.",
     description: "Discourages speculative flipping. Slows price appreciation.",
     lore: "Various jurisdictions have used short-term sale taxes to dampen speculation. San Francisco voters considered a measure in 2014; it failed but inspired similar proposals nationally.",
@@ -282,7 +282,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "land-trust-acquisition",
-    name: "Community land trust acquisition",
+    name: "Buy 5 lots into a community land trust",
     flavor: "Take five parcels off the speculative market forever.",
     description: "Purchase land into a permanent community trust. Locks affordability for the duration of the lease.",
     lore: "The Burlington Community Land Trust in Vermont, founded 1984, holds about 565 homes and 2,200 rental units. Resale formulas keep prices appreciating slowly enough that the units remain affordable across generations.",
@@ -303,7 +303,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "tenant-opportunity-purchase",
-    name: "Tenant opportunity to purchase",
+    name: "First right of refusal for tenants",
     flavor: "Tenants get first right of refusal when their building goes up for sale.",
     description: "Slows speculative resale. Tenants can pool to buy as a co-op.",
     lore: "Washington, D.C.'s Tenant Opportunity to Purchase Act (TOPA) dates to 1980 and has produced thousands of co-op conversions. Chicago has discussed TOPA repeatedly without passing one.",
@@ -317,7 +317,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "modular-affordable",
-    name: "Modular affordable construction",
+    name: "Build 20 factory-made affordable units",
     flavor: "Factory-built units, faster and cheaper.",
     description: "20 modular units in 6 months instead of 24.",
     lore: "Modular construction can cut build time roughly in half but has struggled with quality control and union pushback in Chicago. Boston-based Factory OS has been a notable West Coast case.",
@@ -335,7 +335,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "establish-tif",
-    name: "Establish a TIF district",
+    name: "Freeze property tax to fund projects (TIF)",
     flavor: "Freeze the property-tax base for 23 years.",
     description: "Capture future tax growth in a TIF fund. Subsidizes infrastructure or developers.",
     lore: "Chicago has 124 active TIF districts capturing $1.36 billion in 2023, about 42 percent of all property-tax growth. Most TIF dollars have historically gone to downtown projects rather than the disinvested neighborhoods the program was originally meant to help.",
@@ -355,7 +355,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "tif-affordable-housing",
-    name: "Direct TIF to affordable housing",
+    name: "Spend TIF dollars on affordable housing",
     flavor: "Captured property tax pays for permanent affordable units.",
     description: "Spends TIF dollars on affordable construction. Cuts available capital but raises equity.",
     lore: "About 25 percent of Chicago TIF dollars go to housing in any given year, but only a small share of that is permanently affordable. Activists have pushed for a much higher share since the early 2010s.",
@@ -370,7 +370,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "tif-sunset",
-    name: "TIF sunset clause",
+    name: "End the TIF early, send tax back to schools",
     flavor: "Roll back the TIF early. Property tax flows to schools again.",
     description: "Ends an active TIF. Restores tax base to CPS.",
     lore: "Chicago has surplused several TIFs early under public pressure, with funds returned to schools. The 2017 surplus alone returned about $200M to CPS.",
@@ -385,7 +385,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "developer-impact-fee",
-    name: "Developer impact fee",
+    name: "Charge new construction a community fee",
     flavor: "New construction pays into a community-benefits fund.",
     description: "Charges new market-rate developments a per-unit fee.",
     lore: "Impact fees are widespread on the West Coast (San Francisco, Berkeley, Oakland). Chicago's ARO in-lieu fee functions similarly but is paid only by ARO-triggered developments, not all new construction.",
@@ -399,7 +399,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "vacancy-tax",
-    name: "Vacant property tax",
+    name: "Tax empty buildings",
     flavor: "Empty buildings pay a steep annual fee.",
     description: "Pressures absentee owners to sell or rehab.",
     lore: "Vancouver's Empty Homes Tax, started in 2017, brought thousands of vacant homes onto the rental market within two years. Oakland passed its own version in 2018.",
@@ -419,7 +419,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "down-payment-assistance",
-    name: "Down-payment assistance",
+    name: "$30K down-payment grants for first homes",
     flavor: "$30K toward first homes, no repayment required.",
     description: "Helps long-term renters become owners. Limited number of slots per year.",
     lore: "Chicago's Building Neighborhoods and Affordable Homes Program has provided down-payment assistance since the 1990s. The program has also been criticized for steering Black buyers into still-redlined neighborhoods.",
@@ -433,7 +433,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "redlining-investigation",
-    name: "Investigate continued redlining",
+    name: "Sue banks for ongoing redlining",
     flavor: "Disparity studies, public hearings, news coverage.",
     description: "Forces banks to lend equitably. Slow but durable.",
     lore: "The 2018 Reveal investigation 'Kept Out' found significant ongoing lending discrimination in 61 metro areas including Chicago, despite the Fair Housing Act of 1968 and the Community Reinvestment Act of 1977.",
@@ -448,7 +448,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "fund-cra-banks",
-    name: "Recruit a CRA-active bank",
+    name: "Open a community-development bank branch",
     flavor: "A community-development bank opens a Parkhaven branch.",
     description: "Improves access to credit. Reverses some long-term redlining.",
     lore: "Community Reinvestment Act ratings affect bank merger approval, which gives the federal government some leverage on local lending patterns. South Side Community Federal Credit Union and Self-Help Credit Union are examples of CRA-driven local lenders.",
@@ -466,7 +466,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "accept-expressway",
-    name: "Accept the expressway",
+    name: "Approve a 6-lane expressway through the ward",
     flavor: "Federal money. A six-lane corridor through the C-graded blocks.",
     description: "Demolishes 7 parcels. Brings jobs and air pollution.",
     lore: "The Federal-Aid Highway Act of 1956 funded the urban interstates. Mayor Daley widened the Dan Ryan in 1962 specifically to keep Black residents east of the white South Side. The expressway demolished thousands of housing units.",
@@ -491,7 +491,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "decline-expressway",
-    name: "Decline the expressway",
+    name: "Reject the expressway",
     flavor: "Federal money walks. Parkhaven flagged uncooperative.",
     description: "Saves the parcels. Loses the funding.",
     lore: "Few cities successfully fought interstate routings, but those that did, like Greenwich Village under Jane Jacobs against the Lower Manhattan Expressway, preserved their neighborhood fabric.",
@@ -505,7 +505,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "transit-extension",
-    name: "Red Line Extension station",
+    name: "Bring the Red Line train to Parkhaven",
     flavor: "$1.2B, four years to build, 40 percent land-value bump.",
     description: "Adds a train station. Activates surrounding parcels.",
     lore: "The Red Line Extension cost $5.75B for 5.6 miles and four stations, fully funded by an FTA grant signed in December 2024. CTA projects $1.7B in associated real-estate activity. Without preservation overlays first, the activity becomes displacement.",
@@ -528,7 +528,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "bus-rapid-transit",
-    name: "Bus rapid transit corridor",
+    name: "Build a fast-bus corridor",
     flavor: "Dedicated lanes, level boarding, signal priority.",
     description: "Faster bus service through the central blocks.",
     lore: "Cleveland's HealthLine BRT, opened 2008, generated $9.5B in adjacent investment over its first decade. Chicago's Ashland BRT was proposed in 2013 and has stalled.",
@@ -542,7 +542,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "protected-bike-lanes",
-    name: "Protected bike network",
+    name: "Build protected bike lanes",
     flavor: "Concrete bollards, not paint.",
     description: "Adds safe cycling infrastructure. Reduces car dependence.",
     lore: "Protected bike lanes are correlated with significant drops in cyclist fatalities. Chicago has built a partial network since 2011. Coverage is heavily concentrated on the North Side.",
@@ -556,7 +556,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "alley-permeable",
-    name: "Permeable alley program",
+    name: "Replace asphalt alleys with permeable surface",
     flavor: "Replace asphalt with permeable pavers.",
     description: "Reduces flooding, lowers urban heat.",
     lore: "Chicago's Green Alley Program, launched 2006, has converted hundreds of alleys to permeable surfaces. The city saves on stormwater management and reduces basement flooding.",
@@ -570,7 +570,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "tree-canopy-program",
-    name: "Restore the tree canopy",
+    name: "Plant 10,000 trees",
     flavor: "10,000 trees over five years.",
     description: "Reduces summer heat, cleans air, raises adjacent property values.",
     lore: "Chicago's tree canopy is heavily concentrated in wealthy North Side neighborhoods. South and West Side blocks have measurably hotter summer temperatures, contributing to higher emergency-department visits during heat waves.",
@@ -588,7 +588,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "tenant-union",
-    name: "Support a tenant union",
+    name: "Help tenants form a union",
     flavor: "Building-by-building organizing, then citywide.",
     description: "Builds organized power. Cuts evictions, raises trust slowly.",
     lore: "The Lifton Building tenants in Uptown Chicago organized one of the city's first known tenant unions in 1969. The Autonomous Tenants Union, active in Albany Park since 2017, has won several rent strikes.",
@@ -602,7 +602,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "contract-buyers-strike",
-    name: "Back the Contract Buyers League",
+    name: "Back the 1968 contract-buyers strike",
     flavor: "500 families withhold contract payments.",
     description: "Forces speculator renegotiations. Some families keep their homes.",
     lore: "The Contract Buyers League's 1968-1971 strike was the largest organized resistance to predatory home-sale practices in U.S. history. Some families won renegotiated terms. Many lost their homes anyway.",
@@ -617,7 +617,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "fair-housing-tester",
-    name: "Fair-housing tester program",
+    name: "Send paired auditors to catch landlord discrimination",
     flavor: "Paired tests catch landlords discriminating.",
     description: "Documents and prosecutes housing discrimination.",
     lore: "Tester programs send paired auditors of different races to inquire about housing. The systematic differences they document have been the basis for many federal fair housing cases. The Chicago Lawyers' Committee for Civil Rights ran an active tester program through the 2010s.",
@@ -631,7 +631,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "youth-research-cohort",
-    name: "Youth research cohort",
+    name: "Hire high-school students as researchers",
     flavor: "High-school students lead the next round of research.",
     description: "Builds long-term knowledge. Pays back over the next decade.",
     lore: "Rooted Forward's own model. Youth-led research cohorts in Chicago, Detroit, and Philadelphia have produced policy briefs cited by city councils.",
@@ -645,7 +645,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "community-benefits-agreement",
-    name: "Community benefits agreement",
+    name: "Force a developer to sign a community contract",
     flavor: "Developer signs an enforceable contract with the neighborhood.",
     description: "Major project must hire locally, fund affordable units, or build amenities.",
     lore: "The Staples Center CBA in Los Angeles (2001) was the first major community benefits agreement and became a template. Chicago has seen smaller CBAs around the Obama Presidential Center and the United Center.",
@@ -659,7 +659,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "anti-displacement-coalition",
-    name: "Anti-displacement coalition",
+    name: "Build an anti-displacement coalition",
     flavor: "Pilsen Alliance, LSNA, Logan Square Neighborhood Association.",
     description: "Cross-neighborhood coalition. Long-term political muscle.",
     lore: "The Pilsen Alliance and LSNA have been continuously active since the 1970s, pushing back on displacement pressure and shaping Chicago's affordable housing policy.",
@@ -677,7 +677,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "small-business-grant",
-    name: "Small-business grants",
+    name: "$25K microgrants for corner shops",
     flavor: "$25K microgrants to neighborhood shops.",
     description: "Stabilizes corner stores, bakeries, barbershops.",
     lore: "The Neighborhood Opportunity Fund, established in Chicago in 2016, taxes downtown developers to fund neighborhood-business grants on the South and West Sides.",
@@ -691,7 +691,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "cultural-corridor",
-    name: "Designate a cultural corridor",
+    name: "Protect a cultural shopping strip",
     flavor: "Murals, banners, cultural-business protections.",
     description: "Recognizes and protects cultural identity. Reduces displacement of cultural institutions.",
     lore: "Pilsen's 18th Street and the Chinatown gateway are examples. Cultural-corridor designations don't stop displacement on their own, but they create a political and aesthetic baseline that organized residents can defend.",
@@ -705,7 +705,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "neighborhood-mural",
-    name: "Commission a public mural",
+    name: "Paint a neighborhood mural",
     flavor: "Hector Duarte, William Walker, the next generation.",
     description: "Adds a mural that builds community memory.",
     lore: "Chicago's mural movement dates to the late 1960s, with William Walker's 'Wall of Respect' (1967) at 43rd and Langley as the foundational piece. Pilsen's mural tradition is one of the densest in the country.",
@@ -724,7 +724,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "branch-library",
-    name: "Branch library",
+    name: "Open a branch library",
     flavor: "A new Carnegie-style library opens.",
     description: "Free internet, after-school programs, civic anchor.",
     lore: "Chicago Public Library has 81 branches; the South Side and West Side have systematically smaller and older branches than the North. Investments in branch libraries correlate with measurable improvements in adjacent property stability.",
@@ -744,7 +744,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "community-clinic",
-    name: "Community health clinic",
+    name: "Open a sliding-scale health clinic",
     flavor: "Free or sliding-scale primary care.",
     description: "Adds clinic; long-term improvement in resident health.",
     lore: "Chicago's Federally Qualified Health Centers serve over a million patients annually. The South Side network, including TCA Health and Friend Family Health Center, has long waitlists.",
@@ -764,7 +764,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "community-garden",
-    name: "Community garden",
+    name: "Turn a vacant lot into a community garden",
     flavor: "Vacant lot, raised beds, neighborhood plots.",
     description: "Activates a vacant lot. Modest food security gain.",
     lore: "Chicago's NeighborSpace, a nonprofit land trust for community gardens, holds about 130 sites. Garden sites are correlated with reduced crime and higher neighborhood satisfaction in adjacent blocks.",
@@ -788,7 +788,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "rebuild-school",
-    name: "Rebuild a neighborhood school",
+    name: "Renovate the local elementary school",
     flavor: "New building, new lab, new gym, same kids.",
     description: "Renovates the local elementary school.",
     lore: "Chicago closed 50 neighborhood schools in 2013, the largest single round of school closures in U.S. history. Almost all closures were on the South and West Sides. The closures were challenged in federal court and the schools were never reopened.",
@@ -822,7 +822,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "fund-schools-fairly",
-    name: "Equalize CPS funding",
+    name: "Equalize per-pupil school funding",
     flavor: "End the per-pupil funding gap.",
     description: "Shifts resources to underfunded schools.",
     lore: "Chicago Public Schools has one of the largest per-pupil funding gaps in the country, driven by reliance on local property tax. Black and Latino students attend schools funded at thousands of dollars less per pupil than majority-white CPS schools.",
@@ -840,7 +840,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "industrial-cleanup",
-    name: "Brownfield cleanup",
+    name: "Clean up contaminated industrial land",
     flavor: "EPA Superfund, soil remediation, two years.",
     description: "Restores contaminated land for use.",
     lore: "Chicago has dozens of brownfield sites, mostly from industrial uses on the South and West Sides. The federal Brownfields program funds cleanup. Once cleaned, the sites can host housing, parks, or commercial use.",
@@ -859,7 +859,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "rooftop-solar",
-    name: "Rooftop solar incentives",
+    name: "Subsidize rooftop solar",
     flavor: "Federal tax credit plus city rebate.",
     description: "Lowers utility bills, cuts emissions.",
     lore: "The Inflation Reduction Act of 2022 expanded federal solar incentives substantially. Chicago has historically lagged Sunbelt cities on adoption. Rebates and bulk-buy programs have accelerated installations on the West Side.",
@@ -873,7 +873,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "lead-pipe-replacement",
-    name: "Replace lead service lines",
+    name: "Replace lead water pipes",
     flavor: "Federal Lead Service Line Replacement program.",
     description: "Replaces lead pipes to homes. Long-term health win.",
     lore: "Chicago has the most lead service lines of any U.S. city, an estimated 400,000. Federal lead-pipe replacement funding from the 2021 infrastructure law has begun a multi-decade program.",
@@ -891,7 +891,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "publish-disparity-study",
-    name: "Publish a disparity study",
+    name: "Publish a racial-disparity report",
     flavor: "Numbers in print. Hard to ignore.",
     description: "Quantifies racial disparities in lending, contracting, schools.",
     lore: "Disparity studies are required for cities to defend race-conscious contracting programs after Croson v. City of Richmond (1989). Chicago publishes one every few years.",
@@ -905,7 +905,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "document-history",
-    name: "Document the neighborhood history",
+    name: "Record oral histories from longtime residents",
     flavor: "Oral histories, archived photos, walking-tour scripts.",
     description: "Builds heritage durably. Slow-burn equity gain.",
     lore: "The Chicago Public Library's StoryCorps initiative and the South Side Home Movie Project have preserved oral and visual histories that would otherwise be lost.",
@@ -923,7 +923,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "speculator-buyout",
-    name: "Court a speculator",
+    name: "Sell 5 lots to an out-of-state speculator",
     flavor: "Quietly invite outside capital. Watch values rise.",
     description: "Speculator buys 5 parcels. Capital gain. Trust loss.",
     lore: "Tax-lien speculators have bought thousands of South and West Side parcels since the 2008 crisis, often holding them empty until prices rise. The Cook County Land Bank Authority was created in 2013 in part to push back on this practice.",
@@ -944,7 +944,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "luxury-tower-deal",
-    name: "Approve a luxury tower",
+    name: "Approve an 80-unit luxury tower",
     flavor: "Gleaming glass, 80 units, no affordability.",
     description: "Big tax bump. Catalyzes gentrification of adjacent blocks.",
     lore: "Luxury towers without affordability requirements were the default outcome of Chicago's pre-2015 zoning regime. The 2021 ARO update addressed this in displacement-risk zones.",
@@ -966,7 +966,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "evict-noncompliant-tenants",
-    name: "Aggressive code enforcement",
+    name: "Issue building citations aggressively",
     flavor: "Issue building citations. Push out absentee landlords.",
     description: "Drives renovation. Some legitimate landlords lose buildings too.",
     lore: "Aggressive code enforcement is a documented gentrification tactic. It can accelerate displacement under the cover of public-safety concerns. Code-enforcement displacement was a major theme in 1980s gentrification studies of Park Slope, Brooklyn.",
@@ -984,7 +984,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "sign-summit-agreement",
-    name: "Sign the Summit Agreement",
+    name: "Sign Daley's Summit Agreement (1966)",
     flavor: "Daley calls it a victory. The marches stop.",
     description: "Quiet on the streets, no enforcement teeth.",
     lore: "The 1966 Summit Agreement ended the Chicago Open Housing Movement marches. The agreement contained vague language and no enforcement mechanism. Daley signed and then did not enforce it.",
@@ -1002,7 +1002,7 @@ export const CARDS: Card[] = [
    * ============================================================== */
   {
     id: "preservation-overlay-rle",
-    name: "Lock in preservation before the RLE",
+    name: "Lock in tenant protections before the train arrives",
     flavor: "Pass the overlays. Then announce the train.",
     description: "Rights of first refusal, demolition holds, anti-flipping. Then transit.",
     lore: "Pre-emptive preservation before transit announcements is the most effective known anti-displacement tactic. Few American cities have done it. Boston's Fairmount Indigo CDC partnerships and the LA Metro Transit-Oriented Communities program are partial examples.",
@@ -1021,7 +1021,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "regional-fair-share",
-    name: "Regional fair-share housing",
+    name: "Force suburbs to take their share of affordable units",
     flavor: "Suburbs absorb their share of affordable units.",
     description: "Spreads the affordability burden across the metro.",
     lore: "New Jersey's Mount Laurel doctrine, established 1975 and codified in 1985, requires every municipality to plan for its 'fair share' of regional affordable housing. The Chicago metro has nothing comparable.",
@@ -1035,7 +1035,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "reparations-fund",
-    name: "Local reparations fund",
+    name: "Fund local reparations",
     flavor: "Targeted compensation for descendants of contract buyers and demolished blocks.",
     description: "Cash transfers and homeownership support.",
     lore: "Evanston, Illinois, established the country's first municipal reparations program in 2021, offering $25,000 housing grants to qualifying Black residents. Chicago has discussed but not enacted a similar program.",
@@ -1340,7 +1340,7 @@ export const CARDS: Card[] = [
   /* ---------- Trap cards: look strong, hurt later ---------- */
   {
     id: "tax-abatement-bait",
-    name: "Tax abatement for big tenants",
+    name: "Cut taxes for a corporate headquarters",
     flavor: "Twenty-year break to keep the headquarters in town.",
     description: "Big short-term Capital, but starves the property-tax base for two decades.",
     lore: "Chicago's 6b property tax incentive for industrial properties cuts assessments to 10% for the first 10 years, doubling at year 11, full at 13. Critics argue these abatements transfer billions out of the school fund.",
@@ -1354,7 +1354,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "fast-permit-luxury",
-    name: "Fast-track luxury permits",
+    name: "Fast-track permits for luxury towers",
     flavor: "Cut the review timeline. Shovels go in by Q3.",
     description: "Rapid Growth and Capital. Sets a gentrification flag that hits adjacent blocks later.",
     lore: "When Chicago waived 90-day environmental reviews for a 2018 luxury tower, displacement pressure on the adjacent rental blocks measurably accelerated within 18 months.",
@@ -1368,7 +1368,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "convention-bid",
-    name: "Bid for a major convention",
+    name: "Bid for a national convention",
     flavor: "Big show, big build, big hotel rooms.",
     description: "Boom now, hangover later. Capital up, displacement risk up.",
     lore: "Chicago has spent hundreds of millions chasing the Olympics, the DNC, and other mega-events. McCormick Place expansions displaced 15,000 people in the South Loop between 1958 and 1996.",
@@ -1382,7 +1382,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "police-expansion",
-    name: "Expand the police district",
+    name: "Add 300 police officers and 2 stations",
     flavor: "Two new stations, three hundred new officers.",
     description: "Order rises short-term, trust collapses long-term.",
     lore: "Studies of large-scale policing investments find short-term reductions in some crime types but long-term erosion of community trust, especially in over-policed neighborhoods.",
@@ -1396,7 +1396,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "casino-license",
-    name: "Approve a riverside casino",
+    name: "License a riverside casino",
     flavor: "Tax revenue, jobs, and a steady stream of late-night noise.",
     description: "Huge Capital influx with social costs that show up later.",
     lore: "Bally's Chicago Casino, opened in stages 2023-2026, was projected to generate $200M annual tax revenue. Public-health researchers flagged increased gambling addiction and household financial stress.",
@@ -1410,7 +1410,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "remove-ada-curb-ramps",
-    name: "Defer ADA curb-ramp upgrades",
+    name: "Skip ADA curb-ramp upgrades to save money",
     flavor: "Save the line item. Cite budget pressure.",
     description: "Saves Capital now. Future events will exact a much higher cost.",
     lore: "Cities deferring ADA compliance face costly federal lawsuits. The 2020 Chicago consent decree on accessibility is funded at $2 billion over 30 years.",
@@ -1470,7 +1470,7 @@ export const CARDS: Card[] = [
   /* ---------- High-risk high-reward ---------- */
   {
     id: "alderman-recall",
-    name: "Recall the aldermanic veto",
+    name: "Strip aldermen of their veto power",
     flavor: "Strip aldermen of their downzoning power.",
     description: "Massive long-term equity gain. Massive political cost up front.",
     lore: "Chicago's aldermanic prerogative lets a single alderman block all developments in their ward, including affordable housing. Reformers have argued it is the single biggest blocker of fair-share housing.",
@@ -1484,7 +1484,7 @@ export const CARDS: Card[] = [
   },
   {
     id: "land-bank-bulk-acquisition",
-    name: "Bulk acquire from the Land Bank",
+    name: "Buy 30 distressed lots from the Land Bank",
     flavor: "Buy 30 distressed parcels in one go.",
     description: "Permanent neighborhood control. Big up-front price tag.",
     lore: "The Cook County Land Bank Authority has acquired over 5,000 distressed properties since 2013 and resold them to community-aligned buyers at substantial discounts.",
@@ -2114,9 +2114,9 @@ export const CARDS: Card[] = [
   { id: "micro-lending-program", name: "Micro-lending revolving fund", flavor: "$5K to $25K loans, flexible terms.", description: "Small-biz fuel on the margin.", lore: "Accion Chicago and Kiva Chicago have provided thousands of micro-loans to Chicago entrepreneurs.", source: "Accion Chicago impact reports", category: "finance", rarity: "common", cost: { capital: 2 }, fromYear: 2000, toYear: 2040, effect: { equity: 2, growth: 2 } },
 
   // TRAP (short-term good, long-term bad)
-  { id: "sell-air-rights", name: "Sell downtown air rights", flavor: "Quick cash, permanent shadow.", description: "Capital now. Daylight lost forever.", lore: "Chicago's Vista Tower (St. Regis) sits on air rights sold by the city decades earlier.", source: "City of Chicago air rights transactions", category: "finance", rarity: "uncommon", cost: { power: 2 }, fromYear: 2000, toYear: 2040, effect: { capital: 5, sustainability: -3, heritage: -2 } },
-  { id: "privatize-parking", name: "Privatize parking meters", flavor: "$1.2B up front. 75-year contract. No take-backs.", description: "Disaster in slow motion.", lore: "Chicago's 2008 parking meter deal is widely considered one of the worst urban public-finance deals in US history.", source: "Coverage of Chicago parking meter privatization", category: "finance", rarity: "uncommon", cost: { power: 2 }, fromYear: 2005, toYear: 2040, effect: { capital: 6, equity: -3, sustainability: -3, growth: -2 } },
-  { id: "hire-consultants", name: "Hire high-priced urban consultants", flavor: "McKinsey partners walk through the ward.", description: "Impressive slide deck. Hollow outcomes.", lore: "Chicago has spent hundreds of millions on consulting contracts, with mixed public-outcome evidence.", source: "City of Chicago consulting procurement records", category: "finance", rarity: "common", cost: { capital: 3 }, fromYear: 1990, toYear: 2040, effect: { capital: -3, knowledge: 2, equity: -1, growth: -1 } },
+  { id: "sell-air-rights", name: "Sell downtown air rights for cash", flavor: "Quick cash, permanent shadow.", description: "Capital now. Daylight lost forever.", lore: "Chicago's Vista Tower (St. Regis) sits on air rights sold by the city decades earlier.", source: "City of Chicago air rights transactions", category: "finance", rarity: "uncommon", cost: { power: 2 }, fromYear: 2000, toYear: 2040, effect: { capital: 5, sustainability: -3, heritage: -2 } },
+  { id: "privatize-parking", name: "Lease the parking meters to a private company", flavor: "$1.2B up front. 75-year contract. No take-backs.", description: "Disaster in slow motion.", lore: "Chicago's 2008 parking meter deal is widely considered one of the worst urban public-finance deals in US history.", source: "Coverage of Chicago parking meter privatization", category: "finance", rarity: "uncommon", cost: { power: 2 }, fromYear: 2005, toYear: 2040, effect: { capital: 6, equity: -3, sustainability: -3, growth: -2 } },
+  { id: "hire-consultants", name: "Hire McKinsey to study the ward", flavor: "McKinsey partners walk through the ward.", description: "Impressive slide deck. Hollow outcomes.", lore: "Chicago has spent hundreds of millions on consulting contracts, with mixed public-outcome evidence.", source: "City of Chicago consulting procurement records", category: "finance", rarity: "common", cost: { capital: 3 }, fromYear: 1990, toYear: 2040, effect: { capital: -3, knowledge: 2, equity: -1, growth: -1 } },
 
   // COMMUNITY SAFETY
   { id: "streetlights-restore", name: "Restore broken streetlights", flavor: "Citywide sweep. Every corner.", description: "Quick visible safety gain.", lore: "Chicago's broken-streetlight reporting app became a national model for municipal service tracking.", source: "City of Chicago Streetlight reporting data", category: "infrastructure", rarity: "common", cost: { capital: 1 }, fromYear: 1995, toYear: 2040, effect: { equity: 2, sustainability: 1 } },
