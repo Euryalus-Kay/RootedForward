@@ -8,6 +8,7 @@ import { ACHIEVEMENT_BY_ID } from "@/lib/game/achievements";
 import { OBJECTIVES_BY_ID, completedObjectives } from "@/lib/game/objectives";
 import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { clearSave, appendLocalRun } from "@/lib/game/save";
+import { checkSynergies } from "@/lib/game/synergy";
 
 export function EndScreen({
   state,
@@ -220,6 +221,42 @@ export function EndScreen({
             {(ROLES[state.roleKey as RoleKey] ?? ROLES.alderman).mottoLine}
           </p>
         </div>
+
+        {/* Strategic synergies */}
+        {(() => {
+          const { fired } = checkSynergies(state);
+          if (fired.length === 0) return null;
+          return (
+            <div className="mt-12 border-t border-border pt-8">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                Strategic arcs
+              </p>
+              <p className="mt-1 font-body text-sm text-ink/65">
+                Multi-decade combinations you built. Each adds to your bonus.
+              </p>
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+                {fired.map((s) => (
+                  <div
+                    key={s.id}
+                    className="rounded-sm border-2 border-forest/40 bg-forest/5 p-3"
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="font-display text-sm font-semibold text-forest">
+                        {s.name}
+                      </p>
+                      <span className="font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                        +{s.bonus}
+                      </span>
+                    </div>
+                    <p className="mt-1 font-body text-xs text-ink/70">
+                      {s.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Achievements */}
         {state.achievements.size > 0 && (

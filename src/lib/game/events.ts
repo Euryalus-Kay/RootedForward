@@ -1152,8 +1152,13 @@ EVENTS.push(
 // EVENTS array literal above so the diff on this file stays minimal.
 import { EXPANSION_EVENTS } from "./events-expansion";
 import { EXPANSION_EVENTS_2 } from "./events-expansion-2";
+import { GATED_EVENTS } from "./events-gated";
 EVENTS.push(...EXPANSION_EVENTS);
 EVENTS.push(...EXPANSION_EVENTS_2);
+// Gated events fire only when the prerequisite flags are present. These
+// are the branch-points that make playthroughs feel different depending
+// on earlier strategic choices.
+EVENTS.push(...GATED_EVENTS);
 
 /** Map for fast lookup */
 export const EVENT_BY_ID: Map<string, GameEvent> = new Map(EVENTS.map((e) => [e.id, e]));

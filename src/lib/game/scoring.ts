@@ -12,6 +12,7 @@ import type {
   ScoreRank,
 } from "./types";
 import { completedObjectives, totalObjectiveReward } from "./objectives";
+import { checkSynergies } from "./synergy";
 
 export const ARCHETYPES: Record<ArchetypeKey, Archetype> = {
   reformer: {
@@ -180,6 +181,10 @@ export function computeFinalScore(state: GameState): FinalScore {
   // Objectives chosen at start grant their reward if completed
   const objReward = totalObjectiveReward(state, state.objectives);
   bonus += objReward;
+
+  // Synergy combos reward coherent multi-decade strategic arcs.
+  const synergy = checkSynergies(state);
+  bonus += synergy.totalBonus;
 
   const total = baseEquity + baseHeritage + baseGrowth + baseSustainability + bonus;
 

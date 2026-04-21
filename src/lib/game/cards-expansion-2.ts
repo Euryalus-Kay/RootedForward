@@ -277,6 +277,7 @@ const SCHOOL_CARDS: Card[] = [
       equity: 4,
       heritage: 2,
       sustainability: 2,
+      setFlag: "community-schools-active",
       transformParcels: [
         { selector: "type:school", delta: { condition: 12, memory: 6 } },
       ],
@@ -390,7 +391,7 @@ const ENV_CARDS: Card[] = [
     cost: { capital: 3 },
     fromYear: 2010,
     toYear: 2040,
-    effect: { sustainability: 4, heritage: 1, equity: 1 },
+    effect: { sustainability: 4, heritage: 1, equity: 1, setFlag: "green-infrastructure" },
   },
   {
     id: "exp2-solar-coop-pilot",
@@ -406,7 +407,7 @@ const ENV_CARDS: Card[] = [
     cost: { capital: 3, knowledge: 2 },
     fromYear: 2015,
     toYear: 2040,
-    effect: { sustainability: 4, equity: 4, growth: 1 },
+    effect: { sustainability: 4, equity: 4, growth: 1, setFlag: "solar-coop-active" },
   },
   {
     id: "exp2-urban-ag-network",

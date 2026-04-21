@@ -43,6 +43,7 @@ const DEPRESSION_POSTWAR_CARDS: Card[] = [
       equity: 5,
       growth: 2,
       trust: 2,
+      setFlag: "municipal-lending",
       transformParcels: [
         { selector: "holc:D", delta: { value: 4, condition: 3 } },
       ],
@@ -1122,6 +1123,7 @@ const DISINVESTMENT_CARDS: Card[] = [
       growth: 2,
       heritage: 1,
       capital: 2,
+      setFlag: "cra-office",
       transformParcels: [
         { selector: "holc:D", delta: { value: 4, condition: 3 } },
       ],
@@ -1239,6 +1241,7 @@ const DISINVESTMENT_CARDS: Card[] = [
       heritage: 3,
       equity: 4,
       sustainability: 2,
+      setFlag: "tower-rehabbed",
       transformParcels: [
         { selector: "type:tower", set: { type: "rehab-tower" }, delta: { condition: 40 } },
       ],
@@ -1594,6 +1597,7 @@ const MODERN_CARDS: Card[] = [
       heritage: 3,
       sustainability: 3,
       growth: -1,
+      setFlag: "606-mitigated",
     },
     glossary: ["Gentrification", "Displacement"],
   },
@@ -1656,6 +1660,7 @@ const MODERN_CARDS: Card[] = [
       sustainability: 5,
       equity: 3,
       heritage: 1,
+      setFlag: "heat-mitigation-active",
       transformParcels: [
         { selector: "all", delta: { condition: 2 } },
       ],
@@ -1679,6 +1684,7 @@ const MODERN_CARDS: Card[] = [
       equity: 4,
       growth: 3,
       sustainability: 2,
+      setFlag: "municipal-broadband",
     },
   },
   {
@@ -1700,6 +1706,7 @@ const MODERN_CARDS: Card[] = [
       equity: 2,
       sustainability: 1,
       heritage: 1,
+      setFlag: "pb-active",
     },
   },
   {
@@ -1720,6 +1727,7 @@ const MODERN_CARDS: Card[] = [
       equity: 5,
       heritage: 2,
       trust: 2,
+      setFlag: "rtc-active",
     },
     glossary: ["Displacement"],
   },
@@ -1809,6 +1817,7 @@ const MODERN_CARDS: Card[] = [
       equity: 3,
       heritage: 1,
       growth: 1,
+      setFlag: "climate-plan-active",
     },
   },
   {
@@ -1830,6 +1839,7 @@ const MODERN_CARDS: Card[] = [
       growth: 2,
       heritage: 2,
       sustainability: 1,
+      setFlag: "baby-bonds-active",
     },
   },
   {
@@ -1850,6 +1860,7 @@ const MODERN_CARDS: Card[] = [
       equity: 5,
       heritage: 3,
       trust: 3,
+      setFlag: "violence-interrupters-active",
     },
   },
   {
@@ -1870,6 +1881,7 @@ const MODERN_CARDS: Card[] = [
       sustainability: 5,
       equity: 4,
       growth: 1,
+      setFlag: "solar-coop-active",
     },
   },
   {
@@ -1911,6 +1923,7 @@ const MODERN_CARDS: Card[] = [
       equity: 6,
       heritage: 3,
       trust: 2,
+      setFlag: "reparations-passed",
       transformParcels: [
         { selector: "holc:D", delta: { value: 3, condition: 3, memory: 6 } },
       ],
@@ -1935,6 +1948,7 @@ const MODERN_CARDS: Card[] = [
       heritage: 1,
       growth: 2,
       sustainability: 2,
+      setFlag: "gi-pilot-active",
     },
   },
   {
@@ -1955,6 +1969,7 @@ const MODERN_CARDS: Card[] = [
       heritage: 5,
       equity: 2,
       sustainability: 1,
+      setFlag: "cultural-district",
       transformParcels: [
         { selector: "type:commercial", delta: { memory: 8 } },
         { selector: "type:mural", delta: { memory: 8 } },
@@ -2003,6 +2018,7 @@ const MODERN_CARDS: Card[] = [
       equity: 4,
       heritage: 2,
       sustainability: 1,
+      setFlag: "land-bank-active",
       transformParcels: [
         { selector: "type:vacant", set: { owner: "land-trust" } },
       ],
@@ -2051,6 +2067,7 @@ const MODERN_CARDS: Card[] = [
       heritage: 2,
       sustainability: 1,
       growth: -1,
+      setFlag: "good-cause-active",
     },
   },
   {

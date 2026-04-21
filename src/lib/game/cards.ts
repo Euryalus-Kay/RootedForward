@@ -15,6 +15,7 @@
 import type { Card } from "./types";
 import { EXPANSION_CARDS } from "./cards-expansion";
 import { EXPANSION_CARDS_2 } from "./cards-expansion-2";
+import { FOLLOWUP_CARDS } from "./cards-followups";
 
 export const CARDS_CORE: Card[] = [
   /* ============================================================== *
@@ -2213,10 +2214,16 @@ export const CARDS_CORE: Card[] = [
   { id: "emergency-rental-fund", name: "Emergency rental fund", flavor: "One-time assistance, no questions.", description: "Stops eviction cold.", lore: "Chicago's Emergency Rental Assistance program distributed $280M in 2021 alone.", source: "Chicago Department of Housing ERA program data", category: "organizing", rarity: "common", cost: { capital: 3 }, fromYear: 2020, toYear: 2040, effect: { equity: 3, heritage: 1 } },
 ];
 
-/** Merged card library: core plus two expansion packs. The first
- *  expansion adds ~70 era-appropriate and role-signature cards. The
- *  second adds ~35 mid-to-late-era deep-strategy cards. */
-export const CARDS: Card[] = [...CARDS_CORE, ...EXPANSION_CARDS, ...EXPANSION_CARDS_2];
+/** Merged card library: core, two expansion packs, and follow-up chains.
+ *  The follow-up cards only enter the draw pool when specific flags are
+ *  set by earlier-era cards, which creates the strategic unlock chains
+ *  that make decade-to-decade choices actually compound. */
+export const CARDS: Card[] = [
+  ...CARDS_CORE,
+  ...EXPANSION_CARDS,
+  ...EXPANSION_CARDS_2,
+  ...FOLLOWUP_CARDS,
+];
 
 /** Map of card id to card for fast lookup */
 export const CARD_BY_ID: Map<string, Card> = new Map(CARDS.map((c) => [c.id, c]));

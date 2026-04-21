@@ -14,6 +14,7 @@ import { computeFinalScore } from "./scoring";
 import { RNG, generateSeed } from "./rng";
 import { ROLES, applyRoleBonus, type RoleKey } from "./roles";
 import { FACTION_LIST } from "./factions";
+import { effectiveDrift } from "./flags";
 import type {
   GameAction,
   GameEvent,
@@ -52,32 +53,18 @@ export interface DriftLine {
 }
 
 export function computeDrift(state: { flags: Set<string> }): DriftLine[] {
-  const out: DriftLine[] = [];
-  if (state.flags.has("expressway-built")) {
-    out.push({ flag: "expressway-built", description: "Expressway you approved is still polluting", equity: 0, heritage: -1, growth: 0, sustainability: -1 });
-  }
-  if (state.flags.has("tower-built")) {
-    out.push({ flag: "tower-built", description: "CHA towers you built keep deteriorating", equity: 0, heritage: -0.5, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("tax-abatement-active")) {
-    out.push({ flag: "tax-abatement-active", description: "Tax abatement is starving the school fund", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("fast-track-permits")) {
-    out.push({ flag: "fast-track-permits", description: "Fast-track luxury permits are pushing rents up", equity: -1, heritage: 0, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("policing-heavy")) {
-    out.push({ flag: "policing-heavy", description: "Heavy policing is eroding community trust", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("tif-active") && !state.flags.has("tif-affordable")) {
-    out.push({ flag: "tif-active", description: "TIF without affordable allocation", equity: -0.5, heritage: 0, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("preservation-overlay")) {
-    out.push({ flag: "preservation-overlay", description: "Preservation overlays still working", equity: 0, heritage: 1, growth: 0, sustainability: 0 });
-  }
-  if (state.flags.has("transit-extension") && !state.flags.has("preservation-overlay")) {
-    out.push({ flag: "transit-extension", description: "Transit station displacing residents", equity: -1, heritage: 0, growth: 0, sustainability: 0 });
-  }
-  return out;
+  // Delegated to the flags registry (src/lib/game/flags.ts) which is the
+  // single source of truth for per-turn drift. This function survives so
+  // existing callers (the LastingEffectsStrip HUD) don't need to change.
+  const { lines } = effectiveDrift(state.flags);
+  return lines.map((l) => ({
+    flag: l.flag,
+    description: l.description,
+    equity: l.equity,
+    heritage: l.heritage,
+    growth: l.growth,
+    sustainability: l.sustainability,
+  }));
 }
 
 export function freshState(): GameState {
@@ -407,43 +394,14 @@ export function reducer(state: GameState, action: GameAction): GameState {
         : { capital: 4, power: 3, trust: 1 };
 
       // Persistent score drift from flags set earlier. Early decisions
-      // bite throughout the rest of the run.
-      let driftEquity = 0;
-      let driftHeritage = 0;
-      let driftSustainability = 0;
-      let driftGrowth = 0;
-      if (next.flags.has("expressway-built")) {
-        driftHeritage -= 1;
-        driftSustainability -= 1;
-      }
-      if (next.flags.has("tower-built")) {
-        driftHeritage -= 0.5;
-      }
-      if (next.flags.has("tax-abatement-active")) {
-        driftEquity -= 0.5;
-      }
-      if (next.flags.has("fast-track-permits")) {
-        driftEquity -= 1;
-      }
-      if (next.flags.has("policing-heavy")) {
-        driftEquity -= 0.5;
-      }
-      if (next.flags.has("tif-active")) {
-        // TIF starves general fund; modest equity drag UNLESS player has
-        // explicitly used it for affordable housing (a separate flag).
-        if (!next.flags.has("tif-affordable")) driftEquity -= 0.5;
-      }
-      if (next.flags.has("preservation-overlay")) {
-        driftHeritage += 1;
-      }
-      if (next.flags.has("transit-extension") && !next.flags.has("preservation-overlay")) {
-        driftEquity -= 1; // displacement pressure without overlays
-      }
+      // bite (or reward) throughout the rest of the run. Sourced from the
+      // flags registry so the HUD and END_YEAR stay in lockstep.
+      const drift = effectiveDrift(next.flags);
       next.scores = {
-        equity: next.scores.equity + driftEquity,
-        heritage: next.scores.heritage + driftHeritage,
-        growth: next.scores.growth + driftGrowth,
-        sustainability: next.scores.sustainability + driftSustainability,
+        equity: next.scores.equity + drift.equity,
+        heritage: next.scores.heritage + drift.heritage,
+        growth: next.scores.growth + drift.growth,
+        sustainability: next.scores.sustainability + drift.sustainability,
       };
       next.resources = {
         capital: next.resources.capital + (eraTrickle.capital ?? 0),

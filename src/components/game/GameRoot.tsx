@@ -27,6 +27,7 @@ import { DecadeOverlay } from "./DecadeOverlay";
 import { StatsDashboard } from "./StatsDashboard";
 import { RunTimeline } from "./RunTimeline";
 import { Almanac } from "./Almanac";
+import { StrategyPanel } from "./StrategyPanel";
 import type { Parcel } from "@/lib/game/types";
 
 const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
@@ -55,6 +56,7 @@ export default function GameRoot() {
   const [statsOpen, setStatsOpen] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
   const [almanacOpen, setAlmanacOpen] = useState(false);
+  const [strategyOpen, setStrategyOpen] = useState(false);
   const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
   const lastSavedAt = useRef<number>(0);
   const lastDecadeShown = useRef<number>(0);
@@ -323,6 +325,13 @@ export default function GameRoot() {
                 Almanac
               </button>
               <button
+                onClick={() => setStrategyOpen(true)}
+                className="inline-flex rounded-sm border-2 border-rust bg-rust/10 px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust-dark hover:bg-rust/20"
+                title="Open strategy panel"
+              >
+                Strategy
+              </button>
+              <button
                 onClick={() => setPaused(true)}
                 className="rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
               >
@@ -573,6 +582,9 @@ export default function GameRoot() {
 
       {/* Almanac */}
       {almanacOpen && <Almanac onClose={() => setAlmanacOpen(false)} />}
+
+      {/* Strategy panel */}
+      {strategyOpen && <StrategyPanel state={state} onClose={() => setStrategyOpen(false)} />}
 
       {/* Decade overlay */}
       {decadeOverlayOpen && (
