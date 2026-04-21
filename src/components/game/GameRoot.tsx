@@ -22,6 +22,11 @@ import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
 import { LastingEffects, LastingEffectsStrip } from "./LastingEffects";
+import { Codex } from "./Codex";
+import { DecadeOverlay } from "./DecadeOverlay";
+import { StatsDashboard } from "./StatsDashboard";
+import { RunTimeline } from "./RunTimeline";
+import { Almanac } from "./Almanac";
 import type { Parcel } from "@/lib/game/types";
 
 const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
@@ -46,7 +51,13 @@ export default function GameRoot() {
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
   const [mapMode, setMapMode] = useState<"classic" | "3d">("classic");
+  const [codexOpen, setCodexOpen] = useState(false);
+  const [statsOpen, setStatsOpen] = useState(false);
+  const [timelineOpen, setTimelineOpen] = useState(false);
+  const [almanacOpen, setAlmanacOpen] = useState(false);
+  const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
   const lastSavedAt = useRef<number>(0);
+  const lastDecadeShown = useRef<number>(0);
 
   /* ------------- first-time auto-open how-to-play ------------- */
   useEffect(() => {
@@ -72,6 +83,21 @@ export default function GameRoot() {
     lastSavedAt.current = now;
     saveToLocal(state);
   }, [state]);
+
+  /* ------------- decade overlay trigger ------------- */
+  useEffect(() => {
+    if (state.phase !== "playing") return;
+    const decade = Math.floor(state.year / 10) * 10;
+    // Only show once per decade, and not at the very first playing frame
+    if (lastDecadeShown.current === 0) {
+      lastDecadeShown.current = decade;
+      return;
+    }
+    if (decade > lastDecadeShown.current) {
+      lastDecadeShown.current = decade;
+      setDecadeOverlayOpen(true);
+    }
+  }, [state.year, state.phase]);
 
   /* ------------- keyboard shortcut for pause ------------- */
   useEffect(() => {
@@ -267,6 +293,34 @@ export default function GameRoot() {
                 title="How to play"
               >
                 ?
+              </button>
+              <button
+                onClick={() => setCodexOpen(true)}
+                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+                title="Open codex"
+              >
+                Codex
+              </button>
+              <button
+                onClick={() => setStatsOpen(true)}
+                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+                title="Open stats"
+              >
+                Stats
+              </button>
+              <button
+                onClick={() => setTimelineOpen(true)}
+                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+                title="Open timeline"
+              >
+                Timeline
+              </button>
+              <button
+                onClick={() => setAlmanacOpen(true)}
+                className="hidden lg:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+                title="Open almanac"
+              >
+                Almanac
               </button>
               <button
                 onClick={() => setPaused(true)}
@@ -507,6 +561,26 @@ export default function GameRoot() {
 
       {/* How-to-play modal */}
       {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
+
+      {/* Codex */}
+      {codexOpen && <Codex onClose={() => setCodexOpen(false)} />}
+
+      {/* Stats dashboard */}
+      {statsOpen && <StatsDashboard state={state} onClose={() => setStatsOpen(false)} />}
+
+      {/* Run timeline */}
+      {timelineOpen && <RunTimeline state={state} onClose={() => setTimelineOpen(false)} />}
+
+      {/* Almanac */}
+      {almanacOpen && <Almanac onClose={() => setAlmanacOpen(false)} />}
+
+      {/* Decade overlay */}
+      {decadeOverlayOpen && (
+        <DecadeOverlay
+          year={state.year}
+          onClose={() => setDecadeOverlayOpen(false)}
+        />
+      )}
 
       {/* Toasts */}
       <Toasts messages={state.messages} onDismiss={handleDismissToast} />

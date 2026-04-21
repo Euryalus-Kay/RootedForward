@@ -14,7 +14,9 @@ export interface GlossaryEntry {
   source?: string;
 }
 
-export const GLOSSARY: Record<string, GlossaryEntry> = {
+import { GLOSSARY_EXPANSION } from "./glossary-expansion";
+
+const GLOSSARY_CORE: Record<string, GlossaryEntry> = {
   HOLC: {
     term: "HOLC",
     short: "Home Owners' Loan Corporation. The 1933 federal agency that drew the redlining maps.",
@@ -201,6 +203,14 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     long: "Inclusionary zoning requires private developers building market-rate housing to include some percentage of affordable units, either on-site or off-site, or to pay a fee in lieu. Chicago's ARO is one example. Montgomery County, Maryland, has had inclusionary zoning since 1974 and is the most-studied case. Critics argue it raises the cost of all units; supporters argue without it private development never produces affordability at all.",
     source: "Mukhija et al., 'Inclusionary Housing in California and New Jersey' (2010)",
   },
+};
+
+/** Merged glossary: core terms plus the expansion pack. The expansion
+ *  adds roughly 40 additional terms covering federal programs, Chicago
+ *  politics, climate, organizing, transportation, and culture. */
+export const GLOSSARY: Record<string, GlossaryEntry> = {
+  ...GLOSSARY_CORE,
+  ...GLOSSARY_EXPANSION,
 };
 
 /** Return the full definition for a term, or null if not found */

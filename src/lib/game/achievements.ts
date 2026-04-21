@@ -5,8 +5,9 @@
  */
 
 import type { Achievement, GameState } from "./types";
+import { ACHIEVEMENTS_EXPANSION, checkExpansionAchievements } from "./achievements-expansion";
 
-export const ACHIEVEMENTS: Achievement[] = [
+const ACHIEVEMENTS_CORE: Achievement[] = [
   {
     id: "first-card",
     name: "First Decision",
@@ -188,6 +189,9 @@ export const ACHIEVEMENTS: Achievement[] = [
   },
 ];
 
+/** Full achievement list: core plus expansion. */
+export const ACHIEVEMENTS: Achievement[] = [...ACHIEVEMENTS_CORE, ...ACHIEVEMENTS_EXPANSION];
+
 export const ACHIEVEMENT_BY_ID: Map<string, Achievement> = new Map(
   ACHIEVEMENTS.map((a) => [a.id, a])
 );
@@ -236,6 +240,10 @@ export function checkNewAchievements(state: GameState): string[] {
   if (state.flags.has("transit-extension") && state.flags.has("preservation-overlay") && !has("rle-with-overlay")) {
     earned.push("rle-with-overlay");
   }
+
+  // Merge expansion-pack achievements. Pure function; order doesn't matter.
+  const expansion = checkExpansionAchievements(state);
+  for (const id of expansion) if (!earned.includes(id)) earned.push(id);
 
   return earned;
 }

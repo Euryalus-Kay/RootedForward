@@ -160,10 +160,20 @@ function drawCards(state: GameState, n: number, rng: RNG): GameState {
     return Array(w).fill(c.id);
   });
 
+  // Try to draw `n` unique cards. If `rng.pick` returns a duplicate, retry
+  // up to a generous cap before giving up. This fixes a subtle bug where
+  // the loop previously exited after `n` attempts regardless of success,
+  // producing undersized hands when the weighted pool had many duplicates.
   const drawn: string[] = [];
-  for (let i = 0; i < n && state.hand.length + drawn.length < state.handSize && weighted.length > 0; i++) {
+  let attempts = 0;
+  const maxAttempts = Math.max(32, n * 8);
+  while (drawn.length < n && state.hand.length + drawn.length < state.handSize && attempts < maxAttempts) {
+    attempts++;
     const id = rng.pick(weighted);
-    if (!drawn.includes(id) && !state.hand.includes(id)) drawn.push(id);
+    if (!id) break;
+    if (drawn.includes(id)) continue;
+    if (state.hand.includes(id)) continue;
+    drawn.push(id);
   }
   return {
     ...state,

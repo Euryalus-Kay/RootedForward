@@ -1148,6 +1148,13 @@ EVENTS.push(
   }
 );
 
+// Pull in the expansion events and append them. Done separately from the
+// EVENTS array literal above so the diff on this file stays minimal.
+import { EXPANSION_EVENTS } from "./events-expansion";
+import { EXPANSION_EVENTS_2 } from "./events-expansion-2";
+EVENTS.push(...EXPANSION_EVENTS);
+EVENTS.push(...EXPANSION_EVENTS_2);
+
 /** Map for fast lookup */
 export const EVENT_BY_ID: Map<string, GameEvent> = new Map(EVENTS.map((e) => [e.id, e]));
 

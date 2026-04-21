@@ -13,8 +13,10 @@
  */
 
 import type { Card } from "./types";
+import { EXPANSION_CARDS } from "./cards-expansion";
+import { EXPANSION_CARDS_2 } from "./cards-expansion-2";
 
-export const CARDS: Card[] = [
+export const CARDS_CORE: Card[] = [
   /* ============================================================== *
    *  ZONING                                                         *
    * ============================================================== */
@@ -2210,6 +2212,11 @@ export const CARDS: Card[] = [
   { id: "rooftop-garden-incentive", name: "Rooftop garden incentive", flavor: "Tax credit for edible-plant rooftops.", description: "Sustainability with food security.", lore: "Chicago's Green Roof Improvement Fund subsidized hundreds of roofs starting 2005.", source: "City of Chicago Green Roof Grant program", category: "environment", rarity: "common", cost: { capital: 1, knowledge: 1 }, fromYear: 2005, toYear: 2040, effect: { sustainability: 3, heritage: 1, equity: 1 } },
   { id: "emergency-rental-fund", name: "Emergency rental fund", flavor: "One-time assistance, no questions.", description: "Stops eviction cold.", lore: "Chicago's Emergency Rental Assistance program distributed $280M in 2021 alone.", source: "Chicago Department of Housing ERA program data", category: "organizing", rarity: "common", cost: { capital: 3 }, fromYear: 2020, toYear: 2040, effect: { equity: 3, heritage: 1 } },
 ];
+
+/** Merged card library: core plus two expansion packs. The first
+ *  expansion adds ~70 era-appropriate and role-signature cards. The
+ *  second adds ~35 mid-to-late-era deep-strategy cards. */
+export const CARDS: Card[] = [...CARDS_CORE, ...EXPANSION_CARDS, ...EXPANSION_CARDS_2];
 
 /** Map of card id to card for fast lookup */
 export const CARD_BY_ID: Map<string, Card> = new Map(CARDS.map((c) => [c.id, c]));

@@ -39,7 +39,10 @@ export function IntroScreen({
 }) {
   const [mode, setMode] = useState<ScreenMode>("menu");
   const [saveSummary, setSaveSummary] = useState<SaveSummary | null>(null);
-  const [tipIdx] = useState(() => Math.floor(Math.random() * TIPS.length));
+  // Deterministic tip on the server (first one), randomized post-mount so
+  // the initial HTML matches the server's render and we avoid hydration
+  // mismatches while still giving returning players a rotating tip.
+  const [tipIdx, setTipIdx] = useState<number>(0);
 
   const [name, setName] = useState("");
   const [seed, setSeed] = useState("");
@@ -48,6 +51,11 @@ export function IntroScreen({
 
   useEffect(() => {
     setSaveSummary(readSaveSummary());
+    // Rotate the displayed tip once the client has hydrated. Doing this
+    // in an effect (rather than in useState initializer) guarantees the
+    // first server render and first client render match, which keeps
+    // Next.js hydration happy.
+    setTipIdx(Math.floor(Math.random() * TIPS.length));
     // If the player clicked "Play this seed" from the leaderboard, the
     // seed is stashed in sessionStorage. Prefill and jump to setup.
     if (typeof window !== "undefined") {

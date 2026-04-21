@@ -6,6 +6,7 @@
  */
 
 import type { GameState } from "./types";
+import { OBJECTIVES_EXPANSION } from "./objectives-expansion";
 
 export interface Objective {
   id: string;
@@ -20,7 +21,7 @@ export interface Objective {
   difficulty: "easy" | "medium" | "hard";
 }
 
-export const OBJECTIVES: Objective[] = [
+const OBJECTIVES_CORE: Objective[] = [
   {
     id: "no-tower",
     name: "Tower-Free Century",
@@ -134,6 +135,11 @@ export const OBJECTIVES: Objective[] = [
     difficulty: "medium",
   },
 ];
+
+/** Full objective list combining the core objectives with the expansion
+ *  pack. Expansion objectives add era-specific and archetype-specific
+ *  challenges to encourage replayability. */
+export const OBJECTIVES: Objective[] = [...OBJECTIVES_CORE, ...OBJECTIVES_EXPANSION];
 
 export const OBJECTIVES_BY_ID = new Map(OBJECTIVES.map((o) => [o.id, o]));
 
