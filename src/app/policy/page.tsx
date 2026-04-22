@@ -150,17 +150,32 @@ export default async function PolicyPage() {
   return (
     <PageTransition>
       {/* ============================================================
-          SECTION 1: PAGE HEADER
+          SECTION 1: BANNER
+          Hero image with a forest tint overlay, matching the
+          research, education, and get-involved banner treatment.
           ============================================================ */}
-      <section className="bg-cream pb-10 pt-28 md:pt-36">
+      <section className="relative pt-16 pb-12 md:pb-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-forest/70" />
+        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+          <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
+            Policy
+          </h1>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 1b: INTRO PROSE
+          ============================================================ */}
+      <section className="bg-cream pb-10 pt-12 md:pt-16">
         <div className="mx-auto max-w-4xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
             Policy / Chicago
           </p>
-          <h1 className="mt-4 font-display text-4xl leading-[1.1] text-forest md:text-6xl">
-            Public Policy Initiatives
-          </h1>
-          <p className="mt-8 max-w-[65ch] font-body text-lg leading-relaxed text-ink/75">
+          <p className="mt-6 max-w-[65ch] font-body text-lg leading-relaxed text-ink/75">
             Rooted Forward exists to teach people how historical urban
             inequality shaped the Chicago they live in today. The tours, films,
             and classroom work are the first half of that mission. This page is
