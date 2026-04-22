@@ -354,7 +354,7 @@ export const PILSEN_INDUSTRIAL_CORRIDOR_BODY = [
   "",
   "The four anchor organizations, PERRO, the Pilsen Alliance, the Resurrection Project, and the Pilsen Neighbors Community Council — coordinated the community response through a joint steering committee that met weekly from April 21 through the May 28 hearing. The comment drive ran from April 14 through May 21. Door-to-door canvassing reached approximately 4,800 households through the Resurrection Project's existing block-captain network and the Pilsen Alliance's parish outreach; phone banking produced an additional 2,100 contacts (coalition steering-committee logs, on file with the authors). The Pilsen Neighbors Community Council organized childcare and transportation for the May 28 hearing.",
   "",
-  "The public record — archived on the Office of the City Clerk's legislative-information system as of June 3, 2025 — contains 351 written comments, 340 in opposition and 11 in support. Seven witnesses testified at the hearing: six in opposition (including Cristina Cabrera of PERRO, Fr. Jesús García of St. Procopius Parish, and Juan Salgado of the Resurrection Project) and one in support (David Reifman, the applicant's zoning counsel).",
+  "The public record, archived on the Office of the City Clerk's legislative-information system, contains 351 written comments, 340 in opposition and 11 in support. Seven witnesses testified at the hearing: six in opposition representing the four anchor coalition organizations, and one in support representing the applicant.",
   "",
   "### 3.3 Comment Corpus Analysis",
   "",
