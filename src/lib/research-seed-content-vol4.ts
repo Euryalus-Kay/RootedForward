@@ -162,7 +162,7 @@ export const CROSS_BRONX_EXPRESSWAY_BODY = [
   "",
   "## Data Availability",
   "",
-  "The digitized parcel-level acquisition records, the tract-level decennial-census crosswalk, and the 2023 air-quality, noise, and health datasets are distributed on request. See [rootedforward.org/research/data](https://rootedforward.org/research/data#cross-bronx-expressway-sixty-years-later) for the file list and licensing. Code is released under MIT; derived data under CC BY 4.0. Source acquisition files are public at the NYC Municipal Archives (Record Group 219).",
+  "The digitized parcel-level acquisition records, the tract-level decennial-census crosswalk, and the 2023 air-quality, noise, and health datasets are distributed on request. See [rooted-forward.org/research/data](https://rooted-forward.org/research/data#cross-bronx-expressway-sixty-years-later) for the file list and licensing. Code is released under MIT; derived data under CC BY 4.0. Source acquisition files are public at the NYC Municipal Archives (Record Group 219).",
   "",
   "## References",
   "",

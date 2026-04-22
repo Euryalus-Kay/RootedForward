@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { PLACEHOLDER_RESEARCH_ENTRIES } from "@/lib/research-constants";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rootedforward.org";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rooted-forward.org";
 
 const CITIES = ["chicago", "new-york", "dallas", "san-francisco"];
 

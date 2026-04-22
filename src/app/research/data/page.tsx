@@ -5,7 +5,7 @@
 /*  A public index of the replication datasets referenced in the      */
 /*  Data Availability sections of each research entry. Datasets are   */
 /*  distributed by email request under per-paper license terms; the   */
-/*  page routes those requests to research@rootedforward.org and      */
+/*  page routes those requests to research@rooted-forward.org and      */
 /*  makes the scope of each dataset explicit.                         */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
@@ -127,7 +127,7 @@ const DATASETS: Record<string, DatasetMeta> = {
     files: [],
     license: "CC BY-NC 4.0 for the edited transcripts. Full audio and verbatim transcripts under standard oral-history archival-access agreement.",
     notes:
-      "Scholarly access requests: contact the Chicago History Museum Research Center. Community-use requests: contact research@rootedforward.org.",
+      "Scholarly access requests: contact the Chicago History Museum Research Center. Community-use requests: contact research@rooted-forward.org.",
   },
   "1938-holc-chicago-map-annotated": {
     contents:
@@ -280,10 +280,10 @@ export default async function ResearchDataPage() {
             <p className="mt-4 max-w-[65ch] font-body text-[16px] leading-[1.7] text-ink/80">
               Requests go to{" "}
               <a
-                href="mailto:research@rootedforward.org?subject=Research%20data%20request"
+                href="mailto:research@rooted-forward.org?subject=Research%20data%20request"
                 className="font-medium text-forest underline decoration-forest/40 underline-offset-2 transition-colors hover:decoration-forest"
               >
-                research@rootedforward.org
+                research@rooted-forward.org
               </a>
               . Please include the paper slug, your affiliation if you have
               one, and a one-sentence description of your planned use. We reply
@@ -357,10 +357,10 @@ export default async function ResearchDataPage() {
                       <p className="mt-4 font-body text-[15px] leading-[1.7] text-ink/80">
                         Dataset summary forthcoming. Email{" "}
                         <a
-                          href={`mailto:research@rootedforward.org?subject=Data%20request%3A%20${entry.slug}`}
+                          href={`mailto:research@rooted-forward.org?subject=Data%20request%3A%20${entry.slug}`}
                           className="text-forest underline decoration-forest/40 underline-offset-2 hover:decoration-forest"
                         >
-                          research@rootedforward.org
+                          research@rooted-forward.org
                         </a>{" "}
                         for the current state of the replication archive.
                       </p>
@@ -368,7 +368,7 @@ export default async function ResearchDataPage() {
 
                     <div className="mt-4 flex gap-4">
                       <a
-                        href={`mailto:research@rootedforward.org?subject=Data%20request%3A%20${entry.slug}`}
+                        href={`mailto:research@rooted-forward.org?subject=Data%20request%3A%20${entry.slug}`}
                         className="font-body text-[13.5px] text-forest underline decoration-forest/40 underline-offset-2 transition-colors hover:decoration-forest"
                       >
                         Request this dataset →
