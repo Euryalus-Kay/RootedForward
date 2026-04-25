@@ -28,7 +28,14 @@ const NAV_LINKS = [
     ],
   },
   { label: "Policy", href: "/policy" },
-  { label: "Research", href: "/research" },
+  {
+    label: "Research",
+    href: "/research",
+    children: [
+      { label: "All Papers", href: "/research" },
+      { label: "Data & Replication", href: "/research/data" },
+    ],
+  },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
 ] as const;
