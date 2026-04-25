@@ -41,8 +41,10 @@ export default function DatasetPreview({ preview }: Props) {
     <div className="rounded-sm border border-border bg-cream-dark/30 p-4">
       <p className="mb-3 inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray">
         <Table className="h-3.5 w-3.5" />
-        Preview · {preview.columns.length} columns
-        {rows.length > 0 ? ` · ${rows.length} sample rows` : ""}
+        Schema · {preview.columns.length} columns
+        {rows.length > 0
+          ? ` · ${rows.length} sample row${rows.length === 1 ? "" : "s"}`
+          : " · no sample rows"}
       </p>
 
       {/* Schema */}
