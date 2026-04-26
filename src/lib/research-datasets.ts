@@ -328,32 +328,37 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
 
   "austin-cba-playbook": {
     summary:
-      "Pointers to the underlying Chicago Community Benefits Agreement documents, which live behind public archive interfaces and council legislation systems.",
+      "Every Chicago TIF-funded financial-incentive project with the actual fields a CBA monitoring committee would inspect — ordinance dates, affordable units, MBE/WBE participation, jobs-created requirements.",
     contents:
-      "The cleaned eight-case Chicago CBA coding table is in preparation. The underlying CBA documents are not on a public Socrata-style API; they are held as case files at the Chicago Lawyers' Committee CBA Repository, the UIC Great Cities Institute Coalition for a Community Benefits Agreement archive, and the Chicago City Council Legistar legislation system. Use the upstream links below to retrieve specific case documents directly from the archives that hold them.",
+      "The eight signed Chicago CBA documents themselves live in the Chicago Lawyers' Committee curated repository and the UIC Great Cities Institute archive — institutional collections without public download URLs. What you can pull from a public API and host directly is this: every Chicago Financial Incentive Project under TIF, with the publicly-recorded compliance fields (affordable_residential_units, mbe_requirement_met, wbe_requirement_met, jobs_created_required) that any CBA monitoring would draw on. The eight-case CBA coding table itself is in preparation pending agreement from the holding institutions.",
     files: [
-      { name: "chicago-cba-eight-case-coding.csv", bytes: 34000, description: "Eight cases coded across structural features." },
+      { name: "chicago-tif-financial-incentive-projects.csv", bytes: 20522, description: "40 Chicago TIF-funded development projects with project name, applicant, address, ward, community area, TIF district, ordinance approval date, RDA approval date, residential units, affordable_residential_units, incentive amount, total project cost, jobs created/retained, MBE/WBE compliance.", available: true, provenance: "Chicago Data Portal · Financial Incentive Projects (TIF-Funded) Economic Development" },
+      { name: "chicago-cba-eight-case-coding.csv", bytes: 34000, description: "Eight Chicago CBA cases coded across five structural features." },
       { name: "cba-structural-features.md", bytes: 12000, description: "Coding rubric." },
       { name: "austin-site-evaluation.md", bytes: 18000, description: "Site-by-site evaluation." },
     ],
-    license: "CC BY 4.0.",
+    license: "CC BY 4.0. The TIF financial-incentive projects file is redistributed under the City of Chicago Data Portal terms.",
     upstream_sources: [
+      { label: "Chicago Data Portal · Financial Incentive Projects (TIF-Funded)", url: "https://data.cityofchicago.org/Community-Economic-Development/Financial-Incentive-Projects-TIF-Funded-Economic-D/iekz-rtng", note: "Live source of the project file we host. Updated as new TIF-funded projects are approved." },
       { label: "Chicago Lawyers' Committee for Civil Rights Under Law", url: "https://www.clccrul.org/", note: "Reference repository for Chicago CBA documents; case files are held in working archives." },
       { label: "UIC Great Cities Institute", url: "https://greatcities.uic.edu/", note: "Coalition for a Community Benefits Agreement document archive." },
-      { label: "Chicago City Council Legistar", url: "https://chicago.legistar.com/Legislation.aspx", note: "Search by ordinance text or sponsor to find CBA-related legislation; some CBAs surface here as housing preservation or planned-development ordinances." },
+      { label: "Chicago City Council Legistar", url: "https://chicago.legistar.com/Legislation.aspx", note: "Search by ordinance text or sponsor to find specific PD ordinances and CBA-related housing legislation." },
       { label: "Austin Coming Together · Quality of Life Plan", url: "https://www.austincomingtogether.org/", note: "Public source of the four near-term Austin CBA target sites." },
     ],
     preview: {
       columns: [
-        { name: "case_name", type: "text" },
-        { name: "signed", type: "date" },
-        { name: "three_party_structure", type: "boolean" },
-        { name: "monitoring_independence", type: "text" },
-        { name: "compliance_categories_full", type: "int" },
+        { name: "project_name", type: "text" },
+        { name: "ward", type: "text" },
+        { name: "community_area", type: "text" },
+        { name: "tif_district", type: "text" },
+        { name: "ordinance_approval_date", type: "date" },
+        { name: "residential_units", type: "int" },
+        { name: "affordable_residential_units", type: "int" },
+        { name: "incentive_amount", type: "numeric" },
       ],
       sample_rows: [],
     },
-    archive_status: "in_preparation",
+    archive_status: "live",
   },
 
   "bronzeville-tif-expenditure-analysis": {
