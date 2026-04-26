@@ -328,9 +328,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
 
   "austin-cba-playbook": {
     summary:
-      "Eight Chicago Community Benefits Agreements, coded across five structural features and ten compliance categories.",
+      "Pointers to the underlying Chicago Community Benefits Agreement documents, which live behind public archive interfaces and council legislation systems.",
     contents:
-      "Eight Chicago CBAs coded by structural features and compliance, plus a site evaluation framework for the four Austin sites identified by Austin Coming Together. The eight CBAs are public documents collected and curated by the Chicago Lawyers' Committee for Civil Rights.",
+      "The cleaned eight-case Chicago CBA coding table is in preparation. The underlying CBA documents are not on a public Socrata-style API; they are held as case files at the Chicago Lawyers' Committee CBA Repository, the UIC Great Cities Institute Coalition for a Community Benefits Agreement archive, and the Chicago City Council Legistar legislation system. Use the upstream links below to retrieve specific case documents directly from the archives that hold them.",
     files: [
       { name: "chicago-cba-eight-case-coding.csv", bytes: 34000, description: "Eight cases coded across structural features." },
       { name: "cba-structural-features.md", bytes: 12000, description: "Coding rubric." },
@@ -338,9 +338,10 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     ],
     license: "CC BY 4.0.",
     upstream_sources: [
-      { label: "Chicago Lawyers' Committee for Civil Rights · CBA Repository", url: "https://www.clccrul.org/", note: "Source of the eight Chicago CBA documents." },
-      { label: "UIC Great Cities Institute", url: "https://greatcities.uic.edu/", note: "Coalition for a Community Benefits Agreement archive." },
-      { label: "Austin Coming Together · Quality of Life Plan", url: "https://www.austincomingtogether.org/", note: "Source of the four near-term Austin CBA target sites." },
+      { label: "Chicago Lawyers' Committee for Civil Rights Under Law", url: "https://www.clccrul.org/", note: "Reference repository for Chicago CBA documents; case files are held in working archives." },
+      { label: "UIC Great Cities Institute", url: "https://greatcities.uic.edu/", note: "Coalition for a Community Benefits Agreement document archive." },
+      { label: "Chicago City Council Legistar", url: "https://chicago.legistar.com/Legislation.aspx", note: "Search by ordinance text or sponsor to find CBA-related legislation; some CBAs surface here as housing preservation or planned-development ordinances." },
+      { label: "Austin Coming Together · Quality of Life Plan", url: "https://www.austincomingtogether.org/", note: "Public source of the four near-term Austin CBA target sites." },
     ],
     preview: {
       columns: [
@@ -352,7 +353,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
       ],
       sample_rows: [],
     },
-    archive_status: "live",
+    archive_status: "in_preparation",
   },
 
   "bronzeville-tif-expenditure-analysis": {
