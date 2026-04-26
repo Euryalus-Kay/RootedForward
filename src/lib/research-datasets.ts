@@ -107,7 +107,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Every grocery store licensed in the three West Side community areas (Austin, East Garfield Park, North Lawndale) in 2013.",
     contents:
-      "Two Chicago Data Portal slices hosted directly on Rooted Forward. The West Side subset filters Chicago's full 2013 grocery licensing list to community areas 25, 27, and 29 — the three areas the paper analyzes. The full citywide list is included so you can reproduce the same filter or compare to other community areas.",
+      "Two Chicago Data Portal slices hosted directly on Rooted Forward. The West Side subset filters Chicago's full 2013 grocery licensing list to community areas 25, 27, and 29, the three areas the paper analyzes. The full citywide list is included so you can reproduce the same filter or compare to other community areas.",
     files: [
       { name: "chicago-west-side-grocery-stores-2013.csv", bytes: 4556, description: "21 grocery stores in Austin, East Garfield Park, and North Lawndale in 2013, with address, license, and tract.", available: true, provenance: "Chicago Data Portal · Grocery Stores - 2013, filtered to community areas 25, 27, 29" },
       { name: "chicago-grocery-stores-2013.csv", bytes: 122664, description: "All 506 grocery stores licensed in Chicago in 2013, with community area, ward, census tract, and license details.", available: true, provenance: "Chicago Data Portal · Grocery Stores - 2013" },
@@ -191,7 +191,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "5,000-stop sample of Chicago Police Department traffic stops from the Stanford Open Policing Project corpus.",
     contents:
-      "A 5,000-stop random sample drawn from the Stanford Open Policing Project's published Chicago dataset, hosted directly on Rooted Forward. Each row carries the date, location, subject demographics, officer demographics, search status, and outcome — the inputs the Knowles-Persico-Todd outcome test runs on.",
+      "A 5,000-stop random sample drawn from the Stanford Open Policing Project's published Chicago dataset, hosted directly on Rooted Forward. Each row carries the date, location, subject demographics, officer demographics, search status, and outcome. These are the inputs the Knowles-Persico-Todd outcome test runs on.",
     files: [
       { name: "chicago-historical-stops-sample.csv", bytes: 832506, description: "5,000-stop random sample from the Stanford Open Policing Project Chicago corpus, with date, location, subject demographics, officer demographics, search status, and outcome.", available: true, provenance: "Stanford Open Policing Project · Chicago dataset" },
     ],
@@ -242,7 +242,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
 
   "school-closures-2013-and-after": {
     summary:
-      "Every Chicago Public School with full profile data — 1,983 schools with location, enrollment, demographics, and ratings.",
+      "Every Chicago Public School with full profile data covering 1,983 schools with location, enrollment, demographics, and ratings.",
     contents:
       "The complete CPS School Profile dataset, hosted directly on Rooted Forward. Filter by school_type, community area, or rating to identify the 49 schools closed in 2013 and the schools their students were sent to.",
     files: [
@@ -272,7 +272,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Every Chicago affordable rental housing development, including CHA properties, with addresses, units, and management.",
     contents:
-      "The complete Chicago Affordable Rental Housing Developments list, hosted directly on Rooted Forward. CHA properties surface alongside other affordable units — filter by property_type or management_company to isolate the CHA portfolio.",
+      "The complete Chicago Affordable Rental Housing Developments list, hosted directly on Rooted Forward. CHA properties surface alongside other affordable units. Filter by property_type or management_company to isolate the CHA portfolio.",
     files: [
       { name: "cha-and-public-housing-properties.csv", bytes: 8176, description: "39 affordable rental properties in Chicago whose property type or management company indicates a public housing or CHA-redevelopment site.", available: true, provenance: "Chicago Data Portal · Affordable Rental Housing Developments, filtered to public housing types and CHA-affiliated managers" },
       { name: "chicago-affordable-rental-housing-developments.csv", bytes: 137515, description: "1,776 affordable rental housing developments in Chicago, with property type, units, address, and management.", available: true, provenance: "Chicago Data Portal · Affordable Rental Housing Developments" },
@@ -298,9 +298,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
 
   "austin-cba-playbook": {
     summary:
-      "Every Chicago TIF-funded financial-incentive project with the actual fields a CBA monitoring committee would inspect — ordinance dates, affordable units, MBE/WBE participation, jobs-created requirements.",
+      "Every Chicago TIF-funded financial-incentive project with the actual fields a CBA monitoring committee would inspect, including ordinance dates, affordable units, MBE/WBE participation, jobs-created requirements.",
     contents:
-      "The eight signed Chicago CBA documents themselves live in the Chicago Lawyers' Committee curated repository and the UIC Great Cities Institute archive — institutional collections without public download URLs. What you can pull from a public API and host directly is this: every Chicago Financial Incentive Project under TIF, with the publicly-recorded compliance fields (affordable_residential_units, mbe_requirement_met, wbe_requirement_met, jobs_created_required) that any CBA monitoring would draw on.",
+      "The eight signed Chicago CBA documents themselves live in the Chicago Lawyers' Committee curated repository and the UIC Great Cities Institute archive, institutional collections without public download URLs. What you can pull from a public API and host directly is this: every Chicago Financial Incentive Project under TIF, with the publicly-recorded compliance fields (affordable_residential_units, mbe_requirement_met, wbe_requirement_met, jobs_created_required) that any CBA monitoring would draw on.",
     files: [
       { name: "chicago-tif-financial-incentive-projects.csv", bytes: 20522, description: "40 Chicago TIF-funded development projects with project name, applicant, address, ward, community area, TIF district, ordinance approval date, RDA approval date, residential units, affordable_residential_units, incentive amount, total project cost, jobs created/retained, MBE/WBE compliance.", available: true, provenance: "Chicago Data Portal · Financial Incentive Projects (TIF-Funded) Economic Development" },
     ],
@@ -359,7 +359,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "5,000 real Cook County Assessor appeal records with PIN, year, township, hearing type, and outcome.",
     contents:
-      "A 5,000-row sample of Cook County Assessor administrative appeal records, hosted directly on Rooted Forward. Each row includes the PIN, year, classification, township, appeal type, hearing type, mailed values, certified values, and reason codes — the full set of fields the paper's analysis runs on.",
+      "A 5,000-row sample of Cook County Assessor administrative appeal records, hosted directly on Rooted Forward. Each row includes the PIN, year, classification, township, appeal type, hearing type, mailed values, certified values, and reason codes. These are the full set of fields the paper runs on.",
     files: [
       { name: "cook-appeals-sample.csv", bytes: 1312953, description: "5,000 Cook County Assessor appeal records with PIN, year, class, township, hearing type, outcome, and reason codes.", available: true, provenance: "Cook County Open Data · Assessor Appeals" },
     ],
@@ -415,7 +415,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     contents:
       "The complete San Francisco MOHCD Affordable Housing Portfolio, hosted directly on Rooted Forward. Filter by ocii_project_area to isolate the Western Addition and Fillmore developments that house Certificate of Preference holders. Each row records the development, address, project area, status, and tenure type.",
     files: [
-      { name: "fillmore-western-addition-developments.csv", bytes: 133110, description: "325 SF MOHCD properties whose neighborhood, OCII project area, or address indicates Western Addition / Fillmore, Yerba Buena, Mission Bay, Hunters Point, Bayview, or South of Market — the OCII project areas where SFRA-era redevelopment took place.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio, filtered to former-SFRA OCII project areas" },
+      { name: "fillmore-western-addition-developments.csv", bytes: 133110, description: "325 SF MOHCD properties whose neighborhood, OCII project area, or address indicates Western Addition / Fillmore, Yerba Buena, Mission Bay, Hunters Point, Bayview, or South of Market, covering the OCII project areas where SFRA-era redevelopment took place.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio, filtered to former-SFRA OCII project areas" },
       { name: "sf-mohcd-affordable-housing-portfolio.csv", bytes: 341050, description: "All 849 affordable housing developments in the SF MOHCD portfolio with OCII project area, status, and tenure.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio" },
     ],
     license: "CC BY-NC 4.0.",
@@ -441,7 +441,7 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     contents:
       "All 645 Dallas County census tracts from the 2023 American Community Survey 5-year estimates, hosted directly on Rooted Forward. Each row carries B19013_001E (median household income), B25003_002E (owner-occupied units), B25003_003E (renter-occupied units), the state and county FIPS, and the tract code. Filter for the South Dallas tracts adjacent to Fair Park (48113008500 and 48113008700) to reproduce the income-gradient finding.",
     files: [
-      { name: "dallas-county-south-area-acs-2023.csv", bytes: 956, description: "13 Dallas County census tracts with codes 002700 to 005000 — the south-of-downtown range that includes the South Dallas community area and the Fair Park-adjacent tracts.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API and filtered to south-Dallas tract codes" },
+      { name: "dallas-county-south-area-acs-2023.csv", bytes: 956, description: "13 Dallas County census tracts with codes 002700 to 005000, covering the south-of-downtown range that includes the South Dallas community area and the Fair Park-adjacent tracts.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API and filtered to south-Dallas tract codes" },
       { name: "dallas-tract-acs-2023.csv", bytes: 45819, description: "All 645 Dallas County census tracts with 2023 ACS median household income, owner / renter occupancy, and FIPS codes.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API" },
     ],
     license: "CC BY 4.0.",

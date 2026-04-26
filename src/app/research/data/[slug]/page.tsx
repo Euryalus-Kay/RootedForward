@@ -30,7 +30,7 @@ import {
   normalizeCitations,
 } from "@/lib/research-constants";
 import type { ResearchEntry } from "@/lib/types/database";
-import { ExternalLink, Scale, Database, Download } from "lucide-react";
+import { ExternalLink, Scale, Database, Download, FileArchive } from "lucide-react";
 
 export const revalidate = 600;
 
@@ -162,17 +162,32 @@ export default async function DatasetDetailPage({ params }: Params) {
         {hasLiveData && (
           <section className="bg-cream pt-12">
             <div className="mx-auto max-w-6xl px-6">
-              <h2 className="font-display text-2xl text-forest md:text-3xl">
-                Live Data
-              </h2>
-              <p className="mt-3 max-w-[64ch] font-body text-[14.5px] leading-relaxed text-ink/75">
-                These files are hosted directly on Rooted Forward and
-                load below as live spreadsheets. Sort by clicking a
-                column header, filter rows with the search box, change
-                page size, or click <em>Export CSV</em> to save your
-                filtered view. Click <em>Download original</em> to grab
-                the unfiltered file.
-              </p>
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-2xl text-forest md:text-3xl">
+                    Live Data
+                  </h2>
+                  <p className="mt-3 max-w-[64ch] font-body text-[14.5px] leading-relaxed text-ink/75">
+                    These files are hosted directly on Rooted Forward
+                    and load below as live spreadsheets. Sort by
+                    clicking a column header, filter rows with the
+                    search box, change page size, or use{" "}
+                    <em>Export current view</em> in any spreadsheet
+                    toolbar to save your filtered view in CSV, TSV, or
+                    JSON.
+                  </p>
+                </div>
+                {availableFiles.length > 1 && (
+                  <a
+                    href={`/api/research/data/zip?slug=${encodeURIComponent(slug)}`}
+                    title={`Download all ${availableFiles.length} files plus a README as a single ZIP`}
+                    className="inline-flex items-center gap-2 rounded-sm bg-forest px-4 py-2.5 font-body text-sm font-semibold text-cream transition-colors hover:bg-forest-dark"
+                  >
+                    <FileArchive className="h-4 w-4" />
+                    Download all as ZIP
+                  </a>
+                )}
+              </div>
 
               <ul className="mt-8 space-y-10">
                 {availableFiles.map((file) => {

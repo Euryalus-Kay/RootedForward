@@ -45,6 +45,7 @@ function slugify(text: string): string {
 export default function AdminBoardPage() {
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("student");
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState<Omit<MemberRow, "id"> & { id?: string }>(EMPTY_FORM);
@@ -56,6 +57,7 @@ export default function AdminBoardPage() {
 
   async function fetchMembers() {
     setLoading(true);
+    setLoadError(null);
     try {
       const supabase = createClient();
       const { data, error } = await supabase
@@ -63,10 +65,24 @@ export default function AdminBoardPage() {
         .select("*")
         .eq("board_type", tab)
         .order("display_order", { ascending: true });
-      if (error) throw error;
+      if (error) {
+        const detail =
+          error.code === "42P01"
+            ? "Table `board_members` does not exist. Run migration 002_policy_schema.sql."
+            : error.code === "PGRST301" || error.code === "42501"
+              ? "Row Level Security is rejecting the read. Confirm your account has role = 'admin' in the users table."
+              : error.message;
+        setLoadError(`${error.code ?? "error"}: ${detail}`);
+        setMembers([]);
+        return;
+      }
       setMembers((data as MemberRow[]) ?? []);
-    } catch {
-      // Table may not exist yet
+    } catch (e) {
+      setLoadError(
+        e instanceof Error
+          ? e.message
+          : "Could not reach Supabase. Check NEXT_PUBLIC_SUPABASE_URL is set."
+      );
       setMembers([]);
     } finally {
       setLoading(false);
@@ -122,8 +138,17 @@ export default function AdminBoardPage() {
       setShowForm(false);
       setEditing(null);
       fetchMembers();
-    } catch {
-      toast.error("Failed to save. Database may not be connected.");
+    } catch (e) {
+      const err = e as { code?: string; message?: string };
+      const detail =
+        err.code === "42P01"
+          ? "Table board_members not found. Run migration 002_policy_schema.sql."
+          : err.code === "23505"
+            ? "Slug already exists. Edit the slug field to a unique value."
+            : err.code === "PGRST301" || err.code === "42501"
+              ? "RLS rejected the write. Confirm your account has role = 'admin' in the users table."
+              : err.message ?? "Unknown error.";
+      toast.error(`Save failed — ${detail}`, { duration: 8000 });
     }
   }
 
@@ -289,12 +314,31 @@ export default function AdminBoardPage() {
         </div>
       )}
 
+      {/* Load error banner — shown when Supabase rejects the read */}
+      {loadError && !loading && (
+        <div className="mt-6 rounded-md border border-rust/40 bg-rust/5 p-4 font-body text-[13px] leading-relaxed text-rust">
+          <p className="font-semibold uppercase tracking-widest text-[11px]">
+            Could not load board members
+          </p>
+          <p className="mt-1 font-mono text-[12.5px] text-rust/85">
+            {loadError}
+          </p>
+          <p className="mt-2 text-rust/85">
+            Until this is fixed, the form below may say it saved
+            successfully but writes will not actually land in the
+            database.
+          </p>
+        </div>
+      )}
+
       {/* Members list */}
       {loading ? (
         <p className="mt-8 font-body text-sm text-warm-gray">Loading...</p>
       ) : members.length === 0 ? (
         <p className="mt-8 font-body text-sm text-warm-gray">
-          No members yet. Add your first board member above.
+          {loadError
+            ? "Members could not be loaded. See error above."
+            : "No members yet. Add your first board member above."}
         </p>
       ) : (
         <div className="mt-6 flex flex-col gap-3">
