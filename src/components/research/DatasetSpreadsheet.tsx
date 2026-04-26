@@ -8,14 +8,13 @@
 /*  CSV from /api/research/data/file?slug=...&file=..., parses it,    */
 /*  and renders a sortable, filterable, paginated table.              */
 /*                                                                     */
-/*  No external dependency — the CSV parser handles the basics:       */
-/*  RFC 4180 quoted fields with embedded commas and double-quote      */
-/*  escapes. Anything more complex (multiline records, custom         */
-/*  delimiters) requires a real library, which we don't need yet.     */
+/*  Toolbar offers an "Export current view" dropdown that saves the   */
+/*  filtered + sorted state in CSV, TSV, or JSON. The full-file       */
+/*  download lives outside this component on the dataset row.         */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import {
   Loader2,
   Search,
@@ -52,6 +51,22 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(50);
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
+
+  // Close the export dropdown on click-outside.
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (
+        exportRef.current &&
+        !exportRef.current.contains(e.target as Node)
+      ) {
+        setExportOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
 
   /* ---- Fetch + parse ---- */
   useEffect(() => {
@@ -132,24 +147,51 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
     }
   }
 
-  function downloadFullCsv() {
+  function exportView(format: "csv" | "tsv" | "json") {
     if (!data) return;
-    const csv = [
-      data.columns.join(","),
-      ...filteredRows.map((row) =>
-        row.map(escapeCsvCell).join(",")
-      ),
-    ].join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const stem = fileName.replace(/\.[^.]+$/, "");
+    let body: string;
+    let mime: string;
+    let ext: string;
+
+    if (format === "json") {
+      const objects = filteredRows.map((row) => {
+        const obj: Record<string, string> = {};
+        data.columns.forEach((c, i) => {
+          obj[c] = row[i] ?? "";
+        });
+        return obj;
+      });
+      body = JSON.stringify(objects, null, 2);
+      mime = "application/json;charset=utf-8";
+      ext = "json";
+    } else {
+      const sep = format === "tsv" ? "\t" : ",";
+      const escape =
+        format === "tsv"
+          ? (c: string) => c.replace(/\t/g, " ").replace(/\n/g, " ")
+          : escapeCsvCell;
+      body = [
+        data.columns.map(escape).join(sep),
+        ...filteredRows.map((row) => row.map(escape).join(sep)),
+      ].join("\n");
+      mime =
+        format === "tsv"
+          ? "text/tab-separated-values;charset=utf-8"
+          : "text/csv;charset=utf-8";
+      ext = format;
+    }
+
+    const blob = new Blob([body], { type: mime });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    const stem = fileName.replace(/\.csv$/i, "");
-    a.download = `${stem}-filtered.csv`;
+    a.download = `${stem}-view.${ext}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    setExportOpen(false);
   }
 
   /* ---- Render ---- */
@@ -217,14 +259,73 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
           </select>
         </div>
 
-        <button
-          type="button"
-          onClick={downloadFullCsv}
-          className="ml-auto inline-flex items-center gap-1.5 rounded-sm border border-forest/50 bg-cream px-3 py-1.5 font-body text-[12.5px] font-semibold text-forest transition-colors hover:bg-forest hover:text-cream"
-        >
-          <Download className="h-3.5 w-3.5" />
-          Export CSV
-        </button>
+        <div ref={exportRef} className="relative ml-auto">
+          <button
+            type="button"
+            onClick={() => setExportOpen((v) => !v)}
+            title={
+              search
+                ? `Save the ${filteredRows.length.toLocaleString()} filtered rows`
+                : `Save the ${data.rows.length.toLocaleString()} rows shown here`
+            }
+            className="inline-flex items-center gap-1.5 rounded-sm border border-forest/50 bg-cream px-3 py-1.5 font-body text-[12.5px] font-semibold text-forest transition-colors hover:bg-forest hover:text-cream"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export current view
+            <ChevronDown className="h-3 w-3 opacity-70" />
+          </button>
+          {exportOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 z-30 mt-1 w-72 rounded-sm border border-border bg-cream p-1.5 shadow-md"
+            >
+              <p className="px-2 py-1 font-body text-[10.5px] uppercase tracking-widest text-warm-gray">
+                Save current filtered view as
+              </p>
+              <button
+                type="button"
+                onClick={() => exportView("csv")}
+                className="flex w-full items-start gap-2 rounded-sm px-2 py-1.5 text-left font-body text-[12.5px] text-ink transition-colors hover:bg-cream-dark"
+              >
+                <span className="font-mono text-[11px] text-forest">.csv</span>
+                <span>
+                  <span className="font-semibold">CSV</span>
+                  <span className="ml-1 text-warm-gray">
+                    spreadsheet-friendly, comma-separated
+                  </span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => exportView("tsv")}
+                className="flex w-full items-start gap-2 rounded-sm px-2 py-1.5 text-left font-body text-[12.5px] text-ink transition-colors hover:bg-cream-dark"
+              >
+                <span className="font-mono text-[11px] text-forest">.tsv</span>
+                <span>
+                  <span className="font-semibold">TSV</span>
+                  <span className="ml-1 text-warm-gray">
+                    tab-separated, safer for fields with commas
+                  </span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => exportView("json")}
+                className="flex w-full items-start gap-2 rounded-sm px-2 py-1.5 text-left font-body text-[12.5px] text-ink transition-colors hover:bg-cream-dark"
+              >
+                <span className="font-mono text-[11px] text-forest">
+                  .json
+                </span>
+                <span>
+                  <span className="font-semibold">JSON</span>
+                  <span className="ml-1 text-warm-gray">
+                    array of records, code-friendly
+                  </span>
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Table */}

@@ -60,10 +60,10 @@ async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
 export default async function ResearchDataPage() {
   const entries = await fetchPublishedEntries();
   const datasetCount = entries.filter((e) => RESEARCH_DATASETS[e.slug]).length;
-  const liveCount = entries.filter(
-    (e) => RESEARCH_DATASETS[e.slug]?.archive_status === "live"
-  ).length;
-  const inPrepCount = datasetCount - liveCount;
+  const totalFiles = Object.values(RESEARCH_DATASETS).reduce(
+    (sum, d) => sum + d.files.filter((f) => f.available).length,
+    0
+  );
 
   return (
     <PageTransition>
@@ -112,18 +112,18 @@ export default async function ResearchDataPage() {
               </div>
               <div className="bg-cream p-6 text-center md:p-8">
                 <p className="font-display text-4xl text-forest md:text-5xl">
-                  {liveCount}
+                  {totalFiles}
                 </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
-                  Live Archives
+                  Hosted Files
                 </p>
               </div>
               <div className="bg-cream p-6 text-center md:p-8">
                 <p className="font-display text-4xl text-forest md:text-5xl">
-                  {inPrepCount}
+                  Public
                 </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
-                  In Preparation
+                  Sources Only
                 </p>
               </div>
             </div>
@@ -148,7 +148,7 @@ export default async function ResearchDataPage() {
             <ul className="grid grid-cols-1 gap-px bg-border md:grid-cols-2">
               {entries.map((entry) => {
                 const meta = RESEARCH_DATASETS[entry.slug];
-                const isLive = meta?.archive_status === "live";
+                const fileCount = meta?.files.filter((f) => f.available).length ?? 0;
                 return (
                   <li key={entry.id} className="bg-cream">
                     <Link
@@ -161,14 +161,8 @@ export default async function ResearchDataPage() {
                             ? entry.format.replace(/_/g, " ")
                             : "Paper"}
                         </p>
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-body text-[10.5px] font-semibold uppercase tracking-widest ${
-                            isLive
-                              ? "bg-forest/10 text-forest"
-                              : "bg-warm-gray/10 text-warm-gray"
-                          }`}
-                        >
-                          {isLive ? "Live" : "In preparation"}
+                        <span className="font-mono text-[11px] text-warm-gray">
+                          {fileCount} {fileCount === 1 ? "file" : "files"}
                         </span>
                       </div>
                       <h3 className="mt-4 font-display text-2xl leading-tight text-forest md:text-[26px]">

@@ -2,32 +2,26 @@
 /*  research-datasets.ts                                               */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  CANONICAL source of truth for replication-archive metadata.       */
-/*                                                                     */
-/*  Adding a new paper means adding ONE entry here, plus one row in   */
-/*  the database via SQL. See docs/RESEARCH-CONTRIBUTING.md for the   */
-/*  full end-to-end walkthrough.                                       */
+/*  CANONICAL source of truth for replication-data metadata.          */
 /*                                                                     */
 /*  REAL DATA POLICY                                                   */
 /*  ----------------                                                   */
-/*  Every dataset entry MUST point at a genuine public upstream       */
-/*  source. We never fabricate sample rows or simulated data.         */
+/*  Every file listed in a dataset must be hosted at                  */
+/*  public/data/<slug>/<filename>. No "in preparation" placeholders  */
+/*  shipped on the public site: if a file is on the page, you can     */
+/*  download it. If we don't have it, we don't list it.               */
 /*                                                                     */
-/*  Two distribution states:                                           */
-/*    archive_status: "in_preparation"                                 */
-/*       The cleaned Rooted Forward replication archive is still      */
-/*       being prepared. The page shows the real upstream URL so      */
-/*       readers can grab the genuine raw data themselves. The        */
-/*       Download button is hidden.                                    */
-/*    archive_status: "live"                                           */
-/*       An admin has uploaded the cleaned archive to the             */
-/*       Supabase storage bucket research-datasets at                 */
-/*       storage_path. The Download button is shown to signed-in     */
-/*       users; the API mints a signed URL and logs the download.    */
+/*  Every dataset must also list at least one real upstream public   */
+/*  source URL so a reader can verify the underlying record on the    */
+/*  agency that publishes it.                                          */
 /*                                                                     */
-/*  upstream_sources is the always-on source list — it is shown on   */
-/*  every card regardless of archive_status, so a reader can always  */
-/*  trace claims back to the public-record origin.                    */
+/*  Adding a new paper:                                                */
+/*    1. Drop the real CSV / GeoJSON file at                          */
+/*       public/data/<slug>/<filename>                                 */
+/*    2. Add an entry here with available: true and the real         */
+/*       on-disk byte count                                            */
+/*    3. Add an entry in research-constants.ts and the SQL migration */
+/*    4. See docs/RESEARCH-CONTRIBUTING.md for the full walkthrough  */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -111,14 +105,12 @@ export interface DatasetMeta {
 export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
   "geography-of-disinvestment-chicago-west-side": {
     summary:
-      "Every grocery store licensed in Chicago in 2013, joined to community-area boundaries on the West Side.",
+      "Every grocery store licensed in the three West Side community areas (Austin, East Garfield Park, North Lawndale) in 2013.",
     contents:
-      "The full Chicago grocery-store licensing list from 2013, hosted directly on Rooted Forward. Filter by community area (25 = Austin, 27 = East Garfield Park, 29 = North Lawndale) to reproduce the West Side disinvestment finding. The full HOLC-to-2020-tract crosswalk and outcome panel is in preparation.",
+      "Two Chicago Data Portal slices hosted directly on Rooted Forward. The West Side subset filters Chicago's full 2013 grocery licensing list to community areas 25, 27, and 29 — the three areas the paper analyzes. The full citywide list is included so you can reproduce the same filter or compare to other community areas.",
     files: [
+      { name: "chicago-west-side-grocery-stores-2013.csv", bytes: 4556, description: "21 grocery stores in Austin, East Garfield Park, and North Lawndale in 2013, with address, license, and tract.", available: true, provenance: "Chicago Data Portal · Grocery Stores - 2013, filtered to community areas 25, 27, 29" },
       { name: "chicago-grocery-stores-2013.csv", bytes: 122664, description: "All 506 grocery stores licensed in Chicago in 2013, with community area, ward, census tract, and license details.", available: true, provenance: "Chicago Data Portal · Grocery Stores - 2013" },
-      { name: "holc-west-side-tract-crosswalk.geojson", bytes: 2300000, description: "HOLC zone polygons crosswalked to 2020 census tracts." },
-      { name: "holc-west-side-outcomes.csv", bytes: 48000, description: "Tract-level outcome panel: vacancy, closures, food access." },
-      { name: "holc-west-side-analysis.R", bytes: 12000, description: "Replication code reproducing every figure in the paper." },
     ],
     license:
       "Code MIT, derived data CC BY 4.0, 1938 zone polygons CC BY-NC-SA 4.0 (Mapping Inequality, Nelson et al. 2016).",
@@ -145,13 +137,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Zillow ZORI rent index for South Side Chicago zip codes, monthly from 2015 through 2025.",
     contents:
-      "The Zillow Observed Rent Index for thirteen South Side Chicago zip codes (60608, 60609, 60615, 60616, 60617, 60619, 60620, 60621, 60628, 60637, 60643, 60649, 60653) extracted from the public Zillow Research ZIP-level CSV. The 60615 / 60637 / 60649 rows around the Obama Presidential Center site are the impact-zone series. The cleaned Rental Registry and Craigslist panel is in preparation.",
+      "The Zillow Observed Rent Index for thirteen South Side Chicago zip codes (60608, 60609, 60615, 60616, 60617, 60619, 60620, 60621, 60628, 60637, 60643, 60649, 60653) extracted from the public Zillow Research ZIP-level CSV. The 60615 / 60637 / 60649 rows around the Obama Presidential Center site are the impact-zone series.",
     files: [
       { name: "zillow-zori-chicago-south-side.csv", bytes: 29687, description: "Monthly Zillow Observed Rent Index for thirteen Chicago South Side zip codes, 2015 through 2025.", available: true, provenance: "Zillow Research · public ZIP-level ZORI release" },
-      { name: "opc-rent-panel-2020-2025.csv", bytes: 18400000, description: "9,612 listings with monthly observations, six years." },
-      { name: "opc-impact-zone-tracts.geojson", bytes: 740000, description: "Eleven-tract half-mile-ring boundary." },
-      { name: "opc-did-analysis.R", bytes: 18000, description: "Difference-in-differences specification." },
-      { name: "opc-synthetic-control.R", bytes: 14500, description: "Synthetic-control robustness." },
     ],
     license: "Data CC BY 4.0, code MIT.",
     upstream_sources: [
@@ -178,12 +166,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "All 2,000 most-recent Chicago building permits in Pilsen (community area 31), live from the Chicago Data Portal.",
     contents:
-      "A live cut of Chicago building permits in the Pilsen community area, hosted directly on Rooted Forward. Filter by permit_type, year, or work_description to see the conversion pattern that the rezoning would have accelerated. The coded comment record for Application ZC-2025-0074 is in preparation.",
+      "A live cut of Chicago building permits in the Pilsen community area, hosted directly on Rooted Forward. Filter by permit_type, year, or work_description to see the conversion pattern that the rezoning would have accelerated.",
     files: [
       { name: "chicago-building-permits-pilsen.csv", bytes: 1759163, description: "2,000 building permits from Chicago's Pilsen community area (CA 31). Each row records permit type, work description, dates, and address.", available: true, provenance: "Chicago Data Portal · Building Permits" },
-      { name: "pilsen-zc-2025-0074-comments.csv", bytes: 410000, description: "351 written comments with seven-dimension coding." },
-      { name: "pilsen-coding-schema.md", bytes: 8000, description: "Coding rubric used by the analysts." },
-      { name: "pilsen-hearing-timeline.csv", bytes: 3500, description: "Hearing-day events and witness order." },
     ],
     license: "CC BY 4.0.",
     upstream_sources: [
@@ -206,13 +191,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "5,000-stop sample of Chicago Police Department traffic stops from the Stanford Open Policing Project corpus.",
     contents:
-      "A 5,000-stop random sample drawn from the Stanford Open Policing Project's published Chicago dataset, hosted directly on Rooted Forward. Each row carries the date, location, subject demographics, officer demographics, search status, and outcome — the inputs the Knowles-Persico-Todd outcome test runs on. The 287,412-record 2024 Chicago Transparency Act release is in preparation pending the city's full quarterly publication cycle.",
+      "A 5,000-stop random sample drawn from the Stanford Open Policing Project's published Chicago dataset, hosted directly on Rooted Forward. Each row carries the date, location, subject demographics, officer demographics, search status, and outcome — the inputs the Knowles-Persico-Todd outcome test runs on.",
     files: [
-      { name: "chicago-historical-stops-sample.csv", bytes: 832506, description: "5,000-stop random sample from the Stanford Open Policing Project Chicago corpus.", available: true, provenance: "Stanford Open Policing Project · Chicago dataset" },
-      { name: "cpd-stops-2024.csv", bytes: 62500000, description: "287,412 stops with 15 fields each." },
-      { name: "cpd-district-crosswalk.csv", bytes: 18000, description: "22 districts with 2023 ACS demographic composition." },
-      { name: "cpd-outcome-test.R", bytes: 21000, description: "Knowles-Persico-Todd outcome-test implementation." },
-      { name: "cpd-vod-check.R", bytes: 15500, description: "Veil-of-darkness robustness check." },
+      { name: "chicago-historical-stops-sample.csv", bytes: 832506, description: "5,000-stop random sample from the Stanford Open Policing Project Chicago corpus, with date, location, subject demographics, officer demographics, search status, and outcome.", available: true, provenance: "Stanford Open Policing Project · Chicago dataset" },
     ],
     license: "Data CC BY 4.0, code MIT.",
     upstream_sources: [
@@ -238,13 +219,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "The full 1938 HOLC Chicago Residential Security Map as live GeoJSON, hosted directly on Rooted Forward.",
     contents:
-      "The complete 1938 HOLC Chicago zone polygons sourced from the Mapping Inequality project at the University of Richmond. Each feature carries the original HOLC grade (A, B, C, or D) and the geometry needed to render the map at any zoom level. The full Area Descriptions transcription and the 2020-tract crosswalk are in preparation.",
+      "The complete 1938 HOLC Chicago zone polygons sourced from the Mapping Inequality project at the University of Richmond. Each feature carries the original HOLC grade (A, B, C, or D) and the geometry needed to render the map at any zoom level.",
     files: [
-      { name: "holc-chicago-1938-zones.geojson", bytes: 510655, description: "All graded zones for HOLC Chicago 1938 with geometry and grade.", available: true, provenance: "Mapping Inequality (Nelson et al. 2016) · CC BY-NC-SA 4.0" },
-      { name: "holc-chicago-1938-area-descriptions.csv", bytes: 480000, description: "All 82 Area Descriptions transcribed." },
-      { name: "holc-chicago-2020-tract-crosswalk.csv", bytes: 62000, description: "Tract-to-zone match with overlap percentages." },
-      { name: "holc-chicago-indicators.parquet", bytes: 1100000, description: "Six tract-level outcome indicators 2020 to 2024." },
-      { name: "holc-chicago-map-tiles.zip", bytes: 104000000, description: "Vector tiles for self-hosting." },
+      { name: "holc-chicago-1938-zones.geojson", bytes: 510655, description: "All graded zones for HOLC Chicago 1938 with geometry and grade. Each feature is a polygon with the original HOLC grade (A, B, C, or D), zone identifier, and area description metadata.", available: true, provenance: "Mapping Inequality (Nelson et al. 2016) · CC BY-NC-SA 4.0" },
     ],
     license: "CC BY-NC-SA 4.0 to match Mapping Inequality. Code MIT.",
     upstream_sources: [
@@ -267,13 +244,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Every Chicago Public School with full profile data — 1,983 schools with location, enrollment, demographics, and ratings.",
     contents:
-      "The complete CPS School Profile dataset, hosted directly on Rooted Forward. Filter by school_type, community area, or rating to identify the 49 schools closed in 2013 and the schools their students were sent to. The de-identified CPS post-closure tracking panel is in preparation.",
+      "The complete CPS School Profile dataset, hosted directly on Rooted Forward. Filter by school_type, community area, or rating to identify the 49 schools closed in 2013 and the schools their students were sent to.",
     files: [
       { name: "cps-schools-full-list.csv", bytes: 1261398, description: "1,983 Chicago Public Schools with location, enrollment, demographics, ratings, and contact info.", available: true, provenance: "Chicago Data Portal · CPS School Profile Information" },
-      { name: "cps-2013-closures-tracking.csv", bytes: 2400000, description: "11,729 displaced students aggregated to tract." },
-      { name: "cps-facilities-master-plan-2013-2024.csv", bytes: 620000, description: "Annual disposition status per building." },
-      { name: "cps-block-vacancy-panel.csv", bytes: 3100000, description: "Quarter-mile buffer vacancy 2013 through 2024." },
-      { name: "cpl-circulation-2013-2024.csv", bytes: 1400000, description: "CPL branch monthly circulation totals." },
     ],
     license:
       "Code/tables MIT. CPS tracking file subject to FOIA 2024-04311 redaction terms.",
@@ -299,13 +272,10 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Every Chicago affordable rental housing development, including CHA properties, with addresses, units, and management.",
     contents:
-      "The complete Chicago Affordable Rental Housing Developments list, hosted directly on Rooted Forward. CHA properties surface alongside other affordable units — filter by property_type or management_company to isolate the CHA portfolio. The de-identified CHA resident-tracking panel is in preparation pending FOIA redaction review.",
+      "The complete Chicago Affordable Rental Housing Developments list, hosted directly on Rooted Forward. CHA properties surface alongside other affordable units — filter by property_type or management_company to isolate the CHA portfolio.",
     files: [
+      { name: "cha-and-public-housing-properties.csv", bytes: 8176, description: "39 affordable rental properties in Chicago whose property type or management company indicates a public housing or CHA-redevelopment site.", available: true, provenance: "Chicago Data Portal · Affordable Rental Housing Developments, filtered to public housing types and CHA-affiliated managers" },
       { name: "chicago-affordable-rental-housing-developments.csv", bytes: 137515, description: "1,776 affordable rental housing developments in Chicago, with property type, units, address, and management.", available: true, provenance: "Chicago Data Portal · Affordable Rental Housing Developments" },
-      { name: "cha-resident-tracking-1999-2024.csv", bytes: 3800000, description: "17,000 displaced families with year-end housing status." },
-      { name: "cha-mtw-tract-aggregates.csv", bytes: 920000, description: "Annual MTW unit counts by tract." },
-      { name: "hud-hcv-chicago-area.csv", bytes: 2100000, description: "HCV households with current tract." },
-      { name: "cha-unit-count-reconciliation.R", bytes: 17000, description: "Reproduces the 25,000-unit reconciliation." },
     ],
     license:
       "Code MIT. CHA tracking subject to FOIA 2019-00924, 2022-00718, and 2025-01108 terms.",
@@ -330,12 +300,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "Every Chicago TIF-funded financial-incentive project with the actual fields a CBA monitoring committee would inspect — ordinance dates, affordable units, MBE/WBE participation, jobs-created requirements.",
     contents:
-      "The eight signed Chicago CBA documents themselves live in the Chicago Lawyers' Committee curated repository and the UIC Great Cities Institute archive — institutional collections without public download URLs. What you can pull from a public API and host directly is this: every Chicago Financial Incentive Project under TIF, with the publicly-recorded compliance fields (affordable_residential_units, mbe_requirement_met, wbe_requirement_met, jobs_created_required) that any CBA monitoring would draw on. The eight-case CBA coding table itself is in preparation pending agreement from the holding institutions.",
+      "The eight signed Chicago CBA documents themselves live in the Chicago Lawyers' Committee curated repository and the UIC Great Cities Institute archive — institutional collections without public download URLs. What you can pull from a public API and host directly is this: every Chicago Financial Incentive Project under TIF, with the publicly-recorded compliance fields (affordable_residential_units, mbe_requirement_met, wbe_requirement_met, jobs_created_required) that any CBA monitoring would draw on.",
     files: [
       { name: "chicago-tif-financial-incentive-projects.csv", bytes: 20522, description: "40 Chicago TIF-funded development projects with project name, applicant, address, ward, community area, TIF district, ordinance approval date, RDA approval date, residential units, affordable_residential_units, incentive amount, total project cost, jobs created/retained, MBE/WBE compliance.", available: true, provenance: "Chicago Data Portal · Financial Incentive Projects (TIF-Funded) Economic Development" },
-      { name: "chicago-cba-eight-case-coding.csv", bytes: 34000, description: "Eight Chicago CBA cases coded across five structural features." },
-      { name: "cba-structural-features.md", bytes: 12000, description: "Coding rubric." },
-      { name: "austin-site-evaluation.md", bytes: 18000, description: "Site-by-site evaluation." },
     ],
     license: "CC BY 4.0. The TIF financial-incentive projects file is redistributed under the City of Chicago Data Portal terms.",
     upstream_sources: [
@@ -367,11 +334,8 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     contents:
       "The full Chicago Tax Increment Financing-funded RDA and IGA project list, hosted directly on Rooted Forward. Filter by tif_district to see Bronzeville-specific spending, or compare across districts to reproduce the regressive-transfer pattern Weber (2022) documented at the aggregate level.",
     files: [
-      { name: "chicago-tif-funded-rda-projects.csv", bytes: 452345, description: "2,558 TIF-funded projects across Chicago with district, developer, approved amount, total cost, affordable units, and ward.", available: true, provenance: "Chicago Data Portal · TIF Funded RDA and IGA Projects" },
-      { name: "bronzeville-tif-revenue-2002-2025.csv", bytes: 24000, description: "Annual increment by overlapping taxing body." },
-      { name: "bronzeville-tif-expenditures-2002-2025.csv", bytes: 42000, description: "Project-level expenditure with category." },
-      { name: "bronzeville-tif-project-list.csv", bytes: 31000, description: "31 projects with within-district share." },
-      { name: "bronzeville-tif-comparison-districts.csv", bytes: 18000, description: "Comparison rates for adjacent districts." },
+      { name: "bronzeville-area-tif-projects.csv", bytes: 13254, description: "27 TIF-funded projects in Bronzeville-area TIF districts (Bronzeville, Michigan/Cermak, 47th/King, Madden/Wells, Stateway, Drexel, Calumet/Cermak), with developer, approved amount, total cost, affordable units, and ward.", available: true, provenance: "Chicago Data Portal · TIF Funded RDA and IGA Projects, filtered to Bronzeville-area TIF districts" },
+      { name: "chicago-tif-funded-rda-projects.csv", bytes: 452345, description: "All 2,558 TIF-funded projects across every Chicago TIF district, including Bronzeville. Use this for the cross-district comparison.", available: true, provenance: "Chicago Data Portal · TIF Funded RDA and IGA Projects" },
     ],
     license: "Code MIT, derived data CC BY 4.0.",
     upstream_sources: [
@@ -395,13 +359,9 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "5,000 real Cook County Assessor appeal records with PIN, year, township, hearing type, and outcome.",
     contents:
-      "A 5,000-row sample of Cook County Assessor administrative appeal records, hosted directly on Rooted Forward. Each row includes the PIN, year, classification, township, appeal type, hearing type, mailed values, certified values, and reason codes — the full set of fields the paper's analysis runs on. The complete 1.74 million-record ten-year panel is in preparation.",
+      "A 5,000-row sample of Cook County Assessor administrative appeal records, hosted directly on Rooted Forward. Each row includes the PIN, year, classification, township, appeal type, hearing type, mailed values, certified values, and reason codes — the full set of fields the paper's analysis runs on.",
     files: [
       { name: "cook-appeals-sample.csv", bytes: 1312953, description: "5,000 Cook County Assessor appeal records with PIN, year, class, township, hearing type, outcome, and reason codes.", available: true, provenance: "Cook County Open Data · Assessor Appeals" },
-      { name: "cook-appeals-2015-2024.csv", bytes: 92000000, description: "1.74 million appeal filings with outcome and filer-identity field." },
-      { name: "cook-appeals-tract-panel.csv", bytes: 1400000, description: "Tract-year panel of filing rate, success rate, reduction magnitude." },
-      { name: "cook-appeals-firm-concentration.csv", bytes: 380000, description: "Specialized firm activity by tract." },
-      { name: "cook-appeals-analysis.R", bytes: 24000, description: "Replication code." },
     ],
     license: "Code MIT, derived data CC BY 4.0.",
     upstream_sources: [
@@ -428,12 +388,8 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     contents:
       "5,000 rows of New York City Air Quality Surveillance, hosted directly on Rooted Forward. Filter by geo_place_name to isolate Bronx neighborhoods adjacent to the Cross-Bronx corridor (Highbridge, Morris Heights, Crotona, West Farms, Tremont). Each row records a pollutant measurement with start_date, geography, and data_value. The parcel-level 1948–1955 acquisition records are in preparation.",
     files: [
-      { name: "nyc-air-quality.csv", bytes: 744050, description: "5,000 NYC air quality measurements (PM2.5, NO2, ozone) by neighborhood with start dates and values.", available: true, provenance: "NYC Open Data · Air Quality Surveillance" },
-      { name: "cross-bronx-acquisitions-1948-1955.csv", bytes: 2900000, description: "Parcel-level acquisitions with payment and demographics." },
-      { name: "cross-bronx-census-1960-1980.csv", bytes: 680000, description: "Quarter-mile buffer panel." },
-      { name: "cross-bronx-environmental-2023.csv", bytes: 210000, description: "Tract-level PM2.5 and noise." },
-      { name: "cross-bronx-asthma-2023.csv", bytes: 190000, description: "Pediatric asthma hospitalization rate." },
-      { name: "cross-bronx-quarter-mile-buffer.geojson", bytes: 1200000, description: "Buffer polygon." },
+      { name: "bronx-corridor-air-quality.csv", bytes: 85096, description: "571 NYC Air Quality Surveillance measurements filtered to Bronx neighborhoods adjacent to the Cross-Bronx corridor (Highbridge, Tremont, Crotona, Morrisania, Mott Haven, Hunts Point, West Farms, Morris Heights, University Heights).", available: true, provenance: "NYC Open Data · Air Quality Surveillance, filtered to Bronx-corridor neighborhoods" },
+      { name: "nyc-air-quality.csv", bytes: 744050, description: "All 5,000 citywide NYC air-quality measurements (PM2.5, NO2, ozone) by neighborhood with start dates and values.", available: true, provenance: "NYC Open Data · Air Quality Surveillance" },
     ],
     license: "Code MIT, derived data CC BY 4.0.",
     upstream_sources: [
@@ -457,11 +413,10 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "All 849 affordable housing developments in the SF MOHCD portfolio, including OCII / former SFRA properties.",
     contents:
-      "The complete San Francisco MOHCD Affordable Housing Portfolio, hosted directly on Rooted Forward. Filter by ocii_project_area to isolate the Western Addition and Fillmore developments that house Certificate of Preference holders. Each row records the development, address, project area, status, and tenure type. The coded SFRA case-file archive is in preparation.",
+      "The complete San Francisco MOHCD Affordable Housing Portfolio, hosted directly on Rooted Forward. Filter by ocii_project_area to isolate the Western Addition and Fillmore developments that house Certificate of Preference holders. Each row records the development, address, project area, status, and tenure type.",
     files: [
-      { name: "sf-mohcd-affordable-housing-portfolio.csv", bytes: 341050, description: "849 affordable housing developments in the SF MOHCD portfolio with OCII project area, status, and tenure.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio" },
-      { name: "sfra-archival-abstracts.csv", bytes: 280000, description: "Coded SFRA case-file abstracts." },
-      { name: "ocii-cop-2008-2024.csv", bytes: 92000, description: "Annual COP placement counts." },
+      { name: "fillmore-western-addition-developments.csv", bytes: 133110, description: "325 SF MOHCD properties whose neighborhood, OCII project area, or address indicates Western Addition / Fillmore, Yerba Buena, Mission Bay, Hunters Point, Bayview, or South of Market — the OCII project areas where SFRA-era redevelopment took place.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio, filtered to former-SFRA OCII project areas" },
+      { name: "sf-mohcd-affordable-housing-portfolio.csv", bytes: 341050, description: "All 849 affordable housing developments in the SF MOHCD portfolio with OCII project area, status, and tenure.", available: true, provenance: "DataSF · MOHCD Affordable Housing Portfolio" },
     ],
     license: "CC BY-NC 4.0.",
     upstream_sources: [
@@ -486,11 +441,8 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     contents:
       "All 645 Dallas County census tracts from the 2023 American Community Survey 5-year estimates, hosted directly on Rooted Forward. Each row carries B19013_001E (median household income), B25003_002E (owner-occupied units), B25003_003E (renter-occupied units), the state and county FIPS, and the tract code. Filter for the South Dallas tracts adjacent to Fair Park (48113008500 and 48113008700) to reproduce the income-gradient finding.",
     files: [
-      { name: "dallas-tract-acs-2023.csv", bytes: 45819, description: "645 Dallas County census tracts with 2023 ACS median household income, owner / renter occupancy, and FIPS codes.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API" },
-      { name: "fair-park-1936-acquisitions.csv", bytes: 68000, description: "3,800 displaced residents on forty-two blocks." },
-      { name: "fair-park-1966-1968-acquisitions.csv", bytes: 34000, description: "1,400 displaced residents on forty-two acres." },
-      { name: "fair-park-acs-2023-panel.csv", bytes: 52000, description: "South Dallas tracts with ACS 2023 indicators." },
-      { name: "fair-park-first-2020-2024.csv", bytes: 24000, description: "Annual Fair Park First implementation milestones." },
+      { name: "dallas-county-south-area-acs-2023.csv", bytes: 956, description: "13 Dallas County census tracts with codes 002700 to 005000 — the south-of-downtown range that includes the South Dallas community area and the Fair Park-adjacent tracts.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API and filtered to south-Dallas tract codes" },
+      { name: "dallas-tract-acs-2023.csv", bytes: 45819, description: "All 645 Dallas County census tracts with 2023 ACS median household income, owner / renter occupancy, and FIPS codes.", available: true, provenance: "U.S. Census Bureau · ACS 5-year 2023, fetched live from the Census API" },
     ],
     license: "CC BY 4.0.",
     upstream_sources: [

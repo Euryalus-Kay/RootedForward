@@ -30,15 +30,7 @@ import {
   normalizeCitations,
 } from "@/lib/research-constants";
 import type { ResearchEntry } from "@/lib/types/database";
-import {
-  ExternalLink,
-  FileCode2,
-  Scale,
-  Database,
-  Check,
-  Clock,
-  Download,
-} from "lucide-react";
+import { ExternalLink, Scale, Database, Download } from "lucide-react";
 
 export const revalidate = 600;
 
@@ -98,10 +90,6 @@ export default async function DatasetDetailPage({ params }: Params) {
   const paperTitle = entry?.title ?? slug;
 
   const availableFiles = meta.files.filter((f) => f.available);
-  const availableCsvs = availableFiles.filter((f) =>
-    f.name.toLowerCase().endsWith(".csv")
-  );
-  const upcomingFiles = meta.files.filter((f) => !f.available);
   const hasLiveData = availableFiles.length > 0;
 
   return (
@@ -137,26 +125,10 @@ export default async function DatasetDetailPage({ params }: Params) {
         {/* Status row */}
         <section className="bg-cream pt-10">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-6">
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-body text-[11px] font-semibold uppercase tracking-widest ${
-                hasLiveData
-                  ? "bg-forest/10 text-forest"
-                  : "bg-warm-gray/15 text-warm-gray"
-              }`}
-            >
-              {hasLiveData ? (
-                <>
-                  <Check className="h-3 w-3" /> Live data
-                </>
-              ) : (
-                <>
-                  <Clock className="h-3 w-3" /> In preparation
-                </>
-              )}
-            </span>
             <span className="font-body text-[13px] text-warm-gray">
-              {availableFiles.length} of {meta.files.length} files live ·
-              estimated {totalArchiveSize(meta)} when complete
+              {availableFiles.length}{" "}
+              {availableFiles.length === 1 ? "file" : "files"} ·{" "}
+              {totalArchiveSize(meta)} on disk
             </span>
             {entry && (
               <Link
@@ -208,7 +180,10 @@ export default async function DatasetDetailPage({ params }: Params) {
                   const downloadUrl = `/api/research/data/file?slug=${encodeURIComponent(
                     slug
                   )}&file=${encodeURIComponent(file.name)}`;
-                  const previewUrl = `${downloadUrl}&preview=1`;
+                  const ext = file.name.split(".").pop()?.toUpperCase() ?? "FILE";
+                  const upstreamUrl = meta.upstream_sources[0]?.url;
+                  const upstreamLabel =
+                    meta.upstream_sources[0]?.label ?? "Source";
                   return (
                     <li
                       key={file.name}
@@ -228,26 +203,30 @@ export default async function DatasetDetailPage({ params }: Params) {
                             </p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className="font-mono text-[11.5px] text-warm-gray">
                             {formatBytes(file.bytes)}
                           </span>
                           <a
                             href={downloadUrl}
+                            title={`Save ${file.name} (${formatBytes(file.bytes)}) to your computer`}
                             className="inline-flex items-center gap-1.5 rounded-sm bg-forest px-3 py-1.5 font-body text-[12.5px] font-semibold text-cream transition-colors hover:bg-forest-dark"
                           >
                             <Download className="h-3.5 w-3.5" />
-                            Download original
+                            Download {ext}
                           </a>
-                          <a
-                            href={previewUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-[12.5px] font-semibold text-ink transition-colors hover:bg-cream-dark"
-                          >
-                            <ExternalLink className="h-3.5 w-3.5" />
-                            Open raw
-                          </a>
+                          {upstreamUrl && (
+                            <a
+                              href={upstreamUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={`Visit the public source: ${upstreamLabel}`}
+                              className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-[12.5px] font-semibold text-ink transition-colors hover:bg-cream-dark"
+                            >
+                              <ExternalLink className="h-3.5 w-3.5" />
+                              View at source
+                            </a>
+                          )}
                         </div>
                       </div>
 
@@ -260,50 +239,13 @@ export default async function DatasetDetailPage({ params }: Params) {
                         </div>
                       ) : (
                         <p className="mt-4 rounded-sm bg-cream-dark/30 p-4 font-body text-[13px] text-warm-gray">
-                          This file is hosted but not a CSV. Use the
-                          buttons above to download or open it raw.
+                          This file is not a tabular CSV. Use the
+                          download button above to save it locally.
                         </p>
                       )}
                     </li>
                   );
                 })}
-              </ul>
-            </div>
-          </section>
-        )}
-
-        {/* Upcoming files — placeholders the archive will eventually contain */}
-        {upcomingFiles.length > 0 && (
-          <section className="bg-cream pt-14">
-            <div className="mx-auto max-w-5xl px-6">
-              <h2 className="font-display text-2xl text-forest md:text-3xl">
-                Files in Preparation
-              </h2>
-              <p className="mt-3 max-w-[64ch] font-body text-[14.5px] leading-relaxed text-ink/75">
-                These files will land in the archive when the cleaned
-                Rooted Forward release ships. Use the upstream sources
-                below for the underlying public records in the
-                meantime.
-              </p>
-              <ul className="mt-5 space-y-2.5">
-                {upcomingFiles.map((file) => (
-                  <li
-                    key={file.name}
-                    className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2"
-                  >
-                    <div className="min-w-0">
-                      <p className="font-mono text-[12.5px] text-warm-gray break-all">
-                        {file.name}
-                      </p>
-                      <p className="mt-0.5 font-body text-[12.5px] text-warm-gray">
-                        {file.description}
-                      </p>
-                    </div>
-                    <span className="shrink-0 font-mono text-[11.5px] text-warm-gray">
-                      {formatBytes(file.bytes)}
-                    </span>
-                  </li>
-                ))}
               </ul>
             </div>
           </section>
@@ -397,37 +339,6 @@ export default async function DatasetDetailPage({ params }: Params) {
             </div>
           </section>
         )}
-
-        {/* Files manifest summary */}
-        <section className="bg-cream pt-14">
-          <div className="mx-auto max-w-5xl px-6">
-            <p className="inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray">
-              <FileCode2 className="h-3.5 w-3.5" />
-              Full archive manifest
-            </p>
-            <ul className="mt-3 space-y-2">
-              {meta.files.map((f) => (
-                <li
-                  key={f.name}
-                  className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2"
-                >
-                  <div className="min-w-0">
-                    <p className="font-mono text-[12.5px] text-ink/85 break-all">
-                      {f.name}
-                    </p>
-                    <p className="mt-0.5 font-body text-[12.5px] text-warm-gray">
-                      {f.description}
-                    </p>
-                  </div>
-                  <span className="shrink-0 font-mono text-[11.5px] text-warm-gray">
-                    {f.available ? "Live · " : "In prep · "}
-                    {formatBytes(f.bytes)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
 
         {/* Back link */}
         <section className="bg-cream pb-20 pt-12">
