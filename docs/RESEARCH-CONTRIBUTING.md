@@ -325,20 +325,56 @@ saves the result. Test it by clicking after deploy.
 
 ---
 
-## When the cleaned archive is ready
+## Hosting real data files
 
-1. Build the cleaned ZIP locally. Filenames must match the `files`
-   list in `RESEARCH_DATASETS`.
+Each available file lives at `public/data/<slug>/<filename>` and
+appears on the detail page as a live spreadsheet (for CSVs) plus a
+download button.
+
+To add a new live file:
+
+1. Drop the file into `public/data/<slug>/<filename>`.
+2. Add an entry to the paper's `files: [...]` in
+   `src/lib/research-datasets.ts` with `available: true`, the real
+   on-disk byte count, a one-sentence description, and a `provenance`
+   string identifying the upstream public source.
+3. Set `archive_status: "live"` for the dataset (any single live
+   file is enough).
+4. Commit. Push. Deploy.
+
+Every file dropped this way:
+
+- Renders inline as a sortable, filterable, paginated spreadsheet
+  if the file ends in `.csv`.
+- Serves through `/api/research/data/file?slug=...&file=...` —
+  with `?preview=1` for the in-site viewer (cached) and without
+  `preview` for an audit-logged authenticated download.
+- Is stored permanently in git, so the data is reproducible from
+  any clone.
+
+**Filename rules:** the API enforces `^[A-Za-z0-9._-]+$` on both slug
+and filename to prevent path traversal. No spaces, no slashes, no
+Unicode. Stick to ASCII alphanumerics, underscore, dot, and dash.
+
+**Size rules:** anything under ~5 MB is fine to commit directly.
+Larger files should still work but will balloon the repo. For files
+above ~50 MB, prefer hosting in the Supabase `research-datasets`
+bucket and setting `storage_path` instead.
+
+## When the Supabase storage archive is ready
+
+For larger archives that don't belong in git, you can still flip
+on a sign-in-required download via Supabase storage:
+
+1. Build the cleaned ZIP locally.
 2. Upload to the `research-datasets` storage bucket via the Supabase
    dashboard, the CLI, or a future admin UI.
-3. Update `src/lib/research-datasets.ts`:
-   - `archive_status: "live"`
-   - `storage_path: "<slug>/<your-archive>.zip"` (path inside the bucket)
+3. Set `storage_path: "<slug>/<your-archive>.zip"` on the dataset.
 4. Commit, push, deploy.
 
-The download API will mint a signed URL on each request and log every
-download to `dataset_downloads`. The admin can see usage at
-`/admin/research/data-usage`.
+The `/api/research/data/download` route will mint a 60-second signed
+URL on each request and log every download to `dataset_downloads`.
+The admin can see usage at `/admin/research/data-usage`.
 
 ---
 

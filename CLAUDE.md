@@ -15,12 +15,17 @@ Short version:
 1. Add the paper body in `src/lib/research-seed-content*.ts` (or inline)
 2. Add the entry record in `src/lib/research-constants.ts` → `PLACEHOLDER_RESEARCH_ENTRIES`
 3. Add the dataset metadata in `src/lib/research-datasets.ts` → `RESEARCH_DATASETS`
-4. Add a seed row to `supabase/migrations/00X_*.sql` (next number)
-5. Run the build to confirm
+4. Drop real CSV/JSON files at `public/data/<slug>/<filename>` and mark
+   them with `available: true` in the dataset entry
+5. Add a seed row to `supabase/migrations/00X_*.sql` (next number)
+6. Run the build to confirm
 
-PDFs, charts, citations, the data page, the navbar dropdown, and the
-admin tracking all read from those files automatically. There is no
-sixth place to update.
+PDFs, charts, citations, the data page, the navbar dropdown, the
+in-site spreadsheet viewer, and the admin tracking all read from
+those files automatically. Any CSV at `public/data/<slug>/<file>`
+with `available: true` shows up as a live sortable, filterable,
+paginated spreadsheet on `/research/data/<slug>` and as an audit-
+logged download via `/api/research/data/file`.
 
 ---
 
