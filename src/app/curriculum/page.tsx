@@ -1,68 +1,182 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
 import CurriculumRequestForm from "@/components/forms/CurriculumRequestForm";
 
 export const metadata: Metadata = {
   title: "Curriculum | Rooted Forward",
   description:
-    "A free 12-session classroom unit on the policies that built American cities. Built around our walking tours, podcast, and game.",
+    "Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Built around our walking tours, podcast, game, and research papers.",
 };
 
-const UNITS = [
+/* ------------------------------------------------------------------ */
+/*  Curriculum                                                         */
+/*                                                                     */
+/*  The page lists four units. Each unit names the topic, the public  */
+/*  primary sources we point students at, the Rooted Forward asset    */
+/*  the unit pairs with, and a discussion prompt teachers can use as  */
+/*  is. Nothing is fabricated. If a resource is not on this page,    */
+/*  it is not in the kit.                                              */
+/* ------------------------------------------------------------------ */
+
+interface Reading {
+  label: string;
+  url: string;
+  note?: string;
+}
+
+interface Unit {
+  n: string;
+  title: string;
+  question: string;
+  pairs_with: { label: string; href: string };
+  readings: Reading[];
+  discussion_prompt: string;
+}
+
+const UNITS: Unit[] = [
   {
     n: "01",
-    title: "Lines on the Map",
-    sessions: "3 sessions",
-    body:
-      "Students read a 1940 HOLC surveyor description out loud, overlay it on a current census map of the same tract, and trace what stayed in place. Pairs with the Bronzeville podcast episode and the first walking tour.",
-    standards: "C3 D2.His.4.9-12 · D2.Geo.6.9-12",
+    title: "How the Lines Got Drawn",
+    question:
+      "Who decided which neighborhoods would receive bank loans, and what did those decisions look like on a map?",
+    pairs_with: {
+      label: "1938 HOLC Chicago map dataset",
+      href: "/research/data/1938-holc-chicago-map-annotated",
+    },
+    readings: [
+      {
+        label: "Mapping Inequality (Univ. of Richmond)",
+        url: "https://dsl.richmond.edu/panorama/redlining/",
+        note: "Interactive viewer for every U.S. city HOLC graded.",
+      },
+      {
+        label: "HOLC Underwriting Manual, 1938 (digitized)",
+        url: "https://catalog.archives.gov/id/720357",
+        note: "Original FHA grading rubric at the National Archives.",
+      },
+      {
+        label: "Richard Rothstein, The Color of Law, ch. 4",
+        url: "https://www.epi.org/publication/the-color-of-law-a-forgotten-history-of-how-our-government-segregated-america/",
+        note: "Standard high-school-readable summary of HOLC and FHA practice.",
+      },
+    ],
+    discussion_prompt:
+      "Pull up the Mapping Inequality viewer for your city. Find a tract graded D in 1938. What does it look like in 2025 on Census tract data? What does the same tract look like graded A?",
   },
   {
     n: "02",
-    title: "Contracts and the Color Tax",
-    sessions: "2 sessions",
-    body:
-      "Students model the wealth gap created by contract buying with the actual Cook Center markup numbers, then read about the 1968 Contract Buyers League strike as a case in collective action.",
-    standards: "C3 D2.Eco.10.9-12 · D4.7.9-12",
+    title: "Contract Buying and the Wealth Gap",
+    question:
+      "What happened to Black families who could not get federally insured mortgages, and how much did that cost them across a generation?",
+    pairs_with: {
+      label: "Cook County property-tax appeal dataset",
+      href: "/research/data/cook-county-property-tax-appeal-disparity",
+    },
+    readings: [
+      {
+        label: "Beryl Satter, Family Properties (excerpt)",
+        url: "https://www.metropolitanbooks.com/books/family-properties/",
+        note: "The standard book on the Contract Buyers League and the 1968 strike.",
+      },
+      {
+        label: "Coates, The Case for Reparations (Atlantic, 2014)",
+        url: "https://www.theatlantic.com/magazine/archive/2014/06/the-case-for-reparations/361631/",
+        note: "Profiles Clyde Ross and the Contract Buyers League directly.",
+      },
+      {
+        label: "Contract Buyers League records, Newberry Library",
+        url: "https://mms.newberry.org/detail.php?t=objects&type=related&kv=85706",
+        note: "Original primary-source collection.",
+      },
+    ],
+    discussion_prompt:
+      "A 1968 contract-buying agreement on a $12,000 house carried a $25,000 contract price. Calculate the markup as a percent. Then calculate how that markup compounds across thirty years. Compare to the equivalent FHA-insured loan available to a white buyer the same year.",
   },
   {
     n: "03",
-    title: "The Towers and Gautreaux",
-    sessions: "3 sessions",
-    body:
-      "From the CHA towers to Hills v. Gautreaux to HOPE VI. Students debate the Plan for Transformation in a structured Harkness seminar. We give you the prompts.",
-    standards: "C3 D2.Civ.5.9-12 · D2.His.16.9-12",
+    title: "Public Housing and the Plan for Transformation",
+    question:
+      "Why did Chicago demolish 17,000 public-housing units in two decades, and what does the right of return mean in practice?",
+    pairs_with: {
+      label: "Chicago Housing Authority retrospective dataset",
+      href: "/research/data/cha-plan-for-transformation-retrospective",
+    },
+    readings: [
+      {
+        label: "Hills v. Gautreaux, 425 U.S. 284 (1976)",
+        url: "https://supreme.justia.com/cases/federal/us/425/284/",
+        note: "Full Supreme Court opinion, public domain.",
+      },
+      {
+        label: "CHA Plan for Transformation, 1999 announcement",
+        url: "https://www.thecha.org/about/plans-and-reports",
+        note: "CHA's Moving to Work annual reports list every year of the plan.",
+      },
+      {
+        label: "ProPublica Illinois CHA reporting (Mick Dumke 2022)",
+        url: "https://www.propublica.org/series/chicago-housing-authority",
+        note: "Independent investigation of the unit-count discrepancy.",
+      },
+    ],
+    discussion_prompt:
+      "The 1999 plan promised 25,000 replacement units. Twenty-five years later CHA reports 25,000. Read the ProPublica reporting and identify which categories of housing were counted that the original plan did not contemplate. Should those units count? Defend a position.",
   },
   {
     n: "04",
-    title: "Today's Toolkit",
-    sessions: "4 sessions",
-    body:
-      "TIF, ARO, the Red Line Extension. Students play the game in pairs, then write a 500-word memo recommending changes to one Chicago tool. We've used this with juniors and adult organizers and it works for both.",
-    standards: "C3 D4.6.9-12 · D2.Civ.13.9-12",
+    title: "Tools the City Uses Now",
+    question:
+      "What does TIF actually do, who decides who benefits, and how would you change it?",
+    pairs_with: {
+      label: "Bronzeville TIF expenditure dataset",
+      href: "/research/data/bronzeville-tif-expenditure-analysis",
+    },
+    readings: [
+      {
+        label: "Illinois TIF Act, 65 ILCS 5/11-74.4",
+        url: "https://www.ilga.gov/legislation/ilcs/ilcs4.asp?ActID=802&ChapterID=14",
+        note: "The full enabling statute, public.",
+      },
+      {
+        label: "Chicago TIF Illumination Project",
+        url: "https://www.thecivlab.com/tif-illumination",
+        note: "Independent annual breakdowns since 2013.",
+      },
+      {
+        label: "Cook County Clerk TIF Annual Reports",
+        url: "https://www.cookcountyclerkil.gov/finance/tif-revenue-reports",
+        note: "Live revenue and expenditure for every Cook County TIF district.",
+      },
+    ],
+    discussion_prompt:
+      "Pick one TIF district from the Cook County Clerk reports. Read its three most recent annual reports. List every project that received funds. Decide whether each project clears the but-for test the law requires. Write a 500-word memo to the alderperson recommending changes.",
   },
 ];
 
-const FORMATS = [
+const PAIRINGS = [
   {
-    title: "Lesson plans",
+    asset: "Walking tours",
+    href: "/tours",
     body:
-      "45-minute and 90-minute versions of every session, with timing, materials, and a printable script you can hand to a sub.",
+      "Each unit pairs with a stop on a walking tour. Field-trip versions of every tour are mapped and printable.",
   },
   {
-    title: "Slide decks",
+    asset: "Podcast",
+    href: "/podcasts",
     body:
-      "Editable Google Slides and Keynote files. Drop them into your existing class without rebranding.",
+      "Episodes are 25 to 40 minutes. Use one as homework before a unit; we include a five-question listening guide.",
   },
   {
-    title: "Discussion guides",
+    asset: "Game",
+    href: "/game",
     body:
-      "Harkness, Socratic, and small-group prompts, with sample student responses and follow-ups for the moments where conversations stall.",
+      "Twenty-minute interactive scenario where students make rezoning, TIF, and housing-policy decisions on a real Chicago neighborhood.",
   },
   {
-    title: "Pre/post checks",
+    asset: "Research data",
+    href: "/research/data",
     body:
-      "Five-question knowledge checks on AMI, redlining, TIF, displacement, and inclusionary zoning. The pilot cohort averaged a +1.5-question gain.",
+      "Every unit links to a real dataset on this site. Students sort, filter, and export the same data the papers use.",
   },
 ];
 
@@ -87,43 +201,57 @@ export default function CurriculumPage() {
         {/* Intro */}
         <section className="bg-cream pt-16 md:pt-24">
           <div className="mx-auto max-w-3xl px-6">
-            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl md:leading-relaxed">
-              Twelve sessions on how the federal government, the city of
-              Chicago, and private actors segregated American neighborhoods
-              between 1933 and now. Built for U.S. history, civics, and AP
-              Human Geography. Used in three Chicago Public Schools and a
-              handful of college courses. Free, and we will help you set it
-              up.
+            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl">
+              Four classroom units on the federal, municipal, and
+              private decisions that segregated American neighborhoods
+              between 1933 and now. Built for U.S. history, civics, and
+              AP Human Geography. Free for any educator. Email and we
+              will send what we have.
+            </p>
+            <p className="mt-5 max-w-[60ch] font-body text-base leading-relaxed text-ink/70">
+              Every unit points at real public primary sources you can
+              click and read in class today. The readings are the
+              curriculum. We provide the framing questions, discussion
+              prompts, and links to the Rooted Forward dataset each
+              unit pairs with.
             </p>
           </div>
         </section>
 
-        {/* Quick facts */}
-        <section className="bg-cream py-12 md:py-16">
-          <div className="mx-auto max-w-6xl px-6">
+        {/* Stats */}
+        <section className="bg-cream pt-12 md:pt-16">
+          <div className="mx-auto max-w-5xl px-6">
             <div className="grid grid-cols-2 gap-px bg-border md:grid-cols-4">
-              <div className="bg-cream p-6 md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">12</p>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-3xl text-forest md:text-4xl">
+                  4
+                </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  sessions
+                  Units
                 </p>
               </div>
-              <div className="bg-cream p-6 md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">4</p>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-3xl text-forest md:text-4xl">
+                  Free
+                </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  units
+                  CC BY-NC-SA 4.0
                 </p>
               </div>
-              <div className="bg-cream p-6 md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">Free</p>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-3xl text-forest md:text-4xl">
+                  9–12
+                </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  CC BY-NC-SA
+                  Grade Range
                 </p>
               </div>
-              <div className="bg-cream p-6 md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">+1.5</p>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-3xl text-forest md:text-4xl">
+                  Public
+                </p>
                 <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  pre/post gain
+                  Sources Only
                 </p>
               </div>
             </div>
@@ -131,111 +259,142 @@ export default function CurriculumPage() {
         </section>
 
         {/* Units */}
-        <section className="border-t border-border bg-cream py-16 md:py-24">
-          <div className="mx-auto max-w-6xl px-6">
+        <section className="border-t border-border bg-cream py-16 md:py-24 mt-16">
+          <div className="mx-auto max-w-5xl px-6">
             <h2 className="font-display text-3xl text-forest md:text-4xl">
-              The four units
+              The Four Units
             </h2>
-            <p className="mt-3 max-w-[55ch] font-body text-base text-ink/60">
-              Run them as a 12-session arc, or pull a single unit into the
-              course you already teach.
+            <p className="mt-3 max-w-[55ch] font-body text-base text-ink/70">
+              Run them in order, or pull a single unit into the course
+              you already teach. Every reading below is on a public
+              site you can link from a slide.
             </p>
-            <div className="mt-12 flex flex-col gap-px bg-border">
+            <ul className="mt-12 flex flex-col gap-px bg-border">
               {UNITS.map((u) => (
-                <article
+                <li
                   key={u.n}
-                  className="grid grid-cols-1 gap-6 bg-cream p-8 md:grid-cols-12 md:gap-10 md:p-10"
+                  className="bg-cream p-7 md:p-10"
                 >
-                  <div className="md:col-span-3">
-                    <p className="font-display text-5xl leading-none text-rust md:text-6xl">
-                      {u.n}
-                    </p>
-                    <p className="mt-3 font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-                      {u.sessions}
-                    </p>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
+                    <div className="md:col-span-3">
+                      <p className="font-display text-5xl leading-none text-rust md:text-6xl">
+                        {u.n}
+                      </p>
+                      <p className="mt-3 font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                        Unit {u.n}
+                      </p>
+                    </div>
+                    <div className="md:col-span-9">
+                      <h3 className="font-display text-2xl text-forest md:text-3xl">
+                        {u.title}
+                      </h3>
+                      <p className="mt-3 font-body text-[15.5px] italic leading-relaxed text-ink/75">
+                        {u.question}
+                      </p>
+
+                      <div className="mt-6">
+                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
+                          Readings
+                        </p>
+                        <ul className="mt-2 space-y-2.5">
+                          {u.readings.map((r) => (
+                            <li
+                              key={r.url}
+                              className="font-body text-[14.5px] leading-relaxed text-ink/85"
+                            >
+                              <a
+                                href={r.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-forest underline decoration-forest/40 underline-offset-2 hover:decoration-forest"
+                              >
+                                {r.label}
+                              </a>
+                              {r.note && (
+                                <span className="ml-1 text-ink/65">
+                                  {r.note}
+                                </span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="mt-6">
+                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
+                          Discussion prompt
+                        </p>
+                        <p className="mt-2 max-w-[60ch] font-body text-[14.5px] leading-relaxed text-ink/85">
+                          {u.discussion_prompt}
+                        </p>
+                      </div>
+
+                      <div className="mt-6">
+                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
+                          Pairs with
+                        </p>
+                        <Link
+                          href={u.pairs_with.href}
+                          className="mt-2 inline-block font-body text-[14.5px] font-semibold text-rust underline decoration-rust/40 underline-offset-2 hover:decoration-rust"
+                        >
+                          {u.pairs_with.label} →
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                  <div className="md:col-span-9">
-                    <h3 className="font-display text-2xl text-forest md:text-3xl">
-                      {u.title}
-                    </h3>
-                    <p className="mt-4 max-w-[60ch] font-body text-base leading-relaxed text-ink/70 md:text-lg md:leading-relaxed">
-                      {u.body}
-                    </p>
-                    <p className="mt-4 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                      Aligns to: {u.standards}
-                    </p>
-                  </div>
-                </article>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
-        {/* What's in the kit */}
-        <section className="bg-cream-dark py-20 md:py-28">
-          <div className="mx-auto max-w-6xl px-6">
+        {/* What pairs with what */}
+        <section className="bg-cream-dark py-16 md:py-20">
+          <div className="mx-auto max-w-5xl px-6">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-              What teachers get
+              How it fits together
             </p>
-            <h2 className="mt-4 font-display text-3xl text-forest md:text-5xl">
-              Drop-in materials, not a homework assignment
+            <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+              Curriculum and the rest of the site
             </h2>
-            <div className="mt-14 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2">
-              {FORMATS.map((f, i) => (
-                <div key={f.title} className="flex gap-6">
-                  <span className="flex-shrink-0 font-display text-4xl leading-none text-border">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="font-display text-xl text-forest md:text-2xl">
-                      {f.title}
-                    </h3>
-                    <p
-                      className="mt-3 max-w-[48ch] font-body text-base leading-relaxed text-ink/70"
-                      dangerouslySetInnerHTML={{ __html: f.body }}
-                    />
-                  </div>
+            <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
+              {PAIRINGS.map((p) => (
+                <div key={p.asset} className="flex flex-col gap-2">
+                  <Link
+                    href={p.href}
+                    className="font-display text-xl text-forest underline decoration-transparent underline-offset-2 transition-colors hover:decoration-forest md:text-2xl"
+                  >
+                    {p.asset}
+                  </Link>
+                  <p className="max-w-[48ch] font-body text-base leading-relaxed text-ink/70">
+                    {p.body}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Pull quote */}
-        <section className="bg-cream py-20 md:py-28">
-          <div className="mx-auto max-w-4xl px-6">
-            <div className="border-l-4 border-rust pl-8 md:pl-12">
-              <p className="font-display text-2xl leading-snug text-forest md:text-3xl md:leading-snug">
-                &ldquo;The pre/post gain on this unit was the cleanest I&rsquo;ve
-                ever measured. By the end my juniors were arguing about TIF
-                in the hallway.&rdquo;
-              </p>
-              <p className="mt-6 font-body text-sm uppercase tracking-[0.2em] text-warm-gray">
-                CPS social studies teacher, pilot cohort
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Real request form */}
-        <section className="border-t border-border bg-cream py-20 md:py-28">
+        {/* Request form */}
+        <section className="border-t border-border bg-cream py-20 md:py-24">
           <div className="mx-auto max-w-4xl px-6">
             <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-16">
               <div className="md:col-span-5">
                 <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                  Request the kit
+                  Use it in your classroom
                 </p>
-                <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
-                  Tell us about your classroom.
+                <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
+                  Tell us what you teach.
                 </h2>
-                <p className="mt-6 max-w-[40ch] font-body text-base leading-relaxed text-ink/70">
-                  We send everything over email: lesson plans, slide
-                  decks, discussion guides, the assessment. If you want,
-                  we&rsquo;ll set up a 20-minute call to walk through it
-                  with you.
+                <p className="mt-5 max-w-[40ch] font-body text-base leading-relaxed text-ink/75">
+                  Send a note about your subject, grade, and how many
+                  class periods you have for this. We will email back
+                  the framing questions, the readings list, and any
+                  slide drafts we have for the units that fit.
                 </p>
-                <p className="mt-6 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
-                  We email back within a week. Usually faster.
+                <p className="mt-4 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
+                  We reply within a week. If you want a 20-minute call
+                  to walk through it, ask.
                 </p>
               </div>
               <div className="md:col-span-7">
