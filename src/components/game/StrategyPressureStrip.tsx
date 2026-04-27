@@ -41,7 +41,7 @@ export function StrategyPressureStrip({ state }: { state: GameState }) {
         </p>
       </div>
 
-      <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
         {report.meters.map((meter) => (
           <div key={meter.key} className="rounded-sm border border-border/70 bg-cream-dark/30 p-2">
             <div className="flex items-baseline justify-between gap-2">
@@ -56,7 +56,7 @@ export function StrategyPressureStrip({ state }: { state: GameState }) {
                 style={{ width: `${meter.value}%` }}
               />
             </div>
-            <p className="mt-1 font-body text-[10.5px] leading-snug text-ink/60">
+            <p className="mt-1 hidden font-body text-[10.5px] leading-snug text-ink/60 sm:block">
               {meter.description}
             </p>
           </div>

@@ -58,11 +58,20 @@ export function PolicyCard({
     (cost.power ?? 0) <= resources.power &&
     (cost.trust ?? 0) <= resources.trust &&
     (cost.knowledge ?? 0) <= resources.knowledge;
+  const missing = ([
+    ["capital", "Capital", cost.capital ?? 0, resources.capital],
+    ["power", "Power", cost.power ?? 0, resources.power],
+    ["trust", "Trust", cost.trust ?? 0, resources.trust],
+    ["knowledge", "Knowledge", cost.knowledge ?? 0, resources.knowledge],
+  ] as const)
+    .filter(([, , need, have]) => need > have)
+    .map(([, label, need, have]) => `${need - have} ${label}`);
 
   return (
     <div
+      data-testid="policy-card"
       onClick={onClick}
-      className={`relative flex h-full w-60 cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 ${
+      className={`relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 sm:w-60 ${
         RARITY_RING[card.rarity]
       } ${selected ? "-translate-y-2 scale-[1.03] shadow-xl" : "hover:-translate-y-1 hover:shadow-lg"} ${
         !affordable ? "opacity-55" : ""
@@ -108,6 +117,11 @@ export function PolicyCard({
       {/* Description */}
       <div className="px-3 pt-2 pb-3">
         <p className="font-body text-[11.5px] leading-snug text-ink/75">{card.description}</p>
+        {!affordable && missing.length > 0 && (
+          <div className="mt-2 rounded-sm border border-rust/25 bg-rust/10 px-2 py-1 font-body text-[10.5px] font-semibold uppercase tracking-widest text-rust-dark">
+            Need {missing.join(" / ")}
+          </div>
+        )}
       </div>
 
       {/* Effect summary */}
