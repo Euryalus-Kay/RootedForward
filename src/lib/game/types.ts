@@ -163,6 +163,8 @@ export interface CardEffect {
   transformParcels?: ParcelTransform[];
   /** Set a flag the rest of the game can read */
   setFlag?: string;
+  /** Set multiple flags when one choice changes several future systems */
+  setFlags?: string[];
   /** Triggers a follow-up event next turn */
   triggerEvent?: string;
   /** Display message on play */

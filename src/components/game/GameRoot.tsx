@@ -21,13 +21,14 @@ import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
-import { LastingEffects, LastingEffectsStrip } from "./LastingEffects";
+import { LastingEffectsStrip } from "./LastingEffects";
 import { Codex } from "./Codex";
 import { DecadeOverlay } from "./DecadeOverlay";
 import { StatsDashboard } from "./StatsDashboard";
 import { RunTimeline } from "./RunTimeline";
 import { Almanac } from "./Almanac";
 import { StrategyPanel } from "./StrategyPanel";
+import { StrategyPressureStrip } from "./StrategyPressureStrip";
 import type { Parcel } from "@/lib/game/types";
 
 const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
@@ -51,7 +52,7 @@ export default function GameRoot() {
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
-  const [mapMode, setMapMode] = useState<"classic" | "3d">("classic");
+  const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
   const [codexOpen, setCodexOpen] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
@@ -68,8 +69,9 @@ export default function GameRoot() {
     try {
       const seen = window.localStorage.getItem(HOW_TO_PLAY_SEEN_KEY);
       if (!seen) {
-        setHowToPlayOpen(true);
         window.localStorage.setItem(HOW_TO_PLAY_SEEN_KEY, "1");
+        const id = window.setTimeout(() => setHowToPlayOpen(true), 0);
+        return () => window.clearTimeout(id);
       }
     } catch {
       // ignore
@@ -97,7 +99,8 @@ export default function GameRoot() {
     }
     if (decade > lastDecadeShown.current) {
       lastDecadeShown.current = decade;
-      setDecadeOverlayOpen(true);
+      const id = window.setTimeout(() => setDecadeOverlayOpen(true), 0);
+      return () => window.clearTimeout(id);
     }
   }, [state.year, state.phase]);
 
@@ -279,6 +282,7 @@ export default function GameRoot() {
           <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} percentile={percentile} />
           {/* Always-visible strip showing per-turn drift from earlier decisions */}
           <LastingEffectsStrip lines={computeDrift(state)} />
+          <StrategyPressureStrip state={state} />
           <div className="flex items-center justify-between">
             <p className="font-body text-xs text-warm-gray">
               Playing as <span className="font-semibold text-forest">{role.name}</span>
@@ -416,7 +420,7 @@ export default function GameRoot() {
               )}
 
               <p className="mt-2 text-right font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                {mapMode === "3d" ? "Drag to pan · Scroll to zoom · Lake Michigan is to the east →" : "Lake Michigan is to the east →"}
+                {mapMode === "3d" ? "Drag to rotate · right-drag to pan · scroll to zoom · Lake Michigan is east →" : "Lake Michigan is to the east →"}
               </p>
             </div>
             <div className="mt-3">

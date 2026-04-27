@@ -3,6 +3,7 @@
 import type { Card, CardCategory, CardRarity, Resources } from "@/lib/game/types";
 import { CategoryIcon, ResourceIcon, ScoreIcon } from "./icons";
 import { effectiveCost } from "@/lib/game/cards";
+import { FLAG_BY_KEY } from "@/lib/game/flags";
 
 const CATEGORY_COLOR: Record<CardCategory, string> = {
   zoning: "from-amber-700 to-amber-800",
@@ -177,6 +178,10 @@ function EffectSummary({ card }: { card: Card }) {
   const e = card.effect;
   type Row = { label: string; value: number; positive: boolean; kind: "score" | "resource"; iconKey: string };
   const rows: Row[] = [];
+  const flags = [
+    ...(e.setFlag ? [e.setFlag] : []),
+    ...(e.setFlags ?? []),
+  ];
   if (e.equity)         rows.push({ label: "Equity",         value: e.equity,         positive: e.equity > 0,         kind: "score",    iconKey: "equity" });
   if (e.heritage)       rows.push({ label: "Heritage",       value: e.heritage,       positive: e.heritage > 0,       kind: "score",    iconKey: "heritage" });
   if (e.growth)         rows.push({ label: "Growth",         value: e.growth,         positive: e.growth > 0,         kind: "score",    iconKey: "growth" });
@@ -186,11 +191,11 @@ function EffectSummary({ card }: { card: Card }) {
   if (e.capital)        rows.push({ label: "Capital",        value: e.capital,        positive: e.capital > 0,        kind: "resource", iconKey: "capital" });
   if (e.power)          rows.push({ label: "Power",          value: e.power,          positive: e.power > 0,          kind: "resource", iconKey: "power" });
 
-  if (rows.length === 0) {
-    return <p className="font-body text-[11px] italic text-warm-gray">No score change</p>;
-  }
   return (
     <div className="flex flex-col gap-0.5">
+      {rows.length === 0 && (
+        <p className="font-body text-[11px] italic text-warm-gray">No score change</p>
+      )}
       {rows.map((r, i) => (
         <div
           key={i}
@@ -211,6 +216,14 @@ function EffectSummary({ card }: { card: Card }) {
           </span>
         </div>
       ))}
+      {flags.length > 0 && (
+        <div className="mt-1 rounded-sm bg-forest/10 px-2 py-1 font-body text-[10.5px] leading-snug text-forest">
+          <span className="font-semibold uppercase tracking-widest">Long-term: </span>
+          {flags
+            .map((flag) => FLAG_BY_KEY.get(flag)?.label ?? flag)
+            .join(", ")}
+        </div>
+      )}
     </div>
   );
 }
