@@ -162,8 +162,27 @@ export default function ParcelGrid({ parcels, onHover, highlight, compact }: Par
 
         {/* Lake Michigan strip on the right */}
         {!compact && (
-          <div className="relative flex w-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm" style={{ background: "linear-gradient(180deg, #4a7ca8 0%, #2c5378 100%)" }}>
-            <span className="rotate-90 whitespace-nowrap font-body text-[9px] font-semibold uppercase tracking-[0.2em] text-cream/90">
+          <div
+            className="relative flex w-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm"
+            style={{
+              background:
+                "linear-gradient(180deg, #5a90c4 0%, #3d6e96 50%, #234a6c 100%)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -2px 4px rgba(0,0,0,0.25)",
+            }}
+          >
+            {/* Animated lake shimmer */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-40"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(180deg, rgba(255,255,255,0.18) 0 1px, transparent 1px 9px)",
+              }}
+            />
+            <span
+              className="relative rotate-90 whitespace-nowrap font-body text-[9px] font-semibold uppercase tracking-[0.2em] text-cream/95"
+              style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
+            >
               Lake Michigan
             </span>
           </div>

@@ -71,10 +71,10 @@ export function PolicyCard({
     <div
       data-testid="policy-card"
       onClick={onClick}
-      className={`relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 sm:w-60 ${
+      className={`relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-md bg-cream sm:w-60 ${
         RARITY_RING[card.rarity]
-      } ${selected ? "-translate-y-2 scale-[1.03] shadow-xl" : "hover:-translate-y-1 hover:shadow-lg"} ${
-        !affordable ? "opacity-55" : ""
+      } ${selected ? "game-card-selected" : "game-card"} ${
+        !affordable ? "opacity-60" : ""
       }`}
     >
       {/* Category header with gradient and icon */}

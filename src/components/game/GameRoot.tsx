@@ -291,7 +291,7 @@ export default function GameRoot() {
   /*  Phase: playing or event                                    */
   /* ========================================================== */
   return (
-    <div ref={rootRef} className="scroll-mt-16 bg-cream pb-20 pt-6 md:scroll-mt-20 md:pt-10">
+    <div ref={rootRef} className="game-bg scroll-mt-16 pb-20 pt-6 md:scroll-mt-20 md:pt-10">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Top HUD: year, score, resources, action buttons */}
         <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
@@ -307,7 +307,7 @@ export default function GameRoot() {
           <div className="flex shrink-0 items-stretch gap-2">
             <button
               onClick={handleTutorial}
-              className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-3 font-display text-base font-bold text-forest transition-colors hover:bg-cream-dark"
+              className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-3 font-display text-base font-bold text-forest"
               aria-label="Restart tutorial"
               title="Restart tutorial"
             >
@@ -316,7 +316,7 @@ export default function GameRoot() {
             <div className="relative" data-more-menu>
               <button
                 onClick={() => setMoreOpen((o) => !o)}
-                className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark"
+                className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest"
                 aria-haspopup="menu"
                 aria-expanded={moreOpen}
               >
@@ -324,7 +324,7 @@ export default function GameRoot() {
               </button>
               {moreOpen && (
                 <div
-                  className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-border bg-cream shadow-lg"
+                  className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-border bg-cream shadow-xl"
                   role="menu"
                 >
                   <MenuItem onClick={() => { setModal("codex"); setMoreOpen(false); }}>Codex</MenuItem>
@@ -336,7 +336,7 @@ export default function GameRoot() {
             </div>
             <button
               onClick={() => setPaused(true)}
-              className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark"
+              className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest"
               title="Pause (Esc)"
             >
               Pause
@@ -347,8 +347,8 @@ export default function GameRoot() {
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Left column: ward + tabbed reference panel */}
           <aside className="order-2 lg:order-1 lg:col-span-5">
-            <div className="rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-3 shadow-sm md:p-4">
-              <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
+            <div className="map-frame rounded-lg p-3 md:p-4">
+              <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-forest/60">
                 Parkhaven &middot; {state.parcels.reduce((s, p) => s + p.residents, 0).toLocaleString()} residents
               </p>
 
@@ -423,7 +423,7 @@ export default function GameRoot() {
                       onClick={handleRedraw}
                       disabled={tappedOut || cantAfford}
                       title={tappedOut ? "Redrawn 3 times this turn." : `Discard hand and draw 3 fresh cards. Costs ${cost} Power.`}
-                      className="inline-flex min-w-[8.5rem] flex-1 flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none"
+                      className="btn-cream inline-flex min-w-[8.5rem] flex-1 flex-col items-center justify-center rounded-md px-3 py-3 font-body font-semibold uppercase tracking-widest text-forest disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none"
                     >
                       <span className="text-[11px]">Redraw</span>
                       <span className="text-[9px] opacity-70">{tappedOut ? "max this turn" : `−${cost} Power`}</span>
@@ -433,7 +433,7 @@ export default function GameRoot() {
                 <button
                   data-tut="end-year"
                   onClick={handleEndYear}
-                  className="inline-flex min-w-[10rem] flex-[1.2] flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light sm:flex-none"
+                  className="btn-primary inline-flex min-w-[10rem] flex-[1.2] flex-col items-center justify-center rounded-md px-6 py-3 font-body font-semibold uppercase tracking-widest text-cream sm:flex-none"
                 >
                   <span className="text-sm">End year &rarr;</span>
                   <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>
@@ -572,8 +572,10 @@ function Tab({
   return (
     <button
       onClick={onClick}
-      className={`flex-1 px-3 py-2.5 text-center font-body text-[11px] font-semibold uppercase tracking-widest transition-colors ${
-        active ? "border-b-2 border-rust bg-cream text-forest" : "text-warm-gray hover:bg-cream-dark/30"
+      className={`relative flex-1 px-3 py-2.5 text-center font-body text-[11px] font-semibold uppercase tracking-widest transition-all ${
+        active
+          ? "bg-cream text-forest"
+          : "text-warm-gray hover:bg-cream-dark/40 hover:text-forest"
       }`}
     >
       {children}
@@ -581,6 +583,13 @@ function Tab({
         <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${active ? "bg-rust text-cream" : "bg-warm-gray/20 text-warm-gray"}`}>
           {count}
         </span>
+      )}
+      {active && (
+        <span
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[3px] rounded-t-sm bg-rust"
+          style={{ boxShadow: "0 0 12px rgba(196,93,62,0.5)" }}
+        />
       )}
     </button>
   );

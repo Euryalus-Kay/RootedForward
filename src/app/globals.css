@@ -85,6 +85,171 @@ body {
   color: white;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Build the Block — game UI styling                                  */
+/* ------------------------------------------------------------------ */
+
+/* Atmospheric cream playing surface with paper grain */
+.game-bg {
+  background:
+    radial-gradient(ellipse at top, rgba(27, 58, 45, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(196, 93, 62, 0.05) 0%, transparent 55%),
+    linear-gradient(180deg, #F5F0E8 0%, #EDE6D8 100%);
+  position: relative;
+}
+.game-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.game-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* HUD bar — dark forest game-frame */
+.game-bar {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #224532 0%, #1B3A2D 60%, #142a20 100%);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 10px 28px rgba(27, 58, 45, 0.22),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Year stamp inside the HUD */
+.year-stamp {
+  background: linear-gradient(180deg, #F5F0E8 0%, #E2D8C0 100%);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* Score number glow */
+.score-glow {
+  color: #F4A78A;
+  text-shadow:
+    0 0 16px rgba(244, 167, 138, 0.5),
+    0 2px 10px rgba(168, 70, 42, 0.45),
+    0 0 4px rgba(255, 220, 200, 0.4);
+}
+
+/* Resource pip — coin-like badge */
+.res-pip {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.55) 0%, transparent 50%),
+    var(--pip-fill, linear-gradient(180deg, #d2a458 0%, #a47b32 100%));
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.15);
+  color: var(--pip-text, #2a1a05);
+}
+
+/* Map frame — clean recessed panel */
+.map-frame {
+  background:
+    linear-gradient(180deg, #F5F0E8 0%, #EDE6D8 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.04),
+    0 6px 24px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Card depth */
+.game-card {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 6px 14px rgba(0, 0, 0, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.1),
+    0 16px 36px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.game-card-selected {
+  transform: translateY(-10px) scale(1.04);
+  box-shadow:
+    0 0 0 3px var(--color-rust),
+    0 0 28px rgba(196, 93, 62, 0.45),
+    0 12px 36px rgba(196, 93, 62, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Primary forest action button — beveled */
+.btn-primary {
+  background:
+    linear-gradient(180deg, #2A5440 0%, #1B3A2D 100%);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 3px 10px rgba(27, 58, 45, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.18s ease;
+}
+.btn-primary:hover:not(:disabled) {
+  background:
+    linear-gradient(180deg, #336347 0%, #224532 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 5px 14px rgba(27, 58, 45, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.22);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.3),
+    0 1px 4px rgba(27, 58, 45, 0.3);
+}
+
+/* Secondary cream button — beveled */
+.btn-cream {
+  background:
+    linear-gradient(180deg, #FBF7EE 0%, #E8DEC9 100%);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+.btn-cream:hover:not(:disabled) {
+  background:
+    linear-gradient(180deg, #FFFCF6 0%, #EDE6D8 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 3px 8px rgba(0, 0, 0, 0.12);
+}
+.btn-cream:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
 /* Focus styles */
 *:focus-visible {
   outline: 2px solid var(--color-rust);
