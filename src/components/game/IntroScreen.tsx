@@ -29,12 +29,10 @@ interface StartConfig {
 export function IntroScreen({
   onStart,
   onContinue,
-  onTutorial,
   onLeaderboard,
 }: {
   onStart: (cfg: StartConfig) => void;
   onContinue: () => void;
-  onTutorial: () => void;
   onLeaderboard: () => void;
 }) {
   const [mode, setMode] = useState<ScreenMode>("menu");
@@ -141,12 +139,6 @@ export function IntroScreen({
             className="inline-flex items-center justify-center rounded-sm bg-forest px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
           >
             New game
-          </button>
-          <button
-            onClick={onTutorial}
-            className="inline-flex items-center justify-center rounded-sm border border-border bg-cream px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark"
-          >
-            How to play
           </button>
           <button
             onClick={onLeaderboard}

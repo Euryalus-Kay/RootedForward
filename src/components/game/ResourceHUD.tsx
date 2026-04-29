@@ -76,7 +76,7 @@ export function ResourceHUD({
 
       {/* Running score with percentile */}
       {typeof score === "number" && (
-        <div className="flex flex-col border-b border-border pb-3 md:border-b-0 md:border-r md:pb-0 md:pr-5" title="Live running score. Plays out in full at year 2040.">
+        <div data-tut="score" className="flex flex-col border-b border-border pb-3 md:border-b-0 md:border-r md:pb-0 md:pr-5" title="Live running score. Plays out in full at year 2040.">
           <span className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-rust">Score</span>
           <span className="font-display text-2xl font-bold text-rust md:text-3xl">
             <AnimatedTotal value={score} />
@@ -90,7 +90,7 @@ export function ResourceHUD({
       )}
 
       {/* Resources */}
-      <div className="flex flex-wrap gap-2 md:ml-auto md:flex-nowrap">
+      <div data-tut="resources" className="flex flex-wrap gap-2 md:ml-auto md:flex-nowrap">
         {(Object.keys(resources) as ResourceKey[]).map((k) => (
           <ResourcePip key={k} k={k} value={resources[k]} />
         ))}

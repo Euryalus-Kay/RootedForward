@@ -18,7 +18,7 @@ import { IntroScreen } from "./IntroScreen";
 import { Toasts } from "./Toasts";
 import { Leaderboard } from "./Leaderboard";
 import { PauseMenu } from "./PauseMenu";
-import { HowToPlay } from "./HowToPlay";
+import { TutorialCoach, TUTORIAL_STEP_COUNT, TUTORIAL_DONE_KEY } from "./TutorialCoach";
 import { LastingEffectsStrip } from "./LastingEffects";
 import { Codex } from "./Codex";
 import { DecadeOverlay } from "./DecadeOverlay";
@@ -48,11 +48,11 @@ export default function GameRoot() {
   const [state, dispatch] = useReducer(reducer, undefined, freshState);
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
-  const [howToPlayOpen, setHowToPlayOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState<number>(-1);
   const [modal, setModal] = useState<Modal>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
-  const [sidePanel, setSidePanel] = useState<SidePanel>("goals");
+  const [sidePanel, setSidePanel] = useState<SidePanel>("score");
   const rootRef = useRef<HTMLDivElement>(null);
   const lastSavedAt = useRef<number>(0);
   const lastDecadeShown = useRef<number>(0);
@@ -116,6 +116,24 @@ export default function GameRoot() {
     return () => window.removeEventListener("mousedown", onDoc);
   }, [moreOpen]);
 
+  /* ------------- auto-start tutorial on first run ------------- */
+  useEffect(() => {
+    if (state.phase !== "playing") return;
+    if (tutorialStep !== -1) return;
+    if (typeof window === "undefined") return;
+    if (window.localStorage.getItem(TUTORIAL_DONE_KEY)) return;
+    if (state.year !== 1940) return;
+    setTutorialStep(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.phase]);
+
+  /* ------------- when tutorial enters step 3 (score-tab), force the
+                   side panel to Score so the explanation matches what
+                   the player sees inside the highlighted box. */
+  useEffect(() => {
+    if (tutorialStep === 2) setSidePanel("score");
+  }, [tutorialStep]);
+
   /* ------------- action creators ------------- */
   const handleStart = useCallback(
     (cfg: { displayName: string; seed?: string; roleKey?: string; objectives?: string[] }) => {
@@ -127,7 +145,21 @@ export default function GameRoot() {
     const restored = loadFromLocal(lookupEvent);
     if (restored) dispatch({ type: "RESTORE_STATE", state: restored });
   }, []);
-  const handleTutorial = useCallback(() => setHowToPlayOpen(true), []);
+  const handleTutorial = useCallback(() => setTutorialStep(0), []);
+  const handleTutorialNext = useCallback(() => {
+    setTutorialStep((s) => {
+      const next = s + 1;
+      if (next >= TUTORIAL_STEP_COUNT) {
+        if (typeof window !== "undefined") window.localStorage.setItem(TUTORIAL_DONE_KEY, "1");
+        return -1;
+      }
+      return next;
+    });
+  }, []);
+  const handleTutorialSkip = useCallback(() => {
+    if (typeof window !== "undefined") window.localStorage.setItem(TUTORIAL_DONE_KEY, "1");
+    setTutorialStep(-1);
+  }, []);
   const handlePlayCard = useCallback((cardId: string) => dispatch({ type: "PLAY_CARD", cardId }), []);
   const handleDiscardCard = useCallback((cardId: string) => dispatch({ type: "DISCARD_CARD", cardId }), []);
   const handleRedraw = useCallback(() => dispatch({ type: "REDRAW_HAND" }), []);
@@ -179,15 +211,11 @@ export default function GameRoot() {
   /* ========================================================== */
   if (state.phase === "menu") {
     return (
-      <>
-        <IntroScreen
-          onStart={handleStart}
-          onContinue={handleContinue}
-          onTutorial={handleTutorial}
-          onLeaderboard={handleViewLeaderboard}
-        />
-        {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
-      </>
+      <IntroScreen
+        onStart={handleStart}
+        onContinue={handleContinue}
+        onLeaderboard={handleViewLeaderboard}
+      />
     );
   }
 
@@ -279,10 +307,10 @@ export default function GameRoot() {
           </div>
           <div className="flex shrink-0 items-stretch gap-2">
             <button
-              onClick={() => setHowToPlayOpen(true)}
+              onClick={handleTutorial}
               className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-3 font-display text-base font-bold text-forest transition-colors hover:bg-cream-dark"
-              aria-label="How to play"
-              title="How to play"
+              aria-label="Restart tutorial"
+              title="Restart tutorial"
             >
               ?
             </button>
@@ -350,16 +378,16 @@ export default function GameRoot() {
             )}
 
             {/* Tabbed reference panel */}
-            <div className="mt-4 rounded-md border border-border bg-cream shadow-sm">
+            <div data-tut="score-tab" className="mt-4 rounded-md border border-border bg-cream shadow-sm">
               <div className="flex border-b border-border">
-                <Tab active={sidePanel === "goals"} onClick={() => setSidePanel("goals")} count={state.objectives.length}>Goals</Tab>
                 <Tab active={sidePanel === "score"} onClick={() => setSidePanel("score")}>Score</Tab>
+                <Tab active={sidePanel === "goals"} onClick={() => setSidePanel("goals")} count={state.objectives.length}>Goals</Tab>
                 <Tab active={sidePanel === "effects"} onClick={() => setSidePanel("effects")} count={computeDrift(state).length}>Effects</Tab>
                 <Tab active={sidePanel === "ward"} onClick={() => setSidePanel("ward")}>Ward</Tab>
               </div>
               <div className="p-3">
-                {sidePanel === "goals" && <GoalsView state={state} />}
                 {sidePanel === "score" && <ScoreBar scores={state.scores} />}
+                {sidePanel === "goals" && <GoalsView state={state} />}
                 {sidePanel === "effects" && <LastingEffectsStrip lines={computeDrift(state)} />}
                 {sidePanel === "ward" && <WardStats parcels={state.parcels} />}
               </div>
@@ -404,6 +432,7 @@ export default function GameRoot() {
                   );
                 })()}
                 <button
+                  data-tut="end-year"
                   onClick={handleEndYear}
                   className="inline-flex min-w-[10rem] flex-[1.2] flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light sm:flex-none"
                 >
@@ -418,7 +447,7 @@ export default function GameRoot() {
             </p>
 
             {/* Hand */}
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div data-tut="hand" className="mt-5 flex flex-wrap gap-3">
               {state.hand.length === 0 ? (
                 <p className="font-body text-sm italic text-warm-gray">
                   No cards in hand. End the year to draw new ones.
@@ -494,7 +523,13 @@ export default function GameRoot() {
         />
       )}
 
-      {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
+      {tutorialStep >= 0 && state.phase === "playing" && (
+        <TutorialCoach
+          step={tutorialStep}
+          onNext={handleTutorialNext}
+          onSkip={handleTutorialSkip}
+        />
+      )}
       {modal === "codex" && <Codex onClose={() => setModal(null)} />}
       {modal === "stats" && <StatsDashboard state={state} onClose={() => setModal(null)} />}
       {modal === "timeline" && <RunTimeline state={state} onClose={() => setModal(null)} />}
