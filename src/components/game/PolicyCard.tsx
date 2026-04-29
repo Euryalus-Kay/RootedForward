@@ -3,6 +3,7 @@
 import type { Card, CardCategory, CardRarity, Resources } from "@/lib/game/types";
 import { CategoryIcon, ResourceIcon, ScoreIcon } from "./icons";
 import { effectiveCost } from "@/lib/game/cards";
+import { FLAG_BY_KEY } from "@/lib/game/flags";
 
 const CATEGORY_COLOR: Record<CardCategory, string> = {
   zoning: "from-amber-700 to-amber-800",
@@ -57,11 +58,20 @@ export function PolicyCard({
     (cost.power ?? 0) <= resources.power &&
     (cost.trust ?? 0) <= resources.trust &&
     (cost.knowledge ?? 0) <= resources.knowledge;
+  const missing = ([
+    ["capital", "Capital", cost.capital ?? 0, resources.capital],
+    ["power", "Power", cost.power ?? 0, resources.power],
+    ["trust", "Trust", cost.trust ?? 0, resources.trust],
+    ["knowledge", "Knowledge", cost.knowledge ?? 0, resources.knowledge],
+  ] as const)
+    .filter(([, , need, have]) => need > have)
+    .map(([, label, need, have]) => `${need - have} ${label}`);
 
   return (
     <div
+      data-testid="policy-card"
       onClick={onClick}
-      className={`relative flex h-full w-60 cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 ${
+      className={`relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-md bg-cream shadow-md transition-all duration-200 sm:w-60 ${
         RARITY_RING[card.rarity]
       } ${selected ? "-translate-y-2 scale-[1.03] shadow-xl" : "hover:-translate-y-1 hover:shadow-lg"} ${
         !affordable ? "opacity-55" : ""
@@ -107,6 +117,11 @@ export function PolicyCard({
       {/* Description */}
       <div className="px-3 pt-2 pb-3">
         <p className="font-body text-[11.5px] leading-snug text-ink/75">{card.description}</p>
+        {!affordable && missing.length > 0 && (
+          <div className="mt-2 rounded-sm border border-rust/25 bg-rust/10 px-2 py-1 font-body text-[10.5px] font-semibold uppercase tracking-widest text-rust-dark">
+            Need {missing.join(" / ")}
+          </div>
+        )}
       </div>
 
       {/* Effect summary */}
@@ -177,6 +192,10 @@ function EffectSummary({ card }: { card: Card }) {
   const e = card.effect;
   type Row = { label: string; value: number; positive: boolean; kind: "score" | "resource"; iconKey: string };
   const rows: Row[] = [];
+  const flags = [
+    ...(e.setFlag ? [e.setFlag] : []),
+    ...(e.setFlags ?? []),
+  ];
   if (e.equity)         rows.push({ label: "Equity",         value: e.equity,         positive: e.equity > 0,         kind: "score",    iconKey: "equity" });
   if (e.heritage)       rows.push({ label: "Heritage",       value: e.heritage,       positive: e.heritage > 0,       kind: "score",    iconKey: "heritage" });
   if (e.growth)         rows.push({ label: "Growth",         value: e.growth,         positive: e.growth > 0,         kind: "score",    iconKey: "growth" });
@@ -186,11 +205,11 @@ function EffectSummary({ card }: { card: Card }) {
   if (e.capital)        rows.push({ label: "Capital",        value: e.capital,        positive: e.capital > 0,        kind: "resource", iconKey: "capital" });
   if (e.power)          rows.push({ label: "Power",          value: e.power,          positive: e.power > 0,          kind: "resource", iconKey: "power" });
 
-  if (rows.length === 0) {
-    return <p className="font-body text-[11px] italic text-warm-gray">No score change</p>;
-  }
   return (
     <div className="flex flex-col gap-0.5">
+      {rows.length === 0 && (
+        <p className="font-body text-[11px] italic text-warm-gray">No score change</p>
+      )}
       {rows.map((r, i) => (
         <div
           key={i}
@@ -211,6 +230,14 @@ function EffectSummary({ card }: { card: Card }) {
           </span>
         </div>
       ))}
+      {flags.length > 0 && (
+        <div className="mt-1 rounded-sm bg-forest/10 px-2 py-1 font-body text-[10.5px] leading-snug text-forest">
+          <span className="font-semibold uppercase tracking-widest">Long-term: </span>
+          {flags
+            .map((flag) => FLAG_BY_KEY.get(flag)?.label ?? flag)
+            .join(", ")}
+        </div>
+      )}
     </div>
   );
 }

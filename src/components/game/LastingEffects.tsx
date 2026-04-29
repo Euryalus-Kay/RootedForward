@@ -19,7 +19,10 @@ export function LastingEffectsStrip({ lines }: { lines: DriftLine[] }) {
         </span>
         {lines.length === 0 ? (
           <span className="font-body text-[11px] italic text-warm-gray">
-            None yet. Cards like &ldquo;Approve a 6-lane expressway&rdquo; or &ldquo;Add 300 police officers&rdquo; add compounding effects here.
+            <span className="sm:hidden">None yet.</span>
+            <span className="hidden sm:inline">
+              None yet. Cards like &ldquo;Approve a 6-lane expressway&rdquo; or &ldquo;Add 300 police officers&rdquo; add compounding effects here.
+            </span>
           </span>
         ) : (
           <>

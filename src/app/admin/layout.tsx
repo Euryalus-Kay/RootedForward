@@ -16,6 +16,7 @@ import {
   MessageSquare,
   Scale,
   BookOpen,
+  Database,
   LogOut,
   Menu,
   X,
@@ -34,6 +35,7 @@ const navItems = [
   { href: "/admin/about/board", label: "Board", icon: Users },
   { href: "/admin/policy", label: "Policy", icon: Scale },
   { href: "/admin/research", label: "Research", icon: BookOpen },
+  { href: "/admin/research/data-usage", label: "Data Usage", icon: Database },
 ];
 
 export default function AdminLayout({
@@ -47,6 +49,13 @@ export default function AdminLayout({
 
   const isActive = (href: string) => {
     if (href === "/admin") return pathname === "/admin";
+    // Don't let parent /admin/research light up when a more specific
+    // sibling like /admin/research/data-usage is active.
+    if (
+      href === "/admin/research" &&
+      pathname.startsWith("/admin/research/data-usage")
+    )
+      return false;
     return pathname.startsWith(href);
   };
 

@@ -1,35 +1,35 @@
 /* ------------------------------------------------------------------ */
-/*  /research/data                                                     */
+/*  /research/data — index                                             */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  A public index of the replication datasets referenced in the      */
-/*  Data Availability sections of each research entry. Datasets are   */
-/*  distributed by email request under per-paper license terms; the   */
-/*  page routes those requests to research@rootedforward.org and      */
-/*  makes the scope of each dataset explicit.                         */
+/*  Clean catalog of replication datasets. One row per published      */
+/*  paper: title, one-line summary, and a "View dataset" link to     */
+/*  /research/data/[slug] where the full preview, files, license,    */
+/*  source list, and download / upstream-link button live.            */
+/*                                                                     */
+/*  All metadata is canonical in src/lib/research-datasets.ts.        */
+/*  See docs/RESEARCH-CONTRIBUTING.md for the add-a-paper workflow.   */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
+import { RESEARCH_DATASETS } from "@/lib/research-datasets";
 import {
   PLACEHOLDER_RESEARCH_ENTRIES,
   normalizeCitations,
 } from "@/lib/research-constants";
 import type { ResearchEntry } from "@/lib/types/database";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Research Data | Rooted Forward",
   description:
-    "Replication datasets, code, and supplementary tables for each Rooted Forward research paper. Distributed by email request under per-paper license terms.",
+    "Replication datasets, analysis code, and supplementary tables for every Rooted Forward research paper. Each entry links to its real public upstream source.",
 };
 
-export const revalidate = 3600;
-
-/* ------------------------------------------------------------------ */
-/*  Data fetcher                                                       */
-/* ------------------------------------------------------------------ */
+export const revalidate = 600;
 
 async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
   try {
@@ -57,333 +57,149 @@ async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
   }
 }
 
-/* ------------------------------------------------------------------ */
-/*  Per-paper dataset descriptions                                     */
-/*                                                                     */
-/*  Keyed by slug. Each entry states, in one line, what the dataset   */
-/*  contains and under what license it is distributed. If a slug is   */
-/*  missing from this map, the page falls back to a generic request   */
-/*  line citing the paper's abstract.                                  */
-/* ------------------------------------------------------------------ */
-
-interface DatasetMeta {
-  contents: string;
-  files: string[];
-  license: string;
-  notes?: string;
-}
-
-const DATASETS: Record<string, DatasetMeta> = {
-  "geography-of-disinvestment-chicago-west-side": {
-    contents:
-      "HOLC-to-2020-tract crosswalk for Austin, East Garfield Park, North Lawndale; six quantitative outcome indicators; Cook County Assessor 2024 residential-vacancy records at the tract level.",
-    files: [
-      "holc-west-side-tract-crosswalk.geojson",
-      "holc-west-side-outcomes.csv",
-      "holc-west-side-analysis.R",
-    ],
-    license:
-      "MIT license for code and derived data. 1938 zone polygons redistributed under Mapping Inequality CC BY-NC-SA 4.0 (Nelson et al. 2016).",
-  },
-  "obama-center-impact-zone-rent-pressure": {
-    contents:
-      "Cleaned 9,612-listing panel from Zillow, Craigslist, and the Chicago Rental Registry, January 2020 through December 2025; eleven-tract half-mile-ring crosswalk; replication code for the difference-in-differences specification and synthetic-control robustness check.",
-    files: [
-      "opc-rent-panel-2020-2025.csv",
-      "opc-impact-zone-tracts.geojson",
-      "opc-did-analysis.R",
-      "opc-synthetic-control.R",
-    ],
-    license: "CC BY 4.0 for data; MIT for code.",
-    notes:
-      "Zillow ZORI values redistributed under Zillow Research's public terms; Craigslist listings de-identified beyond header fields.",
-  },
-  "pilsen-industrial-corridor-rezoning-review": {
-    contents:
-      "Coded 351-comment public record for Application ZC-2025-0074; hearing transcript excerpts; coalition steering-committee log of canvassing and phone-banking activity.",
-    files: [
-      "pilsen-zc-2025-0074-comments.csv",
-      "pilsen-coding-schema.md",
-      "pilsen-hearing-timeline.csv",
-    ],
-    license: "CC BY 4.0. Comment records are public under Illinois Freedom of Information Act.",
-  },
-  "cpd-traffic-stop-data-2024": {
-    contents:
-      "Cleaned 2024 stop-level panel (287,412 records); district-level demographic crosswalk; hourly volume aggregates; wild-cluster-bootstrap implementation; outcome-test and veil-of-darkness replication code.",
-    files: [
-      "cpd-stops-2024.csv",
-      "cpd-district-crosswalk.csv",
-      "cpd-outcome-test.R",
-      "cpd-vod-check.R",
-    ],
-    license: "CC BY 4.0 for data; MIT for code.",
-    notes:
-      "Records redistributed consistent with the City of Chicago's public-records terms for the 2024 Traffic Stop Data Transparency Act release.",
-  },
-  "hyde-park-urban-renewal-oral-histories": {
-    contents:
-      "Full audio recordings and verbatim transcripts of the six published interviews are deposited with the Chicago History Museum Research Center (accession 2025-ORAL-HP-001 through 006). Edited transcripts appear in the published paper.",
-    files: [],
-    license: "CC BY-NC 4.0 for the edited transcripts. Full audio and verbatim transcripts under standard oral-history archival-access agreement.",
-    notes:
-      "Scholarly access requests: contact the Chicago History Museum Research Center. Community-use requests: contact research@rootedforward.org.",
-  },
-  "1938-holc-chicago-map-annotated": {
-    contents:
-      "Annotated edition of the 1938 HOLC Chicago Residential Security Map: all 239 graded zones, 82 Area Descriptions, GeoJSON polygons, 2020-tract crosswalk, six quantitative indicator files.",
-    files: [
-      "holc-chicago-1938-zones.geojson",
-      "holc-chicago-1938-area-descriptions.csv",
-      "holc-chicago-2020-tract-crosswalk.csv",
-      "holc-chicago-indicators.parquet",
-      "holc-chicago-map-tiles.zip",
-    ],
-    license:
-      "CC BY-NC-SA 4.0, consistent with Mapping Inequality source licensing (Nelson et al. 2016). Replication code under MIT.",
-  },
-  "school-closures-2013-and-after": {
-    contents:
-      "CPS post-closure student-tracking panel, de-identified at the tract level (from FOIA 2024-04311); CPS Facilities Master Plan annual updates 2013–2024; Cook County Assessor block-level vacancy panel; Chicago Public Library branch circulation records 2013–2024.",
-    files: [
-      "cps-2013-closures-tracking.csv",
-      "cps-facilities-master-plan-2013-2024.csv",
-      "cps-block-vacancy-panel.csv",
-      "cpl-circulation-2013-2024.csv",
-    ],
-    license: "MIT license for code and derived tables. CPS tracking file subject to FOIA 2024-04311 redaction terms.",
-  },
-  "cha-plan-for-transformation-retrospective": {
-    contents:
-      "De-identified cleaned datasets for the 17,000-family CHA resident-tracking panel (1999–2024); CHA MTW annual reports aggregated to tract; HUD HCV records for Chicago-area voucher holders; replication code for the unit-count reconciliation.",
-    files: [
-      "cha-resident-tracking-1999-2024.csv",
-      "cha-mtw-tract-aggregates.csv",
-      "hud-hcv-chicago-area.csv",
-      "cha-unit-count-reconciliation.R",
-    ],
-    license: "MIT for code. CHA tracking data subject to FOIA 2019-00924, 2022-00718, 2025-01108 terms.",
-  },
-  "austin-cba-playbook": {
-    contents:
-      "Coded eight-case Chicago CBA outcome table; five-feature structural-coding schema; Spearman-correlation implementation; Austin site evaluation framework.",
-    files: [
-      "chicago-cba-eight-case-coding.csv",
-      "cba-structural-features.md",
-      "austin-site-evaluation.md",
-    ],
-    license: "CC BY 4.0.",
-  },
-  "bronzeville-tif-expenditure-analysis": {
-    contents:
-      "Reconciled twenty-three-year Bronzeville TIF revenue and expenditure accounting (2002–2025), drawing on Cook County Clerk TIF reports, Chicago Department of Finance Annual Financial Analysis, and DPD project-level expenditure files.",
-    files: [
-      "bronzeville-tif-revenue-2002-2025.csv",
-      "bronzeville-tif-expenditures-2002-2025.csv",
-      "bronzeville-tif-project-list.csv",
-      "bronzeville-tif-comparison-districts.csv",
-    ],
-    license: "MIT for code; CC BY 4.0 for derived data. Source records are public under IL TIF Act disclosure requirements.",
-  },
-  "west-side-grocery-access-oral-histories": {
-    contents:
-      "Edited transcripts of the ten published oral histories; interview consent documentation; coding schema; Cook County Assessor commercial-occupancy records for the four West Side community areas, 2005–2024.",
-    files: [
-      "west-side-grocery-transcripts-published.md",
-      "west-side-closure-timeline.csv",
-      "cook-commercial-occupancy-west-side-2005-2024.csv",
-    ],
-    license: "CC BY-NC 4.0 for transcripts. CC BY 4.0 for timeline and occupancy data.",
-  },
-  "cook-county-property-tax-appeal-disparity": {
-    contents:
-      "Ten-year Cook County appeal record (2015–2024), cleaned and matched to 2020 census tracts; tract-level demographic and income panel from 2023 ACS 5-year estimates; specialized-firm concentration analysis.",
-    files: [
-      "cook-appeals-2015-2024.csv",
-      "cook-appeals-tract-panel.csv",
-      "cook-appeals-firm-concentration.csv",
-      "cook-appeals-analysis.R",
-    ],
-    license: "MIT for code; CC BY 4.0 for data. Original records from CCAO FOIA 2024-09217 and BoR FOIA 2024-09218.",
-  },
-  "cross-bronx-expressway-sixty-years-later": {
-    contents:
-      "Digitized parcel-level acquisition records from the Triborough Bridge and Tunnel Authority's 1948–1955 Cross-Bronx construction; NHGIS-harmonized 1960–1980 decennial census panel; 2023 PM2.5, noise, and pediatric-asthma-hospitalization data at the tract level.",
-    files: [
-      "cross-bronx-acquisitions-1948-1955.csv",
-      "cross-bronx-census-1960-1980.csv",
-      "cross-bronx-environmental-2023.csv",
-      "cross-bronx-asthma-2023.csv",
-      "cross-bronx-quarter-mile-buffer.geojson",
-    ],
-    license: "MIT for code; CC BY 4.0 for derived data. Source acquisition files are public at the NYC Municipal Archives (RG 219).",
-  },
-  "fillmore-forty-years-after-redevelopment": {
-    contents:
-      "Coded archival-record abstracts from the SFPL History Center's SFRA Records (1948–2012); OCII Certificates of Preference annual reports aggregated to single dataset; edited transcripts of ten oral histories conducted in 2024–2025.",
-    files: [
-      "sfra-archival-abstracts.csv",
-      "ocii-cop-2008-2024.csv",
-      "fillmore-oral-transcripts-published.md",
-    ],
-    license: "CC BY-NC 4.0.",
-  },
-  "fair-park-and-the-neighborhoods-it-displaced": {
-    contents:
-      "Compiled parcel-level records of the 1935–1936 Centennial expansion and the 1966–1968 parking-lot expansion; 2023 ACS tract panel for the South Dallas community area; Fair Park First 2020–2024 implementation data.",
-    files: [
-      "fair-park-1936-acquisitions.csv",
-      "fair-park-1966-1968-acquisitions.csv",
-      "fair-park-acs-2023-panel.csv",
-      "fair-park-first-2020-2024.csv",
-    ],
-    license: "CC BY 4.0.",
-  },
-};
-
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
-
 export default async function ResearchDataPage() {
   const entries = await fetchPublishedEntries();
+  const datasetCount = entries.filter((e) => RESEARCH_DATASETS[e.slug]).length;
+  const totalFiles = Object.values(RESEARCH_DATASETS).reduce(
+    (sum, d) => sum + d.files.filter((f) => f.available).length,
+    0
+  );
 
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
-        {/* Header */}
-        <section className="border-b border-border bg-cream pb-10 pt-28 md:pt-32">
-          <div className="mx-auto max-w-5xl px-6">
-            <nav
-              aria-label="Breadcrumb"
-              className="font-body text-[12px] text-warm-gray"
-            >
-              <Link
-                href="/research"
-                className="underline decoration-transparent underline-offset-2 transition-colors hover:decoration-warm-gray"
-              >
-                Research
-              </Link>
-              <span className="mx-2">/</span>
-              <span className="text-ink/60">Data</span>
-            </nav>
-            <h1 className="mt-6 max-w-[60ch] font-display text-[36px] leading-[1.1] text-forest md:text-[48px]">
-              Research Data
-            </h1>
-            <p className="mt-6 max-w-[65ch] font-body text-[16px] leading-[1.7] text-ink/80">
-              Every Rooted Forward paper published on this site is accompanied
-              by a replication dataset, analysis code, and supplementary
-              tables. We distribute these by email request rather than by
-              direct download so that we can record who uses the data and send
-              follow-up corrections if we find errors post-release.
+        {/* Banner */}
+        <section className="relative pt-16 pb-12 md:pb-16">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-forest/70" />
+          <div className="relative z-10 flex flex-col items-center justify-center pt-12 md:pt-16">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/80">
+              Research
             </p>
-            <p className="mt-4 max-w-[65ch] font-body text-[16px] leading-[1.7] text-ink/80">
-              Requests go to{" "}
-              <a
-                href="mailto:research@rootedforward.org?subject=Research%20data%20request"
-                className="font-medium text-forest underline decoration-forest/40 underline-offset-2 transition-colors hover:decoration-forest"
-              >
-                research@rootedforward.org
-              </a>
-              . Please include the paper slug, your affiliation if you have
-              one, and a one-sentence description of your planned use. We reply
-              within five business days.
+            <h1 className="mt-3 font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+              Data &amp; Replication
+            </h1>
+          </div>
+        </section>
+
+        {/* Intro */}
+        <section className="bg-cream pt-16 md:pt-24">
+          <div className="mx-auto max-w-3xl px-6">
+            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl">
+              Every Rooted Forward paper points at real, public, primary
+              data. The cards below link to each paper&rsquo;s upstream
+              public source so you can pull the raw record yourself.
+              When we finish a cleaned replication archive, it appears on
+              the same card as a signed-in download.
             </p>
           </div>
         </section>
 
-        {/* Per-paper dataset list */}
-        <section className="bg-cream pb-24 pt-12">
+        {/* Stats */}
+        <section className="bg-cream pt-12 md:pt-16">
           <div className="mx-auto max-w-5xl px-6">
-            <ul className="space-y-10">
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-sm bg-border md:grid-cols-3">
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-4xl text-forest md:text-5xl">
+                  {datasetCount}
+                </p>
+                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
+                  Papers with Data
+                </p>
+              </div>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-4xl text-forest md:text-5xl">
+                  {totalFiles}
+                </p>
+                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
+                  Hosted Files
+                </p>
+              </div>
+              <div className="bg-cream p-6 text-center md:p-8">
+                <p className="font-display text-4xl text-forest md:text-5xl">
+                  Public
+                </p>
+                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
+                  Sources Only
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Index grid */}
+        <section className="bg-cream py-16 md:py-24">
+          <div className="mx-auto max-w-5xl px-6">
+            <div className="mb-10 max-w-3xl">
+              <h2 className="font-display text-3xl text-forest md:text-4xl">
+                All Datasets
+              </h2>
+              <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
+                Click a card to see the column schema, files, license,
+                and the public source URLs. Once an admin uploads a
+                cleaned archive, signed-in users see a one-click
+                download on the detail page.
+              </p>
+            </div>
+
+            <ul className="grid grid-cols-1 gap-px bg-border md:grid-cols-2">
               {entries.map((entry) => {
-                const meta = DATASETS[entry.slug];
+                const meta = RESEARCH_DATASETS[entry.slug];
+                const fileCount = meta?.files.filter((f) => f.available).length ?? 0;
                 return (
-                  <li
-                    key={entry.id}
-                    id={entry.slug}
-                    className="scroll-mt-24 border-t border-border pt-8"
-                  >
-                    <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                      <Link
-                        href={`/research/${entry.slug}`}
-                        className="font-display text-[22px] leading-snug text-forest underline decoration-transparent underline-offset-4 transition-colors hover:decoration-forest md:text-[24px]"
-                      >
+                  <li key={entry.id} className="bg-cream">
+                    <Link
+                      href={`/research/data/${entry.slug}`}
+                      className="group flex h-full flex-col p-7 transition-colors hover:bg-cream-dark md:p-8"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-rust">
+                          {entry.format
+                            ? entry.format.replace(/_/g, " ")
+                            : "Paper"}
+                        </p>
+                        <span className="font-mono text-[11px] text-warm-gray">
+                          {fileCount} {fileCount === 1 ? "file" : "files"}
+                        </span>
+                      </div>
+                      <h3 className="mt-4 font-display text-2xl leading-tight text-forest md:text-[26px]">
                         {entry.title}
-                      </Link>
-                      <span className="font-body text-[12px] text-warm-gray">
-                        {entry.slug}
-                      </span>
-                    </div>
-
-                    {meta ? (
-                      <>
-                        <p className="mt-4 font-body text-[15px] leading-[1.7] text-ink/80">
-                          <strong className="font-medium text-ink">
-                            Contents.
-                          </strong>{" "}
-                          {meta.contents}
-                        </p>
-                        {meta.files.length > 0 && (
-                          <div className="mt-3">
-                            <p className="font-body text-[13px] text-warm-gray">
-                              Files on request:
-                            </p>
-                            <ul className="mt-1 space-y-0.5">
-                              {meta.files.map((f) => (
-                                <li
-                                  key={f}
-                                  className="font-mono text-[12.5px] text-ink/75"
-                                >
-                                  {f}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        <p className="mt-3 font-body text-[13.5px] text-warm-gray">
-                          <strong className="font-medium text-ink/80">
-                            License.
-                          </strong>{" "}
-                          {meta.license}
-                        </p>
-                        {meta.notes && (
-                          <p className="mt-2 font-body text-[13px] italic text-warm-gray">
-                            {meta.notes}
-                          </p>
-                        )}
-                      </>
-                    ) : (
-                      <p className="mt-4 font-body text-[15px] leading-[1.7] text-ink/80">
-                        Dataset summary forthcoming. Email{" "}
-                        <a
-                          href={`mailto:research@rootedforward.org?subject=Data%20request%3A%20${entry.slug}`}
-                          className="text-forest underline decoration-forest/40 underline-offset-2 hover:decoration-forest"
-                        >
-                          research@rootedforward.org
-                        </a>{" "}
-                        for the current state of the replication archive.
+                      </h3>
+                      <p className="mt-3 max-w-[48ch] flex-1 font-body text-[15px] leading-relaxed text-ink/75">
+                        {meta?.summary ?? "Dataset summary forthcoming."}
                       </p>
-                    )}
-
-                    <div className="mt-4 flex gap-4">
-                      <a
-                        href={`mailto:research@rootedforward.org?subject=Data%20request%3A%20${entry.slug}`}
-                        className="font-body text-[13.5px] text-forest underline decoration-forest/40 underline-offset-2 transition-colors hover:decoration-forest"
-                      >
-                        Request this dataset →
-                      </a>
-                      <Link
-                        href={`/research/${entry.slug}`}
-                        className="font-body text-[13.5px] text-warm-gray underline decoration-warm-gray/40 underline-offset-2 transition-colors hover:decoration-warm-gray"
-                      >
-                        Read the paper
-                      </Link>
-                    </div>
+                      <span className="mt-6 inline-flex items-center gap-1.5 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors group-hover:text-rust-dark">
+                        View dataset <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </Link>
                   </li>
                 );
               })}
             </ul>
+          </div>
+        </section>
+
+        {/* Footer CTA */}
+        <section className="bg-forest py-20 md:py-28">
+          <div className="mx-auto max-w-3xl px-6 text-center">
+            <h2 className="font-display text-3xl text-cream md:text-5xl">
+              Working on something we should know about?
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
+              We track downstream uses of these datasets and try to
+              connect researchers working on related questions. If you
+              are building on a Rooted Forward replication archive, send
+              us a line.
+            </p>
+            <a
+              href="mailto:research@rooted-forward.org?subject=Working%20with%20Rooted%20Forward%20data"
+              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Get in touch
+            </a>
           </div>
         </section>
       </div>

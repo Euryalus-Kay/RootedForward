@@ -334,7 +334,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                   </h3>
                   <div className="mt-3 flex gap-3">
                     <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(campaign.title)}&url=${encodeURIComponent(`https://rootedforward.org/policy/campaigns/${campaign.slug}`)}`}
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(campaign.title)}&url=${encodeURIComponent(`https://rooted-forward.org/policy/campaigns/${campaign.slug}`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-body text-sm text-forest underline underline-offset-2 hover:text-rust"

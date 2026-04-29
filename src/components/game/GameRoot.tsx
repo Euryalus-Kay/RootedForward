@@ -21,16 +21,15 @@ import { Leaderboard } from "./Leaderboard";
 import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
-import { LastingEffects, LastingEffectsStrip } from "./LastingEffects";
+import { LastingEffectsStrip } from "./LastingEffects";
 import { Codex } from "./Codex";
 import { DecadeOverlay } from "./DecadeOverlay";
 import { StatsDashboard } from "./StatsDashboard";
 import { RunTimeline } from "./RunTimeline";
 import { Almanac } from "./Almanac";
 import { StrategyPanel } from "./StrategyPanel";
+import { StrategyPressureStrip } from "./StrategyPressureStrip";
 import type { Parcel } from "@/lib/game/types";
-
-const HOW_TO_PLAY_SEEN_KEY = "buildTheBlock:htpSeen:v1";
 
 const ERAS = [
   { fromYear: 1940, toYear: 1955, name: "Lines on a Map" },
@@ -51,29 +50,28 @@ export default function GameRoot() {
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
-  const [mapMode, setMapMode] = useState<"classic" | "3d">("classic");
+  const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
   const [codexOpen, setCodexOpen] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
   const [almanacOpen, setAlmanacOpen] = useState(false);
   const [strategyOpen, setStrategyOpen] = useState(false);
   const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const lastSavedAt = useRef<number>(0);
   const lastDecadeShown = useRef<number>(0);
+  const previousPhase = useRef(state.phase);
 
-  /* ------------- first-time auto-open how-to-play ------------- */
+  /* ------------- keep the active game above the static page banner ------------- */
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (state.phase !== "playing") return;
-    try {
-      const seen = window.localStorage.getItem(HOW_TO_PLAY_SEEN_KEY);
-      if (!seen) {
-        setHowToPlayOpen(true);
-        window.localStorage.setItem(HOW_TO_PLAY_SEEN_KEY, "1");
-      }
-    } catch {
-      // ignore
+    if (
+      state.phase === "playing" &&
+      previousPhase.current !== "playing" &&
+      previousPhase.current !== "event"
+    ) {
+      rootRef.current?.scrollIntoView({ block: "start" });
     }
+    previousPhase.current = state.phase;
   }, [state.phase]);
 
   /* ------------- autosave ------------- */
@@ -97,7 +95,8 @@ export default function GameRoot() {
     }
     if (decade > lastDecadeShown.current) {
       lastDecadeShown.current = decade;
-      setDecadeOverlayOpen(true);
+      const id = window.setTimeout(() => setDecadeOverlayOpen(true), 0);
+      return () => window.clearTimeout(id);
     }
   }, [state.year, state.phase]);
 
@@ -272,22 +271,23 @@ export default function GameRoot() {
   /*  Phase: playing or event                                    */
   /* ========================================================== */
   return (
-    <div className="bg-cream pb-20 pt-6 md:pt-10">
+    <div ref={rootRef} className="scroll-mt-16 bg-cream pb-20 pt-6 md:scroll-mt-20 md:pt-10">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Top HUD */}
         <div className="flex flex-col gap-3">
           <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} percentile={percentile} />
           {/* Always-visible strip showing per-turn drift from earlier decisions */}
           <LastingEffectsStrip lines={computeDrift(state)} />
-          <div className="flex items-center justify-between">
-            <p className="font-body text-xs text-warm-gray">
+          <StrategyPressureStrip state={state} />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="min-w-0 font-body text-xs leading-relaxed text-warm-gray">
               Playing as <span className="font-semibold text-forest">{role.name}</span>
               {" · "}
               <span className="text-forest">{state.displayName}</span>
               {" · "}
               Seed <span className="text-forest">{state.seed}</span>
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
               <button
                 onClick={() => setHowToPlayOpen(true)}
                 className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-cream font-display text-sm font-bold text-forest transition-colors hover:bg-cream-dark"
@@ -343,7 +343,7 @@ export default function GameRoot() {
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Left column: ward + context + score bar */}
-          <aside className="lg:col-span-5">
+          <aside className="order-2 lg:order-1 lg:col-span-5">
             <div className="rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-3 shadow-sm md:p-4">
               <div className="mb-2 flex items-baseline justify-between">
                 <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
@@ -395,11 +395,6 @@ export default function GameRoot() {
               {mapMode === "3d" ? (
                 <>
                   <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
-                  {hovered && (
-                    <div className="mt-3">
-                      <ParcelTooltip parcel={hovered} />
-                    </div>
-                  )}
                 </>
               ) : (
                 <div className="flex gap-2">
@@ -416,7 +411,7 @@ export default function GameRoot() {
               )}
 
               <p className="mt-2 text-right font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                {mapMode === "3d" ? "Drag to pan · Scroll to zoom · Lake Michigan is to the east →" : "Lake Michigan is to the east →"}
+                {mapMode === "3d" ? "Drag to rotate · right-drag to pan · scroll to zoom · Lake Michigan is east →" : "Lake Michigan is to the east →"}
               </p>
             </div>
             <div className="mt-3">
@@ -442,8 +437,8 @@ export default function GameRoot() {
           </aside>
 
           {/* Right column: hand */}
-          <main className="lg:col-span-7">
-            <div className="flex items-baseline justify-between border-b border-border pb-3">
+          <main className="order-1 lg:order-2 lg:col-span-7">
+            <div className="flex flex-col gap-3 border-b border-border pb-3 sm:flex-row sm:items-baseline sm:justify-between">
               <div>
                 <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
                   Your hand
@@ -452,7 +447,7 @@ export default function GameRoot() {
                   {state.hand.length} card{state.hand.length === 1 ? "" : "s"}
                 </h3>
               </div>
-              <div className="flex items-stretch gap-2">
+              <div className="flex w-full flex-wrap items-stretch gap-2 sm:w-auto sm:flex-nowrap">
                 {(() => {
                   const cost = state.redrawsThisTurn + 1;
                   const tappedOut = state.redrawsThisTurn >= 3;
@@ -462,7 +457,7 @@ export default function GameRoot() {
                       onClick={handleRedraw}
                       disabled={tappedOut || cantAfford}
                       title={tappedOut ? "Redrawn the max 3 times this turn." : `Discard your hand and draw 3 fresh cards. Costs ${cost} Power.`}
-                      className="inline-flex flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex min-w-[8.5rem] flex-1 flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none"
                     >
                       <span className="text-[11px]">Draw 3 cards</span>
                       <span className="text-[9px] opacity-70">{tappedOut ? "max this turn" : `−${cost} Power`}</span>
@@ -471,7 +466,7 @@ export default function GameRoot() {
                 })()}
                 <button
                   onClick={handleEndYear}
-                  className="inline-flex flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+                  className="inline-flex min-w-[10rem] flex-[1.2] flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light sm:flex-none"
                 >
                   <span className="text-sm">Advance {YEAR_STEP} years &rarr;</span>
                   <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>

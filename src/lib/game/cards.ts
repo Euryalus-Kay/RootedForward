@@ -37,6 +37,7 @@ export const CARDS_CORE: Card[] = [
       growth: -1,
       equity: -2,
       heritage: 1,
+      setFlag: "exclusionary-zoning",
       transformParcels: [
         { selector: "block:0", delta: { value: 8 } },
         { selector: "block:1", delta: { value: 6 } },
@@ -60,6 +61,7 @@ export const CARDS_CORE: Card[] = [
       growth: 3,
       sustainability: 2,
       equity: -1,
+      setFlag: "tod-upzoning",
       transformParcels: [
         { selector: "adjacent-to:transit", delta: { value: 10 } },
       ],
@@ -124,6 +126,7 @@ export const CARDS_CORE: Card[] = [
     effect: {
       heritage: 4,
       growth: -2,
+      setFlag: "preservation-overlay",
       transformParcels: [
         { selector: "block:2", set: { protected: true } },
       ],
@@ -168,6 +171,7 @@ export const CARDS_CORE: Card[] = [
       equity: 1,
       heritage: -2,
       sustainability: -2,
+      setFlag: "tower-built",
       transformParcels: [
         { selector: "first-vacant:south", set: { type: "tower", residents: 200, owner: "cha" } },
       ],
@@ -213,6 +217,7 @@ export const CARDS_CORE: Card[] = [
       equity: 1,
       heritage: -3,
       growth: 3,
+      setFlags: ["tower-demo-planning", "market-rate-tower"],
       transformParcels: [
         { selector: "type:tower", set: { type: "courtyard", residents: 80 } },
       ],
@@ -235,6 +240,7 @@ export const CARDS_CORE: Card[] = [
     effect: {
       heritage: 4,
       equity: 3,
+      setFlag: "tower-rehabbed",
       transformParcels: [
         { selector: "type:tower", set: { type: "rehab-tower", condition: 75 } },
       ],
@@ -267,7 +273,7 @@ export const CARDS_CORE: Card[] = [
     cost: { capital: 3, trust: 1 },
     fromYear: 2010,
     toYear: 2040,
-    effect: { equity: 4, heritage: 2 },
+    effect: { equity: 4, heritage: 2, setFlag: "rtc-active" },
   },
   {
     id: "anti-flipping-tax",
@@ -281,7 +287,7 @@ export const CARDS_CORE: Card[] = [
     cost: { power: 3 },
     fromYear: 1990,
     toYear: 2040,
-    effect: { equity: 2, growth: -1, heritage: 2 },
+    effect: { equity: 2, growth: -1, heritage: 2, setFlag: "anti-flip-tax" },
   },
   {
     id: "land-trust-acquisition",
@@ -298,6 +304,7 @@ export const CARDS_CORE: Card[] = [
     effect: {
       equity: 5,
       heritage: 3,
+      setFlag: "land-bank-active",
       transformParcels: [
         { selector: "random:5", set: { type: "land-trust", owner: "land-trust", protected: true } },
       ],
@@ -316,7 +323,7 @@ export const CARDS_CORE: Card[] = [
     cost: { power: 3, trust: 2 },
     fromYear: 1985,
     toYear: 2040,
-    effect: { equity: 3, heritage: 4 },
+    effect: { equity: 3, heritage: 4, setFlag: "topa-active" },
   },
   {
     id: "modular-affordable",
@@ -369,7 +376,7 @@ export const CARDS_CORE: Card[] = [
     requiresFlag: "tif-active",
     fromYear: 1990,
     toYear: 2040,
-    effect: { equity: 4, growth: 1, heritage: 1 },
+    effect: { equity: 4, growth: 1, heritage: 1, setFlag: "tif-affordable" },
   },
   {
     id: "tif-sunset",
@@ -384,7 +391,7 @@ export const CARDS_CORE: Card[] = [
     requiresFlag: "tif-active",
     fromYear: 1995,
     toYear: 2040,
-    effect: { equity: 3, sustainability: 2, growth: -2 },
+    effect: { equity: 3, sustainability: 2, growth: -2, setFlag: "tif-sunset" },
   },
   {
     id: "developer-impact-fee",
@@ -569,7 +576,7 @@ export const CARDS_CORE: Card[] = [
     cost: { capital: 1 },
     fromYear: 2005,
     toYear: 2040,
-    effect: { sustainability: 3 },
+    effect: { sustainability: 3, setFlag: "green-infrastructure" },
   },
   {
     id: "tree-canopy-program",
@@ -586,6 +593,7 @@ export const CARDS_CORE: Card[] = [
     effect: {
       sustainability: 4,
       equity: 2,
+      setFlag: "heat-mitigation-active",
       transformParcels: [
         { selector: "first-vacant:south", set: { type: "community-garden" } },
         { selector: "block:4", delta: { condition: 6 } },
@@ -609,7 +617,7 @@ export const CARDS_CORE: Card[] = [
     cost: { trust: 2, power: 1 },
     fromYear: 1965,
     toYear: 2040,
-    effect: { equity: 3, trust: 2 },
+    effect: { equity: 3, trust: 2, setFlag: "tenant-union-active" },
   },
   {
     id: "contract-buyers-strike",
@@ -666,7 +674,7 @@ export const CARDS_CORE: Card[] = [
     cost: { power: 3, trust: 3, knowledge: 1 },
     fromYear: 2000,
     toYear: 2040,
-    effect: { equity: 4, growth: 1, heritage: 2 },
+    effect: { equity: 4, growth: 1, heritage: 2, setFlag: "cba-active" },
   },
   {
     id: "anti-displacement-coalition",
@@ -680,7 +688,7 @@ export const CARDS_CORE: Card[] = [
     cost: { trust: 3, power: 2 },
     fromYear: 1975,
     toYear: 2040,
-    effect: { equity: 3, heritage: 3, trust: 2 },
+    effect: { equity: 3, heritage: 3, trust: 2, setFlag: "coalition-active" },
   },
 
   /* ============================================================== *
@@ -712,7 +720,7 @@ export const CARDS_CORE: Card[] = [
     cost: { trust: 2, knowledge: 1 },
     fromYear: 1990,
     toYear: 2040,
-    effect: { heritage: 4, equity: 1 },
+    effect: { heritage: 4, equity: 1, setFlag: "cultural-district" },
   },
   {
     id: "neighborhood-mural",
@@ -970,6 +978,7 @@ export const CARDS_CORE: Card[] = [
       growth: 4,
       equity: -3,
       heritage: -2,
+      setFlag: "market-rate-tower",
       transformParcels: [
         { selector: "first-of-type:vacant", set: { type: "tower", residents: 80, owner: "developer" } },
       ],
@@ -1056,7 +1065,7 @@ export const CARDS_CORE: Card[] = [
     cost: { power: 5, capital: 5, knowledge: 2 },
     fromYear: 2020,
     toYear: 2040,
-    effect: { equity: 8, heritage: 4 },
+    effect: { equity: 8, heritage: 4, setFlag: "reparations-passed" },
   },
 
   /* ============================================================== *
@@ -1145,7 +1154,7 @@ export const CARDS_CORE: Card[] = [
     cost: { trust: 2, power: 1 },
     fromYear: 2009,
     toYear: 2040,
-    effect: { equity: 2, heritage: 2, trust: 2 },
+    effect: { equity: 2, heritage: 2, trust: 2, setFlag: "pb-active" },
   },
   {
     id: "public-safety-investment",
@@ -1159,7 +1168,7 @@ export const CARDS_CORE: Card[] = [
     cost: { capital: 3, trust: 2 },
     fromYear: 2000,
     toYear: 2040,
-    effect: { equity: 3, heritage: 2, sustainability: 1 },
+    effect: { equity: 3, heritage: 2, sustainability: 1, setFlag: "violence-interrupters-active" },
   },
   {
     id: "mortgage-counseling",
@@ -1215,7 +1224,7 @@ export const CARDS_CORE: Card[] = [
     cost: { capital: 2, knowledge: 1 },
     fromYear: 2018,
     toYear: 2040,
-    effect: { sustainability: 4, equity: 2 },
+    effect: { sustainability: 4, equity: 2, setFlag: "solar-coop-active" },
   },
   {
     id: "youth-employment",
@@ -1643,7 +1652,7 @@ export const CARDS_CORE: Card[] = [
     cost: { capital: 4, power: 3, trust: 2 },
     fromYear: 1980,
     toYear: 2040,
-    effect: { equity: 5, sustainability: 2 },
+    effect: { equity: 5, sustainability: 2, setFlag: "gi-pilot-active" },
   },
   {
     id: "repeal-source-of-income",

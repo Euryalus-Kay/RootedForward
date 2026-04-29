@@ -443,7 +443,7 @@ export async function GET(req: NextRequest) {
     const footerY = doc.page.height - margin / 2 - 6;
     doc.font("Times-Roman").fontSize(8).fillColor(WARM_GRAY);
     doc.text(
-      "Rooted Forward · rootedforward.org/research",
+      "Rooted Forward · rooted-forward.org/research",
       margin,
       footerY,
       { width: contentWidth / 2, lineBreak: false }

@@ -5,8 +5,8 @@
  * action. All side effects (API calls, timers) live in the components.
  */
 
-import { availableCards, CARD_BY_ID, CARDS, effectiveCost } from "./cards";
-import { eligibleEvents, checkCrisisTriggers, EVENT_BY_ID, EVENTS } from "./events";
+import { availableCards, CARD_BY_ID, effectiveCost } from "./cards";
+import { eligibleEvents, checkCrisisTriggers } from "./events";
 import { generateInitialParcels, applyTransforms, simulateYear } from "./parcels";
 import { GLOSSARY } from "./glossary";
 import { checkNewAchievements, ACHIEVEMENT_BY_ID } from "./achievements";
@@ -15,9 +15,9 @@ import { RNG, generateSeed } from "./rng";
 import { ROLES, applyRoleBonus, type RoleKey } from "./roles";
 import { FACTION_LIST } from "./factions";
 import { effectiveDrift } from "./flags";
+import { resolveStrategyPressure } from "./strategy-pressure";
 import type {
   GameAction,
-  GameEvent,
   GameState,
   Resources,
   ToastMessage,
@@ -114,6 +114,24 @@ function pushMessage(state: GameState, kind: ToastMessage["kind"], text: string)
   };
 }
 
+function addScores(scores: GameState["scores"], delta: Partial<GameState["scores"]>): GameState["scores"] {
+  return {
+    equity: scores.equity + (delta.equity ?? 0),
+    heritage: scores.heritage + (delta.heritage ?? 0),
+    growth: scores.growth + (delta.growth ?? 0),
+    sustainability: scores.sustainability + (delta.sustainability ?? 0),
+  };
+}
+
+function addResources(resources: GameState["resources"], delta: Partial<GameState["resources"]>): GameState["resources"] {
+  return {
+    capital: Math.max(0, resources.capital + (delta.capital ?? 0)),
+    power: Math.max(0, resources.power + (delta.power ?? 0)),
+    trust: Math.max(0, resources.trust + (delta.trust ?? 0)),
+    knowledge: Math.max(0, resources.knowledge + (delta.knowledge ?? 0)),
+  };
+}
+
 function drawCards(state: GameState, n: number, rng: RNG): GameState {
   if (state.hand.length >= state.handSize) return state;
   const available = availableCards(state.year, state.flags);
@@ -193,10 +211,11 @@ function applyEffect(state: GameState, effect: import("./types").CardEffect, rng
     next.parcels = applyTransforms(state.parcels, effect.transformParcels, rng);
   }
 
-  // Flag
-  if (effect.setFlag) {
+  // Flags
+  if (effect.setFlag || effect.setFlags?.length) {
     next.flags = new Set(state.flags);
-    next.flags.add(effect.setFlag);
+    if (effect.setFlag) next.flags.add(effect.setFlag);
+    for (const flag of effect.setFlags ?? []) next.flags.add(flag);
   }
 
   // Toast
@@ -409,6 +428,21 @@ export function reducer(state: GameState, action: GameAction): GameState {
         trust: next.resources.trust + (eraTrickle.trust ?? 0),
         knowledge: next.resources.knowledge,
       };
+
+      // Strategic pressure is the main between-turn game layer: growth
+      // without protection creates market heat, while trust, organizing,
+      // and community ownership absorb it. This makes "good" growth cards
+      // situational instead of always obvious.
+      const pressure = resolveStrategyPressure(next, new RNG(state.seed + ":pressure:" + newYear));
+      next = {
+        ...next,
+        parcels: pressure.parcels,
+        scores: addScores(next.scores, pressure.scoreDelta),
+        resources: addResources(next.resources, pressure.resourceDelta),
+      };
+      for (const m of pressure.messages) {
+        next = pushMessage(next, m.kind, m.text);
+      }
 
       // Auto-trim hand to make room for new draws. The OLDEST cards
       // (front of hand) are discarded, leaving the most recent in hand.

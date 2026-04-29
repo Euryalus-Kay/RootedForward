@@ -16,9 +16,10 @@ import { useMemo, useState } from "react";
 import type { GameState } from "@/lib/game/types";
 import { SYNERGIES, checkSynergies } from "@/lib/game/synergy";
 import { FLAGS, type FlagDef } from "@/lib/game/flags";
+import { computeStrategyPressure } from "@/lib/game/strategy-pressure";
 
 export function StrategyPanel({ state, onClose }: { state: GameState; onClose: () => void }) {
-  const [tab, setTab] = useState<"combos" | "flags">("combos");
+  const [tab, setTab] = useState<"pressure" | "combos" | "flags">("pressure");
 
   const { fired } = useMemo(() => checkSynergies(state), [state]);
   const firedSet = useMemo(() => new Set(fired.map((f) => f.id)), [fired]);
@@ -54,18 +55,89 @@ export function StrategyPanel({ state, onClose }: { state: GameState; onClose: (
         </div>
 
         <div className="flex border-b border-border bg-cream-dark/40">
+          <TabBtn label="Pressure" active={tab === "pressure"} onClick={() => setTab("pressure")} />
           <TabBtn label={`Strategic arcs (${fired.length}/${SYNERGIES.length})`} active={tab === "combos"} onClick={() => setTab("combos")} />
           <TabBtn label={`Active flags (${flagList.length})`} active={tab === "flags"} onClick={() => setTab("flags")} />
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
-          {tab === "combos" ? (
+          {tab === "pressure" ? (
+            <PressureView state={state} />
+          ) : tab === "combos" ? (
             <CombosView state={state} firedSet={firedSet} />
           ) : (
             <FlagsView flagList={flagList} />
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function PressureView({ state }: { state: GameState }) {
+  const report = computeStrategyPressure(state);
+  const gap = report.marketHeat - report.residentShield;
+  return (
+    <div className="space-y-6">
+      <section className="rounded-sm border border-border bg-cream-dark/30 p-4">
+        <p className="font-body text-xs font-semibold uppercase tracking-widest text-rust">
+          Next-turn forecast
+        </p>
+        <p className="mt-2 font-display text-2xl text-forest">
+          {gap >= 16
+            ? "Growth is outrunning protection."
+            : gap <= -16
+              ? "Residents can absorb the next wave."
+              : "The next turn is a knife-edge."}
+        </p>
+        <p className="mt-2 max-w-[68ch] font-body text-sm leading-relaxed text-ink/70">
+          Market heat rises from land values, speculative ownership, recent growth plays,
+          TIFs, transit, and luxury approvals. Resident shield rises from trust,
+          organizing, protected parcels, land trusts, tenant law, and community benefits.
+        </p>
+      </section>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        {report.meters.map((meter) => (
+          <div key={meter.key} className="rounded-sm border border-border bg-cream p-4">
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="font-display text-lg text-forest">{meter.label}</p>
+              <p className="font-display text-3xl text-rust">{meter.value}</p>
+            </div>
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-cream-dark">
+              <div
+                className={`h-full rounded-full ${
+                  meter.tone === "danger"
+                    ? "bg-rust"
+                    : meter.tone === "warn"
+                      ? "bg-amber-500"
+                      : meter.tone === "good"
+                        ? "bg-forest"
+                        : "bg-warm-gray"
+                }`}
+                style={{ width: `${meter.value}%` }}
+              />
+            </div>
+            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">{meter.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <section className="grid grid-cols-2 gap-2 rounded-sm border-l-2 border-rust bg-rust/5 p-4 font-body text-sm text-ink/75 md:grid-cols-4">
+        <PressureStat label="Vulnerable parcels" value={report.vulnerableParcels} />
+        <PressureStat label="Protected parcels" value={report.protectedParcels} />
+        <PressureStat label="Speculator parcels" value={report.speculatorParcels} />
+        <PressureStat label="Hit by displacement" value={report.displacementParcels} />
+      </section>
+    </div>
+  );
+}
+
+function PressureStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <p className="font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">{label}</p>
+      <p className="mt-1 font-display text-2xl text-forest">{value}</p>
     </div>
   );
 }

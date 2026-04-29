@@ -62,7 +62,7 @@ export const EVENTS: GameEvent[] = [
       {
         label: "Back the family publicly",
         outcome: "you publicly backed the family",
-        effect: { equity: 3, trust: 2, power: -1 },
+        effect: { equity: 3, trust: 2, power: -1, setFlag: "covenants-challenged" },
       },
       {
         label: "Stay neutral",
@@ -156,6 +156,7 @@ export const EVENTS: GameEvent[] = [
           transformParcels: [
             { selector: "first-of-type:single-family", set: { type: "expressway", residents: 0, owner: "city" } },
           ],
+          setFlag: "expressway-built",
         },
       },
       {
@@ -212,7 +213,7 @@ export const EVENTS: GameEvent[] = [
       {
         label: "Hold out for enforcement language",
         outcome: "you held out for enforcement language",
-        effect: { equity: 3, heritage: 2, power: -2 },
+        effect: { equity: 3, heritage: 2, power: -2, setFlag: "summit-enforced" },
       },
     ],
     glossary: ["ChicagoFreedomMovement"],
@@ -280,7 +281,7 @@ export const EVENTS: GameEvent[] = [
       {
         label: "Run a strong relocation program",
         outcome: "you ran a strong Gautreaux relocation program",
-        effect: { equity: 5, knowledge: 2, capital: -3 },
+        effect: { equity: 5, knowledge: 2, capital: -3, setFlag: "gautreaux-backed" },
       },
       {
         label: "Run a minimal program",
@@ -360,6 +361,7 @@ export const EVENTS: GameEvent[] = [
           equity: -2,
           heritage: -3,
           growth: 4,
+          setFlags: ["tower-demo-planning", "market-rate-tower"],
           transformParcels: [
             { selector: "type:tower", set: { type: "courtyard", residents: 80, owner: "developer" } },
           ],
@@ -373,7 +375,7 @@ export const EVENTS: GameEvent[] = [
       {
         label: "Rehab in place",
         outcome: "you chose rehab over demolition",
-        effect: { equity: 4, heritage: 4, capital: -3 },
+        effect: { equity: 4, heritage: 4, capital: -3, setFlag: "tower-rehabbed" },
       },
     ],
     glossary: ["PlanForTransformation"],
@@ -413,7 +415,7 @@ export const EVENTS: GameEvent[] = [
       {
         label: "Demand a binding CBA",
         outcome: "you negotiated a binding community benefits agreement",
-        effect: { equity: 4, heritage: 2, growth: 3, power: -2 },
+        effect: { equity: 4, heritage: 2, growth: 3, power: -2, setFlag: "cba-active" },
       },
       {
         label: "Welcome the project",

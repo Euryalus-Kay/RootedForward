@@ -1,546 +1,13 @@
 "use client";
 
-import { useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Home, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { Parcel, ParcelType } from "@/lib/game/types";
 import { COLS, ROWS } from "@/lib/game/parcels";
 
-/* ============================================================== *
- *  Isometric city map, v2.
- *
- *  Hand-tuned architectural renderings per parcel type. Footprints
- *  are smaller than the tile so streets and sidewalks read clearly
- *  between parcels. Palette is warm, calm, cream-leaning; highlight
- *  is a subtle beam of light instead of a pulsing ring.
- * ============================================================== */
-
-const TILE_W = 58;
-const TILE_H = 29;
-
-function iso(col: number, row: number) {
-  return { x: (col - row) * (TILE_W / 2), y: (col + row) * (TILE_H / 2) };
-}
-
-/** Rotate (col, row) around the grid center by `step` quarter-turns
- *  (each step = 90 degrees clockwise from the camera's perspective).
- *  Returns the effective (col, row) used for drawing. This moves the
- *  ward so the player can see it from four different corners while
- *  the buildings themselves stay upright. */
-function rotated(col: number, row: number, step: number): { col: number; row: number } {
-  const s = ((step % 4) + 4) % 4;
-  if (s === 0) return { col, row };
-  if (s === 1) return { col: ROWS - 1 - row, row: col };
-  if (s === 2) return { col: COLS - 1 - col, row: ROWS - 1 - row };
-  return { col: row, row: COLS - 1 - col };
-}
-
-/* ------------------ palette helpers ------------------ */
-function shade(hex: string, amt: number): string {
-  const c = hex.replace("#", "");
-  const n = parseInt(c, 16);
-  let r = (n >> 16) & 0xff;
-  let g = (n >> 8) & 0xff;
-  let b = n & 0xff;
-  if (amt >= 0) {
-    r = Math.min(255, Math.round(r + (255 - r) * amt));
-    g = Math.min(255, Math.round(g + (255 - g) * amt));
-    b = Math.min(255, Math.round(b + (255 - b) * amt));
-  } else {
-    r = Math.max(0, Math.round(r * (1 + amt)));
-    g = Math.max(0, Math.round(g * (1 + amt)));
-    b = Math.max(0, Math.round(b * (1 + amt)));
-  }
-  return `rgb(${r},${g},${b})`;
-}
-
-/* ------------------ ground palette ------------------ */
-function groundFill(p: Parcel): string {
-  switch (p.holc) {
-    case "A": return "#C8DCB8";
-    case "B": return "#BBCBDC";
-    case "C": return "#E8D28A";
-    case "D": return "#D9A098";
-    default: return "#E8DCC4";
-  }
-}
-function groundStroke(p: Parcel): string {
-  switch (p.holc) {
-    case "A": return "#A2BD8F";
-    case "B": return "#8FA4BA";
-    case "C": return "#C4A353";
-    case "D": return "#B87870";
-    default: return "#C8BA9A";
-  }
-}
-
-/* ------------------ wall palettes by HOLC ------------------ */
-const WALL: Record<string, string[]> = {
-  A: ["#F5EEDB", "#EFE4C6", "#F2E8CF", "#EADDB9"],
-  B: ["#D0DBE4", "#C1CEDE", "#D8E1EA", "#C8D5E0"],
-  C: ["#E6C46D", "#D8B560", "#E8CB76", "#D4AC58"],
-  D: ["#BC7770", "#AE6A64", "#B8726B", "#A56058"],
-  ungraded: ["#D4CAB3", "#CBBFA5"],
-};
-
-/* ------------------ building shapes ------------------ */
-interface BuildingDesign {
-  footprint: number;   // 0..1 fraction of tile
-  stories: number;     // visible story count
-  storyH: number;      // height per story in px
-  wallColor?: string;  // if omitted, picked from HOLC palette
-  roofColor: string;
-  roofStyle: "flat" | "peak" | "gable" | "dome" | "mansard";
-  windows?: boolean;
-  doorColor?: string;
-  accent?: string;     // optional banner color
-  glyph?: string;      // small letter/symbol
-  hasChimney?: boolean;
-  hasAwning?: boolean;
-}
-
-const DESIGNS: Partial<Record<ParcelType, BuildingDesign[]>> = {
-  "single-family": [
-    { footprint: 0.58, stories: 2, storyH: 10, roofColor: "#7A3F1E", roofStyle: "peak", windows: true, doorColor: "#5C2E0C", hasChimney: true },
-    { footprint: 0.56, stories: 1, storyH: 11, roofColor: "#6B3312", roofStyle: "gable", windows: true, doorColor: "#40220A" },
-    { footprint: 0.60, stories: 2, storyH: 10, roofColor: "#5A2A10", roofStyle: "peak", windows: true, doorColor: "#391C08", hasChimney: true },
-  ],
-  "two-flat": [
-    { footprint: 0.62, stories: 2, storyH: 14, roofColor: "#5E2F12", roofStyle: "flat", windows: true, doorColor: "#2E1508", hasAwning: true },
-    { footprint: 0.60, stories: 3, storyH: 12, roofColor: "#4E250F", roofStyle: "flat", windows: true, doorColor: "#2A1307" },
-  ],
-  "three-flat": [
-    { footprint: 0.62, stories: 3, storyH: 14, roofColor: "#3B1E0A", roofStyle: "flat", windows: true, doorColor: "#1E0C04", hasAwning: true },
-    { footprint: 0.64, stories: 3, storyH: 13, roofColor: "#55290F", roofStyle: "flat", windows: true, doorColor: "#2D1407" },
-  ],
-  courtyard: [
-    { footprint: 0.72, stories: 4, storyH: 11, roofColor: "#3B1E0A", roofStyle: "flat", windows: true, doorColor: "#1E0C04", hasAwning: true },
-  ],
-  tower: [
-    { footprint: 0.48, stories: 10, storyH: 12, wallColor: "#76797C", roofColor: "#3D3F40", roofStyle: "flat", windows: true },
-    { footprint: 0.46, stories: 11, storyH: 11, wallColor: "#868688", roofColor: "#3B3B3B", roofStyle: "flat", windows: true },
-  ],
-  "rehab-tower": [
-    { footprint: 0.50, stories: 8, storyH: 11, wallColor: "#7FA18B", roofColor: "#2F4D3B", roofStyle: "flat", windows: true },
-  ],
-  commercial: [
-    { footprint: 0.70, stories: 2, storyH: 15, wallColor: "#B76A2D", roofColor: "#6F3B10", roofStyle: "flat", windows: true, accent: "#F5F0E8", hasAwning: true, doorColor: "#3E1E07" },
-    { footprint: 0.68, stories: 2, storyH: 14, wallColor: "#AD5F20", roofColor: "#6A3710", roofStyle: "flat", windows: true, accent: "#F5F0E8", hasAwning: true, doorColor: "#3E1E07" },
-  ],
-  industrial: [
-    { footprint: 0.78, stories: 2, storyH: 14, wallColor: "#615F58", roofColor: "#2A2925", roofStyle: "flat", windows: false },
-  ],
-  school: [
-    { footprint: 0.74, stories: 2, storyH: 18, wallColor: "#A5432A", roofColor: "#5B2108", roofStyle: "flat", windows: true, glyph: "S", accent: "#F5F0E8" },
-  ],
-  church: [
-    { footprint: 0.60, stories: 2, storyH: 16, wallColor: "#DCC39A", roofColor: "#5E3616", roofStyle: "peak", windows: true, glyph: "+" },
-  ],
-  transit: [
-    { footprint: 0.70, stories: 2, storyH: 14, wallColor: "#C54C3A", roofColor: "#7A1C14", roofStyle: "dome", windows: true, glyph: "M" },
-  ],
-  expressway: [
-    { footprint: 0.95, stories: 1, storyH: 5, wallColor: "#1E1E1E", roofColor: "#111", roofStyle: "flat" },
-  ],
-  "land-trust": [
-    { footprint: 0.58, stories: 2, storyH: 12, wallColor: "#3F6E55", roofColor: "#1B3A2D", roofStyle: "flat", windows: true, accent: "#F5F0E8" },
-  ],
-  mural: [
-    { footprint: 0.64, stories: 2, storyH: 11, wallColor: "#E08560", roofColor: "#7A2F1A", roofStyle: "flat", windows: false, accent: "#1B3A2D" },
-  ],
-  library: [
-    { footprint: 0.68, stories: 2, storyH: 15, wallColor: "#8F6A35", roofColor: "#4E3418", roofStyle: "flat", windows: true, glyph: "L", accent: "#F5F0E8" },
-  ],
-  clinic: [
-    { footprint: 0.68, stories: 2, storyH: 15, wallColor: "#A5432A", roofColor: "#5B2108", roofStyle: "flat", windows: true, glyph: "+", accent: "#F5F0E8" },
-  ],
-};
-
-function designFor(p: Parcel): BuildingDesign | null {
-  const list = DESIGNS[p.type];
-  if (!list || list.length === 0) return null;
-  return list[p.id % list.length];
-}
-
-function wallColorFor(p: Parcel, d: BuildingDesign): string {
-  if (d.wallColor) return d.wallColor;
-  const palette = WALL[p.holc] ?? WALL.ungraded;
-  return palette[p.id % palette.length];
-}
-
-/* ============================================================== *
- *  SVG primitives                                                  *
- * ============================================================== */
-
-/** Isometric diamond tile at (x,y) with half-width and half-height */
-function Diamond({ x, y, hw, hh, fill, stroke, strokeWidth = 0.6 }: {
-  x: number; y: number; hw: number; hh: number; fill: string; stroke?: string; strokeWidth?: number;
-}) {
-  const points = `${x},${y - hh} ${x + hw},${y} ${x},${y + hh} ${x - hw},${y}`;
-  return <polygon points={points} fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeLinejoin="round" />;
-}
-
-/** An isometric extruded box layer. x,y is the center of the base. */
-function ExtrudedBox({
-  x, y, hw, hh, height, color,
-}: { x: number; y: number; hw: number; hh: number; height: number; color: string }) {
-  const top = shade(color, 0.12);
-  const right = shade(color, -0.18);
-  const left = shade(color, -0.05);
-  const topY = y - height;
-  // Left face
-  const leftPoints = `${x},${y + hh} ${x - hw},${y} ${x - hw},${topY} ${x},${topY + hh}`;
-  // Right face
-  const rightPoints = `${x},${y + hh} ${x + hw},${y} ${x + hw},${topY} ${x},${topY + hh}`;
-  // Top face
-  const topPoints = `${x},${topY - hh} ${x + hw},${topY} ${x},${topY + hh} ${x - hw},${topY}`;
-  return (
-    <g>
-      <polygon points={leftPoints} fill={left} />
-      <polygon points={rightPoints} fill={right} />
-      <polygon points={topPoints} fill={top} />
-    </g>
-  );
-}
-
-/* Windows on right face of a box, laid out in story rows */
-function Windows({ x, topY, hw, hh, stories, storyH, accent }: {
-  x: number; topY: number; hw: number; hh: number; stories: number; storyH: number; accent?: string;
-}) {
-  const out: React.ReactNode[] = [];
-  const color = accent ?? "#2A3240";
-  const frame = "#F5F0E8";
-  // Right face windows (visible side)
-  for (let s = 0; s < stories; s++) {
-    const rowY = topY + s * storyH + 3;
-    // two windows per story
-    for (let i = 0; i < 2; i++) {
-      const xPos = x + (i * (hw - 6) / 2) + 3;
-      const yPos = rowY;
-      const yJitter = (i * 0.4 - 0.2) * (hw / hw);
-      out.push(
-        <g key={`rw-${s}-${i}`}>
-          <rect x={xPos} y={yPos + yJitter} width={4.5} height={storyH - 4} fill={frame} opacity="0.2" />
-          <rect x={xPos + 0.6} y={yPos + 0.6 + yJitter} width={3.3} height={storyH - 5.2} fill={color} opacity="0.7" />
-        </g>
-      );
-    }
-  }
-  // Left face (front from camera perspective)
-  for (let s = 0; s < stories; s++) {
-    const rowY = topY + s * storyH + 3;
-    for (let i = 0; i < 2; i++) {
-      const xPos = x - hw + (i * (hw - 6) / 2) + 1;
-      const yPos = rowY;
-      out.push(
-        <g key={`lw-${s}-${i}`}>
-          <rect x={xPos} y={yPos} width={4} height={storyH - 4} fill={frame} opacity="0.18" />
-          <rect x={xPos + 0.5} y={yPos + 0.6} width={3} height={storyH - 5.2} fill={color} opacity="0.65" />
-        </g>
-      );
-    }
-  }
-  return <>{out}</>;
-}
-
-/* ============================================================== *
- *  Building                                                        *
- * ============================================================== */
-
-function Building({ p, centerX, centerY, highlighted, protectedRing }: {
-  p: Parcel; centerX: number; centerY: number; highlighted?: boolean; protectedRing?: boolean;
-}) {
-  const d = designFor(p);
-  if (!d) return null;
-
-  const wallColor = wallColorFor(p, d);
-  const hw = (TILE_W / 2) * d.footprint;
-  const hh = (TILE_H / 2) * d.footprint;
-  const totalH = d.stories * d.storyH;
-  const topY = centerY - totalH;
-
-  return (
-    <g>
-      {/* Main extruded body */}
-      <ExtrudedBox x={centerX} y={centerY} hw={hw} hh={hh} height={totalH} color={wallColor} />
-
-      {/* Windows */}
-      {d.windows && d.stories > 0 && (
-        <Windows x={centerX} topY={topY} hw={hw} hh={hh} stories={d.stories} storyH={d.storyH} accent={d.accent} />
-      )}
-
-      {/* Awning above ground floor */}
-      {d.hasAwning && (
-        <polygon
-          points={`${centerX - hw - 2},${centerY - d.storyH + hh + 2} ${centerX + hw + 2},${centerY - d.storyH + hh + 2} ${centerX + hw - 1},${centerY - d.storyH + 1} ${centerX - hw + 1},${centerY - d.storyH + 1}`}
-          fill={shade(d.roofColor, 0.1)}
-          opacity="0.9"
-        />
-      )}
-
-      {/* Door on the left face, ground floor */}
-      {d.doorColor && (
-        <rect x={centerX - hw + 2} y={centerY - d.storyH + 3} width={4} height={d.storyH - 3} fill={d.doorColor} />
-      )}
-
-      {/* Roof */}
-      {d.roofStyle === "peak" && (
-        <>
-          {/* Eaves shadow under the overhang */}
-          <polygon
-            points={`${centerX - hw - 2},${topY + 1} ${centerX + hw + 2},${topY + 1} ${centerX + hw},${topY + 4} ${centerX - hw},${topY + 4}`}
-            fill="#000"
-            opacity="0.18"
-          />
-          <polygon
-            points={`${centerX - hw - 2},${topY} ${centerX},${topY - hh - 9} ${centerX + hw + 2},${topY} ${centerX},${topY + hh + 1}`}
-            fill={d.roofColor}
-          />
-          <polygon
-            points={`${centerX - hw - 2},${topY} ${centerX},${topY + hh + 1} ${centerX},${topY - hh - 9}`}
-            fill={shade(d.roofColor, -0.15)}
-            opacity="0.85"
-          />
-          {/* Roof ridge highlight */}
-          <line
-            x1={centerX}
-            y1={topY - hh - 9}
-            x2={centerX}
-            y2={topY + hh + 1}
-            stroke={shade(d.roofColor, 0.15)}
-            strokeWidth="0.6"
-            opacity="0.6"
-          />
-        </>
-      )}
-      {d.roofStyle === "gable" && (
-        <>
-          <polygon
-            points={`${centerX - hw},${topY - 2} ${centerX + hw},${topY - 2} ${centerX + hw - 4},${topY - 7} ${centerX - hw + 4},${topY - 7}`}
-            fill={shade(d.roofColor, -0.1)}
-          />
-          <polygon
-            points={`${centerX - hw},${topY} ${centerX},${topY - hh} ${centerX + hw},${topY} ${centerX},${topY + hh}`}
-            fill={d.roofColor}
-          />
-        </>
-      )}
-      {d.roofStyle === "dome" && (
-        <>
-          <ellipse cx={centerX} cy={topY - 3} rx={hw * 0.65} ry={hh * 0.9} fill={d.roofColor} />
-          <ellipse cx={centerX - hw * 0.15} cy={topY - 5} rx={hw * 0.25} ry={hh * 0.4} fill={shade(d.roofColor, 0.15)} opacity="0.6" />
-        </>
-      )}
-      {d.roofStyle === "flat" && (
-        <polygon
-          points={`${centerX - hw},${topY} ${centerX},${topY - hh} ${centerX + hw},${topY} ${centerX},${topY + hh}`}
-          fill={d.roofColor}
-        />
-      )}
-      {d.roofStyle === "mansard" && (
-        <>
-          <polygon
-            points={`${centerX - hw},${topY} ${centerX},${topY - hh + 2} ${centerX + hw},${topY} ${centerX},${topY + hh}`}
-            fill={shade(d.roofColor, -0.1)}
-          />
-          <polygon
-            points={`${centerX - hw * 0.6},${topY - hh * 0.3} ${centerX},${topY - hh + 2} ${centerX + hw * 0.6},${topY - hh * 0.3} ${centerX},${topY + hh * 0.4}`}
-            fill={d.roofColor}
-          />
-        </>
-      )}
-
-      {/* Chimney */}
-      {d.hasChimney && (
-        <rect x={centerX + hw * 0.25} y={topY - hh - 10} width={3} height={7} fill={shade(d.roofColor, -0.15)} />
-      )}
-
-      {/* Glyph badge */}
-      {d.glyph && (
-        <text x={centerX} y={topY - hh * 0.2} textAnchor="middle" fill="#FFFFFF" fontSize={hw * 0.4} fontWeight="800" fontFamily="sans-serif">
-          {d.glyph}
-        </text>
-      )}
-
-      {/* Protected badge: small lock icon floating above */}
-      {protectedRing && (
-        <g transform={`translate(${centerX},${topY - 16})`}>
-          <circle r="5" fill="#C45D3E" />
-          <rect x="-1.5" y="-2.2" width="3" height="4.4" rx="0.8" fill="#F5F0E8" />
-          <path d="M -1.8 -2.2 q 0 -2.5 1.8 -2.5 t 1.8 2.5" stroke="#F5F0E8" strokeWidth="0.7" fill="none" />
-        </g>
-      )}
-
-      {/* Highlight: calm golden outline around the base, no pulsing */}
-      {highlighted && (
-        <g>
-          <polygon
-            points={`${centerX - hw - 2},${centerY} ${centerX},${centerY - hh - 2} ${centerX + hw + 2},${centerY} ${centerX},${centerY + hh + 2}`}
-            fill="none"
-            stroke="#E0A94A"
-            strokeWidth="1.6"
-          />
-          <polygon
-            points={`${centerX - hw - 4},${centerY} ${centerX},${centerY - hh - 4} ${centerX + hw + 4},${centerY} ${centerX},${centerY + hh + 4}`}
-            fill="none"
-            stroke="#E0A94A"
-            strokeWidth="0.8"
-            opacity="0.45"
-          />
-        </g>
-      )}
-    </g>
-  );
-}
-
-/* ============================================================== *
- *  Garden / trees                                                  *
- * ============================================================== */
-
-function Tree({ x, y, size = 9 }: { x: number; y: number; size?: number }) {
-  return (
-    <g>
-      <ellipse cx={x + 1.5} cy={y - size + 5} rx={size * 0.72} ry={size * 1.05} fill="#174E23" opacity="0.35" />
-      <ellipse cx={x} cy={y - size + 2} rx={size * 0.82} ry={size * 1.12} fill="#2E6B34" />
-      <ellipse cx={x - 1.7} cy={y - size + 0.5} rx={size * 0.5} ry={size * 0.72} fill="#4C9A4F" />
-      <rect x={x - 1.1} y={y - 1.5} width={2.2} height={5} fill="#5B3312" />
-    </g>
-  );
-}
-
-function Garden({ x, y, count, lush }: { x: number; y: number; count: number; lush?: boolean }) {
-  const trees: React.ReactNode[] = [];
-  for (let i = 0; i < count; i++) {
-    const ox = (i - (count - 1) / 2) * 11;
-    const oy = (i % 2) * 5 - 3;
-    trees.push(<Tree key={i} x={x + ox} y={y + oy} size={lush ? 11 : 8} />);
-  }
-  return (
-    <g>
-      {lush && (
-        <>
-          <ellipse cx={x} cy={y + 4} rx={TILE_W / 2 - 5} ry={TILE_H / 2 - 2} fill="#5FA85A" opacity="0.42" />
-          {/* Diagonal park path */}
-          <line
-            x1={x - TILE_W / 2 + 6}
-            y1={y - 1}
-            x2={x + TILE_W / 2 - 6}
-            y2={y + 5}
-            stroke="#D0BC91"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            opacity="0.85"
-          />
-          {/* Tiny bench dot */}
-          <rect x={x - 5} y={y + 6} width="3" height="1.4" fill="#5B3312" />
-        </>
-      )}
-      {trees}
-    </g>
-  );
-}
-
-/* ============================================================== *
- *  Lake Michigan                                                   *
- * ============================================================== */
-
-function Lake({ bounds, shoreMinX, sw, ne }: {
-  bounds: { minX: number; maxX: number; minY: number; maxY: number };
-  shoreMinX: number;
-  sw: { x: number; y: number };
-  ne: { x: number; y: number };
-}) {
-  // Wavy shoreline anchored east of the grid
-  const shore: Array<[number, number]> = [];
-  const steps = 18;
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    const y = bounds.minY - 30 + t * (bounds.maxY - bounds.minY + 90);
-    const wave = Math.sin(i * 0.9) * 6 + Math.cos(i * 1.3) * 3;
-    shore.push([shoreMinX + wave, y]);
-  }
-  const east = bounds.maxX + 520;
-  const lakePath = [
-    ...shore,
-    [east, shore[shore.length - 1][1]],
-    [east, shore[0][1]],
-  ]
-    .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
-    .join(" ");
-
-  // Beach strip just west of the shoreline
-  const beach: Array<[number, number]> = [];
-  for (const [x, y] of shore) {
-    beach.push([x - 5, y]);
-  }
-  const beachPath =
-    beach.map(([x, y]) => `${x},${y}`).join(" ") +
-    " " +
-    shore.slice().reverse().map(([x, y]) => `${x},${y}`).join(" ");
-
-  return (
-    <g>
-      {/* Beach strip */}
-      <polygon points={beachPath} fill="#E4D4A8" opacity="0.9" />
-      {/* Lake water - gradient + wave pattern */}
-      <polygon points={lakePath} fill="url(#lakeGrad)" />
-      <polygon points={lakePath} fill="url(#waves2)" opacity="0.8" />
-      <polygon points={lakePath} fill="url(#waves)" opacity="0.6" />
-      {/* Shoreline stroke */}
-      <polyline
-        points={shore.map(([x, y]) => `${x},${y}`).join(" ")}
-        fill="none"
-        stroke="#3E7A8C"
-        strokeWidth="1.4"
-        opacity="0.45"
-      />
-      {/* Piers */}
-      <g>
-        <rect x={shore[4][0]} y={shore[4][1] - 2} width={80} height={4} fill="#5B3312" />
-        <rect x={shore[4][0] + 72} y={shore[4][1] - 8} width={16} height={16} fill="#8B5A3C" />
-      </g>
-      <g>
-        <rect x={shore[12][0]} y={shore[12][1] - 2} width={50} height={3} fill="#5B3312" />
-      </g>
-      {/* Sailboats */}
-      <g>
-        <Sailboat x={bounds.maxX + 90} y={shore[6][1] - 10} />
-        <Sailboat x={bounds.maxX + 220} y={shore[10][1] + 20} small />
-        <Sailboat x={bounds.maxX + 140} y={shore[14][1] + 4} />
-      </g>
-      {/* Lake Michigan label */}
-      <text
-        x={bounds.maxX + 180}
-        y={(bounds.maxY + bounds.minY) / 2 + 100}
-        textAnchor="middle"
-        fontFamily="Fraunces, serif"
-        fontStyle="italic"
-        fontSize="22"
-        fill="#26607A"
-        opacity="0.72"
-        letterSpacing="4"
-      >
-        Lake Michigan
-      </text>
-      {/* Suppress unused var lint */}
-      {null}
-      {sw && ne ? null : null}
-    </g>
-  );
-}
-
-function Sailboat({ x, y, small }: { x: number; y: number; small?: boolean }) {
-  const s = small ? 0.8 : 1;
-  return (
-    <g transform={`translate(${x},${y}) scale(${s})`}>
-      <polygon points={`-6,0 10,0 6,3 -3,3`} fill="#7A4E2E" />
-      <polygon points={`0,-14 0,0 8,0`} fill="#FAF6EC" />
-      <rect x="-0.8" y="-16" width="1.6" height="16" fill="#333" />
-    </g>
-  );
-}
-
-/* ============================================================== *
- *  Main map                                                        *
- * ============================================================== */
+type FilterKey = "all" | "housing" | "civic" | "commerce" | "protected" | "land-trust" | "risk";
 
 export interface ParcelMap3DProps {
   parcels: Parcel[];
@@ -549,319 +16,547 @@ export interface ParcelMap3DProps {
   onClick?: (p: Parcel) => void;
 }
 
-export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: ParcelMap3DProps) {
-  const [panX, setPanX] = useState(0);
-  const [panY, setPanY] = useState(0);
-  const [zoom, setZoom] = useState(1.05);
-  const [rotation, setRotation] = useState(0); // 0, 90, 180, 270 degrees
-  const [dragging, setDragging] = useState(false);
-  const [filter, setFilter] = useState<"all" | "housing" | "civic" | "commerce" | "protected" | "land-trust">("all");
-  const dragStart = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
+const housingTypes = new Set<ParcelType>([
+  "single-family",
+  "two-flat",
+  "three-flat",
+  "courtyard",
+  "tower",
+  "rehab-tower",
+  "land-trust",
+]);
 
-  const isFilteredIn = (p: Parcel): boolean => {
-    if (filter === "all") return true;
-    if (filter === "housing") return ["single-family", "two-flat", "three-flat", "courtyard", "tower", "rehab-tower"].includes(p.type);
-    if (filter === "civic") return ["school", "library", "clinic", "church", "park", "community-garden", "mural", "transit"].includes(p.type);
-    if (filter === "commerce") return ["commercial", "industrial"].includes(p.type);
-    if (filter === "protected") return p.protected;
-    if (filter === "land-trust") return p.type === "land-trust" || p.owner === "land-trust";
-    return true;
-  };
+const civicTypes = new Set<ParcelType>([
+  "school",
+  "library",
+  "clinic",
+  "church",
+  "park",
+  "community-garden",
+  "mural",
+  "transit",
+]);
 
-  // Bounds depend on rotation - recompute when the camera angle changes
-  const bounds = useMemo(() => {
-    const step = Math.floor(rotation / 90);
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const rc = rotated(c, r, step);
-        const { x, y } = iso(rc.col, rc.row);
-        minX = Math.min(minX, x - TILE_W / 2);
-        maxX = Math.max(maxX, x + TILE_W / 2);
-        minY = Math.min(minY, y - TILE_H / 2);
-        maxY = Math.max(maxY, y + TILE_H / 2);
+const commerceTypes = new Set<ParcelType>(["commercial", "industrial"]);
+
+const FILTERS: Array<{ key: FilterKey; label: string }> = [
+  { key: "all", label: "All" },
+  { key: "housing", label: "Housing" },
+  { key: "civic", label: "Civic" },
+  { key: "commerce", label: "Commerce" },
+  { key: "protected", label: "Protected" },
+  { key: "land-trust", label: "Land trust" },
+  { key: "risk", label: "At risk" },
+];
+
+function clamp(n: number, lo = 0, hi = 100): number {
+  return Math.max(lo, Math.min(hi, n));
+}
+
+function isAtRisk(p: Parcel): boolean {
+  if (p.protected || p.owner === "land-trust" || p.type === "land-trust") return false;
+  if (!housingTypes.has(p.type) || p.residents <= 0) return false;
+  return p.owner === "absentee" || p.owner === "speculator" || p.value >= 58 || p.memory <= 44 || p.condition <= 38;
+}
+
+function isFilteredIn(p: Parcel, filter: FilterKey): boolean {
+  if (filter === "all") return true;
+  if (filter === "housing") return housingTypes.has(p.type);
+  if (filter === "civic") return civicTypes.has(p.type);
+  if (filter === "commerce") return commerceTypes.has(p.type);
+  if (filter === "protected") return p.protected;
+  if (filter === "land-trust") return p.owner === "land-trust" || p.type === "land-trust";
+  if (filter === "risk") return isAtRisk(p);
+  return true;
+}
+
+function holcColor(p: Parcel): string {
+  switch (p.holc) {
+    case "A": return "#BFD9A8";
+    case "B": return "#B9CDDF";
+    case "C": return "#E2C668";
+    case "D": return "#D88B7C";
+    default: return "#D8CCB4";
+  }
+}
+
+function buildingColor(p: Parcel): string {
+  if (p.owner === "speculator") return "#9A3A2B";
+  if (p.owner === "land-trust" || p.type === "land-trust") return "#2F6F4F";
+  switch (p.type) {
+    case "single-family": return "#C68445";
+    case "two-flat": return "#B96A3C";
+    case "three-flat": return "#A95E3A";
+    case "courtyard": return "#8F593D";
+    case "tower": return "#777A7E";
+    case "rehab-tower": return "#6C9B78";
+    case "commercial": return "#C45D3E";
+    case "industrial": return "#5F5C55";
+    case "school": return "#A5432A";
+    case "church": return "#D6BD8F";
+    case "library": return "#8B6B38";
+    case "clinic": return "#A74333";
+    case "transit": return "#B73B33";
+    case "mural": return "#D97855";
+    default: return "#B48355";
+  }
+}
+
+function buildingHeight(p: Parcel): number {
+  switch (p.type) {
+    case "single-family": return 0.42;
+    case "two-flat": return 0.62;
+    case "three-flat": return 0.82;
+    case "courtyard": return 0.72;
+    case "tower": return 2.7;
+    case "rehab-tower": return 2.35;
+    case "commercial": return 0.55;
+    case "industrial": return 0.45;
+    case "school": return 0.62;
+    case "church": return 0.75;
+    case "library": return 0.58;
+    case "clinic": return 0.62;
+    case "transit": return 0.5;
+    case "land-trust": return 0.52;
+    case "mural": return 0.48;
+    default: return 0;
+  }
+}
+
+function footprint(p: Parcel): { w: number; d: number } {
+  switch (p.type) {
+    case "tower": return { w: 0.43, d: 0.43 };
+    case "rehab-tower": return { w: 0.48, d: 0.48 };
+    case "industrial": return { w: 0.78, d: 0.7 };
+    case "school": return { w: 0.76, d: 0.62 };
+    case "courtyard": return { w: 0.76, d: 0.7 };
+    case "commercial": return { w: 0.72, d: 0.55 };
+    case "transit": return { w: 0.72, d: 0.42 };
+    case "church": return { w: 0.52, d: 0.58 };
+    default: return { w: 0.58, d: 0.52 };
+  }
+}
+
+function parcelPosition(p: Pick<Parcel, "col" | "row">): THREE.Vector3 {
+  return new THREE.Vector3(p.col - (COLS - 1) / 2, 0, p.row - (ROWS - 1) / 2);
+}
+
+function makeMaterial(color: string, opacity = 1, roughness = 0.82): THREE.MeshStandardMaterial {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness,
+    metalness: 0.03,
+    transparent: opacity < 1,
+    opacity,
+  });
+}
+
+function addParcelUserData(obj: THREE.Object3D, parcel: Parcel) {
+  obj.userData.parcelId = parcel.id;
+  for (const child of obj.children) addParcelUserData(child, parcel);
+}
+
+function addTrees(group: THREE.Group, p: Parcel, count: number, lush = false) {
+  const base = parcelPosition(p);
+  for (let i = 0; i < count; i++) {
+    const ox = ((i % 3) - 1) * 0.22;
+    const oz = (Math.floor(i / 3) - 0.5) * 0.24;
+    const trunk = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.025, 0.035, 0.18, 7),
+      makeMaterial("#6F4A24")
+    );
+    trunk.position.set(base.x + ox, 0.18, base.z + oz);
+    const crown = new THREE.Mesh(
+      new THREE.SphereGeometry(lush ? 0.15 : 0.12, 12, 8),
+      makeMaterial(lush ? "#3F8B43" : "#2F6F34")
+    );
+    crown.position.set(base.x + ox, 0.36, base.z + oz);
+    group.add(trunk, crown);
+  }
+}
+
+function addParcel(scene: THREE.Group, parcel: Parcel, highlighted: boolean, filteredIn: boolean) {
+  const opacity = filteredIn ? 1 : 0.18;
+  const pos = parcelPosition(parcel);
+  const tile = new THREE.Mesh(
+    new THREE.BoxGeometry(0.94, 0.08, 0.94),
+    makeMaterial(holcColor(parcel), opacity)
+  );
+  tile.position.set(pos.x, 0.02, pos.z);
+  addParcelUserData(tile, parcel);
+  scene.add(tile);
+
+  const curb = new THREE.Mesh(
+    new THREE.BoxGeometry(1.0, 0.035, 1.0),
+    makeMaterial("#756B5F", filteredIn ? 0.72 : 0.12)
+  );
+  curb.position.set(pos.x, -0.035, pos.z);
+  scene.add(curb);
+
+  if (parcel.type === "park" || parcel.type === "community-garden") {
+    const grass = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.42, 0.42, 0.045, 6),
+      makeMaterial(parcel.type === "park" ? "#5EA65B" : "#6FB35C", opacity)
+    );
+    grass.rotation.y = Math.PI / 6;
+    grass.position.set(pos.x, 0.095, pos.z);
+    addParcelUserData(grass, parcel);
+    scene.add(grass);
+    addTrees(scene, parcel, parcel.type === "park" ? 6 : 4, true);
+  } else if (parcel.type === "expressway") {
+    const road = new THREE.Mesh(
+      new THREE.BoxGeometry(0.52, 0.06, 1.08),
+      makeMaterial("#262626", opacity)
+    );
+    road.position.set(pos.x, 0.12, pos.z);
+    addParcelUserData(road, parcel);
+    scene.add(road);
+    const stripe = new THREE.Mesh(
+      new THREE.BoxGeometry(0.035, 0.064, 0.82),
+      makeMaterial("#F5F0E8", filteredIn ? 0.75 : 0.12)
+    );
+    stripe.position.set(pos.x, 0.16, pos.z);
+    scene.add(stripe);
+  } else {
+    const h = buildingHeight(parcel);
+    if (h > 0) {
+      const fp = footprint(parcel);
+      const body = new THREE.Mesh(
+        new THREE.BoxGeometry(fp.w, h, fp.d),
+        makeMaterial(buildingColor(parcel), opacity, 0.74)
+      );
+      body.position.set(pos.x, 0.08 + h / 2, pos.z);
+      body.castShadow = true;
+      body.receiveShadow = true;
+      addParcelUserData(body, parcel);
+      scene.add(body);
+
+      const roofColor = parcel.type === "tower" || parcel.type === "rehab-tower" ? "#343536" : "#5E3117";
+      const roof = new THREE.Mesh(
+        new THREE.BoxGeometry(fp.w + 0.04, 0.07, fp.d + 0.04),
+        makeMaterial(roofColor, opacity)
+      );
+      roof.position.set(pos.x, 0.12 + h, pos.z);
+      addParcelUserData(roof, parcel);
+      scene.add(roof);
+
+      if (parcel.type === "church") {
+        const steeple = new THREE.Mesh(
+          new THREE.ConeGeometry(0.16, 0.45, 4),
+          makeMaterial("#5E3117", opacity)
+        );
+        steeple.position.set(pos.x, 0.38 + h, pos.z - 0.03);
+        steeple.rotation.y = Math.PI / 4;
+        addParcelUserData(steeple, parcel);
+        scene.add(steeple);
+      }
+
+      if (parcel.type === "transit") {
+        const canopy = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.35, 0.35, 0.11, 24, 1, false, 0, Math.PI),
+          makeMaterial("#7A1C14", opacity)
+        );
+        canopy.rotation.z = Math.PI / 2;
+        canopy.position.set(pos.x, 0.74, pos.z);
+        addParcelUserData(canopy, parcel);
+        scene.add(canopy);
       }
     }
-    return { minX, maxX, minY, maxY };
-  }, [rotation]);
+  }
 
-  const padLeft = 50;
-  const padRight = 320;
-  const padTop = 150;
-  const padBottom = 70;
-  const mapWidth = bounds.maxX - bounds.minX + padLeft + padRight;
-  const mapHeight = bounds.maxY - bounds.minY + padTop + padBottom;
-  const offsetX = -bounds.minX + padLeft;
-  const offsetY = -bounds.minY + padTop;
+  if (parcel.protected || parcel.owner === "land-trust") {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.52, 0.018, 8, 44),
+      makeMaterial("#1B3A2D", filteredIn ? 0.9 : 0.18)
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.set(pos.x, 0.13, pos.z);
+    scene.add(ring);
+  }
 
+  if (isAtRisk(parcel)) {
+    const risk = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.075, 0.075, 0.055, 16),
+      makeMaterial("#C45D3E", filteredIn ? 0.95 : 0.2)
+    );
+    risk.position.set(pos.x + 0.32, 0.18, pos.z - 0.32);
+    scene.add(risk);
+  }
+
+  if (highlighted) {
+    const glow = new THREE.Mesh(
+      new THREE.TorusGeometry(0.58, 0.026, 8, 64),
+      makeMaterial("#E0A94A", 0.96, 0.5)
+    );
+    glow.rotation.x = Math.PI / 2;
+    glow.position.set(pos.x, 0.2, pos.z);
+    scene.add(glow);
+  }
+}
+
+function addLake(scene: THREE.Group) {
+  const water = new THREE.Mesh(
+    new THREE.BoxGeometry(3.8, 0.04, ROWS + 1.4),
+    makeMaterial("#4A8FA3", 0.92, 0.5)
+  );
+  water.position.set(COLS / 2 + 1.5, -0.045, 0);
+  scene.add(water);
+
+  for (let i = 0; i < 10; i++) {
+    const wave = new THREE.Mesh(
+      new THREE.BoxGeometry(1.1 + (i % 3) * 0.25, 0.012, 0.025),
+      makeMaterial("#D8EEF2", 0.55)
+    );
+    wave.position.set(COLS / 2 + 0.35 + (i % 3) * 0.7, 0.0, -3.1 + i * 0.68);
+    wave.rotation.y = i % 2 === 0 ? 0.12 : -0.08;
+    scene.add(wave);
+  }
+}
+
+export default function ParcelMap3D({ parcels, highlight, onHover, onClick }: ParcelMap3DProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
+  const [filter, setFilter] = useState<FilterKey>("all");
   const highSet = useMemo(() => new Set(highlight ?? []), [highlight]);
 
-  const drawList = useMemo(
-    () => parcels.slice().sort((a, b) => a.row + a.col - (b.row + b.col)),
-    [parcels]
-  );
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  /* ---- drag / zoom ---- */
-  function handleMouseDown(e: React.MouseEvent) {
-    setDragging(true);
-    dragStart.current = { x: e.clientX, y: e.clientY, panX, panY };
-  }
-  function handleMouseMove(e: React.MouseEvent) {
-    if (!dragging || !dragStart.current) return;
-    setPanX(dragStart.current.panX + (e.clientX - dragStart.current.x));
-    setPanY(dragStart.current.panY + (e.clientY - dragStart.current.y));
-  }
-  function handleMouseUp() {
-    setDragging(false);
-    dragStart.current = null;
-  }
-  function handleWheel(e: React.WheelEvent) {
-    const delta = e.deltaY < 0 ? 1.08 : 1 / 1.08;
-    setZoom((z) => Math.max(0.55, Math.min(2.4, z * delta)));
-  }
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.domElement.dataset.testid = "parcel-map-3d-canvas";
+    container.appendChild(renderer.domElement);
 
-  // After rotation the east-facing edge of the ward is a different set
-  // of parcels; compute shoreline position from the actual rightmost x
-  // of all rendered tiles.
-  const shoreMinX = useMemo(() => {
-    const step = Math.floor(rotation / 90);
-    let maxX = -Infinity;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const rc = rotated(c, r, step);
-        const { x } = iso(rc.col, rc.row);
-        if (x > maxX) maxX = x;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color("#F5F0E8");
+    scene.fog = new THREE.Fog("#F5F0E8", 10, 22);
+
+    const camera = new THREE.OrthographicCamera(-6, 6, 4, -4, 0.1, 80);
+    camera.position.set(7.6, 8.2, 9.6);
+    camera.lookAt(0, 0, 0);
+    camera.zoom = 1.1;
+    cameraRef.current = camera;
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.minZoom = 0.62;
+    controls.maxZoom = 2.6;
+    controls.minPolarAngle = 0.55;
+    controls.maxPolarAngle = 1.25;
+    controls.target.set(0, 0, 0);
+    controlsRef.current = controls;
+
+    scene.add(new THREE.HemisphereLight("#FFF7E6", "#6B705C", 2.2));
+    const sun = new THREE.DirectionalLight("#FFF0D0", 3.1);
+    sun.position.set(-4, 9, 5);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    scene.add(sun);
+
+    const ward = new THREE.Group();
+    scene.add(ward);
+
+    const base = new THREE.Mesh(
+      new THREE.BoxGeometry(COLS + 0.9, 0.08, ROWS + 0.9),
+      makeMaterial("#756B5F", 1)
+    );
+    base.position.set(0, -0.08, 0);
+    base.receiveShadow = true;
+    ward.add(base);
+    addLake(ward);
+
+    for (const parcel of parcels) {
+      addParcel(ward, parcel, highSet.has(parcel.id), isFilteredIn(parcel, filter));
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let hoveredId: number | null = null;
+    let frame = 0;
+
+    function resize() {
+      const rect = container.getBoundingClientRect();
+      const width = Math.max(320, Math.floor(rect.width));
+      const height = Math.max(360, Math.floor(rect.height));
+      renderer.setSize(width, height, false);
+      const aspect = width / height;
+      const frustum = 8.2;
+      camera.left = (-frustum * aspect) / 2;
+      camera.right = (frustum * aspect) / 2;
+      camera.top = frustum / 2;
+      camera.bottom = -frustum / 2;
+      camera.updateProjectionMatrix();
+    }
+
+    function parcelFromObject(obj: THREE.Object3D | null): Parcel | null {
+      let cur: THREE.Object3D | null = obj;
+      while (cur) {
+        if (typeof cur.userData.parcelId === "number") {
+          return parcels.find((p) => p.id === cur?.userData.parcelId) ?? null;
+        }
+        cur = cur.parent;
+      }
+      return null;
+    }
+
+    function handlePointerMove(e: PointerEvent) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hit = raycaster.intersectObjects(ward.children, true)[0];
+      const parcel = parcelFromObject(hit?.object ?? null);
+      if ((parcel?.id ?? null) !== hoveredId) {
+        hoveredId = parcel?.id ?? null;
+        onHover?.(parcel);
       }
     }
-    return maxX + TILE_W / 2 + 12;
-  }, [rotation]);
-  const swIso = iso(0, ROWS - 1);
-  const neIso = iso(COLS - 1, 0);
+
+    function handlePointerLeave() {
+      hoveredId = null;
+      onHover?.(null);
+    }
+
+    function handleClick() {
+      if (hoveredId == null) return;
+      const parcel = parcels.find((p) => p.id === hoveredId);
+      if (parcel) onClick?.(parcel);
+    }
+
+    renderer.domElement.addEventListener("pointermove", handlePointerMove);
+    renderer.domElement.addEventListener("pointerleave", handlePointerLeave);
+    renderer.domElement.addEventListener("click", handleClick);
+    const observer = new ResizeObserver(resize);
+    observer.observe(container);
+    resize();
+
+    function animate() {
+      frame = window.requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      renderer.domElement.removeEventListener("pointermove", handlePointerMove);
+      renderer.domElement.removeEventListener("pointerleave", handlePointerLeave);
+      renderer.domElement.removeEventListener("click", handleClick);
+      controls.dispose();
+      scene.traverse((obj) => {
+        const mesh = obj as THREE.Mesh;
+        mesh.geometry?.dispose?.();
+        const material = mesh.material as THREE.Material | THREE.Material[] | undefined;
+        if (Array.isArray(material)) material.forEach((m) => m.dispose());
+        else material?.dispose?.();
+      });
+      renderer.dispose();
+      renderer.domElement.remove();
+      cameraRef.current = null;
+      controlsRef.current = null;
+    };
+  }, [filter, highSet, onClick, onHover, parcels]);
+
+  function zoom(multiplier: number) {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    camera.zoom = clamp(camera.zoom * multiplier, 0.62, 2.6);
+    camera.updateProjectionMatrix();
+    controlsRef.current?.update();
+  }
+
+  function resetCamera() {
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    if (!camera || !controls) return;
+    camera.position.set(7.6, 8.2, 9.6);
+    camera.zoom = 1.1;
+    controls.target.set(0, 0, 0);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+    controls.update();
+  }
+
+  function rotateView() {
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    if (!camera || !controls) return;
+    const offset = camera.position.clone().sub(controls.target);
+    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
+    camera.position.copy(controls.target).add(offset);
+    camera.lookAt(controls.target);
+    controls.update();
+  }
 
   return (
     <div className="w-full">
-      {/* Filter row - sits ABOVE the map, doesn't overlap */}
       <div className="mb-2 flex flex-wrap items-center gap-2 rounded-md border border-border bg-cream-dark/30 px-3 py-2">
         <span className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">Show</span>
         <div className="flex flex-wrap gap-1">
-          {(["all", "housing", "civic", "commerce", "protected", "land-trust"] as const).map((f) => (
+          {FILTERS.map((f) => (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
+              key={f.key}
+              onClick={() => setFilter(f.key)}
               className={`rounded-full px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
-                filter === f ? "bg-forest text-cream" : "bg-cream text-warm-gray hover:bg-cream"
+                filter === f.key ? "bg-forest text-cream" : "bg-cream text-warm-gray hover:bg-cream"
               }`}
             >
-              {f === "land-trust" ? "Land trust" : f}
+              {f.label}
             </button>
           ))}
         </div>
       </div>
 
-    <div className="relative w-full overflow-hidden rounded-md border border-border shadow-sm"
-      style={{ background: "linear-gradient(180deg, #F5F0E8 0%, #EDE5D1 55%, #E2D7BD 100%)" }}
+      <div className="relative h-[440px] w-full overflow-hidden rounded-md border border-border bg-cream shadow-sm md:h-[540px]" data-testid="parcel-map-3d">
+        <div className="absolute left-2 top-2 z-10 rounded-sm bg-cream/90 px-2.5 py-1 shadow-sm">
+          <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">Parkhaven 3D</p>
+        </div>
+
+        <div className="absolute right-2 top-2 z-10 flex gap-1">
+          <IconButton label="Zoom in" onClick={() => zoom(1.14)}>
+            <ZoomIn size={15} />
+          </IconButton>
+          <IconButton label="Zoom out" onClick={() => zoom(1 / 1.14)}>
+            <ZoomOut size={15} />
+          </IconButton>
+          <IconButton label="Rotate view" onClick={rotateView}>
+            <RotateCcw size={15} />
+          </IconButton>
+          <IconButton label="Reset view" onClick={resetCamera}>
+            <Home size={15} />
+          </IconButton>
+        </div>
+
+        <div ref={containerRef} className="h-full w-full" />
+      </div>
+    </div>
+  );
+}
+
+function IconButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 text-forest shadow-sm transition-colors hover:bg-cream-dark"
     >
-      {/* Zoom + rotate controls */}
-      <div className="absolute right-2 top-2 z-10 flex gap-1">
-        <button
-          onClick={() => setZoom((z) => Math.min(2.4, z * 1.12))}
-          aria-label="Zoom in"
-          className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 font-display text-base font-bold text-forest shadow-sm hover:bg-cream-dark"
-        >+</button>
-        <button
-          onClick={() => setZoom((z) => Math.max(0.55, z / 1.12))}
-          aria-label="Zoom out"
-          className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 font-display text-base font-bold text-forest shadow-sm hover:bg-cream-dark"
-        >−</button>
-        <button
-          onClick={() => setRotation((r) => (r + 90) % 360)}
-          aria-label="Rotate"
-          title="Rotate the view 90°"
-          className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-cream/90 text-forest shadow-sm hover:bg-cream-dark"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 12a9 9 0 1 0 9-9" />
-            <polyline points="3 4 3 9 8 9" />
-          </svg>
-        </button>
-        <button
-          onClick={() => { setPanX(0); setPanY(0); setZoom(1.05); setRotation(0); }}
-          className="h-8 rounded-sm border border-border bg-cream/90 px-2 font-body text-[10px] font-semibold uppercase tracking-widest text-forest shadow-sm hover:bg-cream-dark"
-        >Reset</button>
-      </div>
-
-      {/* Title badge */}
-      <div className="absolute left-2 top-2 z-10 rounded-sm bg-cream/90 px-2.5 py-1 shadow-sm">
-        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">Parkhaven</p>
-      </div>
-
-      {/* Compass — rotates with the map */}
-      <div className="absolute bottom-2 left-2 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-cream/90 shadow-sm">
-        <svg viewBox="0 0 32 32" className="h-9 w-9">
-          <circle cx="16" cy="16" r="13" fill="none" stroke="#1B3A2D" strokeWidth="0.5" opacity="0.3" />
-          <g transform={`rotate(${rotation}, 16, 16)`}>
-            <polygon points="16,3 20,16 16,14 12,16" fill="#1B3A2D" />
-            <polygon points="16,29 20,16 16,18 12,16" fill="#1B3A2D" opacity="0.25" />
-            <text x="16" y="10" textAnchor="middle" fontSize="6" fontFamily="serif" fontWeight="800" fill="#1B3A2D">N</text>
-          </g>
-        </svg>
-      </div>
-
-      {/* Hint */}
-      <div className="pointer-events-none absolute bottom-2 left-1/2 z-10 -translate-x-1/2 rounded-full bg-cream/80 px-3 py-1 shadow-sm">
-        <p className="font-body text-[10px] text-warm-gray">Drag to pan · scroll to zoom</p>
-      </div>
-
-      <svg
-        viewBox={`0 0 ${mapWidth} ${mapHeight}`}
-        className="block w-full cursor-grab select-none active:cursor-grabbing"
-        style={{ height: "auto", maxHeight: "540px" }}
-        preserveAspectRatio="xMidYMid meet"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={() => { handleMouseUp(); onHover?.(null); }}
-        onWheel={handleWheel}
-      >
-        <defs>
-          <linearGradient id="lakeGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#8EC4D4" />
-            <stop offset="50%" stopColor="#4A8FA3" />
-            <stop offset="100%" stopColor="#2E6B7F" />
-          </linearGradient>
-          <pattern id="waves" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)">
-            <path d="M0,5 Q6,2 12,5 T24,5" stroke="#FAF6EC" strokeWidth="1.1" fill="none" opacity="0.7" />
-          </pattern>
-          <pattern id="waves2" x="0" y="0" width="32" height="14" patternUnits="userSpaceOnUse">
-            <path d="M0,7 Q8,3 16,7 T32,7" stroke="#B4D8E4" strokeWidth="0.8" fill="none" opacity="0.45" />
-          </pattern>
-          <radialGradient id="parcelShadow">
-            <stop offset="0%" stopColor="#000" stopOpacity="0.3" />
-            <stop offset="70%" stopColor="#000" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#000" stopOpacity="0" />
-          </radialGradient>
-          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" />
-          </filter>
-        </defs>
-
-        {/* Subtle cloud wisps */}
-        <g opacity="0.35" fill="#FFFFFF">
-          <ellipse cx="220" cy="48" rx="40" ry="5" />
-          <ellipse cx="470" cy="36" rx="28" ry="4" />
-        </g>
-
-        <g transform={`translate(${panX}, ${panY}) scale(${zoom}) translate(${offsetX}, ${offsetY})`}>
-          {/* Base plate (street color under tiles) */}
-          {(() => {
-            const nw = iso(0, 0);
-            const ne = iso(COLS - 1, 0);
-            const sw = iso(0, ROWS - 1);
-            const se = iso(COLS - 1, ROWS - 1);
-            const pad = 8;
-            const pts = [
-              [nw.x - TILE_W / 2 - pad, nw.y - TILE_H / 2 - pad],
-              [ne.x + TILE_W / 2 + pad, ne.y - TILE_H / 2 - pad],
-              [se.x + TILE_W / 2 + pad, se.y + TILE_H / 2 + pad],
-              [sw.x - TILE_W / 2 - pad, sw.y + TILE_H / 2 + pad],
-            ]
-              .map((p) => p.join(","))
-              .join(" ");
-            return <polygon points={pts} fill="#6F6459" opacity="0.95" />;
-          })()}
-
-          {/* Lake */}
-          <Lake bounds={bounds} shoreMinX={shoreMinX} sw={swIso} ne={neIso} />
-
-          {/* Parcel ground tiles with sidewalk ring */}
-          {parcels.map((p) => {
-            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
-            return (
-              <g key={`g-${p.id}`}>
-                {/* Sidewalk ring (lighter gray frame) */}
-                <Diamond
-                  x={x}
-                  y={y}
-                  hw={TILE_W / 2 - 1.5}
-                  hh={TILE_H / 2 - 1}
-                  fill="#C4B89E"
-                  stroke="none"
-                />
-                {/* Inner lawn / yard */}
-                <Diamond
-                  x={x}
-                  y={y}
-                  hw={TILE_W / 2 - 4.5}
-                  hh={TILE_H / 2 - 2.5}
-                  fill={groundFill(p)}
-                  stroke={groundStroke(p)}
-                  strokeWidth={0.55}
-                />
-              </g>
-            );
-          })}
-
-          {/* Street center stripes on major avenues */}
-          {(() => {
-            const lines: React.ReactNode[] = [];
-            for (let r = 2; r < ROWS; r += 3) {
-              const a = iso(-0.5, r - 0.5);
-              const b = iso(COLS - 0.5, r - 0.5);
-              lines.push(
-                <line key={`h-${r}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#EDE5D1" strokeWidth="0.9" strokeDasharray="5 5" opacity="0.55" />
-              );
-            }
-            for (let c = 3; c < COLS; c += 3) {
-              const a = iso(c - 0.5, -0.5);
-              const b = iso(c - 0.5, ROWS - 0.5);
-              lines.push(
-                <line key={`v-${c}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#EDE5D1" strokeWidth="0.9" strokeDasharray="5 5" opacity="0.55" />
-              );
-            }
-            return lines;
-          })()}
-
-          {/* Shadows */}
-          {drawList.map((p) => {
-            const d = designFor(p);
-            if (!d) return null;
-            const totalH = d.stories * d.storyH;
-            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
-            const spread = Math.min(TILE_W * 0.65, totalH * 0.22);
-            return (
-              <ellipse
-                key={`sh-${p.id}`}
-                cx={x + 4 + spread * 0.35}
-                cy={y + 3 + spread * 0.12}
-                rx={TILE_W / 2 * d.footprint + spread * 0.3}
-                ry={TILE_H / 2 * d.footprint + spread * 0.15}
-                fill="url(#parcelShadow)"
-                opacity="0.6"
-              />
-            );
-          })}
-
-          {/* Buildings */}
-          {drawList.map((p) => {
-            const rc = rotated(p.col, p.row, rotation / 90); const { x, y } = iso(rc.col, rc.row);
-            const inFilter = isFilteredIn(p);
-            return (
-              <g
-                key={`b-${p.id}`}
-                onMouseEnter={() => onHover?.(p)}
-                onClick={() => onClick?.(p)}
-                style={{ cursor: onClick ? "pointer" : "default", opacity: inFilter ? 1 : 0.18 }}
-              >
-                <Building p={p} centerX={x} centerY={y} highlighted={highSet.has(p.id)} protectedRing={p.protected} />
-                {p.type === "park" && <Garden x={x} y={y + 4} count={5} lush />}
-                {p.type === "community-garden" && <Garden x={x} y={y + 4} count={4} lush />}
-                {p.type === "land-trust" && <Garden x={x + 8} y={y + 2} count={1} />}
-              </g>
-            );
-          })}
-        </g>
-      </svg>
-    </div>
-    </div>
+      {children}
+    </button>
   );
 }
