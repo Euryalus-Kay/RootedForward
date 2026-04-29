@@ -10,7 +10,6 @@ import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
 import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
 import ParcelGrid, { ParcelLegend, ParcelTooltip } from "./ParcelGrid";
-import ParcelMap3D from "./ParcelMap3D";
 import { ResourceHUD, ScoreBar } from "./ResourceHUD";
 import { PolicyCard } from "./PolicyCard";
 import { EventModal } from "./EventModal";
@@ -50,7 +49,6 @@ export default function GameRoot() {
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
-  const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
   const [modal, setModal] = useState<Modal>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
@@ -323,29 +321,9 @@ export default function GameRoot() {
           {/* Left column: ward + tabbed reference panel */}
           <aside className="order-2 lg:order-1 lg:col-span-5">
             <div className="rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-3 shadow-sm md:p-4">
-              <div className="flex items-center justify-between">
-                <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
-                  Parkhaven &middot; {state.parcels.reduce((s, p) => s + p.residents, 0).toLocaleString()} residents
-                </p>
-                <div className="flex gap-1">
-                  <button
-                    onClick={() => setMapMode("3d")}
-                    className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
-                      mapMode === "3d" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
-                    }`}
-                  >
-                    3D
-                  </button>
-                  <button
-                    onClick={() => setMapMode("classic")}
-                    className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
-                      mapMode === "classic" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
-                    }`}
-                  >
-                    Flat
-                  </button>
-                </div>
-              </div>
+              <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                Parkhaven &middot; {state.parcels.reduce((s, p) => s + p.residents, 0).toLocaleString()} residents
+              </p>
 
               {/* Selected card preview, single line */}
               {selectedCard && (
@@ -357,25 +335,11 @@ export default function GameRoot() {
                 </div>
               )}
 
-              <div className="mt-2">
-                {mapMode === "3d" ? (
-                  <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
-                ) : (
-                  <div className="flex gap-2">
-                    <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                      <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
-                      <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
-                      <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
-                      <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
-                    </div>
-                    <div className="flex-1">
-                      <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
-                    </div>
-                  </div>
-                )}
+              <div className="mt-3">
+                <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
               </div>
-              <p className="mt-1 text-right font-body text-[10px] uppercase tracking-widest text-warm-gray">
-                {mapMode === "3d" ? "Drag · scroll to zoom · Lake east →" : "Lake Michigan east →"}
+              <p className="mt-2 font-body text-[10px] uppercase tracking-widest text-warm-gray">
+                Hover a parcel for details
               </p>
             </div>
 

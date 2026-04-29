@@ -100,51 +100,74 @@ export default function ParcelGrid({ parcels, onHover, highlight, compact }: Par
   const highSet = new Set(highlight ?? []);
   return (
     <div
-      className={`relative rounded-sm ${compact ? "" : "bg-gradient-to-br from-forest/5 to-cream-dark/50 p-3"}`}
+      className={`relative ${compact ? "" : "rounded-sm bg-gradient-to-br from-forest/5 to-cream-dark/50 p-2"}`}
       onMouseLeave={() => onHover?.(null)}
     >
-      <div
-        className="grid gap-[3px]"
-        style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}
-      >
-        {parcels.map((p) => {
-          const isHigh = highSet.has(p.id);
-          const showIcon = hasIcon(p.type);
-          return (
-            <div
-              key={p.id}
-              onMouseEnter={() => onHover?.(p)}
-              title={`${TYPE_LABEL[p.type]} · HOLC ${p.holc} · ${p.residents} residents`}
-              className={`group relative aspect-square overflow-hidden rounded-[3px] shadow-sm transition-all duration-500 ${
-                p.protected ? "ring-2 ring-rust" : ""
-              } ${isHigh ? "ring-2 ring-forest ring-offset-1" : ""} hover:z-10 hover:scale-110 hover:shadow-lg`}
-              style={{ backgroundColor: fillFor(p) }}
-            >
-              {/* Subtle inner shadow for dimension */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/15" />
-              {/* Protected marker lock corner */}
-              {p.protected && (
-                <div className="absolute right-0.5 top-0.5 h-1 w-1 rounded-full bg-rust" />
-              )}
-              {/* Building icon */}
-              {showIcon && (
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center" style={{ color: iconColorFor(p) }}>
-                  <ParcelIcon type={p.type} size={compact ? 10 : 16} />
-                </div>
-              )}
-              {/* Speculator shimmer stripes */}
-              {p.owner === "speculator" && (
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-40"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(135deg, transparent 0 3px, #8B3A16 3px 4px)",
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
+      <div className="flex gap-2">
+        {/* Row labels: North / Central / South down the left side */}
+        {!compact && (
+          <div className="relative flex w-7 flex-shrink-0 flex-col font-body text-[9px] font-semibold uppercase tracking-widest text-warm-gray">
+            <span className="absolute left-0 right-1 text-right" style={{ top: "calc(2 / 7 * 100% - 6px)" }}>N</span>
+            <span className="absolute left-0 right-1 text-right" style={{ top: "calc(50% - 6px)" }}>C</span>
+            <span className="absolute left-0 right-1 text-right" style={{ bottom: "calc(2 / 7 * 100% - 6px)" }}>S</span>
+            <span className="absolute right-0 top-1 bottom-1 w-px bg-border" />
+          </div>
+        )}
+
+        {/* The grid itself */}
+        <div
+          className="grid flex-1 gap-1"
+          style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}
+        >
+          {parcels.map((p) => {
+            const isHigh = highSet.has(p.id);
+            const showIcon = hasIcon(p.type);
+            return (
+              <div
+                key={p.id}
+                onMouseEnter={() => onHover?.(p)}
+                title={`${TYPE_LABEL[p.type]} · HOLC ${p.holc} · ${p.residents} residents`}
+                className={`group relative aspect-square overflow-hidden rounded-[4px] border border-black/10 shadow-sm transition-all duration-300 ${
+                  p.protected ? "ring-2 ring-rust ring-offset-1 ring-offset-cream" : ""
+                } ${isHigh ? "ring-2 ring-forest ring-offset-1 ring-offset-cream" : ""} hover:z-10 hover:scale-110 hover:shadow-md`}
+                style={{ backgroundColor: fillFor(p) }}
+              >
+                {/* Building icon — large enough to read at a glance */}
+                {showIcon && (
+                  <div
+                    className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                    style={{ color: iconColorFor(p) }}
+                  >
+                    <ParcelIcon type={p.type} size={compact ? 12 : 22} />
+                  </div>
+                )}
+                {/* Speculator hatched overlay */}
+                {p.owner === "speculator" && (
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-50"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(135deg, transparent 0 4px, #8B3A16 4px 5px)",
+                    }}
+                  />
+                )}
+                {/* Protected lock dot in the corner */}
+                {p.protected && (
+                  <div className="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full bg-rust shadow" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Lake Michigan strip on the right */}
+        {!compact && (
+          <div className="relative flex w-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm" style={{ background: "linear-gradient(180deg, #4a7ca8 0%, #2c5378 100%)" }}>
+            <span className="rotate-90 whitespace-nowrap font-body text-[9px] font-semibold uppercase tracking-[0.2em] text-cream/90">
+              Lake Michigan
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
