@@ -10,7 +10,7 @@ import { ROLES, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES_BY_ID } from "@/lib/game/objectives";
 import { saveToLocal, loadFromLocal, clearSave } from "@/lib/game/save";
 import ParcelGrid, { ParcelLegend, ParcelTooltip } from "./ParcelGrid";
-import { ResourceHUD, ScoreBar } from "./ResourceHUD";
+import { ResourceHUD, ScoreBar, HudButton } from "./ResourceHUD";
 import { PolicyCard } from "./PolicyCard";
 import { EventModal } from "./EventModal";
 import { EndScreen } from "./EndScreen";
@@ -293,56 +293,44 @@ export default function GameRoot() {
   return (
     <div ref={rootRef} className="game-bg scroll-mt-16 pb-20 pt-6 md:scroll-mt-20 md:pt-10">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        {/* Top HUD: year, score, resources, action buttons */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
-          <div className="flex-1">
-            <ResourceHUD
-              resources={state.resources}
-              year={state.year}
-              era={era}
-              score={liveScore.total}
-              percentile={percentile}
-            />
-          </div>
-          <div className="flex shrink-0 items-stretch gap-2">
-            <button
-              onClick={handleTutorial}
-              className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-3 font-display text-base font-bold text-forest"
-              aria-label="Restart tutorial"
-              title="Restart tutorial"
-            >
-              ?
-            </button>
-            <div className="relative" data-more-menu>
-              <button
-                onClick={() => setMoreOpen((o) => !o)}
-                className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest"
-                aria-haspopup="menu"
-                aria-expanded={moreOpen}
-              >
-                More
-              </button>
-              {moreOpen && (
-                <div
-                  className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-border bg-cream shadow-xl"
-                  role="menu"
+        {/* Top HUD: year, score, resources, action buttons all in one bar */}
+        <ResourceHUD
+          resources={state.resources}
+          year={state.year}
+          era={era}
+          score={liveScore.total}
+          percentile={percentile}
+          actions={
+            <>
+              <HudButton onClick={handleTutorial} ariaLabel="Restart tutorial" title="Restart tutorial">
+                <span className="font-display text-base font-bold leading-none">?</span>
+              </HudButton>
+              <div className="relative" data-more-menu>
+                <HudButton
+                  onClick={() => setMoreOpen((o) => !o)}
+                  ariaHaspopup="menu"
+                  ariaExpanded={moreOpen}
                 >
-                  <MenuItem onClick={() => { setModal("codex"); setMoreOpen(false); }}>Codex</MenuItem>
-                  <MenuItem onClick={() => { setModal("stats"); setMoreOpen(false); }}>Stats</MenuItem>
-                  <MenuItem onClick={() => { setModal("timeline"); setMoreOpen(false); }}>Timeline</MenuItem>
-                  <MenuItem onClick={() => { setModal("almanac"); setMoreOpen(false); }}>Almanac</MenuItem>
-                </div>
-              )}
-            </div>
-            <button
-              onClick={() => setPaused(true)}
-              className="btn-cream flex h-full min-h-[3rem] items-center justify-center rounded-md px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest"
-              title="Pause (Esc)"
-            >
-              Pause
-            </button>
-          </div>
-        </div>
+                  More
+                </HudButton>
+                {moreOpen && (
+                  <div
+                    className="absolute right-0 top-full z-30 mt-2 w-44 overflow-hidden rounded-md border border-border bg-cream shadow-xl"
+                    role="menu"
+                  >
+                    <MenuItem onClick={() => { setModal("codex"); setMoreOpen(false); }}>Codex</MenuItem>
+                    <MenuItem onClick={() => { setModal("stats"); setMoreOpen(false); }}>Stats</MenuItem>
+                    <MenuItem onClick={() => { setModal("timeline"); setMoreOpen(false); }}>Timeline</MenuItem>
+                    <MenuItem onClick={() => { setModal("almanac"); setMoreOpen(false); }}>Almanac</MenuItem>
+                  </div>
+                )}
+              </div>
+              <HudButton onClick={() => setPaused(true)} title="Pause (Esc)">
+                Pause
+              </HudButton>
+            </>
+          }
+        />
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Left column: ward + tabbed reference panel */}

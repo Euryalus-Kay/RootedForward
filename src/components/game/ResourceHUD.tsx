@@ -23,10 +23,11 @@ const RES_DESC: Record<ResourceKey, string> = {
 /* ------------------------------------------------------------------ */
 
 function useAnimatedCount(value: number, duration = 350): number {
-  const [display, setDisplay] = useState(value);
+  const target = Math.round(value);
+  const [display, setDisplay] = useState(target);
   useEffect(() => {
     const from = display;
-    const to = value;
+    const to = target;
     if (from === to) return;
     const start = performance.now();
     let raf = 0;
@@ -39,7 +40,7 @@ function useAnimatedCount(value: number, duration = 350): number {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [target]);
   return display;
 }
 
@@ -53,15 +54,17 @@ export function ResourceHUD({
   era,
   score,
   percentile,
+  actions,
 }: {
   resources: Resources;
   year: number;
   era: string;
   score?: number;
   percentile?: number;
+  actions?: React.ReactNode;
 }) {
   return (
-    <div className="game-bar flex flex-col gap-3 rounded-lg p-3 md:flex-row md:items-center md:gap-5 md:p-4">
+    <div className="game-bar flex flex-col gap-3 rounded-lg p-3 md:flex-row md:flex-wrap md:items-center md:gap-5 md:p-4">
       {/* Year stamp + era */}
       <div className="flex items-center gap-3 border-b border-white/10 pb-3 md:border-b-0 md:border-r md:border-white/15 md:pb-0 md:pr-5">
         <YearStamp year={year} />
@@ -102,12 +105,49 @@ export function ResourceHUD({
       )}
 
       {/* Resources */}
-      <div data-tut="resources" className="flex flex-wrap items-center gap-2 md:ml-auto md:flex-nowrap">
+      <div data-tut="resources" className="flex flex-wrap items-center gap-2">
         {(Object.keys(resources) as ResourceKey[]).map((k) => (
           <ResourcePip key={k} k={k} value={resources[k]} />
         ))}
       </div>
+
+      {/* Action buttons embedded on the right */}
+      {actions && (
+        <div className="flex items-center gap-1.5 border-t border-white/10 pt-3 md:ml-auto md:border-l md:border-t-0 md:border-white/15 md:pl-4 md:pt-0">
+          {actions}
+        </div>
+      )}
     </div>
+  );
+}
+
+/** Icon-style button to embed inside the HUD bar. */
+export function HudButton({
+  children,
+  onClick,
+  title,
+  ariaLabel,
+  ariaHaspopup,
+  ariaExpanded,
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  title?: string;
+  ariaLabel?: string;
+  ariaHaspopup?: "menu" | "true" | "false";
+  ariaExpanded?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      title={title}
+      aria-label={ariaLabel}
+      aria-haspopup={ariaHaspopup}
+      aria-expanded={ariaExpanded}
+      className="flex h-9 items-center justify-center rounded-md border border-white/15 bg-white/5 px-3 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-cream/85 transition-all hover:border-white/30 hover:bg-white/12 hover:text-cream active:translate-y-px"
+    >
+      {children}
+    </button>
   );
 }
 
