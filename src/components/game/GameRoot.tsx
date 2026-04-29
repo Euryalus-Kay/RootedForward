@@ -248,13 +248,12 @@ export default function GameRoot() {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-          1940 &middot; Parkhaven &middot; Playing as {role.name}
+          1940 &middot; Parkhaven &middot; {role.name}
         </p>
         <h2 className="mt-4 font-display text-5xl text-forest md:text-7xl">You inherit the ward.</h2>
         <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl md:leading-relaxed">
-          The Depression is ending. Federal mortgage policy is being
-          rewritten. The first wave of the Great Migration is arriving.
-          You hold a starting hand of {state.hand.length} cards.
+          The Depression is ending. Federal redlining maps are being drawn.
+          The Great Migration is arriving. You hold {state.hand.length} cards.
         </p>
 
         {state.objectives.length > 0 && (
@@ -270,7 +269,7 @@ export default function GameRoot() {
                   <li key={id}>
                     <span className="font-semibold text-forest">{o.name}</span>{" "}
                     <span className="text-ink/55">&middot; {o.description}</span>{" "}
-                    <span className="text-rust">+{o.reward} bonus</span>
+                    <span className="text-rust">+{o.reward}</span>
                   </li>
                 );
               })}
@@ -441,10 +440,6 @@ export default function GameRoot() {
                 </button>
               </div>
             </div>
-
-            <p className="mt-3 font-body text-[12px] text-ink/60">
-              Click a card to read it. Click <span className="font-semibold text-forest">Play</span> to commit.
-            </p>
 
             {/* Hand */}
             <div data-tut="hand" className="mt-5 flex flex-wrap gap-3">

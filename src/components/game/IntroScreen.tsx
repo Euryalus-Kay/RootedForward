@@ -5,18 +5,6 @@ import { ROLE_LIST, type Role, type RoleKey } from "@/lib/game/roles";
 import { OBJECTIVES, type Objective } from "@/lib/game/objectives";
 import { readSaveSummary, type SaveSummary } from "@/lib/game/save";
 
-const TIPS = [
-  "There is no winning. Only the trade-offs you choose.",
-  "Every card cites a real Chicago source. Hover to see it.",
-  "Knowledge is a resource. Read glossary entries to earn it.",
-  "Cards rotate by era. The 1940 deck looks nothing like 2030.",
-  "Same seed, same starting ward. Share one with a friend and compare archetypes.",
-  "Some achievements only unlock if you skip the obvious moves.",
-  "Speculators slowly drain memory from the parcels they own.",
-  "Factions watch what you do. Their meter matters by the end.",
-  "Three protected blocks at year 2000 changes the late game completely.",
-];
-
 type ScreenMode = "menu" | "setup" | "role" | "objectives" | "seed";
 
 interface StartConfig {
@@ -37,10 +25,6 @@ export function IntroScreen({
 }) {
   const [mode, setMode] = useState<ScreenMode>("menu");
   const [saveSummary, setSaveSummary] = useState<SaveSummary | null>(null);
-  // Deterministic tip on the server (first one), randomized post-mount so
-  // the initial HTML matches the server's render and we avoid hydration
-  // mismatches while still giving returning players a rotating tip.
-  const [tipIdx, setTipIdx] = useState<number>(0);
 
   const [name, setName] = useState("");
   const [seed, setSeed] = useState("");
@@ -49,11 +33,6 @@ export function IntroScreen({
 
   useEffect(() => {
     setSaveSummary(readSaveSummary());
-    // Rotate the displayed tip once the client has hydrated. Doing this
-    // in an effect (rather than in useState initializer) guarantees the
-    // first server render and first client render match, which keeps
-    // Next.js hydration happy.
-    setTipIdx(Math.floor(Math.random() * TIPS.length));
     // If the player clicked "Play this seed" from the leaderboard, the
     // seed is stashed in sessionStorage. Prefill and jump to setup.
     if (typeof window !== "undefined") {
@@ -98,17 +77,10 @@ export function IntroScreen({
           Build the Block
         </h1>
         <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl md:leading-relaxed">
-          You inherit a fictional Chicago ward in 1940. A hundred years pass.
-          You make decisions, watch the ward change, react to events, and see
-          the neighborhood you built.
-        </p>
-        <p className="mt-3 max-w-[55ch] font-body text-base leading-relaxed text-ink/60">
-          Strategy game. Six starting roles. Twelve objectives. A deck of
-          policy cards that rotates across four eras. A hundred decisions
-          later, a leaderboard rank.
+          Govern a fictional Chicago ward from 1940 to 2040. Play policy
+          cards, react to events, watch the neighborhood you built.
         </p>
 
-        {/* Continue save banner */}
         {saveSummary?.exists && (
           <div className="mt-8 rounded-sm border-2 border-rust bg-rust/5 p-5 md:p-6">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
@@ -120,7 +92,7 @@ export function IntroScreen({
                   {saveSummary.displayName}&rsquo;s Parkhaven, year {saveSummary.year}
                 </p>
                 <p className="font-body text-xs text-warm-gray">
-                  Seed: {saveSummary.seed} &middot; Saved {formatAgo(saveSummary.savedAt)}
+                  Seed {saveSummary.seed} &middot; saved {formatAgo(saveSummary.savedAt)}
                 </p>
               </div>
               <button
@@ -148,25 +120,10 @@ export function IntroScreen({
           </button>
         </div>
 
-        <div className="mt-12 border-t border-border pt-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Tip
-          </p>
-          <p className="mt-2 font-display text-lg italic text-forest">
-            &ldquo;{TIPS[tipIdx]}&rdquo;
-          </p>
-        </div>
-
-        <div className="mt-10 border-t border-border pt-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Content notice
-          </p>
-          <p className="mt-2 max-w-[60ch] font-body text-sm leading-relaxed text-ink/65">
-            The game depicts racial segregation, displacement, and policy
-            violence. Quotations come from the historical record, including
-            1940 HOLC surveyor language. You can pause at any time.
-          </p>
-        </div>
+        <p className="mt-10 font-body text-xs italic text-warm-gray">
+          Depicts racial segregation, displacement, and policy violence.
+          Quotations come from the historical record. You can pause any time.
+        </p>
       </div>
     );
   }
@@ -214,7 +171,7 @@ export function IntroScreen({
               className="mt-2 w-full rounded-sm border border-border bg-cream-dark/40 px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
             />
             <span className="mt-1 block font-body text-xs text-warm-gray">
-              Same seed = same starting ward. Share one with a friend and compare archetypes.
+              Same seed produces the same starting ward.
             </span>
           </label>
 
@@ -251,9 +208,7 @@ export function IntroScreen({
           Who are you in 1940?
         </h2>
         <p className="mt-3 max-w-[60ch] font-body text-base text-ink/70">
-          Each role begins with a different mix of capital, political power,
-          community trust, and knowledge. Roles also start with signature
-          cards that shape the early game.
+          Each role starts with different resources and signature cards.
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -302,11 +257,10 @@ export function IntroScreen({
           Pick up to three goals.
         </h2>
         <p className="mt-3 max-w-[60ch] font-body text-base text-ink/70">
-          Goals are optional. Completing them grants bonus score at the end.
-          Skipping all of them is fine; the game plays the same either way.
+          Optional. Each goal you finish adds a score bonus at the end.
         </p>
         <p className="mt-2 font-body text-xs text-warm-gray">
-          Selected: {objectives.length} / 3
+          Selected {objectives.length} / 3
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
