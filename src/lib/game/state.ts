@@ -15,7 +15,6 @@ import { RNG, generateSeed } from "./rng";
 import { ROLES, applyRoleBonus, type RoleKey } from "./roles";
 import { FACTION_LIST } from "./factions";
 import { effectiveDrift } from "./flags";
-import { resolveStrategyPressure } from "./strategy-pressure";
 import type {
   GameAction,
   GameState,
@@ -111,24 +110,6 @@ function pushMessage(state: GameState, kind: ToastMessage["kind"], text: string)
       ...state.messages,
       { id: nextMessageId(), kind, text, ttl: 4000 },
     ].slice(-6),
-  };
-}
-
-function addScores(scores: GameState["scores"], delta: Partial<GameState["scores"]>): GameState["scores"] {
-  return {
-    equity: scores.equity + (delta.equity ?? 0),
-    heritage: scores.heritage + (delta.heritage ?? 0),
-    growth: scores.growth + (delta.growth ?? 0),
-    sustainability: scores.sustainability + (delta.sustainability ?? 0),
-  };
-}
-
-function addResources(resources: GameState["resources"], delta: Partial<GameState["resources"]>): GameState["resources"] {
-  return {
-    capital: Math.max(0, resources.capital + (delta.capital ?? 0)),
-    power: Math.max(0, resources.power + (delta.power ?? 0)),
-    trust: Math.max(0, resources.trust + (delta.trust ?? 0)),
-    knowledge: Math.max(0, resources.knowledge + (delta.knowledge ?? 0)),
   };
 }
 
@@ -428,21 +409,6 @@ export function reducer(state: GameState, action: GameAction): GameState {
         trust: next.resources.trust + (eraTrickle.trust ?? 0),
         knowledge: next.resources.knowledge,
       };
-
-      // Strategic pressure is the main between-turn game layer: growth
-      // without protection creates market heat, while trust, organizing,
-      // and community ownership absorb it. This makes "good" growth cards
-      // situational instead of always obvious.
-      const pressure = resolveStrategyPressure(next, new RNG(state.seed + ":pressure:" + newYear));
-      next = {
-        ...next,
-        parcels: pressure.parcels,
-        scores: addScores(next.scores, pressure.scoreDelta),
-        resources: addResources(next.resources, pressure.resourceDelta),
-      };
-      for (const m of pressure.messages) {
-        next = pushMessage(next, m.kind, m.text);
-      }
 
       // Auto-trim hand to make room for new draws. The OLDEST cards
       // (front of hand) are discarded, leaving the most recent in hand.

@@ -18,7 +18,6 @@ import { EndScreen } from "./EndScreen";
 import { IntroScreen } from "./IntroScreen";
 import { Toasts } from "./Toasts";
 import { Leaderboard } from "./Leaderboard";
-import { ContextPanel } from "./ContextPanel";
 import { PauseMenu } from "./PauseMenu";
 import { HowToPlay } from "./HowToPlay";
 import { LastingEffectsStrip } from "./LastingEffects";
@@ -27,9 +26,7 @@ import { DecadeOverlay } from "./DecadeOverlay";
 import { StatsDashboard } from "./StatsDashboard";
 import { RunTimeline } from "./RunTimeline";
 import { Almanac } from "./Almanac";
-import { StrategyPanel } from "./StrategyPanel";
-import { StrategyPressureStrip } from "./StrategyPressureStrip";
-import type { Parcel } from "@/lib/game/types";
+import type { Parcel, GameState } from "@/lib/game/types";
 
 const ERAS = [
   { fromYear: 1940, toYear: 1955, name: "Lines on a Map" },
@@ -45,18 +42,19 @@ function eraName(year: number): string {
 
 const lookupEvent = (id: string) => EVENT_BY_ID.get(id);
 
+type SidePanel = "goals" | "score" | "effects" | "ward";
+type Modal = null | "codex" | "stats" | "timeline" | "almanac";
+
 export default function GameRoot() {
   const [state, dispatch] = useReducer(reducer, undefined, freshState);
   const [hovered, setHovered] = useState<Parcel | null>(null);
   const [paused, setPaused] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
   const [mapMode, setMapMode] = useState<"classic" | "3d">("3d");
-  const [codexOpen, setCodexOpen] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [timelineOpen, setTimelineOpen] = useState(false);
-  const [almanacOpen, setAlmanacOpen] = useState(false);
-  const [strategyOpen, setStrategyOpen] = useState(false);
+  const [modal, setModal] = useState<Modal>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [decadeOverlayOpen, setDecadeOverlayOpen] = useState(false);
+  const [sidePanel, setSidePanel] = useState<SidePanel>("goals");
   const rootRef = useRef<HTMLDivElement>(null);
   const lastSavedAt = useRef<number>(0);
   const lastDecadeShown = useRef<number>(0);
@@ -77,7 +75,6 @@ export default function GameRoot() {
   /* ------------- autosave ------------- */
   useEffect(() => {
     if (state.phase === "menu" || state.phase === "ended" || state.phase === "leaderboard") return;
-    // Debounce: save at most once every 300ms
     const now = Date.now();
     if (now - lastSavedAt.current < 300) return;
     lastSavedAt.current = now;
@@ -88,7 +85,6 @@ export default function GameRoot() {
   useEffect(() => {
     if (state.phase !== "playing") return;
     const decade = Math.floor(state.year / 10) * 10;
-    // Only show once per decade, and not at the very first playing frame
     if (lastDecadeShown.current === 0) {
       lastDecadeShown.current = decade;
       return;
@@ -111,6 +107,17 @@ export default function GameRoot() {
     return () => window.removeEventListener("keydown", onKey);
   }, [state.phase]);
 
+  /* ------------- close more menu on outside click ------------- */
+  useEffect(() => {
+    if (!moreOpen) return;
+    function onDoc(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-more-menu]")) setMoreOpen(false);
+    }
+    window.addEventListener("mousedown", onDoc);
+    return () => window.removeEventListener("mousedown", onDoc);
+  }, [moreOpen]);
+
   /* ------------- action creators ------------- */
   const handleStart = useCallback(
     (cfg: { displayName: string; seed?: string; roleKey?: string; objectives?: string[] }) => {
@@ -131,10 +138,8 @@ export default function GameRoot() {
   const handleResolveEvent = useCallback((idx: number) => dispatch({ type: "RESOLVE_EVENT", optionIndex: idx }), []);
   const handleReadNote = useCallback((term: string) => dispatch({ type: "READ_NOTE", term }), []);
   const handleDismissToast = useCallback((id: string) => dispatch({ type: "DISMISS_TOAST", id }), []);
-  // Returning to menu does NOT clear the save - the player can continue from the menu's "Saved Run" banner.
-  // Only Restart explicitly wipes the current save.
   const handleReturnMenu = useCallback(() => {
-    saveToLocal(state); // make sure latest is persisted
+    saveToLocal(state);
     dispatch({ type: "RETURN_TO_MENU" });
     setPaused(false);
   }, [state]);
@@ -188,15 +193,11 @@ export default function GameRoot() {
     );
   }
 
-  /* ========================================================== */
-  /*  Phase: leaderboard (from menu)                             */
-  /* ========================================================== */
   if (state.phase === "leaderboard") {
     return (
       <Leaderboard
         onClose={handleReturnMenu}
         onReplaySeed={(seed) => {
-          // Stash the seed where the IntroScreen's setup flow can pick it up
           if (typeof window !== "undefined") {
             window.sessionStorage.setItem("buildTheBlock:replaySeed", seed);
           }
@@ -206,9 +207,6 @@ export default function GameRoot() {
     );
   }
 
-  /* ========================================================== */
-  /*  Phase: ended                                               */
-  /* ========================================================== */
   if (state.phase === "ended") {
     return (
       <EndScreen
@@ -220,9 +218,6 @@ export default function GameRoot() {
     );
   }
 
-  /* ========================================================== */
-  /*  Phase: intro (first playing view)                          */
-  /* ========================================================== */
   if (state.phase === "intro") {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
@@ -273,167 +268,147 @@ export default function GameRoot() {
   return (
     <div ref={rootRef} className="scroll-mt-16 bg-cream pb-20 pt-6 md:scroll-mt-20 md:pt-10">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        {/* Top HUD */}
-        <div className="flex flex-col gap-3">
-          <ResourceHUD resources={state.resources} year={state.year} era={era} score={liveScore.total} percentile={percentile} />
-          {/* Always-visible strip showing per-turn drift from earlier decisions */}
-          <LastingEffectsStrip lines={computeDrift(state)} />
-          <StrategyPressureStrip state={state} />
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="min-w-0 font-body text-xs leading-relaxed text-warm-gray">
-              Playing as <span className="font-semibold text-forest">{role.name}</span>
-              {" · "}
-              <span className="text-forest">{state.displayName}</span>
-              {" · "}
-              Seed <span className="text-forest">{state.seed}</span>
-            </p>
-            <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+        {/* Top HUD: year, score, resources, action buttons */}
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
+          <div className="flex-1">
+            <ResourceHUD
+              resources={state.resources}
+              year={state.year}
+              era={era}
+              score={liveScore.total}
+              percentile={percentile}
+            />
+          </div>
+          <div className="flex shrink-0 items-stretch gap-2">
+            <button
+              onClick={() => setHowToPlayOpen(true)}
+              className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-3 font-display text-base font-bold text-forest transition-colors hover:bg-cream-dark"
+              aria-label="How to play"
+              title="How to play"
+            >
+              ?
+            </button>
+            <div className="relative" data-more-menu>
               <button
-                onClick={() => setHowToPlayOpen(true)}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-cream font-display text-sm font-bold text-forest transition-colors hover:bg-cream-dark"
-                aria-label="How to play"
-                title="How to play"
+                onClick={() => setMoreOpen((o) => !o)}
+                className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark"
+                aria-haspopup="menu"
+                aria-expanded={moreOpen}
               >
-                ?
+                More
               </button>
-              <button
-                onClick={() => setCodexOpen(true)}
-                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-                title="Open codex"
-              >
-                Codex
-              </button>
-              <button
-                onClick={() => setStatsOpen(true)}
-                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-                title="Open stats"
-              >
-                Stats
-              </button>
-              <button
-                onClick={() => setTimelineOpen(true)}
-                className="hidden md:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-                title="Open timeline"
-              >
-                Timeline
-              </button>
-              <button
-                onClick={() => setAlmanacOpen(true)}
-                className="hidden lg:inline-flex rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-                title="Open almanac"
-              >
-                Almanac
-              </button>
-              <button
-                onClick={() => setStrategyOpen(true)}
-                className="inline-flex rounded-sm border-2 border-rust bg-rust/10 px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust-dark hover:bg-rust/20"
-                title="Open strategy panel"
-              >
-                Strategy
-              </button>
-              <button
-                onClick={() => setPaused(true)}
-                className="rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
-              >
-                Pause &middot; Esc
-              </button>
+              {moreOpen && (
+                <div
+                  className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-border bg-cream shadow-lg"
+                  role="menu"
+                >
+                  <MenuItem onClick={() => { setModal("codex"); setMoreOpen(false); }}>Codex</MenuItem>
+                  <MenuItem onClick={() => { setModal("stats"); setMoreOpen(false); }}>Stats</MenuItem>
+                  <MenuItem onClick={() => { setModal("timeline"); setMoreOpen(false); }}>Timeline</MenuItem>
+                  <MenuItem onClick={() => { setModal("almanac"); setMoreOpen(false); }}>Almanac</MenuItem>
+                </div>
+              )}
             </div>
+            <button
+              onClick={() => setPaused(true)}
+              className="flex h-full min-h-[3rem] items-center justify-center rounded-md border border-border bg-cream px-4 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark"
+              title="Pause (Esc)"
+            >
+              Pause
+            </button>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-          {/* Left column: ward + context + score bar */}
+          {/* Left column: ward + tabbed reference panel */}
           <aside className="order-2 lg:order-1 lg:col-span-5">
             <div className="rounded-md border border-border bg-gradient-to-br from-cream via-cream to-cream-dark/40 p-3 shadow-sm md:p-4">
-              <div className="mb-2 flex items-baseline justify-between">
+              <div className="flex items-center justify-between">
                 <p className="font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-warm-gray">
                   Parkhaven &middot; {state.parcels.reduce((s, p) => s + p.residents, 0).toLocaleString()} residents
                 </p>
-                <button
-                  onClick={() => setHowToPlayOpen(true)}
-                  className="font-body text-[10px] font-semibold uppercase tracking-widest text-rust hover:text-rust-dark"
-                >
-                  What am I looking at?
-                </button>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setMapMode("3d")}
+                    className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+                      mapMode === "3d" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
+                    }`}
+                  >
+                    3D
+                  </button>
+                  <button
+                    onClick={() => setMapMode("classic")}
+                    className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+                      mapMode === "classic" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
+                    }`}
+                  >
+                    Flat
+                  </button>
+                </div>
               </div>
 
-              {/* Card preview banner */}
-              {selectedCard && previewTargetIds.length > 0 && (
-                <div className="mb-2 rounded-sm bg-rust/15 px-3 py-2 font-body text-xs text-rust-dark animate-pulse">
-                  <span className="font-semibold">{selectedCard.name}</span> would affect{" "}
-                  <span className="font-semibold">{previewTargetIds.length}</span>{" "}
-                  parcel{previewTargetIds.length === 1 ? "" : "s"} (highlighted in green ring).
-                </div>
-              )}
-              {selectedCard && previewTargetIds.length === 0 && (
-                <div className="mb-2 rounded-sm bg-cream-dark/60 px-3 py-2 font-body text-xs text-ink/70">
-                  <span className="font-semibold text-forest">{selectedCard.name}</span>{" "}
-                  affects scores and resources. No specific parcel changes.
+              {/* Selected card preview, single line */}
+              {selectedCard && (
+                <div className="mt-2 rounded-sm bg-rust/10 px-3 py-1.5 font-body text-[11px] text-rust-dark">
+                  <span className="font-semibold">{selectedCard.name}</span>{" "}
+                  {previewTargetIds.length > 0
+                    ? <>highlights {previewTargetIds.length} parcel{previewTargetIds.length === 1 ? "" : "s"}.</>
+                    : <>changes scores, not parcels.</>}
                 </div>
               )}
 
-              {/* Map mode toggle */}
-              <div className="mb-2 flex justify-end gap-1">
-                <button
-                  onClick={() => setMapMode("3d")}
-                  className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
-                    mapMode === "3d" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
-                  }`}
-                >
-                  3D city
-                </button>
-                <button
-                  onClick={() => setMapMode("classic")}
-                  className={`rounded-sm px-2 py-1 font-body text-[10px] font-semibold uppercase tracking-widest transition-colors ${
-                    mapMode === "classic" ? "bg-forest text-cream" : "bg-cream-dark text-warm-gray hover:bg-cream"
-                  }`}
-                >
-                  Classic
-                </button>
-              </div>
-
-              {mapMode === "3d" ? (
-                <>
+              <div className="mt-2">
+                {mapMode === "3d" ? (
                   <ParcelMap3D parcels={state.parcels} highlight={previewTargetIds} onHover={setHovered} />
-                </>
-              ) : (
-                <div className="flex gap-2">
-                  <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                    <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
-                    <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
-                    <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
-                    <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
+                ) : (
+                  <div className="flex gap-2">
+                    <div className="relative flex w-12 flex-col items-end font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
+                      <span className="absolute left-0 right-2 text-right" style={{ top: "calc(2 / 7 * 50%)" }}>North</span>
+                      <span className="absolute left-0 right-2 text-right" style={{ top: "calc(50% - 6px)" }}>Central</span>
+                      <span className="absolute left-0 right-2 text-right" style={{ bottom: "calc(2 / 7 * 50%)" }}>South</span>
+                      <span className="absolute right-0 top-2 bottom-2 w-px bg-border" />
+                    </div>
+                    <div className="flex-1">
+                      <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <ParcelGrid parcels={state.parcels} onHover={setHovered} highlight={previewTargetIds} />
-                  </div>
-                </div>
-              )}
-
-              <p className="mt-2 text-right font-body text-[10px] font-semibold uppercase tracking-widest text-warm-gray">
-                {mapMode === "3d" ? "Drag to rotate · right-drag to pan · scroll to zoom · Lake Michigan is east →" : "Lake Michigan is to the east →"}
+                )}
+              </div>
+              <p className="mt-1 text-right font-body text-[10px] uppercase tracking-widest text-warm-gray">
+                {mapMode === "3d" ? "Drag · scroll to zoom · Lake east →" : "Lake Michigan east →"}
               </p>
             </div>
-            <div className="mt-3">
-              <ParcelLegend />
-            </div>
 
-            {/* Ward stats strip */}
-            <WardStats parcels={state.parcels} />
-            <div className="mt-4">
-              <ContextPanel year={state.year} />
-            </div>
-            <div className="mt-4">
-              <ScoreBar scores={state.scores} />
-            </div>
-            {state.objectives.length > 0 && (
-              <ObjectivesHUD state={state} />
-            )}
             {hovered && (
-              <div className="mt-4">
+              <div className="mt-3">
                 <ParcelTooltip parcel={hovered} />
               </div>
             )}
+
+            {/* Tabbed reference panel */}
+            <div className="mt-4 rounded-md border border-border bg-cream shadow-sm">
+              <div className="flex border-b border-border">
+                <Tab active={sidePanel === "goals"} onClick={() => setSidePanel("goals")} count={state.objectives.length}>Goals</Tab>
+                <Tab active={sidePanel === "score"} onClick={() => setSidePanel("score")}>Score</Tab>
+                <Tab active={sidePanel === "effects"} onClick={() => setSidePanel("effects")} count={computeDrift(state).length}>Effects</Tab>
+                <Tab active={sidePanel === "ward"} onClick={() => setSidePanel("ward")}>Ward</Tab>
+              </div>
+              <div className="p-3">
+                {sidePanel === "goals" && <GoalsView state={state} />}
+                {sidePanel === "score" && <ScoreBar scores={state.scores} />}
+                {sidePanel === "effects" && <LastingEffectsStrip lines={computeDrift(state)} />}
+                {sidePanel === "ward" && <WardStats parcels={state.parcels} />}
+              </div>
+            </div>
+
+            <details className="mt-3 rounded-md border border-border bg-cream-dark/30 p-3 text-warm-gray">
+              <summary className="cursor-pointer font-body text-[11px] font-semibold uppercase tracking-widest hover:text-forest">
+                Map legend
+              </summary>
+              <div className="mt-3">
+                <ParcelLegend />
+              </div>
+            </details>
           </aside>
 
           {/* Right column: hand */}
@@ -456,10 +431,10 @@ export default function GameRoot() {
                     <button
                       onClick={handleRedraw}
                       disabled={tappedOut || cantAfford}
-                      title={tappedOut ? "Redrawn the max 3 times this turn." : `Discard your hand and draw 3 fresh cards. Costs ${cost} Power.`}
+                      title={tappedOut ? "Redrawn 3 times this turn." : `Discard hand and draw 3 fresh cards. Costs ${cost} Power.`}
                       className="inline-flex min-w-[8.5rem] flex-1 flex-col items-center justify-center rounded-sm border border-border bg-cream px-3 py-2.5 font-body font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-cream-dark disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none"
                     >
-                      <span className="text-[11px]">Draw 3 cards</span>
+                      <span className="text-[11px]">Redraw</span>
                       <span className="text-[9px] opacity-70">{tappedOut ? "max this turn" : `−${cost} Power`}</span>
                     </button>
                   );
@@ -468,25 +443,18 @@ export default function GameRoot() {
                   onClick={handleEndYear}
                   className="inline-flex min-w-[10rem] flex-[1.2] flex-col items-center justify-center rounded-sm bg-forest px-6 py-2.5 font-body font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light sm:flex-none"
                 >
-                  <span className="text-sm">Advance {YEAR_STEP} years &rarr;</span>
+                  <span className="text-sm">End year &rarr;</span>
                   <span className="text-[9px] opacity-70">to {state.year + YEAR_STEP}</span>
                 </button>
               </div>
             </div>
 
-            <p className="mt-3 max-w-[55ch] font-body text-sm text-ink/65">
-              Click a card to read it. Click <span className="font-semibold text-forest">Play</span> when ready. You can play as
-              many cards as you can afford each year. Confused?{" "}
-              <button
-                onClick={() => setHowToPlayOpen(true)}
-                className="font-semibold text-rust underline underline-offset-2 hover:text-rust-dark"
-              >
-                Open the tutorial.
-              </button>
+            <p className="mt-3 font-body text-[12px] text-ink/60">
+              Click a card to read it. Click <span className="font-semibold text-forest">Play</span> to commit.
             </p>
 
             {/* Hand */}
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               {state.hand.length === 0 ? (
                 <p className="font-body text-sm italic text-warm-gray">
                   No cards in hand. End the year to draw new ones.
@@ -513,10 +481,10 @@ export default function GameRoot() {
 
             {/* Recent activity */}
             {(state.playedCards.length > 0 || state.resolvedEvents.length > 0) && (
-              <div className="mt-10 border-t border-border pt-6">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <details className="mt-8 border-t border-border pt-4">
+                <summary className="cursor-pointer font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray hover:text-rust">
                   Recent activity
-                </p>
+                </summary>
                 <ul className="mt-3 space-y-2">
                   {[
                     ...state.playedCards.slice(-4).reverse().map((p) => ({
@@ -536,7 +504,7 @@ export default function GameRoot() {
                       </li>
                     ))}
                 </ul>
-              </div>
+              </details>
             )}
           </main>
         </div>
@@ -552,7 +520,6 @@ export default function GameRoot() {
         />
       )}
 
-      {/* Pause menu */}
       {paused && (
         <PauseMenu
           state={state}
@@ -563,25 +530,12 @@ export default function GameRoot() {
         />
       )}
 
-      {/* How-to-play modal */}
       {howToPlayOpen && <HowToPlay onClose={() => setHowToPlayOpen(false)} />}
+      {modal === "codex" && <Codex onClose={() => setModal(null)} />}
+      {modal === "stats" && <StatsDashboard state={state} onClose={() => setModal(null)} />}
+      {modal === "timeline" && <RunTimeline state={state} onClose={() => setModal(null)} />}
+      {modal === "almanac" && <Almanac onClose={() => setModal(null)} />}
 
-      {/* Codex */}
-      {codexOpen && <Codex onClose={() => setCodexOpen(false)} />}
-
-      {/* Stats dashboard */}
-      {statsOpen && <StatsDashboard state={state} onClose={() => setStatsOpen(false)} />}
-
-      {/* Run timeline */}
-      {timelineOpen && <RunTimeline state={state} onClose={() => setTimelineOpen(false)} />}
-
-      {/* Almanac */}
-      {almanacOpen && <Almanac onClose={() => setAlmanacOpen(false)} />}
-
-      {/* Strategy panel */}
-      {strategyOpen && <StrategyPanel state={state} onClose={() => setStrategyOpen(false)} />}
-
-      {/* Decade overlay */}
       {decadeOverlayOpen && (
         <DecadeOverlay
           year={state.year}
@@ -589,64 +543,110 @@ export default function GameRoot() {
         />
       )}
 
-      {/* Toasts */}
       <Toasts messages={state.messages} onDismiss={handleDismissToast} />
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Objectives HUD (shows progress inline during the run)              */
+/*  Small inline components                                            */
 /* ------------------------------------------------------------------ */
 
-function WardStats({ parcels }: { parcels: import("@/lib/game/types").Parcel[] }) {
+function MenuItem({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      role="menuitem"
+      className="block w-full px-4 py-2.5 text-left font-body text-xs font-semibold uppercase tracking-widest text-forest hover:bg-cream-dark"
+    >
+      {children}
+    </button>
+  );
+}
+
+function Tab({
+  active,
+  onClick,
+  count,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  count?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex-1 px-3 py-2.5 text-center font-body text-[11px] font-semibold uppercase tracking-widest transition-colors ${
+        active ? "border-b-2 border-rust bg-cream text-forest" : "text-warm-gray hover:bg-cream-dark/30"
+      }`}
+    >
+      {children}
+      {typeof count === "number" && count > 0 && (
+        <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${active ? "bg-rust text-cream" : "bg-warm-gray/20 text-warm-gray"}`}>
+          {count}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function GoalsView({ state }: { state: GameState }) {
+  if (state.objectives.length === 0) {
+    return (
+      <p className="py-2 font-body text-[12px] italic text-warm-gray">
+        No goals chosen. Score for any axis still counts at the end.
+      </p>
+    );
+  }
+  return (
+    <ul className="space-y-2 font-body text-[13px]">
+      {state.objectives.map((id) => {
+        const o = OBJECTIVES_BY_ID.get(id);
+        if (!o) return null;
+        const done = o.test(state);
+        return (
+          <li key={id} className={`flex items-start gap-2 ${done ? "text-forest" : "text-ink/70"}`}>
+            <span className={`mt-0.5 inline-block h-3 w-3 flex-shrink-0 rounded-sm ${done ? "bg-forest" : "border border-border bg-cream-dark"}`} />
+            <span className="flex-1">
+              <span className="font-semibold">{o.name}</span>
+              <span className="ml-2 text-[11px] text-warm-gray">+{o.reward}</span>
+              <span className="block text-[11.5px] text-ink/55">{o.description}</span>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function WardStats({ parcels }: { parcels: Parcel[] }) {
   const housing = parcels.filter((p) => ["single-family", "two-flat", "three-flat", "courtyard", "tower", "rehab-tower", "land-trust"].includes(p.type)).length;
   const civic = parcels.filter((p) => ["school", "church", "library", "clinic", "park", "community-garden", "mural"].includes(p.type)).length;
   const protectedCount = parcels.filter((p) => p.protected).length;
   const speculator = parcels.filter((p) => p.owner === "speculator").length;
   const vacant = parcels.filter((p) => p.type === "vacant").length;
+  const residents = parcels.reduce((s, p) => s + p.residents, 0);
   return (
-    <div className="mt-3 grid grid-cols-5 gap-1 rounded-sm border border-border bg-cream p-3 font-body text-[11px] shadow-sm">
+    <div className="grid grid-cols-3 gap-2 font-body text-[11px]">
       <Stat label="Housing" value={housing} />
       <Stat label="Civic" value={civic} />
+      <Stat label="Vacant" value={vacant} />
       <Stat label="Protected" value={protectedCount} highlight={protectedCount > 0} />
       <Stat label="Speculator" value={speculator} negative={speculator > 0} />
-      <Stat label="Vacant" value={vacant} />
+      <Stat label="Residents" value={residents} />
     </div>
   );
 }
 
 function Stat({ label, value, highlight, negative }: { label: string; value: number; highlight?: boolean; negative?: boolean }) {
   return (
-    <div className="text-center">
+    <div className="rounded-sm bg-cream-dark/30 p-2 text-center">
       <p className={`font-display text-base font-bold leading-none ${highlight ? "text-forest" : negative ? "text-rust" : "text-ink/80"}`}>
-        {value}
+        {value.toLocaleString()}
       </p>
       <p className="mt-1 text-[9px] uppercase tracking-widest text-warm-gray">{label}</p>
-    </div>
-  );
-}
-
-function ObjectivesHUD({ state }: { state: import("@/lib/game/types").GameState }) {
-  return (
-    <div className="mt-4 rounded-sm border border-border bg-cream p-4 shadow-sm">
-      <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-        Goals
-      </p>
-      <ul className="mt-3 space-y-2 font-body text-sm">
-        {state.objectives.map((id) => {
-          const o = OBJECTIVES_BY_ID.get(id);
-          if (!o) return null;
-          const done = o.test(state);
-          return (
-            <li key={id} className={done ? "text-forest" : "text-ink/70"}>
-              <span className={`mr-2 inline-block h-3 w-3 rounded-sm ${done ? "bg-forest" : "bg-cream-dark border border-border"}`} />
-              {o.name}
-              <span className="ml-2 font-body text-xs text-warm-gray">+{o.reward}</span>
-            </li>
-          );
-        })}
-      </ul>
     </div>
   );
 }
