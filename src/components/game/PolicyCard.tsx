@@ -115,6 +115,9 @@ export function PolicyCard({
 
       {/* Cost row — labeled chips so it is obvious which resource each is */}
       <div className="px-3.5 pb-2">
+        <p className="mb-1 font-body text-[9px] font-bold uppercase tracking-[0.22em] text-warm-gray">
+          Card cost
+        </p>
         <div className="flex flex-wrap items-center gap-1">
           {isFree ? (
             <span className="rounded-full bg-forest/10 px-2 py-0.5 font-body text-[10px] font-bold uppercase tracking-widest text-forest">
