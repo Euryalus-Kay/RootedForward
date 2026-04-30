@@ -113,7 +113,7 @@ export function PolicyCard({
         )}
       </div>
 
-      {/* Cost row — small chips, left-aligned, no big "Costs" label */}
+      {/* Cost row — labeled chips so it is obvious which resource each is */}
       <div className="px-3.5 pb-2">
         <div className="flex flex-wrap items-center gap-1">
           {isFree ? (
@@ -122,10 +122,10 @@ export function PolicyCard({
             </span>
           ) : (
             <>
-              {cost.capital ? <CostChip k="capital" value={cost.capital} have={resources.capital} /> : null}
-              {cost.power ? <CostChip k="power" value={cost.power} have={resources.power} /> : null}
-              {cost.trust ? <CostChip k="trust" value={cost.trust} have={resources.trust} /> : null}
-              {cost.knowledge ? <CostChip k="knowledge" value={cost.knowledge} have={resources.knowledge} /> : null}
+              {cost.capital ? <CostChip k="capital" label="Capital" value={cost.capital} have={resources.capital} /> : null}
+              {cost.power ? <CostChip k="power" label="Power" value={cost.power} have={resources.power} /> : null}
+              {cost.trust ? <CostChip k="trust" label="Trust" value={cost.trust} have={resources.trust} /> : null}
+              {cost.knowledge ? <CostChip k="knowledge" label="Knowledge" value={cost.knowledge} have={resources.knowledge} /> : null}
             </>
           )}
         </div>
@@ -133,12 +133,7 @@ export function PolicyCard({
 
       {/* Body */}
       <div className="px-3.5 pb-3">
-        <p className="font-body text-[12px] leading-snug text-ink/80">{card.description}</p>
-        {!affordable && missing.length > 0 && (
-          <div className="mt-2 rounded-sm border border-rust/30 bg-rust/10 px-2 py-1 font-body text-[10.5px] font-semibold uppercase tracking-widest text-rust-dark">
-            Need {missing.join(" / ")}
-          </div>
-        )}
+        <p className="font-body text-[12.5px] leading-snug text-ink">{card.description}</p>
       </div>
 
       {/* Effects panel */}
@@ -193,10 +188,12 @@ const COST_PALETTE: Record<"capital" | "power" | "trust" | "knowledge", { ok: st
 
 function CostChip({
   k,
+  label,
   value,
   have,
 }: {
   k: "capital" | "power" | "trust" | "knowledge";
+  label: string;
   value: number;
   have: number;
 }) {
@@ -204,11 +201,14 @@ function CostChip({
   const palette = ok ? COST_PALETTE[k].ok : COST_PALETTE[k].bad;
   return (
     <span
-      className={`flex items-center gap-1 rounded-md border px-1.5 py-0.5 font-body text-[11.5px] font-bold tabular-nums ${palette}`}
-      title={`Costs ${value} ${k}`}
+      className={`flex items-center gap-1 rounded-md border px-2 py-0.5 font-body tabular-nums ${palette}`}
+      title={`Costs ${value} ${label}`}
     >
       <ResourceIcon resource={k} size={11} />
-      <span>{value}</span>
+      <span className="text-[11.5px] font-bold">{value}</span>
+      <span className="text-[9.5px] font-bold uppercase tracking-[0.12em] opacity-80">
+        {label}
+      </span>
     </span>
   );
 }
