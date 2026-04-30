@@ -141,6 +141,9 @@ export function PolicyCard({
 
       {/* Effects panel */}
       <div className="mt-auto border-t border-border/60 bg-cream-dark/40 px-3.5 py-2.5">
+        <p className="mb-1.5 font-body text-[9px] font-bold uppercase tracking-[0.22em] text-warm-gray">
+          Card effect
+        </p>
         <EffectSummary card={card} />
       </div>
 
