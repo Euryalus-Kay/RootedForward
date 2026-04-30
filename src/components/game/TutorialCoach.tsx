@@ -47,36 +47,33 @@ export function TutorialCoach({
 
   useEffect(() => {
     if (!current) return;
-    let timer: number | undefined;
-
-    function findRect(): DOMRect | null {
-      const el = document.querySelector(`[data-tut="${current.key}"]`) as HTMLElement | null;
-      if (!el) return null;
-      return el.getBoundingClientRect();
+    const el = document.querySelector(`[data-tut="${current.key}"]`) as HTMLElement | null;
+    if (!el) {
+      setRect(null);
+      return;
     }
 
-    function update() {
-      const el = document.querySelector(`[data-tut="${current.key}"]`) as HTMLElement | null;
-      if (!el) {
-        setRect(null);
-        return;
-      }
+    // Snap immediately to the new target so the highlight, dim, and callout
+    // reposition the moment the user clicks Next instead of waiting for the
+    // smooth scroll to finish.
+    setRect(el.getBoundingClientRect());
+
+    // Only scroll if the target is partly off-screen. The scroll listener
+    // below keeps the rect updated while the smooth scroll plays out.
+    const initial = el.getBoundingClientRect();
+    const fullyInView =
+      initial.top >= 0 && initial.bottom <= window.innerHeight;
+    if (!fullyInView) {
       el.scrollIntoView({ block: "center", behavior: "smooth" });
-      timer = window.setTimeout(() => {
-        setRect(el.getBoundingClientRect());
-      }, 280);
     }
-
-    update();
 
     function refresh() {
-      const r = findRect();
-      if (r) setRect(r);
+      const fresh = el?.getBoundingClientRect();
+      if (fresh) setRect(fresh);
     }
     window.addEventListener("resize", refresh);
     window.addEventListener("scroll", refresh, { passive: true });
     return () => {
-      if (timer) window.clearTimeout(timer);
       window.removeEventListener("resize", refresh);
       window.removeEventListener("scroll", refresh);
     };
@@ -108,13 +105,41 @@ export function TutorialCoach({
       transform: "translate(-50%, -50%)",
     };
   } else {
-    const placeBelow = r.top + r.height + margin + calloutHeight < vh;
-    const top = placeBelow
-      ? r.top + r.height + margin
-      : Math.max(margin, r.top - margin - calloutHeight);
-    const maxLeft = Math.max(margin, vw - calloutMaxWidth - margin);
-    const left = Math.min(maxLeft, Math.max(margin, r.left));
-    calloutStyle = { top, left };
+    const fitBelow = r.top + r.height + margin + calloutHeight <= vh - margin;
+    const fitAbove = r.top - margin - calloutHeight >= margin;
+    const leftSpace = r.left - margin * 2;
+    const rightSpace = vw - (r.left + r.width) - margin * 2;
+    const canFitLeft = leftSpace >= calloutMaxWidth;
+    const canFitRight = rightSpace >= calloutMaxWidth;
+    const clampLeft = (x: number) =>
+      Math.min(Math.max(margin, x), Math.max(margin, vw - calloutMaxWidth - margin));
+    const clampTop = (y: number) =>
+      Math.min(Math.max(margin, y), Math.max(margin, vh - calloutHeight - margin));
+
+    if (fitBelow) {
+      calloutStyle = { top: r.top + r.height + margin, left: clampLeft(r.left) };
+    } else if (fitAbove) {
+      calloutStyle = { top: r.top - margin - calloutHeight, left: clampLeft(r.left) };
+    } else if (canFitLeft) {
+      // Tall rect (e.g. the hand) on the right of the screen — place callout
+      // in the left gutter, centered vertically with the rect.
+      calloutStyle = {
+        top: clampTop(r.top + (r.height - calloutHeight) / 2),
+        left: r.left - calloutMaxWidth - margin,
+      };
+    } else if (canFitRight) {
+      calloutStyle = {
+        top: clampTop(r.top + (r.height - calloutHeight) / 2),
+        left: r.left + r.width + margin,
+      };
+    } else {
+      // No fit anywhere — pin to the bottom of the viewport, centered.
+      calloutStyle = {
+        bottom: margin,
+        left: "50%",
+        transform: "translateX(-50%)",
+      };
+    }
   }
 
   const dim = "rgba(20, 24, 22, 0.55)";
