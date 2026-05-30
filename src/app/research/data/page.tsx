@@ -89,11 +89,14 @@ export default async function ResearchDataPage() {
         <section className="bg-cream pt-16 md:pt-24">
           <div className="mx-auto max-w-3xl px-6">
             <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl">
-              Every Rooted Forward paper points at real, public, primary
-              data. The cards below link to each paper&rsquo;s upstream
-              public source so you can pull the raw record yourself.
-              When we finish a cleaned replication archive, it appears on
-              the same card as a signed-in download.
+              Every Rooted Forward paper rests on real, public, primary
+              data. Each card links to the paper&rsquo;s upstream public
+              source so you can pull the raw record yourself, and the
+              cleaned files behind the analysis are hosted here, free to
+              read as a live, sortable table. Every dataset ships the
+              analysis script that produced the paper&rsquo;s figures, so
+              the numbers are reproducible. Signed-in readers can
+              download any file.
             </p>
           </div>
         </section>
@@ -138,10 +141,11 @@ export default async function ResearchDataPage() {
                 All Datasets
               </h2>
               <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
-                Click a card to see the column schema, files, license,
-                and the public source URLs. Once an admin uploads a
-                cleaned archive, signed-in users see a one-click
-                download on the detail page.
+                Click a card to read the data as a live, sortable table
+                and to see the files, column schema, license, and public
+                source URLs. The analysis script that produced each
+                paper&rsquo;s figures ships alongside the data. Signed-in
+                readers can download any file from the detail page.
               </p>
             </div>
 

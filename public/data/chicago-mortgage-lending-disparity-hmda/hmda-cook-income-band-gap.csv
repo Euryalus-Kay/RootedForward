@@ -1,0 +1,217 @@
+activity_year,group,income_band,applications,denials
+2018,Asian,$100k-$150k,2245,445
+2018,Asian,$150k+,2686,489
+2018,Asian,$50k-$75k,1960,505
+2018,Asian,$75k-$100k,1660,401
+2018,Asian,<$50k,1446,635
+2018,Asian,unknown,208,65
+2018,Black,$100k-$150k,2318,878
+2018,Black,$150k+,1175,403
+2018,Black,$50k-$75k,5205,1964
+2018,Black,$75k-$100k,3301,1180
+2018,Black,<$50k,5139,2646
+2018,Black,unknown,566,228
+2018,Latino/Hispanic,$100k-$150k,2407,748
+2018,Latino/Hispanic,$150k+,1194,364
+2018,Latino/Hispanic,$50k-$75k,7078,2228
+2018,Latino/Hispanic,$75k-$100k,3959,1181
+2018,Latino/Hispanic,<$50k,7186,3051
+2018,Latino/Hispanic,unknown,510,196
+2018,Other / Joint,$100k-$150k,555,98
+2018,Other / Joint,$150k+,1010,146
+2018,Other / Joint,$50k-$75k,312,103
+2018,Other / Joint,$75k-$100k,357,76
+2018,Other / Joint,<$50k,208,106
+2018,Other / Joint,unknown,55,17
+2018,Race not available,$100k-$150k,2680,705
+2018,Race not available,$150k+,3689,676
+2018,Race not available,$50k-$75k,2525,1016
+2018,Race not available,$75k-$100k,2253,796
+2018,Race not available,<$50k,2099,1181
+2018,Race not available,unknown,4721,556
+2018,White (non-Hispanic),$100k-$150k,14307,2383
+2018,White (non-Hispanic),$150k+,19823,2839
+2018,White (non-Hispanic),$50k-$75k,12163,2712
+2018,White (non-Hispanic),$75k-$100k,10989,2168
+2018,White (non-Hispanic),<$50k,9014,3388
+2018,White (non-Hispanic),unknown,1450,289
+2019,Asian,$100k-$150k,2784,443
+2019,Asian,$150k+,3480,467
+2019,Asian,$50k-$75k,2074,445
+2019,Asian,$75k-$100k,1959,376
+2019,Asian,<$50k,1467,584
+2019,Asian,unknown,302,57
+2019,Black,$100k-$150k,2638,886
+2019,Black,$150k+,1376,377
+2019,Black,$50k-$75k,5292,1807
+2019,Black,$75k-$100k,3518,1174
+2019,Black,<$50k,4914,2407
+2019,Black,unknown,1215,333
+2019,Latino/Hispanic,$100k-$150k,3036,822
+2019,Latino/Hispanic,$150k+,1545,376
+2019,Latino/Hispanic,$50k-$75k,7758,2021
+2019,Latino/Hispanic,$75k-$100k,4647,1202
+2019,Latino/Hispanic,<$50k,7167,2733
+2019,Latino/Hispanic,unknown,925,226
+2019,Other / Joint,$100k-$150k,649,127
+2019,Other / Joint,$150k+,1340,149
+2019,Other / Joint,$50k-$75k,342,117
+2019,Other / Joint,$75k-$100k,317,78
+2019,Other / Joint,<$50k,288,114
+2019,Other / Joint,unknown,126,15
+2019,Race not available,$100k-$150k,3377,756
+2019,Race not available,$150k+,5212,799
+2019,Race not available,$50k-$75k,2702,875
+2019,Race not available,$75k-$100k,2625,756
+2019,Race not available,<$50k,2115,1023
+2019,Race not available,unknown,5523,695
+2019,White (non-Hispanic),$100k-$150k,17024,2249
+2019,White (non-Hispanic),$150k+,25778,2729
+2019,White (non-Hispanic),$50k-$75k,12429,2344
+2019,White (non-Hispanic),$75k-$100k,12446,1985
+2019,White (non-Hispanic),<$50k,8351,3046
+2019,White (non-Hispanic),unknown,2380,349
+2020,Asian,$100k-$150k,5241,570
+2020,Asian,$150k+,6311,653
+2020,Asian,$50k-$75k,2930,553
+2020,Asian,$75k-$100k,3170,446
+2020,Asian,<$50k,1588,634
+2020,Asian,unknown,542,103
+2020,Black,$100k-$150k,3503,928
+2020,Black,$150k+,2085,480
+2020,Black,$50k-$75k,5898,1701
+2020,Black,$75k-$100k,4373,1139
+2020,Black,<$50k,4748,1911
+2020,Black,unknown,2422,527
+2020,Latino/Hispanic,$100k-$150k,4235,779
+2020,Latino/Hispanic,$150k+,2443,454
+2020,Latino/Hispanic,$50k-$75k,9263,1851
+2020,Latino/Hispanic,$75k-$100k,5919,1200
+2020,Latino/Hispanic,<$50k,7231,2226
+2020,Latino/Hispanic,unknown,2251,368
+2020,Other / Joint,$100k-$150k,1173,109
+2020,Other / Joint,$150k+,2490,201
+2020,Other / Joint,$50k-$75k,414,99
+2020,Other / Joint,$75k-$100k,540,82
+2020,Other / Joint,<$50k,301,83
+2020,Other / Joint,unknown,246,36
+2020,Race not available,$100k-$150k,5856,977
+2020,Race not available,$150k+,8445,1062
+2020,Race not available,$50k-$75k,3855,1032
+2020,Race not available,$75k-$100k,4129,865
+2020,Race not available,<$50k,2748,1137
+2020,Race not available,unknown,5863,987
+2020,White (non-Hispanic),$100k-$150k,30731,2692
+2020,White (non-Hispanic),$150k+,44430,3533
+2020,White (non-Hispanic),$50k-$75k,17495,2434
+2020,White (non-Hispanic),$75k-$100k,20098,2032
+2020,White (non-Hispanic),<$50k,9590,2982
+2020,White (non-Hispanic),unknown,4589,530
+2021,Asian,$100k-$150k,5099,516
+2021,Asian,$150k+,6690,621
+2021,Asian,$50k-$75k,3121,440
+2021,Asian,$75k-$100k,3402,411
+2021,Asian,<$50k,1883,619
+2021,Asian,unknown,502,69
+2021,Black,$100k-$150k,4721,1237
+2021,Black,$150k+,2535,564
+2021,Black,$50k-$75k,7727,2175
+2021,Black,$75k-$100k,5779,1555
+2021,Black,<$50k,6281,2572
+2021,Black,unknown,2741,551
+2021,Latino/Hispanic,$100k-$150k,5044,914
+2021,Latino/Hispanic,$150k+,2682,456
+2021,Latino/Hispanic,$50k-$75k,11092,2082
+2021,Latino/Hispanic,$75k-$100k,6865,1207
+2021,Latino/Hispanic,<$50k,8710,2537
+2021,Latino/Hispanic,unknown,2251,353
+2021,Other / Joint,$100k-$150k,1106,118
+2021,Other / Joint,$150k+,2413,161
+2021,Other / Joint,$50k-$75k,458,96
+2021,Other / Joint,$75k-$100k,593,103
+2021,Other / Joint,<$50k,224,116
+2021,Other / Joint,unknown,217,30
+2021,Race not available,$100k-$150k,6217,1085
+2021,Race not available,$150k+,8839,1018
+2021,Race not available,$50k-$75k,5218,1326
+2021,Race not available,$75k-$100k,5024,1105
+2021,Race not available,<$50k,3652,1546
+2021,Race not available,unknown,6943,946
+2021,White (non-Hispanic),$100k-$150k,26497,2261
+2021,White (non-Hispanic),$150k+,39692,2839
+2021,White (non-Hispanic),$50k-$75k,17268,2199
+2021,White (non-Hispanic),$75k-$100k,18368,1908
+2021,White (non-Hispanic),<$50k,10214,2842
+2021,White (non-Hispanic),unknown,3834,460
+2022,Asian,$100k-$150k,2226,347
+2022,Asian,$150k+,3067,440
+2022,Asian,$50k-$75k,1413,299
+2022,Asian,$75k-$100k,1538,295
+2022,Asian,<$50k,875,375
+2022,Asian,unknown,203,32
+2022,Black,$100k-$150k,3856,1170
+2022,Black,$150k+,2127,618
+2022,Black,$50k-$75k,5965,1931
+2022,Black,$75k-$100k,4450,1379
+2022,Black,<$50k,4520,2237
+2022,Black,unknown,502,119
+2022,Latino/Hispanic,$100k-$150k,3729,927
+2022,Latino/Hispanic,$150k+,1921,454
+2022,Latino/Hispanic,$50k-$75k,7007,1761
+2022,Latino/Hispanic,$75k-$100k,5010,1166
+2022,Latino/Hispanic,<$50k,4863,1923
+2022,Latino/Hispanic,unknown,464,83
+2022,Other / Joint,$100k-$150k,590,97
+2022,Other / Joint,$150k+,1372,155
+2022,Other / Joint,$50k-$75k,288,80
+2022,Other / Joint,$75k-$100k,309,74
+2022,Other / Joint,<$50k,152,82
+2022,Other / Joint,unknown,56,6
+2022,Race not available,$100k-$150k,3563,933
+2022,Race not available,$150k+,4802,761
+2022,Race not available,$50k-$75k,3106,1063
+2022,Race not available,$75k-$100k,2752,828
+2022,Race not available,<$50k,2309,1189
+2022,Race not available,unknown,4913,559
+2022,White (non-Hispanic),$100k-$150k,11901,1618
+2022,White (non-Hispanic),$150k+,19044,2088
+2022,White (non-Hispanic),$50k-$75k,8077,1616
+2022,White (non-Hispanic),$75k-$100k,8195,1293
+2022,White (non-Hispanic),<$50k,5121,1938
+2022,White (non-Hispanic),unknown,817,91
+2023,Asian,$100k-$150k,1673,349
+2023,Asian,$150k+,2563,420
+2023,Asian,$50k-$75k,834,212
+2023,Asian,$75k-$100k,1142,272
+2023,Asian,<$50k,491,235
+2023,Asian,unknown,131,31
+2023,Black,$100k-$150k,3252,1118
+2023,Black,$150k+,1762,598
+2023,Black,$50k-$75k,4056,1529
+2023,Black,$75k-$100k,3479,1164
+2023,Black,<$50k,2729,1533
+2023,Black,unknown,279,114
+2023,Latino/Hispanic,$100k-$150k,3706,1031
+2023,Latino/Hispanic,$150k+,1793,493
+2023,Latino/Hispanic,$50k-$75k,5130,1457
+2023,Latino/Hispanic,$75k-$100k,4563,1137
+2023,Latino/Hispanic,<$50k,2992,1398
+2023,Latino/Hispanic,unknown,243,95
+2023,Other / Joint,$100k-$150k,386,70
+2023,Other / Joint,$150k+,988,139
+2023,Other / Joint,$50k-$75k,172,58
+2023,Other / Joint,$75k-$100k,229,63
+2023,Other / Joint,<$50k,97,63
+2023,Other / Joint,unknown,31,1
+2023,Race not available,$100k-$150k,2535,765
+2023,Race not available,$150k+,3607,693
+2023,Race not available,$50k-$75k,1918,693
+2023,Race not available,$75k-$100k,2133,658
+2023,Race not available,<$50k,1411,867
+2023,Race not available,unknown,4497,506
+2023,White (non-Hispanic),$100k-$150k,7890,1481
+2023,White (non-Hispanic),$150k+,13455,1784
+2023,White (non-Hispanic),$50k-$75k,4728,1120
+2023,White (non-Hispanic),$75k-$100k,5676,1123
+2023,White (non-Hispanic),<$50k,2847,1346
+2023,White (non-Hispanic),unknown,518,92

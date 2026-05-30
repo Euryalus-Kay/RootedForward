@@ -1,0 +1,60 @@
+group,reason,denials
+Asian,Collateral,2368
+Asian,Credit history,2231
+Asian,Debt-to-income ratio,5046
+Asian,Employment history,215
+Asian,Incomplete application,1453
+Asian,Insufficient cash,285
+Asian,Mortgage insurance denied,8
+Asian,Not reported / other code,105
+Asian,Other,1263
+Asian,Unverifiable information,880
+Black,Collateral,7576
+Black,Credit history,13728
+Black,Debt-to-income ratio,10131
+Black,Employment history,461
+Black,Incomplete application,4316
+Black,Insufficient cash,1328
+Black,Mortgage insurance denied,20
+Black,Not reported / other code,189
+Black,Other,3876
+Black,Unverifiable information,1508
+Latino/Hispanic,Collateral,6905
+Latino/Hispanic,Credit history,10784
+Latino/Hispanic,Debt-to-income ratio,12523
+Latino/Hispanic,Employment history,521
+Latino/Hispanic,Incomplete application,4474
+Latino/Hispanic,Insufficient cash,1043
+Latino/Hispanic,Mortgage insurance denied,22
+Latino/Hispanic,Not reported / other code,232
+Latino/Hispanic,Other,3321
+Latino/Hispanic,Unverifiable information,1675
+Other / Joint,Collateral,640
+Other / Joint,Credit history,833
+Other / Joint,Debt-to-income ratio,849
+Other / Joint,Employment history,43
+Other / Joint,Incomplete application,366
+Other / Joint,Insufficient cash,72
+Other / Joint,Not reported / other code,12
+Other / Joint,Other,291
+Other / Joint,Unverifiable information,162
+Race not available,Collateral,6068
+Race not available,Credit history,6302
+Race not available,Debt-to-income ratio,8501
+Race not available,Employment history,426
+Race not available,Incomplete application,5192
+Race not available,Insufficient cash,822
+Race not available,Mortgage insurance denied,20
+Race not available,Not reported / other code,375
+Race not available,Other,2948
+Race not available,Unverifiable information,1781
+White (non-Hispanic),Collateral,13439
+White (non-Hispanic),Credit history,13760
+White (non-Hispanic),Debt-to-income ratio,21643
+White (non-Hispanic),Employment history,747
+White (non-Hispanic),Incomplete application,8357
+White (non-Hispanic),Insufficient cash,1286
+White (non-Hispanic),Mortgage insurance denied,17
+White (non-Hispanic),Not reported / other code,456
+White (non-Hispanic),Other,5812
+White (non-Hispanic),Unverifiable information,3266
