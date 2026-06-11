@@ -67,7 +67,7 @@ export default function DownloadPDFButton({
       onClick={handleClick}
       disabled={busy}
       data-print-hide="true"
-      className="inline-flex items-center gap-2 rounded-sm border border-forest/30 px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest disabled:cursor-wait disabled:opacity-70"
+      className="inline-flex items-center gap-2 rounded-sm border border-border bg-cream px-3 py-1.5 font-body text-[13.5px] text-ink transition-colors hover:bg-cream-dark hover:border-warm-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest disabled:cursor-wait disabled:opacity-70"
       aria-label="Download this article as a PDF"
     >
       {busy ? (

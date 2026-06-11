@@ -14,19 +14,12 @@
 /*  client with the name, email, and message prefilled, so the user   */
 /*  can always deliver their message regardless of server state.       */
 /*                                                                     */
-/*  Styling follows the v2 input language: monospace ledger labels    */
-/*  over bottom-hairline fields, matching the footer newsletter.      */
-/*                                                                     */
 /* ------------------------------------------------------------------ */
 
 import { useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
 
 const FALLBACK_EMAIL = "contact@rooted-forward.org";
-
-const FIELD =
-  "w-full border-b border-ink/25 bg-transparent px-0 py-2.5 font-body text-base text-ink placeholder:text-warm-gray-light transition-colors focus:border-rust focus:outline-none";
-const LABEL = "ledger block text-ink/55";
 
 interface SubmissionResponse {
   message?: string;
@@ -117,44 +110,51 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-      {/* Name + Email */}
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        <div>
-          <label htmlFor="contact-name" className={LABEL}>
-            Name <span className="text-rust">*</span>
-          </label>
-          <input
-            id="contact-name"
-            type="text"
-            required
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Your name"
-            className={FIELD}
-          />
-        </div>
-        <div>
-          <label htmlFor="contact-email" className={LABEL}>
-            Email <span className="text-rust">*</span>
-          </label>
-          <input
-            id="contact-email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            placeholder="you@example.com"
-            className={FIELD}
-          />
-        </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Name */}
+      <div>
+        <label
+          htmlFor="contact-name"
+          className="mb-1.5 block font-body text-sm font-medium text-ink"
+        >
+          Name <span className="text-rust">*</span>
+        </label>
+        <input
+          id="contact-name"
+          type="text"
+          required
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="Your name"
+          className="w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
+        />
+      </div>
+
+      {/* Email */}
+      <div>
+        <label
+          htmlFor="contact-email"
+          className="mb-1.5 block font-body text-sm font-medium text-ink"
+        >
+          Email <span className="text-rust">*</span>
+        </label>
+        <input
+          id="contact-email"
+          type="email"
+          required
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          placeholder="you@example.com"
+          className="w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
+        />
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="contact-message" className={LABEL}>
+        <label
+          htmlFor="contact-message"
+          className="mb-1.5 block font-body text-sm font-medium text-ink"
+        >
           Message <span className="text-rust">*</span>
         </label>
         <textarea
@@ -165,8 +165,8 @@ export default function ContactForm() {
           onChange={(e) =>
             setFormData({ ...formData, message: e.target.value })
           }
-          placeholder="Ask a question, share feedback, or just say hello."
-          className={`${FIELD} resize-y`}
+          placeholder="How can we help? Ask a question, share feedback, or just say hello..."
+          className="w-full resize-y rounded-md border border-border bg-cream px-4 py-3 font-body text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
         />
       </div>
 
@@ -174,31 +174,25 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="group mt-1 inline-flex items-center justify-center gap-2 self-start rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-2 inline-flex items-center justify-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Sending..." : "Send message"}
-        <span aria-hidden="true" className="arrow-nudge">
-          &rarr;
-        </span>
+        {loading ? "Sending..." : "Send Message"}
       </button>
 
       {/* Mailto fallback surfaced after a delivery failure */}
       {failureMode && (
         <div
           role="alert"
-          className="rounded-sm border border-rust/40 bg-rust/5 p-5"
+          className="mt-2 rounded-sm border border-rust/40 bg-rust/5 p-4"
         >
           <p className="font-body text-sm leading-relaxed text-ink">
             {failureMode.hint}
           </p>
           <a
             href={failureMode.mailto}
-            className="group mt-3 inline-flex items-center gap-2 font-body text-sm font-semibold text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
+            className="mt-3 inline-flex items-center gap-2 font-body text-sm font-semibold text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
           >
-            Open email client and send to {FALLBACK_EMAIL}
-            <span aria-hidden="true" className="arrow-nudge">
-              &rarr;
-            </span>
+            Open email client and send to {FALLBACK_EMAIL} &rarr;
           </a>
           <p className="mt-2 font-body text-xs text-warm-gray">
             This will open your default mail app with your message prefilled.

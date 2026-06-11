@@ -183,14 +183,14 @@ export default function ActivityFeed() {
 
   if (loading) {
     return (
-      <div className="border border-border bg-white/40 p-6">
-        <div className="mb-4 h-5 w-36 animate-pulse rounded-sm bg-border" />
+      <div className="rounded-xl border border-border bg-cream p-6">
+        <div className="mb-4 h-5 w-36 animate-pulse rounded bg-cream-dark" />
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="mb-4 flex items-start gap-3">
-            <div className="h-8 w-8 animate-pulse rounded-full bg-border" />
+            <div className="h-8 w-8 animate-pulse rounded-full bg-cream-dark" />
             <div className="flex-1">
-              <div className="h-4 w-3/4 animate-pulse rounded-sm bg-border" />
-              <div className="mt-1 h-3 w-20 animate-pulse rounded-sm bg-border" />
+              <div className="h-4 w-3/4 animate-pulse rounded bg-cream-dark" />
+              <div className="mt-1 h-3 w-20 animate-pulse rounded bg-cream-dark" />
             </div>
           </div>
         ))}
@@ -200,7 +200,7 @@ export default function ActivityFeed() {
 
   if (!isLoggedIn) {
     return (
-      <div className="border border-dashed border-border bg-white/30 p-6 text-center">
+      <div className="rounded-xl border border-border bg-cream p-6 text-center">
         <MapPin size={32} className="mx-auto text-warm-gray-light" />
         <p className="mt-3 font-body text-sm text-warm-gray">
           Sign in to see your activity
@@ -211,7 +211,7 @@ export default function ActivityFeed() {
 
   if (activities.length === 0) {
     return (
-      <div className="border border-dashed border-border bg-white/30 p-6 text-center">
+      <div className="rounded-xl border border-border bg-cream p-6 text-center">
         <MapPin size={32} className="mx-auto text-warm-gray-light" />
         <p className="mt-3 font-body text-sm text-warm-gray">
           Start exploring tours to see your activity here
@@ -221,11 +221,8 @@ export default function ActivityFeed() {
   }
 
   return (
-    <div className="border border-border bg-white/40 p-6">
-      <p className="ledger text-warm-gray">Activity</p>
-      <h3 className="mt-2 mb-5 font-display text-xl text-forest">
-        Recent activity
-      </h3>
+    <div className="rounded-xl border border-border bg-cream p-6">
+      <h3 className="mb-5 font-display text-lg text-forest">Recent Activity</h3>
 
       <div className="relative ml-4 border-l-2 border-border pl-6">
         <AnimatePresence>
@@ -252,7 +249,7 @@ export default function ActivityFeed() {
                 >
                   {getActivityText(item)}
                 </a>
-                <p className="ledger mt-1 text-[11px] text-warm-gray">
+                <p className="mt-0.5 font-body text-xs text-warm-gray">
                   {formatRelativeTime(item.timestamp)}
                 </p>
               </div>

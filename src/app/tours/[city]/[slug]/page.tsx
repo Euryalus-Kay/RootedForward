@@ -2,8 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import PageBanner from "@/components/layout/PageBanner";
-import { Reveal } from "@/components/motion/Reveal";
 import StopActions from "@/components/tours/StopActions";
 import CommentsSection from "@/components/tours/CommentsSection";
 import RelatedStops from "@/components/tours/RelatedStops";
@@ -101,13 +99,12 @@ async function getStopData(
       return { stop: fallback, cityName, allStops: getAllFallbackStops(citySlug) };
     }
 
-    // Fetch all stops in city for related stops, in tour order
+    // Fetch all stops in city for related stops
     const { data: allStopsData } = await supabase
       .from("tour_stops")
       .select("*")
       .eq("city", citySlug)
-      .eq("published", true)
-      .order("created_at", { ascending: true });
+      .eq("published", true);
 
     return { stop, cityName, allStops: allStopsData ?? getAllFallbackStops(citySlug) };
   } catch {
@@ -151,22 +148,66 @@ export default async function StopDetailPage({ params }: PageProps) {
   const immersive = await getImmersiveTour(citySlug, slug);
   if (immersive) {
     const cityName = getCityName(citySlug);
+    const lookAround = immersive.stops.filter((s) => s.media).length;
     return (
       <PageTransition>
-        <PageBanner
-          eyebrow={`Immersive Tours / ${cityName}`}
-          title={immersive.title}
-          dek={immersive.dek}
-          meta={[
-            `${immersive.stops.length} stops`,
-            immersive.medium === "underwater"
-              ? "Underwater"
-              : immersive.medium === "aerial"
-                ? "Aerial"
-                : "Street level",
-            `${immersive.stops.filter((s) => s.media).length} look-around scenes`,
-          ]}
-        />
+        <section className="bg-cream pt-20 md:pt-28">
+          <div className="mx-auto max-w-6xl px-6">
+            {/* Breadcrumb */}
+            <nav aria-label="Breadcrumb" className="mb-8">
+              <ol className="flex flex-wrap items-center gap-2 font-body text-sm text-warm-gray">
+                <li>
+                  <Link
+                    href="/tours"
+                    className="transition-colors hover:text-forest"
+                  >
+                    Tours
+                  </Link>
+                </li>
+                <li aria-hidden="true">&gt;</li>
+                <li>
+                  <Link
+                    href={`/tours/${citySlug}`}
+                    className="transition-colors hover:text-forest"
+                  >
+                    {cityName}
+                  </Link>
+                </li>
+                <li aria-hidden="true">&gt;</li>
+                <li className="font-medium text-forest">{immersive.title}</li>
+              </ol>
+            </nav>
+
+            <h1 className="font-display text-4xl leading-tight text-forest md:text-5xl">
+              {immersive.title}
+            </h1>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="inline-block rounded-full bg-forest/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest">
+                {cityName}
+              </span>
+              <span className="inline-block rounded-full bg-rust/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                {immersive.medium === "underwater"
+                  ? "Underwater"
+                  : immersive.medium === "aerial"
+                    ? "Aerial"
+                    : "Street level"}
+              </span>
+              <span className="inline-block rounded-full bg-forest/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest">
+                {immersive.stops.length} stops
+              </span>
+              {lookAround > 0 && (
+                <span className="inline-block rounded-full bg-forest/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest">
+                  {lookAround} look-around scenes
+                </span>
+              )}
+            </div>
+
+            <p className="mt-6 max-w-[65ch] font-body text-base leading-relaxed text-ink/70">
+              {immersive.dek}
+            </p>
+          </div>
+        </section>
         <ImmersiveTourExperience tour={immersive} />
       </PageTransition>
     );
@@ -180,27 +221,13 @@ export default async function StopDetailPage({ params }: PageProps) {
 
   const { stop, cityName, allStops } = data;
 
-  // Position of this stop within the tour, for the banner meta row.
-  const stopIndex = allStops.findIndex((s) => s.slug === stop.slug);
-  const bannerMeta =
-    stopIndex >= 0
-      ? [`Stop ${String(stopIndex + 1).padStart(2, "0")} of ${String(allStops.length).padStart(2, "0")}`, cityName]
-      : [cityName];
-
   return (
     <PageTransition>
-      <PageBanner
-        compact
-        eyebrow={`Walking Tours / ${cityName}`}
-        title={stop.title}
-        meta={bannerMeta}
-      />
-
-      <article className="bg-cream py-14 md:py-20">
-        <div className="mx-auto max-w-3xl px-6 lg:px-8">
+      <section className="bg-cream py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-6">
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb">
-            <ol className="ledger flex flex-wrap items-center gap-x-3 gap-y-1 text-warm-gray">
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex flex-wrap items-center gap-2 font-body text-sm text-warm-gray">
               <li>
                 <Link
                   href="/tours"
@@ -209,7 +236,7 @@ export default async function StopDetailPage({ params }: PageProps) {
                   Tours
                 </Link>
               </li>
-              <li aria-hidden="true">/</li>
+              <li aria-hidden="true">&gt;</li>
               <li>
                 <Link
                   href={`/tours/${citySlug}`}
@@ -218,15 +245,25 @@ export default async function StopDetailPage({ params }: PageProps) {
                   {cityName}
                 </Link>
               </li>
-              <li aria-hidden="true">/</li>
-              <li className="text-forest">{stop.title}</li>
+              <li aria-hidden="true">&gt;</li>
+              <li className="font-medium text-forest">{stop.title}</li>
             </ol>
           </nav>
 
+          {/* Stop title */}
+          <h1 className="font-display text-4xl leading-tight text-forest md:text-5xl">
+            {stop.title}
+          </h1>
+
+          {/* City badge */}
+          <span className="mt-4 inline-block rounded-full bg-forest/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest">
+            {cityName}
+          </span>
+
           {/* Video embed */}
           {stop.video_url && (
-            <Reveal y={20} className="mt-10">
-              <div className="relative aspect-video overflow-hidden rounded-sm border border-border bg-ink">
+            <div className="mt-10">
+              <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-ink">
                 {/* Play icon placeholder behind iframe */}
                 <div className="absolute inset-0 z-0 flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-16 w-16 text-warm-gray/40">
@@ -241,34 +278,31 @@ export default async function StopDetailPage({ params }: PageProps) {
                   allowFullScreen
                 />
               </div>
-              <p className="ledger mt-3 text-warm-gray">
-                Field recording / {stop.title}
-              </p>
-            </Reveal>
+            </div>
           )}
 
           {/* Description */}
-          <Reveal y={16} className="mt-10">
-            <p className="font-body text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
+          <div className="mt-10">
+            <p className="font-body text-lg leading-relaxed text-ink/80">
               {stop.description}
             </p>
-          </Reveal>
+          </div>
 
           {/* Photo gallery */}
           {stop.images && stop.images.length > 0 && (
-            <div className="mt-14 border-t border-border pt-10">
-              <p className="eyebrow text-warm-gray">Photos</p>
-              <div className="mt-6 grid grid-cols-1 gap-px bg-border sm:grid-cols-2">
+            <div className="mt-14">
+              <h2 className="font-display text-2xl text-forest">Photos</h2>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {stop.images.map((image, index) => (
                   <div
                     key={index}
-                    className="aspect-[4/3] overflow-hidden bg-cream-dark"
+                    className="aspect-[4/3] overflow-hidden rounded-lg border border-border bg-cream-dark"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={image}
                       alt={`${stop.title} photo ${index + 1}`}
-                      className="photo-archival h-full w-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 ))}
@@ -279,17 +313,14 @@ export default async function StopDetailPage({ params }: PageProps) {
           {/* Sources */}
           {stop.sources && stop.sources.length > 0 && (
             <div className="mt-14 border-t border-border pt-10">
-              <p className="eyebrow text-warm-gray">Sources</p>
-              <ol className="mt-6 space-y-3">
+              <h2 className="font-display text-2xl text-forest">Sources</h2>
+              <ol className="mt-6 list-decimal space-y-3 pl-6">
                 {stop.sources.map((source, index) => (
                   <li
                     key={index}
-                    className="flex items-baseline gap-4 font-body text-sm leading-relaxed text-ink/70"
+                    className="font-body text-sm leading-relaxed text-warm-gray"
                   >
-                    <span className="ledger shrink-0 text-warm-gray">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span>{source}</span>
+                    {source}
                   </li>
                 ))}
               </ol>
@@ -297,36 +328,37 @@ export default async function StopDetailPage({ params }: PageProps) {
           )}
 
           {/* User actions (save, visit, share) */}
-          <div className="mt-12">
+          <div className="mt-10">
             <StopActions stopId={stop.id} stopTitle={stop.title} stopDescription={stop.description} city={citySlug} />
           </div>
 
           {/* Comments */}
-          <CommentsSection stopId={stop.id} />
-        </div>
-      </article>
+          <div className="mt-14 border-t border-border pt-10">
+            <CommentsSection stopId={stop.id} />
+          </div>
 
-      {/* Related stops */}
-      {allStops.length > 1 && (
-        <RelatedStops
-          currentStopId={stop.id}
-          city={citySlug}
-          allStops={allStops}
-        />
-      )}
+          {/* Related stops */}
+          {allStops.length > 1 && (
+            <div className="mt-14 border-t border-border pt-10">
+              <RelatedStops
+                currentStopId={stop.id}
+                city={citySlug}
+                allStops={allStops}
+              />
+            </div>
+          )}
 
-      {/* Back link */}
-      <div className="border-t border-border bg-cream">
-        <div className="mx-auto max-w-3xl px-6 py-10 lg:px-8">
-          <Link
-            href="/tours"
-            className="group inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-          >
-            <span aria-hidden="true">&larr;</span>
-            <span>Back to the {cityName} tour</span>
-          </Link>
+          {/* Back link */}
+          <div className="mt-14 border-t border-border pt-10">
+            <Link
+              href={`/tours/${citySlug}`}
+              className="inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light"
+            >
+              &larr; Back to {cityName} Tour
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
     </PageTransition>
   );
 }

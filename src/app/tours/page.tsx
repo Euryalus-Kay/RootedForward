@@ -1,13 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import PageBanner from "@/components/layout/PageBanner";
-import SectionHeading from "@/components/layout/SectionHeading";
-import { Reveal } from "@/components/motion/Reveal";
-import Magnetic from "@/components/motion/Magnetic";
 import { PLACEHOLDER_STOPS } from "@/lib/constants";
 import { PLACEHOLDER_IMMERSIVE_TOURS } from "@/lib/immersive/constants";
+import { isSupabaseConfiguredClient } from "@/lib/supabase/client";
 import type { ImmersiveTour } from "@/lib/immersive/types";
 
 interface TourStop {
@@ -43,7 +40,11 @@ function lngToX(lng: number): number {
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 
-function placeholderChicagoStops(): TourStop[] {
+async function fetchStops(): Promise<TourStop[]> {
+  try {
+    const res = await fetch("/api/policy/campaigns"); // reuse pattern
+    // Actually just use constants for now
+  } catch {}
   return PLACEHOLDER_STOPS.filter((s) => s.city === "chicago").map((s) => ({
     slug: s.slug,
     title: s.title,
@@ -418,6 +419,8 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
           // Label positioning: place to the left for nodes near the right edge
           const labelX = x > 220 ? x - 26 : x + 26;
           const labelAnchor = x > 220 ? "end" : "start";
+          // Line from label pill to node
+          const lineEndX = x > 220 ? x - 20 : x + 20;
 
           return (
             <g key={stop.slug}>
@@ -543,6 +546,7 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         const y = latToY(stop.lat);
         // Convert SVG coordinates (viewBox 400x600) to pixel coordinates
         const scale = containerWidth / 400;
+        const svgHeight = containerWidth * (600 / 400);
         const pixelX = x * scale;
         const pixelY = y * scale;
         const tooltipW = Math.min(240, containerWidth - 16);
@@ -559,7 +563,7 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
               transform: 'translateY(-100%)',
             }}
           >
-            <div className="rounded-sm bg-forest p-4 shadow-xl">
+            <div className="rounded-md bg-forest p-4 shadow-xl">
               <p className="font-body text-sm font-semibold leading-snug text-cream">
                 {stop.title}
               </p>
@@ -587,18 +591,26 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
-/*                                                                     */
-/*  Two movements: the self-guided Chicago tour (stop ledger beside    */
-/*  the hand-drawn map plate) and the in-person Hyde Park walk on a    */
-/*  dark band. Multi-city support: when another city gets published    */
-/*  stops, lift the Chicago content into a per-city block keyed off    */
-/*  CITIES in src/lib/constants.ts.                                    */
 /* ------------------------------------------------------------------ */
 
+/*
+  MULTI-CITY SUPPORT:
+  To re-enable the city tab selector, uncomment the CITIES array below
+  and the city selector section in the JSX (search for "City selector tabs").
+  Then wrap the Chicago content in the selectedCity === "chicago" conditional
+  and uncomment the placeholder for other cities at the bottom.
+
+  const CITIES = [
+    { slug: "chicago", name: "Chicago", active: true },
+    { slug: "new-york", name: "New York", active: false },
+    { slug: "dallas", name: "Dallas", active: false },
+    { slug: "san-francisco", name: "San Francisco", active: false },
+  ];
+*/
+
 export default function ToursPage() {
-  // Placeholder data renders immediately; Supabase replaces it when
-  // the live table has published rows.
-  const [stops, setStops] = useState<TourStop[]>(placeholderChicagoStops);
+  // const [selectedCity, setSelectedCity] = useState("chicago"); // Uncomment for multi-city
+  const [stops, setStops] = useState<TourStop[]>([]);
   const [immersiveTours, setImmersiveTours] = useState<ImmersiveTour[]>(
     PLACEHOLDER_IMMERSIVE_TOURS.filter((t) => t.published)
   );
@@ -617,11 +629,22 @@ export default function ToursPage() {
           .order("created_at", { ascending: true });
         if (!error && data && data.length > 0) {
           setStops(data as TourStop[]);
+          return;
         }
-      } catch {
-        // Keep the placeholder stops already in state
-      }
+      } catch {}
+      setStops(
+        PLACEHOLDER_STOPS.filter((s) => s.city === "chicago").map((s) => ({
+          slug: s.slug,
+          title: s.title,
+          lat: s.lat,
+          lng: s.lng,
+          description: s.description,
+        }))
+      );
+    }
+    async function loadImmersive() {
       try {
+        if (!isSupabaseConfiguredClient()) return;
         const { createClient } = await import("@/lib/supabase/client");
         const supabase = createClient();
         const { data, error } = await supabase
@@ -637,180 +660,183 @@ export default function ToursPage() {
       }
     }
     load();
+    loadImmersive();
   }, []);
 
   return (
     <div className="min-h-screen bg-cream">
-      <PageBanner
-        eyebrow="Education / Walking Tours"
-        title="Walking Tours"
-        dek="Stand where the policy happened. Every stop ties a Chicago block to the decision that shaped it, so the history reads off the street itself."
-        meta={[
-          `${stops.length} stops`,
-          "Chicago",
-          "Self-guided",
-          ...(immersiveTours.length > 0
-            ? [
-                `${immersiveTours.length} underwater ${
-                  immersiveTours.length === 1 ? "route" : "routes"
-                }`,
-              ]
-            : []),
-        ]}
-      />
+      {/* Banner */}
+      <section className="relative pt-16 pb-12 md:pb-16">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-redlining.jpg')" }} />
+        <div className="absolute inset-0 bg-forest/70" />
+        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+          <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+            Walking Tours
+          </h1>
+        </div>
+      </section>
 
-      {/* ============================================================
-          01 — SELF-GUIDED TOUR: stop ledger + map plate
-          ============================================================ */}
+      {/*
+        MULTI-CITY: Uncomment this city selector section to enable tabs.
+        Also uncomment selectedCity state above and CITIES array.
+
+      <section className="border-b border-border bg-cream">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="flex gap-0 overflow-x-auto">
+            {CITIES.map((city) => (
+              <button
+                key={city.slug}
+                onClick={() => city.active && setSelectedCity(city.slug)}
+                className={`relative whitespace-nowrap px-6 py-4 font-body text-sm font-semibold uppercase tracking-widest transition-colors ${
+                  selectedCity === city.slug
+                    ? "border-b-2 border-rust text-rust"
+                    : city.active
+                      ? "text-warm-gray hover:text-forest"
+                      : "cursor-default text-warm-gray/40"
+                }`}
+              >
+                {city.name}
+                {!city.active && (
+                  <span className="ml-2 rounded-full bg-cream-dark px-2 py-0.5 font-body text-[9px] uppercase tracking-wider text-warm-gray">
+                    Soon
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+      */}
+
+      {/* Intro + Map Section */}
       <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <SectionHeading
-            index="01"
-            eyebrow="Self-guided"
-            title="Walk the history"
-            lede="Each stop connects a specific place to the policy that shaped it. Redlining boundaries you can still trace in the infrastructure. Urban renewal demolitions that erased entire blocks. Highway routes that split neighborhoods in half. Pick a stop from the ledger or the map."
-            tone="light"
-          />
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* Left: description */}
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                Self-Guided Tours
+              </p>
+              <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+                Walk the History
+              </h2>
+              <p className="mt-6 max-w-[55ch] font-body text-base leading-relaxed text-ink/70">
+                Each stop on our Chicago tour connects a specific place to
+                the policy that shaped it. Redlining boundaries you can still
+                trace in the infrastructure. Urban renewal demolitions that
+                erased entire blocks. Highway routes that split neighborhoods
+                in half. Click a location on the map to explore.
+              </p>
 
-          <div className="mt-12 grid grid-cols-1 gap-12 md:mt-16 lg:grid-cols-2 lg:gap-16">
-            {/* Left: stop ledger */}
-            <Reveal y={20}>
-              <div className="border border-border bg-white/40">
-                <div className="flex items-baseline justify-between border-b border-border px-6 py-4">
-                  <span className="ledger text-warm-gray">Tour stops</span>
-                  <span className="ledger text-warm-gray">
-                    {String(stops.length).padStart(2, "0")} total
-                  </span>
-                </div>
-                <ol className="divide-y divide-border">
-                  {stops.map((stop, i) => (
-                    <li key={stop.slug}>
-                      <Link
-                        href={`/tours/chicago/${stop.slug}`}
-                        className="group flex items-start gap-5 px-6 py-6 transition-colors hover:bg-cream-dark/50"
-                      >
-                        <span className="index-numeral pt-0.5 text-2xl text-rust/40 transition-colors group-hover:text-rust">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <h3 className="font-display text-xl leading-snug text-forest transition-colors group-hover:text-rust">
-                            {stop.title}
-                          </h3>
-                          <p className="mt-2 font-body text-sm leading-relaxed text-ink/60 line-clamp-2">
-                            {stop.description}
-                          </p>
-                          <span className="mt-3 inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust">
-                            <span>Visit this stop</span>
-                            <span aria-hidden="true" className="arrow-nudge">
-                              &rarr;
-                            </span>
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ol>
+              {/* Stop list */}
+              <div className="mt-10 flex flex-col gap-4">
+                {stops.map((stop, i) => (
+                  <Link
+                    key={stop.slug}
+                    href={`/tours/chicago/${stop.slug}`}
+                    className="group flex items-start gap-4 rounded-sm border border-border p-4 transition-all hover:border-rust/30 hover:shadow-sm"
+                  >
+                    <span className="flex-shrink-0 font-display text-2xl text-border">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="font-display text-lg text-forest transition-colors group-hover:text-rust">
+                        {stop.title}
+                      </h3>
+                      <p className="mt-1 font-body text-sm text-ink/55 line-clamp-2">
+                        {stop.description}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </Reveal>
+            </div>
 
-            {/* Right: hand-drawn map plate */}
-            <Reveal y={20} delay={0.1} className="lg:sticky lg:top-24 lg:self-start">
-              <div className="border border-border bg-white/40 p-5 md:p-6">
-                <div className="flex items-baseline justify-between border-b border-border pb-4">
-                  <span className="ledger text-warm-gray">Fig. 01 / Tour map</span>
-                  <span className="ledger text-warm-gray">Chicago, IL</span>
-                </div>
-                <div className="pt-5">
-                  <ChicagoMap stops={stops} />
-                </div>
-                <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2 border-t border-border pt-4">
-                  <span className="ledger text-warm-gray">
-                    Drawn by Rooted Forward
-                  </span>
-                  <span className="ledger text-rust">
-                    Click a stop to explore
-                  </span>
-                </div>
+            {/* Right: interactive map */}
+            <div className="flex items-start justify-center lg:sticky lg:top-24">
+              <div className="w-full rounded-sm border border-border bg-cream-dark p-6 shadow-md">
+                <p className="mb-4 text-center font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                  Tour Map
+                </p>
+                <ChicagoMap stops={stops} />
+                <p className="mt-3 text-center font-display text-2xl font-bold tracking-[0.35em] text-forest">
+                  CHICAGO
+                </p>
+                <p className="mt-1.5 text-center font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-rust">
+                  Click a stop to explore
+                </p>
+                <p className="mt-0.5 text-center font-body text-[8px] text-warm-gray/60">
+                  Map by Rooted Forward
+                </p>
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============================================================
-          02 — BENEATH THE SURFACE: immersive underwater routes
-          ============================================================ */}
+      {/* Underwater Tours */}
       {immersiveTours.length > 0 && (
-        <section className="grain relative overflow-hidden bg-forest-deep py-20 md:py-28">
-          <div
-            className="grid-lines-light absolute inset-0"
-            aria-hidden="true"
-          />
-          <span
-            aria-hidden="true"
-            className="index-numeral pointer-events-none absolute -right-6 top-8 select-none text-[11rem] leading-none text-cream/[0.05] md:text-[18rem]"
-          >
-            02
-          </span>
+        <section className="bg-forest py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-6">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/60">
+              Beneath the Surface
+            </p>
+            <h2 className="mt-3 font-display text-3xl text-cream md:text-4xl">
+              Underwater Routes
+            </h2>
+            <p className="mt-6 max-w-[55ch] font-body text-base leading-relaxed text-cream/75">
+              The history did not stop at the shoreline. These routes read
+              the river and the lakefront from below, mostly in writing,
+              with 360 look-around scenes at the stops where seeing the
+              water matters.
+            </p>
 
-          <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-            <SectionHeading
-              index="02"
-              eyebrow="Beneath the surface"
-              title="Underwater routes"
-              lede="The history did not stop at the shoreline. These routes read the river and the lakefront from below, mostly in writing, with 360 look-around scenes at the stops where seeing the water matters."
-              tone="dark"
-            />
-
-            <div className="mt-12 grid grid-cols-1 gap-8 md:mt-16 lg:grid-cols-2">
+            <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
               {immersiveTours.map((tour) => {
                 const lookAround = tour.stops.filter((s) => s.media).length;
                 return (
-                  <Reveal key={`${tour.city}-${tour.slug}`} y={20}>
-                    <Link
-                      href={`/tours/${tour.city}/${tour.slug}`}
-                      className="card-lift group flex h-full flex-col border border-cream/15 bg-white/[0.04] p-8 md:p-10"
-                    >
-                      <div className="flex items-baseline justify-between gap-4">
-                        <span className="ledger text-cream/55">
-                          {tour.medium === "underwater"
-                            ? "Underwater"
-                            : tour.medium}{" "}
-                          / {tour.city}
+                  <Link
+                    key={`${tour.city}-${tour.slug}`}
+                    href={`/tours/${tour.city}/${tour.slug}`}
+                    className="group flex h-full flex-col rounded-sm border border-cream/20 bg-cream/5 p-8 transition-colors hover:border-rust/60"
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="font-body text-xs font-semibold uppercase tracking-widest text-cream/60">
+                        {tour.medium === "underwater"
+                          ? "Underwater"
+                          : tour.medium}{" "}
+                        / {tour.city}
+                      </span>
+                      <span className="font-body text-xs text-cream/60">
+                        {tour.stops.length} stops
+                      </span>
+                    </div>
+                    <h3 className="mt-4 font-display text-2xl leading-tight text-cream transition-colors group-hover:text-rust-light md:text-3xl">
+                      {tour.title}
+                    </h3>
+                    <p className="mt-3 font-body text-sm leading-relaxed text-cream/70 line-clamp-3">
+                      {tour.dek}
+                    </p>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      <span className="rounded-full bg-cream/10 px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-wider text-cream/80">
+                        2D + 360 hybrid
+                      </span>
+                      {lookAround > 0 && (
+                        <span className="rounded-full bg-cream/10 px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-wider text-cream/80">
+                          {lookAround} look-around scenes
                         </span>
-                        <span className="ledger text-cream/55">
-                          {String(tour.stops.length).padStart(2, "0")} stops
-                        </span>
-                      </div>
-                      <h3 className="mt-5 font-display text-3xl leading-tight text-cream transition-colors group-hover:text-rust-light md:text-4xl">
-                        {tour.title}
-                      </h3>
-                      <p className="mt-4 line-clamp-3 max-w-[58ch] font-body text-base leading-relaxed text-cream/70">
-                        {tour.dek}
-                      </p>
-                      <div className="mt-6 flex flex-wrap gap-2">
-                        <span className="rounded-sm border border-cream/20 px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-widest text-cream/80">
-                          2D + 360 hybrid
-                        </span>
-                        {lookAround > 0 && (
-                          <span className="rounded-sm border border-cream/20 px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-widest text-cream/80">
-                            {lookAround} look-around scenes
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-8 flex items-center justify-between border-t border-cream/15 pt-5">
-                        <span className="font-body text-xs font-semibold uppercase tracking-widest text-rust-light">
-                          Enter the tour
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className="arrow-nudge text-rust-light"
-                        >
-                          &rarr;
-                        </span>
-                      </div>
-                    </Link>
-                  </Reveal>
+                      )}
+                    </div>
+                    <span className="mt-6 inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust-light">
+                      Enter the tour
+                      <span
+                        aria-hidden="true"
+                        className="transition-transform group-hover:translate-x-0.5"
+                      >
+                        &rarr;
+                      </span>
+                    </span>
+                  </Link>
                 );
               })}
             </div>
@@ -818,105 +844,80 @@ export default function ToursPage() {
         </section>
       )}
 
-      {/* ============================================================
-          03 — IN PERSON: the Hyde Park walking tour
-          ============================================================ */}
-      <section className="grain relative overflow-hidden bg-forest py-20 md:py-28">
-        <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-        <span
-          aria-hidden="true"
-          className="index-numeral pointer-events-none absolute -right-6 top-8 select-none text-[11rem] leading-none text-cream/[0.05] md:text-[18rem]"
-        >
-          03
-        </span>
+      {/* In-Person Tours */}
+      <section className="bg-cream-dark py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="border-l-4 border-rust pl-8 md:pl-12">
+            <h2 className="font-display text-3xl text-forest md:text-5xl">
+              Hyde Park Walking Tour
+            </h2>
+          </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-          <SectionHeading
-            index="03"
-            eyebrow="In person"
-            title="The Hyde Park walking tour"
-            tone="dark"
-          />
-
-          <div className="mt-12 grid grid-cols-1 gap-12 md:mt-16 md:grid-cols-2 md:gap-16">
+          <div className="mt-12 grid grid-cols-1 gap-10 md:mt-16 md:grid-cols-2 md:gap-16">
             <div>
-              <p className="max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg md:leading-relaxed">
+              <p className="max-w-[52ch] font-body text-base leading-relaxed text-ink/70 md:text-lg md:leading-relaxed">
                 A two-hour walk through Hyde Park and the neighborhoods around
                 it, led by trained youth researchers. You hear the history of
-                redlining, urban renewal, and community resistance at the
-                places where it actually happened.
+                redlining, urban renewal, and community resistance at the places
+                where it actually happened.
               </p>
-              <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg md:leading-relaxed">
+              <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/70 md:text-lg md:leading-relaxed">
                 The tour covers the University of Chicago&rsquo;s expansion
                 campaigns, Bronzeville&rsquo;s redlining boundaries, and the
                 organizing that fought back.
               </p>
             </div>
 
-            <Reveal y={20} delay={0.1}>
-              <div className="flex flex-col border border-cream/15 bg-white/[0.04] p-8 md:p-10">
-                <div className="divide-y divide-cream/10">
-                  <div className="flex items-baseline justify-between pb-4">
-                    <span className="ledger text-cream/55">Duration</span>
-                    <span className="font-body text-sm font-semibold text-cream">
-                      2 hours
-                    </span>
-                  </div>
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="ledger text-cream/55">Location</span>
-                    <span className="font-body text-sm font-semibold text-cream">
-                      Hyde Park, Chicago
-                    </span>
-                  </div>
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="ledger text-cream/55">Guide</span>
-                    <span className="font-body text-sm font-semibold text-cream">
-                      Youth-led
-                    </span>
-                  </div>
-                  <div className="flex items-baseline justify-between pt-4">
-                    <span className="ledger text-cream/55">Group</span>
-                    <span className="font-body text-sm font-semibold text-cream">
-                      Small groups
-                    </span>
-                  </div>
+            <div className="flex flex-col justify-between rounded-sm border border-border bg-cream p-8 md:p-10">
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between border-b border-border pb-3">
+                  <span className="font-body text-sm text-warm-gray">Duration</span>
+                  <span className="font-body text-sm font-semibold text-forest">2 hours</span>
                 </div>
-                <Magnetic className="mt-10 self-start">
-                  <a
-                    href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                  >
-                    Book on Viator
-                  </a>
-                </Magnetic>
+                <div className="flex items-baseline justify-between border-b border-border pb-3">
+                  <span className="font-body text-sm text-warm-gray">Location</span>
+                  <span className="font-body text-sm font-semibold text-forest">Hyde Park, Chicago</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-border pb-3">
+                  <span className="font-body text-sm text-warm-gray">Guide</span>
+                  <span className="font-body text-sm font-semibold text-forest">Youth-led</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <span className="font-body text-sm text-warm-gray">Group</span>
+                  <span className="font-body text-sm font-semibold text-forest">Small groups</span>
+                </div>
               </div>
-            </Reveal>
+              <a
+                href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 self-center inline-flex items-center justify-center rounded-sm bg-rust px-10 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              >
+                Book on Viator
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============================================================
-          CLOSER — classroom cross-link
-          ============================================================ */}
-      <section className="bg-cream py-12 md:py-16">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-baseline justify-between gap-x-8 gap-y-4 px-6 lg:px-8">
-          <p className="font-body text-base text-ink/70">
-            Teaching this history? There is a free curriculum built for the
-            classroom.
+      {/*
+        MULTI-CITY: Uncomment this block and wrap Chicago content above
+        in {selectedCity === "chicago" ? ( <> ... </> ) : ( this block )}
+
+      <section className="bg-cream py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <h2 className="font-display text-3xl text-forest md:text-4xl">
+            {CITIES.find((c) => c.slug === selectedCity)?.name} Tours
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-ink/60">
+            Tours for this city are in development. Check back soon.
           </p>
-          <Link
-            href="/education"
-            className="group inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-          >
-            <span>See the curriculum</span>
-            <span aria-hidden="true" className="arrow-nudge">
-              &rarr;
-            </span>
+          <Link href="/get-involved" className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark">
+            Help Us Launch
           </Link>
         </div>
       </section>
+      */}
     </div>
   );
 }

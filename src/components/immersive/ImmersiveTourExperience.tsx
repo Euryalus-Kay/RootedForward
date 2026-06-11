@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils";
 import PanoViewer from "./PanoViewer";
 import TimelinePlayer from "./TimelinePlayer";
@@ -11,10 +10,10 @@ import type { ImmersiveTour } from "@/lib/immersive/types";
 /* ------------------------------------------------------------------ */
 /*  ImmersiveTourExperience: the 2D/3D hybrid tour reader.             */
 /*                                                                     */
-/*  Mostly 2D: each stop is a written chapter with ledger facts and    */
-/*  sources, navigated by a depth rail. Stops that carry 360 media     */
-/*  open a look-around moment inline; stops with a Studio sequence     */
-/*  play the edited hybrid cut.                                        */
+/*  Mostly 2D: each stop is a written chapter with facts and sources,  */
+/*  navigated by a depth rail. Stops that carry 360 media open a       */
+/*  look-around moment inline; stops with a Studio sequence play the   */
+/*  edited hybrid cut.                                                 */
 /* ------------------------------------------------------------------ */
 
 const MEDIUM_LABEL: Record<ImmersiveTour["medium"], string> = {
@@ -22,6 +21,9 @@ const MEDIUM_LABEL: Record<ImmersiveTour["medium"], string> = {
   street: "Street level",
   aerial: "Aerial",
 };
+
+const railLabel =
+  "font-body text-[11px] font-semibold uppercase tracking-[0.2em]";
 
 export default function ImmersiveTourExperience({
   tour,
@@ -64,8 +66,8 @@ export default function ImmersiveTourExperience({
     <div className="bg-cream">
       {/* Provenance note */}
       {tour.heroNote && (
-        <div className="mx-auto max-w-7xl px-6 pt-8 lg:px-8">
-          <div className="border-l-2 border-rust bg-white/40 px-5 py-3">
+        <div className="mx-auto max-w-6xl px-6 pt-8">
+          <div className="rounded-sm border-l-4 border-rust bg-cream-dark px-5 py-3">
             <p className="font-body text-sm leading-relaxed text-ink/70">
               {tour.heroNote}
             </p>
@@ -73,8 +75,8 @@ export default function ImmersiveTourExperience({
         </div>
       )}
 
-      <div className="mx-auto max-w-7xl px-6 py-12 md:py-16 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr] lg:gap-16">
+      <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[250px_1fr] lg:gap-14">
           {/* Depth rail */}
           <nav
             aria-label="Tour stops"
@@ -91,7 +93,7 @@ export default function ImmersiveTourExperience({
                       "rounded-sm border px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-wider transition-colors",
                       i === activeIndex
                         ? "border-rust bg-rust text-white"
-                        : "border-border bg-white/40 text-ink/70 hover:border-rust/50"
+                        : "border-border bg-cream text-ink/70 hover:border-rust/50"
                     )}
                   >
                     {String(i + 1).padStart(2, "0")}
@@ -103,8 +105,8 @@ export default function ImmersiveTourExperience({
             {/* Desktop: vertical depth gauge */}
             <div className="hidden lg:block">
               <div className="flex items-baseline justify-between border-b border-border pb-3">
-                <span className="ledger text-warm-gray">Route</span>
-                <span className="ledger text-warm-gray">
+                <span className={cn(railLabel, "text-warm-gray")}>Route</span>
+                <span className={cn(railLabel, "text-warm-gray")}>
                   {MEDIUM_LABEL[tour.medium]}
                 </span>
               </div>
@@ -119,15 +121,15 @@ export default function ImmersiveTourExperience({
                           "absolute -left-[23px] top-3 h-[7px] w-[7px] rounded-full border transition-colors",
                           active
                             ? "border-rust bg-rust"
-                            : "border-warm-gray-light bg-cream"
+                            : "border-warm-gray/50 bg-cream"
                         )}
                       />
                       <button
                         type="button"
                         onClick={() => scrollTo(i)}
                         className={cn(
-                          "block w-full rounded-sm px-2 py-2 text-left transition-colors hover:bg-cream-dark/60",
-                          active && "bg-cream-dark/60"
+                          "block w-full rounded-sm px-2 py-2 text-left transition-colors hover:bg-cream-dark/70",
+                          active && "bg-cream-dark/70"
                         )}
                       >
                         <span
@@ -140,7 +142,12 @@ export default function ImmersiveTourExperience({
                           {stop.title}
                         </span>
                         {stop.depthLabel && (
-                          <span className="ledger mt-0.5 block text-warm-gray">
+                          <span
+                            className={cn(
+                              railLabel,
+                              "mt-0.5 block text-warm-gray"
+                            )}
+                          >
                             {stop.depthLabel}
                           </span>
                         )}
@@ -150,7 +157,7 @@ export default function ImmersiveTourExperience({
                 })}
               </ol>
               <div className="mt-5 border-t border-border pt-4">
-                <p className="ledger text-warm-gray">
+                <p className={cn(railLabel, "text-warm-gray")}>
                   {tour.stops.length} stops &middot; {lookAroundCount}{" "}
                   look-around
                 </p>
@@ -172,57 +179,55 @@ export default function ImmersiveTourExperience({
                   i > 0 && "mt-16 border-t border-border pt-14 md:mt-20"
                 )}
               >
-                {/* Ledger header */}
+                {/* Header row */}
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                  <p className="ledger text-warm-gray">
+                  <p className={cn(railLabel, "text-warm-gray")}>
                     Stop {String(i + 1).padStart(2, "0")}
                     {stop.kicker ? ` / ${stop.kicker}` : ""}
                   </p>
                   {stop.depthLabel && (
-                    <p className="ledger text-rust">{stop.depthLabel}</p>
+                    <p className={cn(railLabel, "text-rust")}>
+                      {stop.depthLabel}
+                    </p>
                   )}
                 </div>
 
-                <Reveal y={16}>
-                  <h2 className="mt-3 max-w-2xl font-display text-3xl leading-tight text-forest md:text-4xl">
-                    {stop.title}
-                  </h2>
-                </Reveal>
+                <h2 className="mt-3 max-w-2xl font-display text-3xl leading-tight text-forest md:text-4xl">
+                  {stop.title}
+                </h2>
 
-                <Reveal y={14} delay={0.05}>
-                  <p className="mt-6 max-w-[62ch] font-body text-lg leading-relaxed text-ink/80">
-                    {stop.body}
-                  </p>
-                </Reveal>
+                <p className="mt-6 max-w-[62ch] font-body text-lg leading-relaxed text-ink/80">
+                  {stop.body}
+                </p>
 
                 {/* Look-around moment */}
                 {stop.media && (
-                  <Reveal y={18} delay={0.08} className="mt-10">
+                  <div className="mt-10">
                     <PanoViewer media={stop.media} label={stop.title} />
-                    <p className="ledger mt-3 text-warm-gray">
+                    <p className={cn(railLabel, "mt-3 text-warm-gray")}>
                       Look around / drag the frame
                       {stop.media.kind === "video360"
                         ? ", 360 video"
                         : ", 360 photo"}
                     </p>
-                  </Reveal>
+                  </div>
                 )}
 
                 {/* Studio sequence */}
                 {stop.sequence && stop.sequence.segments.length > 0 && (
-                  <Reveal y={18} delay={0.08} className="mt-10">
+                  <div className="mt-10">
                     <TimelinePlayer doc={stop.sequence} />
-                    <p className="ledger mt-3 text-warm-gray">
+                    <p className={cn(railLabel, "mt-3 text-warm-gray")}>
                       Edited sequence / {stop.sequence.title}
                     </p>
-                  </Reveal>
+                  </div>
                 )}
 
-                {/* Facts ledger */}
+                {/* Facts */}
                 {stop.facts && stop.facts.length > 0 && (
-                  <div className="mt-10 border border-border bg-white/40">
+                  <div className="mt-10 rounded-sm border border-border bg-cream-dark/50">
                     <div className="border-b border-border px-5 py-3">
-                      <span className="ledger text-warm-gray">
+                      <span className={cn(railLabel, "text-warm-gray")}>
                         On the record
                       </span>
                     </div>
@@ -232,7 +237,9 @@ export default function ImmersiveTourExperience({
                           key={fi}
                           className="flex items-baseline gap-4 px-5 py-3"
                         >
-                          <span className="ledger shrink-0 text-rust">
+                          <span
+                            className={cn(railLabel, "shrink-0 text-rust")}
+                          >
                             {String(fi + 1).padStart(2, "0")}
                           </span>
                           <span className="font-body text-sm leading-relaxed text-ink/75">
@@ -247,14 +254,25 @@ export default function ImmersiveTourExperience({
                 {/* Sources */}
                 {stop.sources.length > 0 && (
                   <div className="mt-8">
-                    <p className="eyebrow text-warm-gray">Sources</p>
+                    <p
+                      className={cn(
+                        "font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray"
+                      )}
+                    >
+                      Sources
+                    </p>
                     <ol className="mt-3 space-y-2">
                       {stop.sources.map((source, si) => (
                         <li
                           key={si}
                           className="flex items-baseline gap-3 font-body text-sm leading-relaxed text-ink/60"
                         >
-                          <span className="ledger shrink-0 text-warm-gray">
+                          <span
+                            className={cn(
+                              railLabel,
+                              "shrink-0 text-warm-gray"
+                            )}
+                          >
                             {String(si + 1).padStart(2, "0")}
                           </span>
                           <span>{source}</span>
@@ -271,7 +289,7 @@ export default function ImmersiveTourExperience({
 
       {/* Closer: cross-link to the street-level tours */}
       <div className="border-t border-border">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-baseline justify-between gap-x-8 gap-y-4 px-6 py-10 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-x-8 gap-y-4 px-6 py-10">
           <p className="font-body text-base text-ink/70">
             The same history runs at street level. Walk it stop by stop.
           </p>
@@ -280,7 +298,10 @@ export default function ImmersiveTourExperience({
             className="group inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
           >
             <span>All tours</span>
-            <span aria-hidden="true" className="arrow-nudge">
+            <span
+              aria-hidden="true"
+              className="transition-transform group-hover:translate-x-0.5"
+            >
               &rarr;
             </span>
           </Link>

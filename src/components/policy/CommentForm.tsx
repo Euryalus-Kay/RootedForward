@@ -109,24 +109,22 @@ export default function CommentForm({
 
   if (checking) {
     return (
-      <div id="comment" className="border border-border bg-white/40 p-7">
-        <p className="ledger text-warm-gray">Public comment</p>
-        <p className="mt-3 font-body text-sm text-warm-gray">Loading&hellip;</p>
+      <div id="comment" className="rounded-sm border border-border bg-cream-dark p-6">
+        <p className="font-body text-sm text-warm-gray">Loading&hellip;</p>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div id="comment" className="border border-border bg-white/40 p-7">
-        <p className="ledger text-warm-gray">Public comment</p>
-        <h3 className="mt-3 font-display text-xl text-forest">Submit Public Comment</h3>
+      <div id="comment" className="rounded-sm border border-border bg-cream-dark p-6">
+        <h3 className="font-display text-lg text-forest">Submit Public Comment</h3>
         <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
           Sign in to submit your comment on this campaign.
         </p>
         <Link
           href={`/auth/login?redirect=/policy/campaigns/${campaignSlug}#comment`}
-          className="mt-5 inline-flex items-center rounded-sm bg-rust px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          className="mt-4 inline-flex items-center rounded-sm bg-rust px-5 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-rust-dark"
         >
           Sign In
         </Link>
@@ -136,15 +134,14 @@ export default function CommentForm({
 
   if (submitted) {
     return (
-      <div id="comment" className="border border-border bg-white/40 p-7">
-        <p className="ledger text-warm-gray">Public comment</p>
-        <h3 className="mt-3 font-display text-xl text-forest">Comment Submitted</h3>
+      <div id="comment" className="rounded-sm border border-border bg-cream-dark p-6">
+        <h3 className="font-display text-lg text-forest">Comment Submitted</h3>
         <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
           Your comment is pending review. Once approved, it will appear in the
           public feed below.
         </p>
         {existingComment && (
-          <blockquote className="mt-4 border-l-2 border-rust/40 pl-4 font-body text-sm italic leading-relaxed text-ink/60">
+          <blockquote className="mt-4 border-l-2 border-border pl-4 font-body text-sm italic leading-relaxed text-ink/60">
             {existingComment}
           </blockquote>
         )}
@@ -153,9 +150,8 @@ export default function CommentForm({
   }
 
   return (
-    <div id="comment" className="border border-border bg-white/40 p-7">
-      <p className="ledger text-warm-gray">Public comment</p>
-      <h3 className="mt-3 font-display text-xl text-forest">Submit Public Comment</h3>
+    <div id="comment" className="rounded-sm border border-border bg-cream-dark p-6">
+      <h3 className="font-display text-lg text-forest">Submit Public Comment</h3>
       <p className="mt-2 font-body text-sm leading-relaxed text-ink/60">
         Your comment will be reviewed before publication. Approved comments
         are compiled and delivered to the target body.
@@ -164,13 +160,13 @@ export default function CommentForm({
         value={commentBody}
         onChange={(e) => setCommentBody(e.target.value)}
         rows={8}
-        className="mt-5 w-full resize-y rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm leading-relaxed text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
+        className="mt-4 w-full resize-y rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm leading-relaxed text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
         placeholder="Write your public comment here..."
       />
-      <p className="ledger mt-2 text-warm-gray">
+      <p className="mt-1 font-body text-xs text-warm-gray">
         {wordCount} words &middot; 150&ndash;400 recommended
       </p>
-      <label className="mt-4 flex items-center gap-2.5 font-body text-sm text-ink/75">
+      <label className="mt-3 flex items-center gap-2 font-body text-sm text-ink/75">
         <input
           type="checkbox"
           checked={isPublic}

@@ -81,7 +81,7 @@ export default function TourCertificate({
         <div
           ref={certificateRef}
           className={cn(
-            "rf-certificate relative overflow-hidden rounded-sm border-2 border-forest bg-cream p-8 shadow-lg",
+            "rf-certificate relative overflow-hidden rounded-2xl border-2 border-forest bg-cream p-8 shadow-lg",
             "sm:p-10 md:p-12"
           )}
         >
@@ -211,14 +211,14 @@ export default function TourCertificate({
           >
             <button
               onClick={handleDownload}
-              className="inline-flex items-center gap-2 rounded-sm border border-border bg-cream px-4 py-2.5 font-body text-sm font-medium text-ink-light transition-colors hover:bg-cream-dark"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-cream px-4 py-2.5 font-body text-sm font-medium text-ink-light transition-colors hover:bg-cream-dark"
             >
               <Download size={16} />
               Download
             </button>
             <button
               onClick={() => setIsShareOpen(true)}
-              className="inline-flex items-center gap-2 rounded-sm bg-forest px-4 py-2.5 font-body text-sm font-medium text-cream transition-colors hover:bg-forest-light"
+              className="inline-flex items-center gap-2 rounded-lg bg-forest px-4 py-2.5 font-body text-sm font-medium text-cream transition-colors hover:bg-forest-light"
             >
               <Share2 size={16} />
               Share Achievement

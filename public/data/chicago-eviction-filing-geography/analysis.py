@@ -5,7 +5,7 @@ Where Chicago Files Evictions and Who Bears the Filings
 
 Descriptive analysis of the geography of residential eviction filings in
 Chicago, 2010-2019, using the Law Center for Better Housing (LCBH) Chicago
-Evictions Data, Release 2 (published December 2020).
+Evictions Data, Release 2 (published 2020-12-17).
 
 Source files shipped in this directory (unmodified from the LCBH ZIP):
   - eviction_data_comm_area.csv  77 community areas x 10 years (770 rows)
@@ -195,26 +195,6 @@ def main():
     for a in lead:
         sub = area[area["area_name"] == a]["eviction_filings_rate"]
         print(f"  {a:<18} min {sub.min():>5.2f}  max {sub.max():>5.2f}  mean {sub.mean():>5.2f}")
-
-    # South Shore filing counts and rental stock, for the in-text scale claims
-    ss_yr = area[area["area_name"] == "South Shore"].sort_values("filing_year")
-    print("\nSouth Shore filings by year (eviction_filings_total):")
-    print(f"{'year':>6}{'filings':>10}{'rate':>8}")
-    for _, r in ss_yr.iterrows():
-        print(f"{int(r['filing_year']):>6}{int(r['eviction_filings_total']):>10}"
-              f"{r['eviction_filings_rate']:>8.2f}")
-    ss_census = census[census["area_name"] == "South Shore"]
-    for _, r in ss_census.iterrows():
-        print(f"  South Shore rental units, ACS {r['census_year']}: "
-              f"{int(r['housing_units_rental']):,}")
-
-    # 2019 snapshot: the highest-rate areas in the final year of the series
-    yr2019 = (area[area["filing_year"] == 2019]
-              .nlargest(12, "eviction_filings_rate"))
-    print("\nTop 12 community areas by filing rate, 2019 only:")
-    print(f"{'rank':>4}  {'community area':<26}{'2019 rate':>10}")
-    for i, (_, r) in enumerate(yr2019.iterrows(), 1):
-        print(f"{i:>4}  {r['area_name']:<26}{r['eviction_filings_rate']:>10.2f}")
 
     # Stability of the geography: are the same areas on top every year?
     hr("3b. IS IT THE SAME GEOGRAPHY EVERY YEAR?  (top-10-by-rate membership)")

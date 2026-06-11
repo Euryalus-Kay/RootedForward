@@ -2,8 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import PageBanner from "@/components/layout/PageBanner";
-import { Reveal } from "@/components/motion/Reveal";
 import DraftingArea from "@/components/policy/DraftingArea";
 import { PLACEHOLDER_GUIDES, PLACEHOLDER_CAMPAIGNS } from "@/lib/policy-constants";
 import type { Guide } from "@/lib/policy-constants";
@@ -56,14 +54,14 @@ function RenderGuideContent({ markdown }: { markdown: string }) {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/-$/, "")}
-          className="mt-12 mb-5 font-display text-2xl text-forest scroll-mt-24 md:text-3xl"
+          className="mt-12 mb-4 font-display text-2xl text-forest scroll-mt-24"
         >
           {line.replace("## ", "")}
         </h2>
       );
     } else if (line.startsWith("**") && line.endsWith("**")) {
       elements.push(
-        <p key={i} className="my-4 font-body text-base font-semibold text-ink">
+        <p key={i} className="my-3 font-body text-base font-semibold text-ink">
           {line.replace(/\*\*/g, "")}
         </p>
       );
@@ -75,7 +73,7 @@ function RenderGuideContent({ markdown }: { markdown: string }) {
         items.push(lines[i].replace("- ", ""));
       }
       elements.push(
-        <ul key={i} className="my-4 list-disc pl-6 font-body text-base leading-relaxed text-ink/75 space-y-1.5">
+        <ul key={i} className="my-3 list-disc pl-6 font-body text-base leading-relaxed text-ink/75 space-y-1">
           {items.map((item, j) => (
             <li key={j}>{item}</li>
           ))}
@@ -105,7 +103,7 @@ function RenderGuideContent({ markdown }: { markdown: string }) {
       });
 
       elements.push(
-        <p key={i} className="my-4 font-body text-base leading-relaxed text-ink/75">
+        <p key={i} className="my-3 font-body text-base leading-relaxed text-ink/75">
           {rendered}
         </p>
       );
@@ -148,32 +146,30 @@ export default async function GuideDetailPage({ params }: PageProps) {
 
   return (
     <PageTransition>
-      {/* ============================================================
-          COMPACT BANNER
-          ============================================================ */}
-      <PageBanner
-        compact
-        eyebrow="Policy / Guides"
-        title={guide.title}
-        meta={[`${guide.read_time_minutes} min read`, `Updated ${lastUpdated}`]}
-      />
-
-      <section className="bg-cream py-14 md:py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+      <section className="bg-cream pb-20 pt-28 md:pb-28 md:pt-36">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Main content */}
-            <article className="max-w-3xl lg:col-span-8">
-              {/* Why use this guide */}
-              {guide.why_use && (
-                <Reveal y={16}>
-                  <div className="border-b border-border pb-6">
-                    <p className="ledger text-warm-gray">When to use this</p>
-                    <p className="mt-3 font-body text-base leading-relaxed text-ink/75">
-                      {guide.why_use}
-                    </p>
-                  </div>
-                </Reveal>
-              )}
+            <article className="lg:col-span-8">
+              <nav className="font-body text-xs text-warm-gray">
+                <Link href="/policy" className="hover:text-forest">
+                  Policy
+                </Link>
+                {" / "}
+                <span className="text-ink/50">Guides</span>
+              </nav>
+
+              <h1 className="mt-6 font-display text-3xl leading-snug text-forest md:text-4xl">
+                {guide.title}
+              </h1>
+
+              <div className="mt-3 flex items-center gap-4 font-body text-sm text-warm-gray">
+                <span>{guide.read_time_minutes} min read</span>
+                <span>&middot;</span>
+                <span>Updated {lastUpdated}</span>
+              </div>
+
+              <hr className="my-8 border-border" />
 
               <div className="max-w-[65ch]">
                 <RenderGuideContent markdown={guide.content_markdown} />
@@ -184,27 +180,24 @@ export default async function GuideDetailPage({ params }: PageProps) {
 
               {/* Related campaigns */}
               {activeCampaigns.length > 0 && (
-                <div className="mt-16 border-t border-border pt-10">
-                  <p className="ledger text-warm-gray">Put it to work</p>
-                  <h2 className="mt-3 font-display text-2xl text-forest">
+                <div className="mt-16">
+                  <hr className="mb-8 border-border" />
+                  <h2 className="font-display text-xl text-forest">
                     Active Campaigns
                   </h2>
-                  <div className="mt-6 border-t border-border">
+                  <div className="mt-4 flex flex-col gap-3">
                     {activeCampaigns.map((c) => (
                       <Link
                         key={c.id}
                         href={`/policy/campaigns/${c.slug}`}
-                        className="group flex items-baseline justify-between gap-6 border-b border-border py-5 transition-colors hover:bg-white/40 md:px-3"
+                        className="rounded-sm border border-border px-5 py-4 transition-colors hover:bg-cream-dark"
                       >
-                        <div>
-                          <p className="ledger text-rust">{c.category}</p>
-                          <p className="mt-1.5 font-display text-lg leading-snug text-forest transition-colors group-hover:text-rust">
-                            {c.title}
-                          </p>
-                        </div>
-                        <span aria-hidden="true" className="arrow-nudge text-rust">
-                          &rarr;
-                        </span>
+                        <p className="font-body text-xs font-semibold uppercase tracking-wider text-rust">
+                          {c.category}
+                        </p>
+                        <p className="mt-1 font-display text-base text-forest">
+                          {c.title}
+                        </p>
                       </Link>
                     ))}
                   </div>
@@ -215,28 +208,21 @@ export default async function GuideDetailPage({ params }: PageProps) {
             {/* TOC sidebar */}
             {headings.length > 0 && (
               <aside className="hidden lg:col-span-4 lg:block">
-                <div className="sticky top-24 border-l border-border pl-8">
-                  <p className="ledger text-warm-gray">On this page</p>
-                  <nav className="mt-5 flex flex-col gap-3">
+                <div className="sticky top-24">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                    On this page
+                  </p>
+                  <nav className="mt-4 flex flex-col gap-2">
                     {headings.map((h) => (
                       <a
                         key={h.id}
                         href={`#${h.id}`}
-                        className="link-draw self-start font-body text-sm text-ink/60 transition-colors hover:text-forest"
+                        className="font-body text-sm text-ink/60 transition-colors hover:text-forest"
                       >
                         {h.text}
                       </a>
                     ))}
                   </nav>
-                  <div className="mt-8 border-t border-border pt-6">
-                    <Link
-                      href="/policy"
-                      className="group inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust"
-                    >
-                      All policy tools
-                      <span aria-hidden="true" className="arrow-nudge">&rarr;</span>
-                    </Link>
-                  </div>
                 </div>
               </aside>
             )}

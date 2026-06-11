@@ -4,31 +4,27 @@
 /*  ResearchFeed                                                       */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  Client component for the /research catalog. Owns the active       */
-/*  filter state, handles pagination, and renders the section          */
-/*  heading, the sticky filter bar, the hairline entry grid, and       */
-/*  the empty state. Section index 02 of the page.                     */
+/*  Client component for the /research entry list. Owns the active    */
+/*  filter state, handles pagination, and renders the filter bar,    */
+/*  the list itself, and the empty state.                              */
 /*                                                                     */
-/*  The whole feed is client-side so filters can update without a     */
+/*  The whole feed is client-side so filters can update without a   */
 /*  page reload. The URL is synced for shareability.                   */
-/*                                                                     */
-/*  Archive numbering: every entry gets a stable "No. NN" computed    */
-/*  from its chronological position in the full list (oldest = 01),   */
-/*  so the numbers do not shuffle when filters or sort change.         */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
-import { useCallback, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import FilterBar from "@/components/research/FilterBar";
 import EntryCard from "@/components/research/EntryCard";
 import type { ResearchEntry } from "@/lib/types/database";
 import {
+  DEFAULT_FILTERS,
   ENTRIES_PER_PAGE,
   applyFilters,
-  filtersToParams,
   paginateEntries,
   parseFiltersFromParams,
+  type ResearchFilters,
 } from "@/lib/research-constants";
 
 interface ResearchFeedProps {
@@ -36,55 +32,46 @@ interface ResearchFeedProps {
 }
 
 export default function ResearchFeed({ entries }: ResearchFeedProps) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  /* ---- Single source of truth: the URL ----
-     FilterBar writes filter changes to the URL (which also drops any
-     page param, resetting to page 1); pagination writes the page
-     param here. Everything below derives, so back/forward and shared
-     links work with no state syncing. */
-  const filters = useMemo(
-    () =>
-      parseFiltersFromParams(new URLSearchParams(searchParams.toString())),
-    [searchParams]
+  /* ---- Filter state, initialised from URL ---- */
+  const [filters, setFilters] = useState<ResearchFilters>(() =>
+    parseFiltersFromParams(new URLSearchParams(searchParams.toString()))
   );
 
-  const page = useMemo(() => {
+  /* ---- Pagination (1-indexed) ---- */
+  const [page, setPage] = useState<number>(() => {
     const raw = searchParams.get("page");
     const n = raw ? parseInt(raw, 10) : 1;
     return Number.isFinite(n) && n > 0 ? n : 1;
-  }, [searchParams]);
+  });
 
-  /* FilterBar pushes the new filters into the URL itself; deriving
-     from the URL makes this prop a formality. */
-  const handleFiltersChange = useCallback(() => {}, []);
-
-  const goToPage = useCallback(
-    (p: number) => {
-      const params = filtersToParams(filters);
-      if (p > 1) params.set("page", String(p));
-      const qs = params.toString();
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+  /* Reset to page 1 when filters change (user gesture) */
+  const handleFiltersChange = useCallback(
+    (next: ResearchFilters) => {
+      setFilters((prev) => {
+        const filterDidChange =
+          prev.topic !== next.topic ||
+          prev.city !== next.city ||
+          prev.format !== next.format ||
+          prev.sort !== next.sort;
+        if (filterDidChange) setPage(1);
+        return next;
+      });
     },
-    [filters, pathname, router]
+    []
   );
 
-  /* ---- Stable archive numbers, oldest entry = 1 ---- */
-  const archiveNumbers = useMemo(() => {
-    const sorted = [...entries].sort(
-      (a, b) =>
-        new Date(a.published_date).getTime() -
-        new Date(b.published_date).getTime()
+  /* Keep state synced with back/forward URL changes */
+  useEffect(() => {
+    const parsed = parseFiltersFromParams(
+      new URLSearchParams(searchParams.toString())
     );
-    const map = new Map<string, number>();
-    sorted.forEach((e, i) => map.set(e.id, i + 1));
-    return map;
-  }, [entries]);
+    setFilters(parsed);
+    const raw = searchParams.get("page");
+    const n = raw ? parseInt(raw, 10) : 1;
+    setPage(Number.isFinite(n) && n > 0 ? n : 1);
+  }, [searchParams]);
 
   /* ---- Filtered + paginated view ---- */
   const filtered = useMemo(
@@ -98,25 +85,15 @@ export default function ResearchFeed({ entries }: ResearchFeedProps) {
   );
 
   const handleFilterReset = useCallback(() => {
-    router.replace(pathname, { scroll: false });
-  }, [pathname, router]);
+    setFilters(DEFAULT_FILTERS);
+    setPage(1);
+  }, []);
 
   return (
     <section aria-labelledby="research-feed-heading" className="bg-cream">
-      {/* Section index row + heading */}
-      <div className="mx-auto max-w-7xl px-6 pb-10 lg:px-8 md:pb-12">
-        <div className="flex items-center gap-4">
-          <span className="index-numeral text-sm text-rust">02</span>
-          <p className="eyebrow text-warm-gray">Catalog</p>
-          <div className="h-px flex-1 bg-border" aria-hidden="true" />
-        </div>
-        <h2
-          id="research-feed-heading"
-          className="mt-6 font-display text-3xl text-forest md:text-4xl"
-        >
-          The full archive
-        </h2>
-      </div>
+      <h2 id="research-feed-heading" className="sr-only">
+        Research archive
+      </h2>
 
       <FilterBar
         filters={filters}
@@ -124,7 +101,7 @@ export default function ResearchFeed({ entries }: ResearchFeedProps) {
         resultCount={filtered.length}
       />
 
-      <div className="mx-auto max-w-7xl px-6 pb-20 pt-10 lg:px-8 md:pb-28 md:pt-14">
+      <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:pb-28 md:pt-16">
         {filtered.length === 0 ? (
           <div className="max-w-xl">
             <p className="font-body text-[17px] leading-relaxed text-ink/75">
@@ -140,64 +117,53 @@ export default function ResearchFeed({ entries }: ResearchFeedProps) {
           </div>
         ) : (
           <>
-            {/* Hairline catalog grid */}
-            <div className="grid grid-cols-1 gap-px border border-border bg-border md:grid-cols-2">
+            <div className="flex flex-col gap-14 md:gap-16">
               {pagination.items.map((entry) => (
-                <EntryCard
-                  key={entry.id}
-                  entry={entry}
-                  number={archiveNumbers.get(entry.id)}
-                />
+                <EntryCard key={entry.id} entry={entry} />
               ))}
-              {pagination.items.length % 2 === 1 && (
-                <div
-                  className="hidden bg-cream md:block"
-                  aria-hidden="true"
-                />
-              )}
             </div>
 
             {(pagination.hasOlder || pagination.hasNewer) && (
               <nav
-                className="mt-12 flex items-center justify-between border-t border-border pt-6"
+                className="mt-16 flex items-center justify-between border-t border-border pt-6 font-body text-[14px]"
                 aria-label="Archive pagination"
               >
                 {pagination.hasNewer ? (
                   <button
                     type="button"
-                    onClick={() => goToPage(Math.max(1, page - 1))}
-                    className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
+                    onClick={() => {
+                      setPage((p) => Math.max(1, p - 1));
+                      if (typeof window !== "undefined") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className="text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
                   >
-                    <span aria-hidden="true">&larr;</span>
-                    Newer
+                    &larr; Newer
                   </button>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray/50">
-                    <span aria-hidden="true">&larr;</span>
-                    Newer
-                  </span>
+                  <span className="text-warm-gray">&larr; Newer</span>
                 )}
 
-                <p className="ledger text-warm-gray">
-                  Page {pagination.page} / {pagination.totalPages}
+                <p className="text-warm-gray">
+                  Page {pagination.page} of {pagination.totalPages}
                 </p>
 
                 {pagination.hasOlder ? (
                   <button
                     type="button"
-                    onClick={() => goToPage(page + 1)}
-                    className="group inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
+                    onClick={() => {
+                      setPage((p) => p + 1);
+                      if (typeof window !== "undefined") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className="text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
                   >
-                    Older
-                    <span aria-hidden="true" className="arrow-nudge">
-                      &rarr;
-                    </span>
+                    Older &rarr;
                   </button>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray/50">
-                    Older
-                    <span aria-hidden="true">&rarr;</span>
-                  </span>
+                  <span className="text-warm-gray">Older &rarr;</span>
                 )}
               </nav>
             )}

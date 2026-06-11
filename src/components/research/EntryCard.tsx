@@ -2,21 +2,20 @@
 /*  EntryCard                                                          */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  A single cell in the /research hairline catalog grid.             */
+/*  A single entry in the /research vertical feed.                    */
 /*                                                                     */
 /*  Structure (in order of visual importance):                        */
-/*  1. Ledger row — archive number + topic on the left, format on     */
-/*     the right. DM Mono, quiet, bibliographic.                       */
-/*  2. Title — display serif, clickable.                               */
-/*  3. Abstract — body text, clamped to four lines so grid rows       */
-/*     stay even.                                                      */
-/*  4. Author line — names, date, city in small muted text.           */
-/*  5. Hairline footer — Read link, PDF link, citation count.         */
+/*  1. Title — serif, medium-large, clickable.                         */
+/*  2. Abstract — body text, max 65ch.                                 */
+/*  3. Author line — names + date, small muted text.                  */
+/*  4. Metadata line — topic · city · format, small muted text.       */
+/*  5. Citation count — "N citations" linking to #citations on the    */
+/*     detail page.                                                    */
+/*  6. Links — "Read →" and "PDF →" as inline text links.              */
 /*                                                                     */
-/*  Cells sit edge to edge inside a gap-px bg-border grid, so the     */
-/*  card itself paints a solid cream background and hovers with a     */
-/*  background shift rather than a lift (a lift would tear the        */
-/*  hairline grid apart).                                              */
+/*  No shadows, no pills, no colored tags. The metadata is quiet —     */
+/*  it's meant to read like bibliographic fine print on a library      */
+/*  catalog card, not a dashboard result.                              */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -26,8 +25,6 @@ import { cityLabel, formatLabel } from "@/lib/research-constants";
 
 interface EntryCardProps {
   entry: ResearchEntry;
-  /** Stable archive number, oldest entry = 1. Rendered as "No. 01". */
-  number?: number;
 }
 
 function formatAuthorList(authors: string[]): string {
@@ -46,84 +43,68 @@ function formatPublishedDate(raw: string): string {
   });
 }
 
-export default function EntryCard({ entry, number }: EntryCardProps) {
+export default function EntryCard({ entry }: EntryCardProps) {
   const href = `/research/${entry.slug}`;
   const citationCount = entry.citations?.length ?? 0;
 
   return (
-    <article className="flex h-full flex-col bg-cream p-7 transition-colors duration-300 hover:bg-white/50 md:p-8">
-      {/* Ledger row */}
-      <div className="flex items-baseline justify-between gap-4">
-        <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-          {number !== undefined && (
-            <span className="ledger text-warm-gray">
-              No. {String(number).padStart(2, "0")}
-            </span>
-          )}
-          <span className="ledger text-rust">{entry.topic}</span>
-        </div>
-        <span className="ledger shrink-0 text-warm-gray">
-          {formatLabel(entry.format)}
-        </span>
-      </div>
-
-      {/* Title */}
-      <h3 className="mt-5 font-display text-[22px] leading-[1.15] md:text-2xl">
+    <article className="max-w-3xl">
+      <h2 className="font-display text-[26px] leading-[1.2] md:text-[28px]">
         <Link
           href={href}
           className="text-forest transition-colors hover:text-rust"
         >
           {entry.title}
         </Link>
-      </h3>
+      </h2>
 
-      {/* Abstract */}
-      <p className="mt-4 line-clamp-4 flex-1 font-body text-[15px] leading-[1.65] text-ink/70">
+      <p className="mt-3 max-w-[65ch] font-body text-[16px] leading-[1.7] text-ink/75">
         {entry.abstract}
       </p>
 
-      {/* Bibliographic line */}
-      <p className="mt-5 font-body text-[13px] leading-relaxed text-warm-gray">
-        {formatAuthorList(entry.authors)}
+      <p className="mt-4 font-body text-[13px] leading-relaxed text-warm-gray">
+        Published by {formatAuthorList(entry.authors)}
         <span className="mx-1.5">·</span>
         {formatPublishedDate(entry.published_date)}
-        <span className="mx-1.5">·</span>
-        {cityLabel(entry.city)}
       </p>
 
-      {/* Hairline footer */}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border pt-4">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <Link
-            href={href}
-            className="group inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-          >
-            Read
-            <span aria-hidden="true" className="arrow-nudge">
-              &rarr;
-            </span>
-          </Link>
-          {entry.pdf_url && (
-            <a
-              href={entry.pdf_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-draw font-body text-[13px] text-forest"
-            >
-              PDF
-            </a>
-          )}
-        </div>
+      <p className="mt-0.5 font-body text-[13px] leading-relaxed text-warm-gray">
+        <span>{entry.topic}</span>
+        <span className="mx-1.5">·</span>
+        <span>{cityLabel(entry.city)}</span>
+        <span className="mx-1.5">·</span>
+        <span>{formatLabel(entry.format)}</span>
+      </p>
 
-        {citationCount > 0 && (
+      {citationCount > 0 && (
+        <p className="mt-2 font-body text-[13px] leading-relaxed text-warm-gray">
           <Link
             href={`${href}#citations`}
-            className="ledger text-warm-gray transition-colors hover:text-forest"
+            className="underline decoration-transparent underline-offset-2 transition-colors hover:decoration-warm-gray"
           >
             {citationCount} citation{citationCount === 1 ? "" : "s"}
           </Link>
+        </p>
+      )}
+
+      <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 font-body text-[14px]">
+        <Link
+          href={href}
+          className="text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
+        >
+          Read &rarr;
+        </Link>
+        {entry.pdf_url && (
+          <a
+            href={entry.pdf_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
+          >
+            PDF &rarr;
+          </a>
         )}
-      </div>
+      </p>
     </article>
   );
 }

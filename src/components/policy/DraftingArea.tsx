@@ -70,12 +70,11 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
   }
 
   return (
-    <div className="mt-16 border border-border bg-white/40 p-7 md:p-8">
-      <p className="ledger text-warm-gray">Workspace</p>
-      <h2 className="mt-3 font-display text-2xl text-forest">
+    <div className="mt-16 rounded-sm border-2 border-border bg-cream-dark p-6 md:p-8">
+      <h2 className="font-display text-xl text-forest">
         Draft It Here
       </h2>
-      <p className="mt-2 max-w-[62ch] font-body text-sm leading-relaxed text-ink/65">
+      <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
         Use the space below to write your draft. When you are done, copy
         it to send yourself or request a Rooted Forward member to review it
         before you submit.
@@ -85,21 +84,21 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         rows={10}
-        className="mt-5 w-full resize-y rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm leading-relaxed text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
+        className="mt-4 w-full resize-y rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm leading-relaxed text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
         placeholder="Start writing your draft here..."
       />
 
       <div className="mt-2 flex items-center justify-between">
-        <p className="ledger text-warm-gray">
+        <p className="font-body text-xs text-warm-gray">
           {wordCount} {wordCount === 1 ? "word" : "words"}
         </p>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-3 border-t border-border pt-5">
+      <div className="mt-4 flex flex-wrap gap-3">
         <button
           onClick={handleCopy}
           disabled={!draft.trim()}
-          className="inline-flex items-center rounded-sm border border-forest/40 px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:border-forest hover:bg-forest hover:text-cream disabled:opacity-40 disabled:hover:border-forest/40 disabled:hover:bg-transparent disabled:hover:text-forest"
+          className="inline-flex items-center rounded-sm border-2 border-forest px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-forest"
         >
           {copied ? "Copied" : "Copy to Clipboard"}
         </button>
@@ -112,7 +111,7 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
             {draftId && (
               <Link
                 href={`/policy/drafts/${draftId}`}
-                className="px-5 font-body text-xs text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust"
+                className="px-5 font-body text-xs text-rust underline underline-offset-2"
               >
                 View your draft and feedback
               </Link>
@@ -132,7 +131,7 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
 
       {!user && (
         <p className="mt-3 font-body text-xs text-warm-gray">
-          <Link href="/auth/login" className="text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust">
+          <Link href="/auth/login" className="text-rust underline underline-offset-2">
             Sign in
           </Link>{" "}
           to request a review from the Rooted Forward team.
@@ -140,14 +139,14 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
         </p>
       )}
 
-      <p className="mt-4 max-w-[64ch] font-body text-xs leading-relaxed text-ink/50">
+      <p className="mt-4 font-body text-xs leading-relaxed text-ink/50">
         &ldquo;Request a Review&rdquo; sends your draft to a Rooted Forward
         team member who can give feedback before you submit it officially.
         You will be able to see their comments and reply on the draft page.
         You can also copy your draft and email it to{" "}
         <a
           href="mailto:contact@rooted-forward.org"
-          className="text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust"
+          className="text-rust underline underline-offset-2"
         >
           contact@rooted-forward.org
         </a>

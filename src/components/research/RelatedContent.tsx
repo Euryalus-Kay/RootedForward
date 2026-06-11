@@ -60,32 +60,26 @@ export default function RelatedContent({
 
       {relatedEntries.length > 0 && (
         <div className="mt-8">
-          <h3 className="eyebrow text-warm-gray">More research</h3>
-          <ul className="mt-4 flex flex-col divide-y divide-border border-y border-border">
+          <h3 className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-gray">
+            More research
+          </h3>
+          <ul className="mt-4 flex flex-col divide-y divide-border border-t border-border">
             {relatedEntries.map((entry) => (
-              <li key={entry.id}>
+              <li key={entry.id} className="py-5">
                 <Link
                   href={`/research/${entry.slug}`}
-                  className="group flex items-baseline justify-between gap-4 py-5"
+                  className="group block"
                 >
-                  <span className="min-w-0">
-                    <span className="block font-display text-[19px] leading-snug text-forest transition-colors group-hover:text-rust md:text-[20px]">
-                      {entry.title}
-                    </span>
-                    <span className="ledger mt-2 block text-warm-gray">
-                      {entry.topic}
-                      <span className="mx-1.5">·</span>
-                      {cityLabel(entry.city)}
-                      <span className="mx-1.5">·</span>
-                      {formatLabel(entry.format)}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="arrow-nudge shrink-0 text-rust"
-                  >
-                    &rarr;
-                  </span>
+                  <p className="font-display text-[19px] leading-snug text-forest transition-colors group-hover:text-rust md:text-[20px]">
+                    {entry.title}
+                  </p>
+                  <p className="mt-1 font-body text-[13px] text-warm-gray">
+                    {entry.topic}
+                    <span className="mx-1.5">·</span>
+                    {cityLabel(entry.city)}
+                    <span className="mx-1.5">·</span>
+                    {formatLabel(entry.format)}
+                  </p>
                 </Link>
               </li>
             ))}
@@ -95,17 +89,21 @@ export default function RelatedContent({
 
       {relatedCampaigns.length > 0 && (
         <div className="mt-10">
-          <h3 className="eyebrow text-warm-gray">Related campaigns</h3>
+          <h3 className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-gray">
+            Related campaigns
+          </h3>
           <ul className="mt-4 flex flex-col gap-2">
             {relatedCampaigns.map((c) => (
-              <li key={c.id} className="flex flex-wrap items-baseline gap-x-3">
+              <li key={c.id}>
                 <Link
                   href={`/policy/campaigns/${c.slug}`}
-                  className="font-body text-[15px] text-forest underline decoration-forest/30 underline-offset-4 transition-colors hover:decoration-forest"
+                  className="font-body text-[15px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
                 >
                   {c.title}
                 </Link>
-                <span className="ledger text-warm-gray">{c.category}</span>
+                <span className="ml-2 font-body text-[13px] text-warm-gray">
+                  {c.category}
+                </span>
               </li>
             ))}
           </ul>
@@ -114,22 +112,21 @@ export default function RelatedContent({
 
       {relatedTours.length > 0 && (
         <div className="mt-10">
-          <h3 className="eyebrow text-warm-gray">
+          <h3 className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-gray">
             Related walking tour stops
           </h3>
           <ul className="mt-4 flex flex-col gap-2">
             {relatedTours.map((t) => (
-              <li
-                key={`${t.city}/${t.slug}`}
-                className="flex flex-wrap items-baseline gap-x-3"
-              >
+              <li key={`${t.city}/${t.slug}`}>
                 <Link
                   href={`/tours/${t.city}/${t.slug}`}
-                  className="font-body text-[15px] text-forest underline decoration-forest/30 underline-offset-4 transition-colors hover:decoration-forest"
+                  className="font-body text-[15px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
                 >
                   {t.title}
                 </Link>
-                <span className="ledger text-warm-gray">{t.city}</span>
+                <span className="ml-2 font-body text-[13px] text-warm-gray">
+                  {t.city}
+                </span>
               </li>
             ))}
           </ul>

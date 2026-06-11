@@ -52,10 +52,10 @@ function Entry({
   return (
     <li
       id={`citation-${citation.id}`}
-      className="grid grid-cols-[2.25rem_1fr] gap-x-2 scroll-mt-24 font-body text-[14.5px] leading-[1.7] text-ink/85"
+      className="grid grid-cols-[2.25rem_1fr] gap-x-2 scroll-mt-24 font-body text-[15px] leading-[1.7] text-ink/85"
     >
-      <span className="font-mono text-[12px] text-rust/80 tabular-nums">
-        {String(number).padStart(2, "0")}
+      <span className="font-mono text-[13px] text-warm-gray tabular-nums">
+        {number}.
       </span>
       <div>
         {citation.url ? (
@@ -63,7 +63,7 @@ function Entry({
             href={citation.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline decoration-forest/20 underline-offset-2 transition-colors hover:decoration-forest"
+            className="underline decoration-transparent underline-offset-2 transition-colors hover:decoration-forest/50"
           >
             {fullText}
           </a>
@@ -104,6 +104,7 @@ export default function CitationsList({ citations }: CitationsListProps) {
   const secondary = citations.filter((c) => c.type === "secondary");
 
   const hasBoth = primary.length > 0 && secondary.length > 0;
+  let runningNumber = 0;
 
   return (
     <section
@@ -111,31 +112,32 @@ export default function CitationsList({ citations }: CitationsListProps) {
       aria-labelledby="citations-heading"
       className="mt-16 border-t border-border pt-12"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2
-          id="citations-heading"
-          className="scroll-mt-24 font-display text-[28px] leading-tight text-forest md:text-[32px]"
-        >
-          Citations
-        </h2>
-        <p className="ledger text-warm-gray">
-          {citations.length} source{citations.length === 1 ? "" : "s"} cited
-        </p>
-      </div>
+      <h2
+        id="citations-heading"
+        className="scroll-mt-24 font-display text-[28px] leading-tight text-forest md:text-[32px]"
+      >
+        Citations
+      </h2>
+      <p className="mt-3 font-body text-sm text-warm-gray">
+        {citations.length} source{citations.length === 1 ? "" : "s"} cited.
+      </p>
 
       {primary.length > 0 && (
         <div className="mt-8">
           {hasBoth && (
-            <h3 className="eyebrow text-warm-gray">Primary Sources</h3>
+            <h3 className="font-display text-[18px] font-medium text-forest">
+              Primary Sources
+            </h3>
           )}
           <ol
-            className={`flex flex-col gap-3 ${
-              hasBoth ? "mt-5 border-t border-border pt-5" : "mt-2"
-            }`}
+            className={`flex flex-col gap-3 ${hasBoth ? "mt-4" : "mt-2"}`}
           >
-            {primary.map((c, i) => (
-              <Entry key={c.id} citation={c} number={i + 1} />
-            ))}
+            {primary.map((c) => {
+              runningNumber += 1;
+              return (
+                <Entry key={c.id} citation={c} number={runningNumber} />
+              );
+            })}
           </ol>
         </div>
       )}
@@ -143,20 +145,17 @@ export default function CitationsList({ citations }: CitationsListProps) {
       {secondary.length > 0 && (
         <div className="mt-10">
           {hasBoth && (
-            <h3 className="eyebrow text-warm-gray">Secondary Sources</h3>
+            <h3 className="font-display text-[18px] font-medium text-forest">
+              Secondary Sources
+            </h3>
           )}
-          <ol
-            className={`flex flex-col gap-3 ${
-              hasBoth ? "mt-5 border-t border-border pt-5" : "mt-2"
-            }`}
-          >
-            {secondary.map((c, i) => (
-              <Entry
-                key={c.id}
-                citation={c}
-                number={primary.length + i + 1}
-              />
-            ))}
+          <ol className={`flex flex-col gap-3 ${hasBoth ? "mt-4" : "mt-2"}`}>
+            {secondary.map((c) => {
+              runningNumber += 1;
+              return (
+                <Entry key={c.id} citation={c} number={runningNumber} />
+              );
+            })}
           </ol>
         </div>
       )}

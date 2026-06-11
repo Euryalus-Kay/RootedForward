@@ -18,7 +18,7 @@ DATA (real, shipped in this folder, unmodified):
 
 SOURCE: City and County of San Francisco, Mayor's Office of Housing and
 Community Development (MOHCD) / Office of Community Investment and
-Infrastructure (OCII), published via DataSF (Socrata dataset pyxv-n29e).
+Infrastructure (OCII), published via DataSF (Socrata dataset aaxw-2cb8).
 
 WHAT THIS SCRIPT DOES (all numbers printed are computed from the CSVs):
   1. Isolates the OCII "Western Addition-Area 2" renewal footprint and counts
@@ -99,14 +99,6 @@ def main():
           f"{wa2['total_project_units'].isna().sum()}")
     print(f"missing income_restricted rows           : "
           f"{wa2['income_restricted_resid_units'].isna().sum()}")
-
-    # The broader planning neighborhood, reported separately from the
-    # OCII footprint so the two geographies are never conflated.
-    wa_hood = port[port["planning_neighborhood"] == "Western Addition"]
-    print(f"\ndevelopments in the broader 'Western Addition' planning "
-          f"neighborhood (citywide portfolio): {len(wa_hood)}")
-    print("   (reported for context only; the renewal footprint above is the "
-          "OCII project area, not the planning neighborhood)")
 
     print("\nAll OCII project areas in the developments file "
           "(in-OCII rows only), by units:")

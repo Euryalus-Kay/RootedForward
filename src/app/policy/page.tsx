@@ -1,28 +1,9 @@
-/* ------------------------------------------------------------------ */
-/*  /policy                                                            */
-/*                                                                     */
-/*  The policy desk. Sections, in order:                               */
-/*   1. PageBanner          — v2 banner with live campaign counts.     */
-/*   2. Active campaigns    — featured campaign + hairline card grid.  */
-/*   3. Learning zone       — dark band: guides, tools, references.    */
-/*   4. The record          — past campaigns as ledger rows.           */
-/*   5. Proposals closer    — ink band with the submit CTA.            */
-/*   6. Quiet footer        — single email prompt.                     */
-/* ------------------------------------------------------------------ */
-
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import PageBanner from "@/components/layout/PageBanner";
-import SectionHeading from "@/components/layout/SectionHeading";
-import { Reveal } from "@/components/motion/Reveal";
-import WordReveal from "@/components/motion/WordReveal";
-import Magnetic from "@/components/motion/Magnetic";
-import GradeStrip from "@/components/motion/GradeStrip";
 import {
   PLACEHOLDER_CAMPAIGNS,
   PLACEHOLDER_LEARNING_RESOURCES,
-  PLACEHOLDER_GUIDES,
   CHICAGO_REFERENCES,
 } from "@/lib/policy-constants";
 import type { Campaign, LearningResource } from "@/lib/policy-constants";
@@ -48,7 +29,7 @@ async function getCampaigns(): Promise<Campaign[]> {
       .in("status", ["active", "past"])
       .order("created_at", { ascending: false });
     if (!error && data && data.length > 0) {
-      return data.map((c: Campaign) => ({
+      return data.map((c: any) => ({
         ...c,
         signature_count: c.signature_count ?? 0,
         decision_makers: c.decision_makers ?? null,
@@ -75,12 +56,12 @@ function formatDeadline(deadline: string | null): string {
   });
 }
 
-function getOutcomeTone(outcome: string | null): string {
-  if (!outcome) return "text-warm-gray";
+function getOutcomeColor(outcome: string | null): string {
+  if (!outcome) return "bg-warm-gray/10 text-warm-gray";
   const lower = outcome.toLowerCase();
-  if (lower.startsWith("won")) return "text-grade-a";
-  if (lower.startsWith("partial")) return "text-grade-c";
-  return "text-warm-gray";
+  if (lower.startsWith("won")) return "bg-forest/10 text-forest";
+  if (lower.startsWith("partial")) return "bg-rust/10 text-rust";
+  return "bg-warm-gray/10 text-warm-gray";
 }
 
 function getOutcomeTag(outcome: string | null): string {
@@ -89,6 +70,61 @@ function getOutcomeTag(outcome: string | null): string {
   if (lower.startsWith("won")) return "Won";
   if (lower.startsWith("partial")) return "Partial";
   return "Closed";
+}
+
+/* Icon lookup for learning resources */
+function ResourceIcon({ icon }: { icon: LearningResource["icon"] }) {
+  const cls = "h-6 w-6";
+  switch (icon) {
+    case "pen":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+        </svg>
+      );
+    case "book":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+      );
+    case "compass":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+        </svg>
+      );
+    case "megaphone":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+        </svg>
+      );
+    case "scale":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+      );
+    case "lightbulb":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+        </svg>
+      );
+    case "users":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={cls}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+        </svg>
+      );
+  }
 }
 
 const TYPE_LABELS: Record<LearningResource["type"], string> = {
@@ -111,245 +147,218 @@ export default async function PolicyPage() {
   const otherActive = activeCampaigns.slice(1);
   const pastCampaigns = campaigns.filter((c) => c.status === "past");
 
-  const bannerMeta = [
-    `${activeCampaigns.length} active ${activeCampaigns.length === 1 ? "campaign" : "campaigns"}`,
-    `${pastCampaigns.length} past ${pastCampaigns.length === 1 ? "campaign" : "campaigns"}`,
-    `${PLACEHOLDER_GUIDES.length} how-to guides`,
-  ];
-
-  // Ledger facts for the featured campaign panel. Real fields only.
-  const featuredFacts = featured
-    ? ([
-        featured.target_body ? ["Target body", featured.target_body] : null,
-        featured.deadline
-          ? ["Comment closes", formatDeadline(featured.deadline)]
-          : null,
-        ["Signatures", featured.signature_count.toLocaleString()],
-        ["Category", featured.category],
-      ].filter(Boolean) as [string, string][])
-    : [];
-
   return (
     <PageTransition>
       {/* ============================================================
           SECTION 1: BANNER
+          Hero image with a forest tint overlay, matching the
+          research, education, and get-involved banner treatment.
           ============================================================ */}
-      <PageBanner
-        eyebrow="Policy / Chicago"
-        title="The parts still running"
-        dek="Once you can see how redlining, urban renewal, and disinvestment shaped these neighborhoods, the next question is what to do about the patterns that never stopped. We organize that response here. Campaigns you can sign onto, comment drives that put residents into the official record, and a channel for proposing your own ideas."
-        meta={bannerMeta}
-      />
-
-      {/* ============================================================
-          SECTION 2: ACTIVE CAMPAIGNS
-          ============================================================ */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <SectionHeading
-            index="01"
-            eyebrow="Take action"
-            title="Active campaigns"
-            lede="Each campaign pairs a specific ask with a specific decision-maker. Signatures and approved public comments are compiled and delivered to the target body."
-          />
-
-          {featured ? (
-            <div className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
-              {/* Featured campaign, left */}
-              <div className="md:col-span-7">
-                <Reveal y={20}>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                    <span className="ledger text-rust">Active / {featured.category}</span>
-                    {featured.deadline && (
-                      <span className="ledger text-warm-gray">
-                        Comment closes {formatDeadline(featured.deadline)}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="mt-5 max-w-xl font-display text-3xl leading-tight text-forest md:text-4xl">
-                    {featured.title}
-                  </h3>
-                  <p className="mt-6 max-w-[62ch] font-body text-base leading-relaxed text-ink/75">
-                    {featured.summary}
-                  </p>
-                  <Magnetic className="mt-9 inline-block">
-                    <Link
-                      href={`/policy/campaigns/${featured.slug}`}
-                      className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                    >
-                      Read it and take action
-                    </Link>
-                  </Magnetic>
-                  <p className="mt-5 max-w-[52ch] font-body text-sm leading-relaxed text-ink/55">
-                    {featured.signature_count.toLocaleString()} Chicagoans have
-                    signed. You can add your signature or submit a public
-                    comment on the campaign page.
-                  </p>
-                </Reveal>
-              </div>
-
-              {/* Ledger fact panel, right */}
-              <div className="md:col-span-5">
-                <Reveal delay={0.15} y={24}>
-                  <div className="border border-border bg-white/40 p-7">
-                    <p className="ledger text-warm-gray">Campaign file</p>
-                    <dl className="mt-5">
-                      {featuredFacts.map(([label, value], i) => (
-                        <div
-                          key={label}
-                          className={`flex items-baseline justify-between gap-6 py-3.5 ${
-                            i > 0 ? "border-t border-border" : ""
-                          }`}
-                        >
-                          <dt className="ledger shrink-0 text-warm-gray">{label}</dt>
-                          <dd className="text-right font-body text-sm text-ink/80">
-                            {value}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                    <div className="mt-4 border-t border-border pt-5">
-                      <GradeStrip className="opacity-60" />
-                    </div>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          ) : (
-            <Reveal>
-              <p className="mt-12 font-body text-base text-warm-gray">
-                No active campaigns right now. Check the record below or
-                propose one of your own.
-              </p>
-            </Reveal>
-          )}
-
-          {/* Other active campaigns, hairline grid */}
-          {otherActive.length > 0 && (
-            <div className="mt-14 border-t border-border pt-10">
-              <p className="ledger text-warm-gray">Also active</p>
-              <div className="mt-6 grid grid-cols-1 gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-                {otherActive.map((campaign, i) => (
-                  <Reveal key={campaign.id} delay={i * 0.06} className="h-full">
-                    <Link
-                      href={`/policy/campaigns/${campaign.slug}`}
-                      className="card-lift group flex h-full flex-col bg-cream p-7"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="ledger text-rust">{campaign.category}</span>
-                        <span className="ledger text-warm-gray">
-                          {campaign.signature_count.toLocaleString()} signed
-                        </span>
-                      </div>
-                      <h4 className="mt-4 font-display text-xl leading-snug text-forest">
-                        {campaign.title}
-                      </h4>
-                      <p className="mt-3 line-clamp-3 flex-1 font-body text-sm leading-relaxed text-ink/65">
-                        {campaign.summary}
-                      </p>
-                      <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                        <span className="font-body text-xs uppercase tracking-widest text-warm-gray">
-                          Read the campaign
-                        </span>
-                        <span aria-hidden="true" className="arrow-nudge text-rust">
-                          &rarr;
-                        </span>
-                      </div>
-                    </Link>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          )}
+      <section className="relative pt-16 pb-12 md:pb-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-forest/70" />
+        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+          <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
+            Policy
+          </h1>
         </div>
       </section>
 
       {/* ============================================================
-          SECTION 3: POLICY LEARNING ZONE — dark band
+          SECTION 1b: INTRO PROSE
           ============================================================ */}
-      <section className="grain relative overflow-hidden bg-forest py-20 md:py-28">
-        <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-        <span
-          aria-hidden="true"
-          className="index-numeral pointer-events-none absolute -right-6 top-8 select-none text-[11rem] leading-none text-cream/[0.05] md:text-[18rem]"
-        >
-          02
-        </span>
+      <section className="bg-cream pb-10 pt-12 md:pt-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+            Policy / Chicago
+          </p>
+          <p className="mt-6 max-w-[65ch] font-body text-lg leading-relaxed text-ink/75">
+            Rooted Forward exists to teach people how historical urban
+            inequality shaped the Chicago they live in today. The tours, films,
+            and classroom work are the first half of that mission. This page is
+            the second half. Once you understand how redlining, urban renewal,
+            and disinvestment produced the neighborhoods we walk through, the
+            next question is what to do about the patterns that are still
+            running. We organize that response here: active campaigns you can
+            sign onto, public comment drives that put community voices into the
+            official record, and a channel for residents to propose their own
+            policy ideas.
+          </p>
+          <hr className="mt-12 border-border" />
+        </div>
+      </section>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-          <SectionHeading
-            index="02"
-            eyebrow="Policy learning zone"
-            title="Learn, draft, act"
-            lede="Tools and guides for engaging with Chicago policy. Draft a public comment, write a proposal, find your alderperson, or learn how zoning, legislation, and public testimony actually work."
-            tone="dark"
-          />
+      {/* ============================================================
+          SECTION 2: FEATURED ACTIVE CAMPAIGN
+          ============================================================ */}
+      {featured && (
+        <section className="bg-cream py-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-5 md:gap-14">
+              <div className="md:col-span-2">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-cream-dark">
+                  <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
+                  <svg className="absolute inset-0 h-full w-full opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <pattern id="campaign-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <line x1="0" y1="0" x2="0" y2="16" stroke="#1A1A1A" strokeWidth="1" />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#campaign-diag)" />
+                  </svg>
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/40 to-transparent px-5 py-4">
+                    <p className="font-body text-xs uppercase tracking-wider text-cream/80">
+                      {featured.category}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-px bg-cream/15 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="md:col-span-3">
+                <span className="inline-block rounded-full bg-rust/15 px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-rust">
+                  Active Campaign
+                </span>
+                <h2 className="mt-4 font-display text-3xl leading-snug text-forest md:text-4xl">
+                  {featured.title}
+                </h2>
+                {featured.deadline && (
+                  <p className="mt-3 font-body text-sm text-warm-gray">
+                    Public comment closes {formatDeadline(featured.deadline)}
+                  </p>
+                )}
+                <p className="mt-6 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
+                  {featured.summary}
+                </p>
+
+                <Link
+                  href={`/policy/campaigns/${featured.slug}`}
+                  className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Read More &amp; Take Action &rarr;
+                </Link>
+
+                <p className="mt-5 font-body text-sm leading-relaxed text-ink/55">
+                  {featured.signature_count.toLocaleString()} Chicagoans have
+                  signed. You can add your signature or submit a public comment
+                  on the campaign page.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
+          SECTION 3: OTHER ACTIVE INITIATIVES
+          ============================================================ */}
+      {otherActive.length > 0 && (
+        <section className="bg-cream py-12">
+          <div className="mx-auto max-w-6xl px-6">
+            <h2 className="font-display text-2xl text-forest md:text-3xl">
+              Other Active Initiatives
+            </h2>
+            <div className="mt-8 flex gap-6 overflow-x-auto pb-4">
+              {otherActive.map((campaign) => (
+                <Link
+                  key={campaign.id}
+                  href={`/policy/campaigns/${campaign.slug}`}
+                  className="group block w-80 flex-shrink-0"
+                >
+                  <div className="rounded-sm border border-border p-6 transition-shadow hover:shadow-md">
+                    <span className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                      {campaign.category}
+                    </span>
+                    <h3 className="mt-2 font-display text-lg text-forest">
+                      {campaign.title}
+                    </h3>
+                    <p className="mt-2 font-body text-sm leading-relaxed text-ink/65 line-clamp-2">
+                      {campaign.summary.split(". ")[0]}.
+                    </p>
+                    <p className="mt-3 font-body text-xs text-warm-gray">
+                      {campaign.signature_count.toLocaleString()} signatures
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
+          SECTION 4: POLICY LEARNING ZONE
+          ============================================================ */}
+      <section className="border-t border-border bg-forest py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
+            Policy Learning Zone
+          </p>
+          <h2 className="mt-3 font-display text-4xl text-cream md:text-6xl">
+            Learn, Draft, Act
+          </h2>
+          <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-cream/70">
+            Tools and guides for engaging with Chicago policy. Draft a public
+            comment, write a proposal, find your alderperson, or learn how
+            zoning, legislation, and public testimony actually work.
+          </p>
+
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {learningResources.map((resource) => {
               const isExternal = resource.href.startsWith("http");
-              const cardCls =
-                "group flex h-full flex-col bg-forest p-8 transition-colors hover:bg-forest-light";
+              const cardCls = "group flex flex-col rounded-sm border border-cream/15 bg-cream/[0.05] p-6 transition-all hover:bg-cream/[0.10] hover:border-cream/25";
               const cardContent = (
                 <>
-                  <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
-                    {TYPE_LABELS[resource.type]}
-                  </p>
-                  <h3 className="mt-4 font-display text-xl leading-snug text-cream">
+                  <div className="flex items-center justify-between">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-rust/50 text-rust">
+                      <ResourceIcon icon={resource.icon} />
+                    </div>
+                    <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-cream/50">
+                      {TYPE_LABELS[resource.type]}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-rust">
                     {resource.title}
                   </h3>
-                  <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-cream/65">
+                  <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-cream/65">
                     {resource.description}
                   </p>
-                  <span className="mt-6 inline-flex items-center font-body text-xs font-semibold uppercase tracking-widest text-rust-light transition-colors group-hover:text-cream">
+                  <span className="mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-transform group-hover:translate-x-1">
                     {resource.cta_label} &rarr;
                   </span>
                 </>
               );
 
-              return (
-                <Reveal key={resource.id} className="h-full">
-                  {isExternal ? (
-                    <a
-                      href={resource.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cardCls}
-                    >
-                      {cardContent}
-                    </a>
-                  ) : (
-                    <Link href={resource.href} className={cardCls}>
-                      {cardContent}
-                    </Link>
-                  )}
-                </Reveal>
+              return isExternal ? (
+                <a key={resource.id} href={resource.href} target="_blank" rel="noopener noreferrer" className={cardCls}>
+                  {cardContent}
+                </a>
+              ) : (
+                <Link key={resource.id} href={resource.href} className={cardCls}>
+                  {cardContent}
+                </Link>
               );
             })}
           </div>
 
-          {/* Chicago quick reference */}
+          {/* Quick reference links */}
           <div className="mt-16 border-t border-cream/15 pt-10">
-            <Reveal>
-              <p className="eyebrow text-cream/45">Chicago quick reference</p>
-            </Reveal>
-            <div className="mt-6 grid grid-cols-1 gap-x-12 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
-              {CHICAGO_REFERENCES.map((ref, i) => (
-                <Reveal key={ref.url} delay={(i % 3) * 0.05}>
-                  <a
-                    href={ref.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block"
-                  >
-                    <span className="link-draw font-body text-sm font-medium text-cream/85">
-                      {ref.name}
-                    </span>
-                    <p className="mt-1 font-body text-xs leading-relaxed text-cream/45">
-                      {ref.annotation}
-                    </p>
-                  </a>
-                </Reveal>
+            <h3 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/45">
+              Chicago Quick Reference
+            </h3>
+            <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+              {CHICAGO_REFERENCES.map((ref) => (
+                <a
+                  key={ref.url}
+                  href={ref.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-sm text-cream/60 underline decoration-cream/25 underline-offset-2 transition-colors hover:text-rust hover:decoration-rust"
+                >
+                  {ref.name}
+                </a>
               ))}
             </div>
           </div>
@@ -357,102 +366,120 @@ export default async function PolicyPage() {
       </section>
 
       {/* ============================================================
-          SECTION 4: THE RECORD — past campaigns as ledger rows
+          SECTION 5: PROPOSE A POLICY IDEA
+          ============================================================ */}
+      <section className="bg-cream py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="rounded-sm border border-border bg-cream-dark p-8 md:p-12">
+            <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-5">
+              <div className="md:col-span-3">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                  Community Proposals
+                </p>
+                <h2 className="mt-3 font-display text-2xl text-forest md:text-3xl">
+                  Have a policy idea for your neighborhood?
+                </h2>
+                <p className="mt-4 max-w-xl font-body text-base leading-relaxed text-ink/70">
+                  Rooted Forward reviews community-submitted proposals monthly.
+                  If your idea is strong, we develop it into a full campaign
+                  with research backing, public comment infrastructure, and a
+                  delivery plan. You stay involved if you want to be.
+                </p>
+              </div>
+              <div className="md:col-span-2 md:text-right">
+                <Link
+                  href="/policy/submit-proposal"
+                  className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Submit a Proposal &rarr;
+                </Link>
+                <p className="mt-3 font-body text-xs text-warm-gray">
+                  No account required. We respond within 30 days.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 6: PAST CAMPAIGNS
           ============================================================ */}
       {pastCampaigns.length > 0 && (
-        <section className="bg-cream py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <SectionHeading
-              index="03"
-              eyebrow="The record"
-              title="Past campaigns"
-              lede="What we asked for, what happened, and the count of residents who put their names on it. Wins and losses both stay on the books."
-            />
+        <section className="border-t border-border bg-cream py-16 md:py-24">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="font-display text-2xl text-forest md:text-3xl">
+              Past Campaigns
+            </h2>
 
-            <div className="mt-12 border-t border-border">
-              {pastCampaigns.map((campaign, i) => {
-                const year = new Date(campaign.created_at).getFullYear();
-                return (
-                  <Reveal key={campaign.id} delay={i * 0.06}>
+            <div className="relative mt-12">
+              {/* Vertical timeline line */}
+              <div
+                className="absolute left-3 top-2 h-[calc(100%-16px)] w-px bg-border"
+                aria-hidden="true"
+              />
+
+              <div className="flex flex-col gap-8">
+                {pastCampaigns.map((campaign) => {
+                  const year = new Date(campaign.created_at).getFullYear();
+                  return (
                     <Link
+                      key={campaign.id}
                       href={`/policy/campaigns/${campaign.slug}`}
-                      className="group grid grid-cols-1 gap-x-8 gap-y-3 border-b border-border py-7 transition-colors hover:bg-white/40 md:grid-cols-12 md:items-baseline md:px-4"
+                      className="group relative pl-12"
                     >
-                      <div className="flex items-baseline gap-5 md:col-span-2 md:flex-col md:gap-1.5">
-                        <span className="ledger text-warm-gray">{year}</span>
-                        <span className="ledger text-rust">{campaign.category}</span>
+                      {/* Timeline dot */}
+                      <div className="absolute left-0 top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-border bg-cream transition-colors group-hover:border-rust">
+                        <div className="h-2 w-2 rounded-full bg-warm-gray transition-colors group-hover:bg-rust" />
                       </div>
-                      <div className="md:col-span-7">
-                        <h3 className="font-display text-xl leading-snug text-forest transition-colors group-hover:text-rust md:text-2xl">
-                          {campaign.title}
-                        </h3>
-                        {campaign.outcome && (
-                          <p className="mt-2 max-w-[62ch] font-body text-sm leading-relaxed text-ink/60">
-                            {campaign.outcome.replace(/^(Won|Partial|Closed)\.?\s*/i, "")}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex items-baseline gap-5 md:col-span-3 md:flex-col md:items-end md:gap-1.5">
-                        <span className={`ledger ${getOutcomeTone(campaign.outcome)}`}>
-                          {getOutcomeTag(campaign.outcome)}
-                        </span>
-                        <span className="ledger text-warm-gray">
-                          {campaign.signature_count.toLocaleString()} signatures
+
+                      {/* Card */}
+                      <div className="rounded-sm border border-border p-5 transition-all group-hover:border-warm-gray group-hover:shadow-md md:p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <p className="font-body text-xs text-warm-gray">
+                              {year} &middot; {campaign.category}
+                            </p>
+                            <h3 className="mt-1 font-display text-lg text-forest transition-colors group-hover:text-rust">
+                              {campaign.title}
+                            </h3>
+                            {campaign.outcome && (
+                              <p className="mt-2 font-body text-sm leading-relaxed text-ink/60">
+                                {campaign.outcome.replace(
+                                  /^(Won|Partial|Closed)\s*—?\s*/i,
+                                  ""
+                                )}
+                              </p>
+                            )}
+                            <p className="mt-3 font-body text-xs text-warm-gray">
+                              {campaign.signature_count.toLocaleString()} signatures
+                            </p>
+                          </div>
+                          <span
+                            className={`mt-1 flex-shrink-0 rounded-full px-2.5 py-0.5 font-body text-xs font-semibold uppercase tracking-wider ${getOutcomeColor(campaign.outcome)}`}
+                          >
+                            {getOutcomeTag(campaign.outcome)}
+                          </span>
+                        </div>
+                        <span className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust opacity-0 transition-opacity group-hover:opacity-100">
+                          View details &rarr;
                         </span>
                       </div>
                     </Link>
-                  </Reveal>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
       )}
 
       {/* ============================================================
-          SECTION 5: COMMUNITY PROPOSALS — closer
+          SECTION 7: QUIET FOOTER BLOCK
           ============================================================ */}
-      <section className="grain relative overflow-hidden bg-ink py-20 md:py-28">
-        <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-        <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
-          <Reveal y={12}>
-            <GradeStrip className="mx-auto justify-center opacity-70" />
-          </Reveal>
-          <WordReveal
-            as="h2"
-            text="Have a policy idea for your neighborhood?"
-            delay={0.1}
-            className="mt-8 font-display text-3xl text-cream md:text-5xl"
-          />
-          <Reveal delay={0.3}>
-            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
-              Rooted Forward reviews community-submitted proposals monthly. If
-              your idea is strong, we develop it into a full campaign with
-              research backing, public comment infrastructure, and a delivery
-              plan. You stay involved if you want to be.
-            </p>
-          </Reveal>
-          <Reveal delay={0.45}>
-            <Magnetic className="mt-10">
-              <Link
-                href="/policy/submit-proposal"
-                className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Submit a proposal
-              </Link>
-            </Magnetic>
-            <p className="mt-4 font-body text-xs text-cream/45">
-              No account required. We respond within 30 days.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============================================================
-          SECTION 6: QUIET FOOTER BLOCK
-          ============================================================ */}
-      <section className="bg-cream py-14 md:py-16">
-        <div className="mx-auto max-w-3xl px-6">
+      <section className="bg-cream pb-20 pt-8">
+        <div className="mx-auto max-w-4xl px-6">
+          <hr className="mb-10 border-border" />
           <p className="font-body text-sm leading-relaxed text-warm-gray">
             Working on Chicago policy? We share our research with journalists,
             researchers, and legislative offices on request.{" "}

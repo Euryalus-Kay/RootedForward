@@ -236,58 +236,6 @@ print("\nCAVEAT: 80% of projects leave affordable_units blank, so this is a")
 print("reporting subset, not a city-wide affordable-housing accounting. It says")
 print("nothing about units tied to the other 613 projects.")
 
-# ===========================================================================
-# 6. COVERAGE COUNTS AND DATA ARTIFACTS
-# ===========================================================================
-# Counts referenced in the paper that fall outside sections 1-5: how many
-# wards, districts, and individual community areas the records reach, the
-# composition of the 100%-subsidy cohort, and a known text-encoding defect.
-print("\n" + "=" * 72)
-print("6. COVERAGE COUNTS AND DATA ARTIFACTS")
-print("=" * 72)
-
-ward_vals = df["ward"].dropna().astype(str)
-ward_split = sorted({w.strip() for v in ward_vals for w in v.split(",") if w.strip()},
-                    key=int)
-print(f"Distinct ward values as recorded      : {ward_vals.nunique()} "
-      f"(includes comma-joined multi-ward entries)")
-print(f"Distinct individual wards after split : {len(ward_split)} of 50")
-print(f"Distinct TIF districts                : {df['tif_district'].nunique()}")
-
-ca_vals = df["community_area"].dropna().astype(str)
-ca_split = {c.strip() for v in ca_vals for c in v.split(",") if c.strip()}
-print(f"Distinct individual community areas   : {len(ca_split)} of 77 "
-      f"(after splitting the comma-joined rows)")
-print(f"Distinct single-named areas           : {single['community_area'].nunique()}")
-
-c100 = df[df["pct"] == 100]
-over100 = df[df["pct"] > 100]
-print(f"\nProjects with tif_subsidy_percentage == 100 : {len(c100)}")
-print(f"Projects with tif_subsidy_percentage  > 100 : {len(over100)} "
-      f"(max {df['pct'].max():.2f}%)")
-print("Most common developers in the 100% cohort:")
-for name, n in c100["developer"].value_counts().head(6).items():
-    print(f"    {name:28s} {n:>4d}")
-cps_labels = ["Chicago Public Schools", "CPS", "Chicago Board of Education"]
-cps_n = c100["developer"].isin(cps_labels).sum()
-cta_n = c100["developer"].isin(["Chicago Transit Authority", "CTA"]).sum()
-print(f"School-system entries combined (CPS family) : {cps_n}")
-print(f"Transit entries combined (CTA family)       : {cta_n}")
-c100_text = (c100["project_name"].fillna("") + " "
-             + c100["project_description"].fillna("") + " "
-             + c100["developer"].fillna(""))
-iga_n = c100_text.str.contains("IGA|[Ii]ntergovernmental", regex=True).sum()
-print(f"Cohort rows mentioning IGA / intergovernmental: {iga_n}")
-
-# Text-encoding defect: some rows carry the Unicode replacement character
-# (U+FFFD) in a text field. Numeric and geographic columns are unaffected.
-text_cols = ["project_name", "project_description", "developer", "address",
-             "tif_district"]
-fffd = pd.Series(False, index=df.index)
-for col in text_cols:
-    fffd |= df[col].fillna("").astype(str).str.contains("�")
-print(f"\nRows with U+FFFD replacement characters in a text field: {int(fffd.sum())}")
-
 print("\n" + "=" * 72)
 print("END OF ANALYSIS")
 print("=" * 72)

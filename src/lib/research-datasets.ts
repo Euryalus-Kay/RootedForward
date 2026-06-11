@@ -1098,13 +1098,13 @@ export const RESEARCH_DATASETS: Record<string, DatasetMeta> = {
     summary:
       "The sample is too thin and too selectively recorded to prove a stop-level disparity on its own, so the paper pairs the strong external literature with",
     contents:
-      "The real public data behind Missing Race Data in Chicago Police Stop Records. Chicago police stop records (Stanford Open Policing Project, Chicago sample). Files are hosted here directly so the analysis is reproducible; analysis.py reads only these files and prints the figures the paper reports.",
+      "The real public data behind Who Gets Stopped in Chicago and What the Records Leave Out. Chicago police stop records (Stanford Open Policing Project, Chicago sample). Files are hosted here directly so the analysis is reproducible; analysis.py reads only these files and prints the figures the paper reports.",
     files: [
       {
         name: "analysis.py",
-        bytes: 9304,
+        bytes: 9217,
         description:
-          "Reproducible pandas script. Tabulates race recording by outcome (100 percent of arrests, 1.8 percent of citations), the arrest-subset composition, stops per year, coverage, and top violations.",
+          "Reproducible pandas script. Verifies the developments file is a subset of the portfolio, isolates OCII Western Addition-Area 2 (21 developments / 914 units / 821 income-restricted), tabulates tenure a",
         available: true,
         provenance:
           "Stanford Computational Policy Lab / Stanford Open Policing Project (original source: Chicago Police Department, released via the Illinois Traffic and Pedestrian Stop Statistical Study Act)",

@@ -4,8 +4,8 @@
 /*  FilterBar                                                          */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  Sticky filter row for /research. Sits under the catalog heading   */
-/*  and controls the hairline grid below.                              */
+/*  Sticky filter row for /research. Sits under the featured entry   */
+/*  and controls the list below.                                       */
 /*                                                                     */
 /*  - Minimal dropdowns, not pill buttons. Subtle, small.             */
 /*  - Updates the URL (shallow, no page reload) so filtered views    */
@@ -89,12 +89,12 @@ export default function FilterBar({
   );
 
   return (
-    // Sticky only from sm up. On phones the stacked selects are tall
-    // enough that pinning them would cover half the viewport.
-    <div className="z-20 border-y border-border bg-cream/90 backdrop-blur-sm sm:sticky sm:top-16">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-3.5 lg:px-8 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <p className="eyebrow hidden text-warm-gray sm:block">Filter</p>
+    <div className="sticky top-16 z-20 -mx-6 border-b border-border bg-cream/85 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <p className="hidden font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-gray sm:block">
+            Filter
+          </p>
 
           {/* Topic */}
           <FilterSelect
@@ -162,7 +162,7 @@ export default function FilterBar({
           )}
         </div>
 
-        <p className="ledger text-warm-gray">
+        <p className="font-body text-[12px] text-warm-gray">
           {resultCount} {resultCount === 1 ? "entry" : "entries"}
         </p>
       </div>

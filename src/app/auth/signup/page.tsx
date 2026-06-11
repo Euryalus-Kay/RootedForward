@@ -2,19 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   signUpWithEmail,
   signInWithGoogle,
 } from "@/lib/supabase/auth-helpers";
-import { Reveal } from "@/components/motion/Reveal";
 import toast from "react-hot-toast";
 
-const INPUT_CLASS =
-  "w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30";
-
-const LABEL_CLASS = "mb-1.5 block font-body text-sm font-medium text-ink";
-
 export default function SignupPage() {
+  const router = useRouter();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -81,16 +78,16 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="grain grid-lines relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4 py-16">
-        <Reveal y={20} className="relative z-10 w-full max-w-md">
-          <div className="border border-border bg-white/40 px-6 py-10 text-center sm:px-10">
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-forest/20 bg-forest/5">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="rounded-xl border border-border bg-cream-dark/40 px-6 py-10 text-center shadow-sm sm:px-10">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-forest/10">
               <svg
                 className="h-7 w-7 text-forest"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2}
               >
                 <path
                   strokeLinecap="round"
@@ -99,55 +96,55 @@ export default function SignupPage() {
                 />
               </svg>
             </div>
-            <h2 className="font-display text-3xl text-forest">
-              Check your email
+            <h2 className="font-display text-2xl font-semibold text-forest">
+              Check Your Email
             </h2>
-            <p className="mt-4 font-body text-sm leading-relaxed text-ink/70">
+            <p className="mt-3 text-sm leading-relaxed text-warm-gray">
               We&apos;ve sent a confirmation link to{" "}
               <span className="font-medium text-ink">{email}</span>. Click the
               link in your email to activate your account.
             </p>
-            <div className="mt-8 border-t border-border pt-6">
-              <Link
-                href="/auth/login"
-                className="group font-body text-sm font-medium text-forest"
-              >
-                Back to sign in <span className="arrow-nudge">&rarr;</span>
-              </Link>
-            </div>
+            <Link
+              href="/auth/login"
+              className="mt-6 inline-block text-sm font-medium text-forest transition-colors hover:text-forest-light"
+            >
+              Back to Sign In
+            </Link>
           </div>
-        </Reveal>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grain grid-lines relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4 py-16">
-      <Reveal y={20} className="relative z-10 w-full max-w-md">
-        <div className="border border-border bg-white/40 px-6 py-10 sm:px-10">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="rounded-xl border border-border bg-cream-dark/40 px-6 py-10 shadow-sm sm:px-10">
           {/* Header */}
-          <div className="mb-8">
-            <p className="ledger text-warm-gray">Rooted Forward / Account</p>
-            <h1 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+          <div className="mb-8 text-center">
+            <h1 className="font-display text-3xl font-semibold text-forest">
               Join Rooted Forward
             </h1>
-            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
-              Create an account to save stops, leave comments, and more.
+            <p className="mt-2 font-body text-sm text-warm-gray">
+              Create an account to save stops, leave comments, and more
             </p>
           </div>
 
           {/* Error message */}
           {error && (
-            <div className="mb-6 border border-rust/40 bg-rust/5 px-4 py-3">
-              <p className="font-body text-sm text-rust-dark">{error}</p>
+            <div className="mb-6 rounded-md bg-rust/10 px-4 py-3">
+              <p className="text-sm text-rust-light">{error}</p>
             </div>
           )}
 
           {/* Sign up form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="fullName" className={LABEL_CLASS}>
-                Full name
+              <label
+                htmlFor="fullName"
+                className="mb-1.5 block text-sm font-medium text-ink"
+              >
+                Full Name
               </label>
               <input
                 id="fullName"
@@ -156,12 +153,15 @@ export default function SignupPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Your full name"
-                className={INPUT_CLASS}
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className={LABEL_CLASS}>
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-sm font-medium text-ink"
+              >
                 Email
               </label>
               <input
@@ -171,12 +171,15 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className={INPUT_CLASS}
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className={LABEL_CLASS}>
+              <label
+                htmlFor="password"
+                className="mb-1.5 block text-sm font-medium text-ink"
+              >
                 Password
               </label>
               <input
@@ -186,13 +189,16 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className={INPUT_CLASS}
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className={LABEL_CLASS}>
-                Confirm password
+              <label
+                htmlFor="confirmPassword"
+                className="mb-1.5 block text-sm font-medium text-ink"
+              >
+                Confirm Password
               </label>
               <input
                 id="confirmPassword"
@@ -201,14 +207,14 @@ export default function SignupPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Repeat your password"
-                className={INPUT_CLASS}
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex w-full items-center justify-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-10 w-full items-center justify-center rounded-lg bg-rust text-sm font-medium text-white transition-colors hover:bg-rust-dark disabled:opacity-50"
             >
               {loading ? (
                 <svg
@@ -232,15 +238,15 @@ export default function SignupPage() {
                   />
                 </svg>
               ) : (
-                "Create account"
+                "Create Account"
               )}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-4">
+          <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
-            <span className="ledger text-warm-gray">or</span>
+            <span className="text-xs text-warm-gray">or</span>
             <div className="h-px flex-1 bg-border" />
           </div>
 
@@ -248,7 +254,7 @@ export default function SignupPage() {
           <button
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
-            className="inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-forest/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-forest/5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-cream text-sm font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
           >
             {googleLoading ? (
               <svg
@@ -301,19 +307,17 @@ export default function SignupPage() {
           </button>
 
           {/* Link to login */}
-          <div className="mt-8 border-t border-border pt-6 text-center">
-            <p className="font-body text-sm text-warm-gray">
-              Already have an account?{" "}
-              <Link
-                href="/auth/login"
-                className="link-draw font-medium text-forest"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
+          <p className="mt-8 text-center text-sm text-warm-gray">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="font-medium text-forest transition-colors hover:text-forest-light"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
-      </Reveal>
+      </div>
     </div>
   );
 }

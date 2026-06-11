@@ -14,10 +14,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 import ResearchArticleBody from "@/components/research/ResearchArticleBody";
-import ReadingProgress from "@/components/research/ReadingProgress";
 import RelatedContent from "@/components/research/RelatedContent";
 import DownloadPDFButton from "@/components/research/DownloadPDFButton";
-import { Reveal } from "@/components/motion/Reveal";
 import type { ResearchEntry } from "@/lib/types/database";
 import {
   PLACEHOLDER_RESEARCH_ENTRIES,
@@ -26,7 +24,6 @@ import {
   formatLabel,
   normalizeCitations,
 } from "@/lib/research-constants";
-import { RESEARCH_DATASETS } from "@/lib/research-datasets";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -223,114 +220,98 @@ export default async function ResearchEntryPage({ params }: PageProps) {
   const relatedEntries = findRelatedEntries(entry, allPublished, 3);
 
   const hasReviewers = entry.reviewers && entry.reviewers.length > 0;
-  const hasDataset = Boolean(RESEARCH_DATASETS[entry.slug]);
 
   return (
     <PageTransition>
-      <ReadingProgress />
       {/* ============================================================
-          HEADER — compact archival masthead on cream
+          HEADER
           ============================================================ */}
-      <section className="relative overflow-hidden border-b border-border bg-cream pb-10 pt-28 md:pb-12 md:pt-36">
-        <div className="grid-lines absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
+      <section className="bg-cream pb-10 pt-28 md:pt-32">
+        <div className="mx-auto max-w-6xl px-6">
           {/* Breadcrumb */}
-          <Reveal y={10}>
-            <nav aria-label="Breadcrumb" className="ledger text-warm-gray">
-              <Link
-                href="/research"
-                className="link-draw text-rust"
-              >
-                Research
-              </Link>
-              <span className="mx-2 text-warm-gray/60">/</span>
-              <span>{formatLabel(entry.format)}</span>
-            </nav>
-          </Reveal>
+          <nav
+            aria-label="Breadcrumb"
+            className="font-body text-[12px] text-warm-gray"
+          >
+            <Link
+              href="/research"
+              className="underline decoration-transparent underline-offset-2 transition-colors hover:decoration-warm-gray"
+            >
+              Research
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-ink/60">{entry.title}</span>
+          </nav>
 
           {/* Title */}
-          <Reveal mask>
-            <h1 className="mt-6 max-w-[26ch] font-display text-[38px] leading-[1.06] text-forest md:text-[54px]">
-              {entry.title}
-            </h1>
-          </Reveal>
+          <h1 className="mt-6 max-w-[60ch] font-display text-[38px] leading-[1.1] text-forest md:text-[56px]">
+            {entry.title}
+          </h1>
 
-          {/* Ledger band — authors, review, date, filing */}
-          <Reveal delay={0.12} y={14}>
-            <dl
-              className={`mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-border py-6 ${
-                hasReviewers ? "md:grid-cols-4" : "md:grid-cols-3"
-              }`}
-            >
-              <div>
-                <dt className="ledger text-warm-gray">Published by</dt>
-                <dd className="mt-2 font-body text-[14px] leading-relaxed text-ink/85">
-                  {formatList(entry.authors)}
-                </dd>
-              </div>
-              {hasReviewers && (
-                <div>
-                  <dt className="ledger text-warm-gray">Reviewed by</dt>
-                  <dd className="mt-2 font-body text-[14px] leading-relaxed text-ink/85">
-                    {formatList(entry.reviewers)}
-                  </dd>
-                </div>
-              )}
-              <div>
-                <dt className="ledger text-warm-gray">Published</dt>
-                <dd className="mt-2 font-body text-[14px] leading-relaxed text-ink/85">
-                  {formatPublicationDate(entry.published_date)}
-                </dd>
-              </div>
-              <div>
-                <dt className="ledger text-warm-gray">Filed under</dt>
-                <dd className="mt-2 font-body text-[14px] leading-relaxed text-ink/85">
-                  {entry.topic}
-                  <span className="mx-1.5 text-warm-gray">·</span>
-                  {cityLabel(entry.city)}
-                </dd>
-              </div>
-            </dl>
-          </Reveal>
+          {/* Metadata line — format, topic, city */}
+          <p className="mt-5 font-body text-[14px] text-warm-gray">
+            {formatLabel(entry.format)}
+            <span className="mx-1.5">·</span>
+            {entry.topic}
+            <span className="mx-1.5">·</span>
+            {cityLabel(entry.city)}
+          </p>
 
-          {/* Actions — hidden in print */}
-          <Reveal delay={0.2} y={10}>
-            <div
-              data-print-hide="true"
-              className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3"
-            >
-              <DownloadPDFButton />
-              {entry.pdf_url && (
-                <a
-                  href={entry.pdf_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-[13px] text-forest underline decoration-forest/30 underline-offset-4 transition-colors hover:decoration-forest"
+          {/* Publication date */}
+          <p className="mt-1 font-body text-[14px] text-warm-gray">
+            Published {formatPublicationDate(entry.published_date)}
+          </p>
+
+          {/* Credits */}
+          <div className="mt-6 flex flex-col gap-1 font-body text-[14.5px] text-ink/75">
+            <p>Published by {formatList(entry.authors)}</p>
+            {hasReviewers && (
+              <p className="text-warm-gray">
+                Reviewed by {formatList(entry.reviewers)}
+              </p>
+            )}
+          </div>
+
+          {/* PDF actions */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <DownloadPDFButton />
+            {entry.pdf_url && (
+              <a
+                href={entry.pdf_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-print-hide="true"
+                className="inline-flex items-center gap-2 font-body text-[13.5px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-4 w-4"
+                  aria-hidden="true"
                 >
-                  Official typeset PDF
-                </a>
-              )}
-              {hasDataset && (
-                <Link
-                  href={`/research/data/${entry.slug}`}
-                  className="group inline-flex items-center gap-1.5 font-body text-[13px] font-semibold text-rust transition-colors hover:text-rust-dark"
-                >
-                  Replication data
-                  <span aria-hidden="true" className="arrow-nudge">
-                    &rarr;
-                  </span>
-                </Link>
-              )}
-            </div>
-          </Reveal>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+                Official typeset PDF
+              </a>
+            )}
+          </div>
+
+          <hr className="mt-10 border-border" />
         </div>
       </section>
 
       {/* ============================================================
           BODY
           ============================================================ */}
-      <section className="bg-cream pb-20 pt-12 md:pt-16">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+      <section className="bg-cream pb-20">
+        <div className="mx-auto max-w-6xl px-6">
           <ResearchArticleBody
             markdown={entry.full_content_markdown}
             citations={entry.citations}
@@ -357,18 +338,12 @@ export default async function ResearchEntryPage({ params }: PageProps) {
           BACK TO ARCHIVE
           ============================================================ */}
       <section className="border-t border-border bg-cream pb-24 pt-10">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl px-6">
           <Link
             href="/research"
-            className="group inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+            className="font-body text-[14px] text-forest underline decoration-forest/30 underline-offset-2 transition-colors hover:decoration-forest"
           >
-            <span
-              aria-hidden="true"
-              className="inline-block transition-transform group-hover:-translate-x-1"
-            >
-              &larr;
-            </span>
-            All published research
+            &larr; All published research
           </Link>
         </div>
       </section>

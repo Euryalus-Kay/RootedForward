@@ -2,34 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
-import PageTransition from "@/components/layout/PageTransition";
-import PageBanner from "@/components/layout/PageBanner";
-import SectionHeading from "@/components/layout/SectionHeading";
-import { Reveal } from "@/components/motion/Reveal";
-import Magnetic from "@/components/motion/Magnetic";
-
-const CONTACT_EMAIL = "contact@rooted-forward.org";
-const CHAPTER_CITIES = ["Chicago", "New York", "Dallas", "San Francisco"];
-
-/* v2 input language: monospace ledger labels over bottom-hairline
-   fields, matching the footer newsletter. */
-const FIELD =
-  "w-full border-b border-ink/25 bg-transparent px-0 py-2.5 font-body text-base text-ink placeholder:text-warm-gray-light transition-colors focus:border-rust focus:outline-none";
-const LABEL = "ledger block text-ink/55";
-
-function SelectChevron() {
-  return (
-    <svg
-      viewBox="0 0 12 12"
-      fill="none"
-      aria-hidden="true"
-      className="pointer-events-none absolute right-1 top-1/2 h-3 w-3 -translate-y-1/2 text-warm-gray"
-    >
-      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  Chapter Interest Form (join or start)                              */
@@ -98,12 +72,11 @@ function ChapterForm() {
 
   if (done) {
     return (
-      <div className="border border-border bg-white/40 p-8 md:p-10">
-        <p className="ledger text-rust">Received</p>
-        <h3 className="mt-3 font-display text-2xl text-forest">
-          {form.interest === "start" ? "Request received" : "Application received"}
+      <div className="rounded-sm border border-border bg-cream-dark p-8 text-center">
+        <h3 className="font-display text-xl text-forest">
+          {form.interest === "start" ? "Request Received" : "Application Received"}
         </h3>
-        <p className="mt-3 max-w-md font-body text-sm leading-relaxed text-ink/65">
+        <p className="mt-3 font-body text-sm text-ink/65">
           {form.interest === "start"
             ? "We will reach out within two weeks with next steps, templates, and a research kit."
             : "A chapter coordinator will reach out within a week."}
@@ -113,79 +86,63 @@ function ChapterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {/* Interest type */}
-      <fieldset>
-        <legend className={LABEL}>
+      <div>
+        <label className="font-body text-sm font-medium text-ink">
           I want to <span className="text-rust">*</span>
-        </legend>
-        <div className="mt-3 grid grid-cols-1 gap-px border border-border bg-border sm:grid-cols-2">
-          {(
-            [
-              { value: "join", index: "01", label: "Join an existing chapter" },
-              { value: "start", index: "02", label: "Start a new chapter" },
-            ] as const
-          ).map((opt) => {
-            const selected = form.interest === opt.value;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => setForm({ ...form, interest: opt.value })}
-                className={`px-5 py-4 text-left transition-colors ${
-                  selected
-                    ? "bg-forest"
-                    : "bg-cream hover:bg-cream-dark/70"
-                }`}
-              >
-                <span
-                  className={`ledger ${
-                    selected ? "text-cream/60" : "text-warm-gray"
-                  }`}
-                >
-                  {opt.index}
-                </span>
-                <span
-                  className={`mt-1 block font-body text-sm font-semibold ${
-                    selected ? "text-cream" : "text-ink/75"
-                  }`}
-                >
-                  {opt.label}
-                </span>
-              </button>
-            );
-          })}
+        </label>
+        <div className="mt-2 flex gap-3">
+          <button
+            type="button"
+            onClick={() => setForm({ ...form, interest: "join" })}
+            className={`flex-1 rounded-sm border-2 px-4 py-3 font-body text-sm font-semibold transition-colors ${
+              form.interest === "join"
+                ? "border-rust bg-rust/10 text-rust"
+                : "border-border text-ink/60 hover:border-warm-gray"
+            }`}
+          >
+            Join an existing chapter
+          </button>
+          <button
+            type="button"
+            onClick={() => setForm({ ...form, interest: "start" })}
+            className={`flex-1 rounded-sm border-2 px-4 py-3 font-body text-sm font-semibold transition-colors ${
+              form.interest === "start"
+                ? "border-rust bg-rust/10 text-rust"
+                : "border-border text-ink/60 hover:border-warm-gray"
+            }`}
+          >
+            Start a new chapter
+          </button>
         </div>
-      </fieldset>
+      </div>
 
       {/* Name + Email */}
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="chapter-name" className={LABEL}>
+          <label className="font-body text-sm font-medium text-ink">
             Name <span className="text-rust">*</span>
           </label>
           <input
-            id="chapter-name"
             type="text"
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className={FIELD}
+            className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
             placeholder="Your name"
           />
         </div>
         <div>
-          <label htmlFor="chapter-email" className={LABEL}>
+          <label className="font-body text-sm font-medium text-ink">
             Email <span className="text-rust">*</span>
           </label>
           <input
-            id="chapter-email"
             type="email"
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className={FIELD}
+            className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
             placeholder="you@example.com"
           />
         </div>
@@ -193,15 +150,14 @@ function ChapterForm() {
 
       {/* Phone */}
       <div>
-        <label htmlFor="chapter-phone" className={LABEL}>
-          Phone <span className="normal-case text-warm-gray">(optional)</span>
+        <label className="font-body text-sm font-medium text-ink">
+          Phone <span className="font-normal text-warm-gray">(optional)</span>
         </label>
         <input
-          id="chapter-phone"
           type="tel"
           value={form.phone}
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          className={FIELD}
+          className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
           placeholder="(555) 123-4567"
         />
       </div>
@@ -209,57 +165,50 @@ function ChapterForm() {
       {/* Conditional: Join fields */}
       {form.interest === "join" && (
         <div>
-          <label htmlFor="chapter-select" className={LABEL}>
+          <label className="font-body text-sm font-medium text-ink">
             Chapter <span className="text-rust">*</span>
           </label>
-          <div className="relative">
-            <select
-              id="chapter-select"
-              required
-              value={form.chapter}
-              onChange={(e) => setForm({ ...form, chapter: e.target.value })}
-              className={`${FIELD} cursor-pointer appearance-none pr-8`}
-            >
-              <option value="">Select a chapter</option>
-              {CHAPTER_CITIES.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-            <SelectChevron />
-          </div>
+          <select
+            required
+            value={form.chapter}
+            onChange={(e) => setForm({ ...form, chapter: e.target.value })}
+            className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
+          >
+            <option value="">Select a chapter</option>
+            <option value="Chicago">Chicago</option>
+            <option value="New York">New York</option>
+            <option value="Dallas">Dallas</option>
+            <option value="San Francisco">San Francisco</option>
+          </select>
         </div>
       )}
 
       {/* Conditional: Start fields */}
       {form.interest === "start" && (
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="chapter-city" className={LABEL}>
+            <label className="font-body text-sm font-medium text-ink">
               City <span className="text-rust">*</span>
             </label>
             <input
-              id="chapter-city"
               type="text"
               required
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
-              className={FIELD}
+              className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
               placeholder="Where you want to start a chapter"
             />
           </div>
           <div>
-            <label htmlFor="chapter-school" className={LABEL}>
+            <label className="font-body text-sm font-medium text-ink">
               School / Org{" "}
-              <span className="normal-case text-warm-gray">(optional)</span>
+              <span className="font-normal text-warm-gray">(optional)</span>
             </label>
             <input
-              id="chapter-school"
               type="text"
               value={form.school}
               onChange={(e) => setForm({ ...form, school: e.target.value })}
-              className={FIELD}
+              className="mt-1 w-full rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
               placeholder="Your school or organization"
             />
           </div>
@@ -269,16 +218,15 @@ function ChapterForm() {
       {/* Message */}
       {form.interest && (
         <div>
-          <label htmlFor="chapter-message" className={LABEL}>
+          <label className="font-body text-sm font-medium text-ink">
             Tell us more{" "}
-            <span className="normal-case text-warm-gray">(optional)</span>
+            <span className="font-normal text-warm-gray">(optional)</span>
           </label>
           <textarea
-            id="chapter-message"
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
             rows={3}
-            className={`${FIELD} resize-y`}
+            className="mt-1 w-full resize-y rounded-sm border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-1 focus:ring-rust/30"
             placeholder={
               form.interest === "start"
                 ? "Why you want to start a chapter, any organizing experience, etc."
@@ -292,20 +240,15 @@ function ChapterForm() {
       <button
         type="submit"
         disabled={loading || !form.interest}
-        className="group mt-1 inline-flex items-center justify-center gap-2 self-start rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-sm bg-rust px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:opacity-50"
       >
         {loading
           ? "Submitting..."
           : form.interest === "start"
-            ? "Request a chapter kit"
+            ? "Request a Chapter Kit"
             : form.interest === "join"
-              ? "Submit application"
+              ? "Submit Application"
               : "Select an option above"}
-        {!loading && form.interest && (
-          <span aria-hidden="true" className="arrow-nudge">
-            &rarr;
-          </span>
-        )}
       </button>
     </form>
   );
@@ -315,189 +258,119 @@ function ChapterForm() {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-const WAYS = [
-  {
-    index: "01",
-    audience: "For students",
-    title: "Join or start a chapter",
-    body: "Chapters research their city's history, build tours, film documentaries, and develop curriculum. Join an existing chapter or start one in your city.",
-    links: [{ label: "Go to the form", href: "#chapter-form", anchor: true }],
-  },
-  {
-    index: "02",
-    audience: "For Chicago residents",
-    title: "Support a campaign",
-    body: "Sign a campaign, submit a public comment, or propose a policy idea. Takes ten minutes.",
-    links: [{ label: "View active campaigns", href: "/policy", anchor: false }],
-  },
-  {
-    index: "03",
-    audience: "For everyone",
-    title: "Explore the work",
-    body: "Walk the tours, listen to the podcast, or use our policy tools.",
-    links: [
-      { label: "Tours", href: "/tours", anchor: false },
-      { label: "Podcast", href: "/podcasts", anchor: false },
-    ],
-  },
-];
-
 export default function GetInvolvedPage() {
   return (
-    <PageTransition>
-      <PageBanner
-        eyebrow="Get Involved / Ways In"
-        title="Where you come in"
-        dek="Three ways into the work, whether you have a school year or ten minutes."
-        meta={["For students", "For Chicago residents", "For everyone"]}
-      />
+    <div className="min-h-screen bg-cream">
+      {/* Banner */}
+      <section className="relative pt-16 pb-12 md:pb-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-forest/70" />
+        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+          <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+            Get Involved
+          </h1>
+        </div>
+      </section>
 
-      {/* ============================================================
-          01 — THREE WAYS IN
-          ============================================================ */}
+      {/* Chapter form */}
       <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <SectionHeading
-            index="01"
-            eyebrow="Pathways"
-            title="Three ways in"
-            lede="Different commitments, same work. Start where you are."
-          />
-
-          <div className="mt-12 grid grid-cols-1 gap-px bg-border md:grid-cols-3">
-            {WAYS.map((way) => (
-              <Reveal key={way.index} className="h-full">
-                <div className="flex h-full flex-col bg-cream p-8 transition-colors hover:bg-cream-dark md:p-10">
-                  <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                    {way.audience}
-                  </p>
-                  <h3 className="mt-4 font-display text-2xl leading-tight text-forest md:text-3xl">
-                    {way.title}
-                  </h3>
-                  <p className="mt-5 flex-1 font-body text-[15px] leading-relaxed text-ink/70">
-                    {way.body}
-                  </p>
-                  <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-                    {way.links.map((link) =>
-                      link.anchor ? (
-                        <a
-                          key={link.href}
-                          href={link.href}
-                          className="group inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                        >
-                          {link.label}
-                          <span aria-hidden="true" className="arrow-nudge">
-                            &darr;
-                          </span>
-                        </a>
-                      ) : (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          className="group inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                        >
-                          {link.label}
-                          <span aria-hidden="true" className="arrow-nudge">
-                            &rarr;
-                          </span>
-                        </Link>
-                      )
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          02 — THE CHAPTER FORM
-          ============================================================ */}
-      <section
-        id="chapter-form"
-        className="scroll-mt-24 border-t border-border bg-cream py-16 md:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-14 md:grid-cols-12 md:gap-10 lg:gap-16">
-            {/* Rail */}
-            <div className="md:col-span-5 lg:col-span-4">
-              <SectionHeading
-                index="02"
-                eyebrow="Chapters"
-                title="Join or start one"
-                lede="Chapters research their city's history, build tours, film documentaries, and develop curriculum."
-              />
-
-              <Reveal delay={0.15} y={14}>
-                <p className="ledger mt-10 text-warm-gray">Current chapters</p>
-                <ul className="mt-3 border-t border-border">
-                  {CHAPTER_CITIES.map((city, i) => (
-                    <li
-                      key={city}
-                      className="flex items-baseline justify-between border-b border-border py-3"
-                    >
-                      <span className="font-mono text-sm tracking-wide text-ink/80">
-                        {city}
-                      </span>
-                      <span className="ledger text-warm-gray">
-                        0{i + 1}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-6 font-body text-sm leading-relaxed text-ink/60">
-                  No chapter near you? Pick start, and we will send next
-                  steps, templates, and a research kit.
-                </p>
-              </Reveal>
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-12">
+            <div className="md:col-span-4">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-ink/50">
+                For Students
+              </p>
+              <h2 className="mt-2 font-display text-2xl text-forest md:text-3xl">
+                Join or Start a Chapter
+              </h2>
+              <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
+                Chapters research their city&rsquo;s history, build tours,
+                film documentaries, and develop curriculum. Join an existing
+                chapter or start one in your city.
+              </p>
             </div>
-
-            {/* Form */}
-            <div className="md:col-span-7 lg:col-span-8">
-              <Reveal delay={0.1} y={20}>
-                <ChapterForm />
-              </Reveal>
+            <div className="md:col-span-8">
+              <ChapterForm />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============================================================
-          CLOSER — questions / contact
-          ============================================================ */}
-      <section className="grain relative overflow-hidden bg-forest py-16 md:py-24">
-        <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-        <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 md:flex-row md:items-center lg:px-8">
-          <Reveal y={16}>
-            <p className="ledger text-cream/50">Questions</p>
-            <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
-              Not sure where you fit?
-            </h2>
-            <p className="mt-4 max-w-md font-body text-base leading-relaxed text-cream/70">
-              Reach us directly, or send a note through the contact page.
-            </p>
-          </Reveal>
-          <Reveal delay={0.12} y={12}>
-            <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
-              <Magnetic>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                >
-                  Contact us
-                </Link>
-              </Magnetic>
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="link-draw font-mono text-sm tracking-wide text-cream/75 hover:text-cream"
+      <div className="mx-auto max-w-4xl px-6">
+        <hr className="border-border" />
+      </div>
+
+      {/* Campaign + Explore */}
+      <section className="bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+            {/* Campaign */}
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-ink/50">
+                For Chicago Residents
+              </p>
+              <h2 className="mt-2 font-display text-2xl text-forest">
+                Support a Campaign
+              </h2>
+              <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
+                Sign a campaign, submit a public comment, or propose a policy
+                idea. Takes ten minutes.
+              </p>
+              <Link
+                href="/policy"
+                className="mt-6 inline-flex w-full items-center justify-center rounded-sm bg-rust px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
               >
-                {CONTACT_EMAIL}
-              </a>
+                View Active Campaigns
+              </Link>
             </div>
-          </Reveal>
+
+            {/* Explore */}
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-ink/50">
+                For Everyone
+              </p>
+              <h2 className="mt-2 font-display text-2xl text-forest">
+                Explore Our Work
+              </h2>
+              <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
+                Walk the tours, listen to the podcast, or use our policy tools.
+              </p>
+              <div className="mt-6 flex flex-col gap-3">
+                <Link
+                  href="/tours"
+                  className="inline-flex w-full items-center justify-center rounded-sm border-2 border-forest px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
+                >
+                  Walk the Tours
+                </Link>
+                <Link
+                  href="/podcasts"
+                  className="inline-flex w-full items-center justify-center rounded-sm border-2 border-forest px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:bg-forest hover:text-cream"
+                >
+                  Listen to the Podcast
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-    </PageTransition>
+
+      {/* Footer */}
+      <section className="bg-forest py-14 md:py-20">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="font-body text-base text-cream/65">
+            Questions? Reach us at{" "}
+            <a
+              href="mailto:contact@rooted-forward.org"
+              className="text-cream underline decoration-cream/30 underline-offset-2 transition-colors hover:decoration-cream"
+            >
+              contact@rooted-forward.org
+            </a>
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signInWithEmail, signInWithGoogle } from "@/lib/supabase/auth-helpers";
-import { Reveal } from "@/components/motion/Reveal";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -69,24 +68,23 @@ function LoginContent() {
   }
 
   return (
-    <div className="grain grid-lines relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4 py-16">
-      <Reveal y={20} className="relative z-10 w-full max-w-md">
-        <div className="border border-border bg-white/40 px-6 py-10 sm:px-10">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="rounded-xl border border-border bg-cream-dark/40 px-6 py-10 shadow-sm sm:px-10">
           {/* Header */}
-          <div className="mb-8">
-            <p className="ledger text-warm-gray">Rooted Forward / Account</p>
-            <h1 className="mt-3 font-display text-3xl text-forest md:text-4xl">
-              Welcome back
+          <div className="mb-8 text-center">
+            <h1 className="font-display text-3xl font-semibold text-forest">
+              Welcome Back
             </h1>
-            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
-              Sign in to your Rooted Forward account.
+            <p className="mt-2 font-body text-sm text-warm-gray">
+              Sign in to your Rooted Forward account
             </p>
           </div>
 
           {/* Error message */}
           {error && (
-            <div className="mb-6 border border-rust/40 bg-rust/5 px-4 py-3">
-              <p className="font-body text-sm text-rust-dark">{error}</p>
+            <div className="mb-6 rounded-md bg-rust/10 px-4 py-3">
+              <p className="text-sm text-rust-light">{error}</p>
             </div>
           )}
 
@@ -95,7 +93,7 @@ function LoginContent() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-1.5 block font-body text-sm font-medium text-ink"
+                className="mb-1.5 block text-sm font-medium text-ink"
               >
                 Email
               </label>
@@ -106,14 +104,14 @@ function LoginContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="mb-1.5 block font-body text-sm font-medium text-ink"
+                className="mb-1.5 block text-sm font-medium text-ink"
               >
                 Password
               </label>
@@ -124,14 +122,14 @@ function LoginContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
-                className="w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30"
+                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex w-full items-center justify-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-10 w-full items-center justify-center rounded-lg bg-rust text-sm font-medium text-white transition-colors hover:bg-rust-dark disabled:opacity-50"
             >
               {loading ? (
                 <svg
@@ -155,15 +153,15 @@ function LoginContent() {
                   />
                 </svg>
               ) : (
-                "Sign in"
+                "Sign In"
               )}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-4">
+          <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
-            <span className="ledger text-warm-gray">or</span>
+            <span className="text-xs text-warm-gray">or</span>
             <div className="h-px flex-1 bg-border" />
           </div>
 
@@ -171,7 +169,7 @@ function LoginContent() {
           <button
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
-            className="inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-forest/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-forest/5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-cream text-sm font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
           >
             {googleLoading ? (
               <svg
@@ -224,19 +222,17 @@ function LoginContent() {
           </button>
 
           {/* Link to sign up */}
-          <div className="mt-8 border-t border-border pt-6 text-center">
-            <p className="font-body text-sm text-warm-gray">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/signup"
-                className="link-draw font-medium text-forest"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
+          <p className="mt-8 text-center text-sm text-warm-gray">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/auth/signup"
+              className="font-medium text-forest transition-colors hover:text-forest-light"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
-      </Reveal>
+      </div>
     </div>
   );
 }

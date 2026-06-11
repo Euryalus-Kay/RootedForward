@@ -20,8 +20,7 @@ Data sources (all real, all public):
         tracts, derived once from the repo's tract polygons and shipped here
         so the overlay is reproducible without a 3 MB geojson), and
       * the 1938 HOLC graded-zone polygons for Chicago, read by relative path
-        from the sibling data folder chicago-mortgage-lending-disparity-hmda/
-        (the repo ships one copy of the digitized 1938 zone polygons there).
+        from the sibling data folder 1938-holc-chicago-map-annotated/.
 
 Lead-classification column meanings (from the inventory):
   L   = confirmed lead service line
@@ -51,7 +50,7 @@ TR_CSV = os.path.join(HERE, "chicago-tracts-lead.csv")
 # Geojson lives in sibling data folders shipped elsewhere in the repo.
 DATA_ROOT = os.path.dirname(HERE)
 HOLC_GEOJSON = os.path.join(
-    DATA_ROOT, "chicago-mortgage-lending-disparity-hmda", "holc-chicago-1938-zones.geojson"
+    DATA_ROOT, "1938-holc-chicago-map-annotated", "holc-chicago-1938-zones.geojson"
 )
 # Small shipped centroid table (geoid, centroid_lat, centroid_lon).
 CENTROIDS_CSV = os.path.join(HERE, "chicago-tract-centroids.csv")

@@ -7,8 +7,8 @@ City-Owned Land Inventory, via the Chicago Data Portal (Socrata),
 dataset aksk-kvfp. Full table pulled 2026-05-29 (20,732 parcels).
 
 Spatial overlay: 1938 HOLC ("redlining") graded zones for Chicago,
-shipped alongside this script at
-public/data/cook-county-vacant-land-land-bank/holc-chicago-1938-zones.geojson.
+shipped in this repo at
+public/data/1938-holc-chicago-map-annotated/holc-chicago-1938-zones.geojson.
 
 This script reads the shipped files by relative path, computes the
 descriptive statistics that support the paper, and prints labeled results.
@@ -26,7 +26,9 @@ import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSV = os.path.join(HERE, "chicago-city-owned-land-inventory.csv")
-HOLC = os.path.join(HERE, "holc-chicago-1938-zones.geojson")
+HOLC = os.path.join(
+    HERE, "..", "1938-holc-chicago-map-annotated", "holc-chicago-1938-zones.geojson"
+)
 
 pd.set_option("display.width", 120)
 

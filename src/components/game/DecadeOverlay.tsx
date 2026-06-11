@@ -25,32 +25,23 @@ export function DecadeOverlay({
   const [summary, setSummary] = useState<DecadeSummary | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    // Deferred a microtask so the state write is not synchronous in the
-    // effect body (react-hooks/set-state-in-effect).
-    queueMicrotask(() => {
-      if (cancelled) return;
-      const s = decadeSummaryForYear(year);
-      if (!s) {
-        onClose();
-        return;
-      }
-      if (!force) {
-        try {
-          const seen = JSON.parse(
-            typeof window === "undefined" ? "[]" : window.localStorage.getItem(DISMISSED_KEY) ?? "[]"
-          );
-          if (Array.isArray(seen) && seen.includes(s.startYear)) {
-            onClose();
-            return;
-          }
-        } catch {}
-      }
-      setSummary(s);
-    });
-    return () => {
-      cancelled = true;
-    };
+    const s = decadeSummaryForYear(year);
+    if (!s) {
+      onClose();
+      return;
+    }
+    if (!force) {
+      try {
+        const seen = JSON.parse(
+          typeof window === "undefined" ? "[]" : window.localStorage.getItem(DISMISSED_KEY) ?? "[]"
+        );
+        if (Array.isArray(seen) && seen.includes(s.startYear)) {
+          onClose();
+          return;
+        }
+      } catch {}
+    }
+    setSummary(s);
   }, [year, onClose, force]);
 
   function handleDismiss() {

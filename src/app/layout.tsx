@@ -3,7 +3,6 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import GlobalSearchShortcut from "@/components/ui/GlobalSearchShortcut";
-import SmoothScroll from "@/components/motion/SmoothScroll";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
@@ -20,11 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col font-body bg-cream text-ink">
-        <SmoothScroll>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </SmoothScroll>
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
         <GlobalSearchShortcut />
         <Toaster
           position="bottom-right"

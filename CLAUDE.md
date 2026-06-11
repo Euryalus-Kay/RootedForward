@@ -106,11 +106,9 @@ logged download via `/api/research/data/file`.
   role check is client-side in `src/app/admin/layout.tsx`. This was
   a deliberate workaround for cookie and RLS issues across deploy
   environments. Do not move the role check into middleware.
-- **The game is hidden.** `/game` serves a 404 (`notFound()` in
-  `src/app/game/page.tsx`) and nothing on the site links to it, by
-  the owner's request. The code under `src/lib/game/` and
-  `src/components/game/` is intact so it can be restored, but do not
-  re-link it, restyle it, or spend time on it.
+- **The game lives at `/game`.** Build the Block, with code under
+  `src/lib/game/` and `src/components/game/`. Leave it as the owner
+  left it; do not restyle it or spend time on it unasked.
 
 ---
 
@@ -124,42 +122,18 @@ logged download via `/api/research/data/file`.
 
 ---
 
-## Layout conventions across top-level pages (design system v2)
+## Layout conventions
 
-Every top-level page opens with the shared `PageBanner` component:
-
-```tsx
-import PageBanner from "@/components/layout/PageBanner";
-
-<PageBanner
-  eyebrow="Research / Archive"        // mono ledger label
-  title="Page Title"                  // no colons
-  dek="One supporting sentence."      // optional
-  meta={["16 papers", "16 datasets"]} // optional, REAL facts only
-  compact                              // detail pages only
-/>
-```
-
-In-page sections use `SectionHeading` from
-`src/components/layout/SectionHeading.tsx`. Motion comes from the
-shared library in `src/components/motion/` (Reveal, RevealGroup,
-WordReveal, Parallax, TiltCard, Magnetic, Marquee, GradeStrip) and
-the CSS utilities in `globals.css` (`.eyebrow`, `.ledger`,
-`.index-numeral`, `.link-draw`, `.arrow-nudge`, `.card-lift`,
-`.photo-archival`, `.grain`, `.grid-lines`, `.grid-lines-light`).
-Smooth scrolling is Lenis via `src/components/motion/SmoothScroll.tsx`
-(wired in `layout.tsx`; it pauses itself when a modal sets
-`body.style.overflow = "hidden"`).
-
-House patterns. Cards on cream are
-`card-lift border border-border bg-white/40 p-7` with a `.ledger`
-meta row, a `font-display` title, and a hairline `border-t` footer
-row. Dark bands are `bg-forest` / `bg-ink` / `bg-forest-deep` with
-`grain` and a `grid-lines-light` overlay div. Primary CTAs are rust,
-uppercase, tracking-widest. Oversized `index-numeral` numerals at
-very low opacity are the section-numbering motif. The HOLC grade
-strip (`GradeStrip`) is the signature accent; use it sparingly.
-All motion respects `prefers-reduced-motion`.
+Pages are plain Tailwind with the site palette tokens (`cream`,
+`cream-dark`, `forest`, `rust`, `ink`, `warm-gray`, `border`) and the
+`font-display` / `font-body` families. Section eyebrows are
+`font-body text-xs font-semibold uppercase tracking-[0.25em]`,
+headings are `font-display text-3xl text-forest md:text-4xl`, cards
+are `rounded-sm border border-border` on cream, and primary CTAs are
+rust, uppercase, tracking-widest. A design-system v2 overhaul was
+built and then removed at the owner's request (reverted June 2026);
+do not reintroduce its shared `PageBanner`/`SectionHeading`/motion
+library without being asked.
 
 ---
 

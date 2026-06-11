@@ -43,7 +43,7 @@ export const PLACEHOLDER_STOPS = [
     lng: -87.6186,
     description:
       "In the 1930s, the Home Owners' Loan Corporation drew red lines around Bronzeville, labeling it 'hazardous' for investment. This single bureaucratic act locked generations of Black families out of homeownership and wealth-building. The boundary ran along Cottage Grove Avenue, a line still visible today in the contrast between maintained infrastructure to the east and decades of disinvestment to the west.",
-    video_url: null,
+    video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
       "Mapping Inequality Project, University of Richmond",
@@ -58,7 +58,7 @@ export const PLACEHOLDER_STOPS = [
     lat: 41.8565,
     lng: -87.6553,
     description:
-      "The murals along 16th Street in Pilsen are more than public art. They are declarations of resistance. As gentrification pressures mount in this historically Mexican-American neighborhood, local artists have painted building-sized responses documenting the community's history and its refusal to be erased. Each mural tells a story of immigration, of labor, of belonging to a place that developers now see primarily as an investment opportunity.",
+      "The murals along 16th Street in Pilsen are more than public art. They are declarations of resistance. As gentrification pressures mount in this historically Mexican-American neighborhood, local artists have painted building-sized responses documenting the community's history and its refusal to be erased. Each mural tells a story: of immigration, of labor, of belonging to a place that developers now see primarily as an investment opportunity.",
     video_url: null,
     images: [],
     sources: [
@@ -74,7 +74,7 @@ export const PLACEHOLDER_STOPS = [
     lng: -87.5907,
     description:
       "In the 1950s and 1960s, the University of Chicago led one of the nation's most aggressive urban renewal campaigns, demolishing hundreds of buildings and displacing thousands of Black residents from Hyde Park and neighboring Kenwood. Framed as 'slum clearance,' the program remade the neighborhood's demographics and built physical barriers, including the Midway Plaisance, between the university community and surrounding Black neighborhoods.",
-    video_url: null,
+    video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
       "Arnold Hirsch, Making the Second Ghetto, 1983",
@@ -105,7 +105,7 @@ export const PLACEHOLDER_STOPS = [
     lng: -73.9465,
     description:
       "Along 125th Street and the surrounding blocks, real estate speculators in the mid-20th century practiced 'blockbusting,' deliberately stoking racial fears among white homeowners to buy properties cheaply, then selling them at inflated prices to Black families desperate for housing. This predatory cycle extracted wealth from both communities while reshaping Harlem's demographics and economics for generations.",
-    video_url: null,
+    video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
       "Satter, Family Properties, 2009",
@@ -116,7 +116,7 @@ export const PLACEHOLDER_STOPS = [
   {
     city: "dallas",
     slug: "central-expressway-wall",
-    title: "The Wall Through Dallas",
+    title: "Central Expressway: The Wall Through Dallas",
     lat: 32.8023,
     lng: -96.7847,
     description:
@@ -136,7 +136,7 @@ export const PLACEHOLDER_STOPS = [
     lng: -96.7951,
     description:
       "Freedman's Cemetery served as the primary burial ground for formerly enslaved people in Dallas from 1869 to 1907. Over 1,500 individuals were buried here. The site was paved over for Central Expressway construction in the 1940s, quite literally burying Black history under asphalt. Rediscovered during highway expansion in 1990, the cemetery is now a memorial, but the erasure it represents continues in how Dallas develops over historically Black land.",
-    video_url: null,
+    video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
       "Freedman's Cemetery Memorial Archives",
@@ -147,12 +147,12 @@ export const PLACEHOLDER_STOPS = [
   {
     city: "san-francisco",
     slug: "fillmore-urban-renewal",
-    title: "Urban Renewal as Removal in the Fillmore",
+    title: "The Fillmore: Urban Renewal as Negro Removal",
     lat: 37.7842,
     lng: -122.4324,
     description:
-      "The Fillmore District was once called the 'Harlem of the West,' a vibrant Black cultural center with jazz clubs, businesses, and churches. In the 1960s and 70s, San Francisco's Redevelopment Agency razed 883 buildings and displaced over 10,000 Black residents under the banner of 'urban renewal.' The community called it what it was, removal. Today, less than 5% of the Fillmore's residents are Black, down from over 40% before redevelopment.",
-    video_url: null,
+      "The Fillmore District was once called the 'Harlem of the West,' a vibrant Black cultural center with jazz clubs, businesses, and churches. In the 1960s and 70s, San Francisco's Redevelopment Agency razed 883 buildings and displaced over 10,000 Black residents under the banner of 'urban renewal.' The community called it what it was: Negro removal. Today, less than 5% of the Fillmore's residents are Black, down from over 40% before redevelopment.",
+    video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: [],
     sources: [
       "San Francisco Redevelopment Agency records",
@@ -176,45 +176,41 @@ export const PLACEHOLDER_STOPS = [
   },
 ];
 
-/* Local-development placeholders only. Production reads podcasts from
-   Supabase. These entries deliberately name no guests and embed no
-   audio, because no real episode exists behind them. Do not add names,
-   quotes, or embed URLs here that cannot be verified. */
 export const PLACEHOLDER_PODCASTS = [
   {
-    title: "The Lines They Drew",
+    title: "The Lines They Drew: How Redlining Shaped Chicago",
     description:
-      "Where the HOLC maps drew their boundaries around Bronzeville in the 1930s, and how a line on a federal map shaped lending, ownership, and investment along Cottage Grove Avenue for decades afterward.",
+      "In our pilot episode, we walk the literal boundary lines that HOLC maps drew around Bronzeville in the 1930s. We talk to residents who grew up on either side of Cottage Grove Avenue and hear how a line on a map became a wall in real life. Featuring historian Dr. LaShonda Hicks and lifelong Bronzeville resident Marcus Williams.",
     episode_number: 1,
     publish_date: "2025-09-15",
-    guests: [],
-    embed_url: "",
+    guests: ["Dr. LaShonda Hicks", "Marcus Williams"],
+    embed_url: "https://open.spotify.com/embed/episode/33iDOkYfD3XutfCLHTV1DC?utm_source=generator",
   },
   {
-    title: "Concrete Walls",
+    title: "Concrete Walls: The Expressways That Divided Us",
     description:
-      "How mid-century expressway routing decisions, from the Cross Bronx Expressway to Central Expressway in Dallas, cut through Black neighborhoods and left barriers that still divide those cities.",
+      "From the Cross Bronx Expressway to Central Expressway in Dallas, we examine how highways were weaponized against Black communities. Urban planner Dr. Kenji Watanabe explains the deliberate routing decisions, and residents share what it's like to live in the shadow of infrastructure that was built to exclude you.",
     episode_number: 2,
     publish_date: "2025-10-01",
-    guests: [],
-    embed_url: "",
+    guests: ["Dr. Kenji Watanabe"],
+    embed_url: "https://open.spotify.com/embed/episode/placeholder2",
   },
   {
-    title: "Renewal or Removal",
+    title: "Renewal or Removal? The Fillmore's Lost Generation",
     description:
-      "San Francisco's Fillmore District was a center of Black cultural life on the West Coast until redevelopment demolished hundreds of buildings. An episode on what urban renewal actually did, and who wrote its history.",
+      "San Francisco's Fillmore District was once the cultural heart of Black life on the West Coast. Urban renewal demolished it. We speak with former residents, visit the jazz clubs that survived, and ask: when a city destroys a neighborhood and calls it progress, who gets to write the history?",
     episode_number: 3,
     publish_date: "2025-10-15",
-    guests: [],
-    embed_url: "",
+    guests: ["Dorothy Pitts", "James Baldwin Jr."],
+    embed_url: "https://open.spotify.com/embed/episode/placeholder3",
   },
   {
-    title: "Who Owns the Block",
+    title: "Who Owns the Block? Gentrification in Pilsen",
     description:
-      "Pilsen's murals document a neighborhood fighting displacement. An episode on gentrification pressure in a historically Mexican-American community, and the tools residents use to push back.",
+      "Pilsen's murals tell the story of a community fighting to stay. We walk 16th Street with local artists, talk to families facing eviction, and investigate how tax incentives meant to help neighborhoods end up pushing residents out. What does it mean to be priced out of your own history?",
     episode_number: 4,
     publish_date: "2025-11-01",
-    guests: [],
-    embed_url: "",
+    guests: ["Maria Elena Gutierrez", "Carlos Ramirez-Rosa"],
+    embed_url: "https://open.spotify.com/embed/episode/placeholder4",
   },
 ];

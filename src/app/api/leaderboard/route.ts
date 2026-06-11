@@ -16,10 +16,10 @@ export async function GET(request: NextRequest) {
 
     if (percentileScore != null) {
       const score = parseInt(percentileScore);
-      const { count: totalCount } = await (supabase as unknown as import("@supabase/supabase-js").SupabaseClient)
+      const { count: totalCount } = await (supabase as any)
         .from("game_runs")
         .select("id", { count: "exact", head: true });
-      const { count: belowCount } = await (supabase as unknown as import("@supabase/supabase-js").SupabaseClient)
+      const { count: belowCount } = await (supabase as any)
         .from("game_runs")
         .select("id", { count: "exact", head: true })
         .lt("total_score", score);
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     }
 
     const limit = Math.min(parseInt(searchParams.get("limit") ?? "25"), 100);
-    const { data, error } = await (supabase as unknown as import("@supabase/supabase-js").SupabaseClient)
+    const { data, error } = await (supabase as any)
       .from("game_runs")
       .select(
         "id, display_name, seed, ended_year, total_score, equity_score, heritage_score, growth_score, sustainability_score, archetype, decisions_made, events_survived, notes_read, achievements, final_state, created_at"
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       userId = null;
     }
 
-    const { data, error } = await (supabase as unknown as import("@supabase/supabase-js").SupabaseClient)
+    const { data, error } = await (supabase as any)
       .from("game_runs")
       .insert({
         user_id: userId,
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Compute rank
-    const { count } = await (supabase as unknown as import("@supabase/supabase-js").SupabaseClient)
+    const { count } = await (supabase as any)
       .from("game_runs")
       .select("id", { count: "exact", head: true })
       .gt("total_score", body.total_score);

@@ -32,24 +32,17 @@ export function IntroScreen({
   const [objectives, setObjectives] = useState<string[]>([]);
 
   useEffect(() => {
-    let cancelled = false;
-    // Deferred a microtask so the state writes are not synchronous in
-    // the effect body (react-hooks/set-state-in-effect).
-    queueMicrotask(() => {
-      if (cancelled) return;
-      setSaveSummary(readSaveSummary());
-      // If the player clicked "Play this seed" from the leaderboard, the
-      // seed is stashed in sessionStorage. Prefill and jump to setup.
+    setSaveSummary(readSaveSummary());
+    // If the player clicked "Play this seed" from the leaderboard, the
+    // seed is stashed in sessionStorage. Prefill and jump to setup.
+    if (typeof window !== "undefined") {
       const replay = window.sessionStorage.getItem("buildTheBlock:replaySeed");
       if (replay) {
         setSeed(replay);
         window.sessionStorage.removeItem("buildTheBlock:replaySeed");
         setMode("setup");
       }
-    });
-    return () => {
-      cancelled = true;
-    };
+    }
   }, []);
 
   function toggleObjective(id: string) {

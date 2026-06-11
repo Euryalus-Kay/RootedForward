@@ -1,21 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
-import PageBanner from "@/components/layout/PageBanner";
-import SectionHeading from "@/components/layout/SectionHeading";
-import { Reveal } from "@/components/motion/Reveal";
-import Magnetic from "@/components/motion/Magnetic";
 
 export const metadata: Metadata = {
   title: "Education | Rooted Forward",
   description:
-    "Walking tours, a podcast, and a free classroom curriculum on Chicago housing policy.",
+    "Walking tours, a podcast, a playable game about Chicago housing policy, and a free classroom curriculum.",
 };
 
 const PROGRAMS = [
   {
-    index: "01",
-    eyebrow: "On foot",
+    eyebrow: "Walking",
     title: "Walking Tours",
     href: "/tours",
     blurb:
@@ -23,7 +18,6 @@ const PROGRAMS = [
     cta: "See the tours",
   },
   {
-    index: "02",
     eyebrow: "Audio",
     title: "Podcast",
     href: "/podcasts",
@@ -32,12 +26,19 @@ const PROGRAMS = [
     cta: "Listen",
   },
   {
-    index: "03",
+    eyebrow: "Playable",
+    title: "The Game",
+    href: "/game",
+    blurb:
+      "Twenty minutes in the chair of someone who shaped a Chicago neighborhood between 1940 and 2040. Every decision draws from the historical record.",
+    cta: "Play it",
+  },
+  {
     eyebrow: "Classrooms",
     title: "Curriculum",
     href: "/curriculum",
     blurb:
-      "A free classroom unit built around the tours, the podcast, and our research data. Used in three CPS schools and a handful of college courses so far.",
+      "A free 12-session unit built around the tours, podcast, and game. Used in three CPS schools and a handful of college courses so far.",
     cta: "Get the kit",
   },
 ];
@@ -46,28 +47,36 @@ export default function EducationPage() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
-        <PageBanner
-          eyebrow="Education / Programs"
-          title="Education"
-          dek="The story of how American cities got segregated by federal, municipal, and private decisions doesn't fit in one form. We tell it in three."
-          meta={[`${PROGRAMS.length} programs`, "Free for classroom use"]}
-        />
+        {/* Banner */}
+        <section className="relative pt-16 pb-12 md:pb-16">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-forest/70" />
+          <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
+            <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+              Education
+            </h1>
+          </div>
+        </section>
 
-        {/* ============================================================
-            01 — THE THREE PROGRAMS
-            ============================================================ */}
+        {/* Intro */}
+        <section className="bg-cream pt-16 md:pt-24">
+          <div className="mx-auto max-w-3xl px-6">
+            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl">
+              The story of how American cities got segregated by federal,
+              municipal, and private decisions doesn&rsquo;t fit in one form.
+              We tell it in four. Pick the one that fits the way you
+              actually learn.
+            </p>
+          </div>
+        </section>
+
+        {/* Programs grid */}
         <section className="bg-cream py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <SectionHeading
-              index="01"
-              eyebrow="Three ways in"
-              title="Pick the form that fits"
-              lede="Same history, three doors. Take it on foot, put it in your ears, or bring it into a classroom."
-            />
-
-            {/* The original card treatment, unchanged from before the
-                redesign: open hairline grid, no outer frame, no motion. */}
-            <div className="mt-12 grid grid-cols-1 gap-px bg-border md:mt-16 md:grid-cols-3">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="grid grid-cols-1 gap-px bg-border md:grid-cols-2">
               {PROGRAMS.map((p) => (
                 <Link
                   key={p.href}
@@ -92,50 +101,23 @@ export default function EducationPage() {
           </div>
         </section>
 
-        {/* ============================================================
-            02 — FOR EDUCATORS
-            ============================================================ */}
-        <section className="grain relative overflow-hidden bg-forest py-20 md:py-28">
-          <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-          <span
-            aria-hidden="true"
-            className="index-numeral pointer-events-none absolute -right-4 top-6 select-none text-[9rem] leading-none text-cream/[0.05] md:-right-8 md:text-[16rem]"
-          >
-            02
-          </span>
-
-          <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 items-end gap-10 md:grid-cols-12 md:gap-16">
-              <div className="md:col-span-7">
-                <SectionHeading
-                  index="02"
-                  eyebrow="For educators"
-                  title="Teaching with this stuff"
-                  lede="Everything is free for classroom use. The curriculum kit is the fastest way in. Pair it with a podcast episode and use a tour as the field-trip anchor."
-                  tone="dark"
-                />
-              </div>
-              <div className="md:col-span-5">
-                <Reveal delay={0.2}>
-                  <div className="flex flex-wrap items-center gap-4 md:justify-end">
-                    <Magnetic>
-                      <Link
-                        href="/curriculum"
-                        className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                      >
-                        Request the curriculum
-                      </Link>
-                    </Magnetic>
-                    <Link
-                      href="/tours"
-                      className="inline-flex items-center rounded-sm border border-cream/30 px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream/60 hover:text-white"
-                    >
-                      Plan a field trip
-                    </Link>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
+        {/* For educators CTA */}
+        <section className="bg-forest py-20 md:py-28">
+          <div className="mx-auto max-w-3xl px-6 text-center">
+            <h2 className="font-display text-3xl text-cream md:text-5xl">
+              Teaching with this stuff
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
+              Everything is free for classroom use. The curriculum kit is the
+              fastest way in. Pair it with a podcast episode, run the
+              game in one period, and use the tour as a field-trip anchor.
+            </p>
+            <Link
+              href="/curriculum"
+              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Request the curriculum
+            </Link>
           </div>
         </section>
       </div>
