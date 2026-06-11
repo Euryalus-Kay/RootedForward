@@ -106,9 +106,11 @@ logged download via `/api/research/data/file`.
   role check is client-side in `src/app/admin/layout.tsx`. This was
   a deliberate workaround for cookie and RLS issues across deploy
   environments. Do not move the role check into middleware.
-- **The game lives at `/game`.** Build the Block, with code under
-  `src/lib/game/` and `src/components/game/`. Leave it as the owner
-  left it; do not restyle it or spend time on it unasked.
+- **The game is hidden.** `/game` serves a 404 (`notFound()` in
+  `src/app/game/page.tsx`) and nothing on the site links to or
+  mentions it, by the owner's request. The code under `src/lib/game/`
+  and `src/components/game/` is intact so it can be restored, but do
+  not re-link it, restyle it, or spend time on it.
 
 ---
 

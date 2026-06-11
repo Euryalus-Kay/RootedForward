@@ -23,7 +23,6 @@ const NAV_LINKS = [
     children: [
       { label: "Walking Tours", href: "/tours" },
       { label: "Podcast", href: "/podcasts" },
-      { label: "Game", href: "/game" },
       { label: "Curriculum", href: "/curriculum" },
     ],
   },

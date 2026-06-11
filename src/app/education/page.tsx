@@ -5,7 +5,7 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = {
   title: "Education | Rooted Forward",
   description:
-    "Walking tours, a podcast, a playable game about Chicago housing policy, and a free classroom curriculum.",
+    "Walking tours, a podcast, and a free classroom curriculum about Chicago housing policy.",
 };
 
 const PROGRAMS = [
@@ -26,19 +26,11 @@ const PROGRAMS = [
     cta: "Listen",
   },
   {
-    eyebrow: "Playable",
-    title: "The Game",
-    href: "/game",
-    blurb:
-      "Twenty minutes in the chair of someone who shaped a Chicago neighborhood between 1940 and 2040. Every decision draws from the historical record.",
-    cta: "Play it",
-  },
-  {
     eyebrow: "Classrooms",
     title: "Curriculum",
     href: "/curriculum",
     blurb:
-      "A free 12-session unit built around the tours, podcast, and game. Used in three CPS schools and a handful of college courses so far.",
+      "A free 12-session unit built around the tours and podcast. Used in three CPS schools and a handful of college courses so far.",
     cta: "Get the kit",
   },
 ];
@@ -109,8 +101,8 @@ export default function EducationPage() {
             </h2>
             <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
               Everything is free for classroom use. The curriculum kit is the
-              fastest way in. Pair it with a podcast episode, run the
-              game in one period, and use the tour as a field-trip anchor.
+              fastest way in. Pair it with a podcast episode and use the
+              tour as a field-trip anchor.
             </p>
             <Link
               href="/curriculum"

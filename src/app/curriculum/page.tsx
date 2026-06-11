@@ -6,7 +6,7 @@ import CurriculumRequestForm from "@/components/forms/CurriculumRequestForm";
 export const metadata: Metadata = {
   title: "Curriculum | Rooted Forward",
   description:
-    "Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Built around our walking tours, podcast, game, and research papers.",
+    "Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Built around our walking tours, podcast, and research papers.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -165,12 +165,6 @@ const PAIRINGS = [
     href: "/podcasts",
     body:
       "Episodes are 25 to 40 minutes. Use one as homework before a unit; we include a five-question listening guide.",
-  },
-  {
-    asset: "Game",
-    href: "/game",
-    body:
-      "Twenty-minute interactive scenario where students make rezoning, TIF, and housing-policy decisions on a real Chicago neighborhood.",
   },
   {
     asset: "Research data",

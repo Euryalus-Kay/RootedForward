@@ -86,8 +86,8 @@ const PILLARS = [
     href: "/education",
     bg: "bg-forest",
     desc:
-      "The story of how American cities got segregated does not fit in one form, so we tell it in four. Walking tours you take on foot, a podcast with the people who lived it, a game where you build a block and watch the policy play out, and a free curriculum built for the classroom.",
-    items: ["Walking tours", "Podcast", "The game", "Curriculum"],
+      "The story of how American cities got segregated does not fit in one form, so we tell it in three. Walking tours you take on foot, a podcast with the people who lived it, and a free curriculum built for the classroom.",
+    items: ["Walking tours", "Podcast", "Curriculum"],
     cta: "See how we teach it",
   },
   {
