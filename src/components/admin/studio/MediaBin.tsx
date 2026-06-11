@@ -320,7 +320,24 @@ export default function MediaBin({
       ) : (
         <ul className="min-h-0 flex-1 divide-y divide-white/5 overflow-y-auto">
           {media.map((item) => (
-            <li key={item.id} className="group px-3 py-2">
+            <li
+              key={item.id}
+              className={cn(
+                "group px-3 py-2",
+                item.kind !== "audio" && "cursor-grab active:cursor-grabbing"
+              )}
+              draggable={item.kind !== "audio"}
+              onDragStart={(e) => {
+                if (item.kind === "audio") return;
+                e.dataTransfer.effectAllowed = "copy";
+                e.dataTransfer.setData("application/x-rf-clip", item.id);
+              }}
+              title={
+                item.kind !== "audio"
+                  ? "Drag onto the timeline to place this clip"
+                  : undefined
+              }
+            >
               <div className="flex items-center gap-2.5">
                 {/* Thumb */}
                 <div className="relative h-10 w-[68px] shrink-0 overflow-hidden rounded-sm border border-white/10 bg-black">

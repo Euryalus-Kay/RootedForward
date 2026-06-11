@@ -130,6 +130,8 @@ interface TimelineEditorProps {
   muted: boolean;
   onToggleMute: () => void;
   onSplit: () => void;
+  /** Insert a bin clip at a timeline index (drag-and-drop from the bin) */
+  onInsertClip: (clipId: string, index: number) => void;
   onSegmentAI: (segmentId: string, instruction: string) => void;
   aiBusy: boolean;
 }
@@ -244,6 +246,7 @@ export default function TimelineEditor({
   muted,
   onToggleMute,
   onSplit,
+  onInsertClip,
   onSegmentAI,
   aiBusy,
 }: TimelineEditorProps) {
@@ -262,9 +265,28 @@ export default function TimelineEditor({
   > | null>(null);
   const [aiDraft, setAiDraft] = useState("");
   const stripRef = useRef<HTMLDivElement>(null);
-  const dragIndexRef = useRef<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const pxPerSecRef = useRef(34);
+  // Pointer-based clip moving: the block follows the cursor and an
+  // insertion bar marks where it will land. HTML5 drag-and-drop is
+  // only used for drops coming FROM the media bin.
+  const moveRef = useRef<{
+    idx: number;
+    startX: number;
+    moved: boolean;
+    curInsert: number;
+  } | null>(null);
+  const [movePreview, setMovePreview] = useState<{
+    idx: number;
+    dx: number;
+    insertAt: number;
+  } | null>(null);
+  const [binDropAt, setBinDropAt] = useState<number | null>(null);
+  const suppressClickRef = useRef(false);
+  const laneDragRef = useRef<{
+    key: "music" | "voiceover";
+    startX: number;
+    orig: number;
+  } | null>(null);
   const trimRef = useRef<{
     segId: string;
     edge: "in" | "out";
@@ -381,6 +403,169 @@ export default function TimelineEditor({
   const onTrimPointerUp = () => {
     trimRef.current = null;
     setTrimReadout(null);
+  };
+
+  /* ----------------------- wheel + follow -------------------------- */
+
+  useEffect(() => {
+    pxPerSecRef.current = pxPerSec;
+  }, [pxPerSec]);
+
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    // Editor-style wheel: plain wheel pans the timeline, ctrl/cmd
+    // wheel zooms around the cursor. Needs a non-passive listener.
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        const rect = el.getBoundingClientRect();
+        const within = e.clientX - rect.left;
+        const tAt = (within + el.scrollLeft) / pxPerSecRef.current;
+        const next = Math.min(
+          90,
+          Math.max(10, pxPerSecRef.current * (e.deltaY < 0 ? 1.12 : 0.9))
+        );
+        // Write the ref synchronously so fast consecutive wheel ticks
+        // compound instead of all reading the pre-zoom value.
+        pxPerSecRef.current = next;
+        setPxPerSec(next);
+        requestAnimationFrame(() => {
+          el.scrollLeft = Math.max(0, tAt * next - within);
+        });
+      } else if (
+        Math.abs(e.deltaY) > Math.abs(e.deltaX) &&
+        el.scrollWidth > el.clientWidth
+      ) {
+        e.preventDefault();
+        el.scrollLeft += e.deltaY;
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  useEffect(() => {
+    // Keep the playhead in view while playing
+    if (!playing) return;
+    const el = stripRef.current;
+    if (!el) return;
+    const x = Math.min(playerTime, total) * pxPerSec;
+    if (x < el.scrollLeft + 30 || x > el.scrollLeft + el.clientWidth - 80) {
+      el.scrollLeft = Math.max(0, x - 100);
+    }
+  }, [playerTime, playing, pxPerSec, total]);
+
+  useEffect(() => {
+    // Delete / Backspace removes the selected segment
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
+        e.preventDefault();
+        removeSegment(selectedId);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId, doc]);
+
+  /* ------------------------ clip moving ---------------------------- */
+
+  /** Insertion index for a pointer position over the strip. */
+  const insertIndexAt = (clientX: number): number => {
+    const strip = stripRef.current;
+    if (!strip) return doc.segments.length;
+    const rect = strip.getBoundingClientRect();
+    const t = (clientX - rect.left + strip.scrollLeft) / pxPerSec;
+    for (let k = 0; k < timed.length; k++) {
+      if (t < timed[k].startSec + timed[k].lenSec / 2) return k;
+    }
+    return timed.length;
+  };
+
+  const onBlockPointerDown = (e: React.PointerEvent, i: number) => {
+    if (e.button !== 0) return;
+    if ((e.target as HTMLElement).closest("[data-trim]")) return;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    moveRef.current = {
+      idx: i,
+      startX: e.clientX,
+      moved: false,
+      curInsert: i,
+    };
+  };
+
+  const onBlockPointerMove = (e: React.PointerEvent) => {
+    const m = moveRef.current;
+    if (!m) return;
+    const dx = e.clientX - m.startX;
+    // A small threshold keeps plain clicks selecting instead of moving
+    if (!m.moved && Math.abs(dx) < 5) return;
+    m.moved = true;
+    const strip = stripRef.current;
+    if (strip) {
+      const r = strip.getBoundingClientRect();
+      if (e.clientX > r.right - 48) strip.scrollLeft += 14;
+      else if (e.clientX < r.left + 48) strip.scrollLeft -= 14;
+    }
+    m.curInsert = insertIndexAt(e.clientX);
+    setMovePreview({ idx: m.idx, dx, insertAt: m.curInsert });
+  };
+
+  const onBlockPointerUp = () => {
+    const m = moveRef.current;
+    moveRef.current = null;
+    if (m && m.moved) {
+      suppressClickRef.current = true;
+      // The browser's synthesized click lands within this task; clear
+      // the flag right after so an unrelated later click never eats it.
+      setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
+      let to = m.curInsert;
+      if (to > m.idx) to -= 1;
+      if (to !== m.idx) reorderSegment(m.idx, to);
+    }
+    setMovePreview(null);
+  };
+
+  /* -------------------- audio lane offset drag ---------------------- */
+
+  const onLanePointerDown = (
+    e: React.PointerEvent,
+    key: "music" | "voiceover",
+    offset: number
+  ) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    laneDragRef.current = { key, startX: e.clientX, orig: offset };
+  };
+
+  const onLanePointerMove = (e: React.PointerEvent) => {
+    const d = laneDragRef.current;
+    if (!d) return;
+    const track = d.key === "music" ? doc.music : doc.voiceover;
+    if (!track) return;
+    const next =
+      Math.round(
+        Math.max(0, d.orig + (e.clientX - d.startX) / pxPerSec) * 10
+      ) / 10;
+    if (next !== (track.offsetSec ?? 0)) {
+      setTrack(d.key, { ...track, offsetSec: next });
+    }
+  };
+
+  const onLanePointerUp = () => {
+    laneDragRef.current = null;
   };
 
   /* ------------------------- ruler seeking ------------------------- */
@@ -528,6 +713,22 @@ export default function TimelineEditor({
         className="overflow-x-auto px-4 pt-2"
         onPointerMove={onTrimPointerMove}
         onPointerUp={onTrimPointerUp}
+        onDragOver={(e) => {
+          if (e.dataTransfer.types.includes("application/x-rf-clip")) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "copy";
+            setBinDropAt(insertIndexAt(e.clientX));
+          }
+        }}
+        onDragLeave={() => setBinDropAt(null)}
+        onDrop={(e) => {
+          if (!e.dataTransfer.types.includes("application/x-rf-clip")) return;
+          e.preventDefault();
+          const clipId = e.dataTransfer.getData("application/x-rf-clip");
+          const at = insertIndexAt(e.clientX);
+          setBinDropAt(null);
+          if (clipId) onInsertClip(clipId, at);
+        }}
       >
         <div
           className="relative min-w-full"
@@ -562,7 +763,30 @@ export default function TimelineEditor({
           </div>
 
           {/* Segment strip */}
-          <div className="relative flex h-[74px] items-stretch py-2">
+          <div
+            className="relative flex h-[74px] items-stretch py-2"
+            onPointerDown={(e) => {
+              // Clicking empty timeline parks the playhead there
+              if (e.target === e.currentTarget) seekFromRuler(e);
+            }}
+          >
+            {(movePreview || binDropAt !== null) &&
+              (() => {
+                const at = movePreview ? movePreview.insertAt : binDropAt!;
+                const x =
+                  at >= timed.length
+                    ? timed.length
+                      ? timed[timed.length - 1].startSec +
+                        timed[timed.length - 1].lenSec
+                      : 0
+                    : timed[at].startSec;
+                return (
+                  <div
+                    className="pointer-events-none absolute bottom-1 top-1 z-20 w-0.5 rounded bg-rust"
+                    style={{ left: x * pxPerSec }}
+                  />
+                );
+              })()}
             {doc.segments.length === 0 && (
               <p className="self-center px-2 text-sm text-warm-gray">
                 No segments yet. Generate a cut or add clips from the media
@@ -582,63 +806,30 @@ export default function TimelineEditor({
                       ? "z-10 border-rust bg-rust/20"
                       : "border-white/15 bg-[#26241F] hover:border-rust/60",
                     seg.mode === "pano360" && "border-dashed",
-                    draggingIndex === i && "opacity-40",
-                    dragOverIndex === i &&
-                      draggingIndex !== i &&
-                      "ring-2 ring-rust"
+                    movePreview && movePreview.idx === i
+                      ? "z-30 cursor-grabbing opacity-80 shadow-xl ring-1 ring-rust"
+                      : "cursor-grab"
                   )}
                   style={{
-                    left: startSec * pxPerSec,
+                    left:
+                      startSec * pxPerSec +
+                      (movePreview && movePreview.idx === i
+                        ? movePreview.dx
+                        : 0),
                     width: Math.max(34, lenSec * pxPerSec),
+                    touchAction: "none",
                   }}
-                  draggable
-                  onDragStart={(e) => {
-                    if ((e.target as HTMLElement).closest("[data-trim]")) {
-                      e.preventDefault();
+                  onPointerDown={(e) => onBlockPointerDown(e, i)}
+                  onPointerMove={onBlockPointerMove}
+                  onPointerUp={onBlockPointerUp}
+                  onPointerCancel={onBlockPointerUp}
+                  onClick={() => {
+                    if (suppressClickRef.current) {
+                      suppressClickRef.current = false;
                       return;
                     }
-                    dragIndexRef.current = i;
-                    setDraggingIndex(i);
-                    e.dataTransfer.effectAllowed = "move";
-                    e.dataTransfer.setData(
-                      "application/x-rf-segment",
-                      String(i)
-                    );
+                    setSelectedId(seg.id);
                   }}
-                  onDragEnd={() => {
-                    dragIndexRef.current = null;
-                    setDraggingIndex(null);
-                    setDragOverIndex(null);
-                  }}
-                  onDragOver={(e) => {
-                    // Only react to segment drags, never OS file drops
-                    if (
-                      e.dataTransfer.types.includes("application/x-rf-segment")
-                    ) {
-                      e.preventDefault();
-                      setDragOverIndex(i);
-                    }
-                  }}
-                  onDragLeave={() =>
-                    setDragOverIndex((v) => (v === i ? null : v))
-                  }
-                  onDrop={(e) => {
-                    if (
-                      !e.dataTransfer.types.includes(
-                        "application/x-rf-segment"
-                      )
-                    ) {
-                      return;
-                    }
-                    e.preventDefault();
-                    if (dragIndexRef.current !== null) {
-                      reorderSegment(dragIndexRef.current, i);
-                      dragIndexRef.current = null;
-                    }
-                    setDraggingIndex(null);
-                    setDragOverIndex(null);
-                  }}
-                  onClick={() => setSelectedId(seg.id)}
                   onDoubleClick={() => controls.current?.seek(startSec + 0.01)}
                   role="button"
                   tabIndex={0}
@@ -715,13 +906,23 @@ export default function TimelineEditor({
             })}
           </div>
 
-          {/* Audio lanes */}
+          {/* Audio lanes (drag horizontally to set the start offset) */}
           {doc.music && mediaById.get(doc.music.clipId) && (
             <div
               className={cn(
-                "flex h-5 items-center",
+                "flex h-5 touch-none items-center",
+                laneDragRef.current?.key === "music"
+                  ? "cursor-grabbing"
+                  : "cursor-ew-resize",
                 doc.music.muted && "opacity-30"
               )}
+              title="Music bed. Drag to change when it starts."
+              onPointerDown={(e) =>
+                onLanePointerDown(e, "music", doc.music?.offsetSec ?? 0)
+              }
+              onPointerMove={onLanePointerMove}
+              onPointerUp={onLanePointerUp}
+              onPointerCancel={onLanePointerUp}
             >
               <WaveformLane
                 url={mediaById.get(doc.music.clipId)!.url}
@@ -737,9 +938,19 @@ export default function TimelineEditor({
           {doc.voiceover && mediaById.get(doc.voiceover.clipId) && (
             <div
               className={cn(
-                "flex h-5 items-center",
+                "flex h-5 touch-none items-center",
+                laneDragRef.current?.key === "voiceover"
+                  ? "cursor-grabbing"
+                  : "cursor-ew-resize",
                 doc.voiceover.muted && "opacity-30"
               )}
+              title="Voiceover. Drag to change when it starts."
+              onPointerDown={(e) =>
+                onLanePointerDown(e, "voiceover", doc.voiceover?.offsetSec ?? 0)
+              }
+              onPointerMove={onLanePointerMove}
+              onPointerUp={onLanePointerUp}
+              onPointerCancel={onLanePointerUp}
             >
               <WaveformLane
                 url={mediaById.get(doc.voiceover.clipId)!.url}
@@ -796,8 +1007,8 @@ export default function TimelineEditor({
           Subtitles ({doc.subtitles?.length ?? 0})
         </button>
         <span className="ml-auto text-[10px] text-warm-gray">
-          Space play &middot; S split &middot; arrows seek &middot; Ctrl+Z
-          undo
+          Space play &middot; S split &middot; Del removes &middot; drag clips to
+          move them &middot; wheel pans, Ctrl+wheel zooms
         </span>
       </div>
 

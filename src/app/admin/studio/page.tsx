@@ -1078,37 +1078,43 @@ export default function StudioPage() {
     return ids;
   }, [sequence]);
 
+  const insertClipAt = useCallback(
+    (clipId: string, index: number) => {
+      const item = media.find((m) => m.id === clipId);
+      if (!item || item.kind === "audio") return;
+      const base: SequenceDoc = sequence ?? {
+        version: 1,
+        title: projectName,
+        segments: [],
+      };
+      const len = Math.min(6, item.durationSec ?? 6);
+      const at = Math.max(0, Math.min(index, base.segments.length));
+      const seg: SequenceSegment = {
+        id: uid("seg"),
+        clipId: item.id,
+        mode: item.is360 ? "pano360" : "2d",
+        inSec: 0,
+        outSec: Math.max(1, len),
+        transitionIn:
+          at === 0
+            ? { type: "cut", durationSec: 0 }
+            : { type: "crossfade", durationSec: 0.9 },
+        kenBurns: null,
+        panoMotion: item.is360
+          ? { fromYawDeg: 0, toYawDeg: 80, pitchDeg: 0 }
+          : null,
+        overlays: [],
+        muted: true,
+      };
+      const next = [...base.segments];
+      next.splice(at, 0, seg);
+      applySequence({ ...base, segments: next });
+    },
+    [media, sequence, projectName, applySequence]
+  );
+
   const addToTimeline = (item: StudioMediaItem) => {
-    if (item.kind === "audio") return;
-    const base: SequenceDoc = sequence ?? {
-      version: 1,
-      title: projectName,
-      segments: [],
-    };
-    const len = Math.min(6, item.durationSec ?? 6);
-    applySequence({
-      ...base,
-      segments: [
-        ...base.segments,
-        {
-          id: uid("seg"),
-          clipId: item.id,
-          mode: item.is360 ? "pano360" : "2d",
-          inSec: 0,
-          outSec: Math.max(1, len),
-          transitionIn:
-            base.segments.length === 0
-              ? { type: "cut", durationSec: 0 }
-              : { type: "crossfade", durationSec: 0.9 },
-          kenBurns: null,
-          panoMotion: item.is360
-            ? { fromYawDeg: 0, toYawDeg: 80, pitchDeg: 0 }
-            : null,
-          overlays: [],
-          muted: true,
-        },
-      ],
-    });
+    insertClipAt(item.id, sequence?.segments.length ?? 0);
   };
 
   const exportJson = () => {
@@ -1431,6 +1437,7 @@ export default function StudioPage() {
                 controlsRef.current?.setMuted(!monitorMuted)
               }
               onSplit={splitAtPlayhead}
+              onInsertClip={insertClipAt}
               onSegmentAI={handleSegmentAI}
               aiBusy={busy}
             />
