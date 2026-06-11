@@ -44,7 +44,7 @@ function ActionButton({ icon, label, active, disabled, tooltip, onClick }: Actio
       >
         {icon}
       </motion.button>
-      <span className="font-body text-xs text-warm-gray">{label}</span>
+      <span className="ledger text-warm-gray">{label}</span>
       {disabled && tooltip && (
         <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-ink px-2.5 py-1 font-body text-xs text-cream opacity-0 transition-opacity group-hover:opacity-100">
           {tooltip}
@@ -160,7 +160,7 @@ export default function StopActions({ stopId, stopTitle, stopDescription, city }
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-border bg-cream p-4">
+      <div className="rounded-sm border border-border bg-white/40 p-5">
         <div className="flex justify-center gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex flex-col items-center gap-1.5">
@@ -175,7 +175,7 @@ export default function StopActions({ stopId, stopTitle, stopDescription, city }
 
   return (
     <>
-      <div className="rounded-xl border border-border bg-cream p-4">
+      <div className="rounded-sm border border-border bg-white/40 p-5">
         <div className="flex justify-center gap-6">
           <ActionButton
             icon={

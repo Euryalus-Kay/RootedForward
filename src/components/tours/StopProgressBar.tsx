@@ -61,7 +61,7 @@ export default function StopProgressBar({ city, totalStops }: StopProgressBarPro
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-border bg-cream p-4">
+      <div className="rounded-sm border border-border bg-white/40 p-4">
         <div className="h-4 w-48 animate-pulse rounded bg-cream-dark" />
         <div className="mt-3 h-3 w-full animate-pulse rounded-full bg-cream-dark" />
       </div>
@@ -70,7 +70,7 @@ export default function StopProgressBar({ city, totalStops }: StopProgressBarPro
 
   if (!isLoggedIn) {
     return (
-      <div className="rounded-xl border border-border bg-cream p-4 text-center">
+      <div className="rounded-sm border border-border bg-white/40 p-4 text-center">
         <p className="font-body text-sm text-warm-gray">
           Sign in to track your progress
         </p>
@@ -79,7 +79,7 @@ export default function StopProgressBar({ city, totalStops }: StopProgressBarPro
   }
 
   return (
-    <div className="rounded-xl border border-border bg-cream p-4">
+    <div className="rounded-sm border border-border bg-white/40 p-4">
       <div className="flex items-center justify-between">
         <p className="font-body text-sm text-ink-light">
           <span className="font-semibold text-forest">{visitedCount}</span>

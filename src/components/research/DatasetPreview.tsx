@@ -38,8 +38,8 @@ export default function DatasetPreview({ preview }: Props) {
   const rows = Array.isArray(preview.sample_rows) ? preview.sample_rows : [];
 
   return (
-    <div className="rounded-sm border border-border bg-cream-dark/30 p-4">
-      <p className="mb-3 inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray">
+    <div className="border border-border bg-white/40 p-4">
+      <p className="eyebrow mb-3 inline-flex items-center gap-2 text-warm-gray">
         <Table className="h-3.5 w-3.5" />
         Schema · {preview.columns.length} columns
         {rows.length > 0
@@ -84,9 +84,7 @@ export default function DatasetPreview({ preview }: Props) {
       {/* Sample rows */}
       {rows.length > 0 && (
         <div className="mt-4 overflow-x-auto">
-          <p className="mb-2 font-body text-[11px] font-semibold uppercase tracking-widest text-warm-gray">
-            Sample Rows
-          </p>
+          <p className="ledger mb-2 text-warm-gray">Sample Rows</p>
           <table className="w-full border-separate border-spacing-0">
             <thead>
               <tr>
@@ -122,7 +120,7 @@ export default function DatasetPreview({ preview }: Props) {
 }
 
 function formatCell(v: unknown): string {
-  if (v === null || v === undefined) return "—";
+  if (v === null || v === undefined) return "–";
   if (typeof v === "boolean") return v ? "true" : "false";
   return String(v);
 }

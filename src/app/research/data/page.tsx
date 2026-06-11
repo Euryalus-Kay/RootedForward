@@ -2,10 +2,11 @@
 /*  /research/data — index                                             */
 /* ------------------------------------------------------------------ */
 /*                                                                     */
-/*  Clean catalog of replication datasets. One row per published      */
-/*  paper: title, one-line summary, and a "View dataset" link to     */
-/*  /research/data/[slug] where the full preview, files, license,    */
-/*  source list, and download / upstream-link button live.            */
+/*  The replication archive catalog. One ledger row per published     */
+/*  paper: title, one-line summary, and a monospace file listing      */
+/*  with sizes and formats, linking to /research/data/[slug] where    */
+/*  the live spreadsheet viewer, license, source list, and download   */
+/*  flows live.                                                        */
 /*                                                                     */
 /*  All metadata is canonical in src/lib/research-datasets.ts.        */
 /*  See docs/RESEARCH-CONTRIBUTING.md for the add-a-paper workflow.   */
@@ -15,13 +16,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
-import { RESEARCH_DATASETS } from "@/lib/research-datasets";
+import PageBanner from "@/components/layout/PageBanner";
+import SectionHeading from "@/components/layout/SectionHeading";
+import { Reveal } from "@/components/motion/Reveal";
+import Magnetic from "@/components/motion/Magnetic";
+import {
+  RESEARCH_DATASETS,
+  formatBytes,
+  totalArchiveSize,
+} from "@/lib/research-datasets";
 import {
   PLACEHOLDER_RESEARCH_ENTRIES,
+  formatLabel,
   normalizeCitations,
 } from "@/lib/research-constants";
 import type { ResearchEntry } from "@/lib/types/database";
-import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Research Data | Rooted Forward",
@@ -57,9 +66,23 @@ async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
   }
 }
 
+/** Unique uppercase file extensions among available files, e.g. "CSV · PY". */
+function fileFormats(slugMeta: (typeof RESEARCH_DATASETS)[string]): string {
+  const exts = new Set(
+    slugMeta.files
+      .filter((f) => f.available)
+      .map((f) => f.name.split(".").pop()?.toUpperCase() ?? "FILE")
+  );
+  return [...exts].join(" · ");
+}
+
 export default async function ResearchDataPage() {
   const entries = await fetchPublishedEntries();
-  const datasetCount = entries.filter((e) => RESEARCH_DATASETS[e.slug]).length;
+
+  // Only papers that actually ship a replication archive appear in
+  // the catalog, so every row links to a live detail page.
+  const catalog = entries.filter((e) => RESEARCH_DATASETS[e.slug]);
+  const datasetCount = catalog.length;
   const totalFiles = Object.values(RESEARCH_DATASETS).reduce(
     (sum, d) => sum + d.files.filter((f) => f.available).length,
     0
@@ -68,117 +91,93 @@ export default async function ResearchDataPage() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
-        {/* Banner */}
-        <section className="relative pt-16 pb-12 md:pb-16">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-          />
-          <div className="absolute inset-0 bg-forest/70" />
-          <div className="relative z-10 flex flex-col items-center justify-center pt-12 md:pt-16">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/80">
-              Research
-            </p>
-            <h1 className="mt-3 font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-              Data &amp; Replication
-            </h1>
-          </div>
-        </section>
+        <PageBanner
+          eyebrow="Research / Data"
+          title="Data & Replication"
+          dek="Every paper rests on real, public, primary data. The cleaned files behind each analysis are hosted here, free to read as live tables, alongside the script that produced the figures."
+          meta={[
+            `${datasetCount} datasets`,
+            `${totalFiles} hosted files`,
+            "Public sources only",
+          ]}
+        />
 
-        {/* Intro */}
-        <section className="bg-cream pt-16 md:pt-24">
-          <div className="mx-auto max-w-3xl px-6">
-            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl">
-              Every Rooted Forward paper rests on real, public, primary
-              data. Each card links to the paper&rsquo;s upstream public
-              source so you can pull the raw record yourself, and the
-              cleaned files behind the analysis are hosted here, free to
-              read as a live, sortable table. Every dataset ships the
-              analysis script that produced the paper&rsquo;s figures, so
-              the numbers are reproducible. Signed-in readers can
-              download any file.
-            </p>
-          </div>
-        </section>
+        {/* ==========================================================
+            01 — The catalog
+            ========================================================== */}
+        <section className="relative bg-cream py-16 md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <SectionHeading
+              index="01"
+              eyebrow="The catalog"
+              title="All datasets"
+              lede="Open any entry to read the data as a live, sortable table and to see the files, column schema, license, and public source URLs. Signed-in readers can download any file."
+            />
 
-        {/* Stats */}
-        <section className="bg-cream pt-12 md:pt-16">
-          <div className="mx-auto max-w-5xl px-6">
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-sm bg-border md:grid-cols-3">
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-4xl text-forest md:text-5xl">
-                  {datasetCount}
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
-                  Papers with Data
-                </p>
-              </div>
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-4xl text-forest md:text-5xl">
-                  {totalFiles}
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
-                  Hosted Files
-                </p>
-              </div>
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-4xl text-forest md:text-5xl">
-                  Public
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-widest text-warm-gray">
-                  Sources Only
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Index grid */}
-        <section className="bg-cream py-16 md:py-24">
-          <div className="mx-auto max-w-5xl px-6">
-            <div className="mb-10 max-w-3xl">
-              <h2 className="font-display text-3xl text-forest md:text-4xl">
-                All Datasets
-              </h2>
-              <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
-                Click a card to read the data as a live, sortable table
-                and to see the files, column schema, license, and public
-                source URLs. The analysis script that produced each
-                paper&rsquo;s figures ships alongside the data. Signed-in
-                readers can download any file from the detail page.
-              </p>
-            </div>
-
-            <ul className="grid grid-cols-1 gap-px bg-border md:grid-cols-2">
-              {entries.map((entry) => {
+            <ul className="mt-12 flex flex-col gap-px border-y border-border bg-border">
+              {catalog.map((entry, i) => {
                 const meta = RESEARCH_DATASETS[entry.slug];
-                const fileCount = meta?.files.filter((f) => f.available).length ?? 0;
+                const available = meta.files.filter((f) => f.available);
                 return (
                   <li key={entry.id} className="bg-cream">
-                    <Link
-                      href={`/research/data/${entry.slug}`}
-                      className="group flex h-full flex-col p-7 transition-colors hover:bg-cream-dark md:p-8"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-rust">
-                          {entry.format
-                            ? entry.format.replace(/_/g, " ")
-                            : "Paper"}
-                        </p>
-                        <span className="font-mono text-[11px] text-warm-gray">
-                          {fileCount} {fileCount === 1 ? "file" : "files"}
-                        </span>
-                      </div>
-                      <h3 className="mt-4 font-display text-2xl leading-tight text-forest md:text-[26px]">
-                        {entry.title}
-                      </h3>
-                      <p className="mt-3 max-w-[48ch] flex-1 font-body text-[15px] leading-relaxed text-ink/75">
-                        {meta?.summary ?? "Dataset summary forthcoming."}
-                      </p>
-                      <span className="mt-6 inline-flex items-center gap-1.5 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors group-hover:text-rust-dark">
-                        View dataset <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </Link>
+                    <Reveal y={16} delay={Math.min(i, 4) * 0.05}>
+                      <Link
+                        href={`/research/data/${entry.slug}`}
+                        className="group grid grid-cols-1 gap-x-10 gap-y-6 px-1 py-8 transition-colors hover:bg-white/40 md:px-4 lg:grid-cols-12"
+                      >
+                        {/* Left: paper identity */}
+                        <div className="lg:col-span-7">
+                          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                            <span className="ledger text-rust">
+                              {formatLabel(entry.format)}
+                            </span>
+                            <span className="ledger text-warm-gray">
+                              {totalArchiveSize(meta)} on disk
+                            </span>
+                          </div>
+                          <h3 className="mt-3 font-display text-2xl leading-tight text-forest transition-colors group-hover:text-rust md:text-[26px]">
+                            {entry.title}
+                          </h3>
+                          <p className="mt-3 line-clamp-3 max-w-[58ch] font-body text-[14.5px] leading-relaxed text-ink/70">
+                            {meta.summary}
+                          </p>
+                        </div>
+
+                        {/* Right: mono file ledger */}
+                        <div className="flex flex-col lg:col-span-5">
+                          <p className="ledger text-warm-gray">
+                            {available.length}{" "}
+                            {available.length === 1 ? "file" : "files"}
+                            {available.length > 0 && (
+                              <span className="ml-3 text-warm-gray/70">
+                                {fileFormats(meta)}
+                              </span>
+                            )}
+                          </p>
+                          <ul className="mt-3 flex flex-col divide-y divide-border/60 border-t border-border/60">
+                            {available.map((file) => (
+                              <li
+                                key={file.name}
+                                className="flex items-baseline justify-between gap-4 py-1.5"
+                              >
+                                <span className="truncate font-mono text-[11.5px] text-ink/70">
+                                  {file.name}
+                                </span>
+                                <span className="shrink-0 font-mono text-[11px] text-warm-gray tabular-nums">
+                                  {formatBytes(file.bytes)}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                          <span className="mt-4 inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors group-hover:text-rust-dark">
+                            View dataset
+                            <span aria-hidden="true" className="arrow-nudge">
+                              &rarr;
+                            </span>
+                          </span>
+                        </div>
+                      </Link>
+                    </Reveal>
                   </li>
                 );
               })}
@@ -186,24 +185,38 @@ export default async function ResearchDataPage() {
           </div>
         </section>
 
-        {/* Footer CTA */}
-        <section className="bg-forest py-20 md:py-28">
-          <div className="mx-auto max-w-3xl px-6 text-center">
-            <h2 className="font-display text-3xl text-cream md:text-5xl">
-              Working on something we should know about?
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
-              We track downstream uses of these datasets and try to
-              connect researchers working on related questions. If you
-              are building on a Rooted Forward replication archive, send
-              us a line.
-            </p>
-            <a
-              href="mailto:research@rooted-forward.org?subject=Working%20with%20Rooted%20Forward%20data"
-              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Get in touch
-            </a>
+        {/* ==========================================================
+            Closer — downstream use
+            ========================================================== */}
+        <section className="grain relative overflow-hidden bg-forest py-20 md:py-28">
+          <div
+            className="grid-lines-light absolute inset-0"
+            aria-hidden="true"
+          />
+          <div className="relative z-10 mx-auto max-w-3xl px-6 text-center lg:px-8">
+            <Reveal mask>
+              <h2 className="font-display text-3xl text-cream md:text-5xl">
+                Working on something we should know about?
+              </h2>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-cream/70 md:text-lg">
+                We track downstream uses of these datasets and try to
+                connect researchers working on related questions. If you
+                are building on a Rooted Forward replication archive, send
+                us a line.
+              </p>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <Magnetic className="mt-10">
+                <a
+                  href="mailto:research@rooted-forward.org?subject=Working%20with%20Rooted%20Forward%20data"
+                  className="inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Get in touch
+                </a>
+              </Magnetic>
+            </Reveal>
           </div>
         </section>
       </div>

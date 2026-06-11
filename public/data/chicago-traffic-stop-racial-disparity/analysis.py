@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Analysis backbone for the Rooted Forward paper
-"Who Gets Stopped in Chicago and What the Records Leave Out"
+"Missing Race Data in Chicago Police Stop Records"
 slug: chicago-traffic-stop-racial-disparity
 
 Data: Chicago police stop records, Stanford Open Policing Project (Chicago
@@ -46,6 +46,8 @@ print(f"Source: Stanford Open Policing Project, Chicago sample (CPD records).")
 print(f"Shipped file: {CSV}")
 print(f"Total rows in sample: {n_total}")
 print(f"Columns: {len(df.columns)}")
+print(f"Officer race recorded: {df['officer_race'].notna().sum()} of "
+      f"{n_total} rows.")
 print("Outcome types recorded:")
 print(df["outcome"].value_counts(dropna=False).to_string())
 print("Stop types recorded:")

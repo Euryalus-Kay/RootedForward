@@ -152,18 +152,17 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
 
   return (
     <section className="mt-14 border-t border-border pt-10">
-      <div className="flex items-center gap-3 mb-8">
-        <MessageCircle className="h-6 w-6 text-forest" />
+      <div className="mb-8 flex items-baseline justify-between gap-3">
         <h2 className="font-display text-2xl text-forest">Comments</h2>
         {comments.length > 0 && (
-          <span className="rounded-full bg-forest/10 px-2.5 py-0.5 font-body text-xs font-semibold text-forest">
-            {comments.length}
+          <span className="ledger text-warm-gray">
+            {String(comments.length).padStart(2, "0")} posted
           </span>
         )}
       </div>
 
       {/* Add Comment Form */}
-      <div className="mb-10 rounded-lg border border-border bg-white/60 p-6">
+      <div className="mb-10 rounded-sm border border-border bg-white/40 p-6">
         {user ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <label htmlFor="comment-input" className="sr-only">
@@ -179,7 +178,7 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
                 maxLength={MAX_CHARS + 50}
                 disabled={submitting}
                 className={cn(
-                  "w-full resize-none rounded-lg border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray",
+                  "w-full resize-none rounded-sm border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray",
                   "transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20",
                   "disabled:cursor-not-allowed disabled:opacity-60",
                   isOverLimit ? "border-rust" : "border-border"
@@ -207,8 +206,8 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
                 type="submit"
                 disabled={submitting || isOverLimit || !content.trim()}
                 className={cn(
-                  "inline-flex items-center gap-2 rounded-lg bg-rust px-5 py-2.5 font-body text-sm font-medium text-white",
-                  "transition-colors hover:bg-rust/90 active:bg-rust/80",
+                  "inline-flex items-center gap-2 rounded-sm bg-rust px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-white",
+                  "transition-colors hover:bg-rust-dark",
                   "disabled:cursor-not-allowed disabled:opacity-50"
                 )}
               >
@@ -234,7 +233,7 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
             </p>
             <Link
               href="/auth/login"
-              className="inline-flex items-center gap-2 rounded-lg bg-forest px-5 py-2.5 font-body text-sm font-medium text-cream transition-colors hover:bg-forest-light"
+              className="inline-flex items-center gap-2 rounded-sm bg-forest px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
             >
               Sign in to leave a comment
             </Link>
@@ -251,7 +250,7 @@ export default function CommentsSection({ stopId }: CommentsSectionProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="rounded-lg border border-border bg-white/40 p-10 text-center"
+          className="rounded-sm border border-border bg-white/40 p-10 text-center"
         >
           <MessageCircle className="mx-auto h-10 w-10 text-warm-gray-light" />
           <p className="mt-3 font-body text-warm-gray">

@@ -1,5 +1,13 @@
 "use client";
 
+/* ------------------------------------------------------------------ */
+/*  PodcastPlayer — the audio surface inside an episode row            */
+/*                                                                     */
+/*  Spotify embed URLs render the official iframe inside a hairline    */
+/*  frame with a ledger caption. Anything else gets the custom HTML    */
+/*  audio player: play/pause, seek, volume, mute, playback speed.      */
+/* ------------------------------------------------------------------ */
+
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
@@ -70,30 +78,20 @@ function SpotifyEmbed({
   episodeNumber: number;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-white/60 p-5">
-      {/* Header */}
-      <div className="mb-4 flex items-center gap-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-rust/10 font-display text-xs font-bold text-rust">
-          {episodeNumber}
+    <div className="border border-border bg-white/40 p-4">
+      <div className="flex items-baseline justify-between gap-4 px-1 pb-3">
+        <span className="ledger text-warm-gray">
+          Ep {String(episodeNumber).padStart(2, "0")} / Audio
         </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
-            Episode {episodeNumber}
-          </p>
-          <p className="truncate font-display text-sm font-semibold text-forest">
-            {title}
-          </p>
-        </div>
+        <span className="ledger text-warm-gray/70">Via Spotify</span>
       </div>
-
-      {/* Spotify iframe */}
       <iframe
         src={embedUrl}
         width="100%"
         height="152"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
-        className="rounded-lg"
+        className="block"
         title={`Listen to Episode ${episodeNumber}: ${title}`}
         style={{
           border: "none",
@@ -230,22 +228,17 @@ function CustomAudioPlayer({
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="rounded-xl border border-border bg-white/60 p-5">
+    <div className="border border-border bg-white/40 p-5">
       <audio ref={audioRef} src={embedUrl} preload="metadata" />
 
       {/* Header row */}
-      <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-rust/10 font-display text-xs font-bold text-rust">
-          {episodeNumber}
+      <div className="mb-5 flex items-baseline gap-4">
+        <span className="ledger shrink-0 text-rust">
+          Ep {String(episodeNumber).padStart(2, "0")}
         </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
-            Episode {episodeNumber}
-          </p>
-          <p className="truncate font-display text-sm font-semibold text-forest">
-            {title}
-          </p>
-        </div>
+        <p className="min-w-0 flex-1 truncate font-display text-sm text-forest">
+          {title}
+        </p>
         {isPlaying && <NowPlayingBars />}
       </div>
 
@@ -255,7 +248,7 @@ function CustomAudioPlayer({
         <button
           onClick={togglePlay}
           aria-label={isPlaying ? "Pause" : "Play"}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rust text-cream shadow-md transition-transform hover:scale-105 active:scale-95"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-rust text-cream transition-colors hover:bg-rust-dark"
         >
           <AnimatePresence mode="wait" initial={false}>
             {isPlaying ? (
@@ -290,7 +283,7 @@ function CustomAudioPlayer({
             onClick={handleProgressClick}
             onMouseDown={() => setIsDragging(true)}
             onMouseUp={() => setIsDragging(false)}
-            className="group relative h-2 cursor-pointer rounded-full bg-cream-dark"
+            className="group relative h-1.5 cursor-pointer bg-cream-dark"
             role="slider"
             aria-label="Seek"
             aria-valuenow={Math.round(currentTime)}
@@ -298,21 +291,21 @@ function CustomAudioPlayer({
             aria-valuemax={Math.round(duration)}
           >
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-forest transition-[width] duration-100"
+              className="absolute inset-y-0 left-0 bg-rust transition-[width] duration-100"
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full border-2 border-forest bg-cream opacity-0 shadow-sm transition-opacity group-hover:opacity-100"
-              style={{ left: `calc(${progress}% - 8px)` }}
+              className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 border border-rust bg-cream opacity-0 transition-opacity group-hover:opacity-100"
+              style={{ left: `calc(${progress}% - 7px)` }}
             />
           </div>
 
           {/* Time display */}
           <div className="flex items-center justify-between">
-            <span className="font-body text-xs tabular-nums text-warm-gray">
+            <span className="ledger tabular-nums text-warm-gray">
               {formatTime(currentTime)}
             </span>
-            <span className="font-body text-xs tabular-nums text-warm-gray">
+            <span className="ledger tabular-nums text-warm-gray">
               {formatTime(duration)}
             </span>
           </div>
@@ -326,7 +319,7 @@ function CustomAudioPlayer({
           <button
             onClick={toggleMute}
             aria-label={isMuted ? "Unmute" : "Mute"}
-            className="flex h-8 w-8 items-center justify-center rounded-md text-warm-gray transition-colors hover:bg-cream-dark hover:text-ink"
+            className="flex h-8 w-8 items-center justify-center rounded-sm text-warm-gray transition-colors hover:bg-cream-dark hover:text-ink"
           >
             {isMuted || volume === 0 ? (
               <VolumeX className="h-4 w-4" />
@@ -341,7 +334,7 @@ function CustomAudioPlayer({
             step="0.05"
             value={isMuted ? 0 : volume}
             onChange={handleVolumeChange}
-            className="h-1 w-20 cursor-pointer appearance-none rounded-full bg-cream-dark accent-forest"
+            className="h-1 w-20 cursor-pointer appearance-none rounded-full bg-cream-dark accent-rust"
             aria-label="Volume"
           />
         </div>
@@ -350,9 +343,9 @@ function CustomAudioPlayer({
         <button
           onClick={cycleSpeed}
           className={cn(
-            "rounded-lg border px-3 py-1.5 font-body text-xs font-semibold tabular-nums transition-colors",
+            "ledger rounded-sm border px-3 py-1.5 tabular-nums transition-colors",
             speed !== 1
-              ? "border-forest bg-forest/5 text-forest"
+              ? "border-rust bg-rust/5 text-rust"
               : "border-border text-warm-gray hover:bg-cream-dark hover:text-ink"
           )}
         >
@@ -374,10 +367,8 @@ export default function PodcastPlayer({
 }: PodcastPlayerProps) {
   if (!embedUrl) {
     return (
-      <div className="rounded-xl border border-border bg-white/40 p-8 text-center">
-        <p className="font-body text-sm text-warm-gray">
-          Episode coming soon
-        </p>
+      <div className="border border-dashed border-border bg-white/40 p-8 text-center">
+        <p className="ledger text-warm-gray">Episode audio coming soon</p>
       </div>
     );
   }

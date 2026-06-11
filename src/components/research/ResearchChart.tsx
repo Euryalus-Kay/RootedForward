@@ -182,6 +182,8 @@ function BarChart({
       {/* Bars */}
       {x.map((label, xi) => {
         const groupX = padding.left + groupW * xi + barGap;
+        /* Value labels are only legible when the chart is uncrowded. */
+        const showValues = x.length * series.length <= 12;
         return (
           <g key={label}>
             {series.map((s, si) => {
@@ -199,6 +201,21 @@ function BarChart({
                     fill={PALETTE[si % PALETTE.length]}
                     opacity={0.9}
                   />
+                  {showValues && h > 12 && (
+                    <text
+                      x={x + barW / 2}
+                      y={y - 5}
+                      textAnchor="middle"
+                      fontSize="9.5"
+                      fontFamily="var(--font-mono)"
+                      fill="var(--color-ink-light, #3A3A3A)"
+                    >
+                      {formatNumber(v, {
+                        prefix: config.prefix,
+                        unit: config.unit,
+                      })}
+                    </text>
+                  )}
                 </g>
               );
             })}
@@ -362,7 +379,17 @@ function PieChart({
   const cy = height / 2 + 4;
   const radius = Math.min(width, height) * 0.34;
 
-  let acc = 0;
+  /* Precompute each slice's start/end angle so nothing is mutated
+     inside the JSX map (cumulative sum of the values before it). */
+  const arcs = slices.map((s, i) => {
+    const before = slices.slice(0, i).reduce((a, p) => a + p.value, 0);
+    return {
+      ...s,
+      startAngle: (before / total) * Math.PI * 2 - Math.PI / 2,
+      endAngle: ((before + s.value) / total) * Math.PI * 2 - Math.PI / 2,
+    };
+  });
+
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
@@ -371,10 +398,8 @@ function PieChart({
       className="w-full max-w-full"
       preserveAspectRatio="xMidYMid meet"
     >
-      {slices.map((s, i) => {
-        const startAngle = (acc / total) * Math.PI * 2 - Math.PI / 2;
-        acc += s.value;
-        const endAngle = (acc / total) * Math.PI * 2 - Math.PI / 2;
+      {arcs.map((s, i) => {
+        const { startAngle, endAngle } = s;
         const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
         const x1 = cx + radius * Math.cos(startAngle);
         const y1 = cy + radius * Math.sin(startAngle);
@@ -420,10 +445,10 @@ function niceCeiling(n: number): number {
   if (n <= 0) return 1;
   const pow = Math.pow(10, Math.floor(Math.log10(n)));
   const scaled = n / pow;
-  let mult = 1;
-  if (scaled > 1) mult = 2;
-  if (scaled > 2) mult = 5;
-  if (scaled > 5) mult = 10;
+  /* Finer steps than 1/2/5 so the data fills the plot area instead of
+     leaving half the chart as empty headroom (e.g. 111 -> 120, not 200). */
+  const steps = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+  const mult = steps.find((s) => scaled <= s) ?? 10;
   return mult * pow;
 }
 

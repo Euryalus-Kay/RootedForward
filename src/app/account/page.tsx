@@ -8,6 +8,9 @@ import { signOut } from "@/lib/supabase/auth-helpers";
 import type { UserProfile, TourStop } from "@/lib/types/database";
 import toast from "react-hot-toast";
 
+const INPUT_CLASS =
+  "w-full rounded-md border border-border bg-cream px-4 py-3 font-body text-sm text-ink placeholder:text-warm-gray-light focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/30";
+
 export default function AccountPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -180,35 +183,36 @@ export default function AccountPage() {
   function SkeletonField() {
     return (
       <div className="space-y-2">
-        <div className="h-4 w-20 animate-pulse rounded bg-border" />
-        <div className="h-10 w-full animate-pulse rounded-md bg-border" />
+        <div className="h-4 w-20 animate-pulse rounded-sm bg-border" />
+        <div className="h-11 w-full animate-pulse rounded-sm bg-border" />
       </div>
     );
   }
 
   function SkeletonStopCard() {
     return (
-      <div className="flex items-center justify-between rounded-lg border border-border bg-cream px-4 py-3">
+      <div className="flex items-center justify-between border border-border bg-white/40 px-5 py-4">
         <div className="space-y-2">
-          <div className="h-4 w-40 animate-pulse rounded bg-border" />
-          <div className="h-3 w-24 animate-pulse rounded bg-border" />
+          <div className="h-4 w-40 animate-pulse rounded-sm bg-border" />
+          <div className="h-3 w-24 animate-pulse rounded-sm bg-border" />
         </div>
-        <div className="h-8 w-20 animate-pulse rounded bg-border" />
+        <div className="h-8 w-20 animate-pulse rounded-sm bg-border" />
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-6 py-20 md:py-28">
-        <div className="h-9 w-48 animate-pulse rounded bg-border" />
+      <div className="mx-auto max-w-2xl px-6 py-16 md:py-24">
+        <div className="h-4 w-24 animate-pulse rounded-sm bg-border" />
+        <div className="mt-4 h-10 w-56 animate-pulse rounded-sm bg-border" />
         <div className="mt-10 space-y-6">
           <SkeletonField />
           <SkeletonField />
-          <div className="h-10 w-28 animate-pulse rounded-lg bg-border" />
+          <div className="h-11 w-36 animate-pulse rounded-sm bg-border" />
         </div>
-        <div className="mt-12">
-          <div className="h-7 w-32 animate-pulse rounded bg-border" />
+        <div className="mt-14">
+          <div className="h-7 w-32 animate-pulse rounded-sm bg-border" />
           <div className="mt-4 space-y-3">
             <SkeletonStopCard />
             <SkeletonStopCard />
@@ -219,40 +223,43 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-20 md:py-28">
+    <div className="mx-auto max-w-2xl px-6 py-16 md:py-24">
       {/* Page heading */}
-      <h1 className="font-display text-3xl font-semibold text-forest md:text-4xl">
-        Your Account
+      <p className="ledger text-warm-gray">Account</p>
+      <h1 className="mt-3 font-display text-4xl text-forest md:text-5xl">
+        Your account
       </h1>
+      <div className="mt-5 h-px w-14 bg-rust/60" aria-hidden="true" />
 
       {/* Admin link */}
-      {profile && (profile as any).role === "admin" && (
+      {profile && profile.role === "admin" && (
         <Link
           href="/admin"
-          className="mt-4 inline-flex items-center rounded-sm bg-forest px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+          className="mt-8 inline-flex items-center rounded-sm bg-forest px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
         >
-          Admin Dashboard &rarr;
+          Admin dashboard &rarr;
         </Link>
       )}
 
       {/* Profile section */}
       <section className="mt-10">
-        <div className="rounded-xl border border-border bg-cream-dark/40 px-6 py-8 shadow-sm">
-          <h2 className="font-display text-xl font-semibold text-forest">
-            Profile
+        <div className="border border-border bg-white/40 p-7">
+          <p className="ledger text-warm-gray">Profile</p>
+          <h2 className="mt-2 font-display text-2xl text-forest">
+            Your details
           </h2>
 
           <div className="mt-6 space-y-5">
             {/* Email (read-only) */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">
+              <label className="mb-1.5 block font-body text-sm font-medium text-ink">
                 Email
               </label>
               <input
                 type="email"
                 readOnly
                 value={profile?.email ?? ""}
-                className="h-10 w-full rounded-md border border-border bg-cream/60 px-3 text-sm text-warm-gray cursor-not-allowed"
+                className="w-full cursor-not-allowed rounded-md border border-border bg-cream/60 px-4 py-3 font-body text-sm text-warm-gray"
               />
             </div>
 
@@ -260,9 +267,9 @@ export default function AccountPage() {
             <div>
               <label
                 htmlFor="fullName"
-                className="mb-1.5 block text-sm font-medium text-ink"
+                className="mb-1.5 block font-body text-sm font-medium text-ink"
               >
-                Full Name
+                Full name
               </label>
               <input
                 id="fullName"
@@ -270,7 +277,7 @@ export default function AccountPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Your full name"
-                className="h-10 w-full rounded-md border border-border bg-cream px-3 text-sm text-ink placeholder:text-warm-gray-light focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+                className={INPUT_CLASS}
               />
             </div>
 
@@ -278,11 +285,11 @@ export default function AccountPage() {
             <button
               onClick={handleSaveProfile}
               disabled={saving || fullName === (profile?.full_name ?? "")}
-              className="flex h-10 items-center justify-center rounded-lg bg-rust px-6 text-sm font-medium text-white transition-colors hover:bg-rust-dark disabled:opacity-50"
+              className="inline-flex items-center justify-center rounded-sm bg-rust px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? (
                 <svg
-                  className="h-5 w-5 animate-spin text-white"
+                  className="h-4 w-4 animate-spin text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -302,7 +309,7 @@ export default function AccountPage() {
                   />
                 </svg>
               ) : (
-                "Save Changes"
+                "Save changes"
               )}
             </button>
           </div>
@@ -310,10 +317,15 @@ export default function AccountPage() {
       </section>
 
       {/* Saved Stops */}
-      <section className="mt-12">
-        <h2 className="font-display text-xl font-semibold text-forest">
-          Saved Stops
-        </h2>
+      <section className="mt-14">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="font-display text-2xl text-forest">Saved stops</h2>
+          {!stopsLoading && savedStops.length > 0 && (
+            <span className="ledger text-warm-gray">
+              {savedStops.length} saved
+            </span>
+          )}
+        </div>
 
         {stopsLoading ? (
           <div className="mt-4 space-y-3">
@@ -321,39 +333,38 @@ export default function AccountPage() {
             <SkeletonStopCard />
           </div>
         ) : savedStops.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-border bg-cream-dark/30 px-6 py-8 text-center">
-            <p className="text-sm text-warm-gray">
+          <div className="mt-4 border border-dashed border-border bg-white/30 px-6 py-10 text-center">
+            <p className="font-body text-sm leading-relaxed text-warm-gray">
               You haven&apos;t saved any stops yet. Explore our{" "}
-              <Link
-                href="/tours"
-                className="font-medium text-forest transition-colors hover:text-forest-light"
-              >
+              <Link href="/tours" className="link-draw font-medium text-forest">
                 walking tours
               </Link>{" "}
               and save stops to revisit later.
             </p>
           </div>
         ) : (
-          <div className="mt-4 space-y-3">
-            {savedStops.map((stop) => (
+          <div className="mt-4 border border-border bg-white/40">
+            {savedStops.map((stop, i) => (
               <div
                 key={stop.id}
-                className="flex items-center justify-between rounded-lg border border-border bg-cream px-4 py-3 transition-colors hover:bg-cream-dark/40"
+                className={`flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-cream-dark/30 ${
+                  i > 0 ? "border-t border-border" : ""
+                }`}
               >
                 <div>
                   <Link
                     href={`/tours/${stop.city}#${stop.slug}`}
-                    className="text-sm font-medium text-ink transition-colors hover:text-forest"
+                    className="font-body text-sm font-medium text-ink transition-colors hover:text-forest"
                   >
                     {stop.title}
                   </Link>
-                  <p className="mt-0.5 text-xs capitalize text-warm-gray">
+                  <p className="ledger mt-1 text-[11px] text-warm-gray">
                     {stop.city.replace("-", " ")}
                   </p>
                 </div>
                 <button
                   onClick={() => handleRemoveStop(stop.id, "saved_stops")}
-                  className="rounded-md px-3 py-1.5 text-xs font-medium text-rust transition-colors hover:bg-rust/10"
+                  className="rounded-sm px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-wider text-rust transition-colors hover:bg-rust/10"
                 >
                   Remove
                 </button>
@@ -364,10 +375,15 @@ export default function AccountPage() {
       </section>
 
       {/* Visited Stops */}
-      <section className="mt-12">
-        <h2 className="font-display text-xl font-semibold text-forest">
-          Visited Stops
-        </h2>
+      <section className="mt-14">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="font-display text-2xl text-forest">Visited stops</h2>
+          {!stopsLoading && visitedStops.length > 0 && (
+            <span className="ledger text-warm-gray">
+              {visitedStops.length} visited
+            </span>
+          )}
+        </div>
 
         {stopsLoading ? (
           <div className="mt-4 space-y-3">
@@ -375,27 +391,26 @@ export default function AccountPage() {
             <SkeletonStopCard />
           </div>
         ) : visitedStops.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-border bg-cream-dark/30 px-6 py-8 text-center">
-            <p className="text-sm text-warm-gray">
+          <div className="mt-4 border border-dashed border-border bg-white/30 px-6 py-10 text-center">
+            <p className="font-body text-sm leading-relaxed text-warm-gray">
               You haven&apos;t marked any stops as visited yet. Visit a{" "}
-              <Link
-                href="/tours"
-                className="font-medium text-forest transition-colors hover:text-forest-light"
-              >
+              <Link href="/tours" className="link-draw font-medium text-forest">
                 tour stop
               </Link>{" "}
               and mark it complete to track your progress.
             </p>
           </div>
         ) : (
-          <div className="mt-4 space-y-3">
-            {visitedStops.map((stop) => (
+          <div className="mt-4 border border-border bg-white/40">
+            {visitedStops.map((stop, i) => (
               <div
                 key={stop.id}
-                className="flex items-center justify-between rounded-lg border border-border bg-cream px-4 py-3 transition-colors hover:bg-cream-dark/40"
+                className={`flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-cream-dark/30 ${
+                  i > 0 ? "border-t border-border" : ""
+                }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-forest/10">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-forest/10">
                     <svg
                       className="h-3 w-3 text-forest"
                       fill="none"
@@ -413,18 +428,18 @@ export default function AccountPage() {
                   <div>
                     <Link
                       href={`/tours/${stop.city}#${stop.slug}`}
-                      className="text-sm font-medium text-ink transition-colors hover:text-forest"
+                      className="font-body text-sm font-medium text-ink transition-colors hover:text-forest"
                     >
                       {stop.title}
                     </Link>
-                    <p className="mt-0.5 text-xs capitalize text-warm-gray">
+                    <p className="ledger mt-1 text-[11px] text-warm-gray">
                       {stop.city.replace("-", " ")}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => handleRemoveStop(stop.id, "visited_stops")}
-                  className="rounded-md px-3 py-1.5 text-xs font-medium text-rust transition-colors hover:bg-rust/10"
+                  className="rounded-sm px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-wider text-rust transition-colors hover:bg-rust/10"
                 >
                   Remove
                 </button>
@@ -435,15 +450,15 @@ export default function AccountPage() {
       </section>
 
       {/* Sign Out */}
-      <section className="mt-12 border-t border-border pt-8">
+      <section className="mt-14 border-t border-border pt-8">
         <button
           onClick={handleSignOut}
           disabled={signingOut}
-          className="flex h-10 items-center justify-center rounded-lg border border-border bg-cream px-6 text-sm font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-sm border border-forest/30 px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-forest/5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {signingOut ? (
             <svg
-              className="h-5 w-5 animate-spin text-ink"
+              className="h-4 w-4 animate-spin text-ink"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -463,7 +478,7 @@ export default function AccountPage() {
               />
             </svg>
           ) : (
-            "Sign Out"
+            "Sign out"
           )}
         </button>
       </section>

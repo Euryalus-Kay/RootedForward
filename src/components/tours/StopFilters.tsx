@@ -112,7 +112,7 @@ export default function StopFilters({ stops, onFilteredChange }: StopFiltersProp
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Filter stops by title or description..."
             className={cn(
-              "w-full rounded-lg border border-border bg-white/60 py-2.5 pl-9 pr-9 font-body text-sm text-ink",
+              "w-full rounded-sm border border-border bg-white/60 py-2.5 pl-9 pr-9 font-body text-sm text-ink",
               "placeholder:text-warm-gray-light transition-colors",
               "focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             )}
@@ -135,7 +135,7 @@ export default function StopFilters({ stops, onFilteredChange }: StopFiltersProp
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value as SortOption)}
             className={cn(
-              "appearance-none rounded-lg border border-border bg-white/60 py-2.5 pl-9 pr-8 font-body text-sm text-ink",
+              "appearance-none rounded-sm border border-border bg-white/60 py-2.5 pl-9 pr-8 font-body text-sm text-ink",
               "transition-colors cursor-pointer",
               "focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20",
               sortOption !== "default" && "border-forest bg-forest/5"
@@ -154,7 +154,7 @@ export default function StopFilters({ stops, onFilteredChange }: StopFiltersProp
           <button
             onClick={() => setHasVideoOnly((prev) => !prev)}
             className={cn(
-              "inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-body text-sm font-medium transition-colors",
+              "inline-flex items-center gap-2 rounded-sm border px-4 py-2.5 font-body text-sm font-medium transition-colors",
               hasVideoOnly
                 ? "border-forest bg-forest text-cream"
                 : "border-border bg-white/60 text-ink hover:bg-cream-dark"
@@ -169,7 +169,7 @@ export default function StopFilters({ stops, onFilteredChange }: StopFiltersProp
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2.5 font-body text-sm font-medium text-rust transition-colors hover:bg-rust/10"
+            className="inline-flex items-center gap-1.5 rounded-sm px-3 py-2.5 font-body text-sm font-medium text-rust transition-colors hover:bg-rust/10"
           >
             <X className="h-3.5 w-3.5" />
             Clear
@@ -178,14 +178,9 @@ export default function StopFilters({ stops, onFilteredChange }: StopFiltersProp
       </div>
 
       {/* Results count */}
-      <p className="font-body text-sm text-warm-gray">
-        Showing{" "}
-        <span className="font-semibold text-ink">
-          {filteredStops.length}
-        </span>{" "}
-        of{" "}
-        <span className="font-semibold text-ink">{stops.length}</span>{" "}
-        stop{stops.length !== 1 ? "s" : ""}
+      <p className="ledger text-warm-gray">
+        Showing {filteredStops.length} of {stops.length} stop
+        {stops.length !== 1 ? "s" : ""}
       </p>
     </div>
   );

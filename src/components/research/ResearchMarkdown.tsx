@@ -166,6 +166,7 @@ function renderBlocks(
   let i = 0;
   const paragraphBuffer: string[] = [];
   let figureCounter = 0;
+  let sectionCounter = 0;
 
   while (i < lines.length) {
     const line = lines[i];
@@ -262,13 +263,21 @@ function renderBlocks(
       headings.push({ id, text, level });
       const inlineHtml = renderCitationRefs(inlineMarkdown(text), citationIds);
       if (level === 2 || h1) {
+        sectionCounter += 1;
         pushBlock(
-          <h2
-            key={id}
-            id={id}
-            className="scroll-mt-24 font-display text-[28px] leading-tight text-forest md:text-[32px]"
-            dangerouslySetInnerHTML={{ __html: inlineHtml }}
-          />
+          <h2 key={id} id={id} className="mt-8 scroll-mt-24 first:mt-0">
+            <span
+              aria-hidden="true"
+              className="ledger mb-2.5 flex items-center gap-3 text-rust"
+            >
+              {String(sectionCounter).padStart(2, "0")}
+              <span className="h-px w-10 bg-rust/40" />
+            </span>
+            <span
+              className="block font-display text-[28px] leading-tight text-forest md:text-[32px]"
+              dangerouslySetInnerHTML={{ __html: inlineHtml }}
+            />
+          </h2>
         );
       } else {
         pushBlock(

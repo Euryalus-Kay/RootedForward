@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import ScrollReveal from "@/components/ui/ScrollReveal";
-import Badge from "@/components/ui/Badge";
+import { Reveal } from "@/components/motion/Reveal";
 import type { TourStop } from "@/lib/types/database";
 
 /* ------------------------------------------------------------------ */
@@ -22,7 +20,7 @@ interface RelatedStopsProps {
 
 function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trimEnd() + "\u2026";
+  return text.slice(0, maxLength).trimEnd() + "…";
 }
 
 function cityDisplayName(slug: string): string {
@@ -53,73 +51,64 @@ export default function RelatedStops({
 
   // Build the display list: up to 3 stops, preferring same city
   let displayStops: TourStop[] = [];
-  let showCityLabel = false;
 
   if (sameCityStops.length >= 2) {
     displayStops = sameCityStops.slice(0, 3);
   } else {
     displayStops = [...sameCityStops, ...otherCityStops].slice(0, 3);
-    showCityLabel = otherCityStops.length > 0 && sameCityStops.length < 2;
   }
 
   if (displayStops.length === 0) return null;
 
   return (
-    <section className="border-t border-border bg-cream py-16 md:py-20">
-      <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal>
-          <h2 className="font-display text-2xl text-forest md:text-3xl">
-            Continue Exploring
+    <section className="border-t border-border bg-cream-dark py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Reveal y={16}>
+          <p className="eyebrow text-warm-gray">Keep walking</p>
+          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+            Continue exploring
           </h2>
-          <p className="mt-2 font-body text-base text-warm-gray">
-            More stops to discover on your tour.
-          </p>
-        </ScrollReveal>
+        </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {displayStops.map((stop, index) => {
-            const isSameCity = stop.city === city;
-
-            return (
-              <ScrollReveal
-                key={stop.id}
-                delay={index * 0.1}
-                direction="up"
+          {displayStops.map((stop, index) => (
+            <Reveal key={stop.id} delay={index * 0.08} y={20}>
+              <Link
+                href={`/tours/${stop.city}/${stop.slug}`}
+                className="group block h-full"
               >
-                <Link
-                  href={`/tours/${stop.city}/${stop.slug}`}
-                  className="group block h-full"
-                >
-                  <article className="flex h-full flex-col rounded-lg border border-border bg-cream p-6 transition-shadow hover:shadow-md">
-                    {/* City badge when mixing cities */}
-                    {showCityLabel && !isSameCity && (
-                      <div className="mb-3">
-                        <Badge variant="outline" size="sm">
-                          More from {cityDisplayName(stop.city)}
-                        </Badge>
-                      </div>
-                    )}
-
-                    {/* Title */}
-                    <h3 className="font-display text-lg leading-snug text-forest">
-                      {stop.title}
-                    </h3>
-
-                    {/* Description excerpt */}
-                    <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-ink/65">
-                      {truncate(stop.description, 80)}
-                    </p>
-
-                    {/* Link hint */}
-                    <span className="mt-4 inline-flex items-center gap-1 font-body text-sm font-semibold text-rust transition-transform group-hover:translate-x-1">
-                      View Stop
-                      <ArrowRight size={14} />
+                <article className="card-lift flex h-full flex-col border border-border bg-white/40 p-7">
+                  {/* Ledger meta row */}
+                  <div className="flex items-baseline justify-between">
+                    <span className="ledger text-warm-gray">Tour stop</span>
+                    <span className="ledger text-warm-gray">
+                      {cityDisplayName(stop.city)}
                     </span>
-                  </article>
-                </Link>
-              </ScrollReveal>
-            );
-          })}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="mt-4 font-display text-xl leading-snug text-forest transition-colors group-hover:text-rust">
+                    {stop.title}
+                  </h3>
+
+                  {/* Description excerpt */}
+                  <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-ink/70">
+                    {truncate(stop.description, 110)}
+                  </p>
+
+                  {/* Hairline footer */}
+                  <div className="mt-6 border-t border-border pt-4">
+                    <span className="inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                      <span>Visit this stop</span>
+                      <span aria-hidden="true" className="arrow-nudge">
+                        &rarr;
+                      </span>
+                    </span>
+                  </div>
+                </article>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

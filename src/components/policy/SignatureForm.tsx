@@ -104,22 +104,24 @@ export default function SignatureForm({ campaignId, campaignSlug }: SignatureFor
 
   if (checking) {
     return (
-      <div className="rounded-sm border border-border bg-cream-dark p-6">
-        <p className="font-body text-sm text-warm-gray">Loading&hellip;</p>
+      <div className="border border-border bg-white/40 p-7">
+        <p className="ledger text-warm-gray">Signature</p>
+        <p className="mt-3 font-body text-sm text-warm-gray">Loading&hellip;</p>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="rounded-sm border border-border bg-cream-dark p-6">
-        <h3 className="font-display text-lg text-forest">Add Your Signature</h3>
+      <div className="border border-border bg-white/40 p-7">
+        <p className="ledger text-warm-gray">Signature</p>
+        <h3 className="mt-3 font-display text-xl text-forest">Add Your Signature</h3>
         <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
           Sign in to add your name to this campaign.
         </p>
         <Link
           href={`/auth/login?redirect=/policy/campaigns/${campaignSlug}`}
-          className="mt-4 inline-flex items-center rounded-sm bg-rust px-5 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-rust-dark"
+          className="mt-5 inline-flex items-center rounded-sm bg-rust px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
         >
           Sign In
         </Link>
@@ -129,8 +131,9 @@ export default function SignatureForm({ campaignId, campaignSlug }: SignatureFor
 
   if (hasSigned) {
     return (
-      <div className="rounded-sm border border-border bg-cream-dark p-6">
-        <h3 className="font-display text-lg text-forest">Signed</h3>
+      <div className="border border-border bg-white/40 p-7">
+        <p className="ledger text-warm-gray">Signature</p>
+        <h3 className="mt-3 font-display text-xl text-forest">Signed</h3>
         <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
           You&rsquo;ve signed this campaign. Thank you.
         </p>
@@ -139,17 +142,18 @@ export default function SignatureForm({ campaignId, campaignSlug }: SignatureFor
   }
 
   return (
-    <div className="rounded-sm border border-border bg-cream-dark p-6">
-      <h3 className="font-display text-lg text-forest">Add Your Signature</h3>
+    <div className="border border-border bg-white/40 p-7">
+      <p className="ledger text-warm-gray">Signature</p>
+      <h3 className="mt-3 font-display text-xl text-forest">Add Your Signature</h3>
       {userName && (
         <p className="mt-2 font-body text-sm text-ink/65">
           Signing as <span className="font-medium text-ink">{userName}</span>.{" "}
-          <Link href="/account" className="text-rust underline underline-offset-2">
+          <Link href="/account" className="text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust">
             Edit profile
           </Link>
         </p>
       )}
-      <label className="mt-4 flex items-center gap-2 font-body text-sm text-ink/75">
+      <label className="mt-5 flex items-center gap-2.5 border-t border-border pt-5 font-body text-sm text-ink/75">
         <input
           type="checkbox"
           checked={isPublic}

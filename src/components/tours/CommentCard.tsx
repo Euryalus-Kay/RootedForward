@@ -57,7 +57,7 @@ export default function CommentCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.25 }}
-      className="group rounded-lg border border-border bg-white/60 p-5 transition-colors hover:bg-white/80"
+      className="group rounded-sm border border-border bg-white/40 p-5 transition-colors hover:bg-white/60"
     >
       <div className="flex items-start gap-4">
         {/* Avatar */}
@@ -75,7 +75,7 @@ export default function CommentCard({
               <span className="font-body text-sm font-semibold text-ink">
                 {displayName}
               </span>
-              <span className="font-body text-xs text-warm-gray">
+              <span className="ledger text-warm-gray">
                 {getRelativeTime(comment.created_at)}
               </span>
             </div>

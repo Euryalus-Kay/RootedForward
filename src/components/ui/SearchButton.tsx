@@ -1,8 +1,25 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useSyncExternalStore,
+} from "react";
 import { Search } from "lucide-react";
 import SearchModal from "./SearchModal";
+
+/* Platform never changes after load; read it as an external value so
+   the server render (false) and client value reconcile without an
+   effect-driven setState. */
+const subscribeNoop = () => () => {};
+function useIsMac(): boolean {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => /Mac|iPod|iPhone|iPad/.test(navigator.userAgent),
+    () => false
+  );
+}
 
 export default function SearchButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,13 +38,7 @@ export default function SearchButton() {
   }, [handleKeyDown]);
 
   /* ---- Detect platform for shortcut badge ---- */
-  const [isMac, setIsMac] = useState(false);
-  useEffect(() => {
-    setIsMac(
-      typeof navigator !== "undefined" &&
-        /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)
-    );
-  }, []);
+  const isMac = useIsMac();
 
   return (
     <>

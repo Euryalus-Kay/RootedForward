@@ -79,7 +79,7 @@ export default function DatasetDownloadButton({ slug, paperTitle }: Props) {
 
   if (authLoading) {
     return (
-      <span className="inline-flex items-center gap-2 rounded-sm bg-cream-dark/40 px-4 py-2 font-body text-sm font-medium text-warm-gray">
+      <span className="inline-flex items-center gap-2 rounded-sm bg-cream-dark/40 px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray">
         <Loader2 className="h-4 w-4 animate-spin" /> Checking session
       </span>
     );
@@ -90,7 +90,7 @@ export default function DatasetDownloadButton({ slug, paperTitle }: Props) {
     return (
       <a
         href={`/auth/login?next=${next}`}
-        className="inline-flex items-center gap-2 rounded-sm border border-rust bg-rust/5 px-4 py-2 font-body text-sm font-semibold text-rust transition-colors hover:bg-rust hover:text-cream"
+        className="inline-flex items-center gap-2 rounded-sm border border-rust px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:bg-rust hover:text-white"
       >
         <Lock className="h-4 w-4" /> Sign in to download
       </a>
@@ -102,7 +102,7 @@ export default function DatasetDownloadButton({ slug, paperTitle }: Props) {
       type="button"
       onClick={handleDownload}
       disabled={downloading}
-      className="inline-flex items-center gap-2 rounded-sm bg-forest px-4 py-2 font-body text-sm font-semibold text-cream transition-colors hover:bg-forest-dark disabled:cursor-wait disabled:opacity-70"
+      className="inline-flex items-center gap-2 rounded-sm bg-forest px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-dark disabled:cursor-wait disabled:opacity-70"
     >
       {downloading ? (
         <>

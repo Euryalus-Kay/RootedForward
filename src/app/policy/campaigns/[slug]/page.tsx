@@ -2,9 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import PageBanner from "@/components/layout/PageBanner";
+import { Reveal } from "@/components/motion/Reveal";
 import SignatureForm from "@/components/policy/SignatureForm";
 import CommentForm from "@/components/policy/CommentForm";
 import CommentsFeed from "@/components/policy/CommentsFeed";
+import ShareRow from "@/components/policy/ShareRow";
 import {
   PLACEHOLDER_CAMPAIGNS,
   PLACEHOLDER_COMMENTS,
@@ -26,7 +29,7 @@ async function getCampaign(slug: string): Promise<Campaign | null> {
       .eq("slug", slug)
       .single();
     if (!error && data) {
-      const c = data as any;
+      const c = data as Campaign;
       return {
         ...c,
         signature_count: c.signature_count ?? 0,
@@ -114,7 +117,7 @@ function RenderMarkdown({ content }: { content: string }) {
     if (line.startsWith("## ")) {
       flushList();
       elements.push(
-        <h2 key={i} className="mt-10 mb-4 font-display text-2xl text-forest">
+        <h2 key={i} className="mt-12 mb-5 font-display text-2xl text-forest md:text-3xl">
           {line.replace("## ", "")}
         </h2>
       );
@@ -125,7 +128,7 @@ function RenderMarkdown({ content }: { content: string }) {
     } else {
       flushList();
       elements.push(
-        <p key={i} className="my-3 font-body text-base leading-relaxed text-ink/75">
+        <p key={i} className="my-4 font-body text-base leading-relaxed text-ink/75">
           {line}
         </p>
       );
@@ -142,61 +145,56 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
   const comments = await getApprovedComments(campaign.id);
   const isActive = campaign.status === "active";
-  const statusLabel = campaign.status === "active" ? "Active Campaign" : campaign.status === "past" ? "Past Campaign" : "Draft";
-  const statusColor = campaign.status === "active" ? "bg-rust/15 text-rust" : "bg-warm-gray/15 text-warm-gray";
+  const statusLabel = campaign.status === "active" ? "Active campaign" : campaign.status === "past" ? "Past campaign" : "Draft";
+  const campaignUrl = `https://rooted-forward.org/policy/campaigns/${campaign.slug}`;
+
+  const bannerMeta = [
+    statusLabel,
+    campaign.category,
+    isActive && campaign.deadline
+      ? `Comment closes ${formatDeadline(campaign.deadline)}`
+      : null,
+    `${campaign.signature_count.toLocaleString()} signatures`,
+  ].filter(Boolean) as string[];
 
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-cream pb-8 pt-28 md:pt-36">
-        <div className="mx-auto max-w-6xl px-6">
-          {/* Breadcrumb */}
-          <nav className="font-body text-xs text-warm-gray">
-            <Link href="/policy" className="hover:text-forest">
-              Policy
-            </Link>
-            {" / "}
-            <Link href="/policy" className="hover:text-forest">
-              Campaigns
-            </Link>
-            {" / "}
-            <span className="text-ink/50">{campaign.title}</span>
-          </nav>
+      {/* ============================================================
+          COMPACT BANNER
+          ============================================================ */}
+      <PageBanner
+        compact
+        eyebrow="Policy / Campaigns"
+        title={campaign.title}
+        meta={bannerMeta}
+      />
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span
-              className={`inline-block rounded-full px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider ${statusColor}`}
-            >
-              {statusLabel}
-            </span>
-            {campaign.deadline && isActive && (
-              <span className="font-body text-sm text-warm-gray">
-                Deadline: {formatDeadline(campaign.deadline)}
-              </span>
-            )}
-          </div>
+      {/* ============================================================
+          BODY — article column + sticky action sidebar
+          ============================================================ */}
+      <section className="bg-cream py-14 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+            {/* Main content, left */}
+            <article className="max-w-3xl lg:col-span-7">
+              {/* Ledger metadata row */}
+              {campaign.target_body && (
+                <Reveal y={16}>
+                  <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-b border-border pb-5">
+                    <span className="ledger text-warm-gray">Target body</span>
+                    <span className="font-body text-sm text-ink/80">
+                      {campaign.target_body}
+                    </span>
+                  </div>
+                </Reveal>
+              )}
 
-          <h1 className="mt-4 max-w-4xl font-display text-3xl leading-snug text-forest md:text-5xl">
-            {campaign.title}
-          </h1>
-          {campaign.target_body && (
-            <p className="mt-3 font-body text-sm text-warm-gray">
-              Target: {campaign.target_body}
-            </p>
-          )}
-          <p className="mt-6 max-w-3xl font-body text-lg leading-relaxed text-ink/75">
-            {campaign.summary}
-          </p>
-          <hr className="mt-10 border-border" />
-        </div>
-      </section>
+              <Reveal delay={0.1}>
+                <p className="mt-7 font-body text-lg leading-relaxed text-ink/80">
+                  {campaign.summary}
+                </p>
+              </Reveal>
 
-      {/* Two-column body */}
-      <section className="bg-cream pb-20 pt-8 md:pb-28">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-            {/* Main content — left */}
-            <div className="lg:col-span-7">
               {/* The Problem */}
               {campaign.problem_markdown && (
                 <RenderMarkdown content={campaign.problem_markdown} />
@@ -209,15 +207,15 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
               {/* Who Decides */}
               {campaign.decision_makers && campaign.decision_makers.length > 0 && (
-                <div className="mt-10">
-                  <h2 className="mb-4 font-display text-2xl text-forest">
+                <div className="mt-12">
+                  <h2 className="font-display text-2xl text-forest md:text-3xl">
                     Who Decides
                   </h2>
-                  <div className="flex flex-col gap-3">
+                  <div className="mt-5 border-t border-border">
                     {campaign.decision_makers.map((dm, i) => (
                       <div
                         key={i}
-                        className="rounded-sm border border-border bg-cream-dark px-5 py-4"
+                        className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-border py-4"
                       >
                         <p className="font-body text-sm font-medium text-ink">
                           {dm.name}
@@ -233,22 +231,25 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
               {/* The Evidence */}
               {campaign.evidence_links && campaign.evidence_links.length > 0 && (
-                <div className="mt-10">
-                  <h2 className="mb-4 font-display text-2xl text-forest">
+                <div className="mt-12">
+                  <h2 className="font-display text-2xl text-forest md:text-3xl">
                     The Evidence
                   </h2>
-                  <div className="flex flex-col gap-3">
+                  <div className="mt-5 border-t border-border">
                     {campaign.evidence_links.map((link, i) => (
-                      <div key={i}>
+                      <div
+                        key={i}
+                        className="border-b border-border py-4"
+                      >
                         <a
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-body text-sm font-medium text-forest underline decoration-border underline-offset-2 hover:text-rust hover:decoration-rust"
+                          className="link-draw font-body text-sm font-medium text-forest"
                         >
                           {link.title}
                         </a>
-                        <p className="font-body text-xs text-warm-gray">
+                        <p className="ledger mt-1.5 text-warm-gray">
                           {link.source}
                         </p>
                       </div>
@@ -259,18 +260,19 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
               {/* Related Tours */}
               {campaign.related_tour_slugs.length > 0 && (
-                <div className="mt-10">
-                  <h2 className="mb-4 font-display text-2xl text-forest">
+                <div className="mt-12">
+                  <h2 className="font-display text-2xl text-forest md:text-3xl">
                     Related Tours
                   </h2>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="mt-5 flex flex-wrap gap-3">
                     {campaign.related_tour_slugs.map((tourSlug) => (
                       <Link
                         key={tourSlug}
                         href={`/tours/chicago/${tourSlug}`}
-                        className="rounded-sm border border-border px-4 py-2 font-body text-sm text-forest transition-colors hover:bg-cream-dark"
+                        className="group inline-flex items-center gap-2 border border-forest/30 px-4 py-2.5 font-body text-sm text-forest transition-colors hover:border-forest hover:bg-forest hover:text-cream"
                       >
-                        {tourSlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} &rarr;
+                        {tourSlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                        <span aria-hidden="true" className="arrow-nudge">&rarr;</span>
                       </Link>
                     ))}
                   </div>
@@ -278,17 +280,18 @@ export default async function CampaignDetailPage({ params }: PageProps) {
               )}
 
               {/* Public Comments Feed */}
-              <div className="mt-14">
-                <h2 className="font-display text-2xl text-forest">
+              <div className="mt-16 border-t border-border pt-10">
+                <p className="ledger text-warm-gray">Public record</p>
+                <h2 className="mt-3 font-display text-2xl text-forest md:text-3xl">
                   What Chicagoans Are Saying
                 </h2>
-                <div className="mt-6">
+                <div className="mt-7">
                   <CommentsFeed comments={comments} />
                 </div>
               </div>
-            </div>
+            </article>
 
-            {/* Sidebar — right */}
+            {/* Sidebar, right */}
             <div className="lg:col-span-5">
               <div className="sticky top-20 flex flex-col gap-6">
                 {isActive && (
@@ -306,21 +309,22 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                 )}
 
                 {/* Counts */}
-                <div className="rounded-sm border border-border bg-cream-dark p-6">
-                  <div className="flex flex-col gap-3">
+                <div className="border border-border bg-white/40 p-7">
+                  <p className="ledger text-warm-gray">Count so far</p>
+                  <div className="mt-5 grid grid-cols-2 gap-6">
                     <div>
-                      <p className="font-display text-2xl text-forest">
+                      <p className="font-display text-3xl text-forest">
                         {campaign.signature_count.toLocaleString()}
                       </p>
-                      <p className="font-body text-xs text-warm-gray">
+                      <p className="ledger mt-1.5 text-warm-gray">
                         signatures
                       </p>
                     </div>
                     <div>
-                      <p className="font-display text-2xl text-forest">
+                      <p className="font-display text-3xl text-forest">
                         {comments.length}
                       </p>
-                      <p className="font-body text-xs text-warm-gray">
+                      <p className="ledger mt-1.5 text-warm-gray">
                         public comments
                       </p>
                     </div>
@@ -328,36 +332,18 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                 </div>
 
                 {/* Share */}
-                <div className="rounded-sm border border-border bg-cream-dark p-6">
-                  <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
-                    Share
-                  </h3>
-                  <div className="mt-3 flex gap-3">
-                    <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(campaign.title)}&url=${encodeURIComponent(`https://rooted-forward.org/policy/campaigns/${campaign.slug}`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-body text-sm text-forest underline underline-offset-2 hover:text-rust"
-                    >
-                      X / Twitter
-                    </a>
-                    <span className="text-border">|</span>
-                    <button
-                      onClick={undefined}
-                      className="font-body text-sm text-forest underline underline-offset-2 hover:text-rust"
-                    >
-                      Copy link
-                    </button>
+                <div className="border border-border bg-white/40 p-7">
+                  <p className="ledger text-warm-gray">Share</p>
+                  <div className="mt-4">
+                    <ShareRow title={campaign.title} url={campaignUrl} />
                   </div>
                 </div>
 
                 {/* Past campaign outcome */}
                 {campaign.status === "past" && campaign.outcome && (
-                  <div className="rounded-sm border border-border bg-cream-dark p-6">
-                    <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
-                      Outcome
-                    </h3>
-                    <p className="mt-2 font-body text-sm leading-relaxed text-ink/75">
+                  <div className="border border-border bg-white/40 p-7">
+                    <p className="ledger text-warm-gray">Outcome</p>
+                    <p className="mt-3 font-body text-sm leading-relaxed text-ink/75">
                       {campaign.outcome}
                     </p>
                   </div>

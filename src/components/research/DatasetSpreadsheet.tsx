@@ -71,8 +71,13 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
   /* ---- Fetch + parse ---- */
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
+    // Deferred a microtask so the reset is not a synchronous state write
+    // in the effect body (react-hooks/set-state-in-effect).
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setLoading(true);
+      setError(null);
+    });
     fetch(
       `/api/research/data/file?slug=${encodeURIComponent(
         slug
@@ -197,7 +202,7 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
   /* ---- Render ---- */
   if (loading) {
     return (
-      <div className="flex items-center gap-3 rounded-sm border border-border bg-cream-dark/30 p-6 font-body text-sm text-warm-gray">
+      <div className="flex items-center gap-3 border border-border bg-cream p-6 font-body text-sm text-warm-gray">
         <Loader2 className="h-4 w-4 animate-spin" /> Loading {fileName}...
       </div>
     );
@@ -205,21 +210,21 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
 
   if (error || !data) {
     return (
-      <div className="rounded-sm border border-rust/30 bg-rust/5 p-6 font-body text-sm text-rust">
+      <div className="border border-rust/30 bg-rust/5 p-6 font-body text-sm text-rust">
         Could not load {fileName}: {error ?? "no data"}.
       </div>
     );
   }
 
   return (
-    <div className="rounded-sm border border-border bg-cream-dark/30 p-4 md:p-5">
+    <div className="border border-border bg-cream p-4 md:p-5">
       {/* Header */}
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-3">
-        <p className="inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray">
+        <p className="eyebrow inline-flex items-center gap-2 text-warm-gray">
           <TableIcon className="h-3.5 w-3.5" />
           {title ?? fileName}
         </p>
-        <p className="font-mono text-[11.5px] text-warm-gray">
+        <p className="ledger text-warm-gray">
           {data.columns.length} columns · {data.rows.length.toLocaleString()}{" "}
           rows
         </p>
@@ -237,7 +242,7 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
               setSearch(e.target.value);
               setPage(0);
             }}
-            className="w-56 rounded-sm border border-border bg-cream py-1.5 pl-8 pr-3 font-body text-[13px] text-ink placeholder:text-warm-gray focus:border-forest focus:outline-none"
+            className="w-56 rounded-sm border border-border bg-white/60 py-1.5 pl-8 pr-3 font-body text-[13px] text-ink placeholder:text-warm-gray focus:border-forest focus:outline-none"
           />
         </div>
 
@@ -329,7 +334,7 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-sm border border-border bg-cream">
+      <div className="overflow-x-auto border border-border bg-white/60">
         <table className="w-full border-collapse text-left">
           <thead className="bg-cream-dark/40">
             <tr>
@@ -381,7 +386,7 @@ export default function DatasetSpreadsheet({ slug, fileName, title }: Props) {
                       className="px-3 py-1.5 align-top font-mono text-[11.5px] text-ink/85"
                     >
                       {cell || (
-                        <span className="text-warm-gray/60">—</span>
+                        <span className="text-warm-gray/60">&ndash;</span>
                       )}
                     </td>
                   ))}

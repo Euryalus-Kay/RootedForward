@@ -22,27 +22,27 @@ export default function CityTourView({ city, stops }: CityTourViewProps) {
           role="tab"
           aria-selected={view === "map"}
           onClick={() => setView("map")}
-          className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 font-body text-sm font-medium transition-colors ${
+          className={`inline-flex items-center gap-2 rounded-sm border px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest transition-colors ${
             view === "map"
-              ? "bg-forest text-cream"
-              : "border border-border bg-cream text-ink hover:bg-cream-dark"
+              ? "border-forest bg-forest text-cream"
+              : "border-border bg-cream text-ink hover:bg-cream-dark"
           }`}
         >
-          <Map size={16} />
-          Map View
+          <Map size={14} />
+          Map view
         </button>
         <button
           role="tab"
           aria-selected={view === "list"}
           onClick={() => setView("list")}
-          className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 font-body text-sm font-medium transition-colors ${
+          className={`inline-flex items-center gap-2 rounded-sm border px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest transition-colors ${
             view === "list"
-              ? "bg-forest text-cream"
-              : "border border-border bg-cream text-ink hover:bg-cream-dark"
+              ? "border-forest bg-forest text-cream"
+              : "border-border bg-cream text-ink hover:bg-cream-dark"
           }`}
         >
-          <List size={16} />
-          List View
+          <List size={14} />
+          List view
         </button>
       </div>
 

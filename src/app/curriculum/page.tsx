@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
+import PageBanner from "@/components/layout/PageBanner";
+import SectionHeading from "@/components/layout/SectionHeading";
+import { Reveal } from "@/components/motion/Reveal";
 import CurriculumRequestForm from "@/components/forms/CurriculumRequestForm";
 
 export const metadata: Metadata = {
   title: "Curriculum | Rooted Forward",
   description:
-    "Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Built around our walking tours, podcast, game, and research papers.",
+    "Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Built around our walking tours, podcast, and research papers.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -41,8 +44,8 @@ const UNITS: Unit[] = [
     question:
       "Who decided which neighborhoods would receive bank loans, and what did those decisions look like on a map?",
     pairs_with: {
-      label: "1938 HOLC Chicago map dataset",
-      href: "/research/data/1938-holc-chicago-map-annotated",
+      label: "HOLC redlining and present-day outcomes dataset",
+      href: "/research/data/holc-redlining-present-day-outcomes-chicago",
     },
     readings: [
       {
@@ -99,8 +102,8 @@ const UNITS: Unit[] = [
     question:
       "Why did Chicago demolish 17,000 public-housing units in two decades, and what does the right of return mean in practice?",
     pairs_with: {
-      label: "Chicago Housing Authority retrospective dataset",
-      href: "/research/data/cha-plan-for-transformation-retrospective",
+      label: "Comparative urban renewal and displacement dataset",
+      href: "/research/data/comparative-urban-renewal-displacement",
     },
     readings: [
       {
@@ -128,8 +131,8 @@ const UNITS: Unit[] = [
     question:
       "What does TIF actually do, who decides who benefits, and how would you change it?",
     pairs_with: {
-      label: "Bronzeville TIF expenditure dataset",
-      href: "/research/data/bronzeville-tif-expenditure-analysis",
+      label: "Chicago TIF spending distribution dataset",
+      href: "/research/data/chicago-tif-spending-distribution",
     },
     readings: [
       {
@@ -167,12 +170,6 @@ const PAIRINGS = [
       "Episodes are 25 to 40 minutes. Use one as homework before a unit; we include a five-question listening guide.",
   },
   {
-    asset: "Game",
-    href: "/game",
-    body:
-      "Twenty-minute interactive scenario where students make rezoning, TIF, and housing-policy decisions on a real Chicago neighborhood.",
-  },
-  {
     asset: "Research data",
     href: "/research/data",
     body:
@@ -184,134 +181,108 @@ export default function CurriculumPage() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
-        {/* Banner */}
-        <section className="relative pt-16 pb-12 md:pb-16">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-          />
-          <div className="absolute inset-0 bg-forest/70" />
-          <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-            <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-              Curriculum
-            </h1>
-          </div>
-        </section>
+        <PageBanner
+          eyebrow="Education / Curriculum"
+          title="Curriculum"
+          dek="Four classroom units on the federal, municipal, and private decisions that segregated American neighborhoods between 1933 and now. Free for any educator."
+          meta={[
+            `${UNITS.length} units`,
+            "Grades 9–12",
+            "Public sources only",
+            "CC BY-NC-SA 4.0",
+          ]}
+        />
 
         {/* Intro */}
         <section className="bg-cream pt-16 md:pt-24">
-          <div className="mx-auto max-w-3xl px-6">
-            <p className="max-w-[60ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl">
-              Four classroom units on the federal, municipal, and
-              private decisions that segregated American neighborhoods
-              between 1933 and now. Built for U.S. history, civics, and
-              AP Human Geography. Free for any educator. Email and we
-              will send what we have.
-            </p>
-            <p className="mt-5 max-w-[60ch] font-body text-base leading-relaxed text-ink/70">
-              Every unit points at real public primary sources you can
-              click and read in class today. The readings are the
-              curriculum. We provide the framing questions, discussion
-              prompts, and links to the Rooted Forward dataset each
-              unit pairs with.
-            </p>
-          </div>
-        </section>
-
-        {/* Stats */}
-        <section className="bg-cream pt-12 md:pt-16">
-          <div className="mx-auto max-w-5xl px-6">
-            <div className="grid grid-cols-2 gap-px bg-border md:grid-cols-4">
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">
-                  4
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <Reveal>
+                <p className="font-body text-lg leading-relaxed text-ink/80 md:text-xl">
+                  Built for U.S. history, civics, and AP Human Geography.
+                  Every unit points at real public primary sources you can
+                  click and read in class today. The readings are the
+                  curriculum. We provide the framing questions, discussion
+                  prompts, and links to the Rooted Forward dataset each
+                  unit pairs with.
                 </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  Units
-                </p>
-              </div>
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">
-                  Free
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  CC BY-NC-SA 4.0
-                </p>
-              </div>
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">
-                  9–12
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  Grade Range
-                </p>
-              </div>
-              <div className="bg-cream p-6 text-center md:p-8">
-                <p className="font-display text-3xl text-forest md:text-4xl">
-                  Public
-                </p>
-                <p className="mt-2 font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-                  Sources Only
-                </p>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* Units */}
-        <section className="border-t border-border bg-cream py-16 md:py-24 mt-16">
-          <div className="mx-auto max-w-5xl px-6">
-            <h2 className="font-display text-3xl text-forest md:text-4xl">
-              The Four Units
-            </h2>
-            <p className="mt-3 max-w-[55ch] font-body text-base text-ink/70">
-              Run them in order, or pull a single unit into the course
-              you already teach. Every reading below is on a public
-              site you can link from a slide.
-            </p>
-            <ul className="mt-12 flex flex-col gap-px bg-border">
+        {/* ============================================================
+            01 — THE FOUR UNITS, as archival dossier rows
+            ============================================================ */}
+        <section className="bg-cream py-16 md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <SectionHeading
+              index="01"
+              eyebrow="The kit"
+              title="The four units"
+              lede="Run them in order, or pull a single unit into the course you already teach. Every reading below is on a public site you can link from a slide."
+            />
+
+            <div className="mt-12 border-t border-border md:mt-16">
               {UNITS.map((u) => (
-                <li
+                <article
                   key={u.n}
-                  className="bg-cream p-7 md:p-10"
+                  className="grid grid-cols-1 gap-x-12 gap-y-8 border-b border-border py-10 md:grid-cols-12 md:py-14"
                 >
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
-                    <div className="md:col-span-3">
-                      <p className="font-display text-5xl leading-none text-rust md:text-6xl">
+                  {/* Dossier rail */}
+                  <div className="md:col-span-3">
+                    <Reveal y={18}>
+                      <span
+                        className="index-numeral block text-6xl leading-none text-rust md:text-8xl"
+                        aria-hidden="true"
+                      >
                         {u.n}
+                      </span>
+                      <p className="ledger mt-4 text-warm-gray">
+                        Unit {u.n} / 0{UNITS.length}
                       </p>
-                      <p className="mt-3 font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-                        Unit {u.n}
+                      <p className="ledger mt-1.5 text-warm-gray">
+                        {u.readings.length} readings
                       </p>
-                    </div>
-                    <div className="md:col-span-9">
-                      <h3 className="font-display text-2xl text-forest md:text-3xl">
+                    </Reveal>
+                  </div>
+
+                  {/* Dossier body */}
+                  <div className="md:col-span-9">
+                    <Reveal y={20}>
+                      <h3 className="max-w-[26ch] font-display text-2xl leading-tight text-forest md:text-4xl">
                         {u.title}
                       </h3>
-                      <p className="mt-3 font-body text-[15.5px] italic leading-relaxed text-ink/75">
+                      <p className="mt-4 max-w-[62ch] font-body text-[15.5px] italic leading-relaxed text-ink/75">
                         {u.question}
                       </p>
+                    </Reveal>
 
-                      <div className="mt-6">
-                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
-                          Readings
-                        </p>
-                        <ul className="mt-2 space-y-2.5">
+                    <Reveal y={16} delay={0.08}>
+                      <div className="mt-8">
+                        <p className="ledger text-warm-gray">Readings</p>
+                        <ul className="mt-3 space-y-3">
                           {u.readings.map((r) => (
                             <li
                               key={r.url}
-                              className="font-body text-[14.5px] leading-relaxed text-ink/85"
+                              className="max-w-[72ch] font-body text-[15px] leading-relaxed"
                             >
                               <a
                                 href={r.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="font-semibold text-forest underline decoration-forest/40 underline-offset-2 hover:decoration-forest"
+                                className="link-draw font-semibold text-forest"
                               >
                                 {r.label}
+                                <span
+                                  aria-hidden="true"
+                                  className="ml-1 text-rust"
+                                >
+                                  &#8599;
+                                </span>
                               </a>
                               {r.note && (
-                                <span className="ml-1 text-ink/65">
+                                <span className="ml-2 text-ink/60">
                                   {r.note}
                                 </span>
                               )}
@@ -319,36 +290,50 @@ export default function CurriculumPage() {
                           ))}
                         </ul>
                       </div>
+                    </Reveal>
 
-                      <div className="mt-6">
-                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
+                    <Reveal y={16} delay={0.12}>
+                      <blockquote className="mt-8 border-l-2 border-rust/50 pl-5 md:pl-6">
+                        <p className="ledger text-warm-gray">
                           Discussion prompt
                         </p>
-                        <p className="mt-2 max-w-[60ch] font-body text-[14.5px] leading-relaxed text-ink/85">
+                        <p className="mt-2 max-w-[62ch] font-body text-[15px] italic leading-relaxed text-ink/80">
                           {u.discussion_prompt}
                         </p>
-                      </div>
+                      </blockquote>
+                    </Reveal>
 
-                      <div className="mt-6">
-                        <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-warm-gray">
-                          Pairs with
-                        </p>
+                    <Reveal y={12} delay={0.16}>
+                      <div className="mt-8 border-t border-border pt-4">
                         <Link
                           href={u.pairs_with.href}
-                          className="mt-2 inline-block font-body text-[14.5px] font-semibold text-rust underline decoration-rust/40 underline-offset-2 hover:decoration-rust"
+                          className="group inline-flex flex-wrap items-baseline gap-x-3 gap-y-1"
                         >
-                          {u.pairs_with.label} →
+                          <span className="ledger text-warm-gray">
+                            Pairs with
+                          </span>
+                          <span className="font-body text-sm font-semibold text-rust transition-colors group-hover:text-rust-dark">
+                            {u.pairs_with.label}
+                          </span>
+                          <span
+                            aria-hidden="true"
+                            className="arrow-nudge text-rust"
+                          >
+                            &rarr;
+                          </span>
                         </Link>
                       </div>
-                    </div>
+                    </Reveal>
                   </div>
-                </li>
+                </article>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
-        {/* What pairs with what */}
+        {/* ============================================================
+            02 — HOW IT FITS TOGETHER (dark band)
+            ============================================================ */}
         <section className="bg-cream-dark py-16 md:py-20">
           <div className="mx-auto max-w-5xl px-6">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
@@ -375,30 +360,35 @@ export default function CurriculumPage() {
           </div>
         </section>
 
-        {/* Request form */}
-        <section className="border-t border-border bg-cream py-20 md:py-24">
-          <div className="mx-auto max-w-4xl px-6">
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-16">
-              <div className="md:col-span-5">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                  Use it in your classroom
-                </p>
-                <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
-                  Tell us what you teach.
-                </h2>
-                <p className="mt-5 max-w-[40ch] font-body text-base leading-relaxed text-ink/75">
-                  Send a note about your subject, grade, and how many
-                  class periods you have for this. We will email back
-                  the framing questions, the readings list, and any
-                  slide drafts we have for the units that fit.
-                </p>
-                <p className="mt-4 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
-                  We reply within a week. If you want a 20-minute call
-                  to walk through it, ask.
-                </p>
+        {/* ============================================================
+            03 — REQUEST FORM
+            ============================================================ */}
+        <section className="bg-cream py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-5">
+                <SectionHeading
+                  index="03"
+                  eyebrow="Use it in your classroom"
+                  title="Tell us what you teach"
+                  lede="Send a note about your subject, grade, and how many class periods you have for this. We will email back the framing questions, the readings list, and any slide drafts we have for the units that fit."
+                />
+                <Reveal delay={0.2}>
+                  <p className="mt-6 max-w-[40ch] font-body text-sm leading-relaxed text-warm-gray">
+                    We reply within a week. If you want a 20-minute call
+                    to walk through it, ask.
+                  </p>
+                  <p className="ledger mt-8 text-warm-gray">
+                    Licensed CC BY-NC-SA 4.0
+                  </p>
+                </Reveal>
               </div>
-              <div className="md:col-span-7">
-                <CurriculumRequestForm />
+              <div className="lg:col-span-7">
+                <Reveal delay={0.15} y={24}>
+                  <div className="border border-border bg-white/40 p-6 md:p-8">
+                    <CurriculumRequestForm />
+                  </div>
+                </Reveal>
               </div>
             </div>
           </div>

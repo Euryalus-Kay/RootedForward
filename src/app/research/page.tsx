@@ -5,23 +5,26 @@
 /*  The main Rooted Forward research archive.                          */
 /*                                                                     */
 /*  Page sections, in order:                                           */
-/*   1. Banner             — hero image with Research title.           */
-/*   2. Featured entry     — most recent published entry.              */
-/*   3. Filter bar + list  — client side feed with sticky filter.      */
-/*   4. Quiet footer       — single email prompt.                      */
+/*   1. PageBanner          — v2 banner with live archive counts.      */
+/*   2. Featured entry      — most recent published entry, editorial.  */
+/*   3. Filter bar + grid   — client side feed with sticky filter.     */
+/*   4. Correspondence      — collaboration prompt above the footer.   */
 /*                                                                     */
 /* ------------------------------------------------------------------ */
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageTransition from "@/components/layout/PageTransition";
+import PageBanner from "@/components/layout/PageBanner";
 import FeaturedEntry from "@/components/research/FeaturedEntry";
+import GradeBands from "@/components/research/GradeBands";
 import ResearchFeed from "@/components/research/ResearchFeed";
 import ResearchFooter from "@/components/research/ResearchFooter";
 import {
   PLACEHOLDER_RESEARCH_ENTRIES,
   normalizeCitations,
 } from "@/lib/research-constants";
+import { RESEARCH_DATASETS } from "@/lib/research-datasets";
 import type { ResearchEntry } from "@/lib/types/database";
 
 export const metadata: Metadata = {
@@ -73,6 +76,10 @@ async function fetchPublishedEntries(): Promise<ResearchEntry[]> {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
+function count(n: number, singular: string): string {
+  return `${n} ${singular}${n === 1 ? "" : "s"}`;
+}
+
 export default async function ResearchPage() {
   const entries = await fetchPublishedEntries();
 
@@ -80,26 +87,27 @@ export default async function ResearchPage() {
   // the filterable feed.
   const [featured, ...rest] = entries;
 
+  // Banner meta is computed from real data, never hand-typed.
+  const paperCount = entries.length;
+  const datasetCount = Object.keys(RESEARCH_DATASETS).length;
+  const topicCount = new Set(entries.map((e) => e.topic)).size;
+
   return (
     <PageTransition>
       <div className="min-h-screen bg-cream">
         {/* ==========================================================
             SECTION 1: BANNER
-            Hero image with a forest tint overlay, matching the
-            education, policy, and get-involved banner treatment.
             ========================================================== */}
-        <section className="relative pt-16 pb-12 md:pb-16">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-          />
-          <div className="absolute inset-0 bg-forest/70" />
-          <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-            <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
-              Research
-            </h1>
-          </div>
-        </section>
+        <PageBanner
+          eyebrow="Research / Archive"
+          title="Research"
+          dek="Published work on housing, displacement, zoning, education, policing, and economic development in American cities."
+          meta={[
+            count(paperCount, "paper"),
+            count(datasetCount, "dataset"),
+            count(topicCount, "topic"),
+          ]}
+        />
 
         {/* ==========================================================
             SECTION 2: FEATURED ENTRY
@@ -107,11 +115,16 @@ export default async function ResearchPage() {
         {featured && <FeaturedEntry entry={featured} />}
 
         {/* ==========================================================
-            SECTION 3: FILTER BAR + ENTRY LIST
+            SECTION 2.5: THE HOLC LEGEND — scroll-drawn grade bands
+            ========================================================== */}
+        <GradeBands />
+
+        {/* ==========================================================
+            SECTION 3: FILTER BAR + ENTRY GRID
             ========================================================== */}
         <Suspense
           fallback={
-            <div className="mx-auto max-w-6xl px-6 py-20">
+            <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
               <p className="font-body text-[15px] text-warm-gray">
                 Loading archive…
               </p>
@@ -122,7 +135,7 @@ export default async function ResearchPage() {
         </Suspense>
 
         {/* ==========================================================
-            SECTION 4: QUIET FOOTER EMAIL BLOCK
+            SECTION 4: CORRESPONDENCE BLOCK
             ========================================================== */}
         <ResearchFooter />
       </div>

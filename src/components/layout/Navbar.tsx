@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, User, LogOut, LayoutDashboard, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -23,7 +24,6 @@ const NAV_LINKS = [
     children: [
       { label: "Walking Tours", href: "/tours" },
       { label: "Podcast", href: "/podcasts" },
-      { label: "Game", href: "/game" },
       { label: "Curriculum", href: "/curriculum" },
     ],
   },
@@ -40,17 +40,35 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export default function Navbar() {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastY = useRef(0);
+  const pathname = usePathname();
 
   /* ---- Auth listener ---- */
   useEffect(() => {
     const supabase = createClient();
+
+    async function fetchRole(userId: string) {
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("role")
+          .eq("id", userId)
+          .single();
+        setUserRole((data as { role?: string } | null)?.role ?? null);
+      } catch {
+        setUserRole(null);
+      }
+    }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -73,24 +91,14 @@ export default function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
-  async function fetchRole(userId: string) {
-    try {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("users")
-        .select("role")
-        .eq("id", userId)
-        .single();
-      setUserRole((data as any)?.role ?? null);
-    } catch {
-      setUserRole(null);
-    }
-  }
-
-  /* ---- Scroll detection ---- */
+  /* ---- Scroll behavior: shadow after 8px, hide on scroll down ---- */
   useEffect(() => {
     function handleScroll() {
-      setScrolled(window.scrollY > 8);
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      /* Only hide once well past the top, and never while a menu is open */
+      setHidden(y > 160 && y > lastY.current);
+      lastY.current = y;
     }
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -110,7 +118,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  /* ---- Lock body scroll when mobile menu is open ---- */
+  /* ---- Lock body scroll when the mobile menu is open ---- */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
@@ -118,50 +126,79 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  /* ---- Close the menus on navigation ----
+     State adjustment during render (the documented React pattern for
+     resetting state when a value changes), not an effect. */
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMobileOpen(false);
+    setDropdownOpen(false);
+  }
+
   async function handleSignOut() {
     await signOut();
     setDropdownOpen(false);
     setMobileOpen(false);
   }
 
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  }
+
   return (
-    <header
+    <motion.header
+      animate={{ y: hidden && !mobileOpen ? "-100%" : "0%" }}
+      transition={{ duration: 0.35, ease: EASE }}
       className={`sticky top-0 z-50 bg-cream/90 backdrop-blur-md transition-shadow duration-300 ${
         scrolled ? "shadow-[0_1px_0_0_var(--color-border)]" : ""
       }`}
     >
       <nav className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5"
-        >
-          <img src="/logo.svg" alt="" className="h-8 w-8" />
+        <Link href="/" className="group flex items-center gap-2.5">
+          <img
+            src="/logo.svg"
+            alt=""
+            className="h-8 w-8 transition-transform duration-500 group-hover:rotate-[8deg]"
+          />
           <span className="font-display text-xl font-semibold tracking-tight text-forest">
             Rooted Forward
           </span>
         </Link>
 
-        {/* Desktop links — centered as a group, pushed slightly right toward the account/search */}
+        {/* Desktop links */}
         <ul className="hidden items-center justify-end gap-7 md:flex md:pr-2 lg:pr-4">
           {NAV_LINKS.map((link) => (
             <li key={link.href} className="relative group">
               <Link
                 href={link.href}
-                className="font-body text-sm text-ink transition-colors duration-200 hover:text-forest"
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={`link-draw font-body text-sm transition-colors duration-200 ${
+                  isActive(link.href)
+                    ? "text-forest"
+                    : "text-ink hover:text-forest"
+                }`}
               >
                 {link.label}
               </Link>
               {"children" in link && link.children && (
-                <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                  <div className="min-w-[180px] rounded-lg border border-border bg-cream p-1 shadow-lg">
+                <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-300 [transition-timing-function:var(--ease-out-expo)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 translate-y-1">
+                  <div className="min-w-[200px] border border-border bg-cream p-1.5 shadow-[0_12px_40px_rgba(26,26,26,0.12)]">
                     {link.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block rounded-md px-3 py-2 font-body text-sm text-ink transition-colors hover:bg-forest/10 hover:text-forest"
+                        className="group/item flex items-center justify-between px-3 py-2.5 font-body text-sm text-ink transition-colors hover:bg-forest/[0.07] hover:text-forest"
                       >
-                        {child.label}
+                        <span>{child.label}</span>
+                        <span
+                          aria-hidden="true"
+                          className="arrow-nudge text-rust opacity-0 transition-opacity group-hover/item:opacity-100"
+                        >
+                          &rarr;
+                        </span>
                       </Link>
                     ))}
                   </div>
@@ -171,10 +208,9 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Right section — account, search */}
+        {/* Right section */}
         <div className="flex items-center justify-end gap-3">
           {user ? (
-            /* User dropdown */
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setDropdownOpen((prev) => !prev)}
@@ -187,16 +223,16 @@ export default function Navbar() {
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                    initial={{ opacity: 0, scale: 0.97, y: -4 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border border-border bg-cream p-1 shadow-lg"
+                    exit={{ opacity: 0, scale: 0.97, y: -4 }}
+                    transition={{ duration: 0.18, ease: EASE }}
+                    className="absolute right-0 mt-2 w-48 origin-top-right border border-border bg-cream p-1.5 shadow-[0_12px_40px_rgba(26,26,26,0.12)]"
                   >
                     <Link
                       href="/account"
                       onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/10"
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/[0.07]"
                     >
                       <User size={16} />
                       Account
@@ -206,7 +242,7 @@ export default function Navbar() {
                       <Link
                         href="/admin"
                         onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/10"
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/[0.07]"
                       >
                         <LayoutDashboard size={16} />
                         Admin Dashboard
@@ -215,7 +251,7 @@ export default function Navbar() {
 
                     <button
                       onClick={handleSignOut}
-                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/10"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm font-body text-ink transition-colors hover:bg-forest/[0.07]"
                     >
                       <LogOut size={16} />
                       Sign Out
@@ -225,7 +261,6 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
           ) : (
-            /* Login / Sign up */
             <Link
               href="/auth/login"
               className="hidden rounded-full bg-rust px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-rust-dark md:inline-block"
@@ -237,7 +272,10 @@ export default function Navbar() {
           {/* Search button (desktop) */}
           <button
             onClick={() => {
-              const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
+              const event = new KeyboardEvent("keydown", {
+                key: "k",
+                metaKey: true,
+              });
               document.dispatchEvent(event);
             }}
             className="hidden items-center gap-2 rounded-full border border-border bg-cream-dark/50 px-3 py-1.5 text-sm text-warm-gray transition-colors hover:border-warm-gray-light hover:text-ink md:flex"
@@ -254,67 +292,96 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="flex h-9 w-9 items-center justify-center rounded-md text-forest md:hidden"
+            className="relative z-[70] flex h-9 w-9 items-center justify-center text-forest md:hidden"
           >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            {mobileOpen ? <X size={22} className="text-cream" /> : <Menu size={22} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — full-screen editorial overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-border bg-cream md:hidden"
+            className="grain fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-forest-deep md:hidden"
+            data-lenis-prevent
           >
-            <ul className="flex flex-col gap-1 px-4 py-4">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block rounded-md px-3 py-2.5 font-body text-base text-ink transition-colors hover:bg-forest/10"
+            <div className="grid-lines-light pointer-events-none absolute inset-0" />
+            <div className="relative flex-1 px-6 pb-10 pt-24">
+              <p className="ledger text-cream/40">Menu</p>
+              <ul className="mt-6 flex flex-col">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.li
+                    key={link.href}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.06 + i * 0.055, ease: EASE }}
+                    className="border-b border-cream/10"
                   >
-                    {link.label}
-                  </Link>
-                  {"children" in link && link.children && (
-                    <ul className="ml-4 flex flex-col gap-1">
-                      {link.children.map((child) => (
-                        <li key={child.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-baseline justify-between py-4"
+                    >
+                      <span className="font-display text-3xl text-cream">
+                        {link.label}
+                      </span>
+                      <span className="index-numeral text-xs text-cream/35">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </Link>
+                    {"children" in link && link.children && (
+                      <div className="-mt-2 flex flex-wrap gap-x-5 gap-y-1 pb-4">
+                        {link.children.map((child) => (
                           <Link
+                            key={child.href}
                             href={child.href}
                             onClick={() => setMobileOpen(false)}
-                            className="block rounded-md px-3 py-2 font-body text-sm text-warm-gray transition-colors hover:bg-forest/10 hover:text-ink"
+                            className="font-body text-sm text-cream/55 transition-colors hover:text-cream"
                           >
                             {child.label}
                           </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
+                        ))}
+                      </div>
+                    )}
+                  </motion.li>
+                ))}
+              </ul>
 
-              {!user && (
-                <li className="mt-2">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-10 flex items-center justify-between"
+              >
+                {!user ? (
                   <Link
-                    href="/login"
+                    href="/auth/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-full bg-rust px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-rust-dark"
+                    className="rounded-full bg-rust px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-rust-dark"
                   >
                     Log in / Sign up
                   </Link>
-                </li>
-              )}
-            </ul>
+                ) : (
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-full border border-cream/25 px-6 py-3 text-sm font-medium text-cream"
+                  >
+                    Your account
+                  </Link>
+                )}
+                <p className="ledger text-cream/35">Chicago, IL</p>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

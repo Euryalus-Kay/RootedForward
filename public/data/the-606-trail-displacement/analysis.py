@@ -146,6 +146,21 @@ print(f"  of which carry NO affordable_units value           : {n_aff_blank} "
 print("  (these are non-residential TIF items such as school, infrastructure,")
 print("   and commercial reimbursements; they are excluded from unit totals)")
 
+# Exact matching drops any row whose community_area field lists several
+# areas joined by commas. Report those rows so the reader can see exactly
+# what the rule excludes (corridor counts are therefore floors).
+multi = tif[tif["community_area"].astype(str).str.contains(",", na=False)]
+multi_corr = multi[multi["community_area"].astype(str).apply(
+    lambda s: any(c in s.split(",") for c in CORRIDOR))]
+print(f"\nRecords with comma-joined community_area values "
+      f"(excluded by exact match): {len(multi)}")
+print(f"  of which name a corridor community area: {len(multi_corr)}")
+for _, r in multi_corr.iterrows():
+    aff_val = pd.to_numeric(r["affordable_units"], errors="coerce")
+    aff_s = "blank" if pd.isna(aff_val) else f"{int(aff_val)}"
+    print(f"    {r['project_name']} ({r['community_area']}), "
+          f"affordable_units={aff_s}")
+
 # Residential affordable projects only = affordable_units > 0.
 res = tc[tc["aff_num"] > 0].copy()
 print(f"\nResidential TIF/RDA projects committing affordable units: {len(res):,}")
@@ -195,6 +210,12 @@ for s, row in tif_side.iterrows():
 tif_west = int(tif_side.loc["West of Western", "aff_units"])
 print(f"\nWestern-segment share of TIF/RDA affordable units: "
       f"{tif_west:,} of {res_units:,} = {tif_west / res_units * 100:.1f}%")
+
+# Boundary check for the 100% figure: name the easternmost residential
+# project so the distance to the cut line is visible, not asserted.
+em = res.loc[res["lng"].idxmax()]
+print(f"\nEasternmost residential project: {em['project_name']}")
+print(f"  longitude {em['lng']:.4f} vs Western Ave cut line {WESTERN_AVE_LNG}")
 
 # ============================================================================
 # ANALYSIS 5 - Ratio framing: committed supply vs the at-risk 2-4 flat stock

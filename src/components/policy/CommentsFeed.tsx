@@ -42,13 +42,13 @@ export default function CommentsFeed({ comments: initial }: CommentsFeedProps) {
   return (
     <div>
       {/* Sort controls */}
-      <div className="flex items-center gap-3">
-        <span className="font-body text-xs text-warm-gray">Sort by:</span>
+      <div className="flex items-baseline gap-5 border-b border-border pb-4">
+        <span className="ledger text-warm-gray">Sort</span>
         <button
           onClick={() => setSortOrder("newest")}
-          className={`font-body text-xs transition-colors ${
+          className={`ledger transition-colors ${
             sortOrder === "newest"
-              ? "font-semibold text-forest"
+              ? "text-rust"
               : "text-warm-gray hover:text-ink"
           }`}
         >
@@ -56,9 +56,9 @@ export default function CommentsFeed({ comments: initial }: CommentsFeedProps) {
         </button>
         <button
           onClick={() => setSortOrder("oldest")}
-          className={`font-body text-xs transition-colors ${
+          className={`ledger transition-colors ${
             sortOrder === "oldest"
-              ? "font-semibold text-forest"
+              ? "text-rust"
               : "text-warm-gray hover:text-ink"
           }`}
         >
@@ -67,26 +67,25 @@ export default function CommentsFeed({ comments: initial }: CommentsFeedProps) {
       </div>
 
       {/* Comments */}
-      <div className="mt-6 flex flex-col">
-        {visible.map((comment, i) => (
-          <div key={comment.id}>
-            {i > 0 && <hr className="my-6 border-border" />}
-            <div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-body text-sm font-medium text-ink">
-                  {comment.user_name}
-                </span>
-                <span className="font-body text-xs text-warm-gray">
+      <div className="flex flex-col">
+        {visible.map((comment) => (
+          <div key={comment.id} className="border-b border-border py-6">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-body text-sm font-medium text-ink">
+                {comment.user_name}
+              </span>
+              {comment.neighborhood && (
+                <span className="ledger text-rust">
                   {comment.neighborhood}
                 </span>
-              </div>
-              <p className="mt-0.5 font-body text-xs text-warm-gray-light">
+              )}
+              <span className="ledger text-warm-gray-light">
                 {formatDate(comment.created_at)}
-              </p>
-              <blockquote className="mt-3 font-body text-sm leading-relaxed text-ink/75">
-                {comment.comment_body}
-              </blockquote>
+              </span>
             </div>
+            <blockquote className="mt-3 max-w-[62ch] font-body text-sm leading-relaxed text-ink/75">
+              {comment.comment_body}
+            </blockquote>
           </div>
         ))}
       </div>
@@ -94,9 +93,10 @@ export default function CommentsFeed({ comments: initial }: CommentsFeedProps) {
       {hasMore && (
         <button
           onClick={() => setVisibleCount((c) => c + 5)}
-          className="mt-8 font-body text-sm font-medium text-rust transition-colors hover:text-rust-dark"
+          className="group mt-7 inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
         >
           Load more comments
+          <span aria-hidden="true" className="arrow-nudge">&darr;</span>
         </button>
       )}
     </div>

@@ -48,15 +48,16 @@ export function TutorialCoach({
   useEffect(() => {
     if (!current) return;
     const el = document.querySelector(`[data-tut="${current.key}"]`) as HTMLElement | null;
-    if (!el) {
-      setRect(null);
-      return;
-    }
 
-    // Snap immediately to the new target so the highlight, dim, and callout
-    // reposition the moment the user clicks Next instead of waiting for the
-    // smooth scroll to finish.
-    setRect(el.getBoundingClientRect());
+    // Snap on the next frame so the highlight, dim, and callout reposition
+    // right after the user clicks Next, without writing state synchronously
+    // inside the effect body (react-hooks/set-state-in-effect).
+    const raf = requestAnimationFrame(() => {
+      setRect(el ? el.getBoundingClientRect() : null);
+    });
+    if (!el) {
+      return () => cancelAnimationFrame(raf);
+    }
 
     // Only scroll if the target is partly off-screen. The scroll listener
     // below keeps the rect updated while the smooth scroll plays out.
@@ -74,6 +75,7 @@ export function TutorialCoach({
     window.addEventListener("resize", refresh);
     window.addEventListener("scroll", refresh, { passive: true });
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", refresh);
       window.removeEventListener("scroll", refresh);
     };
