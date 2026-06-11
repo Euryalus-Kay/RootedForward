@@ -135,33 +135,25 @@ export default function AgentPanel({
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#1B1A18]">
-      <div className="shrink-0 border-b border-white/10 px-3 py-3">
-        <h2 className="flex items-center gap-2 font-display text-sm font-semibold text-cream">
+      <div className="flex shrink-0 items-center gap-2 border-b border-white/10 px-3 py-2.5">
+        <h2 className="flex shrink-0 items-center gap-1.5 font-display text-sm font-semibold text-cream">
           <Bot className="h-4 w-4 text-rust" />
-          Agent pipeline
+          AI
         </h2>
-        <div className="mt-1.5 flex items-center gap-2">
-          <label
-            htmlFor="studio-orchestration"
-            className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray"
-          >
-            Models
-          </label>
-          <select
-            id="studio-orchestration"
-            value={orch.key}
-            onChange={(e) => onOrchKey(e.target.value)}
-            disabled={busy}
-            title={orch.blurb}
-            className="min-w-0 flex-1 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-[11px] font-medium text-cream focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
-          >
-            {ORCHESTRATION_PRESETS.map((p) => (
-              <option key={p.key} value={p.key}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          id="studio-orchestration"
+          value={orch.key}
+          onChange={(e) => onOrchKey(e.target.value)}
+          disabled={busy}
+          title={orch.blurb}
+          className="min-w-0 flex-1 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-[11px] font-medium text-cream focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+        >
+          {ORCHESTRATION_PRESETS.map((p) => (
+            <option key={p.key} value={p.key}>
+              {p.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Brief + stage board scroll when the panel is squeezed, so
@@ -185,34 +177,30 @@ export default function AgentPanel({
         />
       </div>
 
-      {/* Stage board */}
-      <div className="border-b border-white/10 px-3 py-3">
-        <ol className="space-y-2">
-          {STAGES.map((stage) => (
-            <li key={stage.key} className="flex items-center gap-2.5">
-              <StageIcon state={pipeline[stage.key]} />
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-cream">
+      {/* Stage strip: one compact row, blurbs and models in tooltips */}
+      <div className="border-b border-white/10 px-3 py-2.5">
+        <div className="flex items-center justify-between gap-1">
+          {STAGES.map((stage) => {
+            const last = traces.filter((t) => t.agent === stage.key).slice(-1)[0];
+            return (
+              <div
+                key={stage.key}
+                className="flex min-w-0 items-center gap-1.5"
+                title={`${stage.name} on ${shortModel(orch.models[stage.action])}. ${stage.blurb}.`}
+              >
+                <StageIcon state={pipeline[stage.key]} />
+                <span className="truncate text-[11px] font-semibold text-cream/85">
                   {stage.name}
-                  <span className="ml-1.5 rounded-sm bg-white/10 px-1 py-px font-mono text-[9px] font-normal text-warm-gray-light">
-                    {shortModel(orch.models[stage.action])}
+                </span>
+                {last && (
+                  <span className="font-mono text-[9px] text-warm-gray">
+                    {(last.ms / 1000).toFixed(0)}s
                   </span>
-                </p>
-                <p className="truncate text-[11px] text-warm-gray">
-                  {stage.blurb}
-                </p>
+                )}
               </div>
-              {traces
-                .filter((t) => t.agent === stage.key)
-                .slice(-1)
-                .map((t, i) => (
-                  <span key={i} className="font-mono text-[10px] text-warm-gray">
-                    {(t.ms / 1000).toFixed(1)}s
-                  </span>
-                ))}
-            </li>
-          ))}
-        </ol>
+            );
+          })}
+        </div>
 
         {pipeline.detail && (
           <p className="mt-2 flex items-center gap-1.5 text-[11px] text-rust-light">
@@ -226,24 +214,29 @@ export default function AgentPanel({
           </p>
         )}
 
-        <button
-          onClick={onGenerate}
-          disabled={busy}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-md bg-rust px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
-        >
-          <Sparkles className="h-3.5 w-3.5" />
-          {hasSequence ? "Regenerate the cut" : "Generate the cut"}
-        </button>
-        <button
-          onClick={onVariations}
-          disabled={busy}
-          className="mt-1.5 w-full rounded-md border border-rust/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-50"
-        >
-          3 variations, pick one
-        </button>
+        <div className="mt-2.5 flex gap-1.5">
+          <button
+            onClick={onGenerate}
+            disabled={busy}
+            className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-rust px-3 py-2 text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
+          >
+            <Sparkles className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">
+              {hasSequence ? "Regenerate" : "Generate the cut"}
+            </span>
+          </button>
+          <button
+            onClick={onVariations}
+            disabled={busy}
+            className="shrink-0 rounded-md border border-rust/40 px-3 py-2 text-[11px] font-semibold uppercase tracking-widest text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-50"
+            title="Three Directors cut the same material in parallel; pick your favorite"
+          >
+            3 variations
+          </button>
+        </div>
 
         {hasSequence && (
-          <div className="mt-2.5 flex flex-wrap gap-1.5">
+          <div className="mt-2 flex flex-wrap gap-1">
             {QUICK_ACTIONS.map((qa) => (
               <button
                 key={qa.label}

@@ -1161,6 +1161,12 @@ export default function StudioPage() {
   const [monitorSize, setMonitorSize] = useState({ w: 0, h: 0 });
   const [dockH, setDockH] = useState(330);
 
+  // Size the dock to the window once on mount so short laptop
+  // viewports keep the whole AI panel visible without scrolling.
+  useEffect(() => {
+    setDockH(Math.max(200, Math.min(330, window.innerHeight - 502)));
+  }, []);
+
   useEffect(() => {
     const el = monitorRef.current;
     if (!el) return;
