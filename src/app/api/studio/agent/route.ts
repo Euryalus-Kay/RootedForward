@@ -547,7 +547,11 @@ export async function POST(req: NextRequest) {
       case "direct": {
         const raw = await runAgent(client, {
           system: DIRECTOR_SYSTEM,
-          content: `Brief\n${body.brief || "No brief given. Build a tight, watchable cut from the strongest material."}\n\nClip bin\n${clipBin(body.clips)}`,
+          content: `Brief\n${body.brief || "No brief given. Build a tight, watchable cut from the strongest material."}${
+            body.styleHint
+              ? `\n\nCreative direction for this attempt\n${body.styleHint}`
+              : ""
+          }\n\nClip bin\n${clipBin(body.clips)}`,
           schema: SEQUENCE_SCHEMA,
           maxTokens: 10000,
         });
@@ -581,9 +585,17 @@ export async function POST(req: NextRequest) {
       }
 
       case "revise": {
+        const history = (body.chatContext ?? [])
+          .slice(-8)
+          .map((m) => `${m.role === "user" ? "Editor" : "Director"}: ${m.text}`)
+          .join("\n");
         const raw = (await runAgent(client, {
           system: DIRECTOR_SYSTEM,
-          content: `The current sequence\n${JSON.stringify(body.sequence, null, 2)}\n\nClip bin\n${clipBin(body.clips)}\n\nBrief\n${body.brief || "(none)"}\n\nInstruction from the editor\n${body.instruction}\n\nApply the instruction to the current sequence. Keep everything the instruction does not touch. Reply conversationally in "reply" (one to three sentences), list concrete edits in "changelog", and return the full updated sequence.`,
+          content: `The current sequence\n${JSON.stringify(body.sequence, null, 2)}\n\nClip bin\n${clipBin(body.clips)}\n\nBrief\n${body.brief || "(none)"}${
+            history
+              ? `\n\nRecent conversation (for context, the last line is what matters most)\n${history}`
+              : ""
+          }\n\nInstruction from the editor\n${body.instruction}\n\nApply the instruction to the current sequence. Read it in the context of the conversation, so follow-ups like "shorter" or "undo that last idea" resolve against what was just discussed. Keep everything the instruction does not touch. Reply conversationally in "reply" (one to three sentences), list concrete edits in "changelog", and return the full updated sequence.`,
           schema: REVISE_SCHEMA,
           maxTokens: 12000,
         })) as { reply: string; changelog: string[]; sequence: unknown };
@@ -593,6 +605,38 @@ export async function POST(req: NextRequest) {
             changelog: raw.changelog,
             sequence: normalizeSequence(raw.sequence),
           },
+          trace: { agent: "director", model: MODEL, ms: Date.now() - started },
+        });
+      }
+
+      case "revise-segment": {
+        const target = body.sequence.segments.find(
+          (s) => s.id === body.segmentId
+        );
+        if (!target) {
+          return NextResponse.json(
+            { error: "Unknown segment id" },
+            { status: 400 }
+          );
+        }
+        const raw = (await runAgent(client, {
+          system: `${DIRECTOR_SYSTEM}\n\nFor this request you are editing ONE segment only. Return the updated segment, keeping its id. You may change any of its fields (trim, speed, transition, motion, filter, overlays, audio handling) but you may not change which segment it is.`,
+          content: `The full sequence, for context\n${JSON.stringify(body.sequence, null, 2)}\n\nClip bin\n${clipBin(body.clips)}\n\nBrief\n${body.brief || "(none)"}\n\nThe segment to edit\n${JSON.stringify(target, null, 2)}\n\nInstruction from the editor about this segment\n${body.instruction}`,
+          schema: {
+            type: "object",
+            additionalProperties: false,
+            required: ["reply", "segment"],
+            properties: {
+              reply: { type: "string" },
+              segment: SEGMENT_SCHEMA,
+            },
+          },
+          maxTokens: 6000,
+        })) as { reply: string; segment: { id: string } };
+        // The id is load-bearing; restore it if the model drifted.
+        raw.segment.id = body.segmentId;
+        return NextResponse.json({
+          result: raw,
           trace: { agent: "director", model: MODEL, ms: Date.now() - started },
         });
       }

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { DEMO_MEDIA } from "@/lib/immersive/demo";
 import {
   looks360,
+  makeThumb,
   probeMedia,
   uid,
   uploadTourMedia,
@@ -63,7 +64,7 @@ export default function MediaBin({
       const url = URL.createObjectURL(file);
       try {
         const probe = await probeMedia(url, kind);
-        additions.push({
+        const item: StudioMediaItem = {
           id: uid("clip"),
           name: file.name,
           kind,
@@ -74,7 +75,9 @@ export default function MediaBin({
           is360: kind !== "audio" && looks360(probe.width, probe.height),
           persisted: false,
           analysis: null,
-        });
+        };
+        item.thumb = await makeThumb(item);
+        additions.push(item);
       } catch {
         URL.revokeObjectURL(url);
         toast.error(`Could not read ${file.name}`);
@@ -259,7 +262,14 @@ export default function MediaBin({
             <li key={item.id} className="flex items-center gap-3 px-5 py-3">
               {/* Thumb */}
               <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm border border-border bg-ink">
-                {item.kind === "video" ? (
+                {item.thumb ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.thumb}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : item.kind === "video" ? (
                   <video
                     src={item.url}
                     muted

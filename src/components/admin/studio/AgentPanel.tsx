@@ -40,6 +40,7 @@ interface AgentPanelProps {
   onGenerate: () => void;
   onChat: (instruction: string) => void;
   onScript: () => void;
+  onVariations: () => void;
 }
 
 const QUICK_ACTIONS: { label: string; instruction: string }[] = [
@@ -88,6 +89,7 @@ export default function AgentPanel({
   onGenerate,
   onChat,
   onScript,
+  onVariations,
 }: AgentPanelProps) {
   const [draft, setDraft] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -156,6 +158,13 @@ export default function AgentPanel({
         >
           <Sparkles className="h-3.5 w-3.5" />
           {hasSequence ? "Regenerate the cut" : "Generate the cut"}
+        </button>
+        <button
+          onClick={onVariations}
+          disabled={busy}
+          className="mt-1.5 w-full rounded-md border border-rust/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-rust transition-colors hover:bg-rust/5 disabled:opacity-50"
+        >
+          3 variations, pick one
         </button>
 
         {hasSequence && (

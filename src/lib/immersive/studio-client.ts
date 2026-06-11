@@ -74,13 +74,12 @@ export function looks360(width: number, height: number): boolean {
   return Math.abs(ratio - 2) < 0.08;
 }
 
-const FRAME_WIDTH = 640;
-const FRAME_QUALITY = 0.72;
-
-/** Sample frames evenly across a clip as JPEG data URLs for the Analyst. */
+/** Sample frames evenly across a clip as JPEG data URLs. */
 export async function extractFrames(
   item: StudioMediaItem,
-  count = 4
+  count = 4,
+  frameWidth = 640,
+  quality = 0.72
 ): Promise<string[]> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -94,11 +93,11 @@ export async function extractFrames(
       el.onerror = () => reject(new Error("Could not load the image"));
       el.src = item.url;
     });
-    const scale = FRAME_WIDTH / img.naturalWidth;
-    canvas.width = FRAME_WIDTH;
+    const scale = frameWidth / img.naturalWidth;
+    canvas.width = frameWidth;
     canvas.height = Math.round(img.naturalHeight * scale);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    return [canvas.toDataURL("image/jpeg", FRAME_QUALITY)];
+    return [canvas.toDataURL("image/jpeg", quality)];
   }
 
   const video = document.createElement("video");
@@ -113,8 +112,8 @@ export async function extractFrames(
   });
 
   const duration = Number.isFinite(video.duration) ? video.duration : 0;
-  const scale = FRAME_WIDTH / (video.videoWidth || FRAME_WIDTH);
-  canvas.width = FRAME_WIDTH;
+  const scale = frameWidth / (video.videoWidth || frameWidth);
+  canvas.width = frameWidth;
   canvas.height = Math.round((video.videoHeight || 360) * scale);
 
   const frames: string[] = [];
@@ -132,12 +131,25 @@ export async function extractFrames(
       video.currentTime = Math.min(t, Math.max(0, duration - 0.05));
     });
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    frames.push(canvas.toDataURL("image/jpeg", FRAME_QUALITY));
+    frames.push(canvas.toDataURL("image/jpeg", quality));
   }
 
   video.removeAttribute("src");
   video.load();
   return frames;
+}
+
+/** Small filmstrip thumbnail for timeline blocks and the bin. */
+export async function makeThumb(
+  item: StudioMediaItem
+): Promise<string | undefined> {
+  if (item.kind === "audio") return undefined;
+  try {
+    const [thumb] = await extractFrames(item, 1, 220, 0.6);
+    return thumb;
+  } catch {
+    return undefined;
+  }
 }
 
 /* ------------------------- storage upload ------------------------ */

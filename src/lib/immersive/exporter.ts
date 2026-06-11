@@ -35,8 +35,44 @@ export interface ExportOptions {
   width: number;
   height: number;
   fps?: number;
+  /** Preferred container/codec; falls back to the best supported WebM */
+  mimeType?: string;
   onProgress?: (fraction: number, note: string) => void;
   signal?: AbortSignal;
+}
+
+export interface ExportFormat {
+  label: string;
+  mimeType: string;
+  ext: string;
+}
+
+/** Formats this browser can actually record, best first. */
+export function supportedExportFormats(): ExportFormat[] {
+  const candidates: ExportFormat[] = [
+    {
+      label: "MP4 (H.264)",
+      mimeType: 'video/mp4;codecs="avc1.42E01E,mp4a.40.2"',
+      ext: "mp4",
+    },
+    { label: "MP4", mimeType: "video/mp4", ext: "mp4" },
+    { label: "WebM (VP9)", mimeType: "video/webm;codecs=vp9,opus", ext: "webm" },
+    { label: "WebM (VP8)", mimeType: "video/webm;codecs=vp8,opus", ext: "webm" },
+    { label: "WebM", mimeType: "video/webm", ext: "webm" },
+  ];
+  const out: ExportFormat[] = [];
+  const seenExt = new Set<string>();
+  for (const c of candidates) {
+    if (
+      typeof MediaRecorder !== "undefined" &&
+      MediaRecorder.isTypeSupported(c.mimeType) &&
+      !seenExt.has(c.ext)
+    ) {
+      out.push(c);
+      seenExt.add(c.ext);
+    }
+  }
+  return out;
 }
 
 export interface ExportResult {
@@ -355,10 +391,15 @@ export async function exportSequence(
   const stream = canvas.captureStream(fps);
   const audioTrack = dest.stream.getAudioTracks()[0];
   if (audioTrack) stream.addTrack(audioTrack);
-  const mimeType = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"].find(
-    (m) => MediaRecorder.isTypeSupported(m)
-  );
-  if (!mimeType) throw new Error("This browser cannot record WebM video");
+  const mimeType =
+    opts.mimeType && MediaRecorder.isTypeSupported(opts.mimeType)
+      ? opts.mimeType
+      : [
+          "video/webm;codecs=vp9,opus",
+          "video/webm;codecs=vp8,opus",
+          "video/webm",
+        ].find((m) => MediaRecorder.isTypeSupported(m));
+  if (!mimeType) throw new Error("This browser cannot record video");
   const recorder = new MediaRecorder(stream, {
     mimeType,
     videoBitsPerSecond: W >= 1600 ? 10_000_000 : 6_000_000,

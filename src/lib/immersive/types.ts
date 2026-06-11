@@ -263,6 +263,8 @@ export interface StudioMediaItem {
   kind: "video" | "image" | "audio";
   /** Object URL (session only) or storage public URL */
   url: string;
+  /** Small JPEG data URL used as the filmstrip thumbnail */
+  thumb?: string;
   storagePath?: string | null;
   durationSec?: number;
   width?: number;
@@ -315,6 +317,8 @@ export interface AnalyzeRequest {
 export interface DirectRequest {
   action: "direct";
   brief: string;
+  /** Optional creative direction for this attempt, used for variations */
+  styleHint?: string;
   clips: Array<
     Pick<StudioMediaItem, "id" | "name" | "kind" | "durationSec" | "is360"> & {
       analysis?: StudioClipAnalysis | null;
@@ -333,6 +337,17 @@ export interface ReviseRequest {
   action: "revise";
   instruction: string;
   brief: string;
+  sequence: SequenceDoc;
+  clips: DirectRequest["clips"];
+  /** Recent conversation turns so follow-ups read in context */
+  chatContext?: { role: "user" | "assistant"; text: string }[];
+}
+
+export interface ReviseSegmentRequest {
+  action: "revise-segment";
+  instruction: string;
+  brief: string;
+  segmentId: string;
   sequence: SequenceDoc;
   clips: DirectRequest["clips"];
 }
@@ -356,6 +371,7 @@ export type StudioAgentRequest =
   | DirectRequest
   | CritiqueRequest
   | ReviseRequest
+  | ReviseSegmentRequest
   | ScriptRequest;
 
 export interface CritiqueResult {

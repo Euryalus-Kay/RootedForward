@@ -31,6 +31,7 @@ import {
   buildAssets,
   callAgent,
   extractFrames,
+  makeThumb,
   uid,
 } from "@/lib/immersive/studio-client";
 import type {
@@ -49,10 +50,12 @@ import {
   Clapperboard,
   Download,
   Film,
+  FolderOpen,
   KeyRound,
   Link2,
   Loader2,
   Save,
+  Trash2,
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -63,7 +66,10 @@ import toast from "react-hot-toast";
 /*  wraps every change, including the AI's.                            */
 /* ------------------------------------------------------------------ */
 
-const AUTOSAVE_KEY = "rf-studio-project-v1";
+const LEGACY_AUTOSAVE_KEY = "rf-studio-project-v1";
+const INDEX_KEY = "rf-studio-projects-index";
+const ACTIVE_KEY = "rf-studio-active-project";
+const projKey = (id: string) => `rf-studio-project:${id}`;
 const HISTORY_CAP = 60;
 
 interface ProjectSnapshot {
@@ -74,6 +80,43 @@ interface ProjectSnapshot {
   sequence: SequenceDoc | null;
   chat: StudioChatMessage[];
 }
+
+interface ProjectIndexEntry {
+  id: string;
+  name: string;
+  updatedAt: string;
+}
+
+function readIndex(): ProjectIndexEntry[] {
+  try {
+    return JSON.parse(localStorage.getItem(INDEX_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+function writeIndex(entries: ProjectIndexEntry[]) {
+  try {
+    localStorage.setItem(INDEX_KEY, JSON.stringify(entries.slice(0, 40)));
+  } catch {
+    // best effort
+  }
+}
+
+const VARIATION_HINTS = [
+  {
+    name: "Calm",
+    hint: "Calm and contemplative. Longer holds, slow Ken Burns, gentle crossfades and one dip to black, restrained text.",
+  },
+  {
+    name: "Energetic",
+    hint: "Energetic and quick. Shorter segments, harder cuts with one zoom and one wipe, a faster open, punchier titles.",
+  },
+  {
+    name: "Documentary",
+    hint: "Classic documentary rhythm. Measured pacing, lower-thirds for context, a unifying grade across the cut, the 360 moment as a clear centerpiece.",
+  },
+];
 
 const IDLE_PIPELINE: PipelineState = {
   analyst: "idle",
@@ -104,6 +147,8 @@ export default function StudioPage() {
   const [saving, setSaving] = useState(false);
   const [attachOpen, setAttachOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [projectsOpen, setProjectsOpen] = useState(false);
+  const [variations, setVariations] = useState<SequenceDoc[] | null>(null);
   const [loop, setLoop] = useState(false);
   const [playerTime, setPlayerTime] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -157,32 +202,61 @@ export default function StudioPage() {
 
   /* ------------------------- persistence ------------------------- */
 
+  const loadSnapshot = useCallback((snap: ProjectSnapshot) => {
+    const usable = snap.media.filter((m) => !m.url.startsWith("blob:"));
+    const dropped = snap.media.length - usable.length;
+    setProjectId(snap.id ?? uid("proj"));
+    setProjectName(snap.name ?? "Untitled sequence");
+    setBrief(snap.brief ?? "");
+    setMedia(usable);
+    setSequenceRaw(snap.sequence ?? null);
+    setChat(snap.chat ?? []);
+    pastRef.current = [];
+    futureRef.current = [];
+    setHistoryTick((v) => v + 1);
+    if (dropped > 0) {
+      toast(
+        `${dropped} session-only clip${dropped === 1 ? "" : "s"} did not survive the reload. Save clips to the library to keep them.`,
+        { icon: "⚠️" }
+      );
+    }
+  }, []);
+
   useEffect(() => {
     agentHealth().then(setHealth);
     try {
-      const raw = localStorage.getItem(AUTOSAVE_KEY);
-      if (raw) {
-        const snap = JSON.parse(raw) as ProjectSnapshot;
-        const usable = snap.media.filter((m) => !m.url.startsWith("blob:"));
-        const dropped = snap.media.length - usable.length;
-        setProjectId(snap.id ?? uid("proj"));
-        setProjectName(snap.name ?? "Untitled sequence");
-        setBrief(snap.brief ?? "");
-        setMedia(usable);
-        setSequenceRaw(snap.sequence ?? null);
-        setChat(snap.chat ?? []);
-        if (dropped > 0) {
-          toast(
-            `${dropped} session-only clip${dropped === 1 ? "" : "s"} did not survive the reload. Save clips to the library to keep them.`,
-            { icon: "⚠️" }
-          );
+      // One-time migration of the old single-slot autosave
+      const legacy = localStorage.getItem(LEGACY_AUTOSAVE_KEY);
+      if (legacy) {
+        const snap = JSON.parse(legacy) as ProjectSnapshot;
+        if (snap.id) {
+          localStorage.setItem(projKey(snap.id), legacy);
+          const idx = readIndex();
+          if (!idx.some((e) => e.id === snap.id)) {
+            writeIndex([
+              {
+                id: snap.id,
+                name: snap.name ?? "Untitled sequence",
+                updatedAt: new Date().toISOString(),
+              },
+              ...idx,
+            ]);
+          }
+          localStorage.setItem(ACTIVE_KEY, snap.id);
         }
+        localStorage.removeItem(LEGACY_AUTOSAVE_KEY);
+      }
+
+      const activeId = localStorage.getItem(ACTIVE_KEY);
+      const raw = activeId ? localStorage.getItem(projKey(activeId)) : null;
+      if (raw) {
+        loadSnapshot(JSON.parse(raw) as ProjectSnapshot);
       }
     } catch {
       // Ignore a corrupt autosave
     }
     hydrated.current = true;
-  }, []);
+  }, [loadSnapshot]);
 
   useEffect(() => {
     if (!hydrated.current) return;
@@ -195,11 +269,38 @@ export default function StudioPage() {
       chat,
     };
     try {
-      localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snap));
+      localStorage.setItem(projKey(projectId), JSON.stringify(snap));
+      localStorage.setItem(ACTIVE_KEY, projectId);
+      const idx = readIndex().filter((e) => e.id !== projectId);
+      writeIndex([
+        { id: projectId, name: projectName, updatedAt: new Date().toISOString() },
+        ...idx,
+      ]);
     } catch {
       // Storage full; autosave is best-effort
     }
   }, [projectId, projectName, brief, media, sequence, chat]);
+
+  /* ------------------------ thumbnail backfill -------------------- */
+
+  useEffect(() => {
+    const missing = media.filter((m) => m.kind !== "audio" && !m.thumb);
+    if (missing.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      for (const item of missing) {
+        const thumb = await makeThumb(item);
+        if (cancelled || !thumb) continue;
+        setMedia((prev) =>
+          prev.map((m) => (m.id === item.id ? { ...m, thumb } : m))
+        );
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [media.length]);
 
   const saveToSupabase = async () => {
     setSaving(true);
@@ -503,6 +604,10 @@ export default function StudioPage() {
           brief,
           sequence,
           clips: clipsPayload(media),
+          chatContext: chat.slice(-8).map((m) => ({
+            role: m.role,
+            text: m.text.slice(0, 400),
+          })),
         },
         key
       );
@@ -536,6 +641,108 @@ export default function StudioPage() {
         error: message,
       }));
     } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleSegmentAI = async (segmentId: string, instruction: string) => {
+    if (!sequence) return;
+    setBusy(true);
+    setPipeline((p) => ({
+      ...p,
+      director: "running",
+      detail: "The Director is editing the selected segment",
+      error: null,
+    }));
+    try {
+      const { result, trace } = await callAgent<{
+        reply: string;
+        segment: SequenceSegment;
+      }>(
+        {
+          action: "revise-segment",
+          instruction,
+          brief,
+          segmentId,
+          sequence,
+          clips: clipsPayload(media),
+        },
+        key
+      );
+      setTraces((t) => [...t, trace as AgentTraceEntry]);
+      applySequence({
+        ...sequence,
+        segments: sequence.segments.map((s) =>
+          s.id === segmentId ? result.segment : s
+        ),
+      });
+      setChat((c) => [
+        ...c,
+        {
+          role: "user",
+          text: `(segment) ${instruction}`,
+          at: new Date().toISOString(),
+        },
+        { role: "assistant", text: result.reply, at: new Date().toISOString() },
+      ]);
+      setPipeline((p) => ({ ...p, director: "done", detail: "" }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setPipeline((p) => ({
+        ...p,
+        director: "error",
+        detail: "",
+        error: message,
+      }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const runVariations = async () => {
+    if (media.filter((m) => m.kind !== "audio").length === 0) {
+      toast.error("Add clips to the media bin first");
+      return;
+    }
+    setBusy(true);
+    setPipeline({ ...IDLE_PIPELINE, detail: "Starting" });
+    try {
+      const analyzed = await ensureAnalyses(media);
+      setPipeline((p) => ({
+        ...p,
+        analyst: "done",
+        director: "running",
+        detail: "Three Directors are cutting in parallel",
+      }));
+      const results = await Promise.all(
+        VARIATION_HINTS.map((v) =>
+          callAgent<SequenceDoc>(
+            {
+              action: "direct",
+              brief,
+              styleHint: v.hint,
+              clips: clipsPayload(analyzed),
+            },
+            key
+          ).then((r) => {
+            setTraces((t) => [...t, r.trace as AgentTraceEntry]);
+            return { ...r.result, notes: `${v.name}. ${r.result.notes ?? ""}` };
+          })
+        )
+      );
+      setPipeline((p) => ({ ...p, director: "done", detail: "" }));
+      setVariations(results);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setPipeline((p) => ({
+        ...p,
+        analyst: p.analyst === "running" ? "error" : "done",
+        director: "error",
+        detail: "",
+        error: message,
+      }));
+    } finally {
+      setAnalyzingId(null);
       setBusy(false);
     }
   };
@@ -681,6 +888,13 @@ export default function StudioPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setProjectsOpen(true)}
+            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
+          >
+            <FolderOpen className="h-3.5 w-3.5" />
+            Projects
+          </button>
           <button
             onClick={loadDemoProject}
             className="rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
@@ -830,6 +1044,8 @@ export default function StudioPage() {
               loop={loop}
               onToggleLoop={() => setLoop((v) => !v)}
               onSplit={splitAtPlayhead}
+              onSegmentAI={handleSegmentAI}
+              aiBusy={busy}
             />
           )}
 
@@ -851,6 +1067,7 @@ export default function StudioPage() {
             onGenerate={runPipeline}
             onChat={handleChat}
             onScript={handleScript}
+            onVariations={runVariations}
           />
         </div>
       </div>
@@ -871,6 +1088,329 @@ export default function StudioPage() {
           onClose={() => setExportOpen(false)}
         />
       )}
+
+      {variations && (
+        <VariationsModal
+          variations={variations}
+          onAdopt={(doc) => {
+            applySequence(doc);
+            setVariations(null);
+            setChat((c) => [
+              ...c,
+              {
+                role: "assistant",
+                text: `Adopted "${doc.title}". ${doc.notes ?? ""}`,
+                at: new Date().toISOString(),
+              },
+            ]);
+          }}
+          onClose={() => setVariations(null)}
+        />
+      )}
+
+      {projectsOpen && (
+        <ProjectsModal
+          activeId={projectId}
+          onNew={() => {
+            loadSnapshot({
+              id: uid("proj"),
+              name: "Untitled sequence",
+              brief:
+                "A short hybrid teaser for the underwater Chicago tour. Open with a title, descend, give one 360 look-around moment, end calm.",
+              media: [],
+              sequence: null,
+              chat: [],
+            });
+            setProjectsOpen(false);
+          }}
+          onOpen={(snap) => {
+            loadSnapshot(snap);
+            setProjectsOpen(false);
+          }}
+          onClose={() => setProjectsOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Variations picker                                                  */
+/* ================================================================== */
+
+function VariationsModal({
+  variations,
+  onAdopt,
+  onClose,
+}: {
+  variations: SequenceDoc[];
+  onAdopt: (doc: SequenceDoc) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
+      <div className="w-full max-w-3xl rounded-xl border border-border bg-cream p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-lg font-bold text-forest">
+            Three directions on the same material
+          </h2>
+          <button
+            onClick={onClose}
+            className="rounded-md p-1 text-warm-gray hover:text-ink"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {variations.map((doc, i) => {
+            const { total } = layoutDoc(doc);
+            const pano = doc.segments.filter(
+              (s) => s.mode === "pano360"
+            ).length;
+            return (
+              <div
+                key={i}
+                className="flex flex-col rounded-lg border border-border bg-white p-4"
+              >
+                <p className="font-display text-base font-semibold leading-snug text-forest">
+                  {doc.title}
+                </p>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-warm-gray">
+                  {total.toFixed(0)}s &middot; {doc.segments.length} segments
+                  {pano > 0 ? ` · ${pano} in 360` : ""}
+                </p>
+                <div className="mt-2 flex h-2 overflow-hidden rounded-full">
+                  {doc.segments.map((s) => (
+                    <div
+                      key={s.id}
+                      className={cn(
+                        "h-full",
+                        s.mode === "pano360" ? "bg-rust" : "bg-forest/60"
+                      )}
+                      style={{
+                        flexGrow: Math.max(
+                          0.2,
+                          (s.outSec - s.inSec) / (s.speed ?? 1)
+                        ),
+                      }}
+                    />
+                  ))}
+                </div>
+                <p className="mt-3 flex-1 text-xs leading-relaxed text-ink/70">
+                  {doc.notes}
+                </p>
+                <button
+                  onClick={() => onAdopt(doc)}
+                  className="mt-4 rounded-md bg-forest px-3 py-2 text-xs font-semibold text-cream transition-colors hover:bg-forest-light"
+                >
+                  Use this cut
+                </button>
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-3 text-[11px] text-warm-gray">
+          Adopting a cut replaces the current timeline. Undo brings the old
+          one back.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Projects drawer                                                    */
+/* ================================================================== */
+
+function ProjectsModal({
+  activeId,
+  onNew,
+  onOpen,
+  onClose,
+}: {
+  activeId: string;
+  onNew: () => void;
+  onOpen: (snap: ProjectSnapshot) => void;
+  onClose: () => void;
+}) {
+  const [local, setLocal] = useState<ProjectIndexEntry[]>([]);
+  const [remote, setRemote] = useState<
+    { id: string; name: string; updated_at: string }[] | null
+  >(null);
+
+  useEffect(() => {
+    setLocal(readIndex());
+    (async () => {
+      try {
+        if (!isSupabaseConfiguredClient()) throw new Error("unconfigured");
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from("studio_projects")
+          .select("id, name, updated_at")
+          .order("updated_at", { ascending: false })
+          .limit(25);
+        if (error) throw error;
+        setRemote(
+          (data ?? []) as { id: string; name: string; updated_at: string }[]
+        );
+      } catch {
+        setRemote(null);
+      }
+    })();
+  }, []);
+
+  const openLocal = (id: string) => {
+    try {
+      const raw = localStorage.getItem(projKey(id));
+      if (!raw) throw new Error("missing");
+      onOpen(JSON.parse(raw) as ProjectSnapshot);
+    } catch {
+      toast.error("That project could not be read from this browser");
+    }
+  };
+
+  const deleteLocal = (id: string) => {
+    localStorage.removeItem(projKey(id));
+    const next = readIndex().filter((e) => e.id !== id);
+    writeIndex(next);
+    setLocal(next);
+  };
+
+  const openRemote = async (id: string) => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("studio_projects")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error || !data) throw error ?? new Error("missing");
+      onOpen({
+        id: data.id as string,
+        name: (data.name as string) ?? "Untitled sequence",
+        brief: (data.brief as string) ?? "",
+        media: (data.media as StudioMediaItem[]) ?? [],
+        sequence: (data.sequence as SequenceDoc | null) ?? null,
+        chat: (data.chat as StudioChatMessage[]) ?? [],
+      });
+    } catch {
+      toast.error("Could not load that project from Supabase");
+    }
+  };
+
+  const deleteRemote = async (id: string) => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("studio_projects")
+        .delete()
+        .eq("id", id);
+      if (error) throw error;
+      setRemote((r) => (r ? r.filter((e) => e.id !== id) : r));
+    } catch {
+      toast.error("Could not delete that project");
+    }
+  };
+
+  const row =
+    "flex items-center justify-between gap-2 rounded-md border border-border bg-white px-3 py-2";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
+      <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-cream p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-lg font-bold text-forest">
+            Projects
+          </h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onNew}
+              className="rounded-md bg-forest px-3 py-1.5 text-xs font-semibold text-cream transition-colors hover:bg-forest-light"
+            >
+              New project
+            </button>
+            <button
+              onClick={onClose}
+              className="rounded-md p-1 text-warm-gray hover:text-ink"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
+          In this browser
+        </p>
+        {local.length === 0 ? (
+          <p className="mt-1 text-xs text-warm-gray">None yet.</p>
+        ) : (
+          <ul className="mt-2 space-y-1.5">
+            {local.map((e) => (
+              <li key={e.id} className={row}>
+                <button
+                  onClick={() => openLocal(e.id)}
+                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-ink hover:text-rust"
+                >
+                  {e.name}
+                  {e.id === activeId && (
+                    <span className="ml-2 rounded-full bg-forest/10 px-2 py-0.5 text-[9px] font-semibold uppercase text-forest">
+                      open
+                    </span>
+                  )}
+                </button>
+                <span className="shrink-0 font-mono text-[10px] text-warm-gray">
+                  {new Date(e.updatedAt).toLocaleDateString()}
+                </span>
+                <button
+                  onClick={() => deleteLocal(e.id)}
+                  disabled={e.id === activeId}
+                  className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600 disabled:opacity-30"
+                  title="Remove from this browser"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
+          Saved to Supabase
+        </p>
+        {remote === null ? (
+          <p className="mt-1 text-xs text-warm-gray">
+            Not reachable here. Run migration 006 and sign in as admin to
+            save projects across devices.
+          </p>
+        ) : remote.length === 0 ? (
+          <p className="mt-1 text-xs text-warm-gray">
+            None yet. Use Save project to put this one there.
+          </p>
+        ) : (
+          <ul className="mt-2 space-y-1.5">
+            {remote.map((e) => (
+              <li key={e.id} className={row}>
+                <button
+                  onClick={() => openRemote(e.id)}
+                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-ink hover:text-rust"
+                >
+                  {e.name}
+                </button>
+                <span className="shrink-0 font-mono text-[10px] text-warm-gray">
+                  {new Date(e.updated_at).toLocaleDateString()}
+                </span>
+                <button
+                  onClick={() => deleteRemote(e.id)}
+                  className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                  title="Delete from Supabase"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

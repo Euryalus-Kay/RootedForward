@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   exportSequence,
   pickExportSizes,
+  supportedExportFormats,
 } from "@/lib/immersive/exporter";
 import type { SequenceAsset, SequenceDoc } from "@/lib/immersive/types";
 import { Download, Loader2, X } from "lucide-react";
@@ -27,7 +28,9 @@ export default function ExportModal({
   onClose: () => void;
 }) {
   const sizes = pickExportSizes(doc.aspect);
+  const formats = supportedExportFormats();
   const [sizeIdx, setSizeIdx] = useState(0);
+  const [formatIdx, setFormatIdx] = useState(0);
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [note, setNote] = useState("");
@@ -39,6 +42,7 @@ export default function ExportModal({
 
   const start = async () => {
     const size = sizes[sizeIdx];
+    const format = formats[formatIdx];
     setRunning(true);
     setProgress(0);
     const controller = new AbortController();
@@ -48,15 +52,17 @@ export default function ExportModal({
         width: size.width,
         height: size.height,
         fps: 30,
+        mimeType: format?.mimeType,
         signal: controller.signal,
         onProgress: (p, n) => {
           setProgress(p);
           setNote(n);
         },
       });
+      const ext = result.mimeType.includes("mp4") ? "mp4" : "webm";
       const a = document.createElement("a");
       a.href = URL.createObjectURL(result.blob);
-      a.download = `${projectName.replace(/[^\w\-]+/g, "-").toLowerCase()}-${size.height}p.webm`;
+      a.download = `${projectName.replace(/[^\w\-]+/g, "-").toLowerCase()}-${size.height}p.${ext}`;
       a.click();
       URL.revokeObjectURL(a.href);
       toast.success(
@@ -102,21 +108,39 @@ export default function ExportModal({
               it runs. Output is WebM with sound; 360 segments follow their
               scripted camera move.
             </p>
-            <div className="mt-4">
-              <label className="mb-1 block text-sm font-medium text-ink">
-                Resolution
-              </label>
-              <select
-                value={sizeIdx}
-                onChange={(e) => setSizeIdx(parseInt(e.target.value, 10))}
-                className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
-              >
-                {sizes.map((s, i) => (
-                  <option key={s.label} value={i}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-ink">
+                  Resolution
+                </label>
+                <select
+                  value={sizeIdx}
+                  onChange={(e) => setSizeIdx(parseInt(e.target.value, 10))}
+                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
+                >
+                  {sizes.map((s, i) => (
+                    <option key={s.label} value={i}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-ink">
+                  Format
+                </label>
+                <select
+                  value={formatIdx}
+                  onChange={(e) => setFormatIdx(parseInt(e.target.value, 10))}
+                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
+                >
+                  {formats.map((f, i) => (
+                    <option key={f.label} value={i}>
+                      {f.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="mt-5 flex justify-end gap-3">
               <button

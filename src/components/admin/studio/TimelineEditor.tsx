@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   FILTER_PRESETS,
@@ -124,6 +124,93 @@ interface TimelineEditorProps {
   loop: boolean;
   onToggleLoop: () => void;
   onSplit: () => void;
+  onSegmentAI: (segmentId: string, instruction: string) => void;
+  aiBusy: boolean;
+}
+
+/** Cached waveform peaks per audio URL */
+const waveformCache = new Map<string, number[]>();
+
+function WaveformLane({
+  url,
+  offsetSec,
+  pxPerSec,
+  totalSec,
+  durationSec,
+  loop,
+}: {
+  url: string;
+  offsetSec: number;
+  pxPerSec: number;
+  totalSec: number;
+  durationSec: number;
+  loop: boolean;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      let peaks = waveformCache.get(url);
+      if (!peaks) {
+        try {
+          const buf = await fetch(url).then((r) => r.arrayBuffer());
+          const actx = new AudioContext();
+          const audio = await actx.decodeAudioData(buf);
+          actx.close().catch(() => undefined);
+          const ch = audio.getChannelData(0);
+          const buckets = 480;
+          const per = Math.max(1, Math.floor(ch.length / buckets));
+          peaks = Array.from({ length: buckets }, (_, i) => {
+            let max = 0;
+            for (let j = i * per; j < (i + 1) * per && j < ch.length; j += 40) {
+              const v = Math.abs(ch[j]);
+              if (v > max) max = v;
+            }
+            return max;
+          });
+          waveformCache.set(url, peaks);
+        } catch {
+          peaks = [];
+        }
+      }
+      if (cancelled) return;
+      const canvas = canvasRef.current;
+      if (!canvas || !peaks || peaks.length === 0) return;
+      const w = Math.max(10, Math.round((totalSec - offsetSec) * pxPerSec));
+      canvas.width = w;
+      canvas.height = 20;
+      const c = canvas.getContext("2d");
+      if (!c) return;
+      c.clearRect(0, 0, w, 20);
+      c.fillStyle = "rgba(27,58,45,0.55)";
+      const span = loop
+        ? totalSec - offsetSec
+        : Math.min(durationSec, totalSec - offsetSec);
+      const spanPx = span * pxPerSec;
+      for (let x = 0; x < spanPx; x += 2) {
+        const tSec = (x / pxPerSec) % Math.max(0.01, durationSec);
+        const idx = Math.min(
+          peaks.length - 1,
+          Math.floor((tSec / Math.max(0.01, durationSec)) * peaks.length)
+        );
+        const h = Math.max(1, peaks[idx] * 18);
+        c.fillRect(x, 10 - h / 2, 1.4, h);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [url, offsetSec, pxPerSec, totalSec, durationSec, loop]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="h-5"
+      style={{ marginLeft: offsetSec * pxPerSec }}
+      title="Music bed"
+    />
+  );
 }
 
 export default function TimelineEditor({
@@ -140,6 +227,8 @@ export default function TimelineEditor({
   loop,
   onToggleLoop,
   onSplit,
+  onSegmentAI,
+  aiBusy,
 }: TimelineEditorProps) {
   const [selectedId, setSelectedId] = useState<string | null>(
     doc.segments[0]?.id ?? null
@@ -149,6 +238,12 @@ export default function TimelineEditor({
     "trim" | "look" | "frame" | "audio" | "text" | "stickers"
   >("trim");
   const [showSubtitles, setShowSubtitles] = useState(false);
+  const [trimReadout, setTrimReadout] = useState<string | null>(null);
+  const [styleClipboard, setStyleClipboard] = useState<Pick<
+    SequenceSegment,
+    "filter" | "transitionIn"
+  > | null>(null);
+  const [aiDraft, setAiDraft] = useState("");
   const stripRef = useRef<HTMLDivElement>(null);
   const dragIndexRef = useRef<number | null>(null);
   const trimRef = useRef<{
@@ -253,17 +348,20 @@ export default function TimelineEditor({
         Math.min(trim.origIn + deltaMedia, seg.outSec - 0.2 * speed)
       );
       updateSegment(seg.id, { inSec: Math.round(nextIn * 10) / 10 });
+      setTrimReadout(`in ${(Math.round(nextIn * 10) / 10).toFixed(1)}s`);
     } else {
       const nextOut = Math.min(
         maxOut,
         Math.max(trim.origOut + deltaMedia, seg.inSec + 0.2 * speed)
       );
       updateSegment(seg.id, { outSec: Math.round(nextOut * 10) / 10 });
+      setTrimReadout(`out ${(Math.round(nextOut * 10) / 10).toFixed(1)}s`);
     }
   };
 
   const onTrimPointerUp = () => {
     trimRef.current = null;
+    setTrimReadout(null);
   };
 
   /* ------------------------- ruler seeking ------------------------- */
@@ -273,7 +371,17 @@ export default function TimelineEditor({
     if (!strip) return;
     const rect = strip.getBoundingClientRect();
     const x = e.clientX - rect.left + strip.scrollLeft;
-    controls.current?.seek(Math.max(0, Math.min(total, x / pxPerSec)));
+    let t = Math.max(0, Math.min(total, x / pxPerSec));
+    // Snap to segment boundaries within ~7px
+    for (const { startSec, lenSec } of timed) {
+      for (const b of [startSec, startSec + lenSec]) {
+        if (Math.abs(b - t) * pxPerSec < 7) {
+          t = b;
+          break;
+        }
+      }
+    }
+    controls.current?.seek(t);
   };
 
   /* -------------------------- doc helpers -------------------------- */
@@ -318,6 +426,11 @@ export default function TimelineEditor({
             {fmt(Math.min(playerTime, total))}{" "}
             <span className="text-warm-gray">/ {fmt(total)}</span>
           </span>
+          {trimReadout && (
+            <span className="ml-2 rounded-sm bg-rust/10 px-2 py-0.5 font-mono text-[10px] text-rust">
+              {trimReadout}
+            </span>
+          )}
           <button
             onClick={onToggleLoop}
             className={cn(iconBtn, loop && "bg-rust/10 text-rust")}
@@ -457,13 +570,27 @@ export default function TimelineEditor({
                     }
                   }}
                   onClick={() => setSelectedId(seg.id)}
+                  onDoubleClick={() => controls.current?.seek(startSec + 0.01)}
                   role="button"
                   tabIndex={0}
                 >
-                  <span className="pointer-events-none truncate text-[10px] font-semibold text-ink">
+                  {clip?.thumb && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-45"
+                      style={{ backgroundImage: `url(${clip.thumb})` }}
+                    />
+                  )}
+                  {clip?.thumb && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/75 via-white/35 to-white/75"
+                    />
+                  )}
+                  <span className="pointer-events-none relative truncate text-[10px] font-semibold text-ink">
                     {clip?.name ?? seg.clipId}
                   </span>
-                  <span className="pointer-events-none flex items-center gap-1">
+                  <span className="pointer-events-none relative flex items-center gap-1">
                     <span
                       className={cn(
                         "rounded-sm px-1 font-mono text-[8px] uppercase",
@@ -514,6 +641,22 @@ export default function TimelineEditor({
               );
             })}
           </div>
+
+          {/* Music waveform */}
+          {doc.music && mediaById.get(doc.music.clipId) && (
+            <div className="flex h-5 items-center">
+              <WaveformLane
+                url={mediaById.get(doc.music.clipId)!.url}
+                offsetSec={doc.music.offsetSec ?? 0}
+                pxPerSec={pxPerSec}
+                totalSec={total}
+                durationSec={
+                  mediaById.get(doc.music.clipId)!.durationSec ?? 10
+                }
+                loop={doc.music.loop}
+              />
+            </div>
+          )}
 
           {/* Playhead */}
           <div
@@ -684,6 +827,62 @@ export default function TimelineEditor({
             </div>
             <div className="flex items-center gap-1">
               <button
+                onClick={() => {
+                  setStyleClipboard({
+                    filter: selected.filter
+                      ? { ...selected.filter }
+                      : null,
+                    transitionIn: { ...selected.transitionIn },
+                  });
+                  toast.success("Style copied (grade + transition)");
+                }}
+                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink"
+                title="Copy this segment's grade and transition"
+              >
+                Copy style
+              </button>
+              <button
+                onClick={() => {
+                  if (!styleClipboard) return;
+                  updateSegment(selected.id, {
+                    filter: styleClipboard.filter
+                      ? { ...styleClipboard.filter }
+                      : null,
+                    transitionIn: { ...styleClipboard.transitionIn },
+                  });
+                }}
+                disabled={!styleClipboard}
+                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink disabled:opacity-40"
+                title="Paste the copied style onto this segment"
+              >
+                Paste
+              </button>
+              <button
+                onClick={() => {
+                  const src = styleClipboard ?? {
+                    filter: selected.filter ? { ...selected.filter } : null,
+                    transitionIn: { ...selected.transitionIn },
+                  };
+                  onChange({
+                    ...doc,
+                    segments: doc.segments.map((s, i) => ({
+                      ...s,
+                      filter: src.filter ? { ...src.filter } : null,
+                      transitionIn:
+                        i === 0
+                          ? s.transitionIn
+                          : { ...src.transitionIn },
+                    })),
+                  });
+                  toast.success("Style applied to every segment");
+                }}
+                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink"
+                title="Apply this grade and transition to the whole cut"
+              >
+                Apply to all
+              </button>
+              <span className="mx-1 h-5 w-px bg-border" />
+              <button
                 onClick={() => moveSegment(selected.id, -1)}
                 className={iconBtn}
                 title="Move earlier"
@@ -746,6 +945,36 @@ export default function TimelineEditor({
                 update={(p) => updateSegment(selected.id, p)}
               />
             )}
+          </div>
+
+          {/* Segment-scoped AI */}
+          <div className="mt-3 flex items-center gap-2 border-t border-border/60 pt-3">
+            <input
+              value={aiDraft}
+              onChange={(e) => setAiDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && aiDraft.trim() && !aiBusy) {
+                  onSegmentAI(selected.id, aiDraft.trim());
+                  setAiDraft("");
+                }
+                e.stopPropagation();
+              }}
+              placeholder='Direct the AI at this segment, e.g. "slow it down and grade it colder"'
+              disabled={aiBusy}
+              className="flex-1 rounded-md border border-border bg-white px-3 py-1.5 text-xs text-ink placeholder:text-warm-gray-light focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+            />
+            <button
+              onClick={() => {
+                if (aiDraft.trim()) {
+                  onSegmentAI(selected.id, aiDraft.trim());
+                  setAiDraft("");
+                }
+              }}
+              disabled={aiBusy || !aiDraft.trim()}
+              className="rounded-md bg-forest px-3 py-1.5 text-[11px] font-semibold text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
+            >
+              {aiBusy ? "Working" : "AI edit"}
+            </button>
           </div>
         </div>
       )}
@@ -934,8 +1163,26 @@ function TrimPanel({
   clip?: StudioMediaItem;
   update: (p: Partial<SequenceSegment>) => void;
 }) {
+  const bestMoment = clip?.analysis?.bestMoments?.[0];
   return (
     <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
+      {bestMoment && (
+        <button
+          onClick={() => {
+            const maxOut = clip?.durationSec ?? seg.outSec;
+            const inSec = Math.max(0, bestMoment.atSec - 2);
+            const outSec = Math.min(maxOut, bestMoment.atSec + 2.5);
+            if (outSec - inSec >= 0.5) update({ inSec, outSec });
+            toast.success(
+              `Trimmed to the Analyst's best moment (${bestMoment.atSec}s)`
+            );
+          }}
+          className="rounded-md border border-forest/40 bg-forest/5 px-2.5 py-1.5 text-[11px] font-semibold text-forest transition-colors hover:bg-forest/10"
+          title={bestMoment.why}
+        >
+          Smart trim
+        </button>
+      )}
       <div>
         <label className={fieldLabel}>In (s)</label>
         <input
