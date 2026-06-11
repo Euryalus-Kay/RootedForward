@@ -14,8 +14,8 @@ import type { StudioMediaItem } from "@/lib/immersive/types";
 import {
   AudioLines,
   CheckCircle2,
-  Film,
-  ImageIcon,
+  CloudUpload,
+  FlaskConical,
   Loader2,
   Mic,
   Plus,
@@ -25,10 +25,11 @@ import {
 import toast from "react-hot-toast";
 
 /* ------------------------------------------------------------------ */
-/*  MediaBin: the Studio's clip library. Local files become session    */
-/*  object URLs immediately; "Save to library" pushes them to the      */
-/*  tour-media bucket so they survive reloads and can ship in          */
-/*  published sequences.                                               */
+/*  MediaBin: the left media rail of the editor workspace. Local       */
+/*  files become session object URLs immediately (drop them anywhere   */
+/*  on the rail); "Save to library" pushes them to the tour-media      */
+/*  bucket so they survive reloads and can ship in published           */
+/*  sequences. Dark editor chrome.                                     */
 /* ------------------------------------------------------------------ */
 
 interface MediaBinProps {
@@ -38,6 +39,9 @@ interface MediaBinProps {
   analyzingId: string | null;
 }
 
+const railBtn =
+  "flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-cream/70 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-40";
+
 export default function MediaBin({
   media,
   onChange,
@@ -46,6 +50,7 @@ export default function MediaBin({
 }: MediaBinProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [dropping, setDropping] = useState(false);
 
   const addFiles = async (files: FileList) => {
     const additions: StudioMediaItem[] = [];
@@ -214,181 +219,202 @@ export default function MediaBin({
   };
 
   return (
-    <div className="rounded-xl border border-border bg-white/60 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3.5">
-        <div>
-          <h2 className="font-display text-base font-semibold text-forest">
-            Media bin
+    <div
+      className={cn(
+        "flex h-full min-h-0 flex-col bg-[#1B1A18] transition-colors",
+        dropping && "bg-rust/10"
+      )}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setDropping(true);
+      }}
+      onDragLeave={() => setDropping(false)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setDropping(false);
+        if (e.dataTransfer.files?.length) addFiles(e.dataTransfer.files);
+      }}
+    >
+      {/* Rail header */}
+      <div className="shrink-0 border-b border-white/10 px-3 py-2.5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-sm font-semibold text-cream">
+            Media
           </h2>
-          <p className="text-xs text-warm-gray">
+          <span className="font-mono text-[10px] text-warm-gray">
             {media.length} clip{media.length === 1 ? "" : "s"}
-          </p>
+          </span>
         </div>
-        <div className="flex items-center gap-2">
-          {media.some((m) => !m.persisted) && (
-            <button
-              onClick={saveAll}
-              disabled={savingAll}
-              className="flex items-center gap-1.5 rounded-md border border-forest/40 bg-forest/5 px-3 py-1.5 text-xs font-medium text-forest transition-colors hover:bg-forest/10 disabled:opacity-50"
-              title="Upload every session-only clip to the media library"
-            >
-              {savingAll ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <Upload className="h-3.5 w-3.5" />
-              )}
-              Save all
-            </button>
-          )}
-          <button
-            onClick={addDemoMedia}
-            className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
-          >
-            Add test clips
-          </button>
-          <button
-            onClick={toggleRecording}
-            className={cn(
-              "flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors",
-              recording
-                ? "animate-pulse border-red-400 bg-red-50 text-red-600"
-                : "border-border text-ink hover:bg-cream-dark"
-            )}
-            title="Record a voiceover with the microphone"
-          >
-            <Mic className="h-3.5 w-3.5" />
-            {recording ? "Stop" : "Voiceover"}
-          </button>
+        <div className="mt-2 flex items-center gap-1.5">
           <button
             onClick={() => fileRef.current?.click()}
-            className="flex items-center gap-1.5 rounded-md bg-forest px-3 py-1.5 text-xs font-medium text-cream transition-colors hover:bg-forest-light"
+            className="flex h-8 flex-1 items-center justify-center gap-1.5 rounded-md bg-rust text-xs font-semibold text-cream transition-colors hover:bg-rust-light"
+            title="Add video, image, or audio files (or drop them here)"
           >
             <Upload className="h-3.5 w-3.5" />
             Add media
           </button>
-          <input
-            ref={fileRef}
-            type="file"
-            multiple
-            accept="video/*,image/*,audio/*"
-            className="hidden"
-            onChange={(e) => {
-              if (e.target.files?.length) addFiles(e.target.files);
-              e.target.value = "";
-            }}
-          />
+          <button
+            onClick={toggleRecording}
+            className={cn(
+              railBtn,
+              recording &&
+                "animate-pulse border-red-400/50 bg-red-500/15 text-red-300"
+            )}
+            title="Record a voiceover with the microphone"
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+          <button
+            onClick={addDemoMedia}
+            className={railBtn}
+            title="Add the built-in labeled test clips"
+          >
+            <FlaskConical className="h-4 w-4" />
+          </button>
+          {media.some((m) => !m.persisted) && (
+            <button
+              onClick={saveAll}
+              disabled={savingAll}
+              className={cn(railBtn, "text-emerald-300/80 hover:text-emerald-300")}
+              title="Upload every session-only clip to the media library"
+            >
+              {savingAll ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <CloudUpload className="h-4 w-4" />
+              )}
+            </button>
+          )}
         </div>
+        <input
+          ref={fileRef}
+          type="file"
+          multiple
+          accept="video/*,image/*,audio/*"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files?.length) addFiles(e.target.files);
+            e.target.value = "";
+          }}
+        />
       </div>
 
+      {/* Clip list */}
       {media.length === 0 ? (
-        <div className="px-5 py-10 text-center">
-          <p className="text-sm text-warm-gray">
-            Add your own footage or load the built-in test clips to try the
+        <div className="flex flex-1 items-center justify-center px-4 py-8">
+          <p className="text-center text-xs leading-relaxed text-warm-gray">
+            Drop footage here, or add the built-in test clips to try the
             pipeline.
           </p>
         </div>
       ) : (
-        <ul className="divide-y divide-border/60">
+        <ul className="min-h-0 flex-1 divide-y divide-white/5 overflow-y-auto">
           {media.map((item) => (
-            <li key={item.id} className="flex items-center gap-3 px-5 py-3">
-              {/* Thumb */}
-              <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm border border-border bg-ink">
-                {item.thumb ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.thumb}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : item.kind === "video" ? (
-                  <video
-                    src={item.url}
-                    muted
-                    playsInline
-                    preload="metadata"
-                    className="h-full w-full object-cover"
-                  />
-                ) : item.kind === "audio" ? (
-                  <div className="flex h-full w-full items-center justify-center bg-forest">
-                    <AudioLines className="h-5 w-5 text-cream/80" />
-                  </div>
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.url}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                )}
-                <span className="absolute bottom-0.5 right-0.5 rounded-sm bg-ink/70 px-1 font-mono text-[9px] text-cream">
-                  {item.durationSec
-                    ? `${item.durationSec}s`
-                    : item.kind === "image"
-                      ? "img"
-                      : ""}
-                </span>
-              </div>
-
-              {/* Meta */}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">
-                  {item.name}
-                </p>
-                <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  {item.kind === "audio" ? (
-                    <span className="rounded-full bg-forest/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-forest">
-                      audio
-                    </span>
+            <li key={item.id} className="group px-3 py-2">
+              <div className="flex items-center gap-2.5">
+                {/* Thumb */}
+                <div className="relative h-10 w-[68px] shrink-0 overflow-hidden rounded-sm border border-white/10 bg-black">
+                  {item.thumb ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.thumb}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  ) : item.kind === "video" ? (
+                    <video
+                      src={item.url}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : item.kind === "audio" ? (
+                    <div className="flex h-full w-full items-center justify-center bg-forest">
+                      <AudioLines className="h-4 w-4 text-cream/80" />
+                    </div>
                   ) : (
-                    <button
-                      onClick={() => toggle360(item)}
-                      className={cn(
-                        "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider transition-colors",
-                        item.is360
-                          ? "bg-rust/15 text-rust"
-                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
-                      )}
-                      title="Toggle whether this clip is treated as equirectangular 360"
-                    >
-                      {item.is360 ? "360" : "2D"}
-                    </button>
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.url}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
                   )}
-                  <span
-                    className={cn(
-                      "rounded-full px-2 py-0.5 text-[10px] font-medium",
-                      item.persisted
-                        ? "bg-forest/10 text-forest"
-                        : "bg-amber-100 text-amber-700"
-                    )}
-                  >
-                    {item.persisted ? "library" : "this session only"}
+                  <span className="absolute bottom-0.5 right-0.5 rounded-sm bg-black/75 px-1 font-mono text-[8px] text-cream">
+                    {item.durationSec
+                      ? `${item.durationSec}s`
+                      : item.kind === "image"
+                        ? "img"
+                        : ""}
                   </span>
-                  {analyzingId === item.id ? (
-                    <span className="flex items-center gap-1 text-[10px] font-medium text-rust">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      analyzing
-                    </span>
-                  ) : item.analysis ? (
+                </div>
+
+                {/* Meta */}
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="truncate text-xs font-medium text-cream"
+                    title={item.name}
+                  >
+                    {item.name}
+                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-1">
+                    {item.kind === "audio" ? (
+                      <span className="rounded-full bg-forest/60 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider text-cream/90">
+                        audio
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => toggle360(item)}
+                        className={cn(
+                          "rounded-full px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider transition-colors",
+                          item.is360
+                            ? "bg-rust/25 text-rust-light"
+                            : "bg-white/10 text-warm-gray-light hover:bg-white/20"
+                        )}
+                        title="Toggle whether this clip is treated as equirectangular 360"
+                      >
+                        {item.is360 ? "360" : "2D"}
+                      </button>
+                    )}
                     <span
-                      className="flex items-center gap-1 text-[10px] font-medium text-forest"
-                      title={item.analysis.summary}
+                      className={cn(
+                        "rounded-full px-1.5 py-px text-[9px] font-medium",
+                        item.persisted
+                          ? "bg-emerald-400/15 text-emerald-300"
+                          : "bg-amber-400/15 text-amber-300"
+                      )}
                     >
-                      <CheckCircle2 className="h-3 w-3" />
-                      analyzed
+                      {item.persisted ? "library" : "session"}
                     </span>
-                  ) : null}
+                    {analyzingId === item.id ? (
+                      <span className="flex items-center gap-1 text-[9px] font-medium text-rust-light">
+                        <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                        analyzing
+                      </span>
+                    ) : item.analysis ? (
+                      <span
+                        className="flex items-center gap-0.5 text-[9px] font-medium text-emerald-300"
+                        title={item.analysis.summary}
+                      >
+                        <CheckCircle2 className="h-2.5 w-2.5" />
+                        analyzed
+                      </span>
+                    ) : null}
+                  </div>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="flex shrink-0 items-center gap-1">
+              <div className="mt-1.5 flex items-center gap-1">
                 {item.kind !== "audio" && (
                   <button
                     onClick={() => onAddToTimeline(item)}
-                    className="flex items-center gap-1 rounded-md bg-rust/10 px-2 py-1.5 text-[11px] font-semibold text-rust transition-colors hover:bg-rust/20"
+                    className="flex items-center gap-1 rounded-md bg-rust/15 px-2 py-1 text-[10px] font-semibold text-rust-light transition-colors hover:bg-rust/25"
                     title="Append to the timeline"
                   >
-                    <Plus className="h-3.5 w-3.5" />
+                    <Plus className="h-3 w-3" />
                     Timeline
                   </button>
                 )}
@@ -396,22 +422,23 @@ export default function MediaBin({
                   <button
                     onClick={() => saveToLibrary(item)}
                     disabled={uploadingId === item.id}
-                    className="rounded-md p-1.5 text-warm-gray transition-colors hover:bg-cream-dark hover:text-ink disabled:opacity-50"
+                    className="flex items-center gap-1 rounded-md border border-white/10 px-2 py-1 text-[10px] font-medium text-cream/60 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-50"
                     title="Save to the media library (Supabase)"
                   >
                     {uploadingId === item.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-3 w-3 animate-spin" />
                     ) : (
-                      <Upload className="h-4 w-4" />
+                      <CloudUpload className="h-3 w-3" />
                     )}
+                    Save
                   </button>
                 )}
                 <button
                   onClick={() => remove(item)}
-                  className="rounded-md p-1.5 text-warm-gray transition-colors hover:bg-red-50 hover:text-red-600"
+                  className="ml-auto rounded-md p-1 text-warm-gray transition-colors hover:bg-red-500/10 hover:text-red-400"
                   title="Remove from the bin"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
             </li>
@@ -419,14 +446,11 @@ export default function MediaBin({
         </ul>
       )}
 
-      <div className="flex items-center gap-2 border-t border-border px-5 py-2.5">
-        <Film className="h-3.5 w-3.5 text-warm-gray" />
-        <p className="text-[11px] leading-relaxed text-warm-gray">
-          2:1 sources are auto-flagged 360. Audio files feed the music and
-          voiceover tracks. Session-only clips play here but cannot ship in
-          a published sequence until saved to the library.
+      <div className="shrink-0 border-t border-white/10 px-3 py-2">
+        <p className="text-[10px] leading-relaxed text-warm-gray">
+          2:1 sources auto-flag as 360. Audio feeds the music and voiceover
+          tracks. Session clips need a library save to ship.
         </p>
-        <ImageIcon className="hidden" aria-hidden="true" />
       </div>
     </div>
   );

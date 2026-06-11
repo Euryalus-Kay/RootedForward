@@ -19,8 +19,9 @@ import {
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/*  AgentPanel: the pipeline status board (Analyst, Director, Critic)  */
-/*  plus the revision chat with the Director.                          */
+/*  AgentPanel: the right-hand AI column of the editor workspace.      */
+/*  Brief, pipeline status board (Analyst, Director, Critic), and the  */
+/*  revision chat with the Director. Dark editor chrome.               */
 /* ------------------------------------------------------------------ */
 
 export type StageState = "idle" | "running" | "done" | "error";
@@ -39,6 +40,8 @@ interface AgentPanelProps {
   chat: StudioChatMessage[];
   busy: boolean;
   hasSequence: boolean;
+  brief: string;
+  onBrief: (brief: string) => void;
   orchKey: string;
   onOrchKey: (key: string) => void;
   onGenerate: () => void;
@@ -85,13 +88,13 @@ const STAGES: {
 function StageIcon({ state }: { state: StageState }) {
   switch (state) {
     case "running":
-      return <Loader2 className="h-4 w-4 animate-spin text-rust" />;
+      return <Loader2 className="h-4 w-4 animate-spin text-rust-light" />;
     case "done":
-      return <CheckCircle2 className="h-4 w-4 text-forest" />;
+      return <CheckCircle2 className="h-4 w-4 text-emerald-400" />;
     case "error":
-      return <XCircle className="h-4 w-4 text-red-600" />;
+      return <XCircle className="h-4 w-4 text-red-400" />;
     default:
-      return <Circle className="h-4 w-4 text-warm-gray-light" />;
+      return <Circle className="h-4 w-4 text-white/20" />;
   }
 }
 
@@ -101,6 +104,8 @@ export default function AgentPanel({
   chat,
   busy,
   hasSequence,
+  brief,
+  onBrief,
   orchKey,
   onOrchKey,
   onGenerate,
@@ -127,13 +132,13 @@ export default function AgentPanel({
   };
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border bg-white/60 shadow-sm">
-      <div className="border-b border-border px-5 py-3.5">
-        <h2 className="flex items-center gap-2 font-display text-base font-semibold text-forest">
+    <div className="flex h-full min-h-0 flex-col bg-[#1B1A18]">
+      <div className="shrink-0 border-b border-white/10 px-4 py-3">
+        <h2 className="flex items-center gap-2 font-display text-sm font-semibold text-cream">
           <Bot className="h-4 w-4 text-rust" />
           Agent pipeline
         </h2>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1.5 flex items-center gap-2">
           <label
             htmlFor="studio-orchestration"
             className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray"
@@ -146,7 +151,7 @@ export default function AgentPanel({
             onChange={(e) => onOrchKey(e.target.value)}
             disabled={busy}
             title={orch.blurb}
-            className="min-w-0 flex-1 rounded-md border border-border bg-white px-2 py-1 text-[11px] font-medium text-ink focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+            className="min-w-0 flex-1 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-[11px] font-medium text-cream focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
           >
             {ORCHESTRATION_PRESETS.map((p) => (
               <option key={p.key} value={p.key}>
@@ -157,16 +162,34 @@ export default function AgentPanel({
         </div>
       </div>
 
+      {/* Brief */}
+      <div className="shrink-0 border-b border-white/10 px-4 py-2.5">
+        <label
+          htmlFor="studio-brief"
+          className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray"
+        >
+          Brief for the Director
+        </label>
+        <textarea
+          id="studio-brief"
+          value={brief}
+          onChange={(e) => onBrief(e.target.value)}
+          rows={2}
+          className="mt-1 w-full resize-none rounded-md border border-white/10 bg-[#141312] px-2.5 py-1.5 text-xs leading-relaxed text-cream placeholder:text-warm-gray focus:outline-none focus:ring-1 focus:ring-rust"
+          placeholder="What should this cut be?"
+        />
+      </div>
+
       {/* Stage board */}
-      <div className="border-b border-border px-5 py-3">
+      <div className="shrink-0 border-b border-white/10 px-4 py-3">
         <ol className="space-y-2">
           {STAGES.map((stage) => (
             <li key={stage.key} className="flex items-center gap-2.5">
               <StageIcon state={pipeline[stage.key]} />
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-ink">
+                <p className="text-xs font-semibold text-cream">
                   {stage.name}
-                  <span className="ml-1.5 rounded-sm bg-cream-dark px-1 py-px font-mono text-[9px] font-normal text-warm-gray">
+                  <span className="ml-1.5 rounded-sm bg-white/10 px-1 py-px font-mono text-[9px] font-normal text-warm-gray-light">
                     {shortModel(orch.models[stage.action])}
                   </span>
                 </p>
@@ -187,13 +210,13 @@ export default function AgentPanel({
         </ol>
 
         {pipeline.detail && (
-          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-rust">
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-rust-light">
             {busy && <Loader2 className="h-3 w-3 animate-spin" />}
             {pipeline.detail}
           </p>
         )}
         {pipeline.error && (
-          <p className="mt-2 rounded-md bg-red-50 px-2.5 py-1.5 text-[11px] leading-relaxed text-red-700">
+          <p className="mt-2 rounded-md bg-red-500/10 px-2.5 py-1.5 text-[11px] leading-relaxed text-red-300">
             {pipeline.error}
           </p>
         )}
@@ -201,7 +224,7 @@ export default function AgentPanel({
         <button
           onClick={onGenerate}
           disabled={busy}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-md bg-rust px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark disabled:opacity-50"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-md bg-rust px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
         >
           <Sparkles className="h-3.5 w-3.5" />
           {hasSequence ? "Regenerate the cut" : "Generate the cut"}
@@ -209,7 +232,7 @@ export default function AgentPanel({
         <button
           onClick={onVariations}
           disabled={busy}
-          className="mt-1.5 w-full rounded-md border border-rust/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-rust transition-colors hover:bg-rust/5 disabled:opacity-50"
+          className="mt-1.5 w-full rounded-md border border-rust/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-50"
         >
           3 variations, pick one
         </button>
@@ -221,7 +244,7 @@ export default function AgentPanel({
                 key={qa.label}
                 onClick={() => onChat(qa.instruction)}
                 disabled={busy}
-                className="rounded-full border border-border bg-white px-2.5 py-1 text-[10px] font-semibold text-ink/70 transition-colors hover:border-rust/50 hover:text-rust disabled:opacity-50"
+                className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold text-cream/60 transition-colors hover:border-rust/60 hover:text-rust-light disabled:opacity-50"
               >
                 {qa.label}
               </button>
@@ -229,14 +252,14 @@ export default function AgentPanel({
             <button
               onClick={onScript}
               disabled={busy}
-              className="rounded-full border border-forest/40 bg-forest/5 px-2.5 py-1 text-[10px] font-semibold text-forest transition-colors hover:bg-forest/10 disabled:opacity-50"
+              className="rounded-full border border-emerald-400/30 bg-emerald-400/5 px-2.5 py-1 text-[10px] font-semibold text-emerald-300 transition-colors hover:bg-emerald-400/10 disabled:opacity-50"
             >
               Write narration + subtitles
             </button>
             <button
               onClick={onPolish}
               disabled={busy}
-              className="rounded-full border border-rust/40 bg-rust/5 px-2.5 py-1 text-[10px] font-semibold text-rust transition-colors hover:bg-rust/10 disabled:opacity-50"
+              className="rounded-full border border-rust/40 bg-rust/5 px-2.5 py-1 text-[10px] font-semibold text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-50"
               title="Run the Critic on the current cut and apply its fixes"
             >
               Polish pass
@@ -247,7 +270,7 @@ export default function AgentPanel({
 
       {/* Chat */}
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-5 py-4">
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
           {chat.length === 0 ? (
             <p className="text-xs leading-relaxed text-warm-gray">
               After a cut exists, direct changes or ask questions here. Try
@@ -263,8 +286,8 @@ export default function AgentPanel({
                 className={cn(
                   "max-w-[92%] rounded-lg px-3 py-2 text-xs leading-relaxed",
                   msg.role === "user"
-                    ? "ml-auto bg-forest text-cream"
-                    : "bg-cream-dark text-ink"
+                    ? "ml-auto bg-rust/90 text-cream"
+                    : "bg-[#26241F] text-cream/90"
                 )}
               >
                 {msg.text}
@@ -273,7 +296,7 @@ export default function AgentPanel({
           )}
           <div ref={chatEndRef} />
         </div>
-        <div className="border-t border-border p-3">
+        <div className="shrink-0 border-t border-white/10 p-3">
           <div className="flex items-end gap-2">
             <textarea
               value={draft}
@@ -291,12 +314,12 @@ export default function AgentPanel({
                   : "Generate a cut first, then direct changes here"
               }
               disabled={!hasSequence || busy}
-              className="flex-1 resize-none rounded-md border border-border bg-white px-3 py-2 text-xs text-ink placeholder:text-warm-gray-light focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+              className="flex-1 resize-none rounded-md border border-white/10 bg-[#141312] px-3 py-2 text-xs text-cream placeholder:text-warm-gray focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
             />
             <button
               onClick={send}
               disabled={!hasSequence || busy || !draft.trim()}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-forest text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-rust text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
               aria-label="Send"
             >
               <Send className="h-4 w-4" />

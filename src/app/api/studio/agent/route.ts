@@ -473,7 +473,10 @@ async function runAgent(
     (b): b is Anthropic.TextBlock => b.type === "text"
   );
   if (!textBlock) {
-    throw new Error("The model returned no output");
+    // Usually max_tokens spent entirely on thinking; surface that.
+    throw new Error(
+      `The model returned no output (stop_reason ${response.stop_reason})`
+    );
   }
   return JSON.parse(textBlock.text);
 }
@@ -632,7 +635,9 @@ export async function POST(req: NextRequest) {
           system: CRITIC_SYSTEM,
           content: ctx,
           schema: CRITIQUE_HEAD_SCHEMA,
-          maxTokens: 3000,
+          // Adaptive thinking shares this budget; keep room so a long
+          // review never starves the text output.
+          maxTokens: 8000,
         })) as {
           verdict: "approve" | "revise";
           issues: string[];
@@ -671,7 +676,8 @@ export async function POST(req: NextRequest) {
           system: DIRECTOR_SYSTEM,
           content: `${ctx}\n\nNote from the editor\n${body.instruction}\n\nDecide what the note needs. If it asks for a change to the cut, set "changed" true and list each concrete edit in "changelog" (name segment ids and exact values where it matters); you will produce the updated sequence in the next step. You may change anything on the timeline, including the title, aspect, music, voiceover, and subtitles. If the note is a question or a request for advice instead, set "changed" false, answer it in "reply", and leave "changelog" empty. Read the note against the conversation, so follow-ups like "shorter" or "undo that last idea" resolve to what was just discussed. Always write "reply" as one to three conversational sentences.`,
           schema: REVISE_HEAD_SCHEMA,
-          maxTokens: 2500,
+          // Adaptive thinking shares this budget.
+          maxTokens: 6000,
         })) as { reply: string; changed: boolean; changelog: string[] };
         let updatedSequence: SequenceDoc | null = null;
         if (head.changed) {

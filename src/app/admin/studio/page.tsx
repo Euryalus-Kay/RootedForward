@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Link from "next/link";
 import {
   createClient,
   isSupabaseConfiguredClient,
@@ -50,6 +51,7 @@ import type {
   StudioMediaItem,
 } from "@/lib/immersive/types";
 import {
+  ArrowLeft,
   Clapperboard,
   Download,
   Film,
@@ -108,6 +110,14 @@ function writeIndex(entries: ProjectIndexEntry[]) {
     // best effort
   }
 }
+
+/* Shared dark-chrome classes for the editor workspace */
+const topBtn =
+  "flex items-center gap-1.5 rounded-md border border-white/10 px-2.5 py-1.5 text-xs font-medium text-cream/80 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-40";
+const modalShell =
+  "w-full rounded-xl border border-white/10 bg-[#1F1E1B] p-6 text-cream shadow-2xl";
+const modalSelect =
+  "w-full rounded-md border border-white/10 bg-[#141312] px-3 py-2 text-sm text-cream focus:outline-none focus:ring-1 focus:ring-rust";
 
 const VARIATION_HINTS = [
   {
@@ -1050,77 +1060,143 @@ export default function StudioPage() {
     applySequence({ ...sequence, aspect });
   };
 
+  /* --------------------- workspace measurements -------------------- */
+
+  const monitorRef = useRef<HTMLDivElement>(null);
+  const [monitorSize, setMonitorSize] = useState({ w: 0, h: 0 });
+  const [dockH, setDockH] = useState(330);
+
+  useEffect(() => {
+    const el = monitorRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const r = entries[0].contentRect;
+      setMonitorSize({ w: r.width, h: r.height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const onDockResize = (e: React.PointerEvent) => {
+    e.preventDefault();
+    const startY = e.clientY;
+    const orig = dockH;
+    const move = (ev: PointerEvent) =>
+      setDockH(Math.min(560, Math.max(200, orig + (startY - ev.clientY))));
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  // Fit the player inside the monitor area. The player is a width-
+  // driven aspect box with roughly 92px of controls under it.
+  const aspectNow = sequence?.aspect ?? "16:9";
+  const [aspectW, aspectH] =
+    aspectNow === "9:16" ? [9, 16] : aspectNow === "1:1" ? [1, 1] : [16, 9];
+  const playerW = Math.max(
+    200,
+    Math.min(
+      (monitorSize.w || 880) - 48,
+      ((monitorSize.h || 520) - 124) * (aspectW / aspectH)
+    )
+  );
+
   /* ------------------------------ UI ------------------------------ */
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-forest">
-            <Clapperboard className="h-6 w-6 text-rust" />
-            Studio
-          </h1>
-          <p className="text-sm text-warm-gray">
-            AI-assisted 2D/360 hybrid editing. Plays live on the site, and
-            exports real video.
-          </p>
-          <p className="mt-0.5 text-[11px] text-warm-gray">
-            {saveIssue ? (
-              <span className="font-medium text-amber-700">
-                Autosave could not write (browser storage is full). Use Save
-                to cloud to keep this project.
-              </span>
-            ) : savedAt ? (
-              <>Autosaved in this browser {savedAt}</>
-            ) : (
-              <>Autosave is on</>
-            )}
-            {cloudSavedAt ? <> &middot; cloud copy {cloudSavedAt}</> : null}
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => setProjectsOpen(true)}
-            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
-          >
+    <div
+      className="fixed inset-0 z-[80] flex flex-col overflow-hidden bg-[#141312] text-cream"
+      style={{ colorScheme: "dark" }}
+    >
+      {/* Top bar */}
+      <header className="flex h-12 shrink-0 items-center gap-2 border-b border-white/10 bg-[#1B1A18] px-3">
+        <Link
+          href="/admin"
+          className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium text-warm-gray transition-colors hover:bg-white/10 hover:text-cream"
+          title="Back to the admin dashboard"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Exit
+        </Link>
+        <span className="h-5 w-px shrink-0 bg-white/10" />
+        <Clapperboard className="h-4 w-4 shrink-0 text-rust" />
+        <input
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          className="w-44 min-w-0 shrink rounded-md border border-transparent bg-transparent px-1.5 py-1 font-display text-sm font-semibold text-cream focus:border-white/15 focus:outline-none"
+          title="Project name"
+        />
+        <p className="hidden min-w-0 truncate text-[10px] text-warm-gray lg:block">
+          {saveIssue ? (
+            <span className="font-medium text-amber-400">
+              Autosave could not write (storage full). Use Save to cloud.
+            </span>
+          ) : savedAt ? (
+            <>Autosaved in this browser {savedAt}</>
+          ) : (
+            <>Autosave is on</>
+          )}
+          {cloudSavedAt ? <> &middot; cloud {cloudSavedAt}</> : null}
+        </p>
+
+        <div className="ml-auto flex shrink-0 items-center gap-1.5">
+          <div className="mr-1 hidden rounded-md border border-white/10 p-0.5 md:flex">
+            {(["16:9", "9:16", "1:1"] as const).map((a) => (
+              <button
+                key={a}
+                onClick={() => setAspect(a)}
+                disabled={!sequence}
+                className={cn(
+                  "rounded px-2 py-1 text-[10px] font-semibold transition-colors disabled:opacity-40",
+                  (sequence?.aspect ?? "16:9") === a
+                    ? "bg-rust text-cream"
+                    : "text-cream/50 hover:text-cream"
+                )}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setProjectsOpen(true)} className={topBtn}>
             <FolderOpen className="h-3.5 w-3.5" />
             Projects
           </button>
-          <button
-            onClick={loadDemoProject}
-            className="rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
-          >
+          <button onClick={loadDemoProject} className={topBtn}>
             Load demo project
+          </button>
+          <button
+            onClick={exportJson}
+            disabled={!sequence}
+            className={topBtn}
+            title="Download the sequence as JSON"
+          >
+            <Download className="h-3.5 w-3.5" />
+            JSON
+          </button>
+          <button
+            onClick={() => setAttachOpen(true)}
+            disabled={!sequence}
+            className={topBtn}
+            title="Attach the sequence to a tour stop"
+          >
+            <Link2 className="h-3.5 w-3.5" />
+            Attach
           </button>
           <button
             onClick={() => setExportOpen(true)}
             disabled={!sequence || sequence.segments.length === 0}
-            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-md border border-rust/50 px-2.5 py-1.5 text-xs font-medium text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-40"
           >
             <Film className="h-3.5 w-3.5" />
             Export video
           </button>
           <button
-            onClick={exportJson}
-            disabled={!sequence}
-            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
-          >
-            <Download className="h-3.5 w-3.5" />
-            Export JSON
-          </button>
-          <button
-            onClick={() => setAttachOpen(true)}
-            disabled={!sequence}
-            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
-          >
-            <Link2 className="h-3.5 w-3.5" />
-            Attach to stop
-          </button>
-          <button
             onClick={saveToSupabase}
             disabled={saving}
-            className="flex items-center gap-1.5 rounded-md bg-forest px-3 py-2 text-xs font-medium text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-md bg-rust px-2.5 py-1.5 text-xs font-semibold text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -1130,13 +1206,13 @@ export default function StudioPage() {
             Save to cloud
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Key banner */}
       {health && !health.keyConfigured && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
-          <KeyRound className="h-4 w-4 shrink-0 text-amber-700" />
-          <p className="text-xs leading-relaxed text-amber-800">
+        <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-amber-400/20 bg-amber-400/10 px-4 py-2">
+          <KeyRound className="h-4 w-4 shrink-0 text-amber-400" />
+          <p className="text-xs leading-relaxed text-amber-200">
             No ANTHROPIC_API_KEY on the server. Paste a key to use for this
             tab only, or add the variable to the environment and redeploy.
           </p>
@@ -1145,64 +1221,28 @@ export default function StudioPage() {
             value={sessionKey}
             onChange={(e) => setSessionKey(e.target.value)}
             placeholder="sk-ant-..."
-            className="min-w-56 flex-1 rounded-md border border-amber-300 bg-white px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="min-w-56 flex-1 rounded-md border border-amber-400/30 bg-[#141312] px-3 py-1.5 text-xs text-cream focus:outline-none focus:ring-1 focus:ring-amber-400"
           />
         </div>
       )}
 
-      {/* Project meta */}
-      <div className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-white/60 p-4 shadow-sm md:grid-cols-[220px_1fr_150px]">
-        <div>
-          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
-            Project
-          </label>
-          <input
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm font-medium text-ink focus:outline-none focus:ring-1 focus:ring-rust"
+      {/* Workspace: media rail, monitor, AI panel */}
+      <div className="flex min-h-0 flex-1 max-lg:flex-col max-lg:overflow-y-auto">
+        <aside className="w-[272px] shrink-0 border-r border-white/10 max-lg:h-80 max-lg:w-full max-lg:border-b max-lg:border-r-0">
+          <MediaBin
+            media={media}
+            onChange={setMedia}
+            onAddToTimeline={addToTimeline}
+            analyzingId={analyzingId}
           />
-        </div>
-        <div>
-          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
-            Brief for the Director
-          </label>
-          <textarea
-            value={brief}
-            onChange={(e) => setBrief(e.target.value)}
-            rows={2}
-            className="w-full resize-none rounded-md border border-border bg-white px-3 py-2 text-sm text-ink focus:outline-none focus:ring-1 focus:ring-rust"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
-            Aspect
-          </label>
-          <div className="flex rounded-md border border-border bg-white p-0.5">
-            {(["16:9", "9:16", "1:1"] as const).map((a) => (
-              <button
-                key={a}
-                onClick={() => setAspect(a)}
-                disabled={!sequence}
-                className={cn(
-                  "flex-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors disabled:opacity-40",
-                  (sequence?.aspect ?? "16:9") === a
-                    ? "bg-forest text-cream"
-                    : "text-ink/60 hover:text-ink"
-                )}
-              >
-                {a}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+        </aside>
 
-      {/* Main grid */}
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_340px]">
-        <div className="min-w-0 space-y-5">
-          {/* Player */}
-          <div className="rounded-xl border border-border bg-white/60 p-4 shadow-sm">
-            {sequence && sequence.segments.length > 0 ? (
+        <main
+          ref={monitorRef}
+          className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden bg-[#0E0D0C] p-5 max-lg:min-h-[340px]"
+        >
+          {sequence && sequence.segments.length > 0 ? (
+            <div style={{ width: playerW }} className="max-w-full">
               <TimelinePlayer
                 key={projectId}
                 doc={sequence}
@@ -1211,17 +1251,49 @@ export default function StudioPage() {
                 onTimeUpdate={onTimeUpdate}
                 controlsRef={controlsRef}
               />
-            ) : (
-              <div className="flex aspect-video items-center justify-center rounded-sm border border-dashed border-border bg-cream">
-                <p className="max-w-sm px-6 text-center text-sm text-warm-gray">
-                  No cut yet. Add clips and press Generate, load the demo
-                  project, or build the timeline by hand.
-                </p>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="flex aspect-video w-full max-w-xl items-center justify-center rounded-md border border-dashed border-white/15">
+              <p className="max-w-sm px-6 text-center text-sm text-warm-gray">
+                No cut yet. Add clips and press Generate, load the demo
+                project, or build the timeline by hand.
+              </p>
+            </div>
+          )}
+        </main>
 
-          {sequence && (
+        <aside className="w-[340px] shrink-0 border-l border-white/10 max-lg:h-[520px] max-lg:w-full max-lg:border-l-0 max-lg:border-t">
+          <AgentPanel
+            pipeline={pipeline}
+            traces={traces}
+            chat={chat}
+            busy={busy}
+            hasSequence={Boolean(sequence)}
+            brief={brief}
+            onBrief={setBrief}
+            orchKey={orchKey}
+            onOrchKey={setOrchKey}
+            onGenerate={runPipeline}
+            onChat={handleChat}
+            onScript={handleScript}
+            onVariations={runVariations}
+            onPolish={handlePolish}
+          />
+        </aside>
+      </div>
+
+      {/* Timeline dock */}
+      {sequence && (
+        <>
+          <div
+            onPointerDown={onDockResize}
+            className="h-1.5 shrink-0 cursor-row-resize bg-white/5 transition-colors hover:bg-rust/50 max-lg:hidden"
+            title="Drag to resize the timeline"
+          />
+          <div
+            className="shrink-0 border-t border-white/10"
+            style={{ height: dockH }}
+          >
             <TimelineEditor
               doc={sequence}
               media={media}
@@ -1239,33 +1311,9 @@ export default function StudioPage() {
               onSegmentAI={handleSegmentAI}
               aiBusy={busy}
             />
-          )}
-
-          <MediaBin
-            media={media}
-            onChange={setMedia}
-            onAddToTimeline={addToTimeline}
-            analyzingId={analyzingId}
-          />
-        </div>
-
-        <div className="min-h-[540px]">
-          <AgentPanel
-            pipeline={pipeline}
-            traces={traces}
-            chat={chat}
-            busy={busy}
-            hasSequence={Boolean(sequence)}
-            orchKey={orchKey}
-            onOrchKey={setOrchKey}
-            onGenerate={runPipeline}
-            onChat={handleChat}
-            onScript={handleScript}
-            onVariations={runVariations}
-            onPolish={handlePolish}
-          />
-        </div>
-      </div>
+          </div>
+        </>
+      )}
 
       {attachOpen && sequence && (
         <AttachModal
@@ -1343,15 +1391,15 @@ function VariationsModal({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
-      <div className="w-full max-w-3xl rounded-xl border border-border bg-cream p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+      <div className={cn(modalShell, "max-w-3xl")}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold text-forest">
+          <h2 className="font-display text-lg font-bold text-cream">
             Three directions on the same material
           </h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-warm-gray hover:text-ink"
+            className="rounded-md p-1 text-warm-gray hover:text-cream"
           >
             <X className="h-5 w-5" />
           </button>
@@ -1365,9 +1413,9 @@ function VariationsModal({
             return (
               <div
                 key={i}
-                className="flex flex-col rounded-lg border border-border bg-white p-4"
+                className="flex flex-col rounded-lg border border-white/10 bg-[#26241F] p-4"
               >
-                <p className="font-display text-base font-semibold leading-snug text-forest">
+                <p className="font-display text-base font-semibold leading-snug text-cream">
                   {doc.title}
                 </p>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-warm-gray">
@@ -1380,7 +1428,7 @@ function VariationsModal({
                       key={s.id}
                       className={cn(
                         "h-full",
-                        s.mode === "pano360" ? "bg-rust" : "bg-forest/60"
+                        s.mode === "pano360" ? "bg-rust" : "bg-cream/25"
                       )}
                       style={{
                         flexGrow: Math.max(
@@ -1391,12 +1439,12 @@ function VariationsModal({
                     />
                   ))}
                 </div>
-                <p className="mt-3 flex-1 text-xs leading-relaxed text-ink/70">
+                <p className="mt-3 flex-1 text-xs leading-relaxed text-cream/70">
                   {doc.notes}
                 </p>
                 <button
                   onClick={() => onAdopt(doc)}
-                  className="mt-4 rounded-md bg-forest px-3 py-2 text-xs font-semibold text-cream transition-colors hover:bg-forest-light"
+                  className="mt-4 rounded-md bg-rust px-3 py-2 text-xs font-semibold text-cream transition-colors hover:bg-rust-light"
                 >
                   Use this cut
                 </button>
@@ -1508,25 +1556,25 @@ function ProjectsModal({
   };
 
   const row =
-    "flex items-center justify-between gap-2 rounded-md border border-border bg-white px-3 py-2";
+    "flex items-center justify-between gap-2 rounded-md border border-white/10 bg-[#26241F] px-3 py-2";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
-      <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-cream p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+      <div className={cn(modalShell, "max-h-[85vh] max-w-lg overflow-y-auto")}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold text-forest">
+          <h2 className="font-display text-lg font-bold text-cream">
             Projects
           </h2>
           <div className="flex items-center gap-2">
             <button
               onClick={onNew}
-              className="rounded-md bg-forest px-3 py-1.5 text-xs font-semibold text-cream transition-colors hover:bg-forest-light"
+              className="rounded-md bg-rust px-3 py-1.5 text-xs font-semibold text-cream transition-colors hover:bg-rust-light"
             >
               New project
             </button>
             <button
               onClick={onClose}
-              className="rounded-md p-1 text-warm-gray hover:text-ink"
+              className="rounded-md p-1 text-warm-gray hover:text-cream"
             >
               <X className="h-5 w-5" />
             </button>
@@ -1544,11 +1592,11 @@ function ProjectsModal({
               <li key={e.id} className={row}>
                 <button
                   onClick={() => openLocal(e.id)}
-                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-ink hover:text-rust"
+                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-cream hover:text-rust-light"
                 >
                   {e.name}
                   {e.id === activeId && (
-                    <span className="ml-2 rounded-full bg-forest/10 px-2 py-0.5 text-[9px] font-semibold uppercase text-forest">
+                    <span className="ml-2 rounded-full bg-rust/15 px-2 py-0.5 text-[9px] font-semibold uppercase text-rust-light">
                       open
                     </span>
                   )}
@@ -1559,7 +1607,7 @@ function ProjectsModal({
                 <button
                   onClick={() => deleteLocal(e.id)}
                   disabled={e.id === activeId}
-                  className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600 disabled:opacity-30"
+                  className="rounded-md p-1 text-warm-gray hover:bg-red-500/10 hover:text-red-400 disabled:opacity-30"
                   title="Remove from this browser"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -1587,7 +1635,7 @@ function ProjectsModal({
               <li key={e.id} className={row}>
                 <button
                   onClick={() => openRemote(e.id)}
-                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-ink hover:text-rust"
+                  className="min-w-0 flex-1 truncate text-left text-sm font-medium text-cream hover:text-rust-light"
                 >
                   {e.name}
                 </button>
@@ -1596,7 +1644,7 @@ function ProjectsModal({
                 </span>
                 <button
                   onClick={() => deleteRemote(e.id)}
-                  className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                  className="rounded-md p-1 text-warm-gray hover:bg-red-500/10 hover:text-red-400"
                   title="Delete from Supabase"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -1698,15 +1746,15 @@ function AttachModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
-      <div className="w-full max-w-lg rounded-xl border border-border bg-cream p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+      <div className={cn(modalShell, "max-w-lg")}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold text-forest">
+          <h2 className="font-display text-lg font-bold text-cream">
             Attach the sequence to a tour stop
           </h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-warm-gray hover:text-ink"
+            className="rounded-md p-1 text-warm-gray hover:text-cream"
           >
             <X className="h-5 w-5" />
           </button>
@@ -1714,10 +1762,10 @@ function AttachModal({
 
         {state === "loading" ? (
           <div className="flex justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin text-forest" />
+            <Loader2 className="h-6 w-6 animate-spin text-rust" />
           </div>
         ) : state === "unavailable" ? (
-          <p className="text-sm leading-relaxed text-ink/70">
+          <p className="text-sm leading-relaxed text-cream/70">
             The immersive_tours table is not reachable, so attaching is
             disabled here. Run migration 006 in Supabase, or use Export JSON
             and add the sequence to the tour constants by hand.
@@ -1725,14 +1773,14 @@ function AttachModal({
         ) : (
           <>
             {sessionOnly && (
-              <p className="mb-3 rounded-md bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
+              <p className="mb-3 rounded-md bg-amber-400/10 px-3 py-2 text-xs leading-relaxed text-amber-200">
                 Some segments use session-only clips. Save them to the
                 library first or those segments will not play for visitors.
               </p>
             )}
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-sm font-medium text-ink">
+                <label className="mb-1 block text-sm font-medium text-cream">
                   Tour
                 </label>
                 <select
@@ -1741,7 +1789,7 @@ function AttachModal({
                     setTourIdx(parseInt(e.target.value, 10));
                     setStopIdx(0);
                   }}
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
+                  className={modalSelect}
                 >
                   {tours.map((t, i) => (
                     <option key={t.id} value={i}>
@@ -1751,13 +1799,13 @@ function AttachModal({
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-ink">
+                <label className="mb-1 block text-sm font-medium text-cream">
                   Stop
                 </label>
                 <select
                   value={stopIdx}
                   onChange={(e) => setStopIdx(parseInt(e.target.value, 10))}
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
+                  className={modalSelect}
                 >
                   {(tours[tourIdx]?.stops ?? []).map((s, i) => (
                     <option key={s.id} value={i}>
@@ -1770,14 +1818,14 @@ function AttachModal({
             <div className="mt-5 flex justify-end gap-3">
               <button
                 onClick={onClose}
-                className="rounded-md border border-border px-4 py-2 text-sm font-medium text-ink hover:bg-cream-dark"
+                className="rounded-md border border-white/10 px-4 py-2 text-sm font-medium text-cream hover:bg-white/10"
               >
                 Cancel
               </button>
               <button
                 onClick={attach}
                 disabled={attaching || tours.length === 0}
-                className="flex items-center gap-2 rounded-md bg-forest px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
+                className="flex items-center gap-2 rounded-md bg-rust px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
               >
                 {attaching && <Loader2 className="h-4 w-4 animate-spin" />}
                 Attach

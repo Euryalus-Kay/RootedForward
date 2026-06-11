@@ -102,13 +102,15 @@ function fmt(t: number): string {
 }
 
 const numInput =
-  "w-20 rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
+  "w-20 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-xs text-cream focus:outline-none focus:ring-1 focus:ring-rust";
 const selectInput =
-  "rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
+  "rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-xs text-cream focus:outline-none focus:ring-1 focus:ring-rust";
 const fieldLabel =
   "block text-[10px] font-semibold uppercase tracking-wider text-warm-gray";
 const iconBtn =
-  "flex h-8 w-8 items-center justify-center rounded-md text-warm-gray transition-colors hover:bg-cream-dark hover:text-ink disabled:opacity-30";
+  "flex h-8 w-8 items-center justify-center rounded-md text-warm-gray transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-30";
+const ghostBtn =
+  "rounded-md border border-white/10 px-2 py-1 text-[10px] font-semibold text-cream/70 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-40";
 
 interface TimelineEditorProps {
   doc: SequenceDoc;
@@ -183,7 +185,7 @@ function WaveformLane({
       const c = canvas.getContext("2d");
       if (!c) return;
       c.clearRect(0, 0, w, 20);
-      c.fillStyle = "rgba(27,58,45,0.55)";
+      c.fillStyle = "rgba(245,240,232,0.45)";
       const span = loop
         ? totalSec - offsetSec
         : Math.min(durationSec, totalSec - offsetSec);
@@ -407,13 +409,13 @@ export default function TimelineEditor({
   for (let s = 0; s <= Math.ceil(total); s += tickEvery) ticks.push(s);
 
   return (
-    <div className="rounded-xl border border-border bg-white/60 shadow-sm">
+    <div className="flex h-full min-h-0 flex-col bg-[#1B1A18]">
       {/* Header / toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/10 px-4 py-2">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => controls.current?.toggle()}
-            className="flex h-9 w-9 items-center justify-center rounded-md bg-forest text-cream transition-colors hover:bg-forest-light"
+            className="flex h-8 w-8 items-center justify-center rounded-md bg-rust text-cream transition-colors hover:bg-rust-light"
             title="Play / pause (space)"
           >
             {playing ? (
@@ -422,18 +424,18 @@ export default function TimelineEditor({
               <Play className="h-4 w-4" />
             )}
           </button>
-          <span className="ml-1 font-mono text-xs text-ink/80">
+          <span className="ml-1 font-mono text-xs text-cream/90">
             {fmt(Math.min(playerTime, total))}{" "}
             <span className="text-warm-gray">/ {fmt(total)}</span>
           </span>
           {trimReadout && (
-            <span className="ml-2 rounded-sm bg-rust/10 px-2 py-0.5 font-mono text-[10px] text-rust">
+            <span className="ml-2 rounded-sm bg-rust/15 px-2 py-0.5 font-mono text-[10px] text-rust-light">
               {trimReadout}
             </span>
           )}
           <button
             onClick={onToggleLoop}
-            className={cn(iconBtn, loop && "bg-rust/10 text-rust")}
+            className={cn(iconBtn, loop && "bg-rust/15 text-rust-light")}
             title="Loop playback"
           >
             <Repeat className="h-4 w-4" />
@@ -457,7 +459,7 @@ export default function TimelineEditor({
           >
             <Redo2 className="h-4 w-4" />
           </button>
-          <span className="mx-1 h-5 w-px bg-border" />
+          <span className="mx-1 h-5 w-px bg-white/10" />
           <button
             onClick={onSplit}
             className={iconBtn}
@@ -473,7 +475,7 @@ export default function TimelineEditor({
           >
             <Copy className="h-4 w-4" />
           </button>
-          <span className="mx-1 h-5 w-px bg-border" />
+          <span className="mx-1 h-5 w-px bg-white/10" />
           <button
             onClick={() => setPxPerSec((v) => Math.max(10, v - 8))}
             className={iconBtn}
@@ -491,6 +493,7 @@ export default function TimelineEditor({
         </div>
       </div>
 
+      <div className="min-h-0 flex-1 overflow-y-auto">
       {/* Ruler + strip */}
       <div
         ref={stripRef}
@@ -504,7 +507,7 @@ export default function TimelineEditor({
         >
           {/* Ruler */}
           <div
-            className="relative h-6 cursor-pointer select-none border-b border-border/70"
+            className="relative h-6 cursor-pointer select-none border-b border-white/15"
             onPointerDown={(e) => {
               seekFromRuler(e);
               const move = (ev: PointerEvent) =>
@@ -548,8 +551,8 @@ export default function TimelineEditor({
                   className={cn(
                     "group absolute top-2 flex h-[58px] flex-col justify-between overflow-hidden rounded-md border p-1.5 text-left transition-colors",
                     activeSel
-                      ? "z-10 border-rust bg-rust/10"
-                      : "border-border bg-white hover:border-rust/50",
+                      ? "z-10 border-rust bg-rust/20"
+                      : "border-white/15 bg-[#26241F] hover:border-rust/60",
                     seg.mode === "pano360" && "border-dashed"
                   )}
                   style={{
@@ -584,10 +587,10 @@ export default function TimelineEditor({
                   {clip?.thumb && (
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/75 via-white/35 to-white/75"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/70"
                     />
                   )}
-                  <span className="pointer-events-none relative truncate text-[10px] font-semibold text-ink">
+                  <span className="pointer-events-none relative truncate text-[10px] font-semibold text-cream">
                     {clip?.name ?? seg.clipId}
                   </span>
                   <span className="pointer-events-none relative flex items-center gap-1">
@@ -595,28 +598,28 @@ export default function TimelineEditor({
                       className={cn(
                         "rounded-sm px-1 font-mono text-[8px] uppercase",
                         seg.mode === "pano360"
-                          ? "bg-rust/15 text-rust"
-                          : "bg-forest/10 text-forest"
+                          ? "bg-rust/30 text-rust-light"
+                          : "bg-emerald-400/15 text-emerald-300"
                       )}
                     >
                       {seg.mode === "pano360" ? "360" : "2D"}
                     </span>
                     {(seg.speed ?? 1) !== 1 && (
-                      <span className="rounded-sm bg-amber-100 px-1 font-mono text-[8px] text-amber-700">
+                      <span className="rounded-sm bg-amber-400/20 px-1 font-mono text-[8px] text-amber-300">
                         {seg.speed}x
                       </span>
                     )}
                     {seg.filter && (
-                      <span className="rounded-sm bg-forest/10 px-1 font-mono text-[8px] text-forest">
+                      <span className="rounded-sm bg-emerald-400/15 px-1 font-mono text-[8px] text-emerald-300">
                         fx
                       </span>
                     )}
                     {(seg.overlays?.length ?? 0) > 0 && (
-                      <span className="rounded-sm bg-rust/15 px-1 font-mono text-[8px] text-rust">
+                      <span className="rounded-sm bg-rust/30 px-1 font-mono text-[8px] text-rust-light">
                         T
                       </span>
                     )}
-                    <span className="ml-auto font-mono text-[9px] text-warm-gray">
+                    <span className="ml-auto font-mono text-[9px] text-warm-gray-light">
                       {lenSec.toFixed(1)}s
                     </span>
                   </span>
@@ -669,7 +672,7 @@ export default function TimelineEditor({
       </div>
 
       {/* Track lanes */}
-      <div className="flex flex-wrap items-center gap-2 border-t border-border/60 px-4 py-2">
+      <div className="flex flex-wrap items-center gap-2 border-t border-white/10 px-4 py-2">
         <TrackChip
           icon={<Music className="h-3.5 w-3.5" />}
           label="Music"
@@ -691,8 +694,8 @@ export default function TimelineEditor({
           className={cn(
             "rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition-colors",
             showSubtitles
-              ? "border-rust bg-rust/10 text-rust"
-              : "border-border bg-white text-ink/70 hover:text-ink"
+              ? "border-rust bg-rust/15 text-rust-light"
+              : "border-white/10 text-cream/60 hover:text-cream"
           )}
         >
           Subtitles ({doc.subtitles?.length ?? 0})
@@ -705,7 +708,7 @@ export default function TimelineEditor({
 
       {/* Subtitle editor */}
       {showSubtitles && (
-        <div className="border-t border-border/60 px-4 py-3">
+        <div className="border-t border-white/10 px-4 py-3">
           <div className="flex items-center justify-between">
             <p className={fieldLabel}>Subtitles (absolute timeline seconds)</p>
             <button
@@ -729,7 +732,7 @@ export default function TimelineEditor({
                   ],
                 })
               }
-              className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+              className="text-[11px] font-semibold text-rust-light hover:text-rust"
             >
               + Add cue at playhead
             </button>
@@ -774,7 +777,7 @@ export default function TimelineEditor({
                       onChange={(e) =>
                         updateCue(cue.id, { text: e.target.value })
                       }
-                      className="min-w-40 flex-1 rounded-md border border-border bg-white px-2 py-1 text-xs"
+                      className="min-w-40 flex-1 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-xs text-cream placeholder:text-warm-gray"
                     />
                     <button
                       onClick={() =>
@@ -785,7 +788,7 @@ export default function TimelineEditor({
                           ),
                         })
                       }
-                      className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                      className="rounded-md p-1 text-warm-gray hover:bg-red-500/10 hover:text-red-400"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -798,7 +801,7 @@ export default function TimelineEditor({
 
       {/* Inspector */}
       {selected && selectedTimed && (
-        <div className="border-t border-border px-4 py-3">
+        <div className="border-t border-white/10 px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-1 overflow-x-auto">
               {(
@@ -817,8 +820,8 @@ export default function TimelineEditor({
                   className={cn(
                     "rounded-md px-2.5 py-1 text-[11px] font-semibold transition-colors",
                     inspectorTab === key
-                      ? "bg-forest text-cream"
-                      : "text-ink/60 hover:text-ink"
+                      ? "bg-rust text-cream"
+                      : "text-cream/50 hover:text-cream"
                   )}
                 >
                   {label}
@@ -836,7 +839,7 @@ export default function TimelineEditor({
                   });
                   toast.success("Style copied (grade + transition)");
                 }}
-                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink"
+                className={ghostBtn}
                 title="Copy this segment's grade and transition"
               >
                 Copy style
@@ -852,7 +855,7 @@ export default function TimelineEditor({
                   });
                 }}
                 disabled={!styleClipboard}
-                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink disabled:opacity-40"
+                className={ghostBtn}
                 title="Paste the copied style onto this segment"
               >
                 Paste
@@ -876,12 +879,12 @@ export default function TimelineEditor({
                   });
                   toast.success("Style applied to every segment");
                 }}
-                className="rounded-md border border-border px-2 py-1 text-[10px] font-semibold text-ink/70 hover:text-ink"
+                className={ghostBtn}
                 title="Apply this grade and transition to the whole cut"
               >
                 Apply to all
               </button>
-              <span className="mx-1 h-5 w-px bg-border" />
+              <span className="mx-1 h-5 w-px bg-white/10" />
               <button
                 onClick={() => moveSegment(selected.id, -1)}
                 className={iconBtn}
@@ -898,7 +901,7 @@ export default function TimelineEditor({
               </button>
               <button
                 onClick={() => removeSegment(selected.id)}
-                className="rounded-md p-1.5 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                className="rounded-md p-1.5 text-warm-gray hover:bg-red-500/10 hover:text-red-400"
                 title="Remove segment"
               >
                 <Trash2 className="h-4 w-4" />
@@ -948,7 +951,7 @@ export default function TimelineEditor({
           </div>
 
           {/* Segment-scoped AI */}
-          <div className="mt-3 flex items-center gap-2 border-t border-border/60 pt-3">
+          <div className="mt-3 flex items-center gap-2 border-t border-white/10 pt-3">
             <input
               value={aiDraft}
               onChange={(e) => setAiDraft(e.target.value)}
@@ -961,7 +964,7 @@ export default function TimelineEditor({
               }}
               placeholder='Direct the AI at this segment, e.g. "slow it down and grade it colder"'
               disabled={aiBusy}
-              className="flex-1 rounded-md border border-border bg-white px-3 py-1.5 text-xs text-ink placeholder:text-warm-gray-light focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+              className="flex-1 rounded-md border border-white/10 bg-[#141312] px-3 py-1.5 text-xs text-cream placeholder:text-warm-gray focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
             />
             <button
               onClick={() => {
@@ -971,13 +974,14 @@ export default function TimelineEditor({
                 }
               }}
               disabled={aiBusy || !aiDraft.trim()}
-              className="rounded-md bg-forest px-3 py-1.5 text-[11px] font-semibold text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
+              className="rounded-md bg-rust px-3 py-1.5 text-[11px] font-semibold text-cream transition-colors hover:bg-rust-light disabled:opacity-50"
             >
               {aiBusy ? "Working" : "AI edit"}
             </button>
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -1011,21 +1015,21 @@ function TrackChip({
         className={cn(
           "flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition-colors",
           track
-            ? "border-forest/40 bg-forest/10 text-forest"
-            : "border-border bg-white text-ink/70 hover:text-ink"
+            ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+            : "border-white/10 text-cream/60 hover:text-cream"
         )}
       >
         {icon}
         {label}
         {track && (
-          <span className="max-w-28 truncate font-normal text-forest/80">
+          <span className="max-w-28 truncate font-normal text-emerald-300/80">
             {clip?.name ?? "missing clip"}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute bottom-full left-0 z-30 mb-2 w-72 rounded-lg border border-border bg-white p-3 shadow-xl">
+        <div className="absolute bottom-full left-0 z-30 mb-2 w-72 rounded-lg border border-white/10 bg-[#26241F] p-3 shadow-2xl">
           <p className={fieldLabel}>{label} track</p>
           {audioMedia.length === 0 ? (
             <p className="mt-1 text-xs text-warm-gray">
@@ -1121,7 +1125,7 @@ function TrackChip({
                       className={cn(numInput, "w-full")}
                     />
                   </label>
-                  <label className="col-span-2 flex items-center gap-2 text-[11px] text-ink/70">
+                  <label className="col-span-2 flex items-center gap-2 text-[11px] text-cream/70">
                     <input
                       type="checkbox"
                       checked={track.loop}
@@ -1139,7 +1143,7 @@ function TrackChip({
           <div className="mt-2 flex justify-end">
             <button
               onClick={() => setOpen(false)}
-              className="rounded-md border border-border px-2.5 py-1 text-[11px] text-ink hover:bg-cream-dark"
+              className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] text-cream hover:bg-white/10"
             >
               Done
             </button>
@@ -1177,7 +1181,7 @@ function TrimPanel({
               `Trimmed to the Analyst's best moment (${bestMoment.atSec}s)`
             );
           }}
-          className="rounded-md border border-forest/40 bg-forest/5 px-2.5 py-1.5 text-[11px] font-semibold text-forest transition-colors hover:bg-forest/10"
+          className="rounded-md border border-emerald-400/30 bg-emerald-400/5 px-2.5 py-1.5 text-[11px] font-semibold text-emerald-300 transition-colors hover:bg-emerald-400/10"
           title={bestMoment.why}
         >
           Smart trim
@@ -1388,8 +1392,8 @@ function LookPanel({
             className={cn(
               "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
               presetIdx === i
-                ? "border-rust bg-rust/10 text-rust"
-                : "border-border bg-white text-ink/70 hover:text-ink"
+                ? "border-rust bg-rust/15 text-rust-light"
+                : "border-white/10 text-cream/60 hover:text-cream"
             )}
           >
             {p.name}
@@ -1509,7 +1513,7 @@ function FramePanel({
       </div>
       <button
         onClick={() => update({ transform: null })}
-        className="rounded-md border border-border px-2.5 py-1 text-[11px] text-ink hover:bg-cream-dark"
+        className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] text-cream hover:bg-white/10"
       >
         Reset frame
       </button>
@@ -1630,7 +1634,7 @@ function TextPanel({
               ],
             })
           }
-          className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+          className="text-[11px] font-semibold text-rust-light hover:text-rust"
         >
           + Add text
         </button>
@@ -1642,7 +1646,7 @@ function TextPanel({
           {overlays.map((o, i) => (
             <li
               key={i}
-              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-border/70 bg-white px-3 py-2"
+              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-white/10 bg-[#211F1C] px-3 py-2"
             >
               <select
                 value={o.kind}
@@ -1662,7 +1666,7 @@ function TextPanel({
                 value={o.text}
                 placeholder="Overlay text"
                 onChange={(e) => setOverlay(i, { text: e.target.value })}
-                className="min-w-40 flex-1 rounded-md border border-border bg-white px-2 py-1 text-xs"
+                className="min-w-40 flex-1 rounded-md border border-white/10 bg-[#141312] px-2 py-1 text-xs text-cream placeholder:text-warm-gray"
               />
               <div>
                 <label className={fieldLabel}>Start</label>
@@ -1777,7 +1781,7 @@ function TextPanel({
                 onClick={() =>
                   update({ overlays: overlays.filter((_, oi) => oi !== i) })
                 }
-                className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                className="rounded-md p-1 text-warm-gray hover:bg-red-500/10 hover:text-red-400"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
@@ -1834,7 +1838,7 @@ function StickerPanel({
               ],
             });
           }}
-          className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+          className="text-[11px] font-semibold text-rust-light hover:text-rust"
         >
           + Add sticker
         </button>
@@ -1849,7 +1853,7 @@ function StickerPanel({
           {stickers.map((st) => (
             <li
               key={st.id}
-              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-border/70 bg-white px-3 py-2"
+              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-white/10 bg-[#211F1C] px-3 py-2"
             >
               <select
                 value={st.assetId}
@@ -1920,7 +1924,7 @@ function StickerPanel({
                     stickers: stickers.filter((s) => s.id !== st.id),
                   })
                 }
-                className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                className="rounded-md p-1 text-warm-gray hover:bg-red-500/10 hover:text-red-400"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
