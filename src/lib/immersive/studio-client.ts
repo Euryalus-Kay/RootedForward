@@ -189,6 +189,26 @@ export async function uploadTourMedia(
   return { publicUrl: data.publicUrl, path: data.path };
 }
 
+/**
+ * Make one media item durable. Session-only object URLs get uploaded
+ * to the tour-media bucket and swapped for the public URL; items that
+ * already point at a real URL are just marked persisted. Throws when
+ * the upload fails so callers can count and report.
+ */
+export async function persistMediaItem(
+  item: StudioMediaItem
+): Promise<StudioMediaItem> {
+  if (item.persisted) return item;
+  if (!item.url.startsWith("blob:")) return { ...item, persisted: true };
+  const blob = await fetch(item.url).then((r) => r.blob());
+  const safeName = item.name.replace(/[^\w.\-]+/g, "_");
+  const { publicUrl, path } = await uploadTourMedia(
+    blob,
+    `studio/${Date.now()}-${safeName}`
+  );
+  return { ...item, url: publicUrl, storagePath: path, persisted: true };
+}
+
 /* --------------------------- agent calls ------------------------- */
 
 export class AgentError extends Error {

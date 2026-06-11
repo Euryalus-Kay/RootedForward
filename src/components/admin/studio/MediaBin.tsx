@@ -6,9 +6,9 @@ import { DEMO_MEDIA } from "@/lib/immersive/demo";
 import {
   looks360,
   makeThumb,
+  persistMediaItem,
   probeMedia,
   uid,
-  uploadTourMedia,
 } from "@/lib/immersive/studio-client";
 import type { StudioMediaItem } from "@/lib/immersive/types";
 import {
@@ -161,26 +161,42 @@ export default function MediaBin({
   const saveToLibrary = async (item: StudioMediaItem) => {
     setUploadingId(item.id);
     try {
-      const blob = await fetch(item.url).then((r) => r.blob());
-      const safeName = item.name.replace(/[^\w.\-]+/g, "_");
-      const path = `studio/${Date.now()}-${safeName}`;
-      const { publicUrl, path: storedPath } = await uploadTourMedia(
-        blob,
-        path
-      );
-      onChange(
-        media.map((m) =>
-          m.id === item.id
-            ? { ...m, url: publicUrl, storagePath: storedPath, persisted: true }
-            : m
-        )
-      );
+      const durable = await persistMediaItem(item);
+      onChange(media.map((m) => (m.id === item.id ? durable : m)));
       toast.success("Saved to the media library");
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       toast.error(`Upload failed. ${msg}`);
     } finally {
       setUploadingId(null);
+    }
+  };
+
+  const [savingAll, setSavingAll] = useState(false);
+
+  const saveAll = async () => {
+    setSavingAll(true);
+    // Track the array locally; the media prop is stale inside the loop.
+    let current = [...media];
+    let failed = 0;
+    for (const item of media.filter((m) => !m.persisted)) {
+      setUploadingId(item.id);
+      try {
+        const durable = await persistMediaItem(item);
+        current = current.map((m) => (m.id === item.id ? durable : m));
+        onChange(current);
+      } catch {
+        failed++;
+      }
+    }
+    setUploadingId(null);
+    setSavingAll(false);
+    if (failed > 0) {
+      toast.error(
+        `${failed} upload${failed === 1 ? "" : "s"} failed. Those clips stay session-only.`
+      );
+    } else {
+      toast.success("Every clip is in the library now");
     }
   };
 
@@ -209,6 +225,21 @@ export default function MediaBin({
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {media.some((m) => !m.persisted) && (
+            <button
+              onClick={saveAll}
+              disabled={savingAll}
+              className="flex items-center gap-1.5 rounded-md border border-forest/40 bg-forest/5 px-3 py-1.5 text-xs font-medium text-forest transition-colors hover:bg-forest/10 disabled:opacity-50"
+              title="Upload every session-only clip to the media library"
+            >
+              {savingAll ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Upload className="h-3.5 w-3.5" />
+              )}
+              Save all
+            </button>
+          )}
           <button
             onClick={addDemoMedia}
             className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"

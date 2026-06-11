@@ -32,8 +32,10 @@ import {
   callAgent,
   extractFrames,
   makeThumb,
+  persistMediaItem,
   uid,
 } from "@/lib/immersive/studio-client";
+import { ORCHESTRATION_PRESETS } from "@/lib/immersive/types";
 import type {
   AgentTraceEntry,
   CritiqueResult,
@@ -42,6 +44,7 @@ import type {
   SequenceAspect,
   SequenceDoc,
   SequenceSegment,
+  StudioAgentAction,
   StudioChatMessage,
   StudioClipAnalysis,
   StudioMediaItem,
@@ -69,8 +72,11 @@ import toast from "react-hot-toast";
 const LEGACY_AUTOSAVE_KEY = "rf-studio-project-v1";
 const INDEX_KEY = "rf-studio-projects-index";
 const ACTIVE_KEY = "rf-studio-active-project";
+const ORCH_KEY = "rf-studio-orchestration";
 const projKey = (id: string) => `rf-studio-project:${id}`;
 const HISTORY_CAP = 60;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 interface ProjectSnapshot {
   id: string;
@@ -144,7 +150,11 @@ export default function StudioPage() {
     keyConfigured: boolean;
   } | null>(null);
   const [sessionKey, setSessionKey] = useState("");
+  const [orchKey, setOrchKey] = useState(ORCHESTRATION_PRESETS[0].key);
   const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [saveIssue, setSaveIssue] = useState(false);
+  const [cloudSavedAt, setCloudSavedAt] = useState<string | null>(null);
   const [attachOpen, setAttachOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(false);
@@ -252,11 +262,37 @@ export default function StudioPage() {
       if (raw) {
         loadSnapshot(JSON.parse(raw) as ProjectSnapshot);
       }
+
+      const storedOrch = localStorage.getItem(ORCH_KEY);
+      if (
+        storedOrch &&
+        ORCHESTRATION_PRESETS.some((p) => p.key === storedOrch)
+      ) {
+        setOrchKey(storedOrch);
+      }
     } catch {
       // Ignore a corrupt autosave
     }
     hydrated.current = true;
   }, [loadSnapshot]);
+
+  useEffect(() => {
+    if (!hydrated.current) return;
+    try {
+      localStorage.setItem(ORCH_KEY, orchKey);
+    } catch {
+      // best effort
+    }
+  }, [orchKey]);
+
+  const modelFor = useCallback(
+    (action: StudioAgentAction) =>
+      (
+        ORCHESTRATION_PRESETS.find((p) => p.key === orchKey) ??
+        ORCHESTRATION_PRESETS[0]
+      ).models[action],
+    [orchKey]
+  );
 
   useEffect(() => {
     if (!hydrated.current) return;
@@ -268,16 +304,34 @@ export default function StudioPage() {
       sequence,
       chat,
     };
-    try {
-      localStorage.setItem(projKey(projectId), JSON.stringify(snap));
+    const writeMeta = () => {
       localStorage.setItem(ACTIVE_KEY, projectId);
       const idx = readIndex().filter((e) => e.id !== projectId);
       writeIndex([
         { id: projectId, name: projectName, updatedAt: new Date().toISOString() },
         ...idx,
       ]);
+    };
+    try {
+      localStorage.setItem(projKey(projectId), JSON.stringify(snap));
+      writeMeta();
+      setSavedAt(new Date().toLocaleTimeString());
+      setSaveIssue(false);
     } catch {
-      // Storage full; autosave is best-effort
+      // Storage is full. Thumbnails are the heavy part of a snapshot;
+      // retry without them so the cut itself still survives.
+      try {
+        const lite: ProjectSnapshot = {
+          ...snap,
+          media: media.map((m) => ({ ...m, thumb: undefined })),
+        };
+        localStorage.setItem(projKey(projectId), JSON.stringify(lite));
+        writeMeta();
+        setSavedAt(new Date().toLocaleTimeString());
+        setSaveIssue(false);
+      } catch {
+        setSaveIssue(true);
+      }
     }
   }, [projectId, projectName, brief, media, sequence, chat]);
 
@@ -304,34 +358,80 @@ export default function StudioPage() {
 
   const saveToSupabase = async () => {
     setSaving(true);
+    const note = toast.loading("Saving the project...");
     try {
+      // Make every clip durable first, so the cloud copy actually
+      // plays when it is opened in another browser. Failures are
+      // counted, not fatal; those clips stay session-only.
+      let mediaNow = media;
+      let failedUploads = 0;
+      for (const item of mediaNow.filter((m) => !m.persisted)) {
+        toast.loading(`Uploading ${item.name} to the library...`, {
+          id: note,
+        });
+        try {
+          const durable = await persistMediaItem(item);
+          mediaNow = mediaNow.map((m) => (m.id === item.id ? durable : m));
+          setMedia(mediaNow);
+        } catch {
+          failedUploads++;
+        }
+      }
+
+      toast.loading("Writing the project record...", { id: note });
       const supabase = createClient();
       const payload = {
         name: projectName,
         brief,
-        media: media.filter((m) => m.persisted) as unknown,
+        media: mediaNow.filter((m) => m.persisted) as unknown,
         sequence: sequence as unknown,
         chat: chat as unknown,
       };
-      const { data: updated, error: updateError } = await supabase
-        .from("studio_projects")
-        .update(payload)
-        .eq("id", projectId)
-        .select("id");
-      if (updateError) throw updateError;
-      if (!updated || updated.length === 0) {
+      // Locally minted ids are not uuids; only a project that has been
+      // to Supabase before can be updated in place.
+      let needsInsert = true;
+      if (UUID_RE.test(projectId)) {
+        const { data: updated, error: updateError } = await supabase
+          .from("studio_projects")
+          .update(payload)
+          .eq("id", projectId)
+          .select("id");
+        if (updateError) throw updateError;
+        needsInsert = !updated || updated.length === 0;
+      }
+      if (needsInsert) {
         const { data: inserted, error: insertError } = await supabase
           .from("studio_projects")
           .insert(payload)
           .select("id")
           .single();
         if (insertError) throw insertError;
-        if (inserted) setProjectId(inserted.id as string);
+        if (inserted) {
+          // Move the local autosave under the id Supabase assigned so
+          // the browser copy and the cloud copy stay one project.
+          const newId = inserted.id as string;
+          try {
+            localStorage.removeItem(projKey(projectId));
+            writeIndex(readIndex().filter((e) => e.id !== projectId));
+          } catch {
+            // best effort
+          }
+          setProjectId(newId);
+        }
       }
-      toast.success("Project saved");
+      setCloudSavedAt(new Date().toLocaleTimeString());
+      if (failedUploads > 0) {
+        toast.error(
+          `Project saved, but ${failedUploads} clip upload${failedUploads === 1 ? "" : "s"} failed. Those clips stay session-only.`,
+          { id: note }
+        );
+      } else {
+        toast.success("Project and media saved to the cloud", { id: note });
+      }
     } catch {
       toast.error(
-        "Could not save to Supabase. Run migration 006 and sign in as an admin. The local autosave still has your work."
+        "Could not save to Supabase. Run migration 006 and sign in as an admin. The local autosave still has your work.",
+        { id: note }
       );
     } finally {
       setSaving(false);
@@ -473,6 +573,7 @@ export default function StudioPage() {
         const { result, trace } = await callAgent<StudioClipAnalysis>(
           {
             action: "analyze",
+            model: modelFor("analyze"),
             clipName: item.name,
             durationSec: item.durationSec ?? 0,
             width: item.width ?? 0,
@@ -492,7 +593,7 @@ export default function StudioPage() {
       setAnalyzingId(null);
       return out;
     },
-    [key]
+    [key, modelFor]
   );
 
   const clipsPayload = (items: StudioMediaItem[]) =>
@@ -523,7 +624,12 @@ export default function StudioPage() {
         detail: "The Director is building the cut",
       }));
       const directed = await callAgent<SequenceDoc>(
-        { action: "direct", brief, clips: clipsPayload(analyzed) },
+        {
+          action: "direct",
+          model: modelFor("direct"),
+          brief,
+          clips: clipsPayload(analyzed),
+        },
         key
       );
       setTraces((t) => [...t, directed.trace as AgentTraceEntry]);
@@ -538,6 +644,7 @@ export default function StudioPage() {
       const critiqued = await callAgent<CritiqueResult>(
         {
           action: "critique",
+          model: modelFor("critique"),
           brief,
           sequence: docNext,
           clips: clipsPayload(analyzed),
@@ -596,10 +703,11 @@ export default function StudioPage() {
       const { result, trace } = await callAgent<{
         reply: string;
         changelog: string[];
-        sequence: SequenceDoc;
+        sequence: SequenceDoc | null;
       }>(
         {
           action: "revise",
+          model: modelFor("revise"),
           instruction,
           brief,
           sequence,
@@ -612,13 +720,26 @@ export default function StudioPage() {
         key
       );
       setTraces((t) => [...t, trace as AgentTraceEntry]);
-      // The agent schema does not carry subtitles or the voiceover track;
-      // keep whatever the editor already has.
-      applySequence({
-        ...result.sequence,
-        subtitles: sequence.subtitles,
-        voiceover: sequence.voiceover,
-      });
+      // A null sequence means the Director answered a question and
+      // left the cut alone.
+      if (result.sequence) {
+        const next = result.sequence;
+        // A revision that was not about subtitles or narration must
+        // not lose them, even if the model dropped them.
+        const keepSubs =
+          (next.subtitles?.length ?? 0) === 0 &&
+          (sequence.subtitles?.length ?? 0) > 0 &&
+          !/subtitle|caption|cue/i.test(instruction);
+        const keepVo =
+          !next.voiceover &&
+          Boolean(sequence.voiceover) &&
+          !/voiceover|narration|voice/i.test(instruction);
+        applySequence({
+          ...next,
+          subtitles: keepSubs ? sequence.subtitles : next.subtitles,
+          voiceover: keepVo ? sequence.voiceover : next.voiceover,
+        });
+      }
       setChat((c) => [
         ...c,
         {
@@ -661,6 +782,7 @@ export default function StudioPage() {
       }>(
         {
           action: "revise-segment",
+          model: modelFor("revise-segment"),
           instruction,
           brief,
           segmentId,
@@ -719,6 +841,7 @@ export default function StudioPage() {
           callAgent<SequenceDoc>(
             {
               action: "direct",
+              model: modelFor("direct"),
               brief,
               styleHint: v.hint,
               clips: clipsPayload(analyzed),
@@ -760,6 +883,7 @@ export default function StudioPage() {
       const { result, trace } = await callAgent<ScriptResult>(
         {
           action: "script",
+          model: modelFor("script"),
           brief,
           sequence,
           clips: clipsPayload(media),
@@ -782,6 +906,61 @@ export default function StudioPage() {
       setPipeline((p) => ({
         ...p,
         director: "error",
+        detail: "",
+        error: message,
+      }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handlePolish = async () => {
+    if (!sequence) return;
+    setBusy(true);
+    setPipeline((p) => ({
+      ...p,
+      critic: "running",
+      detail: "The Critic is reviewing the current cut",
+      error: null,
+    }));
+    try {
+      const { result, trace } = await callAgent<CritiqueResult>(
+        {
+          action: "critique",
+          model: modelFor("critique"),
+          brief,
+          sequence,
+          clips: clipsPayload(media),
+        },
+        key
+      );
+      setTraces((t) => [...t, trace as AgentTraceEntry]);
+      if (result.verdict === "revise" && result.revisedSequence) {
+        applySequence(result.revisedSequence);
+        setChat((c) => [
+          ...c,
+          {
+            role: "assistant",
+            text: `Polish pass applied. ${result.issues.slice(0, 4).join(" ")} ${result.pacingNotes}`,
+            at: new Date().toISOString(),
+          },
+        ]);
+      } else {
+        setChat((c) => [
+          ...c,
+          {
+            role: "assistant",
+            text: `The Critic approved the cut as it stands. ${result.pacingNotes}`,
+            at: new Date().toISOString(),
+          },
+        ]);
+      }
+      setPipeline((p) => ({ ...p, critic: "done", detail: "" }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setPipeline((p) => ({
+        ...p,
+        critic: "error",
         detail: "",
         error: message,
       }));
@@ -886,6 +1065,19 @@ export default function StudioPage() {
             AI-assisted 2D/360 hybrid editing. Plays live on the site, and
             exports real video.
           </p>
+          <p className="mt-0.5 text-[11px] text-warm-gray">
+            {saveIssue ? (
+              <span className="font-medium text-amber-700">
+                Autosave could not write (browser storage is full). Use Save
+                to cloud to keep this project.
+              </span>
+            ) : savedAt ? (
+              <>Autosaved in this browser {savedAt}</>
+            ) : (
+              <>Autosave is on</>
+            )}
+            {cloudSavedAt ? <> &middot; cloud copy {cloudSavedAt}</> : null}
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button
@@ -935,7 +1127,7 @@ export default function StudioPage() {
             ) : (
               <Save className="h-3.5 w-3.5" />
             )}
-            Save project
+            Save to cloud
           </button>
         </div>
       </div>
@@ -1064,10 +1256,13 @@ export default function StudioPage() {
             chat={chat}
             busy={busy}
             hasSequence={Boolean(sequence)}
+            orchKey={orchKey}
+            onOrchKey={setOrchKey}
             onGenerate={runPipeline}
             onChat={handleChat}
             onScript={handleScript}
             onVariations={runVariations}
+            onPolish={handlePolish}
           />
         </div>
       </div>

@@ -105,8 +105,9 @@ export default function ExportModal({
                 )
               )}
               s sequence takes about that long). Keep the tab focused while
-              it runs. Output is WebM with sound; 360 segments follow their
-              scripted camera move.
+              it runs. Sound is mixed in, and 360 segments follow their
+              scripted camera move. Pick the format below; MP4 plays
+              everywhere, WebM is the leaner web format.
             </p>
             <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>

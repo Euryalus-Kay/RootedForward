@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { ORCHESTRATION_PRESETS } from "@/lib/immersive/types";
 import type {
   AgentTraceEntry,
+  StudioAgentAction,
   StudioChatMessage,
 } from "@/lib/immersive/types";
 import {
@@ -37,10 +39,18 @@ interface AgentPanelProps {
   chat: StudioChatMessage[];
   busy: boolean;
   hasSequence: boolean;
+  orchKey: string;
+  onOrchKey: (key: string) => void;
   onGenerate: () => void;
   onChat: (instruction: string) => void;
   onScript: () => void;
   onVariations: () => void;
+  onPolish: () => void;
+}
+
+/** "claude-fable-5" renders as "fable-5" in the tight stage rows. */
+function shortModel(model: string): string {
+  return model.replace(/^claude-/, "");
 }
 
 const QUICK_ACTIONS: { label: string; instruction: string }[] = [
@@ -61,10 +71,15 @@ const QUICK_ACTIONS: { label: string; instruction: string }[] = [
   },
 ];
 
-const STAGES: { key: keyof Omit<PipelineState, "detail" | "error">; name: string; blurb: string }[] = [
-  { key: "analyst", name: "Analyst", blurb: "Watches every clip" },
-  { key: "director", name: "Director", blurb: "Builds the cut" },
-  { key: "critic", name: "Critic", blurb: "Checks pacing and continuity" },
+const STAGES: {
+  key: keyof Omit<PipelineState, "detail" | "error">;
+  action: StudioAgentAction;
+  name: string;
+  blurb: string;
+}[] = [
+  { key: "analyst", action: "analyze", name: "Analyst", blurb: "Watches every clip" },
+  { key: "director", action: "direct", name: "Director", blurb: "Builds the cut" },
+  { key: "critic", action: "critique", name: "Critic", blurb: "Checks pacing and continuity" },
 ];
 
 function StageIcon({ state }: { state: StageState }) {
@@ -86,13 +101,19 @@ export default function AgentPanel({
   chat,
   busy,
   hasSequence,
+  orchKey,
+  onOrchKey,
   onGenerate,
   onChat,
   onScript,
   onVariations,
+  onPolish,
 }: AgentPanelProps) {
   const [draft, setDraft] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const orch =
+    ORCHESTRATION_PRESETS.find((p) => p.key === orchKey) ??
+    ORCHESTRATION_PRESETS[0];
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -112,7 +133,28 @@ export default function AgentPanel({
           <Bot className="h-4 w-4 text-rust" />
           Agent pipeline
         </h2>
-        <p className="text-xs text-warm-gray">claude-fable-5, three roles</p>
+        <div className="mt-1 flex items-center gap-2">
+          <label
+            htmlFor="studio-orchestration"
+            className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray"
+          >
+            Models
+          </label>
+          <select
+            id="studio-orchestration"
+            value={orch.key}
+            onChange={(e) => onOrchKey(e.target.value)}
+            disabled={busy}
+            title={orch.blurb}
+            className="min-w-0 flex-1 rounded-md border border-border bg-white px-2 py-1 text-[11px] font-medium text-ink focus:outline-none focus:ring-1 focus:ring-rust disabled:opacity-60"
+          >
+            {ORCHESTRATION_PRESETS.map((p) => (
+              <option key={p.key} value={p.key}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Stage board */}
@@ -122,7 +164,12 @@ export default function AgentPanel({
             <li key={stage.key} className="flex items-center gap-2.5">
               <StageIcon state={pipeline[stage.key]} />
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-ink">{stage.name}</p>
+                <p className="text-xs font-semibold text-ink">
+                  {stage.name}
+                  <span className="ml-1.5 rounded-sm bg-cream-dark px-1 py-px font-mono text-[9px] font-normal text-warm-gray">
+                    {shortModel(orch.models[stage.action])}
+                  </span>
+                </p>
                 <p className="truncate text-[11px] text-warm-gray">
                   {stage.blurb}
                 </p>
@@ -186,6 +233,14 @@ export default function AgentPanel({
             >
               Write narration + subtitles
             </button>
+            <button
+              onClick={onPolish}
+              disabled={busy}
+              className="rounded-full border border-rust/40 bg-rust/5 px-2.5 py-1 text-[10px] font-semibold text-rust transition-colors hover:bg-rust/10 disabled:opacity-50"
+              title="Run the Critic on the current cut and apply its fixes"
+            >
+              Polish pass
+            </button>
           </div>
         )}
       </div>
@@ -195,9 +250,11 @@ export default function AgentPanel({
         <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-5 py-4">
           {chat.length === 0 ? (
             <p className="text-xs leading-relaxed text-warm-gray">
-              After a cut exists, direct revisions here. Try &ldquo;tighten
-              the opening&rdquo;, &ldquo;add a ripple into the 360
-              scene&rdquo;, or &ldquo;retitle it Beneath Bubbly Creek&rdquo;.
+              After a cut exists, direct changes or ask questions here. Try
+              &ldquo;tighten the opening&rdquo;, &ldquo;add a ripple into
+              the 360 scene&rdquo;, or &ldquo;why did you order it this
+              way?&rdquo;. The Director sees the whole timeline, subtitles
+              and audio included.
             </p>
           ) : (
             chat.map((msg, i) => (
@@ -230,7 +287,7 @@ export default function AgentPanel({
               rows={2}
               placeholder={
                 hasSequence
-                  ? "Tell the Director what to change..."
+                  ? "Direct a change or ask a question..."
                   : "Generate a cut first, then direct changes here"
               }
               disabled={!hasSequence || busy}

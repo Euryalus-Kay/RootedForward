@@ -304,8 +304,85 @@ export interface AgentTraceEntry {
 /*  Agent API payloads (POST /api/studio/agent)                        */
 /* ------------------------------------------------------------------ */
 
+export type StudioAgentAction =
+  | "analyze"
+  | "direct"
+  | "critique"
+  | "revise"
+  | "revise-segment"
+  | "script";
+
+/** Models the agent endpoint will accept for a role. */
+export const STUDIO_MODELS = [
+  "claude-fable-5",
+  "claude-opus-4-8",
+  "claude-sonnet-4-6",
+] as const;
+
+export type StudioModel = (typeof STUDIO_MODELS)[number];
+
+/** A named per-role model assignment for the agent pipeline. */
+export interface OrchestrationPreset {
+  key: string;
+  label: string;
+  blurb: string;
+  models: Record<StudioAgentAction, StudioModel>;
+}
+
+/**
+ * The default puts Fable 5 on the creative and visual roles (watching
+ * footage, directing, motion, narration) and Opus 4.8 on the surgical
+ * ones (trims, segment edits, review), where rule-checking matters
+ * more than invention. Sonnet 4.6 is the cheap fast lane for drafts.
+ * The first preset is the server-side default.
+ */
+export const ORCHESTRATION_PRESETS: OrchestrationPreset[] = [
+  {
+    key: "blend",
+    label: "Fable directs, Opus cuts",
+    blurb:
+      "Fable 5 watches footage and builds the cut, Opus 4.8 reviews and makes surgical edits",
+    models: {
+      analyze: "claude-fable-5",
+      direct: "claude-fable-5",
+      revise: "claude-fable-5",
+      script: "claude-fable-5",
+      critique: "claude-opus-4-8",
+      "revise-segment": "claude-opus-4-8",
+    },
+  },
+  {
+    key: "fable",
+    label: "All Fable 5",
+    blurb: "Every role on the flagship model",
+    models: {
+      analyze: "claude-fable-5",
+      direct: "claude-fable-5",
+      revise: "claude-fable-5",
+      script: "claude-fable-5",
+      critique: "claude-fable-5",
+      "revise-segment": "claude-fable-5",
+    },
+  },
+  {
+    key: "fast",
+    label: "Fast drafts",
+    blurb: "Sonnet 4.6 everywhere, quicker and cheaper for rough passes",
+    models: {
+      analyze: "claude-sonnet-4-6",
+      direct: "claude-sonnet-4-6",
+      revise: "claude-sonnet-4-6",
+      script: "claude-sonnet-4-6",
+      critique: "claude-sonnet-4-6",
+      "revise-segment": "claude-sonnet-4-6",
+    },
+  },
+];
+
 export interface AnalyzeRequest {
   action: "analyze";
+  /** Model override for this call; the server validates and falls back */
+  model?: StudioModel;
   clipName: string;
   durationSec: number;
   width: number;
@@ -316,6 +393,7 @@ export interface AnalyzeRequest {
 
 export interface DirectRequest {
   action: "direct";
+  model?: StudioModel;
   brief: string;
   /** Optional creative direction for this attempt, used for variations */
   styleHint?: string;
@@ -328,6 +406,7 @@ export interface DirectRequest {
 
 export interface CritiqueRequest {
   action: "critique";
+  model?: StudioModel;
   brief: string;
   sequence: SequenceDoc;
   clips: DirectRequest["clips"];
@@ -335,6 +414,7 @@ export interface CritiqueRequest {
 
 export interface ReviseRequest {
   action: "revise";
+  model?: StudioModel;
   instruction: string;
   brief: string;
   sequence: SequenceDoc;
@@ -345,6 +425,7 @@ export interface ReviseRequest {
 
 export interface ReviseSegmentRequest {
   action: "revise-segment";
+  model?: StudioModel;
   instruction: string;
   brief: string;
   segmentId: string;
@@ -354,6 +435,7 @@ export interface ReviseSegmentRequest {
 
 export interface ScriptRequest {
   action: "script";
+  model?: StudioModel;
   brief: string;
   sequence: SequenceDoc;
   clips: DirectRequest["clips"];
