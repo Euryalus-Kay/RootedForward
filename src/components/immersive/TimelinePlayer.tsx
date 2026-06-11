@@ -28,6 +28,7 @@ import {
   mediaTimeAt,
   MUSIC_DUCK,
   segmentSpeed,
+  SYNC_TOLERANCE,
   trackGainAt,
   type TimedSegment,
 } from "@/lib/immersive/timeline";
@@ -55,6 +56,8 @@ export interface PlayerControls {
   toggle: () => void;
   getTime: () => number;
   isPlaying: () => boolean;
+  setMuted: (muted: boolean) => void;
+  isMuted: () => boolean;
 }
 
 const OVERLAY_COLORS: Record<string, string> = {
@@ -96,6 +99,20 @@ interface TimelinePlayerProps {
   controlsRef?: React.MutableRefObject<PlayerControls | null>;
   /** Hide the built-in control bar (editor renders its own transport) */
   minimalChrome?: boolean;
+  /**
+   * Start with sound on. Public embeds keep the muted default so
+   * autoplay stays polite; the studio passes false.
+   */
+  defaultMuted?: boolean;
+  onMutedChange?: (muted: boolean) => void;
+  /** Studio edit mode: text overlays become draggable on the stage */
+  editable?: boolean;
+  onOverlayMove?: (
+    segmentId: string,
+    overlayIndex: number,
+    xPct: number,
+    yPct: number
+  ) => void;
 }
 
 export default function TimelinePlayer({
@@ -108,6 +125,10 @@ export default function TimelinePlayer({
   onTimeUpdate,
   controlsRef,
   minimalChrome = false,
+  defaultMuted = true,
+  onMutedChange,
+  editable = false,
+  onOverlayMove,
 }: TimelinePlayerProps) {
   const filterId = useId().replace(/[:]/g, "x");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -119,10 +140,47 @@ export default function TimelinePlayer({
   const timeRef = useRef(0);
   const playingRef = useRef(autoPlay);
   const [playing, setPlaying] = useState(autoPlay);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMutedState] = useState(defaultMuted);
+  const mutedRef = useRef(defaultMuted);
+  const duckRef = useRef(1);
   const [showCC, setShowCC] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [tick, setTick] = useState(0);
+
+  const setMuted = useCallback(
+    (v: boolean | ((m: boolean) => boolean)) => {
+      setMutedState((prev) => {
+        const next = typeof v === "function" ? v(prev) : v;
+        if (next !== prev) {
+          mutedRef.current = next;
+          onMutedChange?.(next);
+        }
+        return next;
+      });
+    },
+    [onMutedChange]
+  );
+
+  /* --------------------- overlay drag (studio) --------------------- */
+
+  const [dragPos, setDragPos] = useState<{
+    segId: string;
+    idx: number;
+    xPct: number;
+    yPct: number;
+  } | null>(null);
+  const overlayDragRef = useRef<{
+    segId: string;
+    idx: number;
+    startX: number;
+    startY: number;
+    px: number;
+    py: number;
+    w: number;
+    h: number;
+    curX: number;
+    curY: number;
+  } | null>(null);
 
   const resolved = useMemo(
     () => ({ ...(doc.assets ?? {}), ...(assets ?? {}) }),
@@ -153,11 +211,13 @@ export default function TimelinePlayer({
       toggle: () => setPlayingBoth(!playingRef.current),
       getTime: () => timeRef.current,
       isPlaying: () => playingRef.current,
+      setMuted: (v: boolean) => setMuted(v),
+      isMuted: () => mutedRef.current,
     };
     return () => {
       controlsRef.current = null;
     };
-  }, [controlsRef, seek, setPlayingBoth]);
+  }, [controlsRef, seek, setPlayingBoth, setMuted]);
 
   /* ----------------------------- clock ----------------------------- */
 
@@ -207,7 +267,7 @@ export default function TimelinePlayer({
       if (!el) continue;
       const local = mediaTimeAt(seg, t - startSec);
       const within = t >= startSec && t <= startSec + lenSec;
-      if (Math.abs(el.currentTime - local) > 0.3) {
+      if (Math.abs(el.currentTime - local) > SYNC_TOLERANCE) {
         try {
           el.currentTime = local;
         } catch {
@@ -246,10 +306,6 @@ export default function TimelinePlayer({
 
   /* --------------------------- audio beds -------------------------- */
 
-  const voGainNow = doc.voiceover
-    ? trackGainAt(doc.voiceover, t, total)
-    : 0;
-
   useEffect(() => {
     const syncBed = (
       el: HTMLAudioElement | null,
@@ -258,12 +314,16 @@ export default function TimelinePlayer({
     ) => {
       if (!el || !track) return;
       const local = t - (track.offsetSec ?? 0);
-      const inWindow = local >= 0 && t < total;
-      el.loop = track.loop;
       const dur = Number.isFinite(el.duration) ? el.duration : 0;
+      // A finished non-loop bed is out of window; without that term
+      // the per-tick play() rewinds the ended element and the track
+      // stutter-restarts forever.
+      const inWindow =
+        local >= 0 && t < total && (track.loop || dur === 0 || local < dur);
+      el.loop = track.loop;
       if (inWindow && dur > 0) {
         const target = track.loop ? local % dur : Math.min(local, dur - 0.05);
-        if (Math.abs(el.currentTime - target) > 0.35) {
+        if (Math.abs(el.currentTime - target) > SYNC_TOLERANCE) {
           try {
             el.currentTime = target;
           } catch {
@@ -271,21 +331,39 @@ export default function TimelinePlayer({
           }
         }
       }
-      el.volume = Math.max(0, Math.min(1, muted ? 0 : gain));
-      if (playing && inWindow && el.paused) {
+      const vol = Math.max(0, Math.min(1, muted ? 0 : gain));
+      // Mirror mute onto the element so autoplay policy treats the
+      // bed as a muted element instead of a silenced unmuted one.
+      el.muted = muted || vol <= 0.001;
+      el.volume = vol;
+      if (playing && inWindow && !el.ended && el.paused) {
         el.play().catch(() => undefined);
       } else if ((!playing || !inWindow) && !el.paused) {
         el.pause();
       }
     };
 
-    const duck = voGainNow > 0.02 ? MUSIC_DUCK : 1;
+    const voEl = voRef.current;
+    const musEl = musicRef.current;
+    const voDur =
+      voEl && Number.isFinite(voEl.duration) ? voEl.duration : undefined;
+    const musDur =
+      musEl && Number.isFinite(musEl.duration) ? musEl.duration : undefined;
+    const voGain = doc.voiceover
+      ? trackGainAt(doc.voiceover, t, total, voDur)
+      : 0;
+    // Duck only while narration is actually audible, and ramp the
+    // duck over ~250ms so it never pops.
+    const voActive = Boolean(voEl && !voEl.ended && voGain > 0.02);
+    duckRef.current += ((voActive ? MUSIC_DUCK : 1) - duckRef.current) * 0.22;
     syncBed(
-      musicRef.current,
+      musEl,
       doc.music ?? null,
-      doc.music ? trackGainAt(doc.music, t, total) * duck : 0
+      doc.music
+        ? trackGainAt(doc.music, t, total, musDur) * duckRef.current
+        : 0
     );
-    syncBed(voRef.current, doc.voiceover ?? null, voGainNow);
+    syncBed(voEl, doc.voiceover ?? null, voGain);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tick, playing, muted]);
 
@@ -332,6 +410,81 @@ export default function TimelinePlayer({
     seek(0);
     setPlayingBoth(true);
   }, [seek, setPlayingBoth]);
+
+  /* --------------------- overlay drag handlers --------------------- */
+
+  const startOverlayDrag = (
+    e: React.PointerEvent,
+    segId: string,
+    idx: number,
+    o: SequenceOverlay
+  ) => {
+    if (!editable) return;
+    e.stopPropagation();
+    e.preventDefault();
+    // Pause so the overlay cannot unmount mid-drag when playback
+    // passes its end time.
+    setPlayingBoth(false);
+    const stage = containerRef.current?.getBoundingClientRect();
+    if (!stage || stage.width === 0) return;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    let startX: number;
+    let startY: number;
+    if (o.xPct != null && o.yPct != null) {
+      startX = o.xPct;
+      startY = o.yPct;
+    } else {
+      // Seed from the element's current center so grabbing a
+      // slot-positioned title never jumps.
+      const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      startX = ((r.left + r.width / 2 - stage.left) / stage.width) * 100;
+      startY = ((r.top + r.height / 2 - stage.top) / stage.height) * 100;
+    }
+    overlayDragRef.current = {
+      segId,
+      idx,
+      startX,
+      startY,
+      px: e.clientX,
+      py: e.clientY,
+      w: stage.width,
+      h: stage.height,
+      curX: startX,
+      curY: startY,
+    };
+    setDragPos({ segId, idx, xPct: startX, yPct: startY });
+  };
+
+  const moveOverlayDrag = (e: React.PointerEvent) => {
+    const d = overlayDragRef.current;
+    if (!d) return;
+    e.stopPropagation();
+    const clamp = (v: number) => Math.min(98, Math.max(2, v));
+    d.curX = clamp(d.startX + ((e.clientX - d.px) / d.w) * 100);
+    d.curY = clamp(d.startY + ((e.clientY - d.py) / d.h) * 100);
+    setDragPos({ segId: d.segId, idx: d.idx, xPct: d.curX, yPct: d.curY });
+  };
+
+  const endOverlayDrag = () => {
+    // Commit from the ref, not state: a drag that begins and ends
+    // inside one frame has not re-rendered yet.
+    const d = overlayDragRef.current;
+    overlayDragRef.current = null;
+    if (d && onOverlayMove) {
+      onOverlayMove(
+        d.segId,
+        d.idx,
+        Math.round(d.curX * 10) / 10,
+        Math.round(d.curY * 10) / 10
+      );
+    }
+    setDragPos(null);
+  };
+
+  const cancelOverlayDrag = () => {
+    overlayDragRef.current = null;
+    setDragPos(null);
+  };
 
   /* --------------------------- per-segment ------------------------- */
 
@@ -686,22 +839,68 @@ export default function TimelinePlayer({
 
               {/* Overlays */}
               {overlaysAt(seg, startSec).map((o, i) => {
+                const overlayIdx = (seg.overlays ?? []).indexOf(o);
                 const pos =
                   o.position ?? (o.kind === "title" ? "center" : "lower");
                 const color = OVERLAY_COLORS[o.style?.color ?? "cream"];
                 const size = o.style?.size ?? "md";
                 const withBg = o.style?.background ?? o.kind !== "title";
+                // Free position: a live drag previews locally, a
+                // stored xPct/yPct pair overrides the slot classes,
+                // and absent coordinates keep today's slot layout.
+                const live =
+                  dragPos &&
+                  dragPos.segId === seg.id &&
+                  dragPos.idx === overlayIdx
+                    ? dragPos
+                    : o.xPct != null && o.yPct != null
+                      ? { xPct: o.xPct, yPct: o.yPct }
+                      : null;
+                const anim = overlayAnimStyle(o, startSec);
+                const wrapperStyle: React.CSSProperties = live
+                  ? {
+                      left: `${live.xPct}%`,
+                      top: `${live.yPct}%`,
+                      opacity: anim.opacity,
+                      transform: `translate(-50%, -50%)${
+                        anim.transform ? ` ${anim.transform}` : ""
+                      }`,
+                      ...(editable ? { zIndex: 40 } : {}),
+                    }
+                  : { ...anim, ...(editable ? { zIndex: 40 } : {}) };
                 return (
                   <div
                     key={`${seg.id}-o${i}`}
                     className={cn(
-                      "pointer-events-none absolute inset-x-0 flex px-8",
-                      pos === "center" &&
-                        "inset-y-0 items-center justify-center",
-                      pos === "lower" && "bottom-14 justify-start",
-                      pos === "upper" && "top-10 justify-center"
+                      "pointer-events-none absolute flex",
+                      live
+                        ? "max-w-[92%]"
+                        : cn(
+                            "inset-x-0 px-8",
+                            pos === "center" &&
+                              "inset-y-0 items-center justify-center",
+                            pos === "lower" && "bottom-14 justify-start",
+                            pos === "upper" && "top-10 justify-center"
+                          )
                     )}
-                    style={overlayAnimStyle(o, startSec)}
+                    style={wrapperStyle}
+                  >
+                  <div
+                    className={cn(
+                      editable &&
+                        "pointer-events-auto cursor-grab select-none rounded-sm outline-1 outline-rust/70 hover:outline active:cursor-grabbing"
+                    )}
+                    style={editable ? { touchAction: "none" } : undefined}
+                    draggable={false}
+                    onPointerDown={
+                      editable
+                        ? (e) => startOverlayDrag(e, seg.id, overlayIdx, o)
+                        : undefined
+                    }
+                    onPointerMove={editable ? moveOverlayDrag : undefined}
+                    onPointerUp={editable ? endOverlayDrag : undefined}
+                    onPointerCancel={editable ? cancelOverlayDrag : undefined}
+                    title={editable ? "Drag to position" : undefined}
                   >
                     {o.kind === "title" ? (
                       <h3
@@ -762,6 +961,7 @@ export default function TimelinePlayer({
                         {o.text}
                       </p>
                     )}
+                  </div>
                   </div>
                 );
               })}

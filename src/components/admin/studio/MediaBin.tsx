@@ -37,6 +37,8 @@ interface MediaBinProps {
   onChange: (media: StudioMediaItem[]) => void;
   onAddToTimeline: (item: StudioMediaItem) => void;
   analyzingId: string | null;
+  /** Clips the current sequence references; deleting them is blocked */
+  usedClipIds: Set<string>;
 }
 
 const railBtn =
@@ -47,6 +49,7 @@ export default function MediaBin({
   onChange,
   onAddToTimeline,
   analyzingId,
+  usedClipIds,
 }: MediaBinProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
@@ -206,6 +209,12 @@ export default function MediaBin({
   };
 
   const remove = (item: StudioMediaItem) => {
+    if (usedClipIds.has(item.id)) {
+      toast.error(
+        `${item.name} is in use on the timeline. Remove it from the cut first.`
+      );
+      return;
+    }
     if (!item.persisted && item.url.startsWith("blob:")) {
       URL.revokeObjectURL(item.url);
     }
@@ -331,7 +340,7 @@ export default function MediaBin({
                       className="h-full w-full object-cover"
                     />
                   ) : item.kind === "audio" ? (
-                    <div className="flex h-full w-full items-center justify-center bg-forest">
+                    <div className="flex h-full w-full items-center justify-center bg-white/10">
                       <AudioLines className="h-4 w-4 text-cream/80" />
                     </div>
                   ) : (
@@ -361,7 +370,7 @@ export default function MediaBin({
                   </p>
                   <div className="mt-1 flex flex-wrap items-center gap-1">
                     {item.kind === "audio" ? (
-                      <span className="rounded-full bg-forest/60 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider text-cream/90">
+                      <span className="rounded-full bg-emerald-400/15 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider text-emerald-300">
                         audio
                       </span>
                     ) : (

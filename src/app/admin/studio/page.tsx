@@ -40,6 +40,7 @@ import { ORCHESTRATION_PRESETS } from "@/lib/immersive/types";
 import type {
   AgentTraceEntry,
   CritiqueResult,
+  OverlaysResult,
   ImmersiveStop,
   ScriptResult,
   SequenceAspect,
@@ -53,6 +54,7 @@ import type {
 import {
   ArrowLeft,
   Clapperboard,
+  FlaskConical,
   Download,
   Film,
   FolderOpen,
@@ -170,6 +172,7 @@ export default function StudioPage() {
   const [projectsOpen, setProjectsOpen] = useState(false);
   const [variations, setVariations] = useState<SequenceDoc[] | null>(null);
   const [loop, setLoop] = useState(false);
+  const [monitorMuted, setMonitorMuted] = useState(false);
   const [playerTime, setPlayerTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const hydrated = useRef(false);
@@ -182,12 +185,21 @@ export default function StudioPage() {
   const futureRef = useRef<SequenceDoc[]>([]);
   const [historyTick, setHistoryTick] = useState(0);
 
+  const lastPushAt = useRef(0);
+
   const applySequence = useCallback(
     (next: SequenceDoc | null) => {
       setSequenceRaw((prev) => {
         if (prev) {
-          pastRef.current = [...pastRef.current.slice(-HISTORY_CAP), prev];
           futureRef.current = [];
+          // Coalesce rapid-fire updates (trim drags, slider moves)
+          // into roughly one undo entry per gesture instead of one
+          // per pointer event.
+          const now = performance.now();
+          if (now - lastPushAt.current > 500) {
+            pastRef.current = [...pastRef.current.slice(-HISTORY_CAP), prev];
+          }
+          lastPushAt.current = now;
         }
         return next;
       });
@@ -924,6 +936,76 @@ export default function StudioPage() {
     }
   };
 
+  const handleOverlayMove = useCallback(
+    (segmentId: string, overlayIndex: number, xPct: number, yPct: number) => {
+      if (!sequence) return;
+      applySequence({
+        ...sequence,
+        segments: sequence.segments.map((s) =>
+          s.id !== segmentId
+            ? s
+            : {
+                ...s,
+                overlays: (s.overlays ?? []).map((o, i) =>
+                  i === overlayIndex ? { ...o, xPct, yPct } : o
+                ),
+              }
+        ),
+      });
+    },
+    [sequence, applySequence]
+  );
+
+  const handleTitles = async () => {
+    if (!sequence) return;
+    setBusy(true);
+    setPipeline((p) => ({
+      ...p,
+      director: "running",
+      detail: "The Director is designing the text layer",
+      error: null,
+    }));
+    try {
+      const { result, trace } = await callAgent<OverlaysResult>(
+        {
+          action: "overlays",
+          model: modelFor("direct"),
+          brief,
+          sequence,
+          clips: clipsPayload(media),
+        },
+        key
+      );
+      setTraces((t) => [...t, trace as AgentTraceEntry]);
+      const byId = new Map(result.items.map((it) => [it.segmentId, it.overlays]));
+      applySequence({
+        ...sequence,
+        segments: sequence.segments.map((s) =>
+          byId.has(s.id) ? { ...s, overlays: byId.get(s.id)! } : s
+        ),
+      });
+      setChat((c) => [
+        ...c,
+        {
+          role: "assistant",
+          text: `Text pass done. ${result.reply}`,
+          at: new Date().toISOString(),
+        },
+      ]);
+      setPipeline((p) => ({ ...p, director: "done", detail: "" }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setPipeline((p) => ({
+        ...p,
+        director: "error",
+        detail: "",
+        error: message,
+      }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const handlePolish = async () => {
     if (!sequence) return;
     setBusy(true);
@@ -982,6 +1064,19 @@ export default function StudioPage() {
   /* ------------------------ export / attach ----------------------- */
 
   const assets = useMemo(() => buildAssets(media), [media]);
+
+  const usedClipIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (sequence) {
+      for (const s of sequence.segments) {
+        ids.add(s.clipId);
+        for (const st of s.stickers ?? []) ids.add(st.assetId);
+      }
+      if (sequence.music) ids.add(sequence.music.clipId);
+      if (sequence.voiceover) ids.add(sequence.voiceover.clipId);
+    }
+    return ids;
+  }, [sequence]);
 
   const addToTimeline = (item: StudioMediaItem) => {
     if (item.kind === "audio") return;
@@ -1081,8 +1176,10 @@ export default function StudioPage() {
     e.preventDefault();
     const startY = e.clientY;
     const orig = dockH;
+    // Never let the dock starve the workspace row of its ~230px floor.
+    const maxH = Math.max(240, window.innerHeight - 280);
     const move = (ev: PointerEvent) =>
-      setDockH(Math.min(560, Math.max(200, orig + (startY - ev.clientY))));
+      setDockH(Math.min(maxH, Math.max(200, orig + (startY - ev.clientY))));
     const up = () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
@@ -1160,12 +1257,21 @@ export default function StudioPage() {
               </button>
             ))}
           </div>
-          <button onClick={() => setProjectsOpen(true)} className={topBtn}>
+          <button
+            onClick={() => setProjectsOpen(true)}
+            className={topBtn}
+            title="Projects"
+          >
             <FolderOpen className="h-3.5 w-3.5" />
-            Projects
+            <span className="hidden xl:inline">Projects</span>
           </button>
-          <button onClick={loadDemoProject} className={topBtn}>
-            Load demo project
+          <button
+            onClick={loadDemoProject}
+            className={topBtn}
+            title="Load demo project"
+          >
+            <FlaskConical className="h-3.5 w-3.5" />
+            <span className="hidden xl:inline">Load demo project</span>
           </button>
           <button
             onClick={exportJson}
@@ -1174,7 +1280,7 @@ export default function StudioPage() {
             title="Download the sequence as JSON"
           >
             <Download className="h-3.5 w-3.5" />
-            JSON
+            <span className="hidden xl:inline">JSON</span>
           </button>
           <button
             onClick={() => setAttachOpen(true)}
@@ -1183,7 +1289,7 @@ export default function StudioPage() {
             title="Attach the sequence to a tour stop"
           >
             <Link2 className="h-3.5 w-3.5" />
-            Attach
+            <span className="hidden xl:inline">Attach</span>
           </button>
           <button
             onClick={() => setExportOpen(true)}
@@ -1191,7 +1297,7 @@ export default function StudioPage() {
             className="flex items-center gap-1.5 rounded-md border border-rust/50 px-2.5 py-1.5 text-xs font-medium text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-40"
           >
             <Film className="h-3.5 w-3.5" />
-            Export video
+            <span className="hidden xl:inline">Export video</span>
           </button>
           <button
             onClick={saveToSupabase}
@@ -1228,18 +1334,19 @@ export default function StudioPage() {
 
       {/* Workspace: media rail, monitor, AI panel */}
       <div className="flex min-h-0 flex-1 max-lg:flex-col max-lg:overflow-y-auto">
-        <aside className="w-[272px] shrink-0 border-r border-white/10 max-lg:h-80 max-lg:w-full max-lg:border-b max-lg:border-r-0">
+        <aside className="w-[272px] shrink-0 overflow-hidden border-r border-white/10 max-lg:h-80 max-lg:w-full max-lg:border-b max-lg:border-r-0">
           <MediaBin
             media={media}
             onChange={setMedia}
             onAddToTimeline={addToTimeline}
             analyzingId={analyzingId}
+            usedClipIds={usedClipIds}
           />
         </aside>
 
         <main
           ref={monitorRef}
-          className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden bg-[#0E0D0C] p-5 max-lg:min-h-[340px]"
+          className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden bg-[#0E0D0C] p-4 max-lg:min-h-[340px]"
         >
           {sequence && sequence.segments.length > 0 ? (
             <div style={{ width: playerW }} className="max-w-full">
@@ -1250,6 +1357,10 @@ export default function StudioPage() {
                 loop={loop}
                 onTimeUpdate={onTimeUpdate}
                 controlsRef={controlsRef}
+                defaultMuted={false}
+                onMutedChange={setMonitorMuted}
+                editable
+                onOverlayMove={handleOverlayMove}
               />
             </div>
           ) : (
@@ -1262,7 +1373,7 @@ export default function StudioPage() {
           )}
         </main>
 
-        <aside className="w-[340px] shrink-0 border-l border-white/10 max-lg:h-[520px] max-lg:w-full max-lg:border-l-0 max-lg:border-t">
+        <aside className="w-[340px] shrink-0 overflow-hidden border-l border-white/10 max-lg:h-[520px] max-lg:w-full max-lg:border-l-0 max-lg:border-t">
           <AgentPanel
             pipeline={pipeline}
             traces={traces}
@@ -1278,6 +1389,7 @@ export default function StudioPage() {
             onScript={handleScript}
             onVariations={runVariations}
             onPolish={handlePolish}
+            onTitles={handleTitles}
           />
         </aside>
       </div>
@@ -1287,11 +1399,12 @@ export default function StudioPage() {
         <>
           <div
             onPointerDown={onDockResize}
-            className="h-1.5 shrink-0 cursor-row-resize bg-white/5 transition-colors hover:bg-rust/50 max-lg:hidden"
-            title="Drag to resize the timeline"
+            onDoubleClick={() => setDockH(330)}
+            className="h-1.5 shrink-0 cursor-row-resize bg-white/10 transition-colors hover:bg-rust/50 max-lg:hidden"
+            title="Drag to resize the timeline. Double-click to reset."
           />
           <div
-            className="shrink-0 border-t border-white/10"
+            className="relative z-10 shrink-0 bg-[#1B1A18]"
             style={{ height: dockH }}
           >
             <TimelineEditor
@@ -1307,6 +1420,10 @@ export default function StudioPage() {
               onRedo={redo}
               loop={loop}
               onToggleLoop={() => setLoop((v) => !v)}
+              muted={monitorMuted}
+              onToggleMute={() =>
+                controlsRef.current?.setMuted(!monitorMuted)
+              }
               onSplit={splitAtPlayhead}
               onSegmentAI={handleSegmentAI}
               aiBusy={busy}

@@ -194,12 +194,6 @@ class PanoRenderer {
 
 /* --------------------------- preloading --------------------------- */
 
-interface LoadedMedia {
-  videos: Map<string, HTMLVideoElement>;
-  images: Map<string, HTMLImageElement>;
-  audios: Map<string, HTMLAudioElement>;
-}
-
 function loadVideo(url: string): Promise<HTMLVideoElement> {
   return new Promise((resolve, reject) => {
     const el = document.createElement("video");
@@ -287,7 +281,14 @@ function drawOverlay(
 
   let x: number;
   let y: number;
-  if (pos === "center") {
+  if (o.xPct != null && o.yPct != null) {
+    // Free position set by dragging on the studio monitor; the DOM
+    // anchors the box center at (xPct%, yPct%), mirror that here.
+    const cl = (v: number) => Math.min(98, Math.max(2, v));
+    x = (cl(o.xPct) / 100) * W;
+    y = (cl(o.yPct) / 100) * H;
+    ctx.textAlign = "center";
+  } else if (pos === "center") {
     x = W / 2;
     y = H / 2;
     ctx.textAlign = "center";
@@ -340,27 +341,40 @@ export async function exportSequence(
 
   onProgress(0, "Loading media");
 
-  /* Preload every referenced asset */
-  const media: LoadedMedia = {
-    videos: new Map(),
-    images: new Map(),
-    audios: new Map(),
-  };
-  const neededClipIds = new Set<string>(timed.map((e) => e.seg.clipId));
-  for (const e of timed)
-    for (const st of e.seg.stickers ?? []) neededClipIds.add(st.assetId);
-  if (doc.music) neededClipIds.add(doc.music.clipId);
-  if (doc.voiceover) neededClipIds.add(doc.voiceover.clipId);
+  /* Preload. Videos get one element PER SEGMENT (a duplicated clip
+     placed near its sibling would otherwise fight over one element's
+     currentTime and gain). Images and beds stay per clip. A bed whose
+     clip is gone is dropped with a degraded mix instead of failing
+     the whole export. */
+  const segVideos = new Map<string, HTMLVideoElement>();
+  const seg360 = new Set<string>();
+  const images = new Map<string, HTMLImageElement>();
+  const audios = new Map<string, HTMLAudioElement>();
 
-  for (const clipId of neededClipIds) {
-    const asset = assets[clipId];
-    if (!asset) throw new Error(`Missing media for clip ${clipId}`);
+  for (const e of timed) {
+    const asset = assets[e.seg.clipId];
+    if (!asset) throw new Error(`Missing media for clip ${e.seg.clipId}`);
+    if (asset.is360) seg360.add(e.seg.id);
     if (asset.kind === "video") {
-      media.videos.set(clipId, await loadVideo(asset.url));
-    } else if (asset.kind === "image") {
-      media.images.set(clipId, await loadImage(asset.url));
-    } else {
-      media.audios.set(clipId, await loadAudio(asset.url));
+      segVideos.set(e.seg.id, await loadVideo(asset.url));
+    } else if (asset.kind === "image" && !images.has(e.seg.clipId)) {
+      images.set(e.seg.clipId, await loadImage(asset.url));
+    }
+  }
+  for (const e of timed) {
+    for (const st of e.seg.stickers ?? []) {
+      const a = assets[st.assetId];
+      if (a?.kind === "image" && !images.has(st.assetId)) {
+        images.set(st.assetId, await loadImage(a.url));
+      }
+    }
+  }
+  const music = doc.music && assets[doc.music.clipId] ? doc.music : null;
+  const voiceover =
+    doc.voiceover && assets[doc.voiceover.clipId] ? doc.voiceover : null;
+  for (const track of [music, voiceover]) {
+    if (track && !audios.has(track.clipId)) {
+      audios.set(track.clipId, await loadAudio(assets[track.clipId].url));
     }
   }
 
@@ -384,8 +398,12 @@ export async function exportSequence(
     src.connect(gain).connect(dest);
     gains.set(key, gain);
   };
-  for (const [clipId, el] of media.videos) wireAudio(`clip:${clipId}`, el);
-  for (const [clipId, el] of media.audios) wireAudio(`bed:${clipId}`, el);
+  // 360 clips are never audible in the live preview (PanoViewer
+  // force-mutes them), so they stay silent in the export too.
+  for (const [segId, el] of segVideos) {
+    if (!seg360.has(segId)) wireAudio(`clip:${segId}`, el);
+  }
+  for (const [clipId, el] of audios) wireAudio(`bed:${clipId}`, el);
 
   /* Recorder */
   const stream = canvas.captureStream(fps);
@@ -465,12 +483,12 @@ export async function exportSequence(
   const cleanup = () => {
     stopped = true;
     cancelAnimationFrame(raf);
-    for (const el of media.videos.values()) {
+    for (const el of segVideos.values()) {
       el.pause();
       el.removeAttribute("src");
       el.load();
     }
-    for (const el of media.audios.values()) {
+    for (const el of audios.values()) {
       el.pause();
       el.removeAttribute("src");
       el.load();
@@ -504,18 +522,21 @@ export async function exportSequence(
 
     const syncBed = (
       track: AudioTrack | null | undefined,
-      key: string,
       t: number,
-      duck: number
+      duck: number,
+      smoothing: number
     ) => {
       if (!track) return 0;
-      const el = media.audios.get(track.clipId);
+      const el = audios.get(track.clipId);
       const gain = gains.get(`bed:${track.clipId}`);
       if (!el || !gain) return 0;
       const local = t - (track.offsetSec ?? 0);
-      const inWindow = local >= 0 && t < total;
-      el.loop = track.loop;
       const dur = Number.isFinite(el.duration) ? el.duration : 0;
+      // Same end-of-file guard as the live player: a finished
+      // non-loop bed must not be restarted by the per-frame play().
+      const inWindow =
+        local >= 0 && t < total && (track.loop || dur === 0 || local < dur);
+      el.loop = track.loop;
       if (inWindow && dur > 0) {
         const target = track.loop ? local % dur : Math.min(local, dur - 0.05);
         if (Math.abs(el.currentTime - target) > 0.35) {
@@ -525,12 +546,12 @@ export async function exportSequence(
             // not seekable
           }
         }
-        if (el.paused) el.play().catch(() => undefined);
+        if (!el.ended && el.paused) el.play().catch(() => undefined);
       } else if (!el.paused) {
         el.pause();
       }
-      const g = trackGainAt(track, t, total) * duck;
-      gain.gain.setTargetAtTime(g, actx.currentTime, 0.05);
+      const g = trackGainAt(track, t, total, dur || undefined) * duck;
+      gain.gain.setTargetAtTime(g, actx.currentTime, smoothing);
       return g;
     };
 
@@ -550,12 +571,17 @@ export async function exportSequence(
       }
       onProgress(Math.min(1, t / total), "Rendering");
 
-      /* Audio beds with ducking */
-      const voGain = doc.voiceover
-        ? trackGainAt(doc.voiceover, t, total)
+      /* Audio beds with ducking gated on real narration activity,
+         smoothed (~0.1s constant) to match the live player's ramp */
+      const voEl = voiceover ? audios.get(voiceover.clipId) : null;
+      const voDur =
+        voEl && Number.isFinite(voEl.duration) ? voEl.duration : undefined;
+      const voGain = voiceover
+        ? trackGainAt(voiceover, t, total, voDur)
         : 0;
-      syncBed(doc.music, "music", t, voGain > 0.02 ? MUSIC_DUCK : 1);
-      syncBed(doc.voiceover, "voiceover", t, 1);
+      const voActive = Boolean(voEl && !voEl.ended && voGain > 0.02);
+      syncBed(music, t, voActive ? MUSIC_DUCK : 1, 0.1);
+      syncBed(voiceover, t, 1, 0.05);
 
       /* Background */
       ctx.globalAlpha = 1;
@@ -568,11 +594,11 @@ export async function exportSequence(
         const { seg, startSec, lenSec } = entry;
         const within = t >= startSec - 1.5 && t <= startSec + lenSec + 0.5;
         const asset = assets[seg.clipId];
-        const vid = media.videos.get(seg.clipId);
+        const vid = segVideos.get(seg.id);
 
         /* Per-clip audio gain + transport */
         if (vid) {
-          const gain = gains.get(`clip:${seg.clipId}`);
+          const gain = gains.get(`clip:${seg.id}`);
           const playingNow = t >= startSec && t <= startSec + lenSec;
           if (within) {
             const target = mediaTimeAt(seg, Math.max(0, t - startSec));
@@ -640,7 +666,7 @@ export async function exportSequence(
 
         if (asset.is360) {
           const sourceEl =
-            vid ?? media.images.get(seg.clipId) ?? null;
+            vid ?? images.get(seg.clipId) ?? null;
           if (sourceEl) {
             const pm = seg.panoMotion;
             const p = Math.min(
@@ -661,7 +687,7 @@ export async function exportSequence(
         } else if (vid) {
           drawCover(vid, vid.videoWidth || 16, vid.videoHeight || 9, entry, t);
         } else {
-          const img = media.images.get(seg.clipId);
+          const img = images.get(seg.clipId);
           if (img) {
             drawCover(
               img,
@@ -679,7 +705,7 @@ export async function exportSequence(
         for (const st of seg.stickers ?? []) {
           const local = t - startSec;
           if (local < st.startSec || local > st.endSec) continue;
-          const stImg = media.images.get(st.assetId);
+          const stImg = images.get(st.assetId);
           if (!stImg) continue;
           const a = Math.min(
             1,

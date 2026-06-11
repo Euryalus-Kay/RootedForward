@@ -32,6 +32,8 @@ import {
   Scissors,
   Trash2,
   Undo2,
+  Volume2,
+  VolumeX,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -110,7 +112,7 @@ const fieldLabel =
 const iconBtn =
   "flex h-8 w-8 items-center justify-center rounded-md text-warm-gray transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-30";
 const ghostBtn =
-  "rounded-md border border-white/10 px-2 py-1 text-[10px] font-semibold text-cream/70 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-40";
+  "flex h-7 items-center rounded-md border border-white/10 px-2 text-[10px] font-semibold text-cream/70 transition-colors hover:bg-white/10 hover:text-cream disabled:opacity-40";
 
 interface TimelineEditorProps {
   doc: SequenceDoc;
@@ -125,13 +127,15 @@ interface TimelineEditorProps {
   onRedo: () => void;
   loop: boolean;
   onToggleLoop: () => void;
+  muted: boolean;
+  onToggleMute: () => void;
   onSplit: () => void;
   onSegmentAI: (segmentId: string, instruction: string) => void;
   aiBusy: boolean;
 }
 
-/** Cached waveform peaks per audio URL */
-const waveformCache = new Map<string, number[]>();
+/** Cached waveform peaks (and decoded duration) per audio URL */
+const waveformCache = new Map<string, { peaks: number[]; durSec: number }>();
 
 function WaveformLane({
   url,
@@ -140,6 +144,8 @@ function WaveformLane({
   totalSec,
   durationSec,
   loop,
+  label = "Music bed",
+  tint = "rgba(245,240,232,0.45)",
 }: {
   url: string;
   offsetSec: number;
@@ -147,14 +153,16 @@ function WaveformLane({
   totalSec: number;
   durationSec: number;
   loop: boolean;
+  label?: string;
+  tint?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      let peaks = waveformCache.get(url);
-      if (!peaks) {
+      let entry = waveformCache.get(url);
+      if (!entry) {
         try {
           const buf = await fetch(url).then((r) => r.arrayBuffer());
           const actx = new AudioContext();
@@ -163,38 +171,43 @@ function WaveformLane({
           const ch = audio.getChannelData(0);
           const buckets = 480;
           const per = Math.max(1, Math.floor(ch.length / buckets));
-          peaks = Array.from({ length: buckets }, (_, i) => {
-            let max = 0;
-            for (let j = i * per; j < (i + 1) * per && j < ch.length; j += 40) {
-              const v = Math.abs(ch[j]);
-              if (v > max) max = v;
-            }
-            return max;
-          });
-          waveformCache.set(url, peaks);
+          entry = {
+            durSec: audio.duration,
+            peaks: Array.from({ length: buckets }, (_, i) => {
+              let max = 0;
+              for (let j = i * per; j < (i + 1) * per && j < ch.length; j += 40) {
+                const v = Math.abs(ch[j]);
+                if (v > max) max = v;
+              }
+              return max;
+            }),
+          };
+          waveformCache.set(url, entry);
         } catch {
-          peaks = [];
+          entry = { peaks: [], durSec: 0 };
         }
       }
       if (cancelled) return;
       const canvas = canvasRef.current;
-      if (!canvas || !peaks || peaks.length === 0) return;
+      const peaks = entry.peaks;
+      const realDur = durationSec > 0 ? durationSec : entry.durSec;
+      if (!canvas || peaks.length === 0) return;
       const w = Math.max(10, Math.round((totalSec - offsetSec) * pxPerSec));
       canvas.width = w;
       canvas.height = 20;
       const c = canvas.getContext("2d");
       if (!c) return;
       c.clearRect(0, 0, w, 20);
-      c.fillStyle = "rgba(245,240,232,0.45)";
+      c.fillStyle = tint;
       const span = loop
         ? totalSec - offsetSec
-        : Math.min(durationSec, totalSec - offsetSec);
+        : Math.min(realDur || totalSec, totalSec - offsetSec);
       const spanPx = span * pxPerSec;
       for (let x = 0; x < spanPx; x += 2) {
-        const tSec = (x / pxPerSec) % Math.max(0.01, durationSec);
+        const tSec = (x / pxPerSec) % Math.max(0.01, realDur || 1);
         const idx = Math.min(
           peaks.length - 1,
-          Math.floor((tSec / Math.max(0.01, durationSec)) * peaks.length)
+          Math.floor((tSec / Math.max(0.01, realDur || 1)) * peaks.length)
         );
         const h = Math.max(1, peaks[idx] * 18);
         c.fillRect(x, 10 - h / 2, 1.4, h);
@@ -203,14 +216,14 @@ function WaveformLane({
     return () => {
       cancelled = true;
     };
-  }, [url, offsetSec, pxPerSec, totalSec, durationSec, loop]);
+  }, [url, offsetSec, pxPerSec, totalSec, durationSec, loop, tint]);
 
   return (
     <canvas
       ref={canvasRef}
       className="h-5"
       style={{ marginLeft: offsetSec * pxPerSec }}
-      title="Music bed"
+      title={label}
     />
   );
 }
@@ -228,6 +241,8 @@ export default function TimelineEditor({
   onRedo,
   loop,
   onToggleLoop,
+  muted,
+  onToggleMute,
   onSplit,
   onSegmentAI,
   aiBusy,
@@ -248,6 +263,8 @@ export default function TimelineEditor({
   const [aiDraft, setAiDraft] = useState("");
   const stripRef = useRef<HTMLDivElement>(null);
   const dragIndexRef = useRef<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const trimRef = useRef<{
     segId: string;
     edge: "in" | "out";
@@ -434,6 +451,17 @@ export default function TimelineEditor({
             </span>
           )}
           <button
+            onClick={onToggleMute}
+            className={cn(iconBtn, muted && "bg-amber-400/15 text-amber-300")}
+            title={muted ? "Unmute the monitor" : "Mute the monitor"}
+          >
+            {muted ? (
+              <VolumeX className="h-4 w-4" />
+            ) : (
+              <Volume2 className="h-4 w-4" />
+            )}
+          </button>
+          <button
             onClick={onToggleLoop}
             className={cn(iconBtn, loop && "bg-rust/15 text-rust-light")}
             title="Loop playback"
@@ -553,7 +581,11 @@ export default function TimelineEditor({
                     activeSel
                       ? "z-10 border-rust bg-rust/20"
                       : "border-white/15 bg-[#26241F] hover:border-rust/60",
-                    seg.mode === "pano360" && "border-dashed"
+                    seg.mode === "pano360" && "border-dashed",
+                    draggingIndex === i && "opacity-40",
+                    dragOverIndex === i &&
+                      draggingIndex !== i &&
+                      "ring-2 ring-rust"
                   )}
                   style={{
                     left: startSec * pxPerSec,
@@ -561,16 +593,50 @@ export default function TimelineEditor({
                   }}
                   draggable
                   onDragStart={(e) => {
+                    if ((e.target as HTMLElement).closest("[data-trim]")) {
+                      e.preventDefault();
+                      return;
+                    }
                     dragIndexRef.current = i;
+                    setDraggingIndex(i);
                     e.dataTransfer.effectAllowed = "move";
+                    e.dataTransfer.setData(
+                      "application/x-rf-segment",
+                      String(i)
+                    );
                   }}
-                  onDragOver={(e) => e.preventDefault()}
+                  onDragEnd={() => {
+                    dragIndexRef.current = null;
+                    setDraggingIndex(null);
+                    setDragOverIndex(null);
+                  }}
+                  onDragOver={(e) => {
+                    // Only react to segment drags, never OS file drops
+                    if (
+                      e.dataTransfer.types.includes("application/x-rf-segment")
+                    ) {
+                      e.preventDefault();
+                      setDragOverIndex(i);
+                    }
+                  }}
+                  onDragLeave={() =>
+                    setDragOverIndex((v) => (v === i ? null : v))
+                  }
                   onDrop={(e) => {
+                    if (
+                      !e.dataTransfer.types.includes(
+                        "application/x-rf-segment"
+                      )
+                    ) {
+                      return;
+                    }
                     e.preventDefault();
                     if (dragIndexRef.current !== null) {
                       reorderSegment(dragIndexRef.current, i);
                       dragIndexRef.current = null;
                     }
+                    setDraggingIndex(null);
+                    setDragOverIndex(null);
                   }}
                   onClick={() => setSelectedId(seg.id)}
                   onDoubleClick={() => controls.current?.seek(startSec + 0.01)}
@@ -629,13 +695,17 @@ export default function TimelineEditor({
 
                   {/* Trim handles */}
                   <div
-                    className="absolute left-0 top-0 h-full w-2 cursor-ew-resize opacity-0 transition-opacity group-hover:opacity-100"
+                    data-trim
+                    draggable={false}
+                    className="absolute left-0 top-0 h-full w-2 cursor-ew-resize touch-none opacity-0 transition-opacity group-hover:opacity-100"
                     style={{ background: "rgba(196,93,62,0.5)" }}
                     onPointerDown={(e) => onTrimPointerDown(e, seg, "in")}
                     title="Drag to trim in"
                   />
                   <div
-                    className="absolute right-0 top-0 h-full w-2 cursor-ew-resize opacity-0 transition-opacity group-hover:opacity-100"
+                    data-trim
+                    draggable={false}
+                    className="absolute right-0 top-0 h-full w-2 cursor-ew-resize touch-none opacity-0 transition-opacity group-hover:opacity-100"
                     style={{ background: "rgba(196,93,62,0.5)" }}
                     onPointerDown={(e) => onTrimPointerDown(e, seg, "out")}
                     title="Drag to trim out"
@@ -645,18 +715,43 @@ export default function TimelineEditor({
             })}
           </div>
 
-          {/* Music waveform */}
+          {/* Audio lanes */}
           {doc.music && mediaById.get(doc.music.clipId) && (
-            <div className="flex h-5 items-center">
+            <div
+              className={cn(
+                "flex h-5 items-center",
+                doc.music.muted && "opacity-30"
+              )}
+            >
               <WaveformLane
                 url={mediaById.get(doc.music.clipId)!.url}
                 offsetSec={doc.music.offsetSec ?? 0}
                 pxPerSec={pxPerSec}
                 totalSec={total}
-                durationSec={
-                  mediaById.get(doc.music.clipId)!.durationSec ?? 10
-                }
+                durationSec={mediaById.get(doc.music.clipId)!.durationSec ?? 0}
                 loop={doc.music.loop}
+                label="Music bed"
+              />
+            </div>
+          )}
+          {doc.voiceover && mediaById.get(doc.voiceover.clipId) && (
+            <div
+              className={cn(
+                "flex h-5 items-center",
+                doc.voiceover.muted && "opacity-30"
+              )}
+            >
+              <WaveformLane
+                url={mediaById.get(doc.voiceover.clipId)!.url}
+                offsetSec={doc.voiceover.offsetSec ?? 0}
+                pxPerSec={pxPerSec}
+                totalSec={total}
+                durationSec={
+                  mediaById.get(doc.voiceover.clipId)!.durationSec ?? 0
+                }
+                loop={doc.voiceover.loop}
+                label="Voiceover"
+                tint="rgba(212,118,92,0.55)"
               />
             </div>
           )}
@@ -818,7 +913,7 @@ export default function TimelineEditor({
                   key={key}
                   onClick={() => setInspectorTab(key)}
                   className={cn(
-                    "rounded-md px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                    "flex h-7 items-center rounded-md px-2.5 text-[11px] font-semibold transition-colors",
                     inspectorTab === key
                       ? "bg-rust text-cream"
                       : "text-cream/50 hover:text-cream"
@@ -1006,10 +1101,21 @@ function TrackChip({
   onSet: (t: AudioTrack | null) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const clip = track ? mediaById.get(track.clipId) : null;
 
+  // Close when clicking anywhere else
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener("pointerdown", onDown);
+    return () => window.removeEventListener("pointerdown", onDown);
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={rootRef}>
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
@@ -1026,10 +1132,15 @@ function TrackChip({
             {clip?.name ?? "missing clip"}
           </span>
         )}
+        {track?.muted && (
+          <span className="rounded-sm bg-amber-400/20 px-1 font-mono text-[9px] text-amber-300">
+            muted
+          </span>
+        )}
       </button>
 
       {open && (
-        <div className="absolute bottom-full left-0 z-30 mb-2 w-72 rounded-lg border border-white/10 bg-[#26241F] p-3 shadow-2xl">
+        <div className="absolute left-0 top-full z-30 mt-2 max-h-[300px] w-72 overflow-y-auto rounded-lg border border-white/10 bg-[#26241F] p-3 shadow-2xl">
           <p className={fieldLabel}>{label} track</p>
           {audioMedia.length === 0 ? (
             <p className="mt-1 text-xs text-warm-gray">
@@ -1067,7 +1178,10 @@ function TrackChip({
               {track && (
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   <label className="text-[10px] text-warm-gray">
-                    Volume
+                    Volume{" "}
+                    <span className="font-mono text-cream/70">
+                      {Math.round(track.volume * 100)}%
+                    </span>
                     <input
                       type="range"
                       min="0"
@@ -1140,7 +1254,33 @@ function TrackChip({
               )}
             </>
           )}
-          <div className="mt-2 flex justify-end">
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              {track && (
+                <>
+                  <button
+                    onClick={() => onSet({ ...track, muted: !track.muted })}
+                    className={cn(
+                      "rounded-md border px-2.5 py-1 text-[11px] transition-colors",
+                      track.muted
+                        ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                        : "border-white/10 text-cream/70 hover:bg-white/10"
+                    )}
+                  >
+                    {track.muted ? "Unmute" : "Mute"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      onSet(null);
+                      setOpen(false);
+                    }}
+                    className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] text-red-300/80 hover:bg-red-500/10 hover:text-red-300"
+                  >
+                    Remove track
+                  </button>
+                </>
+              )}
+            </div>
             <button
               onClick={() => setOpen(false)}
               className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] text-cream hover:bg-white/10"
@@ -1593,8 +1733,9 @@ function AudioPanel({
         />
       </div>
       <p className="text-[11px] leading-snug text-warm-gray">
-        Unmute the player to hear it. Music ducks automatically while a
-        voiceover plays.
+        {seg.mode === "pano360"
+          ? "360 clips play silent in the monitor and the export. Use the music or voiceover track for sound under this segment."
+          : "Music ducks automatically while a voiceover plays."}
       </p>
     </div>
   );
@@ -1701,12 +1842,80 @@ function TextPanel({
                     position: e.target.value as "center" | "lower" | "upper",
                   })
                 }
-                className={selectInput}
+                className={cn(selectInput, o.xPct != null && "opacity-50")}
+                title={
+                  o.xPct != null
+                    ? "Ignored while a custom X/Y position is set"
+                    : "Slot position"
+                }
               >
                 <option value="center">Center</option>
                 <option value="lower">Lower</option>
                 <option value="upper">Upper</option>
               </select>
+              <div>
+                <label className={fieldLabel}>X %</label>
+                <input
+                  type="number"
+                  min={2}
+                  max={98}
+                  step={1}
+                  placeholder="auto"
+                  value={o.xPct ?? ""}
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setOverlay(i, { xPct: undefined, yPct: undefined });
+                      return;
+                    }
+                    const v = Math.min(
+                      98,
+                      Math.max(2, parseFloat(e.target.value) || 50)
+                    );
+                    const pos =
+                      o.position ?? (o.kind === "title" ? "center" : "lower");
+                    const defaultY =
+                      pos === "upper" ? 12 : pos === "lower" ? 84 : 50;
+                    setOverlay(i, { xPct: v, yPct: o.yPct ?? defaultY });
+                  }}
+                  className={cn(numInput, "w-14")}
+                  title="Center of the text, percent of frame width. Drag the text on the monitor to set it visually."
+                />
+              </div>
+              <div>
+                <label className={fieldLabel}>Y %</label>
+                <input
+                  type="number"
+                  min={2}
+                  max={98}
+                  step={1}
+                  placeholder="auto"
+                  value={o.yPct ?? ""}
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setOverlay(i, { xPct: undefined, yPct: undefined });
+                      return;
+                    }
+                    const v = Math.min(
+                      98,
+                      Math.max(2, parseFloat(e.target.value) || 50)
+                    );
+                    setOverlay(i, { yPct: v, xPct: o.xPct ?? 50 });
+                  }}
+                  className={cn(numInput, "w-14")}
+                  title="Center of the text, percent of frame height"
+                />
+              </div>
+              {o.xPct != null && (
+                <button
+                  onClick={() =>
+                    setOverlay(i, { xPct: undefined, yPct: undefined })
+                  }
+                  className="text-[10px] font-semibold text-rust-light hover:text-rust"
+                  title="Back to slot positioning"
+                >
+                  Reset pos
+                </button>
+              )}
               <select
                 value={o.style?.size ?? "md"}
                 onChange={(e) =>

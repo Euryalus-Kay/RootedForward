@@ -49,6 +49,7 @@ interface AgentPanelProps {
   onScript: () => void;
   onVariations: () => void;
   onPolish: () => void;
+  onTitles: () => void;
 }
 
 /** "claude-fable-5" renders as "fable-5" in the tight stage rows. */
@@ -113,6 +114,7 @@ export default function AgentPanel({
   onScript,
   onVariations,
   onPolish,
+  onTitles,
 }: AgentPanelProps) {
   const [draft, setDraft] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -133,7 +135,7 @@ export default function AgentPanel({
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#1B1A18]">
-      <div className="shrink-0 border-b border-white/10 px-4 py-3">
+      <div className="shrink-0 border-b border-white/10 px-3 py-3">
         <h2 className="flex items-center gap-2 font-display text-sm font-semibold text-cream">
           <Bot className="h-4 w-4 text-rust" />
           Agent pipeline
@@ -162,8 +164,11 @@ export default function AgentPanel({
         </div>
       </div>
 
+      {/* Brief + stage board scroll when the panel is squeezed, so
+          every control stays reachable at small viewport heights. */}
+      <div className="min-h-0 shrink overflow-y-auto">
       {/* Brief */}
-      <div className="shrink-0 border-b border-white/10 px-4 py-2.5">
+      <div className="border-b border-white/10 px-3 py-2.5">
         <label
           htmlFor="studio-brief"
           className="text-[10px] font-semibold uppercase tracking-wider text-warm-gray"
@@ -181,7 +186,7 @@ export default function AgentPanel({
       </div>
 
       {/* Stage board */}
-      <div className="shrink-0 border-b border-white/10 px-4 py-3">
+      <div className="border-b border-white/10 px-3 py-3">
         <ol className="space-y-2">
           {STAGES.map((stage) => (
             <li key={stage.key} className="flex items-center gap-2.5">
@@ -257,6 +262,14 @@ export default function AgentPanel({
               Write narration + subtitles
             </button>
             <button
+              onClick={onTitles}
+              disabled={busy}
+              className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold text-cream/60 transition-colors hover:border-rust/60 hover:text-rust-light disabled:opacity-50"
+              title="A text-only AI pass: titles, lower-thirds, placement"
+            >
+              Design titles
+            </button>
+            <button
               onClick={onPolish}
               disabled={busy}
               className="rounded-full border border-rust/40 bg-rust/5 px-2.5 py-1 text-[10px] font-semibold text-rust-light transition-colors hover:bg-rust/10 disabled:opacity-50"
@@ -268,9 +281,11 @@ export default function AgentPanel({
         )}
       </div>
 
+      </div>
+
       {/* Chat */}
-      <div className="flex min-h-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
+      <div className="flex min-h-[150px] flex-1 flex-col">
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3">
           {chat.length === 0 ? (
             <p className="text-xs leading-relaxed text-warm-gray">
               After a cut exists, direct changes or ask questions here. Try

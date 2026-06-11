@@ -255,14 +255,23 @@ export function fadeGain(
   return Math.max(0, Math.min(1, g));
 }
 
-/** Gain for a doc-level track at timeline time t. */
+/**
+ * Gain for a doc-level track at timeline time t. For a non-looping
+ * track, pass the audio file's duration so the fade-out lands at the
+ * audible end of the bed instead of the end of the timeline.
+ */
 export function trackGainAt(
   track: AudioTrack,
   t: number,
-  totalSec: number
+  totalSec: number,
+  clipDurSec?: number
 ): number {
+  if (track.muted) return 0;
   const local = t - (track.offsetSec ?? 0);
-  const window = totalSec - (track.offsetSec ?? 0);
+  let window = totalSec - (track.offsetSec ?? 0);
+  if (!track.loop && clipDurSec && clipDurSec > 0) {
+    window = Math.min(window, clipDurSec);
+  }
   if (local < 0 || window <= 0) return 0;
   return (
     Math.max(0, Math.min(1, track.volume)) *
@@ -272,6 +281,9 @@ export function trackGainAt(
 
 /** How much the music ducks while a voiceover is audible. */
 export const MUSIC_DUCK = 0.25;
+
+/** Max drift before a bed/clip element gets hard-resynced, seconds. */
+export const SYNC_TOLERANCE = 0.18;
 
 /* ------------------------------ aspect --------------------------- */
 

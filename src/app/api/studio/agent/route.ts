@@ -115,6 +115,49 @@ const ANALYSIS_SCHEMA = {
   },
 } as const;
 
+/* Overlay text item. Position is plain xPct/yPct coordinates of the
+   text's center (2..98); the old three-slot position enum was swapped
+   out to pay the compiled-grammar cost of the audio field. */
+const OVERLAY_ITEM_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "kind",
+    "text",
+    "startSec",
+    "endSec",
+    "xPct",
+    "yPct",
+    "style",
+    "anim",
+  ],
+  properties: {
+    kind: { type: "string", enum: ["title", "lower-third", "caption"] },
+    text: { type: "string" },
+    startSec: { type: "number" },
+    endSec: { type: "number" },
+    xPct: { type: "number" },
+    yPct: { type: "number" },
+    style: {
+      type: "object",
+      additionalProperties: false,
+      required: ["size", "color", "background"],
+      properties: {
+        size: { type: "string", enum: ["sm", "md", "lg"] },
+        color: {
+          type: "string",
+          enum: ["cream", "white", "rust", "ink"],
+        },
+        background: { type: "boolean" },
+      },
+    },
+    anim: {
+      type: "string",
+      enum: ["fade", "slide-up", "pop", "none"],
+    },
+  },
+} as const;
+
 const SEGMENT_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -130,7 +173,8 @@ const SEGMENT_SCHEMA = {
     "panoMotion",
     "filter",
     "overlays",
-    "muted",
+    "gain",
+    "audioFade",
   ],
   properties: {
     id: { type: "string" },
@@ -220,47 +264,12 @@ const SEGMENT_SCHEMA = {
         { type: "null" },
       ],
     },
-    overlays: {
-      type: "array",
-      items: {
-        type: "object",
-        additionalProperties: false,
-        required: [
-          "kind",
-          "text",
-          "startSec",
-          "endSec",
-          "position",
-          "style",
-          "anim",
-        ],
-        properties: {
-          kind: { type: "string", enum: ["title", "lower-third", "caption"] },
-          text: { type: "string" },
-          startSec: { type: "number" },
-          endSec: { type: "number" },
-          position: { type: "string", enum: ["center", "lower", "upper"] },
-          style: {
-            type: "object",
-            additionalProperties: false,
-            required: ["size", "color", "background"],
-            properties: {
-              size: { type: "string", enum: ["sm", "md", "lg"] },
-              color: {
-                type: "string",
-                enum: ["cream", "white", "rust", "ink"],
-              },
-              background: { type: "boolean" },
-            },
-          },
-          anim: {
-            type: "string",
-            enum: ["fade", "slide-up", "pop", "none"],
-          },
-        },
-      },
-    },
-    muted: { type: "boolean" },
+    overlays: { type: "array", items: OVERLAY_ITEM_SCHEMA },
+    /* Clip soundtrack as two plain numbers; an object or a nullable
+       union here pushes the compiled grammar over the API size limit.
+       gain 0 = silent. The route expands them to SegmentAudio. */
+    gain: { type: "number" },
+    audioFade: { type: "number" },
   },
 } as const;
 
@@ -294,7 +303,6 @@ const SEQUENCE_SCHEMA = {
     "aspect",
     "music",
     "voiceover",
-    "subtitles",
     "segments",
   ],
   properties: {
@@ -303,19 +311,9 @@ const SEQUENCE_SCHEMA = {
     aspect: { type: "string", enum: ["16:9", "9:16", "1:1"] },
     music: { anyOf: [AUDIO_TRACK_SCHEMA, { type: "null" }] },
     voiceover: { anyOf: [AUDIO_TRACK_SCHEMA, { type: "null" }] },
-    subtitles: {
-      type: "array",
-      items: {
-        type: "object",
-        additionalProperties: false,
-        required: ["startSec", "endSec", "text"],
-        properties: {
-          startSec: { type: "number" },
-          endSec: { type: "number" },
-          text: { type: "string" },
-        },
-      },
-    },
+    /* subtitles are deliberately NOT in this schema; they carry
+       through server-side and the script action writes them. The
+       grammar budget went to overlay coordinates and clip gain. */
     segments: { type: "array", items: SEGMENT_SCHEMA },
   },
 } as const;
@@ -372,6 +370,29 @@ const REVISE_HEAD_SCHEMA = {
   },
 } as const;
 
+/* Patch-shaped text pass: redesigns overlays per segment without
+   regenerating (or risking) the rest of the cut. */
+const OVERLAYS_PATCH_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["reply", "items"],
+  properties: {
+    reply: { type: "string" },
+    items: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["segmentId", "overlays"],
+        properties: {
+          segmentId: { type: "string" },
+          overlays: { type: "array", items: OVERLAY_ITEM_SCHEMA },
+        },
+      },
+    },
+  },
+} as const;
+
 /* ------------------------ system prompts ------------------------- */
 
 const HOUSE_STYLE = `House writing rules for any overlay text you produce:
@@ -389,12 +410,12 @@ const SEQUENCE_GRAMMAR = `You output an edit decision list with this grammar:
 - kenBurns animates 2d segments. Scales stay between 1.0 and 1.18, pan values between -1 and 1. Use slow moves, never both a big zoom and a big pan at once. Set kenBurns null on pano360 segments.
 - panoMotion animates pano360 segments as a slow heading drift in degrees (20 to 140 degrees of total travel reads well, pitchDeg between -20 and 20). Set panoMotion null on 2d segments.
 - filter is an optional color grade per 2d segment (null for none). brightness/contrast/saturate stay between 0.7 and 1.3, hueDeg between -30 and 30, blur normally 0, grayscale and sepia 0 to 1 only for deliberate looks. A cool teal grade reads as underwater (saturate 1.1, hueDeg -12, brightness 0.95). Use grades to unify the cut, not on every segment differently.
-- overlays sit on a segment with startSec/endSec relative to the segment's screen time, inside its duration. "title" for the opening card, "lower-third" for labels, "caption" for guidance. Each overlay carries style {size sm|md|lg, color cream|white|rust|ink, background true|false} and anim "fade"|"slide-up"|"pop"|"none". Titles look best size lg, color cream, background false, anim slide-up. Lower-thirds best size md, background true. Keep text under 60 characters.
+- overlays sit on a segment with startSec/endSec relative to the segment's screen time, inside its duration. "title" for the opening card, "lower-third" for labels, "caption" for guidance. xPct/yPct place the text's center as a percentage of the frame (2 to 98). Canonical placements: a title at 50/45, a lower-third at 18/84, a caption at 50/88; place text away from the action when the clip analysis says where the action is. When revising, carry existing overlay positions through unchanged unless the note is about them. Each overlay carries style {size sm|md|lg, color cream|white|rust|ink, background true|false} and anim "fade"|"slide-up"|"pop"|"none". Titles look best size lg, color cream, background false, anim slide-up. Lower-thirds best size md, background true. Keep text under 60 characters.
+- gain is the clip's own soundtrack level per segment, 0 to 1. Most segments use 0 (silent). Ride natural sound under the music with 0.2 to 0.5. audioFade fades that sound in and out (0.5 to 1 second reads well; use 0 when gain is 0).
 - aspect is "16:9" unless the brief asks for vertical ("9:16") or square ("1:1").
 - music points at an audio clip from the bin when one exists (volume 0.4 to 0.6, fadeInSec 1 to 2, fadeOutSec 2 to 3, loop true, offsetSec 0). Set music null when the bin has no audio.
 - voiceover points at a recorded narration audio clip from the bin (its name usually starts with "voiceover") when the editor asks for one, same fields as music but volume 0.9 to 1 and loop false. Otherwise null. While a voiceover plays, the music ducks automatically.
-- subtitles are timed caption cues over the whole cut, in absolute timeline seconds (startSec/endSec/text). Cues run 2 to 4 seconds, never overlap, text under 70 characters. A brand-new cut starts with an empty subtitles array; the script step writes them later. When revising, carry existing subtitles through unchanged unless the instruction is about them.
-- muted is true unless told otherwise.
+- subtitles are not part of your output. They are written by the narration step and edited by hand, and they carry through every revision automatically.
 - Segment ids are short and unique, like "seg-1".`;
 
 const ANALYST_SYSTEM = `You are the Analyst in a documentary video pipeline for Rooted Forward, a civic history project. You receive frames sampled evenly across one clip plus its metadata. Describe only what is visibly there. Note whether the frames look like an equirectangular 360 source (strong horizontal stretching, a full horizon wrap, pole distortion at top and bottom, or compass and horizon markings). Suggest the strongest in/out trim in seconds within the clip duration and call out the best moments with timestamps. Be concrete and brief. If the footage is a labeled synthetic test pattern, say so plainly in the summary.`;
@@ -416,7 +437,7 @@ ${HOUSE_STYLE}
 
 Write notes as a two or three sentence director's note explaining the shape of the cut.`;
 
-const CRITIC_SYSTEM = `You are the Critic in a hybrid 2D/360 editing studio. You receive a brief, the clip bin with analyses, and a sequence. Check, in order: trims stay inside clip durations, modes match the clips (pano360 only on 360 clips), pacing in screen time after speed (no segment under 2s or over 10s without reason, 360 segments long enough for their drift to read), speed values stay between 0.5 and 2 unless the brief demands more, transition variety (ripple at most twice, first segment cuts in), filters stay subtle and consistent across the cut, overlay timing inside segment bounds with text under 60 characters, music and voiceover point at real audio clips from the bin or are null, subtitle cues never overlap and stay under 70 characters and inside the runtime, house style in overlay and subtitle text, and whether the cut serves the brief. If everything important holds, verdict "approve". If not, verdict "revise" and list each problem in issues, concretely enough that an editor could act on it (name the segment id and the exact change). When asked for the corrected sequence in a follow-up, fix exactly those issues, keep as much of the Director's intent as possible, and carry subtitles, music, and voiceover through unchanged unless they are what failed a check.
+const CRITIC_SYSTEM = `You are the Critic in a hybrid 2D/360 editing studio. You receive a brief, the clip bin with analyses, and a sequence. Check, in order: trims stay inside clip durations, modes match the clips (pano360 only on 360 clips), pacing in screen time after speed (no segment under 2s or over 10s without reason, 360 segments long enough for their drift to read), speed values stay between 0.5 and 2 unless the brief demands more, transition variety (ripple at most twice, first segment cuts in), filters stay subtle and consistent across the cut, overlay timing inside segment bounds with text under 60 characters, music and voiceover point at real audio clips from the bin or are null, subtitle problems (overlaps, length over 70 characters, cues outside the runtime) flagged in issues only since subtitles carry through automatically and are edited elsewhere, house style in overlay text, and whether the cut serves the brief. If everything important holds, verdict "approve". If not, verdict "revise" and list each problem in issues, concretely enough that an editor could act on it (name the segment id and the exact change). When asked for the corrected sequence in a follow-up, fix exactly those issues, keep as much of the Director's intent as possible, and carry subtitles, music, and voiceover through unchanged unless they are what failed a check.
 ${SEQUENCE_GRAMMAR}
 
 ${HOUSE_STYLE}`;
@@ -522,24 +543,96 @@ function clipBin(
   );
 }
 
-function normalizeSequence(raw: unknown): SequenceDoc {
-  const doc = raw as Omit<SequenceDoc, "version" | "subtitles"> & {
-    subtitles?: { id?: string; startSec: number; endSec: number; text: string }[];
+type RawSegment = Record<string, unknown> & {
+  gain?: number;
+  audioFade?: number;
+};
+
+/** Expand the schema's gain/audioFade pair into SegmentAudio + muted. */
+function normalizeSegment(raw: RawSegment): SequenceDoc["segments"][number] {
+  const { gain, audioFade, ...rest } = raw;
+  const g = typeof gain === "number" ? Math.max(0, Math.min(1, gain)) : 0;
+  const fade = typeof audioFade === "number" ? Math.max(0, audioFade) : 0;
+  return {
+    ...(rest as unknown as SequenceDoc["segments"][number]),
+    audio: g > 0.001 ? { volume: g, fadeInSec: fade, fadeOutSec: fade } : null,
+    muted: g <= 0.001,
   };
-  // The schema omits cue ids (they are an implementation detail);
-  // stamp them server-side so the editor can address every cue.
-  const stamp = Date.now().toString(36);
+}
+
+function normalizeSequence(raw: unknown): SequenceDoc {
+  const doc = raw as Omit<SequenceDoc, "version" | "subtitles">;
   return {
     version: 1,
     ...doc,
-    subtitles: (doc.subtitles ?? []).map((c, i) => ({
-      id: c.id ?? `cue-${stamp}-${i}`,
-      startSec: c.startSec,
-      endSec: c.endSec,
-      text: c.text,
-    })),
+    segments: ((doc.segments ?? []) as unknown as RawSegment[]).map(
+      normalizeSegment
+    ),
+    // The schema cannot express subtitles; fresh cuts start empty and
+    // revisions get them carried through by mergeSequencePreserve.
+    subtitles: [],
   };
 }
+
+/**
+ * The structured-output schema cannot express transform, stickers, or
+ * the assets map (and may drop manual audio), so every full-sequence
+ * AI pass would silently destroy manual work without this merge.
+ * Returned segments that match an incoming id carry those fields
+ * forward; subtitle cues that match exactly keep their identity.
+ */
+function mergeSequencePreserve(
+  next: SequenceDoc,
+  prev: SequenceDoc | undefined
+): SequenceDoc {
+  if (!prev) return next;
+  const prevSegs = new Map(prev.segments.map((s) => [s.id, s]));
+  const prevCues = prev.subtitles ?? [];
+  return {
+    ...next,
+    assets: prev.assets,
+    segments: next.segments.map((s) => {
+      const old = prevSegs.get(s.id);
+      if (!old) return s;
+      return {
+        ...s,
+        transform: old.transform ?? null,
+        audio: s.audio ?? old.audio ?? null,
+        stickers: old.stickers ?? [],
+      };
+    }),
+    subtitles: prevCues,
+  };
+}
+
+/**
+ * A hallucinated clipId would produce a segment the player cannot
+ * resolve; reject those at the agent boundary instead of at playback.
+ */
+function validateClipRefs(
+  doc: SequenceDoc,
+  clips: Array<{ id: string }>
+): { doc: SequenceDoc; dropped: string[] } {
+  const ids = new Set(clips.map((c) => c.id));
+  const dropped: string[] = [];
+  const segments = doc.segments.filter((s) => {
+    if (ids.has(s.clipId)) return true;
+    dropped.push(s.clipId);
+    return false;
+  });
+  return {
+    doc: {
+      ...doc,
+      segments,
+      music: doc.music && ids.has(doc.music.clipId) ? doc.music : null,
+      voiceover:
+        doc.voiceover && ids.has(doc.voiceover.clipId) ? doc.voiceover : null,
+    },
+    dropped,
+  };
+}
+
+const STRUCTURAL_EDIT_NOTE = `Structural edits are allowed and expected when the note calls for them. You may add segments using any clip in the bin, including clips not yet on the timeline, remove segments, duplicate a segment, or reorder them. Give new segments fresh unique ids and reference clips only by a clipId that exists in the bin.`;
 
 /* ---------------------------- routes ----------------------------- */
 
@@ -621,8 +714,12 @@ export async function POST(req: NextRequest) {
           schema: SEQUENCE_SCHEMA,
           maxTokens: 10000,
         });
+        const checked = validateClipRefs(normalizeSequence(raw), body.clips);
+        if (checked.dropped.length > 0) {
+          checked.doc.notes = `${checked.doc.notes ?? ""} (${checked.dropped.length} segment(s) referencing unknown clips were removed.)`;
+        }
         return NextResponse.json({
-          result: normalizeSequence(raw),
+          result: checked.doc,
           trace: { agent: "director", model, ms: Date.now() - started },
         });
       }
@@ -648,11 +745,14 @@ export async function POST(req: NextRequest) {
           const fixed = await runAgent(client, {
             model,
             system: CRITIC_SYSTEM,
-            content: `${ctx}\n\nYou reviewed this sequence and found these issues\n${head.issues.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nReturn the corrected sequence now.`,
+            content: `${ctx}\n\nYou reviewed this sequence and found these issues\n${head.issues.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nYour pacing notes\n${head.pacingNotes}\n\nReturn the corrected sequence now. The issues plus the pacing notes are the complete fix list; apply every fix mentioned in either.`,
             schema: SEQUENCE_SCHEMA,
             maxTokens: 12000,
           });
-          revised = normalizeSequence(fixed);
+          revised = validateClipRefs(
+            mergeSequencePreserve(normalizeSequence(fixed), body.sequence),
+            body.clips
+          ).doc;
         }
         return NextResponse.json({
           result: { ...head, revisedSequence: revised },
@@ -674,21 +774,36 @@ export async function POST(req: NextRequest) {
         const head = (await runAgent(client, {
           model,
           system: DIRECTOR_SYSTEM,
-          content: `${ctx}\n\nNote from the editor\n${body.instruction}\n\nDecide what the note needs. If it asks for a change to the cut, set "changed" true and list each concrete edit in "changelog" (name segment ids and exact values where it matters); you will produce the updated sequence in the next step. You may change anything on the timeline, including the title, aspect, music, voiceover, and subtitles. If the note is a question or a request for advice instead, set "changed" false, answer it in "reply", and leave "changelog" empty. Read the note against the conversation, so follow-ups like "shorter" or "undo that last idea" resolve to what was just discussed. Always write "reply" as one to three conversational sentences.`,
+          content: `${ctx}\n\nNote from the editor\n${body.instruction}\n\nDecide what the note needs. If it asks for a change to the cut, set "changed" true and list each concrete edit in "changelog" (name segment ids and exact values where it matters); you will produce the updated sequence in the next step. You may change anything on the timeline, including the title, aspect, music, voiceover, subtitles, and per-segment audio. ${STRUCTURAL_EDIT_NOTE} If the note is a question or a request for advice instead, set "changed" false, answer it in "reply", and leave "changelog" empty. Read the note against the conversation, so follow-ups like "shorter" or "undo that last idea" resolve to what was just discussed. Always write "reply" as one to three conversational sentences.`,
           schema: REVISE_HEAD_SCHEMA,
           // Adaptive thinking shares this budget.
           maxTokens: 6000,
         })) as { reply: string; changed: boolean; changelog: string[] };
         let updatedSequence: SequenceDoc | null = null;
         if (head.changed) {
+          // An empty changelog with changed=true would let the second
+          // call improvise; pin it to the minimal edit instead.
+          const editList =
+            head.changelog.length > 0
+              ? `You decided on these edits\n${head.changelog.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nYou told the editor: "${head.reply}"\n\nThe changelog plus that reply is the complete edit list; apply every edit mentioned in either and nothing more.`
+              : `Make the minimal edit the note asks for and nothing else. You told the editor: "${head.reply}".`;
           const updated = await runAgent(client, {
             model,
             system: DIRECTOR_SYSTEM,
-            content: `${ctx}\n\nNote from the editor\n${body.instruction}\n\nYou decided on these edits\n${head.changelog.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nReturn the full updated sequence with exactly those edits applied. Carry everything the edits do not touch through unchanged, including subtitles, music, and voiceover.`,
+            content: `${ctx}\n\nNote from the editor\n${body.instruction}\n\n${editList}\n\n${STRUCTURAL_EDIT_NOTE}\n\nReturn the full updated sequence with exactly those edits applied. Carry everything the edits do not touch through unchanged, including subtitles, music, voiceover, and overlay positions.`,
             schema: SEQUENCE_SCHEMA,
             maxTokens: 12000,
           });
-          updatedSequence = normalizeSequence(updated);
+          const checked = validateClipRefs(
+            mergeSequencePreserve(normalizeSequence(updated), body.sequence),
+            body.clips
+          );
+          updatedSequence = checked.doc;
+          if (checked.dropped.length > 0) {
+            head.changelog.push(
+              `Removed ${checked.dropped.length} segment(s) that referenced clips not in the bin`
+            );
+          }
         }
         return NextResponse.json({
           result: {
@@ -726,8 +841,19 @@ export async function POST(req: NextRequest) {
           },
           maxTokens: 6000,
         })) as { reply: string; segment: { id: string } };
-        // The id is load-bearing; restore it if the model drifted.
-        raw.segment.id = body.segmentId;
+        // The id is load-bearing; restore it if the model drifted,
+        // expand gain/audioFade, and carry through what the schema
+        // cannot express.
+        const converted = normalizeSegment(
+          raw.segment as unknown as RawSegment
+        );
+        raw.segment = {
+          ...converted,
+          id: body.segmentId,
+          transform: target.transform ?? null,
+          audio: converted.audio ?? target.audio ?? null,
+          stickers: target.stickers ?? [],
+        } as typeof raw.segment;
         return NextResponse.json({
           result: raw,
           trace: { agent: "director", model, ms: Date.now() - started },
@@ -772,6 +898,42 @@ export async function POST(req: NextRequest) {
         };
         return NextResponse.json({
           result,
+          trace: { agent: "director", model, ms: Date.now() - started },
+        });
+      }
+
+      case "overlays": {
+        // Patch-shaped text pass: only overlays move, so the rest of
+        // the cut (and the grammar budget) is never at risk.
+        const model = modelFor("direct", body.model);
+        const { timed } = layoutDoc(body.sequence);
+        const segTable = timed
+          .map(({ seg, startSec, lenSec }, i) => {
+            const clip = body.clips.find((c) => c.id === seg.clipId);
+            return `${i + 1}. id ${seg.id}, ${startSec.toFixed(1)}s to ${(startSec + lenSec).toFixed(1)}s, ${clip?.name ?? seg.clipId} (${seg.mode})${
+              clip?.analysis ? `, content: ${clip.analysis.summary}` : ""
+            }, current overlays: ${JSON.stringify(seg.overlays ?? [])}`;
+          })
+          .join("\n");
+        const raw = (await runAgent(client, {
+          model,
+          system: `${DIRECTOR_SYSTEM}\n\nFor this request you are designing ONLY the text layer. Return one item per segment whose overlays should change, with that segment's complete new overlays array (an empty array clears it). Segments you do not list keep their text untouched. Never change anything except overlays.`,
+          content: `Brief\n${body.brief || "(none)"}\n\nTimeline\n${segTable}\n\nInstruction\n${
+            body.instruction ||
+            "Design the text for this cut. A strong opening title, lower-thirds where context earns them, nothing redundant. Place text away from the action using xPct/yPct."
+          }`,
+          schema: OVERLAYS_PATCH_SCHEMA,
+          maxTokens: 8000,
+        })) as {
+          reply: string;
+          items: { segmentId: string; overlays: unknown[] }[];
+        };
+        const segIds = new Set(body.sequence.segments.map((s) => s.id));
+        return NextResponse.json({
+          result: {
+            reply: raw.reply,
+            items: raw.items.filter((it) => segIds.has(it.segmentId)),
+          },
           trace: { agent: "director", model, ms: Date.now() - started },
         });
       }

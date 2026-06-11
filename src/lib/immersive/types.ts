@@ -167,6 +167,13 @@ export interface SequenceOverlay {
   startSec: number;
   endSec: number;
   position?: "center" | "lower" | "upper";
+  /**
+   * Free position of the overlay's center as a percentage of the
+   * frame, 2..98. When BOTH are set they override `position`.
+   * Set by dragging on the studio monitor or by the Director.
+   */
+  xPct?: number;
+  yPct?: number;
   style?: OverlayStyle;
   anim?: OverlayAnim;
 }
@@ -202,6 +209,8 @@ export interface AudioTrack {
   loop: boolean;
   /** Seconds into the timeline where the track starts */
   offsetSec: number;
+  /** Temporarily silence the track without losing its level */
+  muted?: boolean;
 }
 
 export interface SubtitleCue {
@@ -433,6 +442,21 @@ export interface ReviseSegmentRequest {
   clips: DirectRequest["clips"];
 }
 
+export interface OverlaysRequest {
+  action: "overlays";
+  model?: StudioModel;
+  brief: string;
+  /** Optional creative direction for the text pass */
+  instruction?: string;
+  sequence: SequenceDoc;
+  clips: DirectRequest["clips"];
+}
+
+export interface OverlaysResult {
+  reply: string;
+  items: { segmentId: string; overlays: SequenceOverlay[] }[];
+}
+
 export interface ScriptRequest {
   action: "script";
   model?: StudioModel;
@@ -454,6 +478,7 @@ export type StudioAgentRequest =
   | CritiqueRequest
   | ReviseRequest
   | ReviseSegmentRequest
+  | OverlaysRequest
   | ScriptRequest;
 
 export interface CritiqueResult {
