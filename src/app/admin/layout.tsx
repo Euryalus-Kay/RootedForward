@@ -17,6 +17,8 @@ import {
   Scale,
   BookOpen,
   Database,
+  Waves,
+  Clapperboard,
   LogOut,
   Menu,
   X,
@@ -26,6 +28,8 @@ import toast from "react-hot-toast";
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/tours", label: "Tours", icon: MapPin },
+  { href: "/admin/immersive", label: "Immersive", icon: Waves },
+  { href: "/admin/studio", label: "Studio", icon: Clapperboard },
   { href: "/admin/podcasts", label: "Podcasts", icon: Headphones },
   { href: "/admin/cities", label: "Cities", icon: Building2 },
   { href: "/admin/content", label: "Site Content", icon: FileText },

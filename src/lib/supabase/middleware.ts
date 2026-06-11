@@ -9,6 +9,17 @@ const SUPABASE_ANON_KEY =
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  // Local fallback mode: with no Supabase configured there is no auth
+  // system at all (login itself cannot work), so gating /admin would
+  // make it unreachable in offline development. Production always has
+  // Supabase configured, so this never applies there.
+  if (
+    SUPABASE_URL.includes("placeholder") &&
+    process.env.NODE_ENV !== "production"
+  ) {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY,

@@ -1,8 +1,26 @@
 # Rooted Forward — AI Quick-Start
 
-**Project:** rooted-forward.org. A Chicago-anchored civic site about urban policy, redlining, and displacement. Walking tours, a podcast, a playable game, a curriculum, a policy section, and a research archive.
+**Project:** rooted-forward.org. A Chicago-anchored civic site about urban policy, redlining, and displacement. Walking tours, a podcast, a curriculum, a policy section, and a research archive. (A playable game exists in the code but is hidden from the site; see below.)
 
 **Stack:** Next.js 16 App Router · React 19 · TypeScript · Tailwind v4 · Supabase (auth + Postgres + storage) · Vercel hosting.
+
+---
+
+## Common commands
+
+| Task | Command |
+|---|---|
+| Local dev server | `npm run dev` |
+| Production build | `npm run build` |
+| Lint | `npm run lint` |
+| Type check | `npx tsc --noEmit` |
+| Deploy production | `vercel deploy --prod --scope zain-zaidis-projects --yes` |
+| Verify a page | `curl -s -o /dev/null -w "%{http_code}" https://rooted-forward.org/<path>` |
+
+There is no test runner. CI (`.github/workflows/ci.yml`) runs typecheck,
+lint, and build separately on every push to `main` or `claude/*`. Match
+those locally before pushing. UI changes get verified by `npm run build`
+plus `curl` checks against production after deploy.
 
 ---
 
@@ -12,7 +30,7 @@
 
 Short version:
 
-1. Add the paper body in `src/lib/research-seed-content*.ts` (or inline)
+1. Add the paper as one file in `src/lib/research/papers/<slug>.ts` and register it in `src/lib/research/papers/index.ts`
 2. Add the entry record in `src/lib/research-constants.ts` → `PLACEHOLDER_RESEARCH_ENTRIES`
 3. Add the dataset metadata in `src/lib/research-datasets.ts` → `RESEARCH_DATASETS`
 4. Drop real CSV/JSON files at `public/data/<slug>/<filename>` and mark
@@ -26,6 +44,35 @@ those files automatically. Any CSV at `public/data/<slug>/<file>`
 with `available: true` shows up as a live sortable, filterable,
 paginated spreadsheet on `/research/data/<slug>` and as an audit-
 logged download via `/api/research/data/file`.
+
+---
+
+## Immersive tours and the Studio (2D/3D hybrid)
+
+- **Types + placeholder data:** `src/lib/immersive/` (`types.ts`,
+  `constants.ts`, `data.ts`, `demo.ts`, `studio-client.ts`). Tours read
+  the `immersive_tours` table first and fall back to
+  `PLACEHOLDER_IMMERSIVE_TOURS` by (city, slug), same pattern as the
+  rest of the site.
+- **Player components:** `src/components/immersive/` holds `PanoViewer`
+  (dependency-free WebGL equirectangular 360 viewer), `TimelinePlayer`
+  (plays a `SequenceDoc` edit live in the browser), and
+  `ImmersiveTourExperience` (the scrollytelling hybrid tour reader).
+  Immersive tours share `/tours/[city]/[slug]` and match before stops.
+- **Admin:** `/admin/immersive` manages tours and 360 media and has a
+  no-database player test bench. `/admin/studio` is the AI editor
+  (Analyst, Director, Critic agents on `claude-fable-5` via
+  `/api/studio/agent`, structured outputs enforced). Uploads go through
+  `/api/studio/upload-url` (service-role signed) into the public
+  `tour-media` bucket.
+- **Env:** `ANTHROPIC_API_KEY` must be set (already in Vercel
+  production). Migration `006_immersive_tours.sql` creates the tables,
+  policies, and seed; the `tour-media` bucket already exists on the
+  production project (50MB per file plan cap).
+- **Media honesty:** the shipped 360 assets in `public/media/360` and
+  `public/media/studio` are generated, labeled test patterns
+  (`scripts/gen-immersive-test-media.py`). Keep test captures labeled
+  via the media `note` field until real footage replaces them.
 
 ---
 
@@ -46,6 +93,27 @@ logged download via `/api/research/data/file`.
 
 ---
 
+## Architecture in three sentences
+
+- **Pages read Supabase first, fall back to TypeScript constants.**
+  Every content-driven page (research, policy, podcasts, tours, site
+  copy) loads the live row from Supabase, then falls through to the
+  matching placeholder array in `src/lib/*-constants.ts`. Both sides
+  stay in sync by slug. The pitfall is already noted for research
+  entries; the same pattern holds across the site.
+- **Auth enforcement is split on purpose.** `src/middleware.ts` only
+  requires a logged-in user on `/admin` and `/account`. The admin
+  role check is client-side in `src/app/admin/layout.tsx`. This was
+  a deliberate workaround for cookie and RLS issues across deploy
+  environments. Do not move the role check into middleware.
+- **The game is hidden.** `/game` serves a 404 (`notFound()` in
+  `src/app/game/page.tsx`) and nothing on the site links to it, by
+  the owner's request. The code under `src/lib/game/` and
+  `src/components/game/` is intact so it can be restored, but do not
+  re-link it, restyle it, or spend time on it.
+
+---
+
 ## Branch and deploy
 
 - Working branch: `claude/rooted-forward-site-avKps`. Never push to `main`.
@@ -56,30 +124,42 @@ logged download via `/api/research/data/file`.
 
 ---
 
-## Layout conventions across top-level pages
+## Layout conventions across top-level pages (design system v2)
 
-Every top-level page (`/research`, `/research/data`, `/policy`, `/game`,
-`/podcasts`, `/education`) shares the banner pattern:
+Every top-level page opens with the shared `PageBanner` component:
 
 ```tsx
-<section className="relative pt-16 pb-12 md:pb-16">
-  <div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-  />
-  <div className="absolute inset-0 bg-forest/70" />
-  <div className="relative z-10 flex flex-col items-center justify-center pt-12 md:pt-16">
-    <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/80">
-      Section
-    </p>
-    <h1 className="mt-3 font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-      Page Title
-    </h1>
-  </div>
-</section>
+import PageBanner from "@/components/layout/PageBanner";
+
+<PageBanner
+  eyebrow="Research / Archive"        // mono ledger label
+  title="Page Title"                  // no colons
+  dek="One supporting sentence."      // optional
+  meta={["16 papers", "16 datasets"]} // optional, REAL facts only
+  compact                              // detail pages only
+/>
 ```
 
-Match this exactly when adding a new top-level page.
+In-page sections use `SectionHeading` from
+`src/components/layout/SectionHeading.tsx`. Motion comes from the
+shared library in `src/components/motion/` (Reveal, RevealGroup,
+WordReveal, Parallax, TiltCard, Magnetic, Marquee, GradeStrip) and
+the CSS utilities in `globals.css` (`.eyebrow`, `.ledger`,
+`.index-numeral`, `.link-draw`, `.arrow-nudge`, `.card-lift`,
+`.photo-archival`, `.grain`, `.grid-lines`, `.grid-lines-light`).
+Smooth scrolling is Lenis via `src/components/motion/SmoothScroll.tsx`
+(wired in `layout.tsx`; it pauses itself when a modal sets
+`body.style.overflow = "hidden"`).
+
+House patterns. Cards on cream are
+`card-lift border border-border bg-white/40 p-7` with a `.ledger`
+meta row, a `font-display` title, and a hairline `border-t` footer
+row. Dark bands are `bg-forest` / `bg-ink` / `bg-forest-deep` with
+`grain` and a `grid-lines-light` overlay div. Primary CTAs are rust,
+uppercase, tracking-widest. Oversized `index-numeral` numerals at
+very low opacity are the section-numbering motif. The HOLC grade
+strip (`GradeStrip`) is the signature accent; use it sparingly.
+All motion respects `prefers-reduced-motion`.
 
 ---
 
@@ -88,7 +168,7 @@ Match this exactly when adding a new top-level page.
 | Concern | Path |
 |---|---|
 | Research entries (placeholder data) | `src/lib/research-constants.ts` |
-| Research bodies (markdown) | `src/lib/research-seed-content*.ts` |
+| Research papers (one file each) | `src/lib/research/papers/<slug>.ts` + `index.ts` |
 | Dataset metadata | `src/lib/research-datasets.ts` |
 | Database schema | `supabase/migrations/*.sql` |
 | Public research catalog | `src/app/research/page.tsx` |
@@ -118,11 +198,3 @@ Match this exactly when adding a new top-level page.
   through the API route, never via the public bucket URL.
 - **Migration numbers must be monotonic.** Existing migrations through
   `005_research_data_downloads.sql`. New ones start at 006.
-
----
-
-## Helpful skills
-
-If the project uses your `claude-code-guide` skill or similar, refer to
-the deeper guides there. For Anthropic-specific guidance not project-
-specific, defer to the user's general instructions.
