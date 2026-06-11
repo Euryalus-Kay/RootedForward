@@ -39,7 +39,26 @@ interface AgentPanelProps {
   hasSequence: boolean;
   onGenerate: () => void;
   onChat: (instruction: string) => void;
+  onScript: () => void;
 }
+
+const QUICK_ACTIONS: { label: string; instruction: string }[] = [
+  {
+    label: "Tighten pacing",
+    instruction:
+      "Tighten the pacing. Trim slack from every segment, keep the strongest material, aim for a noticeably shorter cut without losing the story.",
+  },
+  {
+    label: "Underwater mood",
+    instruction:
+      "Give the whole cut an underwater mood. Apply a cool teal grade to the 2D segments, slow the calmest segment slightly, and use a ripple transition once where it lands best.",
+  },
+  {
+    label: "Stronger titles",
+    instruction:
+      "Improve the text. Give the opening a large styled title with a slide-up animation, add one lower-third where context helps, and keep everything under 60 characters.",
+  },
+];
 
 const STAGES: { key: keyof Omit<PipelineState, "detail" | "error">; name: string; blurb: string }[] = [
   { key: "analyst", name: "Analyst", blurb: "Watches every clip" },
@@ -68,6 +87,7 @@ export default function AgentPanel({
   hasSequence,
   onGenerate,
   onChat,
+  onScript,
 }: AgentPanelProps) {
   const [draft, setDraft] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -137,6 +157,28 @@ export default function AgentPanel({
           <Sparkles className="h-3.5 w-3.5" />
           {hasSequence ? "Regenerate the cut" : "Generate the cut"}
         </button>
+
+        {hasSequence && (
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {QUICK_ACTIONS.map((qa) => (
+              <button
+                key={qa.label}
+                onClick={() => onChat(qa.instruction)}
+                disabled={busy}
+                className="rounded-full border border-border bg-white px-2.5 py-1 text-[10px] font-semibold text-ink/70 transition-colors hover:border-rust/50 hover:text-rust disabled:opacity-50"
+              >
+                {qa.label}
+              </button>
+            ))}
+            <button
+              onClick={onScript}
+              disabled={busy}
+              className="rounded-full border border-forest/40 bg-forest/5 px-2.5 py-1 text-[10px] font-semibold text-forest transition-colors hover:bg-forest/10 disabled:opacity-50"
+            >
+              Write narration + subtitles
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Chat */}

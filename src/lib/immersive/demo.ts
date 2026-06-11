@@ -71,6 +71,18 @@ export const DEMO_MEDIA: StudioMediaItem[] = [
     persisted: true,
     analysis: null,
   },
+  {
+    id: "demo-ambient",
+    name: "test-ambient.mp3",
+    kind: "audio",
+    url: "/media/studio/test-ambient.mp3",
+    durationSec: 24,
+    width: 0,
+    height: 0,
+    is360: false,
+    persisted: true,
+    analysis: null,
+  },
 ];
 
 export const DEMO_ASSETS: Record<string, SequenceAsset> = Object.fromEntries(
@@ -95,8 +107,23 @@ export const DEMO_SEQUENCE: SequenceDoc = {
   version: 1,
   title: "Hybrid player test sequence",
   notes:
-    "Reference cut over the generated test clips. Exercises titles, Ken Burns, every transition, and a 360 look-around segment.",
+    "Reference cut over the generated test clips. Exercises styled titles, Ken Burns, color grades, speed, transitions, a 360 look-around segment, a music bed, and subtitles.",
+  aspect: "16:9",
   assets: DEMO_ASSETS,
+  music: {
+    clipId: "demo-ambient",
+    volume: 0.5,
+    fadeInSec: 1.5,
+    fadeOutSec: 2.5,
+    loop: true,
+    offsetSec: 0,
+  },
+  subtitles: [
+    { id: "cue-1", startSec: 0.6, endSec: 3.4, text: "A reference cut for the hybrid player." },
+    { id: "cue-2", startSec: 4.2, endSec: 7.6, text: "Color grades, speed, and transitions are all live." },
+    { id: "cue-3", startSec: 9.0, endSec: 12.5, text: "This segment is 360. Grab the frame to look around." },
+    { id: "cue-4", startSec: 16.5, endSec: 19.5, text: "The music bed under this cut is a synthetic test tone." },
+  ],
   segments: [
     {
       id: "seg-1",
@@ -120,6 +147,8 @@ export const DEMO_SEQUENCE: SequenceDoc = {
           startSec: 0.4,
           endSec: 3.2,
           position: "center",
+          style: { size: "lg", color: "cream", background: false },
+          anim: "slide-up",
         },
       ],
     },
@@ -130,6 +159,15 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       inSec: 0.5,
       outSec: 5,
       transitionIn: { type: "ripple", durationSec: 1.2 },
+      filter: {
+        brightness: 0.96,
+        contrast: 1.05,
+        saturate: 1.15,
+        hueDeg: -12,
+        blur: 0,
+        grayscale: 0,
+        sepia: 0,
+      },
       kenBurns: {
         fromScale: 1.05,
         toScale: 1.12,
@@ -141,10 +179,12 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       overlays: [
         {
           kind: "lower-third",
-          text: "Ripple transition, descent pattern",
+          text: "Ripple in, underwater grade",
           startSec: 1.4,
           endSec: 4,
           position: "lower",
+          style: { size: "md", color: "cream", background: true },
+          anim: "slide-up",
         },
       ],
     },
@@ -156,15 +196,6 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       outSec: 7,
       transitionIn: { type: "crossfade", durationSec: 1 },
       panoMotion: { fromYawDeg: 0, toYawDeg: 130 },
-      overlays: [
-        {
-          kind: "caption",
-          text: "360 segment. Grab the frame to look around.",
-          startSec: 0.8,
-          endSec: 4.5,
-          position: "lower",
-        },
-      ],
     },
     {
       id: "seg-4",
@@ -172,7 +203,17 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       mode: "2d",
       inSec: 1,
       outSec: 5.5,
-      transitionIn: { type: "dip-black", durationSec: 1 },
+      speed: 0.75,
+      transitionIn: { type: "blur", durationSec: 1 },
+      filter: {
+        brightness: 0.9,
+        contrast: 1.1,
+        saturate: 0.85,
+        hueDeg: -18,
+        blur: 0,
+        grayscale: 0,
+        sepia: 0,
+      },
       kenBurns: {
         fromScale: 1.1,
         toScale: 1,
@@ -184,10 +225,12 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       overlays: [
         {
           kind: "lower-third",
-          text: "Dip to black, lake bed pan",
+          text: "Blur in, slow motion, cold grade",
           startSec: 1.2,
-          endSec: 4,
+          endSec: 4.5,
           position: "lower",
+          style: { size: "md", color: "cream", background: true },
+          anim: "fade",
         },
       ],
     },
@@ -197,7 +240,7 @@ export const DEMO_SEQUENCE: SequenceDoc = {
       mode: "2d",
       inSec: 4,
       outSec: 7.5,
-      transitionIn: { type: "slide-left", durationSec: 0.9 },
+      transitionIn: { type: "zoom", durationSec: 0.9 },
       overlays: [
         {
           kind: "title",
@@ -205,6 +248,8 @@ export const DEMO_SEQUENCE: SequenceDoc = {
           startSec: 1,
           endSec: 3,
           position: "center",
+          style: { size: "md", color: "rust", background: false },
+          anim: "pop",
         },
       ],
     },

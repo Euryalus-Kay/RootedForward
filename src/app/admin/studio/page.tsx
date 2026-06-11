@@ -1,18 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   createClient,
   isSupabaseConfiguredClient,
 } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import TimelinePlayer from "@/components/immersive/TimelinePlayer";
+import TimelinePlayer, {
+  type PlayerControls,
+} from "@/components/immersive/TimelinePlayer";
 import MediaBin from "@/components/admin/studio/MediaBin";
 import TimelineEditor from "@/components/admin/studio/TimelineEditor";
+import ExportModal from "@/components/admin/studio/ExportModal";
 import AgentPanel, {
   type PipelineState,
 } from "@/components/admin/studio/AgentPanel";
 import { DEMO_SEQUENCE } from "@/lib/immersive/demo";
+import {
+  layoutDoc,
+  segmentSpeed,
+} from "@/lib/immersive/timeline";
 import {
   agentHealth,
   buildAssets,
@@ -24,7 +37,10 @@ import type {
   AgentTraceEntry,
   CritiqueResult,
   ImmersiveStop,
+  ScriptResult,
+  SequenceAspect,
   SequenceDoc,
+  SequenceSegment,
   StudioChatMessage,
   StudioClipAnalysis,
   StudioMediaItem,
@@ -32,6 +48,7 @@ import type {
 import {
   Clapperboard,
   Download,
+  Film,
   KeyRound,
   Link2,
   Loader2,
@@ -42,13 +59,12 @@ import toast from "react-hot-toast";
 
 /* ------------------------------------------------------------------ */
 /*  Studio: the AI editor. Media bin on the left, player + timeline    */
-/*  in the middle, agent pipeline and chat on the right.               */
-/*                                                                     */
-/*  The deliverable is a SequenceDoc the hybrid player runs live on    */
-/*  the site, attachable to any immersive tour stop.                   */
+/*  in the middle, agent pipeline and chat on the right. Undo/redo     */
+/*  wraps every change, including the AI's.                            */
 /* ------------------------------------------------------------------ */
 
 const AUTOSAVE_KEY = "rf-studio-project-v1";
+const HISTORY_CAP = 60;
 
 interface ProjectSnapshot {
   id: string;
@@ -74,7 +90,7 @@ export default function StudioPage() {
     "A short hybrid teaser for the underwater Chicago tour. Open with a title, descend, give one 360 look-around moment, end calm."
   );
   const [media, setMedia] = useState<StudioMediaItem[]>([]);
-  const [sequence, setSequence] = useState<SequenceDoc | null>(null);
+  const [sequence, setSequenceRaw] = useState<SequenceDoc | null>(null);
   const [chat, setChat] = useState<StudioChatMessage[]>([]);
   const [pipeline, setPipeline] = useState<PipelineState>(IDLE_PIPELINE);
   const [traces, setTraces] = useState<AgentTraceEntry[]>([]);
@@ -87,7 +103,57 @@ export default function StudioPage() {
   const [sessionKey, setSessionKey] = useState("");
   const [saving, setSaving] = useState(false);
   const [attachOpen, setAttachOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [loop, setLoop] = useState(false);
+  const [playerTime, setPlayerTime] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const hydrated = useRef(false);
+  const controlsRef = useRef<PlayerControls | null>(null);
+  const lastTimeSet = useRef(0);
+
+  /* ------------------------- undo / redo -------------------------- */
+
+  const pastRef = useRef<SequenceDoc[]>([]);
+  const futureRef = useRef<SequenceDoc[]>([]);
+  const [historyTick, setHistoryTick] = useState(0);
+
+  const applySequence = useCallback(
+    (next: SequenceDoc | null) => {
+      setSequenceRaw((prev) => {
+        if (prev) {
+          pastRef.current = [...pastRef.current.slice(-HISTORY_CAP), prev];
+          futureRef.current = [];
+        }
+        return next;
+      });
+      setHistoryTick((v) => v + 1);
+    },
+    []
+  );
+
+  const undo = useCallback(() => {
+    setSequenceRaw((current) => {
+      const prev = pastRef.current.pop();
+      if (!prev) return current;
+      if (current) futureRef.current.push(current);
+      setHistoryTick((v) => v + 1);
+      return prev;
+    });
+  }, []);
+
+  const redo = useCallback(() => {
+    setSequenceRaw((current) => {
+      const next = futureRef.current.pop();
+      if (!next) return current;
+      if (current) pastRef.current.push(current);
+      setHistoryTick((v) => v + 1);
+      return next;
+    });
+  }, []);
+
+  void historyTick;
+  const canUndo = pastRef.current.length > 0;
+  const canRedo = futureRef.current.length > 0;
 
   /* ------------------------- persistence ------------------------- */
 
@@ -103,7 +169,7 @@ export default function StudioPage() {
         setProjectName(snap.name ?? "Untitled sequence");
         setBrief(snap.brief ?? "");
         setMedia(usable);
-        setSequence(snap.sequence ?? null);
+        setSequenceRaw(snap.sequence ?? null);
         setChat(snap.chat ?? []);
         if (dropped > 0) {
           toast(
@@ -146,7 +212,6 @@ export default function StudioPage() {
         sequence: sequence as unknown,
         chat: chat as unknown,
       };
-      // Try update first; insert when the row does not exist yet.
       const { data: updated, error: updateError } = await supabase
         .from("studio_projects")
         .update(payload)
@@ -172,6 +237,121 @@ export default function StudioPage() {
     }
   };
 
+  /* ------------------------ player wiring ------------------------ */
+
+  const onTimeUpdate = useCallback((t: number) => {
+    const now = performance.now();
+    if (now - lastTimeSet.current > 90) {
+      lastTimeSet.current = now;
+      setPlayerTime(t);
+      setPlaying(controlsRef.current?.isPlaying() ?? false);
+    }
+  }, []);
+
+  /* ------------------------ split at playhead --------------------- */
+
+  const splitAtPlayhead = useCallback(() => {
+    if (!sequence) return;
+    const t = controlsRef.current?.getTime() ?? playerTime;
+    const { timed } = layoutDoc(sequence);
+    const entry = timed.find(
+      ({ startSec, lenSec }) =>
+        t > startSec + 0.15 && t < startSec + lenSec - 0.15
+    );
+    if (!entry) {
+      toast("Park the playhead inside a segment to split it");
+      return;
+    }
+    const { seg, startSec } = entry;
+    const localTimeline = t - startSec;
+    const mediaSplit = seg.inSec + localTimeline * segmentSpeed(seg);
+    const first: SequenceSegment = {
+      ...seg,
+      outSec: Math.round(mediaSplit * 100) / 100,
+      overlays: (seg.overlays ?? []).filter((o) => o.startSec < localTimeline),
+      stickers: (seg.stickers ?? []).filter(
+        (st) => st.startSec < localTimeline
+      ),
+    };
+    const second: SequenceSegment = {
+      ...(JSON.parse(JSON.stringify(seg)) as SequenceSegment),
+      id: uid("seg"),
+      inSec: Math.round(mediaSplit * 100) / 100,
+      transitionIn: { type: "cut", durationSec: 0 },
+      overlays: (seg.overlays ?? [])
+        .filter((o) => o.endSec > localTimeline)
+        .map((o) => ({
+          ...o,
+          startSec: Math.max(0, o.startSec - localTimeline),
+          endSec: o.endSec - localTimeline,
+        })),
+      stickers: (seg.stickers ?? [])
+        .filter((st) => st.endSec > localTimeline)
+        .map((st) => ({
+          ...st,
+          id: uid("st"),
+          startSec: Math.max(0, st.startSec - localTimeline),
+          endSec: st.endSec - localTimeline,
+        })),
+    };
+    const idx = sequence.segments.findIndex((s) => s.id === seg.id);
+    const next = [...sequence.segments];
+    next.splice(idx, 1, first, second);
+    applySequence({ ...sequence, segments: next });
+  }, [sequence, playerTime, applySequence]);
+
+  /* ----------------------- keyboard shortcuts --------------------- */
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+      const c = controlsRef.current;
+      if (e.key === " ") {
+        e.preventDefault();
+        c?.toggle();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        c?.seek((c?.getTime() ?? 0) + (e.shiftKey ? 5 : 1));
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        c?.seek(Math.max(0, (c?.getTime() ?? 0) - (e.shiftKey ? 5 : 1)));
+      } else if (e.key === "," || e.key === ".") {
+        e.preventDefault();
+        const step = 1 / 30;
+        c?.seek(
+          Math.max(0, (c?.getTime() ?? 0) + (e.key === "." ? step : -step))
+        );
+      } else if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        splitAtPlayhead();
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        e.key.toLowerCase() === "z" &&
+        !e.shiftKey
+      ) {
+        e.preventDefault();
+        undo();
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        (e.key.toLowerCase() === "y" ||
+          (e.key.toLowerCase() === "z" && e.shiftKey))
+      ) {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [splitAtPlayhead, undo, redo]);
+
   /* --------------------------- pipeline --------------------------- */
 
   const key = sessionKey.trim() || null;
@@ -181,7 +361,7 @@ export default function StudioPage() {
       const out = [...items];
       for (let i = 0; i < out.length; i++) {
         const item = out[i];
-        if (item.analysis) continue;
+        if (item.analysis || item.kind === "audio") continue;
         setAnalyzingId(item.id);
         setPipeline((p) => ({
           ...p,
@@ -206,9 +386,7 @@ export default function StudioPage() {
           is360: item.is360 || result.looksEquirect,
         };
         setTraces((t) => [...t, trace as AgentTraceEntry]);
-        setMedia((prev) =>
-          prev.map((m) => (m.id === out[i].id ? out[i] : m))
-        );
+        setMedia((prev) => prev.map((m) => (m.id === out[i].id ? out[i] : m)));
       }
       setAnalyzingId(null);
       return out;
@@ -227,7 +405,7 @@ export default function StudioPage() {
     }));
 
   const runPipeline = async () => {
-    if (media.length === 0) {
+    if (media.filter((m) => m.kind !== "audio").length === 0) {
       toast.error("Add clips to the media bin first");
       return;
     }
@@ -235,11 +413,9 @@ export default function StudioPage() {
     setTraces([]);
     setPipeline({ ...IDLE_PIPELINE, detail: "Starting" });
     try {
-      // 1. Analyst
       const analyzed = await ensureAnalyses(media);
       setPipeline((p) => ({ ...p, analyst: "done" }));
 
-      // 2. Director
       setPipeline((p) => ({
         ...p,
         director: "running",
@@ -250,10 +426,9 @@ export default function StudioPage() {
         key
       );
       setTraces((t) => [...t, directed.trace as AgentTraceEntry]);
-      let doc = directed.result;
+      let docNext = directed.result;
       setPipeline((p) => ({ ...p, director: "done" }));
 
-      // 3. Critic
       setPipeline((p) => ({
         ...p,
         critic: "running",
@@ -263,7 +438,7 @@ export default function StudioPage() {
         {
           action: "critique",
           brief,
-          sequence: doc,
+          sequence: docNext,
           clips: clipsPayload(analyzed),
         },
         key
@@ -271,16 +446,16 @@ export default function StudioPage() {
       setTraces((t) => [...t, critiqued.trace as AgentTraceEntry]);
       const verdict = critiqued.result;
       if (verdict.verdict === "revise" && verdict.revisedSequence) {
-        doc = verdict.revisedSequence;
+        docNext = verdict.revisedSequence;
       }
       setPipeline((p) => ({ ...p, critic: "done", detail: "" }));
 
-      setSequence(doc);
+      applySequence(docNext);
       setChat((c) => [
         ...c,
         {
           role: "assistant",
-          text: `Cut ready, "${doc.title}". ${doc.notes ?? ""}${
+          text: `Cut ready, "${docNext.title}". ${docNext.notes ?? ""}${
             verdict.verdict === "revise"
               ? ` The Critic adjusted it. ${verdict.issues.slice(0, 3).join(" ")}`
               : " The Critic approved it as cut."
@@ -332,7 +507,13 @@ export default function StudioPage() {
         key
       );
       setTraces((t) => [...t, trace as AgentTraceEntry]);
-      setSequence(result.sequence);
+      // The agent schema does not carry subtitles or the voiceover track;
+      // keep whatever the editor already has.
+      applySequence({
+        ...result.sequence,
+        subtitles: sequence.subtitles,
+        voiceover: sequence.voiceover,
+      });
       setChat((c) => [
         ...c,
         {
@@ -348,7 +529,55 @@ export default function StudioPage() {
       setPipeline((p) => ({ ...p, director: "done", detail: "" }));
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setPipeline((p) => ({ ...p, director: "error", detail: "", error: message }));
+      setPipeline((p) => ({
+        ...p,
+        director: "error",
+        detail: "",
+        error: message,
+      }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleScript = async () => {
+    if (!sequence) return;
+    setBusy(true);
+    setPipeline((p) => ({
+      ...p,
+      director: "running",
+      detail: "The Director is writing narration and subtitles",
+      error: null,
+    }));
+    try {
+      const { result, trace } = await callAgent<ScriptResult>(
+        {
+          action: "script",
+          brief,
+          sequence,
+          clips: clipsPayload(media),
+        },
+        key
+      );
+      setTraces((t) => [...t, trace as AgentTraceEntry]);
+      applySequence({ ...sequence, subtitles: result.subtitles });
+      setChat((c) => [
+        ...c,
+        {
+          role: "assistant",
+          text: `Narration script (record it with the mic in the media bin, then set it as the voiceover track):\n\n${result.narration}\n\n${result.subtitles.length} subtitle cues were added to the timeline. ${result.notes}`,
+          at: new Date().toISOString(),
+        },
+      ]);
+      setPipeline((p) => ({ ...p, director: "done", detail: "" }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setPipeline((p) => ({
+        ...p,
+        director: "error",
+        detail: "",
+        error: message,
+      }));
     } finally {
       setBusy(false);
     }
@@ -359,13 +588,14 @@ export default function StudioPage() {
   const assets = useMemo(() => buildAssets(media), [media]);
 
   const addToTimeline = (item: StudioMediaItem) => {
+    if (item.kind === "audio") return;
     const base: SequenceDoc = sequence ?? {
       version: 1,
       title: projectName,
       segments: [],
     };
     const len = Math.min(6, item.durationSec ?? 6);
-    setSequence({
+    applySequence({
       ...base,
       segments: [
         ...base.segments,
@@ -395,11 +625,11 @@ export default function StudioPage() {
     const sessionOnly = sequence.segments.filter(
       (s) => !media.find((m) => m.id === s.clipId)?.persisted
     );
-    const doc: SequenceDoc = {
+    const docOut: SequenceDoc = {
       ...sequence,
       assets: buildAssets(media, { persistedOnly: false }),
     };
-    const blob = new Blob([JSON.stringify(doc, null, 2)], {
+    const blob = new Blob([JSON.stringify(docOut, null, 2)], {
       type: "application/json",
     });
     const a = document.createElement("a");
@@ -416,19 +646,22 @@ export default function StudioPage() {
   };
 
   const loadDemoProject = () => {
-    const demoMedia = media.length === 0;
-    if (demoMedia) {
-      // MediaBin's demo button adds clips; here we load the full project.
+    if (media.length === 0) {
       import("@/lib/immersive/demo").then(({ DEMO_MEDIA }) => {
         setMedia(DEMO_MEDIA.map((m) => ({ ...m })));
-        setSequence({ ...DEMO_SEQUENCE });
+        applySequence(JSON.parse(JSON.stringify(DEMO_SEQUENCE)));
         setProjectName("Hybrid player test sequence");
         toast.success("Demo project loaded");
       });
     } else {
-      setSequence({ ...DEMO_SEQUENCE });
+      applySequence(JSON.parse(JSON.stringify(DEMO_SEQUENCE)));
       toast.success("Demo sequence loaded");
     }
+  };
+
+  const setAspect = (aspect: SequenceAspect) => {
+    if (!sequence) return;
+    applySequence({ ...sequence, aspect });
   };
 
   /* ------------------------------ UI ------------------------------ */
@@ -443,8 +676,8 @@ export default function StudioPage() {
             Studio
           </h1>
           <p className="text-sm text-warm-gray">
-            AI-assisted 2D/360 hybrid editing. The cut plays live on the
-            site, no render step.
+            AI-assisted 2D/360 hybrid editing. Plays live on the site, and
+            exports real video.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -453,6 +686,14 @@ export default function StudioPage() {
             className="rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark"
           >
             Load demo project
+          </button>
+          <button
+            onClick={() => setExportOpen(true)}
+            disabled={!sequence || sequence.segments.length === 0}
+            className="flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-50"
+          >
+            <Film className="h-3.5 w-3.5" />
+            Export video
           </button>
           <button
             onClick={exportJson}
@@ -504,7 +745,7 @@ export default function StudioPage() {
       )}
 
       {/* Project meta */}
-      <div className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-white/60 p-4 shadow-sm md:grid-cols-[240px_1fr]">
+      <div className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-white/60 p-4 shadow-sm md:grid-cols-[220px_1fr_150px]">
         <div>
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
             Project
@@ -526,6 +767,28 @@ export default function StudioPage() {
             className="w-full resize-none rounded-md border border-border bg-white px-3 py-2 text-sm text-ink focus:outline-none focus:ring-1 focus:ring-rust"
           />
         </div>
+        <div>
+          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-warm-gray">
+            Aspect
+          </label>
+          <div className="flex rounded-md border border-border bg-white p-0.5">
+            {(["16:9", "9:16", "1:1"] as const).map((a) => (
+              <button
+                key={a}
+                onClick={() => setAspect(a)}
+                disabled={!sequence}
+                className={cn(
+                  "flex-1 rounded px-2 py-1.5 text-xs font-semibold transition-colors disabled:opacity-40",
+                  (sequence?.aspect ?? "16:9") === a
+                    ? "bg-forest text-cream"
+                    : "text-ink/60 hover:text-ink"
+                )}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Main grid */}
@@ -534,7 +797,14 @@ export default function StudioPage() {
           {/* Player */}
           <div className="rounded-xl border border-border bg-white/60 p-4 shadow-sm">
             {sequence && sequence.segments.length > 0 ? (
-              <TimelinePlayer key={projectId} doc={sequence} assets={assets} />
+              <TimelinePlayer
+                key={projectId}
+                doc={sequence}
+                assets={assets}
+                loop={loop}
+                onTimeUpdate={onTimeUpdate}
+                controlsRef={controlsRef}
+              />
             ) : (
               <div className="flex aspect-video items-center justify-center rounded-sm border border-dashed border-border bg-cream">
                 <p className="max-w-sm px-6 text-center text-sm text-warm-gray">
@@ -546,7 +816,21 @@ export default function StudioPage() {
           </div>
 
           {sequence && (
-            <TimelineEditor doc={sequence} media={media} onChange={setSequence} />
+            <TimelineEditor
+              doc={sequence}
+              media={media}
+              onChange={applySequence}
+              playerTime={playerTime}
+              controls={controlsRef}
+              playing={playing}
+              canUndo={canUndo}
+              canRedo={canRedo}
+              onUndo={undo}
+              onRedo={redo}
+              loop={loop}
+              onToggleLoop={() => setLoop((v) => !v)}
+              onSplit={splitAtPlayhead}
+            />
           )}
 
           <MediaBin
@@ -566,6 +850,7 @@ export default function StudioPage() {
             hasSequence={Boolean(sequence)}
             onGenerate={runPipeline}
             onChat={handleChat}
+            onScript={handleScript}
           />
         </div>
       </div>
@@ -575,6 +860,15 @@ export default function StudioPage() {
           sequence={sequence}
           media={media}
           onClose={() => setAttachOpen(false)}
+        />
+      )}
+
+      {exportOpen && sequence && (
+        <ExportModal
+          doc={sequence}
+          assets={assets}
+          projectName={projectName}
+          onClose={() => setExportOpen(false)}
         />
       )}
     </div>
@@ -595,7 +889,13 @@ function AttachModal({
   onClose: () => void;
 }) {
   const [tours, setTours] = useState<
-    { id: string; title: string; city: string; slug: string; stops: ImmersiveStop[] }[]
+    {
+      id: string;
+      title: string;
+      city: string;
+      slug: string;
+      stops: ImmersiveStop[];
+    }[]
   >([]);
   const [state, setState] = useState<"loading" | "ready" | "unavailable">(
     "loading"
@@ -742,9 +1042,7 @@ function AttachModal({
               <button
                 onClick={attach}
                 disabled={attaching || tours.length === 0}
-                className={cn(
-                  "flex items-center gap-2 rounded-md bg-forest px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
-                )}
+                className="flex items-center gap-2 rounded-md bg-forest px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-forest-light disabled:opacity-50"
               >
                 {attaching && <Loader2 className="h-4 w-4 animate-spin" />}
                 Attach

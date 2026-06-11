@@ -67,11 +67,69 @@ export type TransitionType =
   | "crossfade"
   | "dip-black"
   | "slide-left"
-  | "ripple";
+  | "ripple"
+  | "wipe"
+  | "zoom"
+  | "blur";
 
 export interface SequenceTransition {
   type: TransitionType;
   durationSec: number;
+}
+
+/** Color grade for a segment. Neutral is 1,1,1,0,0,0,0. */
+export interface SegmentFilter {
+  brightness: number;
+  contrast: number;
+  saturate: number;
+  hueDeg: number;
+  blur: number;
+  grayscale: number;
+  sepia: number;
+}
+
+export const NEUTRAL_FILTER: SegmentFilter = {
+  brightness: 1,
+  contrast: 1,
+  saturate: 1,
+  hueDeg: 0,
+  blur: 0,
+  grayscale: 0,
+  sepia: 0,
+};
+
+/** Static framing for a segment, applied under any Ken Burns move. */
+export interface SegmentTransform {
+  scale: number;
+  /** Pan offsets as a percentage of the frame, -50..50 */
+  xPct: number;
+  yPct: number;
+  rotateDeg: number;
+  fit: "cover" | "contain";
+}
+
+/** Per-segment soundtrack handling for the clip's own audio. */
+export interface SegmentAudio {
+  /** 0..1 */
+  volume: number;
+  fadeInSec: number;
+  fadeOutSec: number;
+}
+
+/** An image pinned over a segment, CapCut-sticker style. */
+export interface SegmentSticker {
+  id: string;
+  /** References an image asset / media item */
+  assetId: string;
+  /** Center position as a percentage of the frame */
+  xPct: number;
+  yPct: number;
+  widthPct: number;
+  rotateDeg: number;
+  opacity: number;
+  /** Seconds relative to the segment start */
+  startSec: number;
+  endSec: number;
 }
 
 /** Ken Burns move for 2D segments. x/y are pan offsets in -1..1 of overflow. */
@@ -93,6 +151,15 @@ export interface PanoMotion {
 
 export type OverlayKind = "title" | "lower-third" | "caption";
 
+export type OverlayAnim = "fade" | "slide-up" | "pop" | "none";
+
+export interface OverlayStyle {
+  size: "sm" | "md" | "lg";
+  color: "cream" | "white" | "rust" | "ink";
+  /** Draw a dark backing plate behind the text */
+  background: boolean;
+}
+
 export interface SequenceOverlay {
   kind: OverlayKind;
   text: string;
@@ -100,6 +167,8 @@ export interface SequenceOverlay {
   startSec: number;
   endSec: number;
   position?: "center" | "lower" | "upper";
+  style?: OverlayStyle;
+  anim?: OverlayAnim;
 }
 
 export interface SequenceSegment {
@@ -114,12 +183,41 @@ export interface SequenceSegment {
   panoMotion?: PanoMotion | null;
   overlays?: SequenceOverlay[];
   muted?: boolean;
+  /** Playback rate, 0.25..4. Timeline length is (out - in) / speed. */
+  speed?: number;
+  filter?: SegmentFilter | null;
+  transform?: SegmentTransform | null;
+  audio?: SegmentAudio | null;
+  stickers?: SegmentSticker[];
 }
+
+/** A music or voiceover bed under the whole sequence. */
+export interface AudioTrack {
+  /** References an audio asset / media item */
+  clipId: string;
+  /** 0..1 */
+  volume: number;
+  fadeInSec: number;
+  fadeOutSec: number;
+  loop: boolean;
+  /** Seconds into the timeline where the track starts */
+  offsetSec: number;
+}
+
+export interface SubtitleCue {
+  id: string;
+  /** Absolute timeline seconds */
+  startSec: number;
+  endSec: number;
+  text: string;
+}
+
+export type SequenceAspect = "16:9" | "9:16" | "1:1";
 
 /** Resolved media for a clipId so a SequenceDoc plays standalone */
 export interface SequenceAsset {
   url: string;
-  kind: "video" | "image";
+  kind: "video" | "image" | "audio";
   is360: boolean;
   poster?: string | null;
 }
@@ -130,6 +228,11 @@ export interface SequenceDoc {
   /** Director's note describing the cut */
   notes?: string;
   segments: SequenceSegment[];
+  aspect?: SequenceAspect;
+  music?: AudioTrack | null;
+  /** Narration bed. While it plays, music ducks automatically. */
+  voiceover?: AudioTrack | null;
+  subtitles?: SubtitleCue[];
   /**
    * clipId to media map. Filled when a sequence is exported or attached
    * to a tour stop, so the player needs no studio context. Session-only
@@ -157,7 +260,7 @@ export interface StudioClipAnalysis {
 export interface StudioMediaItem {
   id: string;
   name: string;
-  kind: "video" | "image";
+  kind: "video" | "image" | "audio";
   /** Object URL (session only) or storage public URL */
   url: string;
   storagePath?: string | null;
@@ -234,11 +337,26 @@ export interface ReviseRequest {
   clips: DirectRequest["clips"];
 }
 
+export interface ScriptRequest {
+  action: "script";
+  brief: string;
+  sequence: SequenceDoc;
+  clips: DirectRequest["clips"];
+}
+
+export interface ScriptResult {
+  /** Narration script the editor can record as a voiceover */
+  narration: string;
+  subtitles: SubtitleCue[];
+  notes: string;
+}
+
 export type StudioAgentRequest =
   | AnalyzeRequest
   | DirectRequest
   | CritiqueRequest
-  | ReviseRequest;
+  | ReviseRequest
+  | ScriptRequest;
 
 export interface CritiqueResult {
   verdict: "approve" | "revise";

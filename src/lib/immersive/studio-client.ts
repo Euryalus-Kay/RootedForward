@@ -22,7 +22,7 @@ export function uid(prefix: string): string {
 /** Read duration and dimensions from a media URL. */
 export function probeMedia(
   url: string,
-  kind: "video" | "image"
+  kind: "video" | "image" | "audio"
 ): Promise<{ durationSec?: number; width: number; height: number }> {
   return new Promise((resolve, reject) => {
     if (kind === "image") {
@@ -31,6 +31,21 @@ export function probeMedia(
         resolve({ width: img.naturalWidth, height: img.naturalHeight });
       img.onerror = () => reject(new Error("Could not read the image"));
       img.src = url;
+      return;
+    }
+    if (kind === "audio") {
+      const audio = new Audio();
+      audio.preload = "metadata";
+      audio.onloadedmetadata = () =>
+        resolve({
+          durationSec: Number.isFinite(audio.duration)
+            ? Math.round(audio.duration * 10) / 10
+            : undefined,
+          width: 0,
+          height: 0,
+        });
+      audio.onerror = () => reject(new Error("Could not read the audio"));
+      audio.src = url;
       return;
     }
     const video = document.createElement("video");

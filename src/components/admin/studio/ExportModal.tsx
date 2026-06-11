@@ -1,0 +1,167 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  exportSequence,
+  pickExportSizes,
+} from "@/lib/immersive/exporter";
+import type { SequenceAsset, SequenceDoc } from "@/lib/immersive/types";
+import { Download, Loader2, X } from "lucide-react";
+import toast from "react-hot-toast";
+
+/* ------------------------------------------------------------------ */
+/*  ExportModal: renders the sequence to a WebM video in the browser   */
+/*  in real time and downloads it.                                     */
+/* ------------------------------------------------------------------ */
+
+export default function ExportModal({
+  doc,
+  assets,
+  projectName,
+  onClose,
+}: {
+  doc: SequenceDoc;
+  assets: Record<string, SequenceAsset>;
+  projectName: string;
+  onClose: () => void;
+}) {
+  const sizes = pickExportSizes(doc.aspect);
+  const [sizeIdx, setSizeIdx] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [note, setNote] = useState("");
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => abortRef.current?.abort();
+  }, []);
+
+  const start = async () => {
+    const size = sizes[sizeIdx];
+    setRunning(true);
+    setProgress(0);
+    const controller = new AbortController();
+    abortRef.current = controller;
+    try {
+      const result = await exportSequence(doc, assets, {
+        width: size.width,
+        height: size.height,
+        fps: 30,
+        signal: controller.signal,
+        onProgress: (p, n) => {
+          setProgress(p);
+          setNote(n);
+        },
+      });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(result.blob);
+      a.download = `${projectName.replace(/[^\w\-]+/g, "-").toLowerCase()}-${size.height}p.webm`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast.success(
+        `Exported ${result.durationSec.toFixed(1)}s of video`
+      );
+      onClose();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (!/canceled/i.test(msg)) toast.error(msg);
+      setRunning(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
+      <div className="w-full max-w-md rounded-xl border border-border bg-cream p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-lg font-bold text-forest">
+            Export video
+          </h2>
+          <button
+            onClick={() => {
+              abortRef.current?.abort();
+              onClose();
+            }}
+            className="rounded-md p-1 text-warm-gray hover:text-ink"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {!running ? (
+          <>
+            <p className="text-sm leading-relaxed text-ink/70">
+              The cut renders in real time in this tab (a {""}
+              {Math.round(
+                doc.segments.reduce(
+                  (acc, s) => acc + (s.outSec - s.inSec) / (s.speed ?? 1),
+                  0
+                )
+              )}
+              s sequence takes about that long). Keep the tab focused while
+              it runs. Output is WebM with sound; 360 segments follow their
+              scripted camera move.
+            </p>
+            <div className="mt-4">
+              <label className="mb-1 block text-sm font-medium text-ink">
+                Resolution
+              </label>
+              <select
+                value={sizeIdx}
+                onChange={(e) => setSizeIdx(parseInt(e.target.value, 10))}
+                className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm"
+              >
+                {sizes.map((s, i) => (
+                  <option key={s.label} value={i}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                onClick={onClose}
+                className="rounded-md border border-border px-4 py-2 text-sm font-medium text-ink hover:bg-cream-dark"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={start}
+                className="flex items-center gap-2 rounded-md bg-rust px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-rust-dark"
+              >
+                <Download className="h-4 w-4" />
+                Render and download
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-3">
+              <Loader2 className="h-5 w-5 animate-spin text-rust" />
+              <p className="text-sm text-ink/80">
+                {note || "Rendering"}... {Math.round(progress * 100)}%
+              </p>
+            </div>
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-cream-dark">
+              <div
+                className={cn("h-full bg-rust transition-all")}
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div>
+            <div className="mt-5 flex justify-end">
+              <button
+                onClick={() => {
+                  abortRef.current?.abort();
+                  setRunning(false);
+                }}
+                className="rounded-md border border-border px-4 py-2 text-sm font-medium text-ink hover:bg-cream-dark"
+              >
+                Cancel render
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

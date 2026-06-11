@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+import { layoutDoc } from "@/lib/immersive/timeline";
 import type {
+  ScriptResult,
   SequenceDoc,
   StudioAgentRequest,
   StudioClipAnalysis,
@@ -108,9 +110,11 @@ const SEGMENT_SCHEMA = {
     "mode",
     "inSec",
     "outSec",
+    "speed",
     "transitionIn",
     "kenBurns",
     "panoMotion",
+    "filter",
     "overlays",
     "muted",
   ],
@@ -120,6 +124,7 @@ const SEGMENT_SCHEMA = {
     mode: { type: "string", enum: ["2d", "pano360"] },
     inSec: { type: "number" },
     outSec: { type: "number" },
+    speed: { type: "number" },
     transitionIn: {
       type: "object",
       additionalProperties: false,
@@ -127,7 +132,16 @@ const SEGMENT_SCHEMA = {
       properties: {
         type: {
           type: "string",
-          enum: ["cut", "crossfade", "dip-black", "slide-left", "ripple"],
+          enum: [
+            "cut",
+            "crossfade",
+            "dip-black",
+            "slide-left",
+            "ripple",
+            "wipe",
+            "zoom",
+            "blur",
+          ],
         },
         durationSec: { type: "number" },
       },
@@ -165,18 +179,70 @@ const SEGMENT_SCHEMA = {
         { type: "null" },
       ],
     },
+    filter: {
+      anyOf: [
+        {
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "brightness",
+            "contrast",
+            "saturate",
+            "hueDeg",
+            "blur",
+            "grayscale",
+            "sepia",
+          ],
+          properties: {
+            brightness: { type: "number" },
+            contrast: { type: "number" },
+            saturate: { type: "number" },
+            hueDeg: { type: "number" },
+            blur: { type: "number" },
+            grayscale: { type: "number" },
+            sepia: { type: "number" },
+          },
+        },
+        { type: "null" },
+      ],
+    },
     overlays: {
       type: "array",
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["kind", "text", "startSec", "endSec", "position"],
+        required: [
+          "kind",
+          "text",
+          "startSec",
+          "endSec",
+          "position",
+          "style",
+          "anim",
+        ],
         properties: {
           kind: { type: "string", enum: ["title", "lower-third", "caption"] },
           text: { type: "string" },
           startSec: { type: "number" },
           endSec: { type: "number" },
           position: { type: "string", enum: ["center", "lower", "upper"] },
+          style: {
+            type: "object",
+            additionalProperties: false,
+            required: ["size", "color", "background"],
+            properties: {
+              size: { type: "string", enum: ["sm", "md", "lg"] },
+              color: {
+                type: "string",
+                enum: ["cream", "white", "rust", "ink"],
+              },
+              background: { type: "boolean" },
+            },
+          },
+          anim: {
+            type: "string",
+            enum: ["fade", "slide-up", "pop", "none"],
+          },
         },
       },
     },
@@ -187,11 +253,60 @@ const SEGMENT_SCHEMA = {
 const SEQUENCE_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["title", "notes", "segments"],
+  required: ["title", "notes", "aspect", "music", "segments"],
   properties: {
     title: { type: "string" },
     notes: { type: "string" },
+    aspect: { type: "string", enum: ["16:9", "9:16", "1:1"] },
+    music: {
+      anyOf: [
+        {
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "clipId",
+            "volume",
+            "fadeInSec",
+            "fadeOutSec",
+            "loop",
+            "offsetSec",
+          ],
+          properties: {
+            clipId: { type: "string" },
+            volume: { type: "number" },
+            fadeInSec: { type: "number" },
+            fadeOutSec: { type: "number" },
+            loop: { type: "boolean" },
+            offsetSec: { type: "number" },
+          },
+        },
+        { type: "null" },
+      ],
+    },
     segments: { type: "array", items: SEGMENT_SCHEMA },
+  },
+} as const;
+
+const SCRIPT_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["narration", "subtitles", "notes"],
+  properties: {
+    narration: { type: "string" },
+    subtitles: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["startSec", "endSec", "text"],
+        properties: {
+          startSec: { type: "number" },
+          endSec: { type: "number" },
+          text: { type: "string" },
+        },
+      },
+    },
+    notes: { type: "string" },
   },
 } as const;
 
@@ -229,11 +344,15 @@ const HOUSE_STYLE = `House writing rules for any overlay text you produce:
 const SEQUENCE_GRAMMAR = `You output an edit decision list with this grammar:
 - segments play in order; each references a clip by clipId and trims it with inSec/outSec (seconds within the clip, inSec < outSec, never beyond the clip duration).
 - mode is "2d" for flat clips and "pano360" for equirectangular clips. Only mark a segment pano360 if the clip is 360.
-- transitionIn describes how the segment enters. "cut" (durationSec 0) for hard cuts, "crossfade" (0.6 to 1.2s) as the workhorse, "dip-black" (0.8 to 1.4s) for chapter breaks, "slide-left" (0.7 to 1s) for lateral moves, "ripple" (1 to 1.6s) as the water signature, at most once or twice per cut.
+- speed is the playback rate, normally 1. Use 0.5 to 0.75 for a slow contemplative beat, 1.5 to 2 to compress dull motion. A segment's screen time is (out - in) / speed.
+- transitionIn describes how the segment enters. "cut" (durationSec 0) for hard cuts, "crossfade" (0.6 to 1.2s) as the workhorse, "dip-black" (0.8 to 1.4s) for chapter breaks, "slide-left" (0.7 to 1s) for lateral moves, "wipe" (0.6 to 1s) for brisk reveals, "zoom" (0.7 to 1s) for energy, "blur" (0.8 to 1.2s) for dreamlike shifts, "ripple" (1 to 1.6s) as the water signature, at most once or twice per cut.
 - The first segment always enters with a cut.
 - kenBurns animates 2d segments. Scales stay between 1.0 and 1.18, pan values between -1 and 1. Use slow moves, never both a big zoom and a big pan at once. Set kenBurns null on pano360 segments.
 - panoMotion animates pano360 segments as a slow heading drift in degrees (20 to 140 degrees of total travel reads well, pitchDeg between -20 and 20). Set panoMotion null on 2d segments.
-- overlays sit on a segment with startSec/endSec relative to the segment start, inside its duration. "title" for the opening card, "lower-third" for labels, "caption" for guidance. Fade handling is automatic. Keep text under 60 characters.
+- filter is an optional color grade per 2d segment (null for none). brightness/contrast/saturate stay between 0.7 and 1.3, hueDeg between -30 and 30, blur normally 0, grayscale and sepia 0 to 1 only for deliberate looks. A cool teal grade reads as underwater (saturate 1.1, hueDeg -12, brightness 0.95). Use grades to unify the cut, not on every segment differently.
+- overlays sit on a segment with startSec/endSec relative to the segment's screen time, inside its duration. "title" for the opening card, "lower-third" for labels, "caption" for guidance. Each overlay carries style {size sm|md|lg, color cream|white|rust|ink, background true|false} and anim "fade"|"slide-up"|"pop"|"none". Titles look best size lg, color cream, background false, anim slide-up. Lower-thirds best size md, background true. Keep text under 60 characters.
+- aspect is "16:9" unless the brief asks for vertical ("9:16") or square ("1:1").
+- music points at an audio clip from the bin when one exists (volume 0.4 to 0.6, fadeInSec 1 to 2, fadeOutSec 2 to 3, loop true, offsetSec 0). Set music null when the bin has no audio.
 - muted is true unless told otherwise.
 - Segment ids are short and unique, like "seg-1".`;
 
@@ -254,10 +373,20 @@ ${HOUSE_STYLE}
 
 Write notes as a two or three sentence director's note explaining the shape of the cut.`;
 
-const CRITIC_SYSTEM = `You are the Critic in a hybrid 2D/360 editing studio. You receive a brief, the clip bin with analyses, and a sequence. Check, in order: trims stay inside clip durations, modes match the clips (pano360 only on 360 clips), pacing (no segment under 2s or over 10s without reason), transition variety (ripple at most twice, first segment cuts in), overlay timing inside segment bounds and text under 60 characters, house style in overlay text, and whether the cut serves the brief. If everything important holds, verdict "approve" with revisedSequence null. If not, verdict "revise" and return a corrected revisedSequence that keeps as much of the Director's intent as possible.
+const CRITIC_SYSTEM = `You are the Critic in a hybrid 2D/360 editing studio. You receive a brief, the clip bin with analyses, and a sequence. Check, in order: trims stay inside clip durations, modes match the clips (pano360 only on 360 clips), pacing in screen time after speed (no segment under 2s or over 10s without reason), speed values stay between 0.5 and 2 unless the brief demands more, transition variety (ripple at most twice, first segment cuts in), filters stay subtle and consistent across the cut, overlay timing inside segment bounds with text under 60 characters, music points at a real audio clip or is null, house style in overlay text, and whether the cut serves the brief. If everything important holds, verdict "approve" with revisedSequence null. If not, verdict "revise" and return a corrected revisedSequence that keeps as much of the Director's intent as possible.
 ${SEQUENCE_GRAMMAR}
 
 ${HOUSE_STYLE}`;
+
+const SCRIPT_SYSTEM = `You are the narration writer in a documentary studio for Rooted Forward, a civic history project. You receive a brief, a clip bin with analyses, and the final sequence with each segment's absolute start and end time on the timeline. Write two things.
+
+1. narration: a short spoken script the editor will record as a voiceover, written to be read aloud at a calm pace (about 2.3 words per second) over the whole cut. It must fit the total runtime with room to breathe. Plain, concrete, documentary register. Never state a fact (dates, numbers, names, history) that is not in the brief or the clip analyses; for labeled test footage, describe what the viewer is seeing in neutral terms.
+
+2. subtitles: timed cues matching that narration, in absolute timeline seconds, each 2 to 4 seconds long, never overlapping, text under 70 characters, together covering the narration line by line.
+
+${HOUSE_STYLE}
+
+In notes, say in one sentence how you paced the read.`;
 
 /* --------------------------- helpers ----------------------------- */
 
@@ -464,6 +593,46 @@ export async function POST(req: NextRequest) {
             changelog: raw.changelog,
             sequence: normalizeSequence(raw.sequence),
           },
+          trace: { agent: "director", model: MODEL, ms: Date.now() - started },
+        });
+      }
+
+      case "script": {
+        const { timed, total } = layoutDoc(body.sequence);
+        const clipNames = new Map(body.clips.map((c) => [c.id, c.name]));
+        const segTable = timed
+          .map(({ seg, startSec, lenSec }, i) => {
+            const overlayText = (seg.overlays ?? [])
+              .map((o) => `"${o.text}"`)
+              .join(", ");
+            return `${i + 1}. ${startSec.toFixed(1)}s to ${(startSec + lenSec).toFixed(1)}s, ${
+              clipNames.get(seg.clipId) ?? seg.clipId
+            } (${seg.mode})${overlayText ? `, on-screen text ${overlayText}` : ""}`;
+          })
+          .join("\n");
+        const raw = (await runAgent(client, {
+          system: SCRIPT_SYSTEM,
+          content: `Brief\n${body.brief || "(none)"}\n\nTotal runtime ${total.toFixed(1)} seconds\n\nTimeline\n${segTable}\n\nClip bin\n${clipBin(body.clips)}`,
+          schema: SCRIPT_SCHEMA,
+          maxTokens: 6000,
+        })) as {
+          narration: string;
+          subtitles: { startSec: number; endSec: number; text: string }[];
+          notes: string;
+        };
+        const stamp = Date.now().toString(36);
+        const result: ScriptResult = {
+          narration: raw.narration,
+          notes: raw.notes,
+          subtitles: raw.subtitles.map((c, i) => ({
+            id: `cue-${stamp}-${i}`,
+            startSec: c.startSec,
+            endSec: c.endSec,
+            text: c.text,
+          })),
+        };
+        return NextResponse.json({
+          result,
           trace: { agent: "director", model: MODEL, ms: Date.now() - started },
         });
       }

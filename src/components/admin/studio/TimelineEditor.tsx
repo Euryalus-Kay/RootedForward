@@ -1,27 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { sequenceDuration } from "@/lib/immersive/studio-client";
+import {
+  FILTER_PRESETS,
+  layoutDoc,
+  segmentLenSec,
+  segmentSpeed,
+} from "@/lib/immersive/timeline";
+import { uid } from "@/lib/immersive/studio-client";
+import type { PlayerControls } from "@/components/immersive/TimelinePlayer";
 import type {
+  AudioTrack,
   SequenceDoc,
   SequenceOverlay,
   SequenceSegment,
   StudioMediaItem,
+  SubtitleCue,
   TransitionType,
 } from "@/lib/immersive/types";
 import {
   ArrowLeft,
   ArrowRight,
-  ChevronDown,
-  ChevronUp,
+  Copy,
+  Mic,
+  Music,
+  Pause,
+  Play,
+  Redo2,
+  Repeat,
+  Scissors,
   Trash2,
+  Undo2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 /* ------------------------------------------------------------------ */
-/*  TimelineEditor: manual control over the sequence the agents        */
-/*  produced. Segment strip on top, inspector for the selected         */
-/*  segment below. Every change flows up via onChange.                 */
+/*  TimelineEditor: the editing surface. Ruler with a draggable        */
+/*  playhead, zoomable segment strip with trim handles and drag        */
+/*  reorder, split and duplicate, music and voiceover lanes, a         */
+/*  subtitle editor, and a deep inspector (trim, speed, transition,    */
+/*  motion, look, frame, audio, text, stickers).                       */
 /* ------------------------------------------------------------------ */
 
 const TRANSITIONS: { value: TransitionType; label: string }[] = [
@@ -30,6 +51,9 @@ const TRANSITIONS: { value: TransitionType; label: string }[] = [
   { value: "dip-black", label: "Dip to black" },
   { value: "slide-left", label: "Slide" },
   { value: "ripple", label: "Ripple" },
+  { value: "wipe", label: "Wipe" },
+  { value: "zoom", label: "Zoom" },
+  { value: "blur", label: "Blur" },
 ];
 
 const KEN_BURNS_PRESETS: {
@@ -69,33 +93,92 @@ const KEN_BURNS_PRESETS: {
   },
 ];
 
+const SPEEDS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 3, 4];
+
+function fmt(t: number): string {
+  const m = Math.floor(t / 60);
+  const s = (t % 60).toFixed(1).padStart(4, "0");
+  return `${m}:${s}`;
+}
+
+const numInput =
+  "w-20 rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
+const selectInput =
+  "rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
+const fieldLabel =
+  "block text-[10px] font-semibold uppercase tracking-wider text-warm-gray";
+const iconBtn =
+  "flex h-8 w-8 items-center justify-center rounded-md text-warm-gray transition-colors hover:bg-cream-dark hover:text-ink disabled:opacity-30";
+
 interface TimelineEditorProps {
   doc: SequenceDoc;
   media: StudioMediaItem[];
   onChange: (doc: SequenceDoc) => void;
+  playerTime: number;
+  controls: React.MutableRefObject<PlayerControls | null>;
+  playing: boolean;
+  canUndo: boolean;
+  canRedo: boolean;
+  onUndo: () => void;
+  onRedo: () => void;
+  loop: boolean;
+  onToggleLoop: () => void;
+  onSplit: () => void;
 }
 
 export default function TimelineEditor({
   doc,
   media,
   onChange,
+  playerTime,
+  controls,
+  playing,
+  canUndo,
+  canRedo,
+  onUndo,
+  onRedo,
+  loop,
+  onToggleLoop,
+  onSplit,
 }: TimelineEditorProps) {
   const [selectedId, setSelectedId] = useState<string | null>(
     doc.segments[0]?.id ?? null
   );
+  const [pxPerSec, setPxPerSec] = useState(34);
+  const [inspectorTab, setInspectorTab] = useState<
+    "trim" | "look" | "frame" | "audio" | "text" | "stickers"
+  >("trim");
+  const [showSubtitles, setShowSubtitles] = useState(false);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const dragIndexRef = useRef<number | null>(null);
+  const trimRef = useRef<{
+    segId: string;
+    edge: "in" | "out";
+    startX: number;
+    origIn: number;
+    origOut: number;
+  } | null>(null);
 
   const mediaById = new Map(media.map((m) => [m.id, m]));
+  const audioMedia = media.filter((m) => m.kind === "audio");
+  const imageMedia = media.filter((m) => m.kind === "image");
+  const { timed, total } = layoutDoc(doc);
   const selected = doc.segments.find((s) => s.id === selectedId) ?? null;
-  const total = sequenceDuration(doc);
+  const selectedTimed = timed.find((e) => e.seg.id === selectedId) ?? null;
 
-  const updateSegment = (id: string, patch: Partial<SequenceSegment>) => {
-    onChange({
-      ...doc,
-      segments: doc.segments.map((s) =>
-        s.id === id ? { ...s, ...patch } : s
-      ),
-    });
-  };
+  /* --------------------------- mutations --------------------------- */
+
+  const updateSegment = useCallback(
+    (id: string, patch: Partial<SequenceSegment>) => {
+      onChange({
+        ...doc,
+        segments: doc.segments.map((s) =>
+          s.id === id ? { ...s, ...patch } : s
+        ),
+      });
+    },
+    [doc, onChange]
+  );
 
   const moveSegment = (id: string, dir: -1 | 1) => {
     const idx = doc.segments.findIndex((s) => s.id === id);
@@ -106,143 +189,510 @@ export default function TimelineEditor({
     onChange({ ...doc, segments: next });
   };
 
+  const reorderSegment = (from: number, to: number) => {
+    if (from === to || from < 0 || to < 0) return;
+    const next = [...doc.segments];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    onChange({ ...doc, segments: next });
+  };
+
   const removeSegment = (id: string) => {
     onChange({ ...doc, segments: doc.segments.filter((s) => s.id !== id) });
     if (selectedId === id) setSelectedId(null);
   };
 
-  const updateOverlay = (
-    segId: string,
-    index: number,
-    patch: Partial<SequenceOverlay>
-  ) => {
-    const seg = doc.segments.find((s) => s.id === segId);
-    if (!seg) return;
-    const overlays = (seg.overlays ?? []).map((o, i) =>
-      i === index ? { ...o, ...patch } : o
+  const duplicateSegment = (id: string) => {
+    const idx = doc.segments.findIndex((s) => s.id === id);
+    if (idx < 0) return;
+    const copy: SequenceSegment = JSON.parse(
+      JSON.stringify(doc.segments[idx])
     );
-    updateSegment(segId, { overlays });
+    copy.id = uid("seg");
+    copy.stickers = (copy.stickers ?? []).map((st) => ({
+      ...st,
+      id: uid("st"),
+    }));
+    const next = [...doc.segments];
+    next.splice(idx + 1, 0, copy);
+    onChange({ ...doc, segments: next });
+    setSelectedId(copy.id);
   };
 
-  const numInput =
-    "w-20 rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
-  const selectInput =
-    "rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust";
-  const fieldLabel = "block text-[10px] font-semibold uppercase tracking-wider text-warm-gray";
+  /* ---------------------------- trimming --------------------------- */
+
+  const onTrimPointerDown = (
+    e: React.PointerEvent,
+    seg: SequenceSegment,
+    edge: "in" | "out"
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    trimRef.current = {
+      segId: seg.id,
+      edge,
+      startX: e.clientX,
+      origIn: seg.inSec,
+      origOut: seg.outSec,
+    };
+  };
+
+  const onTrimPointerMove = (e: React.PointerEvent) => {
+    const trim = trimRef.current;
+    if (!trim) return;
+    const seg = doc.segments.find((s) => s.id === trim.segId);
+    if (!seg) return;
+    const clip = mediaById.get(seg.clipId);
+    const maxOut = clip?.durationSec ?? Number.POSITIVE_INFINITY;
+    const speed = segmentSpeed(seg);
+    const deltaMedia = ((e.clientX - trim.startX) / pxPerSec) * speed;
+    if (trim.edge === "in") {
+      const nextIn = Math.max(
+        0,
+        Math.min(trim.origIn + deltaMedia, seg.outSec - 0.2 * speed)
+      );
+      updateSegment(seg.id, { inSec: Math.round(nextIn * 10) / 10 });
+    } else {
+      const nextOut = Math.min(
+        maxOut,
+        Math.max(trim.origOut + deltaMedia, seg.inSec + 0.2 * speed)
+      );
+      updateSegment(seg.id, { outSec: Math.round(nextOut * 10) / 10 });
+    }
+  };
+
+  const onTrimPointerUp = () => {
+    trimRef.current = null;
+  };
+
+  /* ------------------------- ruler seeking ------------------------- */
+
+  const seekFromRuler = (e: React.PointerEvent) => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const rect = strip.getBoundingClientRect();
+    const x = e.clientX - rect.left + strip.scrollLeft;
+    controls.current?.seek(Math.max(0, Math.min(total, x / pxPerSec)));
+  };
+
+  /* -------------------------- doc helpers -------------------------- */
+
+  const setTrack = (key: "music" | "voiceover", track: AudioTrack | null) => {
+    onChange({ ...doc, [key]: track });
+  };
+
+  const updateCue = (id: string, patch: Partial<SubtitleCue>) => {
+    onChange({
+      ...doc,
+      subtitles: (doc.subtitles ?? []).map((c) =>
+        c.id === id ? { ...c, ...patch } : c
+      ),
+    });
+  };
+
+  /* ------------------------------ render --------------------------- */
+
+  const playheadX = Math.min(playerTime, total) * pxPerSec;
+  const tickEvery = pxPerSec >= 24 ? 1 : pxPerSec >= 12 ? 5 : 10;
+  const ticks: number[] = [];
+  for (let s = 0; s <= Math.ceil(total); s += tickEvery) ticks.push(s);
 
   return (
     <div className="rounded-xl border border-border bg-white/60 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-5 py-3.5">
-        <div>
-          <h2 className="font-display text-base font-semibold text-forest">
-            Timeline
-          </h2>
-          <p className="text-xs text-warm-gray">
-            {doc.segments.length} segment{doc.segments.length === 1 ? "" : "s"}{" "}
-            &middot; {total}s total
-          </p>
+      {/* Header / toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => controls.current?.toggle()}
+            className="flex h-9 w-9 items-center justify-center rounded-md bg-forest text-cream transition-colors hover:bg-forest-light"
+            title="Play / pause (space)"
+          >
+            {playing ? (
+              <Pause className="h-4 w-4" />
+            ) : (
+              <Play className="h-4 w-4" />
+            )}
+          </button>
+          <span className="ml-1 font-mono text-xs text-ink/80">
+            {fmt(Math.min(playerTime, total))}{" "}
+            <span className="text-warm-gray">/ {fmt(total)}</span>
+          </span>
+          <button
+            onClick={onToggleLoop}
+            className={cn(iconBtn, loop && "bg-rust/10 text-rust")}
+            title="Loop playback"
+          >
+            <Repeat className="h-4 w-4" />
+          </button>
         </div>
-        <p className="max-w-xs text-right text-[11px] leading-snug text-warm-gray">
-          Click a segment to edit it, or ask the Director in chat.
-        </p>
+
+        <div className="flex items-center gap-1">
+          <button
+            onClick={onUndo}
+            disabled={!canUndo}
+            className={iconBtn}
+            title="Undo (Ctrl+Z)"
+          >
+            <Undo2 className="h-4 w-4" />
+          </button>
+          <button
+            onClick={onRedo}
+            disabled={!canRedo}
+            className={iconBtn}
+            title="Redo (Ctrl+Shift+Z)"
+          >
+            <Redo2 className="h-4 w-4" />
+          </button>
+          <span className="mx-1 h-5 w-px bg-border" />
+          <button
+            onClick={onSplit}
+            className={iconBtn}
+            title="Split at playhead (S)"
+          >
+            <Scissors className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => selected && duplicateSegment(selected.id)}
+            disabled={!selected}
+            className={iconBtn}
+            title="Duplicate segment"
+          >
+            <Copy className="h-4 w-4" />
+          </button>
+          <span className="mx-1 h-5 w-px bg-border" />
+          <button
+            onClick={() => setPxPerSec((v) => Math.max(10, v - 8))}
+            className={iconBtn}
+            title="Zoom out"
+          >
+            <ZoomOut className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setPxPerSec((v) => Math.min(90, v + 8))}
+            className={iconBtn}
+            title="Zoom in"
+          >
+            <ZoomIn className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
-      {/* Segment strip */}
-      <div className="overflow-x-auto px-5 py-4">
-        {doc.segments.length === 0 ? (
-          <p className="py-4 text-center text-sm text-warm-gray">
-            No segments yet. Generate a cut or add clips from the media bin.
-          </p>
-        ) : (
-          <div className="flex min-w-max items-stretch gap-1">
-            {doc.segments.map((seg, i) => {
-              const len = Math.max(0.2, seg.outSec - seg.inSec);
+      {/* Ruler + strip */}
+      <div
+        ref={stripRef}
+        className="overflow-x-auto px-4 pt-2"
+        onPointerMove={onTrimPointerMove}
+        onPointerUp={onTrimPointerUp}
+      >
+        <div
+          className="relative min-w-full"
+          style={{ width: Math.max(total * pxPerSec + 60, 300) }}
+        >
+          {/* Ruler */}
+          <div
+            className="relative h-6 cursor-pointer select-none border-b border-border/70"
+            onPointerDown={(e) => {
+              seekFromRuler(e);
+              const move = (ev: PointerEvent) =>
+                seekFromRuler(ev as unknown as React.PointerEvent);
+              const up = () => {
+                window.removeEventListener("pointermove", move);
+                window.removeEventListener("pointerup", up);
+              };
+              window.addEventListener("pointermove", move);
+              window.addEventListener("pointerup", up);
+            }}
+          >
+            {ticks.map((s) => (
+              <div
+                key={s}
+                className="absolute bottom-0 h-2 border-l border-warm-gray/40"
+                style={{ left: s * pxPerSec }}
+              >
+                <span className="absolute -top-4 left-0.5 font-mono text-[9px] text-warm-gray">
+                  {s % 5 === 0 || tickEvery > 1 ? `${s}s` : ""}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Segment strip */}
+          <div className="relative flex h-[74px] items-stretch py-2">
+            {doc.segments.length === 0 && (
+              <p className="self-center px-2 text-sm text-warm-gray">
+                No segments yet. Generate a cut or add clips from the media
+                bin.
+              </p>
+            )}
+            {timed.map((entry, i) => {
+              const { seg, startSec, lenSec } = entry;
               const clip = mediaById.get(seg.clipId);
-              const widthPx = Math.max(84, Math.min(260, len * 26));
               const activeSel = seg.id === selectedId;
               return (
-                <div key={seg.id} className="flex items-stretch gap-1">
-                  {i > 0 && (
-                    <div
-                      className="flex w-7 shrink-0 flex-col items-center justify-center"
-                      title={`${seg.transitionIn.type} ${seg.transitionIn.durationSec}s`}
-                    >
-                      <span className="font-mono text-[9px] uppercase leading-tight text-warm-gray">
-                        {seg.transitionIn.type === "crossfade"
-                          ? "xf"
-                          : seg.transitionIn.type === "dip-black"
-                            ? "dip"
-                            : seg.transitionIn.type === "slide-left"
-                              ? "sld"
-                              : seg.transitionIn.type === "ripple"
-                                ? "rpl"
-                                : "cut"}
-                      </span>
-                      <span className="mt-0.5 h-px w-full bg-border" />
-                    </div>
+                <div
+                  key={seg.id}
+                  className={cn(
+                    "group absolute top-2 flex h-[58px] flex-col justify-between overflow-hidden rounded-md border p-1.5 text-left transition-colors",
+                    activeSel
+                      ? "z-10 border-rust bg-rust/10"
+                      : "border-border bg-white hover:border-rust/50",
+                    seg.mode === "pano360" && "border-dashed"
                   )}
-                  <button
-                    onClick={() => setSelectedId(seg.id)}
-                    style={{ width: widthPx }}
-                    className={cn(
-                      "group relative flex shrink-0 flex-col justify-between overflow-hidden rounded-md border p-2 text-left transition-colors",
-                      activeSel
-                        ? "border-rust bg-rust/10"
-                        : "border-border bg-white hover:border-rust/50",
-                      seg.mode === "pano360" && "border-dashed"
+                  style={{
+                    left: startSec * pxPerSec,
+                    width: Math.max(34, lenSec * pxPerSec),
+                  }}
+                  draggable
+                  onDragStart={(e) => {
+                    dragIndexRef.current = i;
+                    e.dataTransfer.effectAllowed = "move";
+                  }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (dragIndexRef.current !== null) {
+                      reorderSegment(dragIndexRef.current, i);
+                      dragIndexRef.current = null;
+                    }
+                  }}
+                  onClick={() => setSelectedId(seg.id)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="pointer-events-none truncate text-[10px] font-semibold text-ink">
+                    {clip?.name ?? seg.clipId}
+                  </span>
+                  <span className="pointer-events-none flex items-center gap-1">
+                    <span
+                      className={cn(
+                        "rounded-sm px-1 font-mono text-[8px] uppercase",
+                        seg.mode === "pano360"
+                          ? "bg-rust/15 text-rust"
+                          : "bg-forest/10 text-forest"
+                      )}
+                    >
+                      {seg.mode === "pano360" ? "360" : "2D"}
+                    </span>
+                    {(seg.speed ?? 1) !== 1 && (
+                      <span className="rounded-sm bg-amber-100 px-1 font-mono text-[8px] text-amber-700">
+                        {seg.speed}x
+                      </span>
                     )}
-                  >
-                    <span className="truncate text-[11px] font-semibold text-ink">
-                      {clip?.name ?? seg.clipId}
-                    </span>
-                    <span className="mt-2 flex items-center justify-between">
-                      <span
-                        className={cn(
-                          "rounded-sm px-1 py-0.5 font-mono text-[9px] uppercase",
-                          seg.mode === "pano360"
-                            ? "bg-rust/15 text-rust"
-                            : "bg-forest/10 text-forest"
-                        )}
-                      >
-                        {seg.mode === "pano360" ? "360" : "2D"}
+                    {seg.filter && (
+                      <span className="rounded-sm bg-forest/10 px-1 font-mono text-[8px] text-forest">
+                        fx
                       </span>
-                      <span className="font-mono text-[10px] text-warm-gray">
-                        {len.toFixed(1)}s
-                      </span>
-                    </span>
+                    )}
                     {(seg.overlays?.length ?? 0) > 0 && (
-                      <span
-                        className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-rust"
-                        title="Has overlays"
-                      />
+                      <span className="rounded-sm bg-rust/15 px-1 font-mono text-[8px] text-rust">
+                        T
+                      </span>
                     )}
-                  </button>
+                    <span className="ml-auto font-mono text-[9px] text-warm-gray">
+                      {lenSec.toFixed(1)}s
+                    </span>
+                  </span>
+                  {i > 0 && seg.transitionIn.type !== "cut" && (
+                    <span className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-rust/50" />
+                  )}
+
+                  {/* Trim handles */}
+                  <div
+                    className="absolute left-0 top-0 h-full w-2 cursor-ew-resize opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{ background: "rgba(196,93,62,0.5)" }}
+                    onPointerDown={(e) => onTrimPointerDown(e, seg, "in")}
+                    title="Drag to trim in"
+                  />
+                  <div
+                    className="absolute right-0 top-0 h-full w-2 cursor-ew-resize opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{ background: "rgba(196,93,62,0.5)" }}
+                    onPointerDown={(e) => onTrimPointerDown(e, seg, "out")}
+                    title="Drag to trim out"
+                  />
                 </div>
               );
             })}
           </div>
-        )}
+
+          {/* Playhead */}
+          <div
+            className="pointer-events-none absolute bottom-0 top-0 z-20 w-px bg-rust"
+            style={{ left: playheadX }}
+          >
+            <div className="absolute -left-[5px] top-0 h-0 w-0 border-x-[5px] border-t-[6px] border-x-transparent border-t-rust" />
+          </div>
+        </div>
       </div>
 
-      {/* Inspector */}
-      {selected && (
-        <div className="border-t border-border px-5 py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
-              Segment {doc.segments.findIndex((s) => s.id === selected.id) + 1}{" "}
-              &middot; {mediaById.get(selected.clipId)?.name ?? selected.clipId}
+      {/* Track lanes */}
+      <div className="flex flex-wrap items-center gap-2 border-t border-border/60 px-4 py-2">
+        <TrackChip
+          icon={<Music className="h-3.5 w-3.5" />}
+          label="Music"
+          track={doc.music ?? null}
+          mediaById={mediaById}
+          audioMedia={audioMedia}
+          onSet={(t) => setTrack("music", t)}
+        />
+        <TrackChip
+          icon={<Mic className="h-3.5 w-3.5" />}
+          label="Voiceover"
+          track={doc.voiceover ?? null}
+          mediaById={mediaById}
+          audioMedia={audioMedia}
+          onSet={(t) => setTrack("voiceover", t)}
+        />
+        <button
+          onClick={() => setShowSubtitles((v) => !v)}
+          className={cn(
+            "rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition-colors",
+            showSubtitles
+              ? "border-rust bg-rust/10 text-rust"
+              : "border-border bg-white text-ink/70 hover:text-ink"
+          )}
+        >
+          Subtitles ({doc.subtitles?.length ?? 0})
+        </button>
+        <span className="ml-auto text-[10px] text-warm-gray">
+          Space play &middot; S split &middot; arrows seek &middot; Ctrl+Z
+          undo
+        </span>
+      </div>
+
+      {/* Subtitle editor */}
+      {showSubtitles && (
+        <div className="border-t border-border/60 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <p className={fieldLabel}>Subtitles (absolute timeline seconds)</p>
+            <button
+              onClick={() =>
+                onChange({
+                  ...doc,
+                  subtitles: [
+                    ...(doc.subtitles ?? []),
+                    {
+                      id: uid("cue"),
+                      startSec:
+                        Math.round(
+                          (controls.current?.getTime() ?? 0) * 10
+                        ) / 10,
+                      endSec:
+                        Math.round(
+                          ((controls.current?.getTime() ?? 0) + 2.5) * 10
+                        ) / 10,
+                      text: "",
+                    },
+                  ],
+                })
+              }
+              className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+            >
+              + Add cue at playhead
+            </button>
+          </div>
+          {(doc.subtitles ?? []).length === 0 ? (
+            <p className="mt-1 text-xs text-warm-gray">
+              None yet. Ask the Director to write narration, or add cues by
+              hand.
             </p>
+          ) : (
+            <ul className="mt-2 max-h-44 space-y-1.5 overflow-y-auto pr-1">
+              {(doc.subtitles ?? [])
+                .slice()
+                .sort((a, b) => a.startSec - b.startSec)
+                .map((cue) => (
+                  <li key={cue.id} className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={cue.startSec}
+                      onChange={(e) =>
+                        updateCue(cue.id, {
+                          startSec: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className={cn(numInput, "w-16")}
+                    />
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={cue.endSec}
+                      onChange={(e) =>
+                        updateCue(cue.id, {
+                          endSec: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className={cn(numInput, "w-16")}
+                    />
+                    <input
+                      value={cue.text}
+                      placeholder="Cue text"
+                      onChange={(e) =>
+                        updateCue(cue.id, { text: e.target.value })
+                      }
+                      className="min-w-40 flex-1 rounded-md border border-border bg-white px-2 py-1 text-xs"
+                    />
+                    <button
+                      onClick={() =>
+                        onChange({
+                          ...doc,
+                          subtitles: (doc.subtitles ?? []).filter(
+                            (c) => c.id !== cue.id
+                          ),
+                        })
+                      }
+                      className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {/* Inspector */}
+      {selected && selectedTimed && (
+        <div className="border-t border-border px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-1 overflow-x-auto">
+              {(
+                [
+                  ["trim", "Trim"],
+                  ["look", "Look"],
+                  ["frame", "Frame"],
+                  ["audio", "Audio"],
+                  ["text", "Text"],
+                  ["stickers", "Stickers"],
+                ] as const
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setInspectorTab(key)}
+                  className={cn(
+                    "rounded-md px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                    inspectorTab === key
+                      ? "bg-forest text-cream"
+                      : "text-ink/60 hover:text-ink"
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => moveSegment(selected.id, -1)}
-                className="rounded-md p-1.5 text-warm-gray hover:bg-cream-dark hover:text-ink"
+                className={iconBtn}
                 title="Move earlier"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
               <button
                 onClick={() => moveSegment(selected.id, 1)}
-                className="rounded-md p-1.5 text-warm-gray hover:bg-cream-dark hover:text-ink"
+                className={iconBtn}
                 title="Move later"
               >
                 <ArrowRight className="h-4 w-4" />
@@ -257,281 +707,979 @@ export default function TimelineEditor({
             </div>
           </div>
 
-          <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-3">
-            <div>
-              <label className={fieldLabel}>In (s)</label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={selected.inSec}
-                onChange={(e) =>
-                  updateSegment(selected.id, {
-                    inSec: parseFloat(e.target.value) || 0,
-                  })
-                }
-                className={numInput}
+          <div className="mt-3">
+            {inspectorTab === "trim" && (
+              <TrimPanel
+                seg={selected}
+                clip={mediaById.get(selected.clipId)}
+                update={(p) => updateSegment(selected.id, p)}
               />
-            </div>
-            <div>
-              <label className={fieldLabel}>Out (s)</label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={selected.outSec}
-                onChange={(e) =>
-                  updateSegment(selected.id, {
-                    outSec: parseFloat(e.target.value) || 0,
-                  })
-                }
-                className={numInput}
+            )}
+            {inspectorTab === "look" && (
+              <LookPanel
+                seg={selected}
+                update={(p) => updateSegment(selected.id, p)}
               />
-            </div>
-            <div>
-              <label className={fieldLabel}>Transition in</label>
+            )}
+            {inspectorTab === "frame" && (
+              <FramePanel
+                seg={selected}
+                update={(p) => updateSegment(selected.id, p)}
+              />
+            )}
+            {inspectorTab === "audio" && (
+              <AudioPanel
+                seg={selected}
+                update={(p) => updateSegment(selected.id, p)}
+              />
+            )}
+            {inspectorTab === "text" && (
+              <TextPanel
+                seg={selected}
+                update={(p) => updateSegment(selected.id, p)}
+              />
+            )}
+            {inspectorTab === "stickers" && (
+              <StickerPanel
+                seg={selected}
+                imageMedia={imageMedia}
+                update={(p) => updateSegment(selected.id, p)}
+              />
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Track chip (music / voiceover)                                     */
+/* ================================================================== */
+
+function TrackChip({
+  icon,
+  label,
+  track,
+  mediaById,
+  audioMedia,
+  onSet,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  track: AudioTrack | null;
+  mediaById: Map<string, StudioMediaItem>;
+  audioMedia: StudioMediaItem[];
+  onSet: (t: AudioTrack | null) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const clip = track ? mediaById.get(track.clipId) : null;
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          "flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition-colors",
+          track
+            ? "border-forest/40 bg-forest/10 text-forest"
+            : "border-border bg-white text-ink/70 hover:text-ink"
+        )}
+      >
+        {icon}
+        {label}
+        {track && (
+          <span className="max-w-28 truncate font-normal text-forest/80">
+            {clip?.name ?? "missing clip"}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute bottom-full left-0 z-30 mb-2 w-72 rounded-lg border border-border bg-white p-3 shadow-xl">
+          <p className={fieldLabel}>{label} track</p>
+          {audioMedia.length === 0 ? (
+            <p className="mt-1 text-xs text-warm-gray">
+              Add an audio file or record a voiceover in the media bin
+              first.
+            </p>
+          ) : (
+            <>
               <select
-                value={selected.transitionIn.type}
+                value={track?.clipId ?? ""}
+                onChange={(e) => {
+                  const clipId = e.target.value;
+                  if (!clipId) {
+                    onSet(null);
+                  } else {
+                    onSet({
+                      clipId,
+                      volume: track?.volume ?? (label === "Music" ? 0.5 : 1),
+                      fadeInSec: track?.fadeInSec ?? 1,
+                      fadeOutSec: track?.fadeOutSec ?? 1.5,
+                      loop: track?.loop ?? label === "Music",
+                      offsetSec: track?.offsetSec ?? 0,
+                    });
+                  }
+                }}
+                className={cn(selectInput, "mt-2 w-full")}
+              >
+                <option value="">None</option>
+                {audioMedia.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+              {track && (
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <label className="text-[10px] text-warm-gray">
+                    Volume
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={track.volume}
+                      onChange={(e) =>
+                        onSet({ ...track, volume: parseFloat(e.target.value) })
+                      }
+                      className="w-full accent-rust"
+                    />
+                  </label>
+                  <label className="text-[10px] text-warm-gray">
+                    Start at (s)
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={track.offsetSec}
+                      onChange={(e) =>
+                        onSet({
+                          ...track,
+                          offsetSec: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className={cn(numInput, "w-full")}
+                    />
+                  </label>
+                  <label className="text-[10px] text-warm-gray">
+                    Fade in (s)
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={track.fadeInSec}
+                      onChange={(e) =>
+                        onSet({
+                          ...track,
+                          fadeInSec: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className={cn(numInput, "w-full")}
+                    />
+                  </label>
+                  <label className="text-[10px] text-warm-gray">
+                    Fade out (s)
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={track.fadeOutSec}
+                      onChange={(e) =>
+                        onSet({
+                          ...track,
+                          fadeOutSec: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className={cn(numInput, "w-full")}
+                    />
+                  </label>
+                  <label className="col-span-2 flex items-center gap-2 text-[11px] text-ink/70">
+                    <input
+                      type="checkbox"
+                      checked={track.loop}
+                      onChange={(e) =>
+                        onSet({ ...track, loop: e.target.checked })
+                      }
+                      className="accent-rust"
+                    />
+                    Loop until the end
+                  </label>
+                </div>
+              )}
+            </>
+          )}
+          <div className="mt-2 flex justify-end">
+            <button
+              onClick={() => setOpen(false)}
+              className="rounded-md border border-border px-2.5 py-1 text-[11px] text-ink hover:bg-cream-dark"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Inspector panels                                                   */
+/* ================================================================== */
+
+function TrimPanel({
+  seg,
+  clip,
+  update,
+}: {
+  seg: SequenceSegment;
+  clip?: StudioMediaItem;
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
+      <div>
+        <label className={fieldLabel}>In (s)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={seg.inSec}
+          onChange={(e) =>
+            update({ inSec: parseFloat(e.target.value) || 0 })
+          }
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>Out (s)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={seg.outSec}
+          onChange={(e) =>
+            update({ outSec: parseFloat(e.target.value) || 0 })
+          }
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>Speed</label>
+        <select
+          value={seg.speed ?? 1}
+          onChange={(e) => update({ speed: parseFloat(e.target.value) })}
+          className={selectInput}
+        >
+          {SPEEDS.map((s) => (
+            <option key={s} value={s}>
+              {s}x
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className={fieldLabel}>Transition in</label>
+        <select
+          value={seg.transitionIn.type}
+          onChange={(e) =>
+            update({
+              transitionIn: {
+                type: e.target.value as TransitionType,
+                durationSec:
+                  e.target.value === "cut"
+                    ? 0
+                    : seg.transitionIn.durationSec || 0.9,
+              },
+            })
+          }
+          className={selectInput}
+        >
+          {TRANSITIONS.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      {seg.transitionIn.type !== "cut" && (
+        <div>
+          <label className={fieldLabel}>Trans. (s)</label>
+          <input
+            type="number"
+            step="0.1"
+            min="0.2"
+            max="3"
+            value={seg.transitionIn.durationSec}
+            onChange={(e) =>
+              update({
+                transitionIn: {
+                  ...seg.transitionIn,
+                  durationSec: parseFloat(e.target.value) || 0.9,
+                },
+              })
+            }
+            className={numInput}
+          />
+        </div>
+      )}
+      {clip?.is360 && (
+        <div>
+          <label className={fieldLabel}>Mode</label>
+          <select
+            value={seg.mode}
+            onChange={(e) =>
+              update({ mode: e.target.value as "2d" | "pano360" })
+            }
+            className={selectInput}
+          >
+            <option value="pano360">360 look-around</option>
+            <option value="2d">Flat</option>
+          </select>
+        </div>
+      )}
+      {seg.mode === "2d" ? (
+        <div>
+          <label className={fieldLabel}>Ken Burns</label>
+          <select
+            value={KEN_BURNS_PRESETS.findIndex(
+              (p) =>
+                JSON.stringify(p.value) ===
+                JSON.stringify(seg.kenBurns ?? null)
+            )}
+            onChange={(e) =>
+              update({
+                kenBurns:
+                  KEN_BURNS_PRESETS[parseInt(e.target.value, 10)]?.value ??
+                  null,
+              })
+            }
+            className={selectInput}
+          >
+            {KEN_BURNS_PRESETS.map((p, i) => (
+              <option key={p.label} value={i}>
+                {p.label}
+              </option>
+            ))}
+            <option value={-1}>Custom (from Director)</option>
+          </select>
+        </div>
+      ) : (
+        <>
+          <div>
+            <label className={fieldLabel}>Yaw from</label>
+            <input
+              type="number"
+              value={seg.panoMotion?.fromYawDeg ?? 0}
+              onChange={(e) =>
+                update({
+                  panoMotion: {
+                    fromYawDeg: parseFloat(e.target.value) || 0,
+                    toYawDeg: seg.panoMotion?.toYawDeg ?? 90,
+                    pitchDeg: seg.panoMotion?.pitchDeg ?? 0,
+                  },
+                })
+              }
+              className={numInput}
+            />
+          </div>
+          <div>
+            <label className={fieldLabel}>Yaw to</label>
+            <input
+              type="number"
+              value={seg.panoMotion?.toYawDeg ?? 90}
+              onChange={(e) =>
+                update({
+                  panoMotion: {
+                    fromYawDeg: seg.panoMotion?.fromYawDeg ?? 0,
+                    toYawDeg: parseFloat(e.target.value) || 0,
+                    pitchDeg: seg.panoMotion?.pitchDeg ?? 0,
+                  },
+                })
+              }
+              className={numInput}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function LookPanel({
+  seg,
+  update,
+}: {
+  seg: SequenceSegment;
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  const f = seg.filter;
+  const presetIdx = FILTER_PRESETS.findIndex(
+    (p) => JSON.stringify(p.value) === JSON.stringify(f ?? null)
+  );
+  const sliders: {
+    key: "brightness" | "contrast" | "saturate" | "hueDeg" | "blur";
+    label: string;
+    min: number;
+    max: number;
+    step: number;
+    neutral: number;
+  }[] = [
+    { key: "brightness", label: "Brightness", min: 0.4, max: 1.6, step: 0.02, neutral: 1 },
+    { key: "contrast", label: "Contrast", min: 0.4, max: 1.6, step: 0.02, neutral: 1 },
+    { key: "saturate", label: "Saturation", min: 0, max: 2, step: 0.05, neutral: 1 },
+    { key: "hueDeg", label: "Hue", min: -180, max: 180, step: 1, neutral: 0 },
+    { key: "blur", label: "Blur", min: 0, max: 10, step: 0.5, neutral: 0 },
+  ];
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        {FILTER_PRESETS.map((p, i) => (
+          <button
+            key={p.name}
+            onClick={() =>
+              update({ filter: p.value ? { ...p.value } : null })
+            }
+            className={cn(
+              "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+              presetIdx === i
+                ? "border-rust bg-rust/10 text-rust"
+                : "border-border bg-white text-ink/70 hover:text-ink"
+            )}
+          >
+            {p.name}
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-3">
+        {sliders.map((s) => (
+          <label key={s.key} className="text-[10px] text-warm-gray">
+            {s.label}{" "}
+            <span className="font-mono">
+              {(f?.[s.key] ?? s.neutral).toFixed(s.step < 1 ? 2 : 0)}
+            </span>
+            <input
+              type="range"
+              min={s.min}
+              max={s.max}
+              step={s.step}
+              value={f?.[s.key] ?? s.neutral}
+              onChange={(e) =>
+                update({
+                  filter: {
+                    brightness: f?.brightness ?? 1,
+                    contrast: f?.contrast ?? 1,
+                    saturate: f?.saturate ?? 1,
+                    hueDeg: f?.hueDeg ?? 0,
+                    blur: f?.blur ?? 0,
+                    grayscale: f?.grayscale ?? 0,
+                    sepia: f?.sepia ?? 0,
+                    [s.key]: parseFloat(e.target.value),
+                  },
+                })
+              }
+              className="w-full accent-rust"
+            />
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FramePanel({
+  seg,
+  update,
+}: {
+  seg: SequenceSegment;
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  const tr = seg.transform ?? {
+    scale: 1,
+    xPct: 0,
+    yPct: 0,
+    rotateDeg: 0,
+    fit: "cover" as const,
+  };
+  const set = (patch: Partial<typeof tr>) =>
+    update({ transform: { ...tr, ...patch } });
+  return (
+    <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
+      <div>
+        <label className={fieldLabel}>Fit</label>
+        <select
+          value={tr.fit}
+          onChange={(e) => set({ fit: e.target.value as "cover" | "contain" })}
+          className={selectInput}
+        >
+          <option value="cover">Fill the frame</option>
+          <option value="contain">Fit inside</option>
+        </select>
+      </div>
+      <div>
+        <label className={fieldLabel}>Scale</label>
+        <input
+          type="number"
+          step="0.05"
+          min="0.2"
+          max="3"
+          value={tr.scale}
+          onChange={(e) => set({ scale: parseFloat(e.target.value) || 1 })}
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>X (%)</label>
+        <input
+          type="number"
+          step="1"
+          min="-50"
+          max="50"
+          value={tr.xPct}
+          onChange={(e) => set({ xPct: parseFloat(e.target.value) || 0 })}
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>Y (%)</label>
+        <input
+          type="number"
+          step="1"
+          min="-50"
+          max="50"
+          value={tr.yPct}
+          onChange={(e) => set({ yPct: parseFloat(e.target.value) || 0 })}
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>Rotate (deg)</label>
+        <input
+          type="number"
+          step="1"
+          value={tr.rotateDeg}
+          onChange={(e) => set({ rotateDeg: parseFloat(e.target.value) || 0 })}
+          className={numInput}
+        />
+      </div>
+      <button
+        onClick={() => update({ transform: null })}
+        className="rounded-md border border-border px-2.5 py-1 text-[11px] text-ink hover:bg-cream-dark"
+      >
+        Reset frame
+      </button>
+    </div>
+  );
+}
+
+function AudioPanel({
+  seg,
+  update,
+}: {
+  seg: SequenceSegment;
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  const a = seg.audio;
+  const effective = a ? a.volume : (seg.muted ?? true) ? 0 : 1;
+  return (
+    <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+      <label className="text-[10px] text-warm-gray">
+        Clip volume <span className="font-mono">{effective.toFixed(2)}</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value={effective}
+          onChange={(e) => {
+            const v = parseFloat(e.target.value);
+            update({
+              audio: {
+                volume: v,
+                fadeInSec: a?.fadeInSec ?? 0,
+                fadeOutSec: a?.fadeOutSec ?? 0,
+              },
+              muted: v <= 0.001,
+            });
+          }}
+          className="w-44 accent-rust"
+        />
+      </label>
+      <div>
+        <label className={fieldLabel}>Fade in (s)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={a?.fadeInSec ?? 0}
+          onChange={(e) =>
+            update({
+              audio: {
+                volume: a?.volume ?? effective,
+                fadeInSec: parseFloat(e.target.value) || 0,
+                fadeOutSec: a?.fadeOutSec ?? 0,
+              },
+            })
+          }
+          className={numInput}
+        />
+      </div>
+      <div>
+        <label className={fieldLabel}>Fade out (s)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={a?.fadeOutSec ?? 0}
+          onChange={(e) =>
+            update({
+              audio: {
+                volume: a?.volume ?? effective,
+                fadeInSec: a?.fadeInSec ?? 0,
+                fadeOutSec: parseFloat(e.target.value) || 0,
+              },
+            })
+          }
+          className={numInput}
+        />
+      </div>
+      <p className="text-[11px] leading-snug text-warm-gray">
+        Unmute the player to hear it. Music ducks automatically while a
+        voiceover plays.
+      </p>
+    </div>
+  );
+}
+
+function TextPanel({
+  seg,
+  update,
+}: {
+  seg: SequenceSegment;
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  const overlays = seg.overlays ?? [];
+  const setOverlay = (i: number, patch: Partial<SequenceOverlay>) =>
+    update({
+      overlays: overlays.map((o, oi) => (oi === i ? { ...o, ...patch } : o)),
+    });
+  const len = segmentLenSec(seg);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className={fieldLabel}>Text overlays</p>
+        <button
+          onClick={() =>
+            update({
+              overlays: [
+                ...overlays,
+                {
+                  kind: "caption",
+                  text: "",
+                  startSec: 0.5,
+                  endSec: Math.max(1.5, len - 0.5),
+                  position: "lower",
+                  style: { size: "md", color: "cream", background: true },
+                  anim: "fade",
+                },
+              ],
+            })
+          }
+          className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+        >
+          + Add text
+        </button>
+      </div>
+      {overlays.length === 0 ? (
+        <p className="mt-1 text-xs text-warm-gray">None</p>
+      ) : (
+        <ul className="mt-2 space-y-2">
+          {overlays.map((o, i) => (
+            <li
+              key={i}
+              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-border/70 bg-white px-3 py-2"
+            >
+              <select
+                value={o.kind}
                 onChange={(e) =>
-                  updateSegment(selected.id, {
-                    transitionIn: {
-                      ...selected.transitionIn,
-                      type: e.target.value as TransitionType,
-                      durationSec:
-                        e.target.value === "cut"
-                          ? 0
-                          : selected.transitionIn.durationSec || 0.9,
+                  setOverlay(i, {
+                    kind: e.target.value as SequenceOverlay["kind"],
+                  })
+                }
+                className={selectInput}
+              >
+                <option value="title">Title</option>
+                <option value="lower-third">Lower third</option>
+                <option value="caption">Caption</option>
+              </select>
+              <input
+                type="text"
+                value={o.text}
+                placeholder="Overlay text"
+                onChange={(e) => setOverlay(i, { text: e.target.value })}
+                className="min-w-40 flex-1 rounded-md border border-border bg-white px-2 py-1 text-xs"
+              />
+              <div>
+                <label className={fieldLabel}>Start</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={o.startSec}
+                  onChange={(e) =>
+                    setOverlay(i, {
+                      startSec: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className={cn(numInput, "w-16")}
+                />
+              </div>
+              <div>
+                <label className={fieldLabel}>End</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={o.endSec}
+                  onChange={(e) =>
+                    setOverlay(i, { endSec: parseFloat(e.target.value) || 0 })
+                  }
+                  className={cn(numInput, "w-16")}
+                />
+              </div>
+              <select
+                value={o.position ?? (o.kind === "title" ? "center" : "lower")}
+                onChange={(e) =>
+                  setOverlay(i, {
+                    position: e.target.value as "center" | "lower" | "upper",
+                  })
+                }
+                className={selectInput}
+              >
+                <option value="center">Center</option>
+                <option value="lower">Lower</option>
+                <option value="upper">Upper</option>
+              </select>
+              <select
+                value={o.style?.size ?? "md"}
+                onChange={(e) =>
+                  setOverlay(i, {
+                    style: {
+                      size: e.target.value as "sm" | "md" | "lg",
+                      color: o.style?.color ?? "cream",
+                      background: o.style?.background ?? o.kind !== "title",
                     },
                   })
                 }
                 className={selectInput}
               >
-                {TRANSITIONS.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
+                <option value="sm">Small</option>
+                <option value="md">Medium</option>
+                <option value="lg">Large</option>
+              </select>
+              <select
+                value={o.style?.color ?? "cream"}
+                onChange={(e) =>
+                  setOverlay(i, {
+                    style: {
+                      size: o.style?.size ?? "md",
+                      color: e.target.value as
+                        | "cream"
+                        | "white"
+                        | "rust"
+                        | "ink",
+                      background: o.style?.background ?? o.kind !== "title",
+                    },
+                  })
+                }
+                className={selectInput}
+              >
+                <option value="cream">Cream</option>
+                <option value="white">White</option>
+                <option value="rust">Rust</option>
+                <option value="ink">Ink</option>
+              </select>
+              <select
+                value={o.anim ?? "fade"}
+                onChange={(e) =>
+                  setOverlay(i, {
+                    anim: e.target.value as SequenceOverlay["anim"],
+                  })
+                }
+                className={selectInput}
+              >
+                <option value="fade">Fade</option>
+                <option value="slide-up">Slide up</option>
+                <option value="pop">Pop</option>
+                <option value="none">None</option>
+              </select>
+              <label className="flex items-center gap-1 text-[10px] text-warm-gray">
+                <input
+                  type="checkbox"
+                  checked={o.style?.background ?? o.kind !== "title"}
+                  onChange={(e) =>
+                    setOverlay(i, {
+                      style: {
+                        size: o.style?.size ?? "md",
+                        color: o.style?.color ?? "cream",
+                        background: e.target.checked,
+                      },
+                    })
+                  }
+                  className="accent-rust"
+                />
+                Plate
+              </label>
+              <button
+                onClick={() =>
+                  update({ overlays: overlays.filter((_, oi) => oi !== i) })
+                }
+                className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function StickerPanel({
+  seg,
+  imageMedia,
+  update,
+}: {
+  seg: SequenceSegment;
+  imageMedia: StudioMediaItem[];
+  update: (p: Partial<SequenceSegment>) => void;
+}) {
+  const stickers = seg.stickers ?? [];
+  const len = segmentLenSec(seg);
+  const setSticker = (
+    id: string,
+    patch: Partial<(typeof stickers)[number]>
+  ) =>
+    update({
+      stickers: stickers.map((s) => (s.id === id ? { ...s, ...patch } : s)),
+    });
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className={fieldLabel}>Image stickers</p>
+        <button
+          onClick={() => {
+            if (imageMedia.length === 0) {
+              toast("Add an image to the media bin first");
+              return;
+            }
+            update({
+              stickers: [
+                ...stickers,
+                {
+                  id: uid("st"),
+                  assetId: imageMedia[0].id,
+                  xPct: 80,
+                  yPct: 18,
+                  widthPct: 18,
+                  rotateDeg: 0,
+                  opacity: 1,
+                  startSec: 0,
+                  endSec: len,
+                },
+              ],
+            });
+          }}
+          className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+        >
+          + Add sticker
+        </button>
+      </div>
+      {stickers.length === 0 ? (
+        <p className="mt-1 text-xs text-warm-gray">
+          None. Stickers pin an image (a logo, an arrow, a label plate) over
+          this segment.
+        </p>
+      ) : (
+        <ul className="mt-2 space-y-2">
+          {stickers.map((st) => (
+            <li
+              key={st.id}
+              className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-border/70 bg-white px-3 py-2"
+            >
+              <select
+                value={st.assetId}
+                onChange={(e) => setSticker(st.id, { assetId: e.target.value })}
+                className={cn(selectInput, "max-w-40")}
+              >
+                {imageMedia.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
                   </option>
                 ))}
               </select>
-            </div>
-            {selected.transitionIn.type !== "cut" && (
+              {(
+                [
+                  ["xPct", "X %", 0, 100],
+                  ["yPct", "Y %", 0, 100],
+                  ["widthPct", "Width %", 2, 80],
+                  ["rotateDeg", "Rotate", -180, 180],
+                ] as const
+              ).map(([key, label, min, max]) => (
+                <div key={key}>
+                  <label className={fieldLabel}>{label}</label>
+                  <input
+                    type="number"
+                    min={min}
+                    max={max}
+                    value={st[key]}
+                    onChange={(e) =>
+                      setSticker(st.id, {
+                        [key]: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                    className={cn(numInput, "w-16")}
+                  />
+                </div>
+              ))}
               <div>
-                <label className={fieldLabel}>Trans. (s)</label>
+                <label className={fieldLabel}>Start</label>
                 <input
                   type="number"
                   step="0.1"
-                  min="0.2"
-                  max="3"
-                  value={selected.transitionIn.durationSec}
+                  value={st.startSec}
                   onChange={(e) =>
-                    updateSegment(selected.id, {
-                      transitionIn: {
-                        ...selected.transitionIn,
-                        durationSec: parseFloat(e.target.value) || 0.9,
-                      },
+                    setSticker(st.id, {
+                      startSec: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className={numInput}
+                  className={cn(numInput, "w-16")}
                 />
               </div>
-            )}
-            {mediaById.get(selected.clipId)?.is360 && (
               <div>
-                <label className={fieldLabel}>Mode</label>
-                <select
-                  value={selected.mode}
+                <label className={fieldLabel}>End</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={st.endSec}
                   onChange={(e) =>
-                    updateSegment(selected.id, {
-                      mode: e.target.value as "2d" | "pano360",
+                    setSticker(st.id, {
+                      endSec: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className={selectInput}
-                >
-                  <option value="pano360">360 look-around</option>
-                  <option value="2d">Flat</option>
-                </select>
+                  className={cn(numInput, "w-16")}
+                />
               </div>
-            )}
-            {selected.mode === "2d" ? (
-              <div>
-                <label className={fieldLabel}>Ken Burns</label>
-                <select
-                  value={KEN_BURNS_PRESETS.findIndex(
-                    (p) =>
-                      JSON.stringify(p.value) ===
-                      JSON.stringify(selected.kenBurns ?? null)
-                  )}
-                  onChange={(e) =>
-                    updateSegment(selected.id, {
-                      kenBurns:
-                        KEN_BURNS_PRESETS[parseInt(e.target.value, 10)]
-                          ?.value ?? null,
-                    })
-                  }
-                  className={selectInput}
-                >
-                  {KEN_BURNS_PRESETS.map((p, i) => (
-                    <option key={p.label} value={i}>
-                      {p.label}
-                    </option>
-                  ))}
-                  <option value={-1}>Custom (from Director)</option>
-                </select>
-              </div>
-            ) : (
-              <>
-                <div>
-                  <label className={fieldLabel}>Yaw from (deg)</label>
-                  <input
-                    type="number"
-                    value={selected.panoMotion?.fromYawDeg ?? 0}
-                    onChange={(e) =>
-                      updateSegment(selected.id, {
-                        panoMotion: {
-                          fromYawDeg: parseFloat(e.target.value) || 0,
-                          toYawDeg: selected.panoMotion?.toYawDeg ?? 90,
-                          pitchDeg: selected.panoMotion?.pitchDeg ?? 0,
-                        },
-                      })
-                    }
-                    className={numInput}
-                  />
-                </div>
-                <div>
-                  <label className={fieldLabel}>Yaw to (deg)</label>
-                  <input
-                    type="number"
-                    value={selected.panoMotion?.toYawDeg ?? 90}
-                    onChange={(e) =>
-                      updateSegment(selected.id, {
-                        panoMotion: {
-                          fromYawDeg: selected.panoMotion?.fromYawDeg ?? 0,
-                          toYawDeg: parseFloat(e.target.value) || 0,
-                          pitchDeg: selected.panoMotion?.pitchDeg ?? 0,
-                        },
-                      })
-                    }
-                    className={numInput}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Overlays */}
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
-              <p className={fieldLabel}>Overlays</p>
               <button
                 onClick={() =>
-                  updateSegment(selected.id, {
-                    overlays: [
-                      ...(selected.overlays ?? []),
-                      {
-                        kind: "caption",
-                        text: "",
-                        startSec: 0.5,
-                        endSec: Math.max(
-                          1.5,
-                          selected.outSec - selected.inSec - 0.5
-                        ),
-                        position: "lower",
-                      },
-                    ],
+                  update({
+                    stickers: stickers.filter((s) => s.id !== st.id),
                   })
                 }
-                className="text-[11px] font-semibold text-rust hover:text-rust-dark"
+                className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
               >
-                + Add overlay
+                <Trash2 className="h-3.5 w-3.5" />
               </button>
-            </div>
-            {(selected.overlays ?? []).length === 0 ? (
-              <p className="mt-1 text-xs text-warm-gray">None</p>
-            ) : (
-              <ul className="mt-2 space-y-2">
-                {(selected.overlays ?? []).map((o, i) => (
-                  <li
-                    key={i}
-                    className="flex flex-wrap items-end gap-x-3 gap-y-2 rounded-md border border-border/70 bg-white px-3 py-2"
-                  >
-                    <select
-                      value={o.kind}
-                      onChange={(e) =>
-                        updateOverlay(selected.id, i, {
-                          kind: e.target.value as SequenceOverlay["kind"],
-                        })
-                      }
-                      className={selectInput}
-                    >
-                      <option value="title">Title</option>
-                      <option value="lower-third">Lower third</option>
-                      <option value="caption">Caption</option>
-                    </select>
-                    <input
-                      type="text"
-                      value={o.text}
-                      placeholder="Overlay text"
-                      onChange={(e) =>
-                        updateOverlay(selected.id, i, { text: e.target.value })
-                      }
-                      className="min-w-44 flex-1 rounded-md border border-border bg-white px-2 py-1 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-rust"
-                    />
-                    <div>
-                      <label className={fieldLabel}>Start</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={o.startSec}
-                        onChange={(e) =>
-                          updateOverlay(selected.id, i, {
-                            startSec: parseFloat(e.target.value) || 0,
-                          })
-                        }
-                        className={cn(numInput, "w-16")}
-                      />
-                    </div>
-                    <div>
-                      <label className={fieldLabel}>End</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={o.endSec}
-                        onChange={(e) =>
-                          updateOverlay(selected.id, i, {
-                            endSec: parseFloat(e.target.value) || 0,
-                          })
-                        }
-                        className={cn(numInput, "w-16")}
-                      />
-                    </div>
-                    <button
-                      onClick={() =>
-                        updateSegment(selected.id, {
-                          overlays: (selected.overlays ?? []).filter(
-                            (_, oi) => oi !== i
-                          ),
-                        })
-                      }
-                      className="rounded-md p-1 text-warm-gray hover:bg-red-50 hover:text-red-600"
-                      title="Remove overlay"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Collapse hint */}
-          <button
-            onClick={() => setSelectedId(null)}
-            className="mt-3 flex items-center gap-1 text-[11px] font-medium text-warm-gray hover:text-ink"
-          >
-            <ChevronUp className="h-3.5 w-3.5" />
-            Close inspector
-          </button>
-          <ChevronDown className="hidden" aria-hidden="true" />
-        </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
