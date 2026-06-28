@@ -41,3 +41,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hyde Park film: keep the final museum cut + manifest in the repo, but not the
+# large per-chapter intermediates or the older tour cut (regenerate via scripts).
+public/media/hyde-park/video/intro.mp4
+public/media/hyde-park/video/formation.mp4
+public/media/hyde-park/video/university.mp4
+public/media/hyde-park/video/worlds-fair.mp4
+public/media/hyde-park/video/color-line.mp4
+public/media/hyde-park/video/urban-renewal.mp4
+public/media/hyde-park/video/present.mp4
+public/media/hyde-park/video/hyde-park-tour.mp4
+public/media/hyde-park/slates/

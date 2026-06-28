@@ -1,7 +1,7 @@
 {
   "video": "/media/hyde-park/video/hyde-park-museum.mp4",
   "poster": "/media/hyde-park/video/poster.jpg",
-  "duration": 500.44,
+  "duration": 439.09,
   "chapters": [
     {
       "id": "opening",
@@ -15,49 +15,49 @@
       "title": "Hyde Park, Ground That Keeps Moving",
       "era": "Today",
       "year": null,
-      "startSec": 20.8
+      "startSec": 10.22
     },
     {
       "id": "formation",
       "title": "Paul Cornell's Lakefront Bet",
       "era": "1853 to 1889",
       "year": 1853,
-      "startSec": 97.72
+      "startSec": 61.97
     },
     {
       "id": "university",
       "title": "Rockefeller's University Rises",
       "era": "1890 to 1910",
       "year": 1890,
-      "startSec": 184.35
+      "startSec": 134.18
     },
     {
       "id": "worlds-fair",
       "title": "The White City in Jackson Park",
       "era": "1893",
       "year": 1893,
-      "startSec": 249.1
+      "startSec": 190.55
     },
     {
       "id": "color-line",
       "title": "The Color Line Comes to Hyde Park",
       "era": "1920s to 1948",
       "year": 1948,
-      "startSec": 319.85
+      "startSec": 252.3
     },
     {
       "id": "urban-renewal",
       "title": "The University Rebuilds the Neighborhood",
       "era": "1952 to 1970s",
       "year": 1958,
-      "startSec": 362.97
+      "startSec": 303.14
     },
     {
       "id": "present",
       "title": "Hyde Park Now",
       "era": "Today",
       "year": 2026,
-      "startSec": 418.1
+      "startSec": 363.34
     }
   ]
 }
