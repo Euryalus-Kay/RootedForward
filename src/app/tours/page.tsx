@@ -332,6 +332,24 @@ function ChicagoMap({ stops }: { stops: TourStop[] }) {
         <text x="190" y="322" fill="#1B3A2D" opacity="0.2" fontSize="9" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="1.5">BRONZEVILLE</text>
         <text x="240" y="415" fill="#1B3A2D" opacity="0.25" fontSize="9.5" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="1.5">HYDE PARK</text>
 
+        {/* Hyde Park film tour — links the immersive film from the map */}
+        <Link href="/tours/chicago/hyde-park" aria-label="Watch the Hyde Park film tour">
+          <g className="group cursor-pointer">
+            <circle cx="240" cy="437" r="13" fill="#C45D3E" opacity="0.12" className="transition-opacity group-hover:opacity-25" />
+            <circle
+              cx="240"
+              cy="437"
+              r="9"
+              fill="#C45D3E"
+              stroke="#F5F0E8"
+              strokeWidth="2.5"
+              style={{ filter: "drop-shadow(0 2px 5px rgba(196,93,62,0.35))" }}
+            />
+            <path d="M236.8 433 L236.8 441 L243 437 Z" fill="#F5F0E8" className="pointer-events-none" />
+            <text x="240" y="459" fill="#C45D3E" fontSize="6.4" fontFamily="sans-serif" fontWeight="700" textAnchor="middle" letterSpacing="0.7" className="pointer-events-none">WATCH THE FILM TOUR</text>
+          </g>
+        </Link>
+
         {/* Secondary neighborhood labels — mixed case */}
         <text x="135" y="142" fill="#1B3A2D" opacity="0.22" fontSize="8" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.8">Logan Square</text>
         <text x="95" y="300" fill="#1B3A2D" opacity="0.2" fontSize="7.5" fontFamily="sans-serif" fontWeight="600" textAnchor="middle" letterSpacing="0.5">Austin</text>
