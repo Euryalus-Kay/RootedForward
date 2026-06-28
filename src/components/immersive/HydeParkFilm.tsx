@@ -19,11 +19,17 @@ interface Chapter {
   year: number | null;
   startSec: number;
 }
+interface Pano {
+  cid: string;
+  startSec: number;
+  endSec: number;
+}
 interface Manifest {
   video: string;
   poster: string;
   duration: number;
   chapters: Chapter[];
+  panos?: Pano[];
 }
 
 const TEST_PANO: Media360 = {
@@ -109,6 +115,16 @@ export default function HydeParkFilm({
   // video metadata loads in
   const total = man?.duration || dur || 1;
 
+  // the 360 windows in the film. The "View in 3D" button only appears while one
+  // of these is actually on screen, and opens that exact look-around spot.
+  const panos = man?.panos ?? [];
+  const activePano =
+    panos.find((p) => t >= p.startSec - 0.15 && t < p.endSec - 0.05) ?? null;
+  const revealForCid = useCallback((cid: string) => {
+    const i = REVEAL_SPOTS.findIndex((s) => s.id === cid);
+    return i >= 0 ? i : 0;
+  }, []);
+
   const seek = useCallback((sec: number, play = true) => {
     const v = videoRef.current;
     if (!v) return;
@@ -193,12 +209,19 @@ export default function HydeParkFilm({
             onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
           />
 
-          {/* Obvious "View in 3D" button over the video */}
+          {/* "View in 3D" appears only while a 360 beat is actually on screen,
+              and opens that look-around spot. It fades in and out with the beat. */}
           {!open3d && (
             <button
               type="button"
-              onClick={() => open3D()}
-              className="absolute right-3 top-3 z-20 inline-flex items-center gap-2 rounded-full bg-rust px-4 py-2 font-body text-xs font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-transform hover:scale-105"
+              onClick={() => activePano && open3D(revealForCid(activePano.cid))}
+              aria-hidden={!activePano}
+              tabIndex={activePano ? 0 : -1}
+              className={`absolute right-3 top-3 z-20 inline-flex items-center gap-2 rounded-full bg-rust px-4 py-2 font-body text-xs font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-all duration-500 hover:scale-105 ${
+                activePano
+                  ? "translate-y-0 opacity-100"
+                  : "pointer-events-none -translate-y-1 opacity-0"
+              }`}
             >
               <span aria-hidden="true" className="rounded-full bg-white/25 px-1.5 py-0.5 text-[10px] leading-none">360°</span>
               View in 3D

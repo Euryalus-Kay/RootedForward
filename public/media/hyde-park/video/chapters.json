@@ -59,5 +59,17 @@
       "year": 2026,
       "startSec": 363.34
     }
+  ],
+  "panos": [
+    {
+      "cid": "intro",
+      "startSec": 26.19,
+      "endSec": 48.38
+    },
+    {
+      "cid": "present",
+      "startSec": 383.31,
+      "endSec": 408.8
+    }
   ]
 }

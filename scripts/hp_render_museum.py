@@ -1254,6 +1254,7 @@ if "--probe3d" in sys.argv:
 order = ["intro","formation","university","worlds-fair","color-line","urban-renewal","present"]
 stops = {s["id"]: s for s in tour["stops"]}
 CHAPTER_MARKS = []  # for the website's clickable timeline
+PANO_SEGS = []      # absolute time windows of the 360 beats, for the web player
 
 for ci, cid in enumerate(order, start=1):
     stop = stops[cid]
@@ -1306,6 +1307,11 @@ for ci, cid in enumerate(order, start=1):
             elif asset.get("is360"):
                 # an auto-panning 360 preview, draggable on the website
                 pano_card(clipid, dur, out)
+                # remember where this 360 beat sits in the chapter, so the web
+                # player can show "View in 3D" only while a 360 is on screen.
+                # offset of shot si in an xfade chain = sum(durs[:si]) - si*XFADE
+                off = sum(durs[:si]) - si * XFADE
+                PANO_SEGS.append({"cid": cid, "off": off, "dur": dur})
             else:
                 eb = "HOST ON CAMERA . TO BE FILMED" if clipid.startswith("host-") else "PRESENT DAY FOOTAGE . TO BE FILMED"
                 # each placeholder names the exact shot to film at this point
@@ -1357,8 +1363,16 @@ chapters_out = [{"id":"opening","title":"Hyde Park, Built and Rebuilt","era":"Be
 for m in CHAPTER_MARKS:
     chapters_out.append({"id":m["id"],"title":m["title"],"era":m["era"],
                          "year":m["year"],"startSec":round(starts[m["sceneIdx"]],2)})
+# 360 windows: the chapter clip sits one scene after its divider mark
+mark_scene = {m["id"]: m["sceneIdx"] for m in CHAPTER_MARKS}
+panos_out = []
+for ps in PANO_SEGS:
+    base = starts[mark_scene[ps["cid"]] + 1]
+    s0 = base + ps["off"]
+    panos_out.append({"cid": ps["cid"], "startSec": round(s0, 2),
+                      "endSec": round(s0 + ps["dur"], 2)})
 json.dump({"video":"/media/hyde-park/video/hyde-park-museum.mp4",
            "poster":"/media/hyde-park/video/poster.jpg",
-           "duration":round(cum,2),"chapters":chapters_out},
+           "duration":round(cum,2),"chapters":chapters_out,"panos":panos_out},
           open(os.path.join(OUTDIR,"chapters.json"),"w"), indent=2)
-print("WROTE chapters.json", len(chapters_out), "marks, total", round(cum,1),"s")
+print("WROTE chapters.json", len(chapters_out), "marks,", len(panos_out), "360 windows, total", round(cum,1),"s")
