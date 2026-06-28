@@ -6,6 +6,7 @@ import StopActions from "@/components/tours/StopActions";
 import CommentsSection from "@/components/tours/CommentsSection";
 import RelatedStops from "@/components/tours/RelatedStops";
 import ImmersiveTourExperience from "@/components/immersive/ImmersiveTourExperience";
+import HydeParkFilm from "@/components/immersive/HydeParkFilm";
 import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import { getImmersiveTour } from "@/lib/immersive/data";
 import type { TourStop } from "@/lib/types/database";
@@ -148,6 +149,57 @@ export default async function StopDetailPage({ params }: PageProps) {
   const immersive = await getImmersiveTour(citySlug, slug);
   if (immersive) {
     const cityName = getCityName(citySlug);
+
+    // The Hyde Park tour is presented as one full film with a clickable
+    // timeline beneath it, not the scrollytelling reader.
+    if (citySlug === "chicago" && slug === "hyde-park") {
+      // read the chapter timestamps emitted by the renderer so the timeline
+      // renders server-side, no loading flash
+      let manifest = null;
+      try {
+        const { readFile } = await import("node:fs/promises");
+        const path = await import("node:path");
+        const raw = await readFile(
+          path.join(process.cwd(), "public/media/hyde-park/video/chapters.json"),
+          "utf8"
+        );
+        manifest = JSON.parse(raw);
+      } catch {
+        manifest = null;
+      }
+      return (
+        <PageTransition>
+          <section className="bg-cream pt-20 md:pt-24">
+            <div className="mx-auto max-w-6xl px-6">
+              <nav aria-label="Breadcrumb">
+                <ol className="flex flex-wrap items-center gap-2 font-body text-sm text-warm-gray">
+                  <li>
+                    <Link href="/tours" className="transition-colors hover:text-forest">
+                      Tours
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">&gt;</li>
+                  <li>
+                    <Link href={`/tours/${citySlug}`} className="transition-colors hover:text-forest">
+                      {cityName}
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">&gt;</li>
+                  <li className="font-medium text-forest">{immersive.title}</li>
+                </ol>
+              </nav>
+            </div>
+          </section>
+          <HydeParkFilm
+            title={immersive.title}
+            dek={immersive.dek}
+            heroNote={immersive.heroNote}
+            manifest={manifest}
+          />
+        </PageTransition>
+      );
+    }
+
     const lookAround = immersive.stops.filter((s) => s.media).length;
     return (
       <PageTransition>

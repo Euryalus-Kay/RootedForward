@@ -1,4 +1,5 @@
 import type { ImmersiveTour } from "./types";
+import { HYDE_PARK_TOUR } from "./tours/hyde-park";
 
 /* ------------------------------------------------------------------ */
 /*  Placeholder immersive tours.                                       */
@@ -17,6 +18,7 @@ const TEST_NOTE =
   "Test capture. A labeled synthetic panorama stands in until real footage is uploaded.";
 
 export const PLACEHOLDER_IMMERSIVE_TOURS: ImmersiveTour[] = [
+  HYDE_PARK_TOUR,
   {
     city: "chicago",
     slug: "beneath-the-water-line",

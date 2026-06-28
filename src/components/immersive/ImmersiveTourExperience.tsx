@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import PanoViewer from "./PanoViewer";
 import TimelinePlayer from "./TimelinePlayer";
+import StopMap from "./StopMap";
 import type { ImmersiveTour } from "@/lib/immersive/types";
 
 /* ------------------------------------------------------------------ */
@@ -102,8 +103,21 @@ export default function ImmersiveTourExperience({
               ))}
             </ol>
 
-            {/* Desktop: vertical depth gauge */}
+            {/* Desktop: interactive stop map + vertical depth gauge */}
             <div className="hidden lg:block">
+              <div className="mb-5">
+                <StopMap
+                  stops={tour.stops.map((s) => ({
+                    id: s.id,
+                    title: s.title,
+                    lat: s.lat,
+                    lng: s.lng,
+                    kicker: s.kicker,
+                  }))}
+                  activeIndex={activeIndex}
+                  onSelect={scrollTo}
+                />
+              </div>
               <div className="flex items-baseline justify-between border-b border-border pb-3">
                 <span className={cn(railLabel, "text-warm-gray")}>Route</span>
                 <span className={cn(railLabel, "text-warm-gray")}>
