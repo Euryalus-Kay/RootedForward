@@ -1858,7 +1858,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "The color line",
       "lat": 41.8027,
       "lng": -87.5953,
-      "body": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white. Black Chicago kept growing the whole time. About 40,000 people in 1910, around 278,000 by 1940, most of them held inside a thin strip of the South Side. Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn’t enforce them anymore.",
+      "body": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white. Black Chicago kept growing the whole time, about 40,000 people in 1910, around 278,000 by 1940. Most were pressed into a narrow corridor on the South Side that people called the Black Belt, a few blocks wide and miles long, fenced in by the same covenants. Inside it, families paid more for less, carved into kitchenette apartments, because the color line left them nowhere else to go. Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn't enforce them anymore.",
       "facts": [
         "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 in 1930 and about 278,000 by 1940 during the Great Migration.",
         "Racially restrictive covenants spread across the white neighborhoods ringing the Black Belt beginning in the late 1920s, including Kenwood, Hyde Park, Woodlawn, and Englewood. The Washington Park subdivision covenant later litigated in Hansberry was signed September 30, 1927 and recorded February 1, 1928.",
@@ -1898,128 +1898,170 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "color-line-c1",
             "startSec": 0.2,
-            "endSec": 3.2,
+            "endSec": 3,
             "text": "At 6140 South Rhodes Avenue in Woodlawn"
           },
           {
             "id": "color-line-c2",
-            "startSec": 3.2,
-            "endSec": 7.1,
+            "startSec": 3,
+            "endSec": 6.6,
             "text": "one line in the deed barred selling or renting to"
           },
           {
             "id": "color-line-c3",
-            "startSec": 7.1,
-            "endSec": 9,
+            "startSec": 6.6,
+            "endSec": 8.4,
             "text": "anyone who wasn't white."
           },
           {
             "id": "color-line-c4",
-            "startSec": 9,
-            "endSec": 12.7,
+            "startSec": 8.4,
+            "endSec": 11.8,
             "text": "They called it a racially restrictive covenant."
           },
           {
             "id": "color-line-c5",
-            "startSec": 12.7,
-            "endSec": 14.6,
+            "startSec": 11.8,
+            "endSec": 13.7,
             "text": "Neighbors signed in blocs"
           },
           {
             "id": "color-line-c6",
-            "startSec": 14.6,
-            "endSec": 17.6,
+            "startSec": 13.7,
+            "endSec": 16.5,
             "text": "so the clause covered the whole block."
           },
           {
             "id": "color-line-c7",
-            "startSec": 17.6,
-            "endSec": 21.5,
+            "startSec": 16.5,
+            "endSec": 20.1,
             "text": "Hyde Park and Woodlawn leaned on these covenants."
           },
           {
             "id": "color-line-c8",
-            "startSec": 21.5,
-            "endSec": 25.4,
+            "startSec": 20.1,
+            "endSec": 23.7,
             "text": "And the University of Chicago was not a bystander."
           },
           {
             "id": "color-line-c9",
-            "startSec": 25.4,
-            "endSec": 28.8,
+            "startSec": 23.7,
+            "endSec": 26.9,
             "text": "It put money behind defending them in court"
           },
           {
             "id": "color-line-c10",
-            "startSec": 28.8,
-            "endSec": 32.2,
+            "startSec": 26.9,
+            "endSec": 30.1,
             "text": "to keep the blocks around its campus white."
           },
           {
             "id": "color-line-c11",
-            "startSec": 32.2,
-            "endSec": 35.5,
-            "text": "Black Chicago kept growing the whole time."
+            "startSec": 30.1,
+            "endSec": 33.1,
+            "text": "Black Chicago kept growing the whole time"
           },
           {
             "id": "color-line-c12",
-            "startSec": 35.5,
-            "endSec": 37.6,
-            "text": "About 40,000 people in 1910"
+            "startSec": 33.1,
+            "endSec": 35.1,
+            "text": "about 40,000 people in 1910"
           },
           {
             "id": "color-line-c13",
-            "startSec": 37.6,
-            "endSec": 39.4,
-            "text": "around 278,000 by 1940"
+            "startSec": 35.1,
+            "endSec": 36.8,
+            "text": "around 278,000 by 1940."
           },
           {
             "id": "color-line-c14",
-            "startSec": 39.4,
-            "endSec": 43.3,
-            "text": "most of them held inside a thin strip of the South"
+            "startSec": 36.8,
+            "endSec": 40.2,
+            "text": "Most were pressed into a narrow corridor on the"
           },
           {
             "id": "color-line-c15",
-            "startSec": 43.3,
-            "endSec": 44.4,
-            "text": "Side."
+            "startSec": 40.2,
+            "endSec": 43.5,
+            "text": "South Side that people called the Black Belt"
           },
           {
             "id": "color-line-c16",
-            "startSec": 43.8,
-            "endSec": 47.5,
-            "text": "Not until 1948 did the Supreme Court take their"
+            "startSec": 43.5,
+            "endSec": 45.8,
+            "text": "a few blocks wide and miles long"
           },
           {
             "id": "color-line-c17",
-            "startSec": 47.5,
-            "endSec": 48.6,
-            "text": "force away"
+            "startSec": 45.8,
+            "endSec": 48.2,
+            "text": "fenced in by the same covenants."
           },
           {
             "id": "color-line-c18",
-            "startSec": 48.3,
-            "endSec": 49.4,
-            "text": "in Shelley v."
+            "startSec": 48.2,
+            "endSec": 49.3,
+            "text": "Inside it"
           },
           {
             "id": "color-line-c19",
-            "startSec": 49.3,
-            "endSec": 50.4,
-            "text": "Kraemer."
+            "startSec": 48.8,
+            "endSec": 50.8,
+            "text": "families paid more for less"
           },
           {
             "id": "color-line-c20",
-            "startSec": 49.9,
-            "endSec": 52.4,
-            "text": "The clauses stayed in the deeds."
+            "startSec": 50.8,
+            "endSec": 53.3,
+            "text": "carved into kitchenette apartments"
           },
           {
             "id": "color-line-c21",
-            "startSec": 52.4,
-            "endSec": 55.8,
-            "text": "Courts just couldn’t enforce them anymore."
+            "startSec": 53.3,
+            "endSec": 56.8,
+            "text": "because the color line left them nowhere else to"
+          },
+          {
+            "id": "color-line-c22",
+            "startSec": 56.8,
+            "endSec": 57.9,
+            "text": "go."
+          },
+          {
+            "id": "color-line-c23",
+            "startSec": 57.3,
+            "endSec": 60.7,
+            "text": "Not until 1948 did the Supreme Court take their"
+          },
+          {
+            "id": "color-line-c24",
+            "startSec": 60.7,
+            "endSec": 61.8,
+            "text": "force away"
+          },
+          {
+            "id": "color-line-c25",
+            "startSec": 61.5,
+            "endSec": 62.6,
+            "text": "in Shelley v."
+          },
+          {
+            "id": "color-line-c26",
+            "startSec": 62.4,
+            "endSec": 63.5,
+            "text": "Kraemer."
+          },
+          {
+            "id": "color-line-c27",
+            "startSec": 63,
+            "endSec": 65.4,
+            "text": "The clauses stayed in the deeds."
+          },
+          {
+            "id": "color-line-c28",
+            "startSec": 65.4,
+            "endSec": 68.4,
+            "text": "Courts just couldn't enforce them anymore."
           }
         ],
         "segments": [
@@ -2028,7 +2070,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -2076,7 +2118,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2107,7 +2149,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Chicago's Black population, ~40,000 in 1910 to ~278,000 by 1940",
                 "startSec": 2,
-                "endSec": 9.6,
+                "endSec": 11.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2124,7 +2166,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -2155,7 +2197,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Shelley v. Kraemer, decided May 3, 1948, 6 to 0",
                 "startSec": 2,
-                "endSec": 9.6,
+                "endSec": 11.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2172,7 +2214,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-5",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "slide-left",
               "durationSec": 0.8
@@ -2203,7 +2245,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Chicago Public Library, The Great Migration",
                 "startSec": 2,
-                "endSec": 9.6,
+                "endSec": 11.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2220,7 +2262,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-6",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2251,7 +2293,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Shelley v. Kraemer, 334 U.S. 1 (1948), Justia",
                 "startSec": 2,
-                "endSec": 9.6,
+                "endSec": 11.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2268,7 +2310,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-7",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10,
+            "outSec": 12.1,
             "transitionIn": {
               "type": "wipe",
               "durationSec": 0.9
@@ -2352,7 +2394,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "Urban renewal",
       "lat": 41.7995,
       "lng": -87.5934,
-      "body": "In 1952 the University of Chicago set up the South East Chicago Commission to remake the blocks around its campus. Chancellor Lawrence Kimpton chaired it, and a lawyer named Julian Levi ran it day to day. The plan they backed covered eight hundred fifty-six acres. It marked six hundred thirty-eight buildings to come down. The first one fell on May tenth, 1955, before the plan was even approved. The City Council made it official in 1958. All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen. Across the renewal, the neighborhood's Black population fell by about forty percent. Then the university looked south, toward Woodlawn.",
+      "body": "By the early 1950s the covenants were gone, and Black families were moving into the blocks around the university. Afraid its campus would be stranded in a changing neighborhood, the university set up the South East Chicago Commission in 1952 to remake those blocks. Chancellor Lawrence Kimpton chaired it, and a lawyer named Julian Levi ran it day to day. The plan they backed covered eight hundred fifty-six acres. It marked six hundred thirty-eight buildings to come down, judged too crowded or too run down to keep, many of them the older apartments where the newest Black arrivals had found rooms. The first one fell on May tenth, 1955, before the plan was even approved. The City Council made it official in 1958. All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen. Across the renewal, the neighborhood's Black population fell by about forty percent. Then the university looked south, toward Woodlawn.",
       "facts": [
         "In 1952 the University of Chicago organized the South East Chicago Commission, chaired by Chancellor Lawrence Kimpton with attorney Julian Levi as executive director.",
         "The Hyde Park-Kenwood Urban Renewal Plan covered 856 acres and called for demolishing 638 buildings. The first came down on May 10, 1955.",
@@ -2395,175 +2437,217 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "urban-renewal-c1",
             "startSec": 0.2,
-            "endSec": 3.7,
-            "text": "In 1952 the University of Chicago set up the South"
+            "endSec": 3.2,
+            "text": "By the early 1950s the covenants were gone"
           },
           {
             "id": "urban-renewal-c2",
-            "startSec": 3.7,
-            "endSec": 6.9,
-            "text": "East Chicago Commission to remake the blocks"
+            "startSec": 3.2,
+            "endSec": 6.5,
+            "text": "and Black families were moving into the blocks"
           },
           {
             "id": "urban-renewal-c3",
-            "startSec": 6.9,
-            "endSec": 8.2,
-            "text": "around its campus."
+            "startSec": 6.5,
+            "endSec": 8.1,
+            "text": "around the university."
           },
           {
             "id": "urban-renewal-c4",
-            "startSec": 8.2,
-            "endSec": 10.9,
-            "text": "Chancellor Lawrence Kimpton chaired it"
+            "startSec": 8.1,
+            "endSec": 11.6,
+            "text": "Afraid its campus would be stranded in a changing"
           },
           {
             "id": "urban-renewal-c5",
-            "startSec": 10.9,
-            "endSec": 14.4,
-            "text": "and a lawyer named Julian Levi ran it day to day."
+            "startSec": 11.6,
+            "endSec": 12.7,
+            "text": "neighborhood"
           },
           {
             "id": "urban-renewal-c6",
-            "startSec": 14.4,
-            "endSec": 17.4,
-            "text": "The plan they backed covered eight hundred"
+            "startSec": 12.5,
+            "endSec": 15.7,
+            "text": "the university set up the South East Chicago"
           },
           {
             "id": "urban-renewal-c7",
-            "startSec": 17.4,
-            "endSec": 18.5,
-            "text": "fifty-six acres."
+            "startSec": 15.7,
+            "endSec": 18.7,
+            "text": "Commission in 1952 to remake those blocks."
           },
           {
             "id": "urban-renewal-c8",
-            "startSec": 18.5,
-            "endSec": 21.9,
-            "text": "It marked six hundred thirty-eight buildings to"
+            "startSec": 18.7,
+            "endSec": 21.5,
+            "text": "Chancellor Lawrence Kimpton chaired it"
           },
           {
             "id": "urban-renewal-c9",
-            "startSec": 21.9,
-            "endSec": 23,
-            "text": "come down."
+            "startSec": 21.5,
+            "endSec": 25,
+            "text": "and a lawyer named Julian Levi ran it day to day."
           },
           {
             "id": "urban-renewal-c10",
-            "startSec": 22.6,
-            "endSec": 24.8,
-            "text": "The first one fell on May tenth"
+            "startSec": 25,
+            "endSec": 28,
+            "text": "The plan they backed covered eight hundred"
           },
           {
             "id": "urban-renewal-c11",
-            "startSec": 24.8,
-            "endSec": 25.9,
-            "text": "1955"
+            "startSec": 28,
+            "endSec": 29.2,
+            "text": "fifty-six acres."
           },
           {
             "id": "urban-renewal-c12",
-            "startSec": 25.3,
-            "endSec": 27.7,
-            "text": "before the plan was even approved."
+            "startSec": 29.2,
+            "endSec": 32.6,
+            "text": "It marked six hundred thirty-eight buildings to"
           },
           {
             "id": "urban-renewal-c13",
-            "startSec": 27.7,
-            "endSec": 30.7,
-            "text": "The City Council made it official in 1958."
+            "startSec": 32.6,
+            "endSec": 33.7,
+            "text": "come down"
           },
           {
             "id": "urban-renewal-c14",
-            "startSec": 30.7,
-            "endSec": 31.8,
-            "text": "All told"
+            "startSec": 33.2,
+            "endSec": 36.3,
+            "text": "judged too crowded or too run down to keep"
           },
           {
             "id": "urban-renewal-c15",
-            "startSec": 31.3,
-            "endSec": 34.4,
-            "text": "the plan would push out about four thousand"
+            "startSec": 36.3,
+            "endSec": 39.9,
+            "text": "many of them the older apartments where the newest"
           },
           {
             "id": "urban-renewal-c16",
-            "startSec": 34.4,
-            "endSec": 35.5,
-            "text": "families."
+            "startSec": 39.9,
+            "endSec": 42.1,
+            "text": "Black arrivals had found rooms."
           },
           {
             "id": "urban-renewal-c17",
-            "startSec": 35,
-            "endSec": 38.4,
-            "text": "The university spent twenty-nine million dollars"
+            "startSec": 42.1,
+            "endSec": 44.4,
+            "text": "The first one fell on May tenth"
           },
           {
             "id": "urban-renewal-c18",
-            "startSec": 38.4,
-            "endSec": 41.9,
-            "text": "of its own money to buy the land and rebuild it."
+            "startSec": 44.4,
+            "endSec": 45.5,
+            "text": "1955"
           },
           {
             "id": "urban-renewal-c19",
-            "startSec": 41.9,
-            "endSec": 45.3,
-            "text": "The people who came back weren't a random slice."
+            "startSec": 44.8,
+            "endSec": 47.3,
+            "text": "before the plan was even approved."
           },
           {
             "id": "urban-renewal-c20",
-            "startSec": 45.3,
-            "endSec": 47,
-            "text": "In those first projects"
+            "startSec": 47.3,
+            "endSec": 50.3,
+            "text": "The City Council made it official in 1958."
           },
           {
             "id": "urban-renewal-c21",
-            "startSec": 47,
-            "endSec": 50.4,
-            "text": "forty-six percent of the white families who lost"
+            "startSec": 50.3,
+            "endSec": 51.4,
+            "text": "All told"
           },
           {
             "id": "urban-renewal-c22",
-            "startSec": 50.4,
-            "endSec": 52.3,
-            "text": "homes stayed in Hyde Park."
+            "startSec": 50.9,
+            "endSec": 54,
+            "text": "the plan would push out about four thousand"
           },
           {
             "id": "urban-renewal-c23",
-            "startSec": 52.3,
-            "endSec": 53.7,
-            "text": "Among Black families"
+            "startSec": 54,
+            "endSec": 55.1,
+            "text": "families."
           },
           {
             "id": "urban-renewal-c24",
-            "startSec": 53.7,
-            "endSec": 54.9,
-            "text": "it was seventeen."
+            "startSec": 54.6,
+            "endSec": 58.1,
+            "text": "The university spent twenty-nine million dollars"
           },
           {
             "id": "urban-renewal-c25",
-            "startSec": 54.9,
-            "endSec": 56.2,
-            "text": "Across the renewal"
+            "startSec": 58.1,
+            "endSec": 61.6,
+            "text": "of its own money to buy the land and rebuild it."
           },
           {
             "id": "urban-renewal-c26",
-            "startSec": 56.2,
-            "endSec": 59.7,
-            "text": "the neighborhood's Black population fell by about"
+            "startSec": 61.6,
+            "endSec": 65,
+            "text": "The people who came back weren't a random slice."
           },
           {
             "id": "urban-renewal-c27",
-            "startSec": 59.7,
-            "endSec": 60.8,
-            "text": "forty percent."
+            "startSec": 65,
+            "endSec": 66.7,
+            "text": "In those first projects"
           },
           {
             "id": "urban-renewal-c28",
-            "startSec": 60.7,
-            "endSec": 63,
-            "text": "Then the university looked south"
+            "startSec": 66.7,
+            "endSec": 70.2,
+            "text": "forty-six percent of the white families who lost"
           },
           {
             "id": "urban-renewal-c29",
-            "startSec": 63,
-            "endSec": 64.2,
+            "startSec": 70.2,
+            "endSec": 72.1,
+            "text": "homes stayed in Hyde Park."
+          },
+          {
+            "id": "urban-renewal-c30",
+            "startSec": 72.1,
+            "endSec": 73.5,
+            "text": "Among Black families"
+          },
+          {
+            "id": "urban-renewal-c31",
+            "startSec": 73.5,
+            "endSec": 74.7,
+            "text": "it was seventeen."
+          },
+          {
+            "id": "urban-renewal-c32",
+            "startSec": 74.7,
+            "endSec": 76,
+            "text": "Across the renewal"
+          },
+          {
+            "id": "urban-renewal-c33",
+            "startSec": 76,
+            "endSec": 79.6,
+            "text": "the neighborhood's Black population fell by about"
+          },
+          {
+            "id": "urban-renewal-c34",
+            "startSec": 79.6,
+            "endSec": 80.7,
+            "text": "forty percent."
+          },
+          {
+            "id": "urban-renewal-c35",
+            "startSec": 80.6,
+            "endSec": 82.9,
+            "text": "Then the university looked south"
+          },
+          {
+            "id": "urban-renewal-c36",
+            "startSec": 82.9,
+            "endSec": 84,
             "text": "toward Woodlawn."
           }
         ],
@@ -2573,7 +2657,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "urban-renewal-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 22,
+            "outSec": 28.6,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -2621,7 +2705,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "urban-renewal-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 22,
+            "outSec": 28.6,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2652,7 +2736,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "856 acres covered by the renewal plan",
                 "startSec": 2,
-                "endSec": 21.6,
+                "endSec": 28.200000000000003,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2669,7 +2753,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "urban-renewal-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 22,
+            "outSec": 28.6,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -2700,7 +2784,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "638 buildings marked for demolition",
                 "startSec": 2,
-                "endSec": 21.6,
+                "endSec": 28.200000000000003,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2748,7 +2832,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "Now",
       "lat": 41.7843,
       "lng": -87.5872,
-      "body": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable.",
+      "body": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable. It is a pattern the neighborhood has run before. An institution arrives, the ground around it gains value, and the people already there are left to wonder if the new Hyde Park has room for them. A hundred and seventy years after Paul Cornell sold these blocks as a retreat for people with means, the question underneath it all, who this ground is for, still isn't settled.",
       "facts": [
         "The Obama Presidential Center opened to the public on June 19, 2026 (Juneteenth), after a dedication ceremony held June 18, 2026. Grand Opening Weekend events followed June 20 to 21. (Confirmed: Obama Foundation, Wikipedia, CBS News, Newsweek.)",
         "Construction began in August 2021, and the groundbreaking ceremony with the Obamas, Gov. J.B. Pritzker, and former Mayor Lori Lightfoot was held September 28, 2021. The delay followed a multi-year federal review that concluded in 2021. (Confirmed: Obama Foundation press release, PBS, Wikipedia.)",
@@ -2782,146 +2866,212 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "present-c1",
             "startSec": 0.2,
-            "endSec": 4,
+            "endSec": 3.7,
             "text": "The Obama Presidential Center opened on June 19"
           },
           {
             "id": "present-c2",
-            "startSec": 4,
-            "endSec": 5.1,
+            "startSec": 3.7,
+            "endSec": 4.8,
             "text": "2026."
           },
           {
             "id": "present-c3",
-            "startSec": 4.5,
-            "endSec": 5.6,
+            "startSec": 4.1,
+            "endSec": 5.2,
             "text": "Juneteenth."
           },
           {
             "id": "present-c4",
-            "startSec": 5.4,
-            "endSec": 8.6,
+            "startSec": 5,
+            "endSec": 7.9,
             "text": "The museum tower runs about two hundred"
           },
           {
             "id": "present-c5",
-            "startSec": 8.6,
-            "endSec": 11.5,
+            "startSec": 7.9,
+            "endSec": 10.6,
             "text": "twenty-five feet over Jackson Park."
           },
           {
             "id": "present-c6",
-            "startSec": 11.5,
-            "endSec": 15,
+            "startSec": 10.6,
+            "endSec": 13.8,
             "text": "Olmsted and Vaux laid out this park in 1871"
           },
           {
             "id": "present-c7",
-            "startSec": 15,
-            "endSec": 18.5,
+            "startSec": 13.8,
+            "endSec": 17,
             "text": "and it's the same ground that held the 1893"
           },
           {
             "id": "present-c8",
-            "startSec": 18.5,
-            "endSec": 19.6,
+            "startSec": 17,
+            "endSec": 18.1,
             "text": "World's Fair."
           },
           {
             "id": "present-c9",
-            "startSec": 19.6,
-            "endSec": 23.6,
+            "startSec": 18,
+            "endSec": 21.7,
             "text": "The campus cost about eight hundred fifty million"
           },
           {
             "id": "present-c10",
-            "startSec": 23.6,
-            "endSec": 24.7,
+            "startSec": 21.7,
+            "endSec": 22.8,
             "text": "dollars."
           },
           {
             "id": "present-c11",
-            "startSec": 24.2,
-            "endSec": 27.7,
+            "startSec": 22.3,
+            "endSec": 25.5,
             "text": "No presidential center has ever cost more."
           },
           {
             "id": "present-c12",
-            "startSec": 27.7,
-            "endSec": 30,
+            "startSec": 25.5,
+            "endSec": 27.6,
             "text": "Getting it built took years."
           },
           {
             "id": "present-c13",
-            "startSec": 30,
-            "endSec": 32.3,
+            "startSec": 27.6,
+            "endSec": 29.7,
             "text": "The site was picked in 2016."
           },
           {
             "id": "present-c14",
-            "startSec": 32.3,
-            "endSec": 36.1,
+            "startSec": 29.7,
+            "endSec": 33.2,
             "text": "A group called Protect Our Parks sued over and"
           },
           {
             "id": "present-c15",
-            "startSec": 36.1,
-            "endSec": 37.4,
+            "startSec": 33.2,
+            "endSec": 34.4,
             "text": "over to stop it."
           },
           {
             "id": "present-c16",
-            "startSec": 37.4,
-            "endSec": 38.8,
+            "startSec": 34.4,
+            "endSec": 35.7,
             "text": "Every suit failed."
           },
           {
             "id": "present-c17",
-            "startSec": 38.8,
-            "endSec": 41.2,
+            "startSec": 35.7,
+            "endSec": 37.9,
             "text": "Construction started in 2021."
           },
           {
             "id": "present-c18",
-            "startSec": 41.2,
-            "endSec": 43.5,
+            "startSec": 37.9,
+            "endSec": 40,
             "text": "And while the Center went up"
           },
           {
             "id": "present-c19",
-            "startSec": 43.5,
-            "endSec": 45.8,
+            "startSec": 40,
+            "endSec": 42.1,
             "text": "Woodlawn got more expensive."
           },
           {
             "id": "present-c20",
-            "startSec": 45.8,
-            "endSec": 48,
+            "startSec": 42.1,
+            "endSec": 44.2,
             "text": "On the blocks closest to it"
           },
           {
             "id": "present-c21",
-            "startSec": 48,
-            "endSec": 50.6,
+            "startSec": 44.2,
+            "endSec": 46.5,
             "text": "home prices doubled after 2019."
           },
           {
             "id": "present-c22",
-            "startSec": 50.6,
-            "endSec": 51.7,
+            "startSec": 46.5,
+            "endSec": 47.6,
             "text": "By 2024"
           },
           {
             "id": "present-c23",
-            "startSec": 51.1,
-            "endSec": 55.1,
+            "startSec": 47,
+            "endSec": 50.7,
             "text": "less than a third of the housing nearby was still"
           },
           {
             "id": "present-c24",
-            "startSec": 55.1,
-            "endSec": 56.2,
+            "startSec": 50.7,
+            "endSec": 51.8,
             "text": "affordable."
+          },
+          {
+            "id": "present-c25",
+            "startSec": 51.6,
+            "endSec": 55.2,
+            "text": "It is a pattern the neighborhood has run before."
+          },
+          {
+            "id": "present-c26",
+            "startSec": 55.2,
+            "endSec": 56.8,
+            "text": "An institution arrives"
+          },
+          {
+            "id": "present-c27",
+            "startSec": 56.8,
+            "endSec": 59.3,
+            "text": "the ground around it gains value"
+          },
+          {
+            "id": "present-c28",
+            "startSec": 59.3,
+            "endSec": 63,
+            "text": "and the people already there are left to wonder if"
+          },
+          {
+            "id": "present-c29",
+            "startSec": 63,
+            "endSec": 65.7,
+            "text": "the new Hyde Park has room for them."
+          },
+          {
+            "id": "present-c30",
+            "startSec": 65.7,
+            "endSec": 69.2,
+            "text": "A hundred and seventy years after Paul Cornell"
+          },
+          {
+            "id": "present-c31",
+            "startSec": 69.2,
+            "endSec": 72.7,
+            "text": "sold these blocks as a retreat for people with"
+          },
+          {
+            "id": "present-c32",
+            "startSec": 72.7,
+            "endSec": 73.8,
+            "text": "means"
+          },
+          {
+            "id": "present-c33",
+            "startSec": 73.1,
+            "endSec": 75.4,
+            "text": "the question underneath it all"
+          },
+          {
+            "id": "present-c34",
+            "startSec": 75.4,
+            "endSec": 77,
+            "text": "who this ground is for"
+          },
+          {
+            "id": "present-c35",
+            "startSec": 77,
+            "endSec": 78.5,
+            "text": "still isn't settled."
           }
         ],
         "segments": [
@@ -2930,7 +3080,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "present-present",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 16.4,
+            "outSec": 22.8,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -2965,7 +3115,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "pano-obama-center",
             "mode": "pano360",
             "inSec": 0,
-            "outSec": 25.1,
+            "outSec": 34.8,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2996,7 +3146,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "host-close",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 16.4,
+            "outSec": 22.8,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6

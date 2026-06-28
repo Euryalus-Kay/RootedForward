@@ -1230,7 +1230,7 @@
       },
       "script": {
         "chapterId": "color-line-comes-to-hyde-park",
-        "voiceover": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white. Black Chicago kept growing the whole time. About 40,000 people in 1910, around 278,000 by 1940, most of them held inside a thin strip of the South Side. Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn’t enforce them anymore.",
+        "voiceover": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white. Black Chicago kept growing the whole time, about 40,000 people in 1910, around 278,000 by 1940. Most were pressed into a narrow corridor on the South Side that people called the Black Belt, a few blocks wide and miles long, fenced in by the same covenants. Inside it, families paid more for less, carved into kitchenette apartments, because the color line left them nowhere else to go. Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn't enforce them anymore.",
         "lines": [
           "At 6140 South Rhodes Avenue in Woodlawn",
           "one line in the deed barred selling or renting to",
@@ -1242,17 +1242,24 @@
           "And the University of Chicago was not a bystander.",
           "It put money behind defending them in court",
           "to keep the blocks around its campus white.",
-          "Black Chicago kept growing the whole time.",
-          "About 40,000 people in 1910",
-          "around 278,000 by 1940",
-          "most of them held inside a thin strip of the South",
-          "Side.",
+          "Black Chicago kept growing the whole time",
+          "about 40,000 people in 1910",
+          "around 278,000 by 1940.",
+          "Most were pressed into a narrow corridor on the",
+          "South Side that people called the Black Belt",
+          "a few blocks wide and miles long",
+          "fenced in by the same covenants.",
+          "Inside it",
+          "families paid more for less",
+          "carved into kitchenette apartments",
+          "because the color line left them nowhere else to",
+          "go.",
           "Not until 1948 did the Supreme Court take their",
           "force away",
           "in Shelley v.",
           "Kraemer.",
           "The clauses stayed in the deeds.",
-          "Courts just couldn’t enforce them anymore."
+          "Courts just couldn't enforce them anymore."
         ],
         "overlays": [
           {
@@ -1503,17 +1510,24 @@
       },
       "script": {
         "chapterId": "university-rebuilds-the-neighborhood",
-        "voiceover": "In 1952 the University of Chicago set up the South East Chicago Commission to remake the blocks around its campus. Chancellor Lawrence Kimpton chaired it, and a lawyer named Julian Levi ran it day to day. The plan they backed covered eight hundred fifty-six acres. It marked six hundred thirty-eight buildings to come down. The first one fell on May tenth, 1955, before the plan was even approved. The City Council made it official in 1958. All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen. Across the renewal, the neighborhood's Black population fell by about forty percent. Then the university looked south, toward Woodlawn.",
+        "voiceover": "By the early 1950s the covenants were gone, and Black families were moving into the blocks around the university. Afraid its campus would be stranded in a changing neighborhood, the university set up the South East Chicago Commission in 1952 to remake those blocks. Chancellor Lawrence Kimpton chaired it, and a lawyer named Julian Levi ran it day to day. The plan they backed covered eight hundred fifty-six acres. It marked six hundred thirty-eight buildings to come down, judged too crowded or too run down to keep, many of them the older apartments where the newest Black arrivals had found rooms. The first one fell on May tenth, 1955, before the plan was even approved. The City Council made it official in 1958. All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen. Across the renewal, the neighborhood's Black population fell by about forty percent. Then the university looked south, toward Woodlawn.",
         "lines": [
-          "In 1952 the University of Chicago set up the South",
-          "East Chicago Commission to remake the blocks",
-          "around its campus.",
+          "By the early 1950s the covenants were gone",
+          "and Black families were moving into the blocks",
+          "around the university.",
+          "Afraid its campus would be stranded in a changing",
+          "neighborhood",
+          "the university set up the South East Chicago",
+          "Commission in 1952 to remake those blocks.",
           "Chancellor Lawrence Kimpton chaired it",
           "and a lawyer named Julian Levi ran it day to day.",
           "The plan they backed covered eight hundred",
           "fifty-six acres.",
           "It marked six hundred thirty-eight buildings to",
-          "come down.",
+          "come down",
+          "judged too crowded or too run down to keep",
+          "many of them the older apartments where the newest",
+          "Black arrivals had found rooms.",
           "The first one fell on May tenth",
           "1955",
           "before the plan was even approved.",
@@ -1806,7 +1820,7 @@
       },
       "script": {
         "chapterId": "hyde-park-now",
-        "voiceover": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable.",
+        "voiceover": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable. It is a pattern the neighborhood has run before. An institution arrives, the ground around it gains value, and the people already there are left to wonder if the new Hyde Park has room for them. A hundred and seventy years after Paul Cornell sold these blocks as a retreat for people with means, the question underneath it all, who this ground is for, still isn't settled.",
         "lines": [
           "The Obama Presidential Center opened on June 19",
           "2026.",
@@ -1831,7 +1845,18 @@
           "home prices doubled after 2019.",
           "By 2024",
           "less than a third of the housing nearby was still",
-          "affordable."
+          "affordable.",
+          "It is a pattern the neighborhood has run before.",
+          "An institution arrives",
+          "the ground around it gains value",
+          "and the people already there are left to wonder if",
+          "the new Hyde Park has room for them.",
+          "A hundred and seventy years after Paul Cornell",
+          "sold these blocks as a retreat for people with",
+          "means",
+          "the question underneath it all",
+          "who this ground is for",
+          "still isn't settled."
         ],
         "overlays": [
           {

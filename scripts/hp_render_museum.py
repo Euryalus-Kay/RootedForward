@@ -844,7 +844,10 @@ def write_ass(cues, path):
             f.write(f"Dialogue: 0,{ass_time(c['startSec'])},{ass_time(c['endSec'])},Default,,0,0,0,,{txt}\n")
 
 def finish_chapter(silent, dur, vo_path, ass, out):
-    vf = (f"[0:v]fade=t=in:st=0:d={EDGE},fade=t=out:st={dur-EDGE:.2f}:d={EDGE},"
+    # tpad clones the last frame if the picture is shorter than dur, so the full
+    # voiceover always has video under it and is never truncated by -t.
+    vf = (f"[0:v]tpad=stop_mode=clone:stop_duration=12,"
+          f"fade=t=in:st=0:d={EDGE},fade=t=out:st={dur-EDGE:.2f}:d={EDGE},"
           f"subtitles='{ass}'[v];[1:a]apad[a]")
     run(["-i", silent, "-i", vo_path, "-filter_complex", vf,
          "-map","[v]","-map","[a]","-t", f"{dur:.2f}", "-r", str(FPS),
@@ -1121,10 +1124,10 @@ STORY = {
    "shots": [
      ("img", "color-line-4", "6140 South Rhodes"),      # the actual covenanted house
      ("img", "color-line-3", "racially restrictive covenant"),  # the redlining / covenant map
-     ("img", "color-line-5", "not a bystander"),        # the Black Belt the university kept walled
      ("img", "color-line-6", "Black Chicago kept growing"),  # a Great Migration family
      ("chart", "great-migration", "278,000"),           # the population growth, 1910 to 1940
-     ("img", "color-line-7", "Shelley"),                # kitchenette life, the reality that stayed
+     ("img", "color-line-5", "the Black Belt"),         # the Black Belt the covenants built
+     ("img", "color-line-7", "kitchenette apartments"), # kitchenette life inside it
    ],
    "callouts": [("Covenants made unenforceable", "1948", "Shelley")],
  },
@@ -1171,6 +1174,16 @@ def build_story_chapter(cid, seq, vodur, cues):
     for i in range(n):
         nxt = T[i + 1] if i + 1 < n else (vodur + 1.0)
         durs.append(max(2.8, (nxt - T[i]) + XFADE))
+    # A chart should not hold longer than CHART_CAP, but it must still report
+    # its full declared duration to the crossfade chain or the next offset lands
+    # past the (shorter) chart clip and truncates the whole chapter, cutting the
+    # narration. So cap the chart visually and hand the saved time to the final
+    # shot, keeping the chapter long enough to carry the full voiceover.
+    CHART_CAP = 9.2
+    for i in range(n):
+        if shots[i][0] == "chart" and durs[i] > CHART_CAP and i != n - 1:
+            durs[-1] += durs[i] - CHART_CAP
+            durs[i] = CHART_CAP
     # assign each callout to the shot that is on screen when it is said
     assign = {}
     for lab, val, anc in cos:
@@ -1203,10 +1216,12 @@ def build_story_chapter(cid, seq, vodur, cues):
             files.append(out)
             continue
         if kind == "chart":
+            # dur is already capped above, so the clip length matches what the
+            # crossfade chain expects (no truncation of later shots)
             if ref == "return-rate":
-                chart_bars_scene(out, dur=min(dur, 9.0))
+                chart_bars_scene(out, dur=dur)
             elif ref == "great-migration":
-                chart_area_scene(out, dur=min(dur, 9.0))
+                chart_area_scene(out, dur=dur)
             files.append(out)
             continue
         asset = seq["assets"].get(ref)
@@ -1329,7 +1344,9 @@ for ci, cid in enumerate(order, start=1):
     ass = os.path.join(TMP, f"{cid}.ass")
     write_ass(cues, ass)
     chap = os.path.join(TMP, f"scene_chap_{cid}.mp4")
-    finish_chapter(silent, chdur, os.path.join(VO_DIR, f"vo-{cid}.mp3"), ass, chap)
+    # never let the chapter be shorter than its narration
+    target = max(chdur, vodur + 0.5)
+    finish_chapter(silent, target, os.path.join(VO_DIR, f"vo-{cid}.mp3"), ass, chap)
     scenes.append(chap)
     print(f"  chapter {cid}: {len(shot_files)} shots, {chdur:.1f}s", flush=True)
 

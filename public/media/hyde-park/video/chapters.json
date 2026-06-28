@@ -1,7 +1,7 @@
 {
   "video": "/media/hyde-park/video/hyde-park-museum.mp4",
   "poster": "/media/hyde-park/video/poster.jpg",
-  "duration": 439.09,
+  "duration": 515.59,
   "chapters": [
     {
       "id": "opening",
@@ -36,28 +36,28 @@
       "title": "The White City in Jackson Park",
       "era": "1893",
       "year": 1893,
-      "startSec": 190.55
+      "startSec": 190.59
     },
     {
       "id": "color-line",
       "title": "The Color Line Comes to Hyde Park",
       "era": "1920s to 1948",
       "year": 1948,
-      "startSec": 252.3
+      "startSec": 252.34
     },
     {
       "id": "urban-renewal",
       "title": "The University Rebuilds the Neighborhood",
       "era": "1952 to 1970s",
       "year": 1958,
-      "startSec": 303.14
+      "startSec": 327.09
     },
     {
       "id": "present",
       "title": "Hyde Park Now",
       "era": "Today",
       "year": 2026,
-      "startSec": 363.34
+      "startSec": 417.38
     }
   ],
   "panos": [
@@ -68,8 +68,8 @@
     },
     {
       "cid": "present",
-      "startSec": 383.31,
-      "endSec": 408.8
+      "startSec": 443.75,
+      "endSec": 478.94
     }
   ]
 }
