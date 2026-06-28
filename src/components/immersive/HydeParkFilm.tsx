@@ -80,6 +80,17 @@ export default function HydeParkFilm({
   const [dur, setDur] = useState(0);
   const [active, setActive] = useState(0);
   const [reveal, setReveal] = useState(0);
+  const [open3d, setOpen3d] = useState(false);
+
+  const open3D = useCallback((i?: number) => {
+    if (typeof i === "number") setReveal(i);
+    videoRef.current?.pause();
+    setOpen3d(true);
+  }, []);
+  const close3D = useCallback(() => {
+    setOpen3d(false);
+    videoRef.current?.play().catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (man) return; // already provided by the server
@@ -119,13 +130,17 @@ export default function HydeParkFilm({
   };
 
   const fullscreen = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    // iOS Safari uses the proprietary method
-    type FSVideo = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
-    const v = el as FSVideo;
-    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
-    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+    // fullscreen the WRAPPER, not the bare video, so the 3D popup can render
+    // over the video while in fullscreen
+    const el = wrapRef.current;
+    if (el?.requestFullscreen) {
+      el.requestFullscreen().catch(() => {});
+      return;
+    }
+    const v = videoRef.current as
+      | (HTMLVideoElement & { webkitEnterFullscreen?: () => void })
+      | null;
+    if (v?.webkitEnterFullscreen) v.webkitEnterFullscreen();
   };
 
   const trackClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -164,7 +179,7 @@ export default function HydeParkFilm({
       <div className="mx-auto mt-8 max-w-6xl px-6">
         <div
           ref={wrapRef}
-          className="overflow-hidden rounded-sm border border-border bg-ink shadow-sm"
+          className="relative overflow-hidden rounded-sm border border-border bg-ink shadow-sm"
         >
           <video
             ref={videoRef}
@@ -177,6 +192,59 @@ export default function HydeParkFilm({
             onTimeUpdate={onTime}
             onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
           />
+
+          {/* Obvious "View in 3D" button over the video */}
+          {!open3d && (
+            <button
+              type="button"
+              onClick={() => open3D()}
+              className="absolute right-3 top-3 z-20 inline-flex items-center gap-2 rounded-full bg-rust px-4 py-2 font-body text-xs font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-transform hover:scale-105"
+            >
+              <span aria-hidden="true" className="rounded-full bg-white/25 px-1.5 py-0.5 text-[10px] leading-none">360°</span>
+              View in 3D
+            </button>
+          )}
+
+          {/* 3D popup, rendered inside the wrapper so it shows in fullscreen */}
+          {open3d && (
+            <div className="absolute inset-0 z-30 flex flex-col bg-ink/95 backdrop-blur-sm">
+              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.22em] text-rust">
+                  Look around in 3D &middot; {REVEAL_SPOTS[reveal].location}
+                </p>
+                <button
+                  type="button"
+                  onClick={close3D}
+                  aria-label="Close 3D view"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white transition-colors hover:bg-white/20"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="relative min-h-0 flex-1">
+                <PanoViewer media={TEST_PANO} label={REVEAL_SPOTS[reveal].location} />
+              </div>
+              <div className="flex flex-wrap items-center gap-2 border-t border-white/10 px-4 py-3">
+                <span className="mr-1 font-body text-[11px] uppercase tracking-wider text-white/50">
+                  Jump to
+                </span>
+                {REVEAL_SPOTS.map((s, i) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => setReveal(i)}
+                    className={`rounded-full px-3 py-1 font-body text-xs transition-colors ${
+                      i === reveal
+                        ? "bg-rust text-white"
+                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                    }`}
+                  >
+                    {s.location}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border bg-cream-dark/60 px-4 py-3">
             <p className="font-body text-sm text-ink/70">
               {chapters[active] ? (
