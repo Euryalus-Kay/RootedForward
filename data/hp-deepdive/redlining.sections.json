@@ -1,0 +1,618 @@
+{
+  "id": "redlining",
+  "title": "The Idea That Redlined a Nation",
+  "subtitle": "How a quiet table in a Hyde Park book became a national machine for segregation",
+  "stats": {
+    "hoytBook": [
+      "HOYT'S LAND-VALUE BOOK",
+      "1933",
+      "Published by the University of Chicago Press, more than five hundred pages",
+      "Homer Hoyt, One Hundred Years of Land Values in Chicago"
+    ],
+    "fhaCreated": [
+      "FHA CREATED",
+      "1934",
+      "Hoyt served as its chief land economist through 1940",
+      "National Housing Act of 1934"
+    ],
+    "blackLoans": [
+      "BLACK SHARE OF INSURED LOANS",
+      "under 2%",
+      "Of all federally insured home loans from 1945 to 1959",
+      "FHA mortgage insurance under the 1938 Underwriting Manual"
+    ],
+    "holcCities": [
+      "CITIES HOLC SURVEYED",
+      "239",
+      "Graded block by block from 1935 to 1940, A green through D red",
+      "HOLC City Survey"
+    ],
+    "ucCovenants": [
+      "U OF C SPENT ON COVENANTS",
+      "$83,000+",
+      "Defending Hyde Park, Washington Park, and Woodlawn covenants, 1933 to 1947",
+      "University of Chicago records, Advocates' Forum, Crown School"
+    ],
+    "rhodesBricks": [
+      "BRICKS THROUGH THE WINDOW",
+      "2",
+      "The night Carl Hansberry moved his family to 6140 S. Rhodes Avenue, June 15, 1937",
+      "Lorraine Hansberry House landmark report"
+    ],
+    "frontage": [
+      "FRONTAGE SIGNED VS 95% REQUIRED",
+      "about 54%",
+      "The covenant needed ninety five percent of owners to take effect",
+      "Hansberry v. Lee, 311 U.S. 32 (1940)"
+    ],
+    "shelley": [
+      "SHELLEY V KRAEMER DECIDED",
+      "May 3, 1948",
+      "Six to zero, with three justices recused",
+      "U.S. Supreme Court, 334 U.S. 1"
+    ],
+    "illinois2022": [
+      "ILLINOIS REMOVAL LAW",
+      "2022",
+      "The first way for owners to formally strike covenant language from the record",
+      "Illinois Public Act 102-0110"
+    ]
+  },
+  "annot": {
+    "dd-redlining-4a": [
+      "Robert E. Park",
+      "University of Chicago sociologist of urban ecology"
+    ],
+    "homer-hoyt": [
+      "HOLC Residential Security Map of Chicago",
+      "Home Owners Loan Corporation, around 1940"
+    ],
+    "color-line-3": [
+      "Chicago's Redlining Grades, Mapped",
+      "Modern reconstruction of the HOLC A through D grades"
+    ],
+    "dd-redlining-8b": [
+      "HOLC Security Map of Brooklyn",
+      "A second city graded by the same federal hand, 1938"
+    ],
+    "woodlawn-hist": [
+      "The South Side Black Belt",
+      "Russell Lee, Farm Security Administration, Chicago, 1941"
+    ],
+    "color-line-5": [
+      "A Black Belt Street",
+      "Russell Lee, Farm Security Administration, Chicago, 1941"
+    ],
+    "black-belt-street": [
+      "Linotype Operators of the Chicago Defender",
+      "Russell Lee, South Side Chicago, 1941"
+    ],
+    "color-line-1": [
+      "A Family Newly Arrived in South Chicago",
+      "Schomburg Center, 1922, the Great Migration years"
+    ],
+    "color-line-7": [
+      "Washday in a Black Belt Flat",
+      "Russell Lee, family on relief, Chicago, 1941"
+    ],
+    "dd-color-line-2": [
+      "Sanborn Insurance Map of Chicago",
+      "The block-by-block grid the surveyors graded"
+    ],
+    "dd-color-line-7": [
+      "The 1919 Chicago Race Riot",
+      "The violence that hardened the color line on the South Side"
+    ],
+    "racial-hierarchy-doc": [
+      "A Racially Restrictive Covenant",
+      "Period promotion limiting sale to the Caucasian race"
+    ],
+    "dd-redlining-11": [
+      "Carl Augustus Hansberry",
+      "Chicago real estate broker, studio portrait, 1940"
+    ],
+    "color-line-4": [
+      "The Lorraine Hansberry House",
+      "The Chicago landmark three flat tied to the family"
+    ],
+    "dd-redlining-14": [
+      "The United States Supreme Court",
+      "The building, completed 1935, that heard both cases"
+    ],
+    "dd-color-line-12": [
+      "Steps of the Supreme Court",
+      "Washington, the period of the covenant cases"
+    ],
+    "dd-redlining-15": [
+      "The Shelley House on Labadie Avenue",
+      "St. Louis, now a National Historic Landmark"
+    ],
+    "dd-redlining-16b": [
+      "Loren Miller",
+      "Civil rights attorney who argued for the families"
+    ],
+    "dd-color-line-11b": [
+      "Chief Justice Fred M. Vinson",
+      "Author of the Shelley v. Kraemer opinion, 1948"
+    ]
+  },
+  "sections": [
+    {
+      "id": "s1",
+      "title": "It Started With a Number",
+      "era": "1933",
+      "year": 1933,
+      "voiceover": "Most of the harm in this story did not start with a mob. It started with a number. In 1933 the University of Chicago Press published a thick book called One Hundred Years of Land Values in Chicago. The author was an economist named Homer Hoyt, and the book had begun as his doctoral dissertation here at the University of Chicago. It runs more than five hundred pages. It tracks the price of Chicago dirt, block by block, from 1830 to 1933. Hoyt was a careful man with numbers. He had a law degree and a doctorate, and he could read a city the way a doctor reads an x ray. Most of the book is dry, page after page of tables and curves. One table is not. In that table Hoyt ranked races and nationalities by their supposed effect on land values. At the top he put English, Germans, Scots, Irish, and Scandinavians. Below them, North Italians. Then Bohemians, Poles, Lithuanians, Greeks. Near the bottom he placed Russian Jews of the lower class and South Italians. At the very bottom he wrote Negroes, and then Mexicans. Hoyt added a note that mattered. The other groups, he wrote, would blend in once they rose in income and lived like Americans. For Black and Mexican residents, he said, that door stayed closed. He had taken an old prejudice and dressed it as economics. The table did not read like hate. It read like a footnote, calm and precise, which is exactly what made it dangerous. A banker could cite it. A judge could cite it. An appraiser could fold it into a formula and never feel the cruelty of it.",
+      "shots": [
+        [
+          "img",
+          "color-line-1",
+          "It started with a number"
+        ],
+        [
+          "img",
+          "university-1",
+          "published a thick book called One Hundred Years of Land Values in Chicago"
+        ],
+        [
+          "stat",
+          "hoytBook",
+          "his doctoral dissertation here at the University of Chicago"
+        ],
+        [
+          "img",
+          "university-4",
+          "It runs more than five hundred pages"
+        ],
+        [
+          "img",
+          "formation-4",
+          "the price of Chicago dirt, block by block"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "One table is not"
+        ],
+        [
+          "graphic",
+          "hierarchy",
+          "Hoyt ranked races and nationalities by their supposed effect on land values"
+        ],
+        [
+          "stat",
+          "hoytBook",
+          "At the very bottom he wrote Negroes, and then Mexicans"
+        ],
+        [
+          "img",
+          "dd-color-line-2",
+          "It read like a footnote, calm and precise"
+        ]
+      ],
+      "callouts": [
+        [
+          "Author",
+          "Homer Hoyt",
+          "his doctoral dissertation here at the University of Chicago"
+        ],
+        [
+          "At the bottom",
+          "Negroes, then Mexicans",
+          "At the very bottom he wrote Negroes, and then Mexicans"
+        ]
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "The Frame and the Hire",
+      "era": "1934",
+      "year": 1934,
+      "voiceover": "This did not come from nowhere. The University of Chicago was the home of a famous school of urban sociology. Robert Park and Ernest Burgess borrowed words from plant biology to describe city neighborhoods. They wrote about invasion and succession, as if a Black family moving onto a block were a species pushing out another. The language made segregation sound like a law of nature instead of a choice people made. Hoyt took that frame and gave it a dollar sign. A neighborhood, he argued, lost value the moment certain people arrived. He never quite asked the obvious question. Did the value fall because Black families moved in, or because white owners and white banks decided it should, and pulled their money out to make it true. He measured the wound and called it weather. So far this was a theory in a book. Then the federal government hired the man who wrote it. In 1934 Congress created the Federal Housing Administration to insure home loans and pull the country out of the Depression. The FHA needed rules. It needed to decide which mortgages were safe to back. Homer Hoyt became its chief land economist. Working beside him was Frederick Babcock, the appraiser who built the agency's underwriting system and who taught that property values fell when the wrong races moved in.",
+      "shots": [
+        [
+          "img",
+          "dd-redlining-4a",
+          "a famous school of urban sociology"
+        ],
+        [
+          "img",
+          "dd-land-2",
+          "borrowed words from plant biology"
+        ],
+        [
+          "img",
+          "color-line-1",
+          "a Black family moving onto a block"
+        ],
+        [
+          "graphic",
+          "wealth-gap",
+          "Hoyt took that frame and gave it a dollar sign"
+        ],
+        [
+          "img",
+          "dd-university-1",
+          "pulled their money out to make it true"
+        ],
+        [
+          "img",
+          "university-2",
+          "Then the federal government hired the man who wrote it"
+        ],
+        [
+          "stat",
+          "fhaCreated",
+          "Congress created the Federal Housing Administration"
+        ],
+        [
+          "stat",
+          "fhaCreated",
+          "Homer Hoyt became its chief land economist"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "property values fell when the wrong races moved in"
+        ]
+      ],
+      "callouts": [
+        [
+          "Chicago School",
+          "Park and Burgess",
+          "a famous school of urban sociology"
+        ],
+        [
+          "1934",
+          "FHA created",
+          "Congress created the Federal Housing Administration"
+        ]
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "A Federal Instruction Book",
+      "era": "1938",
+      "year": 1938,
+      "voiceover": "The rules they shaped became the FHA Underwriting Manual. That manual was not a private opinion. It was a federal instruction book sent to lenders across the nation. Read the 1938 edition and the logic is plain. It tells appraisers to study whether incompatible racial groups are present near a property. It praises natural or artificial barriers, a river, a wide road, a park, that could keep a neighborhood, in its words, protected from adverse influences. It openly recommends a deed clause barring the wrong people, and gives that clause extra points. The prejudice Hoyt charted in 1933 was now a checklist a bank used to say yes or no. Think about the scale of that. The FHA would go on to insure tens of billions of dollars in home loans over the following decades, and that wealth built the American middle class one mortgage at a time. The manual decided who got in line for it. A white family in a quiet suburb was a safe bet. A Black family on the South Side was a hazard by definition, whatever their savings or their record. The numbers tell it cold. Between 1945 and 1959, Black Americans received less than two percent of all federally insured home loans. The subsidy flowed one way, and a generation of equity piled up on one side of the line.",
+      "shots": [
+        [
+          "img",
+          "dd-color-line-2",
+          "became the FHA Underwriting Manual"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "a federal instruction book sent to lenders across the nation"
+        ],
+        [
+          "img",
+          "dd-color-line-2",
+          "whether incompatible racial groups are present near a property"
+        ],
+        [
+          "img",
+          "dd-urban-renewal-1",
+          "a river, a wide road, a park"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "openly recommends a deed clause barring the wrong people"
+        ],
+        [
+          "graphic",
+          "wealth-gap",
+          "that wealth built the American middle class one mortgage at a time"
+        ],
+        [
+          "img",
+          "color-line-7",
+          "A Black family on the South Side was a hazard by definition"
+        ],
+        [
+          "chart",
+          "return-rate",
+          "Black Americans received less than two percent of all federally insured home loans"
+        ],
+        [
+          "stat",
+          "blackLoans",
+          "a generation of equity piled up on one side of the line"
+        ]
+      ],
+      "callouts": [
+        [
+          "1938 edition",
+          "FHA Underwriting Manual",
+          "Read the 1938 edition and the logic is plain"
+        ],
+        [
+          "1945 to 1959",
+          "under 2% of loans",
+          "Black Americans received less than two percent of all federally insured home loans"
+        ]
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "The Map Becomes a Wall",
+      "era": "1935 to 1940",
+      "year": 1937,
+      "voiceover": "Around the same time, another New Deal agency drew the idea onto maps. The Home Owners Loan Corporation had been set up to refinance failing mortgages. From 1935 to 1940 it surveyed two hundred and thirty nine American cities and graded them block by block in color. Green was A, the best. Blue was B. Yellow was C. Red was D, hazardous, the lowest grade. The notes the surveyors wrote down explain the colors. A green area was native born and well off. A red area was old, crowded, or, again and again in the margins, home to Negro families or what one surveyor called an infiltration of them. On the Chicago maps, the Black Belt on the South Side was washed in red. The grade was not really about the houses. It was about who lived inside them. The word redlining comes from that red ink. A family in a red zone could not get a federally backed loan no matter how steady their paycheck was. They could not buy. They often could not borrow to repair. So the houses aged, and rents stayed high because there was nowhere else to go, and absentee landlords carved single homes into a dozen kitchenettes. Then a new surveyor would arrive, see the crowding the redline had caused, and grade the block hazardous all over again. The map became a wall, and the wall became real.",
+      "shots": [
+        [
+          "img",
+          "homer-hoyt",
+          "another New Deal agency drew the idea onto maps"
+        ],
+        [
+          "img",
+          "color-line-3",
+          "From 1935 to 1940 it surveyed two hundred and thirty nine American cities"
+        ],
+        [
+          "stat",
+          "holcCities",
+          "graded them block by block in color"
+        ],
+        [
+          "img",
+          "homer-hoyt",
+          "Red was D, hazardous, the lowest grade"
+        ],
+        [
+          "img",
+          "dd-color-line-2",
+          "The notes the surveyors wrote down explain the colors"
+        ],
+        [
+          "img",
+          "homer-hoyt",
+          "the Black Belt on the South Side was washed in red"
+        ],
+        [
+          "img",
+          "color-line-7",
+          "They could not buy"
+        ],
+        [
+          "img",
+          "color-line-5",
+          "absentee landlords carved single homes into a dozen kitchenettes"
+        ],
+        [
+          "img",
+          "homer-hoyt",
+          "The map became a wall, and the wall became real"
+        ]
+      ],
+      "callouts": [
+        [
+          "239 cities",
+          "graded A to D",
+          "two hundred and thirty nine American cities"
+        ],
+        [
+          "D, red",
+          "hazardous",
+          "Red was D, hazardous, the lowest grade"
+        ]
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "A National Machine",
+      "era": "1933 to 1947",
+      "year": 1937,
+      "voiceover": "This was not a Chicago story for long. Those surveys covered cities in nearly every corner of the country, from Atlanta to Los Angeles, from Boston to Birmingham. An idea worked out in a Hyde Park seminar room had been turned into a national machine. And while the federal government drew its lines, private owners built their own. The favorite tool was the racially restrictive covenant, a clause written into a deed promising that the property would never be sold or rented to Black residents, and sometimes to Asians or Jews. In Chicago whole subdivisions signed them, block clubs went door to door collecting names, and the University of Chicago itself quietly bankrolled the defense of covenants in the neighborhoods around its campus. From 1933 to 1947 the University spent more than eighty three thousand dollars protecting them. The covenant and the redline worked as a pair. One kept the money out. The other kept the people out. Together they held the South Side Black Belt in place like a clamp. Which brings us back to one block. In the spring of 1937 a Black real estate broker named Carl Hansberry bought a three flat at 6140 South Rhodes Avenue, just south of Washington Park.",
+      "shots": [
+        [
+          "img",
+          "homer-hoyt",
+          "cities in nearly every corner of the country"
+        ],
+        [
+          "img",
+          "dd-redlining-8b",
+          "from Atlanta to Los Angeles, from Boston to Birmingham"
+        ],
+        [
+          "img",
+          "dd-redlining-8b",
+          "had been turned into a national machine"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "The favorite tool was the racially restrictive covenant"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "never be sold or rented to Black residents"
+        ],
+        [
+          "img",
+          "university-1",
+          "the University of Chicago itself quietly bankrolled the defense of covenants"
+        ],
+        [
+          "stat",
+          "ucCovenants",
+          "spent more than eighty three thousand dollars protecting them"
+        ],
+        [
+          "img",
+          "woodlawn-hist",
+          "held the South Side Black Belt in place like a clamp"
+        ],
+        [
+          "img",
+          "color-line-4",
+          "a three flat at 6140 South Rhodes Avenue, just south of Washington Park"
+        ],
+        [
+          "clip",
+          "midway-now",
+          "just south of Washington Park"
+        ]
+      ],
+      "callouts": [
+        [
+          "Private tool",
+          "racial covenant",
+          "The favorite tool was the racially restrictive covenant"
+        ],
+        [
+          "1933 to 1947",
+          "$83,000+ by U of C",
+          "spent more than eighty three thousand dollars protecting them"
+        ]
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "Bricks on Rhodes Avenue",
+      "era": "1937 to 1940",
+      "year": 1937,
+      "voiceover": "He moved his family in on June the fifteenth. That night two bricks came through the front window. His wife, Nannie, took to patrolling the house with a loaded pistol while the children slept. One of those children was seven year old Lorraine Hansberry, who would grow up to write A Raisin in the Sun. Years later she remembered that brick coming through the glass, missing her by inches, and she remembered her mother walking the rooms at night with the gun. The Washington Park subdivision was covered by a covenant barring Black occupants, and within days the new neighbors filed suit to force the family out. Hansberry did not move out. He sued. His lawyers found a crack in the paper. The covenant was supposed to take effect only if the owners of ninety five percent of the frontage signed it, and in truth only about fifty four percent had. The case reached the Supreme Court in 1940 as Hansberry versus Lee. Hansberry won, but on narrow ground. The Court did not say covenants were illegal. It said this particular one had not been properly approved and could not bind him. The wall had a gap in it. The wall itself still stood. It took eight more years to shake it. The decisive case came from St. Louis. In 1945 a Black family named Shelley bought a home on Labadie Avenue, not knowing a covenant from 1911 forbade it. A neighbor named Kraemer, who lived blocks away, sued to throw them out. A nearly identical fight was unfolding in Detroit, where the McGhee family faced a covenant of its own.",
+      "shots": [
+        [
+          "img",
+          "color-line-4",
+          "He moved his family in on June the fifteenth"
+        ],
+        [
+          "stat",
+          "rhodesBricks",
+          "two bricks came through the front window"
+        ],
+        [
+          "img",
+          "dd-redlining-11",
+          "patrolling the house with a loaded pistol while the children slept"
+        ],
+        [
+          "img",
+          "dd-redlining-11",
+          "seven year old Lorraine Hansberry"
+        ],
+        [
+          "img",
+          "color-line-4",
+          "the new neighbors filed suit to force the family out"
+        ],
+        [
+          "img",
+          "dd-redlining-11",
+          "He sued"
+        ],
+        [
+          "stat",
+          "frontage",
+          "only about fifty four percent had"
+        ],
+        [
+          "img",
+          "dd-redlining-14",
+          "The case reached the Supreme Court in 1940 as Hansberry versus Lee"
+        ],
+        [
+          "img",
+          "woodlawn-hist",
+          "The wall itself still stood"
+        ],
+        [
+          "img",
+          "dd-redlining-15",
+          "The decisive case came from St. Louis"
+        ]
+      ],
+      "callouts": [
+        [
+          "June 15, 1937",
+          "two bricks",
+          "two bricks came through the front window"
+        ],
+        [
+          "Hansberry v. Lee",
+          "won, 1940",
+          "The case reached the Supreme Court in 1940 as Hansberry versus Lee"
+        ]
+      ]
+    },
+    {
+      "id": "s7",
+      "title": "Dead Words That Stayed",
+      "era": "1948 to 2022",
+      "year": 1948,
+      "voiceover": "Thurgood Marshall and Loren Miller argued for the families. On the third of May, 1948, the Supreme Court ruled in Shelley versus Kraemer. The decision was clever and limited at once. A covenant between private people, the Court said, was not itself against the Constitution. But the moment a court enforced one, the government became the enforcer, and the Fourteenth Amendment forbids the government from discriminating that way. So the clauses could no longer be enforced. It was a real victory, and Black families across the country began to cross the old lines. But notice what the Court did not do. It did not strike the covenants from the deeds. It did not ban redlining. It did not touch the FHA manual. It pulled one tool out of the toolbox and left the rest on the bench. They could still be written. And they were. For years afterward the racist language sat in millions of American deeds, including thousands here in Chicago, legally dead but never erased. You can still order a copy of your deed today and find it there, a sentence that no longer has teeth but never had to apologize. Illinois did not give homeowners a way to formally strike that language from the record until 2022. And the lines drawn in the 1930s did not fade when the law changed. Researchers who lay the old HOLC maps over the cities of today find the red zones still poorer, still sicker, still hotter in summer, with less tree cover and shorter lives. The wall came down. The shadow it cast did not. That is the shape of this harm. It rarely shouted. It was a table in a book, a manual in a file drawer, a color on a map, a line in a deed. Quiet, official, and built to last.",
+      "shots": [
+        [
+          "img",
+          "dd-redlining-16b",
+          "Thurgood Marshall and Loren Miller argued for the families"
+        ],
+        [
+          "stat",
+          "shelley",
+          "On the third of May, 1948"
+        ],
+        [
+          "img",
+          "dd-color-line-11b",
+          "the Supreme Court ruled in Shelley versus Kraemer"
+        ],
+        [
+          "img",
+          "dd-color-line-12",
+          "the government became the enforcer"
+        ],
+        [
+          "img",
+          "dd-redlining-15",
+          "Black families across the country began to cross the old lines"
+        ],
+        [
+          "img",
+          "racial-hierarchy-doc",
+          "It did not strike the covenants from the deeds"
+        ],
+        [
+          "stat",
+          "illinois2022",
+          "Illinois did not give homeowners a way to formally strike that language from the record until 2022"
+        ],
+        [
+          "img",
+          "color-line-3",
+          "Researchers who lay the old HOLC maps over the cities of today"
+        ],
+        [
+          "img",
+          "woodlawn-hist",
+          "still poorer, still sicker, still hotter in summer"
+        ],
+        [
+          "clip",
+          "old-new-pan",
+          "The shadow it cast did not"
+        ]
+      ],
+      "callouts": [
+        [
+          "May 3, 1948",
+          "Shelley v. Kraemer",
+          "the Supreme Court ruled in Shelley versus Kraemer"
+        ],
+        [
+          "2022",
+          "Illinois removal law",
+          "Illinois did not give homeowners a way to formally strike that language from the record until 2022"
+        ]
+      ]
+    }
+  ]
+}

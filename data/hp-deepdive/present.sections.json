@@ -1,0 +1,173 @@
+{
+  "id": "present",
+  "title": "Hyde Park Now",
+  "subtitle": "A presidential center opens on contested ground and the question of who this place is for stays open",
+  "stats": {
+    "opening": ["OPENING DATE", "June 19, 2026", "Juneteenth, the public opening in Jackson Park", "Obama Foundation; ABC7 Chicago; WGN"],
+    "cost": ["CAMPUS COST", "$850 million", "the costliest presidential center in U.S. history, all private money", "ArchDaily; CBS News, 2026"],
+    "tower": ["MUSEUM TOWER HEIGHT", "225 feet", "stone tower carved with words from Black history", "ArchDaily; Obama Foundation"],
+    "acres": ["CAMPUS SIZE", "19.3 acres", "set on an Olmsted park from 1871", "ArchDaily, 2026"],
+    "groundbreaking": ["GROUNDBREAKING", "Sept 28, 2021", "Obamas, Pritzker, and Lightfoot broke ground together", "Obama Foundation"],
+    "eastwoodlawn": ["EAST WOODLAWN MEDIAN PRICE", "$440,000", "single-family price doubled from 2019 to 2025", "DePaul Institute for Housing Studies"],
+    "pilotprice": ["JACKSON PARK PILOT-AREA MEDIAN", "$72,500 to $330,000", "more than four times higher from 2016 to 2025", "Illinois Answers Project, May 2026"],
+    "affordable": ["HOUSING STILL AFFORDABLE NEARBY", "one-third", "down from roughly two-thirds fifteen years earlier", "Illinois Answers Project, May 2026"],
+    "lots": ["WOODLAWN ORDINANCE LOTS", "52 reserved, 1 built", "one finished project of 58 units in five years", "City of Chicago; Illinois Answers Project"],
+    "unspent": ["PRESERVATION FUNDS UNSPENT", "$2 million", "set aside to rehab housing, left sitting in an account", "Illinois Answers Project, May 2026"],
+    "contract": ["CHICAGO HOMES SOLD ON CONTRACT", "75 to 95 percent", "to Black families in the 1950s and 60s, 84 percent average markup", "Duke Samuel DuBois Cook Center, 2019"],
+    "league": ["CONTRACT BUYERS LEAGUE", "500+ on strike", "founded 1968, more than 450 families won new terms", "Contract Buyers League history; The Chicago Reporter"],
+    "stripped": ["WEALTH STRIPPED FROM BLACK CHICAGO", "$3 to 4 billion", "equity that contract selling carried away for good", "Duke Samuel DuBois Cook Center, 2019"],
+    "wealthgap": ["MEDIAN FAMILY WEALTH, 2022", "$285,000 vs $45,000", "white versus Black, a gap of more than six to one", "Federal Reserve, 2022 Survey of Consumer Finances"],
+    "cornell": ["HYDE PARK FOUNDED", "1853", "Paul Cornell bought the blocks and sold a lakefront suburb", "Encyclopedia of Chicago; Hyde Park Herald"]
+  },
+  "annot": {
+    "dd-present-2": ["Frederick Law Olmsted", "Co-designer of the 1871 Jackson Park plan"],
+    "dd-present-1": ["The White City, 1893", "Court of Honor, World's Columbian Exposition"],
+    "dd-present-3": ["The Olmsted Lagoon", "Wooded Island, Jackson Park, 1893"],
+    "dd-present-4": ["A South Side Block", "Greystone two-flats of the kind sold on contract"],
+    "dd-present-7": ["The University Rises", "UChicago campus and the Midway, around 1907"],
+    "urban-renewal-3": ["University Apartments", "Built on land cleared by Hyde Park renewal"],
+    "dd-urban-renewal-2": ["63rd Street, Woodlawn", "A South Side thoroughfare, photographed 1973"],
+    "formation-1": ["Paul Cornell", "Hyde Park founder, bought the blocks in 1853"],
+    "racial-hierarchy-doc": ["A Racial Covenant", "Deed language barring Black buyers, around 1920"],
+    "woodlawn-hist": ["The Black Belt", "South Side Chicago housing, 1941"],
+    "dd-redlining-14": ["The Supreme Court", "The bench that declined an early Protect Our Parks appeal"]
+  },
+  "sections": [
+    {
+      "id": "s1",
+      "title": "Opening on Juneteenth",
+      "era": "2026",
+      "year": 2026,
+      "voiceover": "On June 19, 2026, the Obama Presidential Center opened to the public. Juneteenth, the day that marks the end of slavery in America. The night before, an invitation-only dedication brought Bruce Springsteen and Stevie Wonder to the lawn, with three former presidents in the crowd. Then the doors opened on Jackson Park. This is the same ground Frederick Law Olmsted and Calvert Vaux laid out in 1871. It's the same ground that held the 1893 World's Columbian Exposition, the White City that drew twenty-seven million visitors to the lakefront. A century and a third later, a new institution sits on it. The date was chosen on purpose. Juneteenth, on the South Side where Barack Obama once worked as a community organizer, for a center built to honor the first Black president. The campus runs 19.3 acres. The firm Tod Williams Billie Tsien Architects designed it, with the park landscape shaped by Michael Van Valkenburgh. At the center stands a stone museum tower that rises about 225 feet, its sides carved with words drawn from Black history. On the north face, the artist Julie Mehretu set 35 painted glass panels she calls Uprising of the Sun, inspired by the marches from Selma to Montgomery. The whole thing cost roughly 850 million dollars in private money. No presidential center has ever cost that much. Inside there's a museum, a branch of the Chicago Public Library, a forum building for public events, an athletic center, and the offices of the Obama Foundation.",
+      "shots": [
+        ["clip", "obama-hero", "the Obama Presidential Center opened to the public"],
+        ["stat", "opening", "the day that marks the end of slavery in America"],
+        ["clip", "obama-aerial", "Then the doors opened on Jackson Park"],
+        ["img", "dd-present-2", "Frederick Law Olmsted and Calvert Vaux laid out in 1871"],
+        ["img", "dd-present-1", "the White City that drew twenty-seven million visitors to the lakefront"],
+        ["clip", "obama-aerial2", "A century and a third later, a new institution sits on it"],
+        ["stat", "acres", "The campus runs 19.3 acres"],
+        ["clip", "cornell-stone", "a stone museum tower that rises about 225 feet"],
+        ["stat", "tower", "its sides carved with words drawn from Black history"],
+        ["stat", "cost", "No presidential center has ever cost that much"]
+      ],
+      "callouts": [
+        ["Dedication", "Springsteen, Wonder, three former presidents", "an invitation-only dedication"],
+        ["Glass installation", "Julie Mehretu, Uprising of the Sun, north face", "35 painted glass panels she calls Uprising of the Sun"]
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Ten Years and a Federal Review",
+      "era": "2016 to 2021",
+      "year": 2021,
+      "voiceover": "Getting here took ten years, and it was not smooth. The Obama Foundation picked the Jackson Park site in 2016, after choosing Chicago over rival bids from New York and Honolulu. Then came the wait. Because Jackson Park is an Olmsted landscape listed on the National Register of Historic Places, the project couldn't just break ground. It needed a full federal review, the kind that weighs whether a public works project will damage a historic place. That review ran for years. And while it ran, a group called Protect Our Parks went to court to stop the whole thing. They were a small group of residents, but they pushed hard. They argued that handing public parkland to a private foundation broke the public trust that's supposed to keep parks open to everyone. They argued the study of alternative sites was a sham, written to reach a conclusion the city had already chosen. They argued the city had effectively given away land that belonged to all of Chicago. They lost, again and again. The U.S. Supreme Court declined to take up an early appeal in 2021. A federal judge dismissed the core suit in 2022. The federal review itself admitted, in plain language, that the Center would alter the historic character of an Olmsted park. The courts let it proceed anyway. The Obamas, Governor J.B. Pritzker, and Mayor Lori Lightfoot broke ground together on September 28, 2021. From there it was just under five years of construction to the ribbon. The argument the Protect Our Parks suits raised never really got answered. It just got overruled.",
+      "shots": [
+        ["clip", "jackson-lagoon", "The Obama Foundation picked the Jackson Park site in 2016"],
+        ["img", "dd-present-3", "Jackson Park is an Olmsted landscape listed on the National Register of Historic Places"],
+        ["clip", "lakefront-reveal", "It needed a full federal review"],
+        ["img", "dd-present-3", "a group called Protect Our Parks went to court to stop the whole thing"],
+        ["img", "dd-present-2", "broke the public trust that's supposed to keep parks open to everyone"],
+        ["img", "dd-redlining-14", "The U.S. Supreme Court declined to take up an early appeal in 2021"],
+        ["img", "dd-redlining-14", "A federal judge dismissed the core suit in 2022"],
+        ["clip", "obama-aerial", "the Center would alter the historic character of an Olmsted park"],
+        ["stat", "groundbreaking", "broke ground together on September 28, 2021"],
+        ["clip", "obama-hero", "It just got overruled"]
+      ],
+      "callouts": [
+        ["Public-trust claim", "Parkland handed to a private foundation", "broke the public trust that's supposed to keep parks open to everyone"],
+        ["Federal finding", "Review admitted an adverse effect on the Olmsted landscape", "the Center would alter the historic character of an Olmsted park"]
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Woodlawn Gets Expensive",
+      "era": "2019 to 2026",
+      "year": 2026,
+      "voiceover": "Now hold that opening day in your mind, and look west, at the streets just past the park. That's Woodlawn. It's the neighborhood that organized for years to bring this here, that wanted the jobs and the foot traffic and the pride of it. And while the tower went up, Woodlawn got more expensive. Not a little. On the east side of Woodlawn, the blocks closest to the Center, the median price of a single-family home doubled between 2019 and 2025, to about 440,000 dollars. That's the figure from DePaul's Institute for Housing Studies. Pull the lens back to the city's whole Jackson Park housing pilot area, and the change is starker. The median sale price went from 72,500 dollars in 2016, the year the site was chosen, to 330,000 dollars by 2025. More than four times higher in nine years. And the supply of homes a working family could actually afford fell off a cliff. In 2024, about a third of the housing stock nearby still counted as affordable. Fifteen years before, it had been roughly two-thirds. The city saw this coming. Organizers saw it years out. In September 2020, after a campaign of about five years, the City Council passed the Woodlawn Housing Preservation Ordinance. On paper it was real protection. It reserved 52 city-owned vacant lots for affordable housing. It set up a loan fund, home-repair grants for longtime owners, and a right of first refusal that was supposed to give tenants a shot at buying their building before it sold out from under them.",
+      "shots": [
+        ["clip", "obama-aerial2", "look west, at the streets just past the park"],
+        ["img", "dd-urban-renewal-2", "That's Woodlawn"],
+        ["clip", "greystone-rise", "while the tower went up, Woodlawn got more expensive"],
+        ["stat", "eastwoodlawn", "the median price of a single-family home doubled between 2019 and 2025"],
+        ["stat", "pilotprice", "from 72,500 dollars in 2016"],
+        ["stat", "affordable", "about a third of the housing stock nearby still counted as affordable"],
+        ["img", "protective-club-era", "after a campaign of about five years"],
+        ["img", "racial-hierarchy-doc", "the City Council passed the Woodlawn Housing Preservation Ordinance"],
+        ["clip", "greystone-rise", "a right of first refusal that was supposed to give tenants a shot at buying their building before it sold out from under them"]
+      ],
+      "callouts": [
+        ["Woodlawn ordinance", "Passed September 2020 after a five-year campaign", "the City Council passed the Woodlawn Housing Preservation Ordinance"],
+        ["On paper", "52 lots reserved, a loan fund, repair grants, right of first refusal", "It reserved 52 city-owned vacant lots for affordable housing"]
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "What the Audit Found",
+      "era": "2026",
+      "year": 2026,
+      "voiceover": "Then five years passed. And in May 2026, the Illinois Answers Project went and checked what the ordinance had actually delivered. The results were thin. Of the 52 reserved lots, exactly one project had been finished, a single building of 58 units. The tenant right of first refusal, the one tool meant to let renters buy before a sale, had generated zero notices in five years. A home-repair grant program reached just 36 longtime homeowners, with grants of up to 20,000 dollars each. And roughly 2 million dollars set aside to preserve and rehab housing sat completely unspent, in part because almost no one applied and no one inside the city was clearly assigned to push the money out the door. The protections were real on paper. On the ground, they barely slowed the wave. The people the ordinance was written to keep in place were leaving while the money it promised them sat in an account. To understand why a doubling of home prices lands so hard in a place like Woodlawn, you have to know how Black families in Chicago came to own homes in the first place. For decades, redlining and racial covenants shut them out of ordinary bank mortgages. The loans that built white wealth in the suburbs were simply not on offer. So when Black families finally bought, on the South and West Sides, a huge share of them bought on contract. A contract sale looked like a mortgage and worked nothing like one. A speculator would buy a house cheap from a fleeing white owner, then turn around and sell it to a Black family at a steep markup, on terms the family had no power to refuse. The seller kept the deed until the very last payment was made, years down the line. The buyer built no equity along the way, and got none of the protections a real mortgage carried. And miss a single payment, even one, and the seller could evict and keep everything already paid, then sell the same house to the next family and start the whole cycle again. Families took in boarders and worked second jobs just to make the monthly number.",
+      "shots": [
+        ["stat", "lots", "Of the 52 reserved lots, exactly one project had been finished, a single building of 58 units"],
+        ["img", "dd-urban-renewal-2", "had generated zero notices in five years"],
+        ["stat", "unspent", "roughly 2 million dollars set aside to preserve and rehab housing sat completely unspent"],
+        ["img", "dd-urban-renewal-2", "On the ground, they barely slowed the wave"],
+        ["img", "woodlawn-hist", "how Black families in Chicago came to own homes in the first place"],
+        ["img", "racial-hierarchy-doc", "redlining and racial covenants shut them out of ordinary bank mortgages"],
+        ["img", "dd-present-4", "a huge share of them bought on contract"],
+        ["graphic", "hierarchy", "A contract sale looked like a mortgage and worked nothing like one"],
+        ["img", "dd-present-4", "The seller kept the deed until the very last payment was made, years down the line"],
+        ["img", "color-line-5", "Families took in boarders and worked second jobs just to make the monthly number"]
+      ],
+      "callouts": [
+        ["Right of first refusal", "Zero notices in five years", "had generated zero notices in five years"],
+        ["Repair grants", "36 homeowners, up to $20,000 each", "reached just 36 longtime homeowners, with grants of up to 20,000 dollars each"]
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "Three to Four Billion Lost",
+      "era": "1968 to 2022",
+      "year": 2019,
+      "voiceover": "Across Chicago, by the Cook Center's count, between 75 and 95 percent of the homes sold to Black families in the 1950s and 60s were sold this way, at an average markup of 84 percent over what a white buyer paid for a comparable house. People fought back. In 1968, North Lawndale residents formed the Contract Buyers League. A World War II veteran named Clyde Ross helped lead it. More than 500 families went on a payment strike, holding their money out of the sellers' hands until the contracts were renegotiated, and more than 450 of them eventually won new terms. But the fight was house by house, and the larger machine kept running. Researchers at Duke University's Samuel DuBois Cook Center on Social Equity, working with the University of Illinois at Chicago, later put a number on the total damage. Contract selling stripped between 3 and 4 billion dollars from Black Chicago. That was money that should have become equity, a paid-off house, a down payment for a grandchild, something handed down. Instead it flowed to the sellers, and for the families it simply vanished. You can still measure the hole it left, decades on. In 2022, the Federal Reserve's Survey of Consumer Finances found that the median white family in America held about 285,000 dollars in wealth. The median Black family held about 45,000. That's a gap of more than six to one. And here's the part that surprises people. Black family wealth actually rose faster over those years, up 61 percent from 2019, against 31 percent for white families. The dollar gap still widened, because Black wealth was growing off a much smaller base. That's what makes a wealth gap so stubborn. You can run faster and still fall further behind. A gap that wide doesn't come from one bad decade or one set of choices. It gets built one stripped contract, one denied loan, one priced-out block at a time, and then it gets passed down, the way wealth is, in reverse. The family that lost a contract house in 1962 didn't just lose a house. It lost the thing that house would have become, the inheritance, the cushion, the down payment for the next generation.",
+      "shots": [
+        ["stat", "contract", "between 75 and 95 percent of the homes sold to Black families in the 1950s and 60s were sold this way"],
+        ["img", "black-belt-street", "People fought back"],
+        ["stat", "league", "North Lawndale residents formed the Contract Buyers League"],
+        ["img", "color-line-5", "More than 500 families went on a payment strike"],
+        ["stat", "stripped", "Contract selling stripped between 3 and 4 billion dollars from Black Chicago"],
+        ["img", "woodlawn-hist", "money that should have become equity, a paid-off house, a down payment for a grandchild"],
+        ["stat", "wealthgap", "the median white family in America held about 285,000 dollars in wealth"],
+        ["graphic", "wealth-gap", "That's a gap of more than six to one"],
+        ["chart", "return-rate", "up 61 percent from 2019, against 31 percent for white families"],
+        ["img", "dd-present-4", "You can run faster and still fall further behind"],
+        ["img", "dd-present-4", "It lost the thing that house would have become, the inheritance, the cushion, the down payment for the next generation"]
+      ],
+      "callouts": [
+        ["Clyde Ross", "WWII veteran who helped lead the League", "A World War II veteran named Clyde Ross helped lead it"],
+        ["Black wealth grew faster", "Up 61% since 2019, yet the dollar gap still widened", "up 61 percent from 2019, against 31 percent for white families"]
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "The 173-Year Pattern",
+      "era": "1853 to 2026",
+      "year": 2026,
+      "voiceover": "And the pattern under all of it is older than anyone now living it. Paul Cornell bought these blocks in 1853 and sold the idea of a refined lakefront suburb, with wide lots and a fast train downtown. The 1893 fair brought the crowds and the prestige. The University of Chicago rose nearby in the 1890s, funded by John D. Rockefeller, and it never stopped growing. In the 1950s and 60s it backed the urban renewal that bulldozed swaths of Hyde Park and Kenwood and pushed thousands of families out, many of them Black families, all of it carried out in the name of saving the neighborhood. Then in our own decade the university kept moving south across the Midway into Woodlawn, with new dorms and acquired property, the same direction the prices were rising. Now the Obama Center sits at the edge of it all. Each time, across a hundred and seventy years, the shape is the same. A powerful institution arrives, the ground around it gains value, and the people already there are left to wonder whether the place they helped build still has room for them. A hundred and seventy-three years after Cornell first walked these blocks, the question underneath this whole neighborhood, who this ground is really for, still isn't settled.",
+      "shots": [
+        ["stat", "cornell", "Paul Cornell bought these blocks in 1853"],
+        ["img", "formation-1", "sold the idea of a refined lakefront suburb, with wide lots and a fast train downtown"],
+        ["img", "dd-present-1", "The 1893 fair brought the crowds and the prestige"],
+        ["img", "dd-present-7", "The University of Chicago rose nearby in the 1890s, funded by John D. Rockefeller"],
+        ["img", "urban-renewal-3", "the urban renewal that bulldozed swaths of Hyde Park and Kenwood and pushed thousands of families out"],
+        ["clip", "campus-quads", "the university kept moving south across the Midway into Woodlawn"],
+        ["clip", "obama-aerial2", "Now the Obama Center sits at the edge of it all"],
+        ["clip", "obama-hero", "the people already there are left to wonder whether the place they helped build still has room for them"],
+        ["clip", "lakefront-reveal", "who this ground is really for, still isn't settled"]
+      ],
+      "callouts": [
+        ["The shape repeats", "Institution arrives, land gains value, residents priced out", "the people already there are left to wonder whether the place they helped build still has room for them"]
+      ]
+    }
+  ]
+}

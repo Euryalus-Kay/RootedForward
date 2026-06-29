@@ -1,0 +1,185 @@
+{
+  "id": "worlds-fair",
+  "title": "The White City and the Color Line",
+  "subtitle": "How the 1893 fair remade the Jackson Park lakefront and drew a line through who belonged on it",
+  "stats": {
+    "fairgrounds": ["FAIRGROUNDS", "686 acres", "Jackson Park lakefront, mostly marsh and sand", "Britannica, World's Columbian Exposition"],
+    "outlay": ["TOTAL OUTLAY", "$28,340,700", "Almost none of it built to last", "Britannica, gross outlays"],
+    "openingDay": ["OPENING DAY", "May 1, 1893", "Cleveland pressed a golden telegraph key", "Chicago Detours, worldsfairchicago1893.com"],
+    "panic": ["PANIC OF 1893", "100,000", "Chicago men out of work that winter", "Living History of Illinois, Effects of the Panic of 1893"],
+    "deaths": ["CONSTRUCTION DEATHS", "32", "Counted by the fair's own medical bureau", "worldsfairchicago1893.com, Workers Escaping Death"],
+    "largest": ["LARGEST BUILDING", "32 acres", "Manufactures and Liberal Arts, biggest in the world then", "Chicago Architecture Center, Chicagology"],
+    "ferris": ["FERRIS WHEEL", "264 feet", "36 cars, 2,160 riders at once, fifty cents a turn", "Wikipedia, Ferris Wheel (1893)"],
+    "visitors": ["VISITORS", "27 million", "Through the gates over the season", "Britannica, attendance reported 25.8 to 28 million"],
+    "chicagoDay": ["CHICAGO DAY", "751,026", "Oct 9, 1893, a record for an outdoor event", "worldsfairchicago1893.com, Chicagology"],
+    "pamphlet": ["PAMPHLET COPIES", "10,000", "The Reason Why, handed out at the Haitian building", "Tennessee Historical Society"],
+    "coloredDay": ["COLORED AMERICAN DAY", "Aug 25, 1893", "Douglass spoke, Dunbar read his verse", "Living History of Illinois, Colored American Day"],
+    "icOrdinance": ["IC TRACK ORDINANCE", "May 1892", "First order to elevate the Illinois Central through Hyde Park", "Chicago Railfan, Metra Electric National Register report"]
+  },
+  "annot": {
+    "dd-worlds-fair-1": ["Bird's-Eye of the Fairgrounds", "Looking northwest from the Liberal Arts Building, 1893"],
+    "dd-worlds-fair-21": ["Columbian Novelty Co. Fair Map", "The fair plan and the South Side rail lines, 1893"],
+    "worlds-fair-1": ["The Court of Honor", "Official Views of the World's Columbian Exposition, plate 15"],
+    "dd-worlds-fair-8": ["Statue of the Republic", "William Henry Jackson, the Grand Basin, 1893"],
+    "dd-worlds-fair-3": ["Palace of Mechanic Arts", "Machinery Hall, which housed the great steam engine"],
+    "dd-worlds-fair-4": ["Daniel Burnham", "Chief of construction over nearly two hundred buildings"],
+    "dd-worlds-fair-5": ["Frederick Law Olmsted", "Who laid out the lagoons and the wooded island"],
+    "dd-worlds-fair-6": ["The Administration Building", "Richard Morris Hunt's domed hall, Official Views plate 23"],
+    "dd-worlds-fair-7": ["Manufactures and Liberal Arts", "The largest building in the world, across the lagoon"],
+    "dd-worlds-fair-9": ["Sullivan's Golden Door", "The Transportation Building, the one break from white"],
+    "white-city-night": ["Court of Honor in Light", "John Henry Twachtman painting of the basin, 1893"],
+    "worlds-fair-7": ["The Midway Looking West", "Official Views plate 97, crowds along the strip"],
+    "midway-village-hist": ["Street of Cairo", "A Midway ethnographic display, Library of Congress 1893"],
+    "dd-worlds-fair-10": ["Frederic Ward Putnam", "The Harvard ethnologist who organized the Midway"],
+    "midway-1893-crowd": ["The Ferris Wheel Over the Midway", "Rijksmuseum photograph, 1893"],
+    "worlds-fair-6": ["The Ferris Wheel", "Official Views plate 91, 264 feet tall"],
+    "dd-worlds-fair-12": ["Ida B. Wells", "Mary Garrity studio portrait, about 1893"],
+    "dd-worlds-fair-13": ["Frederick Douglass", "The elder Douglass, commissioner for Haiti"],
+    "dd-worlds-fair-16": ["Pavilion of the Republic of Haiti", "Where Douglass gave Wells a desk"],
+    "dd-worlds-fair-14": ["Paul Laurence Dunbar", "The young poet who read his verse at the fair"],
+    "ic-embankment-hist": ["The Raised Lakefront Line", "Jack Delano photograph of the Illinois Central, 1943"],
+    "formation-ic-train": ["Illinois Central No. 1376", "A locomotive used on the World's Fair trains, 1893"],
+    "dd-worlds-fair-18": ["Mayor Carter Harrison", "Shot at home two days before the fair closed"]
+  },
+  "sections": [
+    {
+      "id": "s1",
+      "title": "Jackson Park Becomes A Fair",
+      "era": "1893",
+      "year": 1893,
+      "voiceover": "For six months in 1893, Jackson Park was not a park. It was a fair. The World's Columbian Exposition was built to mark four hundred years since Columbus reached the Americas. The dedication ceremonies were held in October of 1892, near the four-hundredth anniversary, but the gates did not open to the public until the first of May the next year. The grounds covered about six hundred and eighty-six acres of lakefront that had been mostly marsh and sand. The whole thing cost more than twenty-eight million dollars. And almost none of it was meant to last. On opening day, President Grover Cleveland stood on a platform at the head of the Court of Honor. A little after noon he pressed a golden telegraph key, and the signal started the great steam engine over in Machinery Hall. Flags dropped, fountains rose, and a choir broke into the Hallelujah chorus. About two hundred thousand people were there to see it. The timing was strange. A week after the gates opened, the Panic of 1893 reached Chicago, a financial collapse that became the worst depression the country had seen. Banks failed and factories closed. By that winter, with the fair's work gone, something like a hundred thousand men were out of work on Chicago's streets. The White City sold a dream of order at the exact moment the economy outside it was falling apart.",
+      "shots": [
+        ["img", "dd-worlds-fair-1", "Jackson Park was not a park"],
+        ["img", "dd-worlds-fair-21", "The World's Columbian Exposition was built to mark four hundred years"],
+        ["stat", "fairgrounds", "six hundred and eighty-six acres of lakefront"],
+        ["stat", "outlay", "cost more than twenty-eight million dollars"],
+        ["img", "worlds-fair-1", "President Grover Cleveland stood on a platform at the head of the Court of Honor"],
+        ["stat", "openingDay", "he pressed a golden telegraph key"],
+        ["img", "dd-worlds-fair-3", "the great steam engine over in Machinery Hall"],
+        ["img", "dd-worlds-fair-8", "About two hundred thousand people were there to see it"],
+        ["stat", "panic", "the Panic of 1893 reached Chicago"],
+        ["clip", "lakefront-reveal", "The White City sold a dream of order"]
+      ],
+      "callouts": [
+        ["Dedication", "October 1892", "near the four-hundredth anniversary"],
+        ["Gates open", "May 1, 1893", "the first of May the next year"]
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Burnham And Olmsted Build The Set",
+      "era": "1891 to 1893",
+      "year": 1893,
+      "voiceover": "Daniel Burnham, a Chicago architect, was the chief of construction. He oversaw nearly two hundred buildings and the army of workers who raised them. To pick the look of the main halls, he chose ten of the country's leading firms, five from Chicago and five from the East, so the fair would feel national. Richard Morris Hunt of New York drew the Administration Building. Charles McKim's firm did the Agriculture Building. Burnham gave them one shared rule. Their cornices would meet at a single height, sixty feet, and they would all be white. Frederick Law Olmsted, who had laid out New York's Central Park, took the swampy ground and turned it into lagoons and a wooded island. What Olmsted built was a stage. What Burnham built was the set. At the center stood the Court of Honor, a ring of enormous halls finished in white over wood and a fiber called staff. They were not marble. They were plaster and burlap and lath, made to photograph like stone. The largest of them, the Manufactures and Liberal Arts Building, covered nearly thirty-two acres under one roof, the biggest building in the world at the time. Crews worked through a brutal Chicago winter to raise it all on a deadline, and the fair's own medical bureau later counted thirty-two deaths during construction. Almost the only hall that broke the white scheme was Louis Sullivan's Transportation Building, off to one side, with colored walls and a great arched Golden Door. Sullivan thought the rest of it was a mistake. He wrote later that the classical fashion the fair made popular had set American architecture back by half a century. At night the basin was strung with electric light, thousands of bulbs at once, in a decade when most American homes still burned gas or oil. People started calling it the White City.",
+      "shots": [
+        ["img", "dd-worlds-fair-4", "Daniel Burnham, a Chicago architect, was the chief of construction"],
+        ["img", "dd-worlds-fair-6", "Richard Morris Hunt of New York drew the Administration Building"],
+        ["img", "dd-worlds-fair-5", "Frederick Law Olmsted, who had laid out New York's Central Park"],
+        ["img", "dd-worlds-fair-8", "turned it into lagoons and a wooded island"],
+        ["img", "worlds-fair-1", "At the center stood the Court of Honor"],
+        ["img", "dd-worlds-fair-7", "the Manufactures and Liberal Arts Building, covered nearly thirty-two acres"],
+        ["stat", "largest", "the biggest building in the world at the time"],
+        ["stat", "deaths", "counted thirty-two deaths during construction"],
+        ["img", "dd-worlds-fair-9", "with colored walls and a great arched Golden Door"],
+        ["img", "white-city-night", "the basin was strung with electric light"],
+        ["clip", "old-new-pan", "People started calling it the White City"]
+      ],
+      "callouts": [
+        ["Shared rule", "60-foot cornice", "Their cornices would meet at a single height"],
+        ["Sullivan's verdict", "set back half a century", "the classical fashion the fair made popular"]
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Beauty As An Argument",
+      "era": "1893",
+      "year": 1893,
+      "voiceover": "The name stuck, and it meant more than the color of the plaster. The fair was beautiful, and the fair was an argument. It laid the world out as a ladder. Northern Europe and white America stood at the top, in the clean geometry of the Court of Honor. Everyone else was sorted onto the rungs below. And you could walk that argument from one end to the other. West of the Court of Honor ran the Midway Plaisance, a strip about a mile long. Frederic Ward Putnam, a Harvard ethnologist, helped organize it as a kind of living museum of peoples. There were villages up and down it. A German village, an Irish village, a street in Cairo with camels and dancers, a Dahomey village brought from West Africa, an encampment meant to stand for Native American life. The idea built into the layout was that a visitor would pass these displays and read them as stages of human progress, the so-called civilized at one end and the so-called primitive at the other. The closer a group sat to the White City, the more advanced the fair meant to call it. The villages of Africans and Native Americans were placed at the far end. People were recruited for small pay, shipped to Chicago, and put on view for the summer. The science was a costume. What it actually taught was rank. Rising over the whole strip was the Ferris Wheel, the fair's answer to the Eiffel Tower of the Paris exposition four years before. George Washington Gale Ferris Junior, a bridge engineer, designed it. It stood two hundred and sixty-four feet tall, with thirty-six cars that could hold sixty people each, more than two thousand riders at once. A turn on the wheel cost fifty cents, the same as admission to the entire fair. About a million and a half people paid it. The wheel rose above the villages, and the crowd looked down on both.",
+      "shots": [
+        ["img", "worlds-fair-1", "The name stuck, and it meant more than the color of the plaster"],
+        ["graphic", "hierarchy", "It laid the world out as a ladder"],
+        ["img", "worlds-fair-7", "West of the Court of Honor ran the Midway Plaisance"],
+        ["img", "dd-worlds-fair-10", "Frederic Ward Putnam, a Harvard ethnologist"],
+        ["img", "midway-village-hist", "a street in Cairo with camels and dancers"],
+        ["img", "worlds-fair-7", "stages of human progress"],
+        ["img", "midway-1893-crowd", "Rising over the whole strip was the Ferris Wheel"],
+        ["img", "worlds-fair-6", "George Washington Gale Ferris Junior, a bridge engineer, designed it"],
+        ["stat", "ferris", "It stood two hundred and sixty-four feet tall"],
+        ["img", "midway-1893-crowd", "the crowd looked down on both"]
+      ],
+      "callouts": [
+        ["The science", "was a costume", "What it actually taught was rank"],
+        ["A turn on the wheel", "fifty cents", "the same as admission to the entire fair"]
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Twenty-Seven Million And An Omission",
+      "era": "1893",
+      "year": 1893,
+      "voiceover": "About twenty-seven million people came through the gates that season. On a single day in October, called Chicago Day, the fair drew more than seven hundred and fifty thousand, a record for an outdoor event. And while those crowds moved through the White City, a small group of Black Americans set out to tell them what the fair was leaving out. The organizers had refused to give African Americans any real part in planning the exposition. There was no building, no commission, no place at the table. Ida B. Wells, the anti-lynching journalist, had a different plan. A year earlier, her newspaper office in Memphis had been destroyed by a mob after she wrote about the lynching of three Black grocers, and she had been driven out of the South. She came to the fair carrying that story. With Frederick Douglass, the educator Irvine Garland Penn, and the lawyer Ferdinand Barnett, who would later become her husband, she put together a pamphlet. They called it The Reason Why the Colored American Is Not in the World's Columbian Exposition. It came out on the thirtieth of August. It ran through the achievements of Black Americans in the thirty years since slavery had ended. It also laid out the convict-lease system, the laws stripping the vote, and the lynchings spreading across the South, with names and numbers. The fair told a story of progress. The pamphlet told the other half of it.",
+      "shots": [
+        ["img", "dd-worlds-fair-1", "About twenty-seven million people came through the gates"],
+        ["stat", "visitors", "twenty-seven million people came through the gates that season"],
+        ["stat", "chicagoDay", "called Chicago Day, the fair drew more than seven hundred and fifty thousand"],
+        ["img", "worlds-fair-7", "a small group of Black Americans set out to tell them what the fair was leaving out"],
+        ["img", "dd-worlds-fair-12", "Ida B. Wells, the anti-lynching journalist, had a different plan"],
+        ["img", "dd-worlds-fair-13", "With Frederick Douglass, the educator Irvine Garland Penn"],
+        ["img", "dd-worlds-fair-12", "They called it The Reason Why the Colored American Is Not in the World's Columbian Exposition"],
+        ["img", "dd-worlds-fair-13", "It also laid out the convict-lease system"],
+        ["img", "dd-worlds-fair-12", "The pamphlet told the other half of it"]
+      ],
+      "callouts": [
+        ["No part in planning", "no place at the table", "no building, no commission"],
+        ["Pamphlet released", "Aug 30, 1893", "It came out on the thirtieth of August"]
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "A Desk In The Haitian Building",
+      "era": "August 1893",
+      "year": 1893,
+      "voiceover": "Wells wrote the preface. The exclusion, she wrote, had created, literally and figuratively, a White City, in the building of which the Colored American was allowed no helping hand, and in its glorious success he had no share. They printed the pamphlet in several languages, so foreign visitors could read it. Douglass had a base for the work. He was serving as a commissioner for the Republic of Haiti, and Haiti had its own building at the fair. He gave Wells a desk inside it. Day after day, the two of them handed the pamphlet to passing visitors, many of them from abroad. By the end, ten thousand copies were out, and Wells later said the message had reached far more people than that. There was one day the fair set aside for Black Americans, the twenty-fifth of August. The organizers called it Colored American Day. Wells wanted nothing to do with it. She saw it as a token, and she was furious at reports that officials meant to draw a crowd with free watermelon. She stayed away. Douglass went. He was in his seventies by then, and when he rose to speak, hecklers in the crowd jeered at him about the Negro problem. He set his prepared pages down. He told them there was no Negro problem. The real problem, he said, was whether the American people had loyalty enough, and honor enough, to live up to their own Constitution. The young poet Paul Laurence Dunbar, who was working at the fair as a washroom attendant, read his verse that day. Wells went to hear what people were saying about it, and she came away moved. She later told Douglass that her youth had made her overreact. The day had not been a mockery after all.",
+      "shots": [
+        ["img", "dd-worlds-fair-12", "Wells wrote the preface"],
+        ["img", "dd-worlds-fair-12", "literally and figuratively, a White City"],
+        ["img", "dd-worlds-fair-16", "Haiti had its own building at the fair"],
+        ["img", "dd-worlds-fair-13", "He gave Wells a desk inside it"],
+        ["stat", "pamphlet", "By the end, ten thousand copies were out"],
+        ["stat", "coloredDay", "The organizers called it Colored American Day"],
+        ["img", "dd-worlds-fair-12", "Wells wanted nothing to do with it"],
+        ["img", "dd-worlds-fair-13", "Douglass went"],
+        ["img", "dd-worlds-fair-13", "He told them there was no Negro problem"],
+        ["img", "dd-worlds-fair-14", "The young poet Paul Laurence Dunbar"],
+        ["img", "dd-worlds-fair-12", "The day had not been a mockery after all"]
+      ],
+      "callouts": [
+        ["Wells on the exclusion", "no helping hand", "in its glorious success he had no share"],
+        ["Douglass's answer", "no Negro problem", "live up to their own Constitution"]
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "Hyde Park East And What Stayed",
+      "era": "1892 to 1894",
+      "year": 1894,
+      "voiceover": "The fair changed this lakefront in a way that outlasted the plaster. To carry the crowds out to Jackson Park, the city had the Illinois Central Railroad lift its tracks. The line that ran along the lake was raised up onto a solid embankment, a long wall of earth and stone with the trains running on top. The first ordinance for the work passed in May of 1892, a full year before the gates opened. That wall cut the neighborhood in two. The blocks between the tracks and the lake became a place apart, reached by ducking under the embankment, and people came to call it Hyde Park East. The fair did not end on a high note. Two days before it closed, a man with a grievance shot Mayor Carter Harrison dead in his own home, and the planned closing ceremony was called off. The gates shut for good on the thirtieth of October. The fair had done what almost no American exposition had done before. It closed with cash left over, the first to turn a profit, even in the teeth of the depression outside. The White City itself was already coming down, and much of what was left burned the following summer. But the embankment stayed. The lagoons stayed. Olmsted's wooded island stayed. And the lakefront the fair had made glamorous was now valuable ground. The question of who that ground belonged to, and who would be welcome on it, was just ahead.",
+      "shots": [
+        ["img", "formation-ic-train", "the city had the Illinois Central Railroad lift its tracks"],
+        ["img", "ic-embankment-hist", "raised up onto a solid embankment, a long wall of earth and stone"],
+        ["stat", "icOrdinance", "The first ordinance for the work passed in May of 1892"],
+        ["clip", "ic-tracks", "That wall cut the neighborhood in two"],
+        ["img", "dd-worlds-fair-21", "people came to call it Hyde Park East"],
+        ["img", "dd-worlds-fair-18", "shot Mayor Carter Harrison dead in his own home"],
+        ["img", "worlds-fair-1", "It closed with cash left over, the first to turn a profit"],
+        ["clip", "jackson-lagoon", "The lagoons stayed"],
+        ["img", "dd-worlds-fair-8", "Olmsted's wooded island stayed"],
+        ["clip", "lakefront-reveal", "the lakefront the fair had made glamorous was now valuable ground"]
+      ],
+      "callouts": [
+        ["Gates shut", "Oct 30, 1893", "The gates shut for good on the thirtieth of October"],
+        ["What stayed", "the embankment", "But the embankment stayed"]
+      ]
+    }
+  ]
+}

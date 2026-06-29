@@ -1,0 +1,595 @@
+{
+ "id": "urban-renewal",
+ "title": "The University Rebuilds the Neighborhood",
+ "subtitle": "How the University of Chicago cleared, rebuilt, and decided who came back to Hyde Park",
+ "stats": {
+  "secc": [
+   "COMMISSION FOUNDED",
+   "1952",
+   "South East Chicago Commission, chaired by Chancellor Lawrence Kimpton",
+   "South East Chicago Commission records"
+  ],
+  "crime": [
+   "REPORTED CRIME JUMP",
+   "32%",
+   "Rise over three years cited to justify the new commission",
+   "Contemporary reporting, CEGU/Expositions analysis"
+  ],
+  "acres": [
+   "PLAN AREA",
+   "856 acres",
+   "Most of the neighborhood, marked for conservation and clearance",
+   "Hyde Park-Kenwood Urban Renewal Plan"
+  ],
+  "buildings": [
+   "BUILDINGS MARKED TO FALL",
+   "638",
+   "Judged too crowded, too old, or too far gone to keep",
+   "Hyde Park-Kenwood Urban Renewal Plan"
+  ],
+  "pop500": [
+   "BLACK POPULATION 1950 TO 1956",
+   "up ~500%",
+   "As Black families moved in after the covenants fell",
+   "Area figures, CEGU/Expositions analysis"
+  ],
+  "firstdemo": [
+   "FIRST DEMOLITION",
+   "May 1955",
+   "Hyde Park A and B, three years before the full plan passed",
+   "Hyde Park Herald, Lost Hyde Park"
+  ],
+  "council": [
+   "CITY COUNCIL APPROVAL",
+   "Nov 7, 1958",
+   "Chicago City Council approved the full plan",
+   "Chicago City Council vote"
+  ],
+  "families": [
+   "FAMILIES DISPLACED",
+   "~4,000",
+   "Households told to find somewhere else to live",
+   "Hyde Park-Kenwood Urban Renewal Plan"
+  ],
+  "money": [
+   "UNIVERSITY'S OWN MONEY",
+   "$29 million",
+   "To buy, control, and rebuild the land, per Kimpton",
+   "Chancellor Lawrence Kimpton"
+  ],
+  "private": [
+   "PRIVATE INVESTMENT UNLOCKED",
+   "~$250 million",
+   "Drawn in alongside the university's contribution",
+   "CEGU/Expositions analysis"
+  ],
+  "white46": [
+   "WHITE FAMILIES WHO STAYED",
+   "46%",
+   "Relocated within Hyde Park-Kenwood after Hyde Park A and B",
+   "Rossi and Dentler, 1961"
+  ],
+  "black17": [
+   "BLACK FAMILIES WHO STAYED",
+   "17%",
+   "Relocated within Hyde Park-Kenwood after Hyde Park A and B",
+   "Rossi and Dentler, 1961"
+  ],
+  "pei": [
+   "UNIVERSITY APARTMENTS",
+   "completed 1961",
+   "I.M. Pei, 1401-1451 E 55th St, construction began Aug 1958",
+   "Wikipedia, University Apartments (Chicago)"
+  ],
+  "displaced15k": [
+   "RESIDENTS DISPLACED, HYDE PARK A AND B",
+   "15,000+",
+   "Cleared under the two earliest projects alone",
+   "Wikipedia, University Apartments (Chicago)"
+  ],
+  "popdrop": [
+   "BLACK POPULATION CHANGE",
+   "down ~40%",
+   "Across the entire renewal area",
+   "Hyde Park-Kenwood Urban Renewal Survey"
+  ],
+  "income": [
+   "MEDIAN INCOME CHANGE",
+   "up ~70%",
+   "Across the entire renewal area",
+   "Hyde Park-Kenwood Urban Renewal Survey"
+  ],
+  "line61": [
+   "WOODLAWN BOUNDARY",
+   "61st Street",
+   "1964 agreement with The Woodlawn Organization",
+   "Chicago Reporter, Encyclopedia of Chicago"
+  ]
+ },
+ "annot": {
+  "urban-renewal-1": [
+   "Hyde Park From the Air",
+   "Chicago Aerial Survey, 1928, the gridded apartment blocks the plan would remake"
+  ],
+  "university-1": [
+   "Cobb Hall",
+   "University of Chicago, the Gothic campus its trustees feared would be stranded"
+  ],
+  "university-4": [
+   "Harper Memorial Library",
+   "University of Chicago, the kind of campus whose presidents lobbied Congress together"
+  ],
+  "protective-club-era": [
+   "Greystones on Ellis Avenue",
+   "Kenwood, the older apartment stock that drew the newest arrivals"
+  ],
+  "racial-hierarchy-doc": [
+   "An Exclusionary Covenant",
+   "A racial restriction deed of the kind the Supreme Court struck down"
+  ],
+  "dd-redlining-14": [
+   "The Supreme Court",
+   "Where the restrictive covenants were finally struck down"
+  ],
+  "woodlawn-hist": [
+   "A South Side Tenement Block",
+   "Russell Lee, FSA, 1941, the cheap, dense housing the plan called blight"
+  ],
+  "color-line-7": [
+   "Inside a Kitchenette Flat",
+   "Russell Lee, FSA, 1941, washday in the crowded rooms that were cleared"
+  ],
+  "dd-redlining-4a": [
+   "The Chicago Sociologist",
+   "University of Chicago social science, which named and mapped blight"
+  ],
+  "urban-renewal-3": [
+   "The University Apartments",
+   "I.M. Pei and Araldo Cossutta, the towers on the 55th Street median"
+  ],
+  "urban-renewal-4": [
+   "55th Street Today",
+   "The commercial strip rebuilt on top of what was cleared"
+  ],
+  "dd-urban-renewal-3": [
+   "A South Side Newsstand",
+   "John H. White, NARA, 22nd and State, where the displaced were scattered"
+  ],
+  "dd-urban-renewal-1": [
+   "Plan of the Midway Plaisance",
+   "Goodspeed map, the border between Hyde Park north and Woodlawn south"
+  ],
+  "dd-urban-renewal-2": [
+   "63rd Street in Woodlawn",
+   "John H. White, NARA, the busy commercial corridor below the Midway"
+  ]
+ },
+ "sections": [
+  {
+   "id": "s1",
+   "title": "A Campus Afraid of Its Block",
+   "era": "1952",
+   "year": 1952,
+   "voiceover": "By the early 1950s the restrictive covenants were gone, struck down by the Supreme Court a few years earlier, and Black families were moving into the blocks around the University of Chicago. The campus sat in the middle of a neighborhood that was changing block by block, and the people who ran the university were afraid. They were afraid the campus would end up stranded, an island of stone buildings surrounded by a place its faculty wouldn't live and its trustees didn't recognize. So the university decided it would not wait to see what happened. It would rebuild the neighborhood itself. What happened over the next decade made Hyde Park the most studied case of urban renewal in the country, and a template other universities copied. It is also the place where the gap between the words and the outcome is easiest to measure. In 1952, after a sensational kidnapping and assault case and a reported thirty-two percent jump in crime over three years, the university called a mass meeting and stood up a new organization called the South East Chicago Commission. Its stated mission was to drive crime and corruption from the neighborhood. Chancellor Lawrence Kimpton chaired it. The real engine was its executive director, a corporate lawyer named Julian Levi, brother of the law school's dean. Levi ran the commission for nearly thirty years, and he ran it hard.",
+   "shots": [
+    [
+     "img",
+     "urban-renewal-1",
+     "the restrictive covenants were gone"
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "struck down by the Supreme Court"
+    ],
+    [
+     "clip",
+     "campus-quads",
+     "the blocks around the University of Chicago"
+    ],
+    [
+     "img",
+     "university-1",
+     "an island of stone buildings"
+    ],
+    [
+     "clip",
+     "greystone-rise",
+     "It would rebuild the neighborhood itself"
+    ],
+    [
+     "img",
+     "urban-renewal-1",
+     "the most studied case of urban renewal in the country"
+    ],
+    [
+     "stat",
+     "crime",
+     "thirty-two percent jump in crime"
+    ],
+    [
+     "stat",
+     "secc",
+     "the South East Chicago Commission"
+    ],
+    [
+     "img",
+     "dd-redlining-4a",
+     "a corporate lawyer named Julian Levi"
+    ],
+    [
+     "pano",
+     "pano-quad-now",
+     "he ran it hard"
+    ]
+   ],
+   "callouts": [
+    [
+     "Chancellor",
+     "Lawrence Kimpton",
+     "Chancellor Lawrence Kimpton chaired it"
+    ],
+    [
+     "Executive director",
+     "Julian Levi",
+     "a corporate lawyer named Julian Levi"
+    ]
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Writing the Laws He Needed",
+   "era": "1953",
+   "year": 1953,
+   "voiceover": "He pushed for more police, leaned on landlords, enforced building codes building by building, and started assembling the legal machinery to clear and rebuild large pieces of Hyde Park and Kenwood. Kimpton put the stakes plainly. He said the very life of the university was at stake. And Levi understood something most reformers didn't. The fastest way to change a place was to change the law underneath it. So he went further than rhetoric. He helped write the laws he needed. In 1953 Illinois passed an Urban Community Conservation Act that let a neighborhood be designated for conservation and replanning, and Levi was deeply involved in shaping it. A few years later he worked with the presidents of Harvard, Yale, Penn, and MIT to get Section 112 added to the federal Housing Act of 1959, a provision that let a university's own spending near its campus count toward the local share of a federal renewal grant. The university wasn't just participating in urban renewal. It was building the tools the whole country would use. Hyde Park became one of the first large urban communities in the country to undergo this kind of planned clearance at its own request, and that was Levi's design.",
+   "shots": [
+    [
+     "img",
+     "protective-club-era",
+     "enforced building codes building by building"
+    ],
+    [
+     "img",
+     "university-1",
+     "Kimpton put the stakes plainly"
+    ],
+    [
+     "img",
+     "dd-redlining-4a",
+     "Levi understood something most reformers didn't"
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "change the law underneath it"
+    ],
+    [
+     "img",
+     "dd-redlining-14",
+     "In 1953 Illinois passed an Urban Community Conservation Act"
+    ],
+    [
+     "img",
+     "university-4",
+     "the presidents of Harvard, Yale, Penn, and MIT"
+    ],
+    [
+     "stat",
+     "secc",
+     "Section 112 added to the federal Housing Act of 1959"
+    ],
+    [
+     "img",
+     "urban-renewal-1",
+     "the tools the whole country would use"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-1",
+     "at its own request, and that was Levi's design"
+    ]
+   ],
+   "callouts": [
+    [
+     "Kimpton",
+     "the very life of the university was at stake",
+     "the very life of the university was at stake"
+    ],
+    [
+     "1959 Housing Act",
+     "Section 112",
+     "Section 112 added to the federal Housing Act of 1959"
+    ]
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Eight Hundred Fifty-Six Acres",
+   "era": "1955",
+   "year": 1955,
+   "voiceover": "The plan that came out of all this was enormous. The Hyde Park and Kenwood renewal plan covered eight hundred fifty-six acres, most of the neighborhood. It marked six hundred thirty-eight buildings to come down. Planners judged them too crowded, too old, or too far gone to keep. A lot of them were the older, cut-up apartment buildings along streets like 55th and Lake Park, the cheaper rooms where the newest arrivals, many of them Black, had found a foothold. The numbers behind that are stark. Between 1950, when Black families were moving in fast, and 1956, the Black population of the area grew by roughly five hundred percent. The plan met that arrival by clearing the buildings that had absorbed it. The taverns and rooming houses of 55th Street, the jazz clubs, the gambling spots, the crowded kitchenette flats, all of it was on the map to be erased. These weren't grand structures. They were cheap, dense, and alive, and in the language of the plan they were blight. The clearing started before the big plan was even law. A separate, earlier project called Hyde Park A and B got approved in 1955, and the first demolition came that May, in 1955, three years before the City Council signed off on the full plan. Bulldozers were already working while the hearings were still going. The City Council made the whole thing official on November seventh, 1958. Kimpton had testified in its favor.",
+   "shots": [
+    [
+     "img",
+     "dd-urban-renewal-1",
+     "The plan that came out of all this was enormous"
+    ],
+    [
+     "stat",
+     "acres",
+     "covered eight hundred fifty-six acres"
+    ],
+    [
+     "stat",
+     "buildings",
+     "six hundred thirty-eight buildings to come down"
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "the older, cut-up apartment buildings"
+    ],
+    [
+     "stat",
+     "pop500",
+     "grew by roughly five hundred percent"
+    ],
+    [
+     "img",
+     "woodlawn-hist",
+     "The taverns and rooming houses of 55th Street"
+    ],
+    [
+     "img",
+     "color-line-7",
+     "the crowded kitchenette flats"
+    ],
+    [
+     "clip",
+     "old-new-pan",
+     "all of it was on the map to be erased"
+    ],
+    [
+     "stat",
+     "firstdemo",
+     "the first demolition came that May, in 1955"
+    ],
+    [
+     "stat",
+     "council",
+     "November seventh, 1958"
+    ]
+   ],
+   "callouts": [
+    [
+     "In the plan's language",
+     "blight",
+     "in the language of the plan they were blight"
+    ]
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Who Actually Came Back",
+   "era": "1961",
+   "year": 1961,
+   "voiceover": "When you add up the families pushed out by the full plan, it comes to about four thousand. Four thousand households told to find somewhere else to live. The plan moved through public hearings and a thick official report, all of it carrying the language of conservation and improvement, while the people whose homes were on the list had little say in whether they stayed. The university did not do this on credit alone. Kimpton said the university put in twenty-nine million dollars of its own money to buy, control, and rebuild the land, and that university money helped unlock far larger sums, federal grants and a quarter of a billion dollars in private investment. This was the most expensive thing the university had ever done that wasn't a building with its name on it. The promise, the thing everyone repeated, was a stable, integrated neighborhood, an example for all, what supporters called a compatible community. And on the surface, Hyde Park did stay integrated, which set it apart from almost every other neighborhood near a changing South Side. But look at who actually got to come back, and the picture turns. Two sociologists, Peter Rossi and Robert Dentler, studied the renewal up close and published their findings in 1961 in a book called The Politics of Urban Renewal. Their numbers are the ones that last. In the first projects, Hyde Park A and B, about forty-six percent of the white families who lost their homes relocated somewhere else inside Hyde Park and Kenwood. Among the Black families who lost their homes, it was about seventeen percent. Same neighborhood, same clearance, two completely different outcomes. The reason was money, and it was built into the plan. The new buildings that replaced the cleared blocks were expensive. The cheap rooms were gone on purpose, because the cheap rooms were what the plan defined as blight. So the people who could afford the new Hyde Park stayed, and the people who couldn't were scattered to the South and West Sides, into neighborhoods that were themselves getting more crowded.",
+   "shots": [
+    [
+     "stat",
+     "families",
+     "it comes to about four thousand"
+    ],
+    [
+     "img",
+     "woodlawn-hist",
+     "find somewhere else to live"
+    ],
+    [
+     "img",
+     "dd-redlining-14",
+     "a thick official report"
+    ],
+    [
+     "stat",
+     "money",
+     "twenty-nine million dollars of its own money"
+    ],
+    [
+     "stat",
+     "private",
+     "a quarter of a billion dollars in private investment"
+    ],
+    [
+     "img",
+     "urban-renewal-4",
+     "what supporters called a compatible community"
+    ],
+    [
+     "chart",
+     "return-rate",
+     "look at who actually got to come back"
+    ],
+    [
+     "img",
+     "dd-redlining-4a",
+     "Two sociologists, Peter Rossi and Robert Dentler"
+    ],
+    [
+     "stat",
+     "white46",
+     "forty-six percent of the white families"
+    ],
+    [
+     "stat",
+     "black17",
+     "it was about seventeen percent"
+    ],
+    [
+     "img",
+     "color-line-7",
+     "the cheap rooms were what the plan defined as blight"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-3",
+     "scattered to the South and West Sides"
+    ]
+   ],
+   "callouts": [
+    [
+     "Rossi and Dentler, 1961",
+     "The Politics of Urban Renewal",
+     "a book called The Politics of Urban Renewal"
+    ],
+    [
+     "White vs Black return",
+     "46% vs 17%",
+     "two completely different outcomes"
+    ]
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "The Towers on Fifty-Fifth",
+   "era": "1961",
+   "year": 1961,
+   "voiceover": "The most famous of the new buildings sits right in the middle of 55th Street. The University Apartments, two ten-story slabs designed by I.M. Pei, finished in 1961, standing on a wide median between 1401 and 1451 East 55th Street. Construction started in August of 1958, before the City Council had even approved the larger plan. Pei put the towers on a long landscaped island in the road, with a parking garage underneath and a garden between them. It's a serious piece of modern architecture, and it sits exactly where a dense, messy, mixed-race commercial strip used to be. Nearby, in the Hyde Park A project, Pei's firm also put up rows of low row houses that people nicknamed the toasters, clean modern homes priced for buyers, not for the renters who'd been cleared. The towers and the toasters are the plan in physical form. Open, expensive, deliberate, and built on top of what was cleared. The Hyde Park A and B projects alone displaced more than fifteen thousand residents. Across the entire renewal area, the numbers tell the same story the towers do. The neighborhood's Black population fell by about forty percent. The median income climbed sharply, by something close to seventy percent. Hyde Park became wealthier, whiter than it was heading toward being, and stable. It also became more controlled. Julian Levi and the South East Chicago Commission didn't go away after the bulldozers left. They kept watch over property, over who bought what, over the conditions of buildings, for decades. Hyde Park is one of the few genuinely integrated neighborhoods on the South Side. It's also a neighborhood whose integration was engineered, and paid for, by removing the people who couldn't afford the result. The families who left didn't vanish. Many landed in already crowded Black neighborhoods to the south and west, where the same forces that had pushed them once would push them again. Renewal in one place was pressure somewhere else, and the somewhere else rarely had a university to write its laws.",
+   "shots": [
+    [
+     "img",
+     "urban-renewal-4",
+     "right in the middle of 55th Street"
+    ],
+    [
+     "img",
+     "urban-renewal-3",
+     "two ten-story slabs designed by I.M. Pei"
+    ],
+    [
+     "stat",
+     "pei",
+     "between 1401 and 1451 East 55th Street"
+    ],
+    [
+     "clip",
+     "old-new-pan",
+     "a long landscaped island in the road"
+    ],
+    [
+     "img",
+     "urban-renewal-3",
+     "a dense, messy, mixed-race commercial strip used to be"
+    ],
+    [
+     "img",
+     "urban-renewal-4",
+     "rows of low row houses that people nicknamed the toasters"
+    ],
+    [
+     "stat",
+     "displaced15k",
+     "more than fifteen thousand residents"
+    ],
+    [
+     "stat",
+     "popdrop",
+     "fell by about forty percent"
+    ],
+    [
+     "stat",
+     "income",
+     "close to seventy percent"
+    ],
+    [
+     "img",
+     "urban-renewal-1",
+     "integration was engineered"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-3",
+     "already crowded Black neighborhoods to the south and west"
+    ]
+   ],
+   "callouts": [
+    [
+     "I.M. Pei",
+     "University Apartments, 1961",
+     "The University Apartments"
+    ],
+    [
+     "Across the renewal area",
+     "income up ~70%",
+     "The median income climbed sharply"
+    ]
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "The Line at Sixty-First",
+   "era": "1964",
+   "year": 1964,
+   "voiceover": "By the early 1960s the university looked south, across the Midway, toward Woodlawn. Woodlawn was a densely populated, mostly Black neighborhood, and the university began planning a South Campus expansion into it, talking about clearing a strip roughly a block deep, the land between 60th and 61st Streets, just south of the Midway. It used the same playbook, announcing it would spend its own millions to trigger a much larger federal grant. A sociologist dismissed the area in print as a community that reads nothing. It was the kind of contempt that had gone unanswered in Hyde Park. But Woodlawn pushed back in a way Hyde Park's displaced never could. Residents, block clubs, and pastors, led by a minister named Arthur Brazier and helped by the organizer Saul Alinsky, built The Woodlawn Organization, known as TWO. Brazier told the university that Woodlawn was not its private colony. TWO fought the expansion through the early sixties, and in 1964 it won a written agreement. The university would get its South Campus land, but it agreed not to expand south of 61st Street, and the deal required new low and moderate income housing be built in Woodlawn as part of it. For the first time, the university had to negotiate with the neighborhood it wanted to remake instead of simply planning over it. That line at 61st Street held for decades. The lesson of Hyde Park was carved into the map. North of the line, the university rebuilt a neighborhood and decided who came back. South of it, an organized community drew a border and made the university stop. Both of those facts are still on the ground today, in the towers on 55th Street and in the line at 61st.",
+   "shots": [
+    [
+     "clip",
+     "midway-now",
+     "across the Midway, toward Woodlawn"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-2",
+     "a densely populated, mostly Black neighborhood"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-1",
+     "the land between 60th and 61st Streets"
+    ],
+    [
+     "img",
+     "dd-redlining-4a",
+     "a community that reads nothing"
+    ],
+    [
+     "img",
+     "woodlawn-hist",
+     "Woodlawn pushed back in a way Hyde Park's displaced never could"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-2",
+     "built The Woodlawn Organization, known as TWO"
+    ],
+    [
+     "stat",
+     "line61",
+     "it agreed not to expand south of 61st Street"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-1",
+     "That line at 61st Street held for decades"
+    ],
+    [
+     "clip",
+     "old-new-pan",
+     "the towers on 55th Street and in the line at 61st"
+    ]
+   ],
+   "callouts": [
+    [
+     "Rev. Arthur Brazier",
+     "Woodlawn is not their private colony",
+     "Woodlawn was not its private colony"
+    ],
+    [
+     "1964 agreement",
+     "no expansion south of 61st",
+     "not to expand south of 61st Street"
+    ]
+   ]
+  }
+ ]
+}

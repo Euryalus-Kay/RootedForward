@@ -1,0 +1,615 @@
+{
+  "id": "land",
+  "title": "The Ground Before Hyde Park",
+  "subtitle": "How the lakefront under Hyde Park was claimed, ceded, and remade deed by deed",
+  "stats": {
+    "portage1673": [
+      "FIRST EUROPEANS AT THE PORTAGE",
+      "1673",
+      "Jolliet and Marquette cross the Chicago Portage",
+      "Chicago Portage history"
+    ],
+    "canalLag": [
+      "YEARS TO DIG THE CANAL",
+      "175",
+      "From Jolliet's idea to the Illinois and Michigan Canal",
+      "Illinois and Michigan Canal, opened 1848"
+    ],
+    "cession1816": [
+      "TREATY OF ST. LOUIS CESSION STRIP",
+      "20 mi wide",
+      "The corridor a canal would need, ceded in 1816",
+      "Treaty of St. Louis, 1816"
+    ],
+    "blackhawkBand": [
+      "BLACK HAWK'S BAND, SPRING 1832",
+      "1,000",
+      "Sauk, Meskwaki, and Kickapoo who crossed the river",
+      "Black Hawk War records"
+    ],
+    "badAxeSurvivors": [
+      "SURVIVORS AFTER BAD AXE",
+      "150",
+      "Of the thousand who crossed in spring",
+      "Battle of Bad Axe, August 1832"
+    ],
+    "acresCeded": [
+      "ACRES CEDED BY THE THREE FIRES",
+      "5,000,000",
+      "Given up in the 1833 Treaty of Chicago",
+      "1833 Treaty of Chicago"
+    ],
+    "cashPromised": [
+      "ANNUAL CASH PROMISED",
+      "$14,000/yr",
+      "For twenty years under the 1833 treaty",
+      "1833 Treaty of Chicago terms"
+    ],
+    "schoolsPromised": [
+      "PROMISED FOR SCHOOLS",
+      "$70,000",
+      "Among the treaty terms in exchange for the land",
+      "1833 Treaty of Chicago terms"
+    ],
+    "lastDancers": [
+      "DANCERS IN THE 1835 PROCESSION",
+      "800",
+      "Men who danced through the streets of Chicago",
+      "John Caton eyewitness account"
+    ],
+    "trailRemoved": [
+      "REMOVED ON THE TRAIL OF DEATH",
+      "859",
+      "Forced from Indiana to eastern Kansas in 1838",
+      "Potawatomi Trail of Death, 1838"
+    ],
+    "trailDistance": [
+      "TRAIL OF DEATH ROUTE",
+      "660 mi, 61 days",
+      "From Twin Lakes, Indiana to the Osage River",
+      "Potawatomi Trail of Death, 1838"
+    ],
+    "trailDeaths": [
+      "DEATHS ON THE TRAIL OF DEATH",
+      "40+",
+      "Most of them children, of typhoid and exhaustion",
+      "Potawatomi Trail of Death, 1838"
+    ],
+    "pokagonToday": [
+      "POKAGON BAND CITIZENS TODAY",
+      "6,000+",
+      "Descendants of the band that never left Michigan",
+      "Pokagon Band of Potawatomi, 2023"
+    ],
+    "chicagoPop": [
+      "CHICAGO POPULATION, 1833 TO 1837",
+      "300 to 4,000+",
+      "The town's growth in four years after the treaty",
+      "Chicago incorporation records"
+    ],
+    "cornellBuy": [
+      "CORNELL'S HYDE PARK PURCHASE",
+      "300 acres",
+      "Lakefront no one else wanted, bought in 1853",
+      "Hyde Park Historical Society"
+    ],
+    "icDeed": [
+      "ACRES DEEDED TO ILLINOIS CENTRAL",
+      "60",
+      "For a depot at 53rd Street and daily trains",
+      "Hyde Park Historical Society"
+    ]
+  },
+  "annot": {
+    "land-potawatomi": [
+      "Wa-baun-see, a Potawatomi Chief",
+      "Library of Congress lithograph, anchoring the Three Fires homelands"
+    ],
+    "dd-land-6": [
+      "The Chicago Portage",
+      "Knight and Zeuch survey of the portage and Mud Lake crossing"
+    ],
+    "dd-land-4": [
+      "Carte de la Decouverte, 1673",
+      "Thevenot engraving of the Marquette and Jolliet route"
+    ],
+    "dd-land-2": [
+      "Allium tricoccum, the Wild Leek",
+      "Britton and Brown botanical plate, 1913; the onion that named Chicago"
+    ],
+    "dd-land-8": [
+      "Carte de la Louisiane",
+      "Delisle and Buache French map of the Mississippi watershed"
+    ],
+    "dd-land-3": [
+      "Second Fort Dearborn",
+      "Period postcard of the rebuilt fort at the river mouth"
+    ],
+    "dd-land-7": [
+      "Royce Indian Land Cessions, Illinois",
+      "Bureau of American Ethnology map of the ceded ground"
+    ],
+    "dd-land-1": [
+      "Black Hawk, Sauk Leader",
+      "Charles Bird King portrait in a red cloak"
+    ],
+    "dd-land-9": [
+      "The Battle of Bad Axe, 1832",
+      "Henry Lewis lithograph of the steamboat Warrior on the riverbank"
+    ],
+    "land-treaty-chicago": [
+      "The 1833 Treaty of Chicago",
+      "Ratified manuscript page with the signature marks visible"
+    ],
+    "dd-land-5": [
+      "Trail of Death Memorial",
+      "Bronze marker carrying the route of the 1838 forced march"
+    ],
+    "dd-land-10": [
+      "Chief Leopold Pokagon",
+      "Founder of the band that kept its land in southwestern Michigan"
+    ],
+    "land-shabbona": [
+      "Chief Shabbona Trail Map",
+      "The Shabbona ground returned to Prairie Band trust in 2024"
+    ],
+    "land-early-chicago": [
+      "Chicago in 1833",
+      "Colbert engraving of log cabins along the marshy river"
+    ],
+    "formation-4": [
+      "Bird's-Eye View of Chicago, 1857",
+      "Inger and Palmatary lithograph after the boom"
+    ],
+    "formation-1": [
+      "Paul Cornell, 1822 to 1904",
+      "The lawyer who bought three hundred acres and named Hyde Park"
+    ],
+    "dd-land-11": [
+      "Van Vechten Map of Cook County, 1861",
+      "Township grid south of Chicago in Cornell's era"
+    ],
+    "formation-6": [
+      "Great Central Station Trainshed, 1856",
+      "The Illinois Central terminal Cornell's depot fed into"
+    ]
+  },
+  "sections": [
+    {
+      "id": "s1",
+      "title": "Prairie, Portage, and the First Crossing",
+      "era": "to 1673",
+      "year": 1673,
+      "voiceover": "Before there was a Hyde Park, before there were street numbers, there was prairie and marsh sloping down to the lake. Sand ridges with bur oaks. Swales of wildflowers. A grassland that ran flat to the horizon. The water was close, and the ground stayed wet most of the year. None of it was empty. This was Potawatomi land, held in common with the Ojibwe and the Odawa in an alliance called the Council of Three Fires. The three nations traced their council, by one elder's reckoning from the old scrolls, back to the 790s, near the straits of Michilimackinac. They divided the work between them. The Ojibwe kept the faith. The Odawa kept the trade. The Potawatomi kept the fire. They had lived, hunted, and traded along these shores for generations before any deed existed to describe them. The water was the reason any of this mattered to outsiders. A few miles northwest of here ran the Chicago Portage, a low seven-mile stretch of wet ground that flooded into a shallow expanse the traders called Mud Lake. In a wet season you could float a canoe from the Great Lakes almost to the Mississippi, with only a short carry between the two watersheds. People had used that crossing for centuries. In the summer of 1673, Kaskaskia guides led a French fur trader, Louis Jolliet, and a Jesuit priest, Jacques Marquette, back up the Illinois and the Des Plaines and over that portage. They were the first Europeans known to stand on the site of Chicago. Jolliet saw at once that a single short canal could join the lake to the river, and the whole interior of the continent to the sea. It took 175 years for anyone to dig it.",
+      "shots": [
+        [
+          "clip",
+          "lakefront-reveal",
+          "there was prairie and marsh sloping down to the lake"
+        ],
+        [
+          "img",
+          "land-potawatomi",
+          "Sand ridges with bur oaks"
+        ],
+        [
+          "pano",
+          "pano-founding",
+          "A grassland that ran flat to the horizon"
+        ],
+        [
+          "img",
+          "land-potawatomi",
+          "This was Potawatomi land"
+        ],
+        [
+          "img",
+          "land-potawatomi",
+          "an alliance called the Council of Three Fires"
+        ],
+        [
+          "img",
+          "dd-land-6",
+          "the Chicago Portage"
+        ],
+        [
+          "img",
+          "dd-land-6",
+          "the traders called Mud Lake"
+        ],
+        [
+          "stat",
+          "portage1673",
+          "In the summer of 1673"
+        ],
+        [
+          "img",
+          "dd-land-4",
+          "a French fur trader, Louis Jolliet"
+        ],
+        [
+          "img",
+          "dd-land-4",
+          "the first Europeans known to stand on the site of Chicago"
+        ],
+        [
+          "stat",
+          "canalLag",
+          "It took 175 years for anyone to dig it"
+        ]
+      ],
+      "callouts": [
+        [
+          "Council of Three Fires",
+          "Ojibwe, Odawa, Potawatomi",
+          "held in common with the Ojibwe and the Odawa"
+        ],
+        [
+          "Mud Lake",
+          "wet-season canoe route",
+          "you could float a canoe from the Great Lakes almost to the Mississippi"
+        ]
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "An Onion, a Garrison, a Boundary Line",
+      "era": "1687 to 1816",
+      "year": 1803,
+      "voiceover": "The name we say every day comes from that low ground. Chicago is a French spelling of a Miami-Illinois word, shikaakwa, for the wild leek that grew thick in the river bottoms. In 1687 one of La Salle's men wrote that the place was called Chicagou because of the quantity of wild garlic in the woods. The city is named for an onion. The United States arrived as a garrison. In 1803, soldiers under Captain John Whistler built Fort Dearborn at the mouth of the river. A sandbar shaped like an elephant's trunk blocked the harbor, so the river bent south and ran parallel to the lake before it found a way out. Ships anchored offshore and waited. The garrison did not hold the ground easily. In 1812 the fort was evacuated and destroyed in a battle with Potawatomi warriors, then rebuilt four years later. For most of three decades that fort was nearly all that passed for a town. The land changed hands on paper first. In 1816, at Portage des Sioux on the Mississippi, the same Three Fires nations signed the Treaty of St. Louis and ceded a strip about twenty miles wide running from the lake to the Illinois River, the exact ground a canal would need. They drew it as the Indian Boundary Line. A few Chicago streets still run on that old diagonal, off the grid, because they trace a line that predates the grid.",
+      "shots": [
+        [
+          "img",
+          "dd-land-2",
+          "a Miami-Illinois word, shikaakwa, for the wild leek"
+        ],
+        [
+          "img",
+          "dd-land-8",
+          "In 1687 one of La Salle's men wrote"
+        ],
+        [
+          "img",
+          "dd-land-2",
+          "The city is named for an onion"
+        ],
+        [
+          "img",
+          "dd-land-3",
+          "built Fort Dearborn at the mouth of the river"
+        ],
+        [
+          "img",
+          "dd-land-3",
+          "A sandbar shaped like an elephant's trunk blocked the harbor"
+        ],
+        [
+          "img",
+          "dd-land-3",
+          "destroyed in a battle with Potawatomi warriors"
+        ],
+        [
+          "img",
+          "dd-land-7",
+          "signed the Treaty of St. Louis and ceded a strip about twenty miles wide"
+        ],
+        [
+          "stat",
+          "cession1816",
+          "the exact ground a canal would need"
+        ],
+        [
+          "img",
+          "dd-land-7",
+          "They drew it as the Indian Boundary Line"
+        ]
+      ],
+      "callouts": [
+        [
+          "Fort Dearborn",
+          "built 1803, burned 1812, rebuilt 1816",
+          "In 1812 the fort was evacuated and destroyed"
+        ],
+        [
+          "Indian Boundary Line",
+          "streets still trace the diagonal",
+          "they trace a line that predates the grid"
+        ]
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "The Black Hawk War and Its Lesson",
+      "era": "1832",
+      "year": 1832,
+      "voiceover": "The pressure that emptied the rest of the land came partly from a war the Potawatomi did not fight. After lead was found around Galena in the 1820s, miners poured onto land the Sauk and Meskwaki still farmed, and pushed them west of the Mississippi. In the spring of 1832, a sixty-five-year-old Sauk leader named Black Hawk led about a thousand Sauk, Meskwaki, and Kickapoo people, most of them women and children, back across the river to plant corn on land a disputed 1804 treaty had signed away. Black Hawk and others said that treaty was never valid, that the men who signed it had no authority to sell. Illinois settlers raised a militia anyway. The Black Hawk War lasted from April to August. It ended on the second of August at the mouth of the Bad Axe River in Wisconsin, where soldiers and militia fired on people trying to surrender under a white flag. Of the thousand who had crossed in spring, roughly a hundred and fifty survived. The war was short. Its lesson for the government was simple. Native nations that stayed could be removed, and the Northwest could be opened to settlers. The Indian Removal Act of 1830 had already made that the policy of the country.",
+      "shots": [
+        [
+          "img",
+          "dd-land-1",
+          "a war the Potawatomi did not fight"
+        ],
+        [
+          "img",
+          "dd-land-1",
+          "After lead was found around Galena in the 1820s"
+        ],
+        [
+          "img",
+          "dd-land-1",
+          "a sixty-five-year-old Sauk leader named Black Hawk"
+        ],
+        [
+          "stat",
+          "blackhawkBand",
+          "led about a thousand Sauk, Meskwaki, and Kickapoo people"
+        ],
+        [
+          "img",
+          "dd-land-1",
+          "a disputed 1804 treaty had signed away"
+        ],
+        [
+          "img",
+          "dd-land-9",
+          "The Black Hawk War lasted from April to August"
+        ],
+        [
+          "img",
+          "dd-land-9",
+          "at the mouth of the Bad Axe River in Wisconsin"
+        ],
+        [
+          "stat",
+          "badAxeSurvivors",
+          "roughly a hundred and fifty survived"
+        ],
+        [
+          "img",
+          "dd-land-7",
+          "the Northwest could be opened to settlers"
+        ],
+        [
+          "img",
+          "dd-land-7",
+          "The Indian Removal Act of 1830"
+        ]
+      ],
+      "callouts": [
+        [
+          "Battle of Bad Axe",
+          "August 2, 1832",
+          "fired on people trying to surrender under a white flag"
+        ]
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "The Treaty and the Last Dance",
+      "era": "1833 to 1835",
+      "year": 1833,
+      "voiceover": "The taking near Chicago came by treaty, not battle. On the twenty-sixth of September, 1833, federal commissioners gathered thousands of Potawatomi, Ojibwe, and Odawa at Chicago and pressed them to sign. The talks dragged for weeks. Many of the chiefs did not want to sell, and the men who finally put their marks on the paper did not all speak for the people the treaty bound. In one document the Three Fires nations gave up about five million acres in Illinois and the Michigan Territory, including this lakefront. In exchange the government promised five million acres west of the Mississippi, a hundred thousand dollars in goods, fourteen thousand dollars in cash a year for twenty years, money for mills and farm tools, and seventy thousand dollars for schools. The Potawatomi had three years to leave. What the leaving looked like was recorded by people who watched. In August 1835, around five thousand Potawatomi gathered at the agency house for their last annuity payment. About eight hundred men began to dance through the streets of Chicago. They had roached their hair and tied hawk and eagle feathers nearly to the ground. Their faces were painted in red and black, the foreheads, cheeks, and noses covered with curved stripes edged in points. They moved from the council house west along the river, stopping in front of every house they passed, then crossed the north branch and were gone. John Caton, a young lawyer who later sat on the Illinois Supreme Court, watched and called it a war dance. The dancers understood it differently. Caton himself recorded that they knew it was the last dance on their native soil, a kind of funeral for old associations and memories.",
+      "shots": [
+        [
+          "img",
+          "land-treaty-chicago",
+          "The taking near Chicago came by treaty, not battle"
+        ],
+        [
+          "img",
+          "land-treaty-chicago",
+          "federal commissioners gathered thousands of Potawatomi"
+        ],
+        [
+          "img",
+          "land-treaty-chicago",
+          "the men who finally put their marks on the paper"
+        ],
+        [
+          "stat",
+          "acresCeded",
+          "gave up about five million acres"
+        ],
+        [
+          "stat",
+          "cashPromised",
+          "fourteen thousand dollars in cash a year for twenty years"
+        ],
+        [
+          "stat",
+          "schoolsPromised",
+          "seventy thousand dollars for schools"
+        ],
+        [
+          "img",
+          "land-early-chicago",
+          "About eight hundred men began to dance through the streets of Chicago"
+        ],
+        [
+          "stat",
+          "lastDancers",
+          "tied hawk and eagle feathers nearly to the ground"
+        ],
+        [
+          "img",
+          "land-early-chicago",
+          "crossed the north branch and were gone"
+        ],
+        [
+          "img",
+          "land-potawatomi",
+          "a kind of funeral for old associations and memories"
+        ]
+      ],
+      "callouts": [
+        [
+          "Treaty of Chicago",
+          "September 26, 1833",
+          "On the twenty-sixth of September, 1833"
+        ],
+        [
+          "The last dance",
+          "August 1835",
+          "the last dance on their native soil"
+        ]
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "The Trail of Death and What Survived",
+      "era": "1838 to 1837",
+      "year": 1838,
+      "voiceover": "Removal was not one event. It ran for years and bent in cruel directions. The hardest came in 1838, after Chicago itself was already a city, when militia forced about 859 Potawatomi out of Indiana and marched them to eastern Kansas. The march began at Twin Lakes, near Plymouth, Indiana, and ended on the fourth of November along the Osage River, near present-day Osawatomie. The route ran roughly 660 miles over 61 days. More than forty people died on the way, most of them children, of typhoid and exhaustion. A young priest, Father Benjamin Petit, walked the whole distance with them and kept a journal. He never recovered. He died the next year in St. Louis, at twenty-seven. History remembers that march as the Trail of Death. The Potawatomi were scattered, not erased. The bands that were marched to Kansas became the Prairie Band Potawatomi Nation, which in 2024 had a piece of its ancestral ground at Shabbona placed back in trust and became the first federally recognized tribe with land in Illinois. One band never left at all. Chief Leopold Pokagon kept about 280 people in southwestern Michigan, and by 1838 they had bought 874 acres of their own land near Dowagiac. Their descendants are the Pokagon Band of Potawatomi, more than six thousand citizens today. The people who held this lakefront are still here. With the land legally cleared, the city at the river mouth took off. Chicago was incorporated as a town in 1833, the same year as the treaty, with about three hundred residents. By 1837 it was a city of more than four thousand. Soldiers cut a channel through the sandbar and gave the river a real harbor. Speculators bought and flipped the wet lots faster than anyone could build on them, until the panic of 1837 wiped out the easy money and a lot of the speculators with it.",
+      "shots": [
+        [
+          "img",
+          "dd-land-5",
+          "when militia forced about 859 Potawatomi out of Indiana"
+        ],
+        [
+          "stat",
+          "trailRemoved",
+          "marched them to eastern Kansas"
+        ],
+        [
+          "img",
+          "dd-land-5",
+          "The march began at Twin Lakes, near Plymouth, Indiana"
+        ],
+        [
+          "stat",
+          "trailDistance",
+          "The route ran roughly 660 miles over 61 days"
+        ],
+        [
+          "stat",
+          "trailDeaths",
+          "More than forty people died on the way"
+        ],
+        [
+          "img",
+          "dd-land-5",
+          "History remembers that march as the Trail of Death"
+        ],
+        [
+          "img",
+          "land-shabbona",
+          "placed back in trust and became the first federally recognized tribe with land in Illinois"
+        ],
+        [
+          "img",
+          "dd-land-10",
+          "Chief Leopold Pokagon kept about 280 people in southwestern Michigan"
+        ],
+        [
+          "stat",
+          "pokagonToday",
+          "more than six thousand citizens today"
+        ],
+        [
+          "img",
+          "formation-4",
+          "the city at the river mouth took off"
+        ],
+        [
+          "stat",
+          "chicagoPop",
+          "By 1837 it was a city of more than four thousand"
+        ],
+        [
+          "img",
+          "formation-4",
+          "the panic of 1837 wiped out the easy money"
+        ]
+      ],
+      "callouts": [
+        [
+          "Father Benjamin Petit",
+          "died 1839, age 27",
+          "walked the whole distance with them and kept a journal"
+        ],
+        [
+          "Shabbona returned",
+          "Prairie Band trust, 2024",
+          "which in 2024 had a piece of its ancestral ground at Shabbona"
+        ]
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "Watson's Tavern and Cornell's Deed",
+      "era": "1853",
+      "year": 1853,
+      "voiceover": "The lakefront that became Hyde Park stayed empty a while longer. The sand that made the portage a crossing made this ground poor for crops. An early settler named Nathan Watson tried to farm it, near the Chicago-to-Detroit wagon road, around what is now 53rd Street and Lake Park. That road was not new. It followed the old Sauk Trail, the Native footpath that ran from the Mississippi at Rock Island east to the Detroit River, the same kind of trail the Potawatomi had walked for generations before a surveyor ever touched it. Watson dreamed of an orchard. The sand beat him. He turned his place into a tavern for travelers on the road. When he died, his widow, Electa Watson, kept it as a boarding house and farm, the only real structure for miles along that stretch of shore. Around it was the same country the Potawatomi had known. Sand ridges with bur oaks, swales of wildflowers, prairie to the horizon. That is the ground a young lawyer found in 1853. Paul Cornell rode six miles south from the city most mornings to buy a glass of buttermilk from Electa Watson at the tavern. In August of that year he bought three hundred acres of lakefront that no one else wanted, sinking nearly everything he had into it. He named the place Hyde Park, after the London park, and within a few years he deeded sixty of those acres to the Illinois Central Railroad for a depot at 53rd Street and a commitment of daily trains to the city. The grocery clerks and the elevated trains and the university were still decades off. The bur oaks and the wildflowers were already there. So was the deed, passed from a tavern keeper's widow to a man with a plan. The first taking had set the pattern. This ground would be claimed, cleared, and remade, by whoever held the paper, again and again.",
+      "shots": [
+        [
+          "clip",
+          "old-new-pan",
+          "The lakefront that became Hyde Park stayed empty a while longer"
+        ],
+        [
+          "img",
+          "dd-land-11",
+          "near the Chicago-to-Detroit wagon road, around what is now 53rd Street and Lake Park"
+        ],
+        [
+          "img",
+          "dd-land-11",
+          "It followed the old Sauk Trail"
+        ],
+        [
+          "img",
+          "dd-land-11",
+          "kept it as a boarding house and farm"
+        ],
+        [
+          "clip",
+          "lakefront-reveal",
+          "Sand ridges with bur oaks, swales of wildflowers, prairie to the horizon"
+        ],
+        [
+          "img",
+          "formation-1",
+          "Paul Cornell rode six miles south from the city most mornings"
+        ],
+        [
+          "stat",
+          "cornellBuy",
+          "he bought three hundred acres of lakefront that no one else wanted"
+        ],
+        [
+          "img",
+          "formation-6",
+          "he deeded sixty of those acres to the Illinois Central Railroad"
+        ],
+        [
+          "stat",
+          "icDeed",
+          "a depot at 53rd Street and a commitment of daily trains"
+        ],
+        [
+          "clip",
+          "ic-tracks",
+          "So was the deed, passed from a tavern keeper's widow to a man with a plan"
+        ],
+        [
+          "clip",
+          "old-new-pan",
+          "claimed, cleared, and remade, by whoever held the paper, again and again"
+        ]
+      ],
+      "callouts": [
+        [
+          "Sauk Trail",
+          "Rock Island to Detroit",
+          "ran from the Mississippi at Rock Island east to the Detroit River"
+        ],
+        [
+          "Hyde Park named",
+          "1853, for the London park",
+          "He named the place Hyde Park, after the London park"
+        ]
+      ]
+    }
+  ]
+}
