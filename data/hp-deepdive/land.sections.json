@@ -131,7 +131,7 @@
   ],
   "dd-land-1": [
    "Black Hawk, Sauk Leader",
-   "Charles Bird King portrait in a red cloak"
+   "Charles Bird King portrait of the Sauk leader"
   ],
   "dd-land-9": [
    "The Battle of Bad Axe, 1832",
@@ -297,7 +297,7 @@
     ],
     [
      "img",
-     "dd-land-3",
+     "land-early-chicago",
      "built Fort Dearborn at the mouth of the river"
     ],
     [
@@ -307,12 +307,17 @@
     ],
     [
      "img",
-     "dd-land-3",
+     "land-potawatomi",
      "destroyed in a battle with Potawatomi warriors"
     ],
     [
      "img",
-     "land-potawatomi",
+     "dd-land-3",
+     "then rebuilt four years later"
+    ],
+    [
+     "img",
+     "formation-4",
      "For most of three decades that fort was nearly all that passed for a town"
     ],
     [
@@ -327,7 +332,7 @@
     ],
     [
      "img",
-     "dd-land-7",
+     "dd-land-11",
      "They drew it as the Indian Boundary Line"
     ]
    ],
@@ -358,7 +363,7 @@
     ],
     [
      "img",
-     "dd-land-8",
+     "dd-land-9",
      "After lead was found around Galena in the 1820s"
     ],
     [
@@ -378,7 +383,7 @@
     ],
     [
      "img",
-     "land-potawatomi",
+     "dd-land-1",
      "The Black Hawk War lasted from April to August"
     ],
     [
@@ -393,12 +398,12 @@
     ],
     [
      "img",
-     "dd-land-7",
+     "dd-land-9",
      "Native nations that stayed could be removed"
     ],
     [
      "img",
-     "dd-land-8",
+     "dd-land-7",
      "The Indian Removal Act of 1830"
     ]
    ],
@@ -444,12 +449,12 @@
     ],
     [
      "img",
-     "land-potawatomi",
+     "land-treaty-chicago",
      "seventy thousand dollars for schools"
     ],
     [
      "img",
-     "land-early-chicago",
+     "formation-4",
      "About eight hundred men began to dance through the streets of Chicago"
     ],
     [
@@ -459,12 +464,12 @@
     ],
     [
      "img",
-     "dd-land-7",
+     "dd-land-6",
      "crossed the north branch and were gone"
     ],
     [
      "img",
-     "land-potawatomi",
+     "dd-land-10",
      "a kind of funeral for old associations and memories"
     ]
    ],
@@ -500,7 +505,7 @@
     ],
     [
      "img",
-     "dd-land-5",
+     "dd-land-10",
      "The march began at Twin Lakes, near Plymouth, Indiana"
     ],
     [
@@ -510,7 +515,7 @@
     ],
     [
      "img",
-     "land-potawatomi",
+     "dd-land-5",
      "most of them children, of typhoid and exhaustion"
     ],
     [
@@ -530,7 +535,7 @@
     ],
     [
      "img",
-     "land-early-chicago",
+     "formation-4",
      "the city at the river mouth took off"
     ],
     [
@@ -540,12 +545,12 @@
     ],
     [
      "img",
-     "formation-4",
+     "formation-6",
      "gave the river a real harbor"
     ],
     [
      "img",
-     "formation-ic-train",
+     "land-early-chicago",
      "the panic of 1837 wiped out the easy money"
     ]
    ],
@@ -611,7 +616,7 @@
     ],
     [
      "img",
-     "formation-6",
+     "formation-ic-train",
      "he deeded sixty of those acres to the Illinois Central Railroad"
     ],
     [

@@ -1033,8 +1033,16 @@ PANO_INSTR = {
  "pano-obama-center": ("The Obama Center, Jackson Park", "A 360 capture at the Presidential Center site."),
 }
 
+# ids forced to the sepia archival grade because they are modern colour
+# reproductions of a historical subject and otherwise break the period tone
+FORCE_ARCHIVAL = {
+    "dd-land-5", "dd-redlining-14", "dd-redlining-15", "protective-club-era",
+    "dd-university-5", "dd-university-8",
+}
+
 def chapter_image_grade(clipid):
     if clipid.startswith("intro-mg"): return "archival"
+    if clipid in FORCE_ARCHIVAL: return "archival"
     c = credits.get(clipid)
     if not c: return "archival"
     lic = (c.get("license") or "")
@@ -1283,7 +1291,6 @@ ANNOT = {
  "first-uofc": ("The first University of Chicago", "Founded in the 1850s, closed 1886"),
  "fannie-barrier-williams": ("Fannie Barrier Williams", "A resident who refused to leave"),
  "jesse-binga": ("Jesse Binga", "The banker who lent to Black families"),
- "racial-hierarchy-doc": ("A restrictive covenant", "A line written into the deed"),
  "great-migration": ("The Great Migration", "Arriving in Chicago"),
  "black-belt-street": ("Inside the Black Belt", "Photographed in 1941"),
  "white-city-night": ("The Court of Honor", "They called it the White City"),

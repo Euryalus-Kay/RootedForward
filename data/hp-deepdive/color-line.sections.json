@@ -1,663 +1,659 @@
 {
-  "id": "color-line",
-  "title": "The Color Line Comes to Hyde Park",
-  "subtitle": "How a homeowners club, a wave of bombs, and a clause in the deed kept Hyde Park white for forty years",
-  "stats": {
-    "club": [
-      "HYDE PARK PROTECTIVE CLUB",
-      "350",
-      "members organized in autumn 1908 under attorney Francis Harper",
-      "Allan Spear, Black Chicago"
-    ],
-    "fortyYears": [
-      "HYDE PARK STAYED WHITE",
-      "40 years",
-      "the line the club drew in 1908 held for four decades",
-      "Allan Spear, Black Chicago"
-    ],
-    "defender": [
-      "CHICAGO DEFENDER CIRCULATION",
-      "125,000",
-      "copies passed by 1918 as the paper drove the Great Migration",
-      "Robert Abbott and The Chicago Defender"
-    ],
-    "population": [
-      "CHICAGO BLACK POPULATION",
-      "40,000 to 278,000",
-      "roughly sevenfold growth from 1910 to 1940",
-      "Chicago Public Library, The Great Migration"
-    ],
-    "rent": [
-      "KITCHENETTE RENT BURDEN",
-      "45%",
-      "of kitchenette tenants paid over 30 percent of income on rent",
-      "Chicago Housing Authority study, late 1930s"
-    ],
-    "bombings": [
-      "BLACK HOMES BOMBED",
-      "1 every 20 days",
-      "the pace of bombings against Black homes and offices, 1917 to 1920",
-      "Chicago Race Riot of 1919 Commemoration Project"
-    ],
-    "riot": [
-      "1919 RIOT DEATHS",
-      "23 Black, 15 white",
-      "dead over a week, with 500-plus injured and about 1,000 families burned out",
-      "Chicago race riot of 1919 records"
-    ],
-    "binga": [
-      "BINGA HOME BOMBINGS",
-      "at least 5",
-      "bombings of Jesse Binga's home and offices, 1917 to 1921",
-      "Don Hayner, Binga, Chicago Sun-Times"
-    ],
-    "uchicago": [
-      "UCHICAGO COVENANT DEFENSE",
-      "$83,000+",
-      "spent defending restrictive covenants near campus, 1933 to 1947",
-      "Chicago Maroon, U of C and Hyde Park history"
-    ],
-    "hansberry": [
-      "HANSBERRY v. LEE",
-      "Nov 12, 1940",
-      "a narrow procedural win that left the covenants standing",
-      "Hansberry v. Lee, 311 U.S. 32"
-    ],
-    "shelley": [
-      "SHELLEY v. KRAEMER",
-      "May 3, 1948",
-      "a 6 to 0 ruling that courts may not enforce racial covenants",
-      "Shelley v. Kraemer, 334 U.S. 1"
-    ],
-    "fannie": [
-      "FANNIE BARRIER WILLIAMS",
-      "1855-1944",
-      "clubwoman and writer, the kind of neighbor the club shut out",
-      "Chicago History Museum, National Park Service"
-    ]
-  },
-  "annot": {
-    "dd-color-line-1c": [
-      "Drexel Boulevard, 1902",
-      "A South Side boulevard building in a 1902 newspaper halftone"
-    ],
-    "protective-club-era": [
-      "Greystones on Ellis Avenue",
-      "The Kenwood housing stock the club fought to keep white"
-    ],
-    "dd-color-line-2": [
-      "Sanborn Fire Map of the South Side",
-      "A period Chicago plat showing platted lots and footprints"
-    ],
-    "dd-formation-7": [
-      "Hyde Park Township",
-      "The South Side township whose blocks the club set out to seal"
-    ],
-    "fannie-barrier-williams": [
-      "Fannie Barrier Williams, c.1880",
-      "First Black woman admitted to the Chicago Woman's Club"
-    ],
-    "color-line-6": [
-      "The Scott family arrives, 1920",
-      "Great Migration arrivals photographed for the Chicago Defender"
-    ],
-    "color-line-1": [
-      "An African American family, South Chicago, 1922",
-      "Newcomers settling on the South Side during the Great Migration"
-    ],
-    "formation-ic-train": [
-      "Illinois Central locomotive",
-      "The rail line that carried migrants straight into Chicago"
-    ],
-    "ic-embankment-hist": [
-      "Illinois Central tracks, 1943",
-      "Trains running the line that fed the South Side"
-    ],
-    "dd-color-line-3": [
-      "A newsboy and the Defender",
-      "The paper's masthead, the engine of the Great Northern Drive"
-    ],
-    "dd-university-9": [
-      "The Chicago Defender building",
-      "Home of the paper that drove the Great Northern Drive"
-    ],
-    "color-line-5": [
-      "Black Belt tenement court, 1941",
-      "Back-porch staircases in a crowded South Side yard"
-    ],
-    "black-belt-street": [
-      "Chicago Defender pressroom, 1941",
-      "Linotype operators at the city's great Black newspaper"
-    ],
-    "dd-present-4": [
-      "An old South Side residential street, 1941",
-      "Rhodes Avenue greystones in the heart of the Black Belt"
-    ],
-    "color-line-7": [
-      "Washday in a kitchenette, 1941",
-      "A makeshift kitchen and bath in a subdivided Black Belt flat"
-    ],
-    "dd-color-line-7": [
-      "The riot area over the Black Belt",
-      "A 1919 newspaper composite of the riot's hot spots and headlines"
-    ],
-    "jesse-binga": [
-      "Jesse Binga, 1923",
-      "Banker who would not run from the bombs on his block"
-    ],
-    "dd-color-line-15": [
-      "The Binga Bank hall",
-      "The city's first Black-owned bank, opened 1908"
-    ],
-    "racial-hierarchy-doc": [
-      "Only Members of the Caucasian Race",
-      "A period notice quoting a deed clause barring non-white buyers"
-    ],
-    "color-line-3": [
-      "HOLC grades on the South Side",
-      "The graded ring of neighborhoods around the Black Belt"
-    ],
-    "homer-hoyt": [
-      "Residential Security Map, c.1940",
-      "The HOLC basemap that fixed the color line in red ink"
-    ],
-    "dd-color-line-14": [
-      "Hull Gate, University of Chicago",
-      "The wrought-iron threshold between campus and the streets"
-    ],
-    "dd-university-8": [
-      "Cobb Gate, University of Chicago",
-      "A carved campus threshold facing the surrounding streets"
-    ],
-    "dd-present-7": [
-      "University of Chicago, c.1907",
-      "The campus at the dawn of the covenant era"
-    ],
-    "university-4": [
-      "Harper Memorial Library, 1920",
-      "The University of Chicago at the height of the covenant era"
-    ],
-    "color-line-4": [
-      "The Lorraine Hansberry House",
-      "6140 South Rhodes Avenue, the family's Woodlawn home"
-    ],
-    "dd-redlining-11": [
-      "Carl Hansberry, 1940",
-      "The real estate man who carried the covenant fight to court"
-    ],
-    "dd-color-line-12": [
-      "The Supreme Court, 1943",
-      "The Court that would strike down covenant enforcement in 1948"
-    ],
-    "dd-color-line-11b": [
-      "Chief Justice Fred M. Vinson",
-      "Author of the Shelley v. Kraemer opinion"
-    ],
-    "dd-color-line-10": [
-      "The Court in session",
-      "The bench that ruled six to nothing in Shelley v. Kraemer"
-    ],
-    "dd-redlining-15": [
-      "The Shelley house, St. Louis",
-      "The home at the center of Shelley v. Kraemer"
-    ],
-    "urban-renewal-4": [
-      "55th Street, Hyde Park today",
-      "The blocks the next chapter would reshape with federal money"
-    ]
-  },
-  "sections": [
-    {
-      "id": "s1",
-      "title": "A Club Forms in 1908",
-      "era": "1908",
-      "year": 1908,
-      "voiceover": "It started with a club. In the autumn of 1908, white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club. A prominent attorney named Francis Harper led it. Within a short time it counted 350 members, and the historian Allan Spear notes they included some of the wealthiest dwellers on the South Side. These were not fringe agitators. They were the lawyers, the businessmen, and the property owners who ran the neighborhood, and they had decided that Hyde Park would be a white neighborhood and would stay that way. A few hundred Black families had begun to settle near Lake Avenue. The club set out to undo that, block by block. The methods were not subtle. The club appointed a committee to buy up property owned by Black residents on white blocks. It offered cash bonuses to Black renters who would give up their leases and leave. And it threatened to blacklist any real estate firm that dared to sell or rent to a Black family across the line it had drawn. Within a couple of years the club itself faded, but it had already done its work. The small Black community along Lake Avenue shrank, and the rest of Hyde Park stayed white for the next forty years.",
-      "shots": [
-        [
-          "img",
-          "dd-color-line-1c",
-          "It started with a club."
-        ],
-        [
-          "img",
-          "protective-club-era",
-          "white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club"
-        ],
-        [
-          "stat",
-          "club",
-          "Within a short time it counted 350 members"
-        ],
-        [
-          "clip",
-          "greystone-rise",
-          "some of the wealthiest dwellers on the South Side"
-        ],
-        [
-          "img",
-          "dd-formation-7",
-          "they had decided that Hyde Park would be a white neighborhood"
-        ],
-        [
-          "img",
-          "dd-color-line-2",
-          "The club set out to undo that, block by block."
-        ],
-        [
-          "img",
-          "protective-club-era",
-          "It offered cash bonuses to Black renters who would give up their leases and leave."
-        ],
-        [
-          "clip",
-          "old-new-pan",
-          "threatened to blacklist any real estate firm"
-        ],
-        [
-          "stat",
-          "fortyYears",
-          "the rest of Hyde Park stayed white for the next forty years"
-        ]
-      ],
-      "callouts": [
-        [
-          "FOUNDED",
-          "Autumn 1908",
-          "white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club"
-        ]
-      ]
-    },
-    {
-      "id": "s2",
-      "title": "Who the Wall Was Against",
-      "era": "1908-1918",
-      "year": 1917,
-      "voiceover": "It is worth remembering who that wall was built against. One of the most prominent Black Chicagoans of these years was Fannie Barrier Williams. She had been the first Black woman admitted to the Chicago Woman's Club, a founder of Black women's organizations, and a writer who pressed the city and the nation to open its doors. She was exactly the kind of accomplished, settled, professional neighbor the club claimed it did not want. The color line did not ask what you had achieved. It asked only one question. To understand why white Hyde Park reacted with that much force, you have to look at what was happening to the city around it. The Great Migration was on. Across the South, Black families were leaving sharecropping, lynching, and Jim Crow, drawn north by wartime jobs in the packinghouses, the steel mills, and the rail yards. Many of them came up the Illinois Central line that ran straight into Chicago. The Chicago Defender, the city's great Black newspaper, fed the movement directly. Its publisher, Robert Abbott, printed train schedules and job listings and called for a Great Northern Drive in the spring of 1917. Pullman porters carried the paper south along the rail lines, and it was read aloud in barbershops and churches across the cotton country. Its circulation passed 125,000 by 1918.",
-      "shots": [
-        [
-          "img",
-          "fannie-barrier-williams",
-          "It is worth remembering who that wall was built against."
-        ],
-        [
-          "stat",
-          "fannie",
-          "the first Black woman admitted to the Chicago Woman's Club"
-        ],
-        [
-          "img",
-          "color-line-6",
-          "The Great Migration was on."
-        ],
-        [
-          "img",
-          "color-line-1",
-          "Black families were leaving sharecropping, lynching, and Jim Crow"
-        ],
-        [
-          "img",
-          "formation-ic-train",
-          "Many of them came up the Illinois Central line that ran straight into Chicago."
-        ],
-        [
-          "clip",
-          "ic-tracks",
-          "came up the Illinois Central line"
-        ],
-        [
-          "img",
-          "dd-color-line-3",
-          "The Chicago Defender, the city's great Black newspaper, fed the movement directly."
-        ],
-        [
-          "img",
-          "dd-university-9",
-          "called for a Great Northern Drive in the spring of 1917"
-        ],
-        [
-          "chart",
-          "great-migration",
-          "Pullman porters carried the paper south along the rail lines"
-        ],
-        [
-          "stat",
-          "defender",
-          "Its circulation passed 125,000 by 1918."
-        ]
-      ],
-      "callouts": [
-        [
-          "GREAT NORTHERN DRIVE",
-          "Spring 1917",
-          "called for a Great Northern Drive in the spring of 1917"
-        ]
-      ]
-    },
-    {
-      "id": "s3",
-      "title": "Into the Black Belt",
-      "era": "1910-1940",
-      "year": 1930,
-      "voiceover": "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 by 1930, and about 278,000 by 1940. Nearly seven times as many people in thirty years. They needed somewhere to live, and the city had decided in advance where that would be. Most newcomers were funneled into a narrow strip on the South Side that people called the Black Belt. It ran for miles north to south but was only a few blocks wide. Inside it, demand far outran supply, and landlords took full advantage. They chopped single apartments into tiny units called kitchenettes, sometimes a hundred square feet, with one bathroom and one stove shared down a hall. Six or seven families might crowd into a flat once leased to two. A Chicago Housing Authority study in the late 1930s found that nearly half of kitchenette tenants, about 45 percent, were paying more than 30 percent of their income just for rent. The sociologists St. Clair Drake and Horace Cayton, who mapped this world in their 1945 study Black Metropolis, described the same blocks holding several times the people they were built for. So Black families paid more, for less, and the color line was the reason. It left them nowhere else to go.",
-      "shots": [
-        [
-          "stat",
-          "population",
-          "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 by 1930"
-        ],
-        [
-          "chart",
-          "great-migration",
-          "Nearly seven times as many people in thirty years."
-        ],
-        [
-          "img",
-          "color-line-3",
-          "Most newcomers were funneled into a narrow strip on the South Side that people called the Black Belt."
-        ],
-        [
-          "img",
-          "dd-present-4",
-          "It ran for miles north to south but was only a few blocks wide."
-        ],
-        [
-          "img",
-          "color-line-5",
-          "Inside it, demand far outran supply, and landlords took full advantage."
-        ],
-        [
-          "img",
-          "color-line-7",
-          "They chopped single apartments into tiny units called kitchenettes"
-        ],
-        [
-          "stat",
-          "rent",
-          "about 45 percent, were paying more than 30 percent of their income just for rent"
-        ],
-        [
-          "img",
-          "black-belt-street",
-          "mapped this world in their 1945 study Black Metropolis"
-        ],
-        [
-          "img",
-          "color-line-5",
-          "So Black families paid more, for less, and the color line was the reason."
-        ]
-      ],
-      "callouts": [
-        [
-          "BLACK METROPOLIS",
-          "Drake and Cayton, 1945",
-          "mapped this world in their 1945 study Black Metropolis"
-        ]
-      ]
-    },
-    {
-      "id": "s4",
-      "title": "The Answer Was a Bomb",
-      "era": "1917-1919",
-      "year": 1919,
-      "voiceover": "When Black families did try to cross that line and rent or buy on a white block, the answer was often a bomb. From 1917 through 1919, roughly two dozen Black homes were bombed in Chicago. Between 1917 and 1920, on average, a Black-owned home or a real estate office that served Black buyers was bombed about once every twenty days. Almost none of the cases were ever solved, and no one went to prison for them. The pressure broke open in the summer of 1919. A Black teenager named Eugene Williams drifted across an invisible line in the water at a Lake Michigan beach. A white man threw rocks, one struck him, and he drowned. The police refused to arrest the white man witnesses named. What followed was a week of rioting. By the time it ended, 23 Black Chicagoans and 15 white Chicagoans were dead, more than 500 people were injured, and about a thousand Black families had lost their homes to arson.",
-      "shots": [
-        [
-          "img",
-          "dd-present-4",
-          "rent or buy on a white block"
-        ],
-        [
-          "img",
-          "racial-hierarchy-doc",
-          "the answer was often a bomb"
-        ],
-        [
-          "stat",
-          "bombings",
-          "bombed about once every twenty days"
-        ],
-        [
-          "img",
-          "color-line-5",
-          "Almost none of the cases were ever solved"
-        ],
-        [
-          "img",
-          "dd-color-line-7",
-          "The pressure broke open in the summer of 1919."
-        ],
-        [
-          "img",
-          "color-line-1",
-          "A white man threw rocks, one struck him, and he drowned."
-        ],
-        [
-          "img",
-          "dd-color-line-7",
-          "What followed was a week of rioting."
-        ],
-        [
-          "stat",
-          "riot",
-          "23 Black Chicagoans and 15 white Chicagoans were dead"
-        ],
-        [
-          "img",
-          "black-belt-street",
-          "about a thousand Black families had lost their homes to arson"
-        ]
-      ],
-      "callouts": [
-        [
-          "EUGENE WILLIAMS",
-          "July 1919",
-          "A Black teenager named Eugene Williams drifted across an invisible line in the water"
-        ]
-      ]
-    },
-    {
-      "id": "s5",
-      "title": "Jesse Binga Will Not Run",
-      "era": "1908-1950",
-      "year": 1917,
-      "voiceover": "One man stood at the center of this storm and would not move. Jesse Binga came to Chicago in 1892, worked his way up from peddling and Pullman cars, and built a real estate fortune. In 1908 he opened the city's first Black-owned bank. In 1917 he bought a house at 5922 South Park Avenue, on a white block. His home and his offices were bombed at least five times between 1917 and 1921. He refused to leave. I will not run, he said, and he stayed. His story did not end in triumph. When the Depression hit, his bank, heavily invested in mortgages to Black churches and families, was shut down by the state in 1930. Binga lost everything, was convicted of embezzlement, and went to Joliet prison in 1935 at the age of 70. The same neighbors who had banked with him signed a petition for his release, and he was paroled in 1938 and pardoned in 1941. He died in 1950, largely forgotten, in the city he had helped build. His house still stands. Hold that picture in mind, a man who would not run from a bomb, because it shows what the next weapon was designed to avoid. There would be no more single defiant homeowners to rally around. The fight would move from the doorstep to the deed. After the riot, white Chicago reached for a quieter and more durable weapon than the bomb. The racially restrictive covenant. A covenant was a clause written into a property deed. It barred the owner from selling, leasing, or even allowing occupancy to anyone who was not white, with narrow exceptions for live-in servants.",
-      "shots": [
-        [
-          "img",
-          "jesse-binga",
-          "One man stood at the center of this storm and would not move."
-        ],
-        [
-          "img",
-          "dd-color-line-15",
-          "In 1908 he opened the city's first Black-owned bank."
-        ],
-        [
-          "img",
-          "dd-present-4",
-          "In 1917 he bought a house at 5922 South Park Avenue, on a white block."
-        ],
-        [
-          "stat",
-          "binga",
-          "His home and his offices were bombed at least five times between 1917 and 1921."
-        ],
-        [
-          "img",
-          "dd-present-4",
-          "I will not run, he said, and he stayed."
-        ],
-        [
-          "img",
-          "dd-color-line-15",
-          "his bank, heavily invested in mortgages to Black churches and families, was shut down by the state in 1930"
-        ],
-        [
-          "img",
-          "jesse-binga",
-          "He died in 1950, largely forgotten, in the city he had helped build."
-        ],
-        [
-          "img",
-          "racial-hierarchy-doc",
-          "The racially restrictive covenant."
-        ],
-        [
-          "img",
-          "dd-color-line-2",
-          "A covenant was a clause written into a property deed."
-        ],
-        [
-          "img",
-          "racial-hierarchy-doc",
-          "with narrow exceptions for live-in servants"
-        ]
-      ],
-      "callouts": [
-        [
-          "\"I WILL NOT RUN\"",
-          "Jesse Binga",
-          "I will not run, he said, and he stayed."
-        ]
-      ]
-    },
-    {
-      "id": "s6",
-      "title": "Signing in Blocs",
-      "era": "1927-1947",
-      "year": 1937,
-      "voiceover": "One deed by itself did little. The power came from numbers. Neighbors signed in blocs, often pledging a set share of a block's frontage before the agreement took effect, so a single signed covenant could seal off whole streets at once. A standard printed form circulated so any block could adopt one. A Chicago attorney named Nathan MacChesney drafted a model covenant in 1927 that real estate boards handed out across the city. Beginning in the late 1920s, covenants swept across the white neighborhoods ringing the Black Belt, including Kenwood, Oakland, Hyde Park, Woodlawn, and Englewood. By the 1940s, hundreds of subdivisions across Cook County carried them. And the University of Chicago was not a bystander to this. From 1933 to 1947, the university spent more than 110,000 dollars on what it politely called community interests. More than 83,000 of those dollars went specifically to defending restrictive covenants in the blocks around its campus. The Chicago Defender had a blunter name for the whole arrangement. The paper called the covenants the University of Chicago Agreement to get rid of Negroes. The covenants were rarely beaten head-on, because the law was on their side. The Hansberry family came closest. Carl Hansberry, a real estate man himself, bought a home at 6140 South Rhodes Avenue in Woodlawn in the spring of 1937 and moved his family in that June. His daughter Lorraine was a young child. A white neighbor, Anna Lee, and the Woodlawn Property Owners Association went to court to enforce a covenant and drive the family out. A mob gathered outside. A brick came through a window and nearly struck Lorraine. The fight went all the way to the Supreme Court. In Hansberry versus Lee, decided November 12, 1940, the Court ruled in the family's favor. But it ruled on a narrow procedural point, namely that an earlier lawsuit could not legally bind him. It did not touch the covenants themselves, and it did not say they were unconstitutional. Lorraine Hansberry would later turn the family's ordeal into the play A Raisin in the Sun.",
-      "shots": [
-        [
-          "img",
-          "racial-hierarchy-doc",
-          "The power came from numbers."
-        ],
-        [
-          "img",
-          "color-line-3",
-          "so a single signed covenant could seal off whole streets at once"
-        ],
-        [
-          "img",
-          "homer-hoyt",
-          "covenants swept across the white neighborhoods ringing the Black Belt"
-        ],
-        [
-          "img",
-          "dd-color-line-14",
-          "And the University of Chicago was not a bystander to this."
-        ],
-        [
-          "img",
-          "dd-university-8",
-          "the university spent more than 110,000 dollars on what it politely called community interests"
-        ],
-        [
-          "stat",
-          "uchicago",
-          "More than 83,000 of those dollars went specifically to defending restrictive covenants"
-        ],
-        [
-          "img",
-          "university-4",
-          "The Chicago Defender had a blunter name for the whole arrangement."
-        ],
-        [
-          "img",
-          "color-line-4",
-          "The Hansberry family came closest."
-        ],
-        [
-          "img",
-          "dd-redlining-11",
-          "Carl Hansberry, a real estate man himself, bought a home at 6140 South Rhodes Avenue"
-        ],
-        [
-          "img",
-          "color-line-4",
-          "A brick came through a window and nearly struck Lorraine."
-        ],
-        [
-          "stat",
-          "hansberry",
-          "In Hansberry versus Lee, decided November 12, 1940, the Court ruled in the family's favor."
-        ]
-      ],
-      "callouts": [
-        [
-          "MODEL COVENANT",
-          "MacChesney, 1927",
-          "drafted a model covenant in 1927 that real estate boards handed out across the city"
-        ]
-      ]
-    },
-    {
-      "id": "s7",
-      "title": "Shelley v Kraemer 1948",
-      "era": "1948",
-      "year": 1948,
-      "voiceover": "The covenants finally fell in 1948, and the decisive case came not from Chicago but from St. Louis. In Shelley versus Kraemer, decided May 3, 1948, the Supreme Court held that a court could not enforce a racially restrictive covenant, because using the power of the courts to do so counted as state action barred by the Fourteenth Amendment. Chief Justice Fred Vinson wrote for the Court, which ruled six to nothing, with three justices stepping aside. The decision did not erase the racist clauses from the deeds. Many of those words sit in Chicago property records to this day. Shelley only made them unenforceable, so a judge could no longer evict a Black family for living where the deed said it must not. After 1948, Black families finally began crossing into Hyde Park and Kenwood. The line that the club had drawn in 1908 had held for forty years. Now it broke. But the people who had spent decades and dollars holding that line did not simply give up. They looked for new instruments that the courts would still permit. Zoning. Land clearance. Federal money. The same university that had funded the covenant defense was already thinking about what to do once the covenants were gone. The bomb had failed. The deed had failed. What came next would be quieter, larger, and backed by the full weight of the government, and it would reshape these blocks far more than any club ever could. That is the story of the chapter that follows.",
-      "shots": [
-        [
-          "img",
-          "dd-redlining-15",
-          "the decisive case came not from Chicago but from St. Louis"
-        ],
-        [
-          "img",
-          "dd-color-line-10",
-          "the Supreme Court held that a court could not enforce a racially restrictive covenant"
-        ],
-        [
-          "img",
-          "dd-color-line-11b",
-          "Chief Justice Fred Vinson wrote for the Court, which ruled six to nothing"
-        ],
-        [
-          "stat",
-          "shelley",
-          "with three justices stepping aside"
-        ],
-        [
-          "img",
-          "racial-hierarchy-doc",
-          "The decision did not erase the racist clauses from the deeds."
-        ],
-        [
-          "img",
-          "color-line-3",
-          "After 1948, Black families finally began crossing into Hyde Park and Kenwood."
-        ],
-        [
-          "img",
-          "protective-club-era",
-          "The line that the club had drawn in 1908 had held for forty years."
-        ],
-        [
-          "img",
-          "dd-color-line-14",
-          "The same university that had funded the covenant defense was already thinking about what to do once the covenants were gone."
-        ],
-        [
-          "clip",
-          "old-new-pan",
-          "What came next would be quieter, larger, and backed by the full weight of the government"
-        ],
-        [
-          "img",
-          "urban-renewal-4",
-          "That is the story of the chapter that follows."
-        ]
-      ],
-      "callouts": [
-        [
-          "STATE ACTION",
-          "Fourteenth Amendment",
-          "counted as state action barred by the Fourteenth Amendment"
-        ]
-      ]
-    }
+ "id": "color-line",
+ "title": "The Color Line Comes to Hyde Park",
+ "subtitle": "How a homeowners club, a wave of bombs, and a clause in the deed kept Hyde Park white for forty years",
+ "stats": {
+  "club": [
+   "HYDE PARK PROTECTIVE CLUB",
+   "350",
+   "members organized in autumn 1908 under attorney Francis Harper",
+   "Allan Spear, Black Chicago"
+  ],
+  "fortyYears": [
+   "HYDE PARK STAYED WHITE",
+   "40 years",
+   "the line the club drew in 1908 held for four decades",
+   "Allan Spear, Black Chicago"
+  ],
+  "defender": [
+   "CHICAGO DEFENDER CIRCULATION",
+   "125,000",
+   "copies passed by 1918 as the paper drove the Great Migration",
+   "Robert Abbott and The Chicago Defender"
+  ],
+  "population": [
+   "CHICAGO BLACK POPULATION",
+   "40,000 to 278,000",
+   "roughly sevenfold growth from 1910 to 1940",
+   "Chicago Public Library, The Great Migration"
+  ],
+  "rent": [
+   "KITCHENETTE RENT BURDEN",
+   "45%",
+   "of kitchenette tenants paid over 30 percent of income on rent",
+   "Chicago Housing Authority study, late 1930s"
+  ],
+  "bombings": [
+   "BLACK HOMES BOMBED",
+   "1 every 20 days",
+   "the pace of bombings against Black homes and offices, 1917 to 1920",
+   "Chicago Race Riot of 1919 Commemoration Project"
+  ],
+  "riot": [
+   "1919 RIOT DEATHS",
+   "23 Black, 15 white",
+   "dead over a week, with 500-plus injured and about 1,000 families burned out",
+   "Chicago race riot of 1919 records"
+  ],
+  "binga": [
+   "BINGA HOME BOMBINGS",
+   "at least 5",
+   "bombings of Jesse Binga's home and offices, 1917 to 1921",
+   "Don Hayner, Binga, Chicago Sun-Times"
+  ],
+  "uchicago": [
+   "UCHICAGO COVENANT DEFENSE",
+   "$83,000+",
+   "spent defending restrictive covenants near campus, 1933 to 1947",
+   "Chicago Maroon, U of C and Hyde Park history"
+  ],
+  "hansberry": [
+   "HANSBERRY v. LEE",
+   "Nov 12, 1940",
+   "a narrow procedural win that left the covenants standing",
+   "Hansberry v. Lee, 311 U.S. 32"
+  ],
+  "shelley": [
+   "SHELLEY v. KRAEMER",
+   "May 3, 1948",
+   "a 6 to 0 ruling that courts may not enforce racial covenants",
+   "Shelley v. Kraemer, 334 U.S. 1"
+  ],
+  "fannie": [
+   "FANNIE BARRIER WILLIAMS",
+   "1855-1944",
+   "clubwoman and writer, the kind of neighbor the club shut out",
+   "Chicago History Museum, National Park Service"
   ]
+ },
+ "annot": {
+  "dd-color-line-1c": [
+   "Drexel Boulevard, 1902",
+   "A South Side boulevard building in a 1902 newspaper halftone"
+  ],
+  "protective-club-era": [
+   "Greystones on Ellis Avenue",
+   "The Kenwood housing stock the club fought to keep white"
+  ],
+  "dd-color-line-2": [
+   "Sanborn Fire Map of the South Side",
+   "A period Chicago plat showing platted lots and footprints"
+  ],
+  "dd-formation-7": [
+   "Hyde Park Township",
+   "The South Side township whose blocks the club set out to seal"
+  ],
+  "fannie-barrier-williams": [
+   "Fannie Barrier Williams, c.1880",
+   "First Black woman admitted to the Chicago Woman's Club"
+  ],
+  "color-line-6": [
+   "The Scott family arrives, 1920",
+   "Great Migration arrivals photographed for the Chicago Defender"
+  ],
+  "color-line-1": [
+   "An African American family, South Chicago, 1922",
+   "Newcomers settling on the South Side during the Great Migration"
+  ],
+  "formation-ic-train": [
+   "Illinois Central locomotive",
+   "The rail line that carried migrants straight into Chicago"
+  ],
+  "ic-embankment-hist": [
+   "Illinois Central tracks, 1943",
+   "Trains running the line that fed the South Side"
+  ],
+  "dd-color-line-3": [
+   "A newsboy and the Defender",
+   "The paper's masthead, the engine of the Great Northern Drive"
+  ],
+  "dd-university-9": [
+   "The Chicago Defender building",
+   "Home of the paper that drove the Great Northern Drive"
+  ],
+  "color-line-5": [
+   "Black Belt tenement court, 1941",
+   "Back-porch staircases in a crowded South Side yard"
+  ],
+  "black-belt-street": [
+   "Chicago Defender pressroom, 1941",
+   "Linotype operators at the city's great Black newspaper"
+  ],
+  "dd-present-4": [
+   "An old South Side residential street, 1941",
+   "Rhodes Avenue greystones in the heart of the Black Belt"
+  ],
+  "color-line-7": [
+   "Washday in a kitchenette, 1941",
+   "A makeshift kitchen and bath in a subdivided Black Belt flat"
+  ],
+  "dd-color-line-7": [
+   "The riot area over the Black Belt",
+   "A 1919 newspaper composite of the riot's hot spots and headlines"
+  ],
+  "jesse-binga": [
+   "Jesse Binga, 1923",
+   "Banker who would not run from the bombs on his block"
+  ],
+  "dd-color-line-15": [
+   "The Binga Bank hall",
+   "The city's first Black-owned bank, opened 1908"
+  ],
+  "color-line-3": [
+   "HOLC grades on the South Side",
+   "The graded ring of neighborhoods around the Black Belt"
+  ],
+  "homer-hoyt": [
+   "Residential Security Map, c.1940",
+   "The HOLC basemap that fixed the color line in red ink"
+  ],
+  "dd-color-line-14": [
+   "Hull Gate, University of Chicago",
+   "The wrought-iron threshold between campus and the streets"
+  ],
+  "dd-university-8": [
+   "Cobb Gate, University of Chicago",
+   "A carved campus threshold facing the surrounding streets"
+  ],
+  "dd-present-7": [
+   "University of Chicago, c.1907",
+   "The campus at the dawn of the covenant era"
+  ],
+  "university-4": [
+   "Harper Memorial Library, 1920",
+   "The University of Chicago at the height of the covenant era"
+  ],
+  "color-line-4": [
+   "The Lorraine Hansberry House",
+   "6140 South Rhodes Avenue, the family's Woodlawn home"
+  ],
+  "dd-redlining-11": [
+   "Carl Hansberry, 1940",
+   "The real estate man who carried the covenant fight to court"
+  ],
+  "dd-color-line-12": [
+   "The Supreme Court, 1943",
+   "The Court that would strike down covenant enforcement in 1948"
+  ],
+  "dd-color-line-11b": [
+   "Chief Justice Fred M. Vinson",
+   "Author of the Shelley v. Kraemer opinion"
+  ],
+  "dd-color-line-10": [
+   "The Court in session",
+   "The bench that ruled six to nothing in Shelley v. Kraemer"
+  ],
+  "dd-redlining-15": [
+   "The Shelley house, St. Louis",
+   "The home at the center of Shelley v. Kraemer"
+  ],
+  "urban-renewal-4": [
+   "55th Street, Hyde Park today",
+   "The blocks the next chapter would reshape with federal money"
+  ]
+ },
+ "sections": [
+  {
+   "id": "s1",
+   "title": "A Club Forms in 1908",
+   "era": "1908",
+   "year": 1908,
+   "voiceover": "It started with a club. In the autumn of 1908, white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club. A prominent attorney named Francis Harper led it. Within a short time it counted 350 members, and the historian Allan Spear notes they included some of the wealthiest dwellers on the South Side. These were not fringe agitators. They were the lawyers, the businessmen, and the property owners who ran the neighborhood, and they had decided that Hyde Park would be a white neighborhood and would stay that way. A few hundred Black families had begun to settle near Lake Avenue. The club set out to undo that, block by block. The methods were not subtle. The club appointed a committee to buy up property owned by Black residents on white blocks. It offered cash bonuses to Black renters who would give up their leases and leave. And it threatened to blacklist any real estate firm that dared to sell or rent to a Black family across the line it had drawn. Within a couple of years the club itself faded, but it had already done its work. The small Black community along Lake Avenue shrank, and the rest of Hyde Park stayed white for the next forty years.",
+   "shots": [
+    [
+     "img",
+     "dd-color-line-1c",
+     "It started with a club."
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club"
+    ],
+    [
+     "stat",
+     "club",
+     "Within a short time it counted 350 members"
+    ],
+    [
+     "clip",
+     "greystone-rise",
+     "some of the wealthiest dwellers on the South Side"
+    ],
+    [
+     "img",
+     "dd-formation-7",
+     "they had decided that Hyde Park would be a white neighborhood"
+    ],
+    [
+     "img",
+     "dd-color-line-2",
+     "The club set out to undo that, block by block."
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "It offered cash bonuses to Black renters who would give up their leases and leave."
+    ],
+    [
+     "clip",
+     "old-new-pan",
+     "threatened to blacklist any real estate firm"
+    ],
+    [
+     "stat",
+     "fortyYears",
+     "the rest of Hyde Park stayed white for the next forty years"
+    ]
+   ],
+   "callouts": [
+    [
+     "FOUNDED",
+     "Autumn 1908",
+     "white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club"
+    ]
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Who the Wall Was Against",
+   "era": "1908-1918",
+   "year": 1917,
+   "voiceover": "It is worth remembering who that wall was built against. One of the most prominent Black Chicagoans of these years was Fannie Barrier Williams. She had been the first Black woman admitted to the Chicago Woman's Club, a founder of Black women's organizations, and a writer who pressed the city and the nation to open its doors. She was exactly the kind of accomplished, settled, professional neighbor the club claimed it did not want. The color line did not ask what you had achieved. It asked only one question. To understand why white Hyde Park reacted with that much force, you have to look at what was happening to the city around it. The Great Migration was on. Across the South, Black families were leaving sharecropping, lynching, and Jim Crow, drawn north by wartime jobs in the packinghouses, the steel mills, and the rail yards. Many of them came up the Illinois Central line that ran straight into Chicago. The Chicago Defender, the city's great Black newspaper, fed the movement directly. Its publisher, Robert Abbott, printed train schedules and job listings and called for a Great Northern Drive in the spring of 1917. Pullman porters carried the paper south along the rail lines, and it was read aloud in barbershops and churches across the cotton country. Its circulation passed 125,000 by 1918.",
+   "shots": [
+    [
+     "img",
+     "fannie-barrier-williams",
+     "It is worth remembering who that wall was built against."
+    ],
+    [
+     "stat",
+     "fannie",
+     "the first Black woman admitted to the Chicago Woman's Club"
+    ],
+    [
+     "img",
+     "color-line-6",
+     "The Great Migration was on."
+    ],
+    [
+     "img",
+     "color-line-1",
+     "Black families were leaving sharecropping, lynching, and Jim Crow"
+    ],
+    [
+     "img",
+     "formation-ic-train",
+     "Many of them came up the Illinois Central line that ran straight into Chicago."
+    ],
+    [
+     "img",
+     "ic-embankment-hist",
+     "came up the Illinois Central line"
+    ],
+    [
+     "img",
+     "dd-color-line-3",
+     "The Chicago Defender, the city's great Black newspaper, fed the movement directly."
+    ],
+    [
+     "img",
+     "dd-university-9",
+     "called for a Great Northern Drive in the spring of 1917"
+    ],
+    [
+     "chart",
+     "great-migration",
+     "Pullman porters carried the paper south along the rail lines"
+    ],
+    [
+     "stat",
+     "defender",
+     "Its circulation passed 125,000 by 1918."
+    ]
+   ],
+   "callouts": [
+    [
+     "GREAT NORTHERN DRIVE",
+     "Spring 1917",
+     "called for a Great Northern Drive in the spring of 1917"
+    ]
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Into the Black Belt",
+   "era": "1910-1940",
+   "year": 1930,
+   "voiceover": "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 by 1930, and about 278,000 by 1940. Nearly seven times as many people in thirty years. They needed somewhere to live, and the city had decided in advance where that would be. Most newcomers were funneled into a narrow strip on the South Side that people called the Black Belt. It ran for miles north to south but was only a few blocks wide. Inside it, demand far outran supply, and landlords took full advantage. They chopped single apartments into tiny units called kitchenettes, sometimes a hundred square feet, with one bathroom and one stove shared down a hall. Six or seven families might crowd into a flat once leased to two. A Chicago Housing Authority study in the late 1930s found that nearly half of kitchenette tenants, about 45 percent, were paying more than 30 percent of their income just for rent. The sociologists St. Clair Drake and Horace Cayton, who mapped this world in their 1945 study Black Metropolis, described the same blocks holding several times the people they were built for. So Black families paid more, for less, and the color line was the reason. It left them nowhere else to go.",
+   "shots": [
+    [
+     "stat",
+     "population",
+     "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 by 1930"
+    ],
+    [
+     "chart",
+     "great-migration",
+     "Nearly seven times as many people in thirty years."
+    ],
+    [
+     "img",
+     "color-line-3",
+     "Most newcomers were funneled into a narrow strip on the South Side that people called the Black Belt."
+    ],
+    [
+     "img",
+     "dd-present-4",
+     "It ran for miles north to south but was only a few blocks wide."
+    ],
+    [
+     "img",
+     "color-line-5",
+     "Inside it, demand far outran supply, and landlords took full advantage."
+    ],
+    [
+     "img",
+     "color-line-7",
+     "They chopped single apartments into tiny units called kitchenettes"
+    ],
+    [
+     "stat",
+     "rent",
+     "about 45 percent, were paying more than 30 percent of their income just for rent"
+    ],
+    [
+     "img",
+     "black-belt-street",
+     "mapped this world in their 1945 study Black Metropolis"
+    ],
+    [
+     "img",
+     "color-line-7",
+     "So Black families paid more, for less, and the color line was the reason."
+    ]
+   ],
+   "callouts": [
+    [
+     "BLACK METROPOLIS",
+     "Drake and Cayton, 1945",
+     "mapped this world in their 1945 study Black Metropolis"
+    ]
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "The Answer Was a Bomb",
+   "era": "1917-1919",
+   "year": 1919,
+   "voiceover": "When Black families did try to cross that line and rent or buy on a white block, the answer was often a bomb. From 1917 through 1919, roughly two dozen Black homes were bombed in Chicago. Between 1917 and 1920, on average, a Black-owned home or a real estate office that served Black buyers was bombed about once every twenty days. Almost none of the cases were ever solved, and no one went to prison for them. The pressure broke open in the summer of 1919. A Black teenager named Eugene Williams drifted across an invisible line in the water at a Lake Michigan beach. A white man threw rocks, one struck him, and he drowned. The police refused to arrest the white man witnesses named. What followed was a week of rioting. By the time it ended, 23 Black Chicagoans and 15 white Chicagoans were dead, more than 500 people were injured, and about a thousand Black families had lost their homes to arson.",
+   "shots": [
+    [
+     "img",
+     "dd-present-4",
+     "rent or buy on a white block"
+    ],
+    [
+     "img",
+     "dd-color-line-7",
+     "the answer was often a bomb"
+    ],
+    [
+     "stat",
+     "bombings",
+     "bombed about once every twenty days"
+    ],
+    [
+     "img",
+     "color-line-5",
+     "Almost none of the cases were ever solved"
+    ],
+    [
+     "img",
+     "black-belt-street",
+     "The pressure broke open in the summer of 1919."
+    ],
+    [
+     "img",
+     "dd-color-line-7",
+     "A white man threw rocks, one struck him, and he drowned."
+    ],
+    [
+     "img",
+     "color-line-5",
+     "What followed was a week of rioting."
+    ],
+    [
+     "stat",
+     "riot",
+     "23 Black Chicagoans and 15 white Chicagoans were dead"
+    ],
+    [
+     "img",
+     "black-belt-street",
+     "about a thousand Black families had lost their homes to arson"
+    ]
+   ],
+   "callouts": [
+    [
+     "EUGENE WILLIAMS",
+     "July 1919",
+     "A Black teenager named Eugene Williams drifted across an invisible line in the water"
+    ]
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Jesse Binga Will Not Run",
+   "era": "1908-1950",
+   "year": 1917,
+   "voiceover": "One man stood at the center of this storm and would not move. Jesse Binga came to Chicago in 1892, worked his way up from peddling and Pullman cars, and built a real estate fortune. In 1908 he opened the city's first Black-owned bank. In 1917 he bought a house at 5922 South Park Avenue, on a white block. His home and his offices were bombed at least five times between 1917 and 1921. He refused to leave. I will not run, he said, and he stayed. His story did not end in triumph. When the Depression hit, his bank, heavily invested in mortgages to Black churches and families, was shut down by the state in 1930. Binga lost everything, was convicted of embezzlement, and went to Joliet prison in 1935 at the age of 70. The same neighbors who had banked with him signed a petition for his release, and he was paroled in 1938 and pardoned in 1941. He died in 1950, largely forgotten, in the city he had helped build. His house still stands. Hold that picture in mind, a man who would not run from a bomb, because it shows what the next weapon was designed to avoid. There would be no more single defiant homeowners to rally around. The fight would move from the doorstep to the deed. After the riot, white Chicago reached for a quieter and more durable weapon than the bomb. The racially restrictive covenant. A covenant was a clause written into a property deed. It barred the owner from selling, leasing, or even allowing occupancy to anyone who was not white, with narrow exceptions for live-in servants.",
+   "shots": [
+    [
+     "img",
+     "jesse-binga",
+     "One man stood at the center of this storm and would not move."
+    ],
+    [
+     "img",
+     "dd-color-line-15",
+     "In 1908 he opened the city's first Black-owned bank."
+    ],
+    [
+     "img",
+     "dd-present-4",
+     "In 1917 he bought a house at 5922 South Park Avenue, on a white block."
+    ],
+    [
+     "stat",
+     "binga",
+     "His home and his offices were bombed at least five times between 1917 and 1921."
+    ],
+    [
+     "img",
+     "jesse-binga",
+     "I will not run, he said, and he stayed."
+    ],
+    [
+     "img",
+     "dd-color-line-15",
+     "his bank, heavily invested in mortgages to Black churches and families, was shut down by the state in 1930"
+    ],
+    [
+     "img",
+     "jesse-binga",
+     "He died in 1950, largely forgotten, in the city he had helped build."
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "The racially restrictive covenant."
+    ],
+    [
+     "img",
+     "dd-color-line-2",
+     "A covenant was a clause written into a property deed."
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "with narrow exceptions for live-in servants"
+    ]
+   ],
+   "callouts": [
+    [
+     "\"I WILL NOT RUN\"",
+     "Jesse Binga",
+     "I will not run, he said, and he stayed."
+    ]
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Signing in Blocs",
+   "era": "1927-1947",
+   "year": 1937,
+   "voiceover": "One deed by itself did little. The power came from numbers. Neighbors signed in blocs, often pledging a set share of a block's frontage before the agreement took effect, so a single signed covenant could seal off whole streets at once. A standard printed form circulated so any block could adopt one. A Chicago attorney named Nathan MacChesney drafted a model covenant in 1927 that real estate boards handed out across the city. Beginning in the late 1920s, covenants swept across the white neighborhoods ringing the Black Belt, including Kenwood, Oakland, Hyde Park, Woodlawn, and Englewood. By the 1940s, hundreds of subdivisions across Cook County carried them. And the University of Chicago was not a bystander to this. From 1933 to 1947, the university spent more than 110,000 dollars on what it politely called community interests. More than 83,000 of those dollars went specifically to defending restrictive covenants in the blocks around its campus. The Chicago Defender had a blunter name for the whole arrangement. The paper called the covenants the University of Chicago Agreement to get rid of Negroes. The covenants were rarely beaten head-on, because the law was on their side. The Hansberry family came closest. Carl Hansberry, a real estate man himself, bought a home at 6140 South Rhodes Avenue in Woodlawn in the spring of 1937 and moved his family in that June. His daughter Lorraine was a young child. A white neighbor, Anna Lee, and the Woodlawn Property Owners Association went to court to enforce a covenant and drive the family out. A mob gathered outside. A brick came through a window and nearly struck Lorraine. The fight went all the way to the Supreme Court. In Hansberry versus Lee, decided November 12, 1940, the Court ruled in the family's favor. But it ruled on a narrow procedural point, namely that an earlier lawsuit could not legally bind him. It did not touch the covenants themselves, and it did not say they were unconstitutional. Lorraine Hansberry would later turn the family's ordeal into the play A Raisin in the Sun.",
+   "shots": [
+    [
+     "img",
+     "dd-color-line-2",
+     "The power came from numbers."
+    ],
+    [
+     "img",
+     "color-line-3",
+     "so a single signed covenant could seal off whole streets at once"
+    ],
+    [
+     "img",
+     "homer-hoyt",
+     "covenants swept across the white neighborhoods ringing the Black Belt"
+    ],
+    [
+     "img",
+     "dd-color-line-14",
+     "And the University of Chicago was not a bystander to this."
+    ],
+    [
+     "img",
+     "dd-university-8",
+     "the university spent more than 110,000 dollars on what it politely called community interests"
+    ],
+    [
+     "stat",
+     "uchicago",
+     "More than 83,000 of those dollars went specifically to defending restrictive covenants"
+    ],
+    [
+     "img",
+     "university-4",
+     "The Chicago Defender had a blunter name for the whole arrangement."
+    ],
+    [
+     "img",
+     "color-line-4",
+     "The Hansberry family came closest."
+    ],
+    [
+     "img",
+     "dd-redlining-11",
+     "Carl Hansberry, a real estate man himself, bought a home at 6140 South Rhodes Avenue"
+    ],
+    [
+     "img",
+     "color-line-4",
+     "A brick came through a window and nearly struck Lorraine."
+    ],
+    [
+     "stat",
+     "hansberry",
+     "In Hansberry versus Lee, decided November 12, 1940, the Court ruled in the family's favor."
+    ]
+   ],
+   "callouts": [
+    [
+     "MODEL COVENANT",
+     "MacChesney, 1927",
+     "drafted a model covenant in 1927 that real estate boards handed out across the city"
+    ]
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Shelley v Kraemer 1948",
+   "era": "1948",
+   "year": 1948,
+   "voiceover": "The covenants finally fell in 1948, and the decisive case came not from Chicago but from St. Louis. In Shelley versus Kraemer, decided May 3, 1948, the Supreme Court held that a court could not enforce a racially restrictive covenant, because using the power of the courts to do so counted as state action barred by the Fourteenth Amendment. Chief Justice Fred Vinson wrote for the Court, which ruled six to nothing, with three justices stepping aside. The decision did not erase the racist clauses from the deeds. Many of those words sit in Chicago property records to this day. Shelley only made them unenforceable, so a judge could no longer evict a Black family for living where the deed said it must not. After 1948, Black families finally began crossing into Hyde Park and Kenwood. The line that the club had drawn in 1908 had held for forty years. Now it broke. But the people who had spent decades and dollars holding that line did not simply give up. They looked for new instruments that the courts would still permit. Zoning. Land clearance. Federal money. The same university that had funded the covenant defense was already thinking about what to do once the covenants were gone. The bomb had failed. The deed had failed. What came next would be quieter, larger, and backed by the full weight of the government, and it would reshape these blocks far more than any club ever could. That is the story of the chapter that follows.",
+   "shots": [
+    [
+     "img",
+     "dd-redlining-15",
+     "the decisive case came not from Chicago but from St. Louis"
+    ],
+    [
+     "img",
+     "dd-color-line-10",
+     "the Supreme Court held that a court could not enforce a racially restrictive covenant"
+    ],
+    [
+     "img",
+     "dd-color-line-11b",
+     "Chief Justice Fred Vinson wrote for the Court, which ruled six to nothing"
+    ],
+    [
+     "stat",
+     "shelley",
+     "with three justices stepping aside"
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "The decision did not erase the racist clauses from the deeds."
+    ],
+    [
+     "img",
+     "color-line-3",
+     "After 1948, Black families finally began crossing into Hyde Park and Kenwood."
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "The line that the club had drawn in 1908 had held for forty years."
+    ],
+    [
+     "img",
+     "dd-color-line-14",
+     "The same university that had funded the covenant defense was already thinking about what to do once the covenants were gone."
+    ],
+    [
+     "clip",
+     "old-new-pan",
+     "What came next would be quieter, larger, and backed by the full weight of the government"
+    ],
+    [
+     "img",
+     "urban-renewal-4",
+     "That is the story of the chapter that follows."
+    ]
+   ],
+   "callouts": [
+    [
+     "STATE ACTION",
+     "Fourteenth Amendment",
+     "counted as state action barred by the Fourteenth Amendment"
+    ]
+   ]
+  }
+ ]
 }

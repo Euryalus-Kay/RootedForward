@@ -1,213 +1,740 @@
 {
-  "id": "university",
-  "title": "Rockefeller's University Rises",
-  "subtitle": "How oil money built Gothic quads in Hyde Park and then paid lawyers to draw a line around them",
-  "stats": {
-    "old-land": ["OLD UNIVERSITY LAND", "10 acres", "Douglas gift at Cottage Grove and 35th, chartered 1857", "Old University of Chicago records"],
-    "old-closes": ["OLD UNIVERSITY CLOSES", "1886", "Creditors foreclose after thirty years of debt and a fire", "Old University of Chicago records"],
-    "pledge": ["ROCKEFELLER PLEDGE", "$600,000", "1889, conditional on a matching gift", "History of the University of Chicago"],
-    "match": ["REQUIRED MATCH", "$400,000", "Raised by the American Baptist Education Society", "History of the University of Chicago"],
-    "oil-share": ["STANDARD OIL REFINING", "~90%", "Share of U.S. oil refining Standard Oil controlled by 1880", "Britannica, Standard Oil"],
-    "incorporated": ["UNIVERSITY INCORPORATED", "1890", "University of Chicago, Hyde Park", "History of the University of Chicago"],
-    "first-land": ["FIRST LAND GIFT", "10 acres", "Marshall Field, 57th to 59th, Ellis to Woodlawn", "History of the University of Chicago"],
-    "harper-age": ["FIRST PRESIDENT", "Age 35", "William Rainey Harper, Yale PhD at 19", "Britannica, William Rainey Harper"],
-    "harper-term": ["HARPER IN OFFICE", "1891-1906", "Died of cancer at 49, still in office", "Britannica, William Rainey Harper"],
-    "faculty": ["OPENING DAY FACULTY", "120", "Oct 1, 1892, eight former college presidents", "History of the University of Chicago"],
-    "enrollment": ["OPENING ENROLLMENT", "594", "Men and women, October 1, 1892", "History of the University of Chicago"],
-    "stagg": ["STAGG'S SALARY", "$2,500", "Tenured professorship for a football coach, 1892", "UChicago Athletics, Amos Alonzo Stagg"],
-    "cobb-buildings": ["COBB'S BUILDINGS", "18", "English Gothic, Bedford limestone, six quadrangles", "SAH Archipedia, Main Quadrangle"],
-    "fair": ["WORLD'S FAIR NEXT DOOR", "1893", "Columbian Exposition, Jackson Park and the Midway", "UChicago Midway Plaisance history"],
-    "first-decade": ["ROCKEFELLER FIRST DECADE", "~$35 million", "Total giving in the university's first ten years", "Philanthropy Roundtable"],
-    "covenant-spend": ["COVENANT SPENDING", "$83,000+", "University funds, 1933 to 1947, restrictive covenants", "Towards a Whiter Woodlawn"],
-    "covenants-end": ["COVENANTS STRUCK DOWN", "1948", "Shelley v. Kraemer, U.S. Supreme Court", "Shelley v. Kraemer (1948)"]
-  },
-  "annot": {
-    "first-uofc": ["The First University of Chicago", "Baptist Convention delegates at the old building, 1867"],
-    "douglas-portrait": ["Stephen A. Douglas", "U.S. senator who gave the land, photographed 1860"],
-    "dd-university-1": ["Panic of 1857", "Run on the Seamen's Savings Bank, Harper's Weekly"],
-    "dd-university-2": ["The Kansas-Nebraska Act of 1854", "Douglas wrote the law that let territories vote slavery in"],
-    "dd-formation-9": ["Built Past What They Could Afford", "Chicago ruins, 1871, standing in for debt and fire"],
-    "university-3": ["John D. Rockefeller", "Standard Oil magnate, photographed 1895"],
-    "university-5": ["Marshall Field", "Department store owner who gave the first ten acres, 1893"],
-    "dd-urban-renewal-1": ["The Campus Footprint", "Goodspeed plan of the Midway Plaisance, 1916"],
-    "university-2": ["William Rainey Harper", "First president, Yale PhD at nineteen, photographed 1903"],
-    "dd-university-5": ["Johns Hopkins University", "The first American research university, Baltimore"],
-    "dd-color-line-14": ["Hull Gate", "Gothic limestone quadrangle of the main campus"],
-    "dd-university-4": ["Amos Alonzo Stagg", "The coach Harper hired onto the tenured faculty"],
-    "dd-university-6": ["The Maroons", "An early University of Chicago football team, 1905"],
-    "dd-university-7": ["The Tower Group", "Cobb's Gothic quadrangles in their first decades"],
-    "university-1": ["Cobb Hall", "First building finished, ready for opening day 1892"],
-    "dd-university-8": ["Cobb Gate", "Grotesques climbing the limestone, new stone made to look old"],
-    "dd-present-7": ["The Quadrangles", "The young campus dressed as an ancient one, around 1907"],
-    "worlds-fair-1": ["The White City", "Court of Honor of the 1893 Columbian Exposition"],
-    "worlds-fair-6": ["The Ferris Wheel", "The first Ferris wheel, Columbian Exposition, 1893"],
-    "midway-1893-crowd": ["The Fair on the Midway", "Ferris wheel on the Midway Plaisance, 1893"],
-    "university-4": ["Harper Memorial Library", "The campus Rockefeller's giving kept building"],
-    "great-migration": ["The Great Migration", "Chicago Defender image of the northward movement, 1920"],
-    "color-line-1": ["Arriving in Chicago", "A Black family on the South Side, 1922"],
-    "homer-hoyt": ["The Black Belt and Woodlawn", "Chicago security map of the graded South Side, around 1940"],
-    "racial-hierarchy-doc": ["A Restrictive Covenant", "An exclusionary deed clause of the kind the university enforced"],
-    "dd-color-line-3": ["The Chicago Defender", "A newsboy selling the city's great Black newspaper"],
-    "dd-color-line-12": ["Shelley v. Kraemer", "The Supreme Court that ended court-enforced covenants in 1948"],
-    "formation-4": ["Chicago in 1857", "Bird's-eye view of the young city the year the school was chartered"],
-    "dd-formation-7": ["Hyde Park Township", "The South Side township the new campus was built into"],
-    "dd-present-2": ["Frederick Law Olmsted", "Designer of the parks that framed the Midway"],
-    "dd-university-10": ["The Fairgrounds Next Door", "Bird's-eye view of the Columbian Exposition in Jackson Park, 1893"],
-    "dd-color-line-1c": ["The Drexel Boulevard Set", "A South Side clubhouse of the white property-owning class, 1902"],
-    "dd-redlining-11": ["Carl Hansberry", "A Black real-estate broker who fought Chicago's covenants"],
-    "protective-club-era": ["The Streets Behind the Line", "Greystones of the kind the covenants meant to keep white"]
-  },
-  "sections": [
-    {
-      "id": "s1",
-      "title": "The First University of Chicago",
-      "era": "1857",
-      "year": 1857,
-      "voiceover": "Before the gray Gothic towers, before the gargoyles and the quiet courtyards, there was a different University of Chicago. It opened in the 1850s, and it stood about two and a half miles north of where the campus sits today, near 35th Street and Cottage Grove Avenue. The land came from Stephen A. Douglas, the United States senator from Illinois. Douglas first offered the tract to the Presbyterians, on the condition that they raise a hundred thousand dollars for a building. They couldn't. So he gave the ten acres to a group of Baptists instead, and the school was chartered in 1857, with Douglas himself as the first president of its board of trustees. That school never had enough money. The financial panic of 1857 wiped out most of the early pledges almost as soon as it opened. Douglas died in 1861, and his name was a problem for fundraisers. He had written the Kansas-Nebraska Act, the law that let new territories vote slavery in, and many donors in the North wanted nothing to do with anything attached to him. The trustees built anyway, past what they could afford. They put up a five-story main building of stone and kept enrolling students even as the bills came due. The debt climbed for thirty years. There was a fire. In 1886 the creditors foreclosed, the classes stopped, and the first University of Chicago was finished. It had run for nearly three decades and never escaped the hole it started in.",
-      "shots": [
-        ["img", "first-uofc", "there was a different University of Chicago"],
-        ["img", "formation-4", "about two and a half miles north of where the campus sits today"],
-        ["img", "first-uofc", "near 35th Street and Cottage Grove Avenue"],
-        ["img", "douglas-portrait", "The land came from Stephen A. Douglas"],
-        ["stat", "old-land", "raise a hundred thousand dollars for a building"],
-        ["img", "dd-formation-7", "the school was chartered in 1857"],
-        ["img", "dd-university-1", "The financial panic of 1857 wiped out most of the early pledges"],
-        ["img", "douglas-portrait", "Douglas died in 1861, and his name was a problem for fundraisers"],
-        ["img", "dd-university-2", "He had written the Kansas-Nebraska Act"],
-        ["img", "dd-formation-9", "The trustees built anyway, past what they could afford"],
-        ["img", "dd-university-2", "There was a fire"],
-        ["stat", "old-closes", "In 1886 the creditors foreclosed"]
-      ],
-      "callouts": [
-        ["Chartered", "1857", "the school was chartered in 1857"],
-        ["Foreclosed", "1886", "In 1886 the creditors foreclosed"]
-      ]
-    },
-    {
-      "id": "s2",
-      "title": "A Deliberate Clean Break",
-      "era": "1890",
-      "year": 1890,
-      "voiceover": "So when people say the University of Chicago was founded in 1890, they mean the second one. It was a clean break. At its last meeting, the old board renamed itself the Old University of Chicago, on purpose, so the new Baptist school could take the name with no legal strings attached. There would be no shared debt, no shared trustees, no shared anything. The new institution wanted a fresh start, and it had the money to buy one. That money came from one man. In 1889, John D. Rockefeller pledged six hundred thousand dollars toward a new university in Chicago. By that point his Standard Oil controlled around ninety percent of the oil refining in the United States. He was, by most measures, the richest man in the country. He was also a devout Baptist, and the Baptists had wanted a great university in the Midwest for years, a flagship to match the older eastern schools. But Rockefeller did not simply write a check. He attached a condition. Other donors had to come up with four hundred thousand more before his money was good. It was a dare as much as a gift. The American Baptist Education Society went out and raised the four hundred thousand. With the match in hand, the University of Chicago incorporated in 1890. Marshall Field, who owned the great department store on State Street, gave the first ten acres of land in Hyde Park, six miles south of downtown, fronting the Midway Plaisance between two parks that Frederick Law Olmsted had laid out. The campus would rise on the blocks from 57th to 59th Street, between Ellis and Woodlawn.",
-      "shots": [
-        ["img", "first-uofc", "they mean the second one"],
-        ["img", "university-3", "That money came from one man"],
-        ["stat", "pledge", "pledged six hundred thousand dollars"],
-        ["img", "dd-university-1", "By that point his Standard Oil controlled around ninety percent"],
-        ["stat", "oil-share", "controlled around ninety percent of the oil refining"],
-        ["img", "university-3", "He was also a devout Baptist"],
-        ["stat", "match", "Other donors had to come up with four hundred thousand more"],
-        ["stat", "incorporated", "the University of Chicago incorporated in 1890"],
-        ["img", "university-5", "Marshall Field, who owned the great department store"],
-        ["stat", "first-land", "gave the first ten acres of land in Hyde Park"],
-        ["img", "dd-present-2", "two parks that Frederick Law Olmsted had laid out"],
-        ["img", "dd-urban-renewal-1", "The campus would rise on the blocks from 57th to 59th Street"]
-      ],
-      "callouts": [
-        ["Rockefeller pledge", "$600,000", "pledged six hundred thousand dollars"],
-        ["Required match", "$400,000", "Other donors had to come up with four hundred thousand more"]
-      ]
-    },
-    {
-      "id": "s3",
-      "title": "Harper, A Young Man In A Hurry",
-      "era": "1891",
-      "year": 1891,
-      "voiceover": "To run it, Rockefeller and the trustees chose William Rainey Harper. Harper was thirty-five. He had earned a doctorate from Yale at nineteen, in Semitic languages, and he taught Hebrew with a kind of fame that was unusual for a scholar. He was a Baptist, ambitious, and in a hurry. He stayed in a hurry his whole life. He drove himself without rest, and he died in office in 1906, of cancer, at forty-nine, fifteen years into the job. He and his wife are buried in the chapel on the campus he built. And he had a model in mind. A generation earlier, Johns Hopkins had opened in Baltimore as the first true research university in the country, built on the German idea that a university should not just teach old books but produce new knowledge. Harper wanted that for Chicago, and he wanted it bigger. He did not want a quiet college. He wanted graduate study and laboratories, a university press, and a faculty of stars, and he wanted it all at once, on day one. He built things into the place that were strange for the time. The university was coeducational from the start, admitting women alongside men. He split the calendar into four quarters and kept the doors open year round, so a student could enroll in summer and graduate whenever the work was done. He started the University of Chicago Press, which began publishing scholarly books and journals in 1892 and is still running. He built an extension division to carry university classes out to working adults across the city.",
-      "shots": [
-        ["img", "university-2", "chose William Rainey Harper"],
-        ["stat", "harper-age", "Harper was thirty-five"],
-        ["img", "university-2", "He had earned a doctorate from Yale at nineteen"],
-        ["stat", "harper-term", "he died in office in 1906"],
-        ["img", "university-4", "He and his wife are buried in the chapel on the campus he built"],
-        ["img", "dd-university-5", "Johns Hopkins had opened in Baltimore as the first true research university in the country"],
-        ["img", "dd-color-line-14", "built on the German idea"],
-        ["img", "dd-university-7", "He wanted graduate study and laboratories"],
-        ["img", "dd-color-line-14", "The university was coeducational from the start"],
-        ["img", "dd-present-7", "He split the calendar into four quarters"],
-        ["img", "university-1", "He started the University of Chicago Press"]
-      ],
-      "callouts": [
-        ["First president", "Age 35", "Harper was thirty-five"],
-        ["In office", "1891-1906", "he died in office in 1906"]
-      ]
-    },
-    {
-      "id": "s4",
-      "title": "Buying A Faculty Of Stars",
-      "era": "1892",
-      "year": 1892,
-      "voiceover": "To fill the faculty, Harper used Rockefeller's money the way few presidents could. He offered salaries no one else could match and went hunting. The most famous raid was on Clark University, in Worcester, Massachusetts. Harper came away with something like two-thirds of its faculty and half of its graduate students. The president of Clark never forgave him. When the first classes opened on October 1, 1892, the University of Chicago already had a faculty of around a hundred and twenty, eight of them former college presidents, and an enrollment of 594 men and women. A university that had not existed three years earlier opened its doors fully formed. One of Harper's early hires tells you what kind of place he was building. He brought in Amos Alonzo Stagg to run physical culture and coach football, and he gave Stagg a salary of twenty-five hundred dollars and a tenured professorship. A football coach, on the regular faculty, with tenure. That was nearly unheard of, and it set a pattern other universities would follow for decades. The campus itself was designed by a Chicago architect named Henry Ives Cobb. Cobb laid out a plan of six connected quadrangles and designed eighteen of the early buildings, all in English Gothic Revival, all faced in gray Bedford limestone from Indiana. The first building finished was Cobb Hall, ready for that opening day in 1892, and it held the classrooms and offices the young university needed all at once. Because Cobb worked from a single master plan, the buildings that came after his, raised by other architects over the following decades, kept to the same gray limestone and the same Gothic line, so the campus reads as one piece even though it went up over many years.",
-      "shots": [
-        ["img", "university-3", "Harper used Rockefeller's money the way few presidents could"],
-        ["img", "university-2", "The most famous raid was on Clark University"],
-        ["stat", "faculty", "a faculty of around a hundred and twenty"],
-        ["stat", "enrollment", "an enrollment of 594 men and women"],
-        ["img", "dd-university-4", "He brought in Amos Alonzo Stagg"],
-        ["img", "dd-university-6", "coach football"],
-        ["stat", "stagg", "a salary of twenty-five hundred dollars and a tenured professorship"],
-        ["img", "dd-university-7", "designed by a Chicago architect named Henry Ives Cobb"],
-        ["stat", "cobb-buildings", "designed eighteen of the early buildings"],
-        ["img", "university-1", "The first building finished was Cobb Hall"],
-        ["img", "dd-color-line-14", "the campus reads as one piece even though it went up over many years"]
-      ],
-      "callouts": [
-        ["Opening day", "Oct 1, 1892", "the first classes opened on October 1, 1892"],
-        ["Stagg's salary", "$2,500", "a salary of twenty-five hundred dollars and a tenured professorship"]
-      ]
-    },
-    {
-      "id": "s5",
-      "title": "Old Stone On A Young City",
-      "era": "1893",
-      "year": 1893,
-      "voiceover": "Cobb modeled the campus on Oxford and Cambridge, the courtyards and the narrow passages and the long sight lines, the crenellations and the gargoyles and the grotesques carved into the stone. It was new construction made to look six hundred years old. Chicago was barely sixty years old as a city. The University of Chicago, two years old, was already dressing itself in the costume of an ancient one. And the timing was almost theatrical. As the first buildings went up, the World's Columbian Exposition was being built right next door, in Jackson Park and along the Midway Plaisance, the southern edge of the campus. The fair opened in 1893, a temporary city of white plaster palaces and the first Ferris wheel, drawing millions of visitors past the new university's gates. The exposition came down within the year. The limestone quadrangles stayed. Rockefeller kept giving. In the university's first decade he put in about thirty-five million dollars, an enormous sum for the time. He later called it the best investment he ever made, and he meant it as money well spent. The institution that money built did not stay inside its gates. From the start, it shaped the neighborhood around it, who could buy there, who could rent there, who could live near the quads at all. The years after the First World War were the years of the Great Migration. Hundreds of thousands of Black Southerners came north to Chicago looking for work and for distance from Jim Crow. The city packed most of them into a narrow corridor on the South Side that people called the Black Belt, where the housing was scarce and the rents were high. By the 1920s, Black families were pressing outward from that corridor, and many of them were heading toward Woodlawn, just across the Midway from campus.",
-      "shots": [
-        ["img", "dd-university-8", "the crenellations and the gargoyles and the grotesques carved into the stone"],
-        ["img", "dd-university-7", "made to look six hundred years old"],
-        ["img", "dd-present-7", "already dressing itself in the costume of an ancient one"],
-        ["img", "worlds-fair-1", "the World's Columbian Exposition was being built right next door"],
-        ["img", "dd-university-10", "in Jackson Park and along the Midway Plaisance, the southern edge of the campus"],
-        ["img", "worlds-fair-6", "the first Ferris wheel"],
-        ["img", "midway-1893-crowd", "drawing millions of visitors past the new university's gates"],
-        ["stat", "fair", "The exposition came down within the year"],
-        ["stat", "first-decade", "he put in about thirty-five million dollars"],
-        ["img", "university-4", "the best investment he ever made"],
-        ["img", "great-migration", "the years of the Great Migration"],
-        ["img", "color-line-1", "Hundreds of thousands of Black Southerners came north to Chicago"],
-        ["img", "homer-hoyt", "a narrow corridor on the South Side that people called the Black Belt"],
-        ["img", "protective-club-era", "heading toward Woodlawn, just across the Midway from campus"]
-      ],
-      "callouts": [
-        ["World's Fair", "1893", "The fair opened in 1893"],
-        ["First decade", "~$35M", "he put in about thirty-five million dollars"]
-      ]
-    },
-    {
-      "id": "s6",
-      "title": "What Protected Really Meant",
-      "era": "1948",
-      "year": 1948,
-      "voiceover": "In 1928, the Woodlawn Property Owners Association organized a racially restrictive covenant in the northwest part of Woodlawn, a legal agreement among white owners not to sell or rent to Black buyers. The university backed it, quietly, with lawyers and money. From 1933 to 1947, the University of Chicago spent more than a hundred and ten thousand dollars on what it called community interests. More than eighty-three thousand of that went to defending and enforcing restrictive covenants in Hyde Park, Washington Park, and Woodlawn. Many of the restricted properties belonged to the university itself. It tried to keep its name off the covenants in public, but the connection was no secret. In 1937, an editorial in the Chicago Defender, the city's great Black newspaper, called those agreements the University of Chicago Agreement to get rid of Negroes. The president through these years was Robert Maynard Hutchins, who led the university from 1929. The Black attorney Earl B. Dickerson, one of the law school's first Black graduates, went to Hutchins with two other lawyers and asked him to stop the university from backing the covenants. By their account, Hutchins answered that he could not allow Black residents near the university because it would hurt enrollment. Then in 1948, the United States Supreme Court ruled in Shelley versus Kraemer that courts could no longer enforce racial covenants. The agreements stayed in the property records, but they lost their teeth. So the same dollars that raised the limestone towers, the same institution that hired the stars and carved the gargoyles, also paid lawyers to keep a line drawn around the campus. The Gothic quads looked like Oxford. The thing they were protecting was something much closer to home. That word, protected, the one people used for Hyde Park's parks and its lake and its university, would carry that second meaning for a long time to come. The towers are still here. The carved stone is still here. And so is the question the carving was meant to answer, namely who the neighborhood was built for, and who it was built to keep out.",
-      "shots": [
-        ["img", "homer-hoyt", "the Woodlawn Property Owners Association"],
-        ["img", "racial-hierarchy-doc", "organized a racially restrictive covenant in the northwest part of Woodlawn"],
-        ["img", "dd-color-line-1c", "The university backed it, quietly, with lawyers and money"],
-        ["stat", "covenant-spend", "More than eighty-three thousand of that"],
-        ["img", "racial-hierarchy-doc", "Many of the restricted properties belonged to the university itself"],
-        ["img", "dd-color-line-3", "an editorial in the Chicago Defender, the city's great Black newspaper"],
-        ["img", "university-2", "Robert Maynard Hutchins, who led the university from 1929"],
-        ["img", "dd-redlining-11", "asked him to stop the university from backing the covenants"],
-        ["img", "dd-color-line-12", "the United States Supreme Court ruled in Shelley versus Kraemer"],
-        ["stat", "covenants-end", "they lost their teeth"],
-        ["img", "dd-university-8", "also paid lawyers to keep a line drawn around the campus"],
-        ["img", "dd-present-7", "The towers are still here"],
-        ["img", "protective-club-era", "who the neighborhood was built for, and who it was built to keep out"]
-      ],
-      "callouts": [
-        ["Covenant spending", "$83,000+", "More than eighty-three thousand of that"],
-        ["Struck down", "1948", "the United States Supreme Court ruled in Shelley versus Kraemer"]
-      ]
-    }
+ "id": "university",
+ "title": "Rockefeller's University Rises",
+ "subtitle": "How oil money built Gothic quads in Hyde Park and then paid lawyers to draw a line around them",
+ "stats": {
+  "old-land": [
+   "OLD UNIVERSITY LAND",
+   "10 acres",
+   "Douglas gift at Cottage Grove and 35th, chartered 1857",
+   "Old University of Chicago records"
+  ],
+  "old-closes": [
+   "OLD UNIVERSITY CLOSES",
+   "1886",
+   "Creditors foreclose after thirty years of debt and a fire",
+   "Old University of Chicago records"
+  ],
+  "pledge": [
+   "ROCKEFELLER PLEDGE",
+   "$600,000",
+   "1889, conditional on a matching gift",
+   "History of the University of Chicago"
+  ],
+  "match": [
+   "REQUIRED MATCH",
+   "$400,000",
+   "Raised by the American Baptist Education Society",
+   "History of the University of Chicago"
+  ],
+  "oil-share": [
+   "STANDARD OIL REFINING",
+   "~90%",
+   "Share of U.S. oil refining Standard Oil controlled by 1880",
+   "Britannica, Standard Oil"
+  ],
+  "incorporated": [
+   "UNIVERSITY INCORPORATED",
+   "1890",
+   "University of Chicago, Hyde Park",
+   "History of the University of Chicago"
+  ],
+  "first-land": [
+   "FIRST LAND GIFT",
+   "10 acres",
+   "Marshall Field, 57th to 59th, Ellis to Woodlawn",
+   "History of the University of Chicago"
+  ],
+  "harper-age": [
+   "FIRST PRESIDENT",
+   "Age 35",
+   "William Rainey Harper, Yale PhD at 19",
+   "Britannica, William Rainey Harper"
+  ],
+  "harper-term": [
+   "HARPER IN OFFICE",
+   "1891-1906",
+   "Died of cancer at 49, still in office",
+   "Britannica, William Rainey Harper"
+  ],
+  "faculty": [
+   "OPENING DAY FACULTY",
+   "120",
+   "Oct 1, 1892, eight former college presidents",
+   "History of the University of Chicago"
+  ],
+  "enrollment": [
+   "OPENING ENROLLMENT",
+   "594",
+   "Men and women, October 1, 1892",
+   "History of the University of Chicago"
+  ],
+  "stagg": [
+   "STAGG'S SALARY",
+   "$2,500",
+   "Tenured professorship for a football coach, 1892",
+   "UChicago Athletics, Amos Alonzo Stagg"
+  ],
+  "cobb-buildings": [
+   "COBB'S BUILDINGS",
+   "18",
+   "English Gothic, Bedford limestone, six quadrangles",
+   "SAH Archipedia, Main Quadrangle"
+  ],
+  "fair": [
+   "WORLD'S FAIR NEXT DOOR",
+   "1893",
+   "Columbian Exposition, Jackson Park and the Midway",
+   "UChicago Midway Plaisance history"
+  ],
+  "first-decade": [
+   "ROCKEFELLER FIRST DECADE",
+   "~$35 million",
+   "Total giving in the university's first ten years",
+   "Philanthropy Roundtable"
+  ],
+  "covenant-spend": [
+   "COVENANT SPENDING",
+   "$83,000+",
+   "University funds, 1933 to 1947, restrictive covenants",
+   "Towards a Whiter Woodlawn"
+  ],
+  "covenants-end": [
+   "COVENANTS STRUCK DOWN",
+   "1948",
+   "Shelley v. Kraemer, U.S. Supreme Court",
+   "Shelley v. Kraemer (1948)"
   ]
+ },
+ "annot": {
+  "first-uofc": [
+   "The First University of Chicago",
+   "Baptist Convention delegates at the old building, 1867"
+  ],
+  "douglas-portrait": [
+   "Stephen A. Douglas",
+   "U.S. senator who gave the land, photographed 1860"
+  ],
+  "dd-university-1": [
+   "Panic of 1857",
+   "Run on the Seamen's Savings Bank, Harper's Weekly"
+  ],
+  "dd-university-2": [
+   "The Kansas-Nebraska Act of 1854",
+   "Douglas wrote the law that let territories vote slavery in"
+  ],
+  "dd-formation-9": [
+   "Built Past What They Could Afford",
+   "Chicago ruins, 1871, standing in for debt and fire"
+  ],
+  "university-3": [
+   "John D. Rockefeller",
+   "Standard Oil magnate, photographed 1895"
+  ],
+  "university-5": [
+   "Marshall Field",
+   "Department store owner who gave the first ten acres, 1893"
+  ],
+  "dd-urban-renewal-1": [
+   "The Campus Footprint",
+   "Goodspeed plan of the Midway Plaisance, 1916"
+  ],
+  "university-2": [
+   "William Rainey Harper",
+   "First president, Yale PhD at nineteen, photographed 1903"
+  ],
+  "dd-university-5": [
+   "Johns Hopkins University",
+   "The first American research university, Baltimore"
+  ],
+  "dd-color-line-14": [
+   "Hull Gate",
+   "Gothic limestone quadrangle of the main campus"
+  ],
+  "dd-university-4": [
+   "Amos Alonzo Stagg",
+   "The coach Harper hired onto the tenured faculty"
+  ],
+  "dd-university-6": [
+   "The Maroons",
+   "An early University of Chicago football team, 1905"
+  ],
+  "dd-university-7": [
+   "The Tower Group",
+   "Cobb's Gothic quadrangles in their first decades"
+  ],
+  "university-1": [
+   "Cobb Hall",
+   "First building finished, ready for opening day 1892"
+  ],
+  "dd-university-8": [
+   "Cobb Gate",
+   "Grotesques climbing the limestone, new stone made to look old"
+  ],
+  "dd-present-7": [
+   "The Quadrangles",
+   "The young campus dressed as an ancient one, around 1907"
+  ],
+  "worlds-fair-1": [
+   "The White City",
+   "Court of Honor of the 1893 Columbian Exposition"
+  ],
+  "worlds-fair-6": [
+   "The Ferris Wheel",
+   "The first Ferris wheel, Columbian Exposition, 1893"
+  ],
+  "midway-1893-crowd": [
+   "The Fair on the Midway",
+   "Ferris wheel on the Midway Plaisance, 1893"
+  ],
+  "university-4": [
+   "Harper Memorial Library",
+   "The campus Rockefeller's giving kept building"
+  ],
+  "great-migration": [
+   "The Great Migration",
+   "Chicago Defender image of the northward movement, 1920"
+  ],
+  "color-line-1": [
+   "Arriving in Chicago",
+   "A Black family on the South Side, 1922"
+  ],
+  "homer-hoyt": [
+   "The Black Belt and Woodlawn",
+   "Chicago security map of the graded South Side, around 1940"
+  ],
+  "dd-color-line-3": [
+   "The Chicago Defender",
+   "A newsboy selling the city's great Black newspaper"
+  ],
+  "dd-color-line-12": [
+   "Shelley v. Kraemer",
+   "The Supreme Court that ended court-enforced covenants in 1948"
+  ],
+  "dd-color-line-10": [
+   "The Court That Would Decide",
+   "Inside the United States Supreme Court, where covenants met their end"
+  ],
+  "formation-4": [
+   "Chicago in 1857",
+   "Bird's-eye view of the young city the year the school was chartered"
+  ],
+  "dd-formation-7": [
+   "Hyde Park Township",
+   "The South Side township the new campus was built into"
+  ],
+  "dd-present-2": [
+   "Frederick Law Olmsted",
+   "Designer of the parks that framed the Midway"
+  ],
+  "dd-university-10": [
+   "The Fairgrounds Next Door",
+   "Bird's-eye view of the Columbian Exposition in Jackson Park, 1893"
+  ],
+  "dd-color-line-1c": [
+   "The Drexel Boulevard Set",
+   "A South Side clubhouse of the white property-owning class, 1902"
+  ],
+  "dd-redlining-11": [
+   "Carl Hansberry",
+   "A Black real-estate broker who fought Chicago's covenants"
+  ],
+  "protective-club-era": [
+   "The Streets Behind the Line",
+   "Greystones of the kind the covenants meant to keep white"
+  ]
+ },
+ "sections": [
+  {
+   "id": "s1",
+   "title": "The First University of Chicago",
+   "era": "1857",
+   "year": 1857,
+   "voiceover": "Before the gray Gothic towers, before the gargoyles and the quiet courtyards, there was a different University of Chicago. It opened in the 1850s, and it stood about two and a half miles north of where the campus sits today, near 35th Street and Cottage Grove Avenue. The land came from Stephen A. Douglas, the United States senator from Illinois. Douglas first offered the tract to the Presbyterians, on the condition that they raise a hundred thousand dollars for a building. They couldn't. So he gave the ten acres to a group of Baptists instead, and the school was chartered in 1857, with Douglas himself as the first president of its board of trustees. That school never had enough money. The financial panic of 1857 wiped out most of the early pledges almost as soon as it opened. Douglas died in 1861, and his name was a problem for fundraisers. He had written the Kansas-Nebraska Act, the law that let new territories vote slavery in, and many donors in the North wanted nothing to do with anything attached to him. The trustees built anyway, past what they could afford. They put up a five-story main building of stone and kept enrolling students even as the bills came due. The debt climbed for thirty years. There was a fire. In 1886 the creditors foreclosed, the classes stopped, and the first University of Chicago was finished. It had run for nearly three decades and never escaped the hole it started in.",
+   "shots": [
+    [
+     "img",
+     "first-uofc",
+     "there was a different University of Chicago"
+    ],
+    [
+     "img",
+     "formation-4",
+     "about two and a half miles north of where the campus sits today"
+    ],
+    [
+     "img",
+     "first-uofc",
+     "near 35th Street and Cottage Grove Avenue"
+    ],
+    [
+     "img",
+     "douglas-portrait",
+     "The land came from Stephen A. Douglas"
+    ],
+    [
+     "stat",
+     "old-land",
+     "raise a hundred thousand dollars for a building"
+    ],
+    [
+     "img",
+     "dd-formation-7",
+     "the school was chartered in 1857"
+    ],
+    [
+     "img",
+     "dd-university-1",
+     "The financial panic of 1857 wiped out most of the early pledges"
+    ],
+    [
+     "img",
+     "douglas-portrait",
+     "Douglas died in 1861, and his name was a problem for fundraisers"
+    ],
+    [
+     "img",
+     "dd-university-2",
+     "He had written the Kansas-Nebraska Act"
+    ],
+    [
+     "img",
+     "formation-4",
+     "The trustees built anyway, past what they could afford"
+    ],
+    [
+     "img",
+     "dd-formation-9",
+     "There was a fire"
+    ],
+    [
+     "stat",
+     "old-closes",
+     "In 1886 the creditors foreclosed"
+    ]
+   ],
+   "callouts": [
+    [
+     "Chartered",
+     "1857",
+     "the school was chartered in 1857"
+    ],
+    [
+     "Foreclosed",
+     "1886",
+     "In 1886 the creditors foreclosed"
+    ]
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "A Deliberate Clean Break",
+   "era": "1890",
+   "year": 1890,
+   "voiceover": "So when people say the University of Chicago was founded in 1890, they mean the second one. It was a clean break. At its last meeting, the old board renamed itself the Old University of Chicago, on purpose, so the new Baptist school could take the name with no legal strings attached. There would be no shared debt, no shared trustees, no shared anything. The new institution wanted a fresh start, and it had the money to buy one. That money came from one man. In 1889, John D. Rockefeller pledged six hundred thousand dollars toward a new university in Chicago. By that point his Standard Oil controlled around ninety percent of the oil refining in the United States. He was, by most measures, the richest man in the country. He was also a devout Baptist, and the Baptists had wanted a great university in the Midwest for years, a flagship to match the older eastern schools. But Rockefeller did not simply write a check. He attached a condition. Other donors had to come up with four hundred thousand more before his money was good. It was a dare as much as a gift. The American Baptist Education Society went out and raised the four hundred thousand. With the match in hand, the University of Chicago incorporated in 1890. Marshall Field, who owned the great department store on State Street, gave the first ten acres of land in Hyde Park, six miles south of downtown, fronting the Midway Plaisance between two parks that Frederick Law Olmsted had laid out. The campus would rise on the blocks from 57th to 59th Street, between Ellis and Woodlawn.",
+   "shots": [
+    [
+     "img",
+     "first-uofc",
+     "they mean the second one"
+    ],
+    [
+     "img",
+     "university-3",
+     "That money came from one man"
+    ],
+    [
+     "stat",
+     "pledge",
+     "pledged six hundred thousand dollars"
+    ],
+    [
+     "img",
+     "university-3",
+     "By that point his Standard Oil controlled around ninety percent"
+    ],
+    [
+     "stat",
+     "oil-share",
+     "controlled around ninety percent of the oil refining"
+    ],
+    [
+     "img",
+     "university-3",
+     "He was also a devout Baptist"
+    ],
+    [
+     "stat",
+     "match",
+     "Other donors had to come up with four hundred thousand more"
+    ],
+    [
+     "stat",
+     "incorporated",
+     "the University of Chicago incorporated in 1890"
+    ],
+    [
+     "img",
+     "university-5",
+     "Marshall Field, who owned the great department store"
+    ],
+    [
+     "stat",
+     "first-land",
+     "gave the first ten acres of land in Hyde Park"
+    ],
+    [
+     "img",
+     "dd-present-2",
+     "two parks that Frederick Law Olmsted had laid out"
+    ],
+    [
+     "img",
+     "dd-urban-renewal-1",
+     "The campus would rise on the blocks from 57th to 59th Street"
+    ]
+   ],
+   "callouts": [
+    [
+     "Rockefeller pledge",
+     "$600,000",
+     "pledged six hundred thousand dollars"
+    ],
+    [
+     "Required match",
+     "$400,000",
+     "Other donors had to come up with four hundred thousand more"
+    ]
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Harper, A Young Man In A Hurry",
+   "era": "1891",
+   "year": 1891,
+   "voiceover": "To run it, Rockefeller and the trustees chose William Rainey Harper. Harper was thirty-five. He had earned a doctorate from Yale at nineteen, in Semitic languages, and he taught Hebrew with a kind of fame that was unusual for a scholar. He was a Baptist, ambitious, and in a hurry. He stayed in a hurry his whole life. He drove himself without rest, and he died in office in 1906, of cancer, at forty-nine, fifteen years into the job. He and his wife are buried in the chapel on the campus he built. And he had a model in mind. A generation earlier, Johns Hopkins had opened in Baltimore as the first true research university in the country, built on the German idea that a university should not just teach old books but produce new knowledge. Harper wanted that for Chicago, and he wanted it bigger. He did not want a quiet college. He wanted graduate study and laboratories, a university press, and a faculty of stars, and he wanted it all at once, on day one. He built things into the place that were strange for the time. The university was coeducational from the start, admitting women alongside men. He split the calendar into four quarters and kept the doors open year round, so a student could enroll in summer and graduate whenever the work was done. He started the University of Chicago Press, which began publishing scholarly books and journals in 1892 and is still running. He built an extension division to carry university classes out to working adults across the city.",
+   "shots": [
+    [
+     "img",
+     "university-2",
+     "chose William Rainey Harper"
+    ],
+    [
+     "stat",
+     "harper-age",
+     "Harper was thirty-five"
+    ],
+    [
+     "img",
+     "university-2",
+     "He had earned a doctorate from Yale at nineteen"
+    ],
+    [
+     "stat",
+     "harper-term",
+     "he died in office in 1906"
+    ],
+    [
+     "img",
+     "university-4",
+     "He and his wife are buried in the chapel on the campus he built"
+    ],
+    [
+     "img",
+     "dd-university-5",
+     "Johns Hopkins had opened in Baltimore as the first true research university in the country"
+    ],
+    [
+     "img",
+     "dd-color-line-14",
+     "built on the German idea"
+    ],
+    [
+     "img",
+     "dd-university-7",
+     "He wanted graduate study and laboratories"
+    ],
+    [
+     "img",
+     "dd-color-line-14",
+     "The university was coeducational from the start"
+    ],
+    [
+     "img",
+     "dd-present-7",
+     "He split the calendar into four quarters"
+    ],
+    [
+     "img",
+     "university-1",
+     "He started the University of Chicago Press"
+    ]
+   ],
+   "callouts": [
+    [
+     "First president",
+     "Age 35",
+     "Harper was thirty-five"
+    ],
+    [
+     "In office",
+     "1891-1906",
+     "he died in office in 1906"
+    ]
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Buying A Faculty Of Stars",
+   "era": "1892",
+   "year": 1892,
+   "voiceover": "To fill the faculty, Harper used Rockefeller's money the way few presidents could. He offered salaries no one else could match and went hunting. The most famous raid was on Clark University, in Worcester, Massachusetts. Harper came away with something like two-thirds of its faculty and half of its graduate students. The president of Clark never forgave him. When the first classes opened on October 1, 1892, the University of Chicago already had a faculty of around a hundred and twenty, eight of them former college presidents, and an enrollment of 594 men and women. A university that had not existed three years earlier opened its doors fully formed. One of Harper's early hires tells you what kind of place he was building. He brought in Amos Alonzo Stagg to run physical culture and coach football, and he gave Stagg a salary of twenty-five hundred dollars and a tenured professorship. A football coach, on the regular faculty, with tenure. That was nearly unheard of, and it set a pattern other universities would follow for decades. The campus itself was designed by a Chicago architect named Henry Ives Cobb. Cobb laid out a plan of six connected quadrangles and designed eighteen of the early buildings, all in English Gothic Revival, all faced in gray Bedford limestone from Indiana. The first building finished was Cobb Hall, ready for that opening day in 1892, and it held the classrooms and offices the young university needed all at once. Because Cobb worked from a single master plan, the buildings that came after his, raised by other architects over the following decades, kept to the same gray limestone and the same Gothic line, so the campus reads as one piece even though it went up over many years.",
+   "shots": [
+    [
+     "img",
+     "university-3",
+     "Harper used Rockefeller's money the way few presidents could"
+    ],
+    [
+     "img",
+     "university-2",
+     "The most famous raid was on Clark University"
+    ],
+    [
+     "stat",
+     "faculty",
+     "a faculty of around a hundred and twenty"
+    ],
+    [
+     "stat",
+     "enrollment",
+     "an enrollment of 594 men and women"
+    ],
+    [
+     "img",
+     "dd-university-4",
+     "He brought in Amos Alonzo Stagg"
+    ],
+    [
+     "img",
+     "dd-university-6",
+     "coach football"
+    ],
+    [
+     "stat",
+     "stagg",
+     "a salary of twenty-five hundred dollars and a tenured professorship"
+    ],
+    [
+     "img",
+     "dd-university-7",
+     "designed by a Chicago architect named Henry Ives Cobb"
+    ],
+    [
+     "stat",
+     "cobb-buildings",
+     "designed eighteen of the early buildings"
+    ],
+    [
+     "img",
+     "university-1",
+     "The first building finished was Cobb Hall"
+    ],
+    [
+     "img",
+     "dd-color-line-14",
+     "the campus reads as one piece even though it went up over many years"
+    ]
+   ],
+   "callouts": [
+    [
+     "Opening day",
+     "Oct 1, 1892",
+     "the first classes opened on October 1, 1892"
+    ],
+    [
+     "Stagg's salary",
+     "$2,500",
+     "a salary of twenty-five hundred dollars and a tenured professorship"
+    ]
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Old Stone On A Young City",
+   "era": "1893",
+   "year": 1893,
+   "voiceover": "Cobb modeled the campus on Oxford and Cambridge, the courtyards and the narrow passages and the long sight lines, the crenellations and the gargoyles and the grotesques carved into the stone. It was new construction made to look six hundred years old. Chicago was barely sixty years old as a city. The University of Chicago, two years old, was already dressing itself in the costume of an ancient one. And the timing was almost theatrical. As the first buildings went up, the World's Columbian Exposition was being built right next door, in Jackson Park and along the Midway Plaisance, the southern edge of the campus. The fair opened in 1893, a temporary city of white plaster palaces and the first Ferris wheel, drawing millions of visitors past the new university's gates. The exposition came down within the year. The limestone quadrangles stayed. Rockefeller kept giving. In the university's first decade he put in about thirty-five million dollars, an enormous sum for the time. He later called it the best investment he ever made, and he meant it as money well spent. The institution that money built did not stay inside its gates. From the start, it shaped the neighborhood around it, who could buy there, who could rent there, who could live near the quads at all. The years after the First World War were the years of the Great Migration. Hundreds of thousands of Black Southerners came north to Chicago looking for work and for distance from Jim Crow. The city packed most of them into a narrow corridor on the South Side that people called the Black Belt, where the housing was scarce and the rents were high. By the 1920s, Black families were pressing outward from that corridor, and many of them were heading toward Woodlawn, just across the Midway from campus.",
+   "shots": [
+    [
+     "img",
+     "dd-university-8",
+     "the crenellations and the gargoyles and the grotesques carved into the stone"
+    ],
+    [
+     "img",
+     "dd-university-7",
+     "made to look six hundred years old"
+    ],
+    [
+     "img",
+     "dd-present-7",
+     "already dressing itself in the costume of an ancient one"
+    ],
+    [
+     "img",
+     "worlds-fair-1",
+     "the World's Columbian Exposition was being built right next door"
+    ],
+    [
+     "img",
+     "dd-university-10",
+     "in Jackson Park and along the Midway Plaisance, the southern edge of the campus"
+    ],
+    [
+     "img",
+     "worlds-fair-6",
+     "the first Ferris wheel"
+    ],
+    [
+     "img",
+     "midway-1893-crowd",
+     "drawing millions of visitors past the new university's gates"
+    ],
+    [
+     "stat",
+     "fair",
+     "The exposition came down within the year"
+    ],
+    [
+     "stat",
+     "first-decade",
+     "he put in about thirty-five million dollars"
+    ],
+    [
+     "img",
+     "university-4",
+     "the best investment he ever made"
+    ],
+    [
+     "img",
+     "great-migration",
+     "the years of the Great Migration"
+    ],
+    [
+     "img",
+     "color-line-1",
+     "Hundreds of thousands of Black Southerners came north to Chicago"
+    ],
+    [
+     "img",
+     "homer-hoyt",
+     "a narrow corridor on the South Side that people called the Black Belt"
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "heading toward Woodlawn, just across the Midway from campus"
+    ]
+   ],
+   "callouts": [
+    [
+     "World's Fair",
+     "1893",
+     "The fair opened in 1893"
+    ],
+    [
+     "First decade",
+     "~$35M",
+     "he put in about thirty-five million dollars"
+    ]
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "What Protected Really Meant",
+   "era": "1948",
+   "year": 1948,
+   "voiceover": "In 1928, the Woodlawn Property Owners Association organized a racially restrictive covenant in the northwest part of Woodlawn, a legal agreement among white owners not to sell or rent to Black buyers. The university backed it, quietly, with lawyers and money. From 1933 to 1947, the University of Chicago spent more than a hundred and ten thousand dollars on what it called community interests. More than eighty-three thousand of that went to defending and enforcing restrictive covenants in Hyde Park, Washington Park, and Woodlawn. Many of the restricted properties belonged to the university itself. It tried to keep its name off the covenants in public, but the connection was no secret. In 1937, an editorial in the Chicago Defender, the city's great Black newspaper, called those agreements the University of Chicago Agreement to get rid of Negroes. The president through these years was Robert Maynard Hutchins, who led the university from 1929. The Black attorney Earl B. Dickerson, one of the law school's first Black graduates, went to Hutchins with two other lawyers and asked him to stop the university from backing the covenants. By their account, Hutchins answered that he could not allow Black residents near the university because it would hurt enrollment. Then in 1948, the United States Supreme Court ruled in Shelley versus Kraemer that courts could no longer enforce racial covenants. The agreements stayed in the property records, but they lost their teeth. So the same dollars that raised the limestone towers, the same institution that hired the stars and carved the gargoyles, also paid lawyers to keep a line drawn around the campus. The Gothic quads looked like Oxford. The thing they were protecting was something much closer to home. That word, protected, the one people used for Hyde Park's parks and its lake and its university, would carry that second meaning for a long time to come. The towers are still here. The carved stone is still here. And so is the question the carving was meant to answer, namely who the neighborhood was built for, and who it was built to keep out.",
+   "shots": [
+    [
+     "img",
+     "homer-hoyt",
+     "the Woodlawn Property Owners Association"
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "organized a racially restrictive covenant in the northwest part of Woodlawn"
+    ],
+    [
+     "img",
+     "dd-color-line-1c",
+     "The university backed it, quietly, with lawyers and money"
+    ],
+    [
+     "stat",
+     "covenant-spend",
+     "More than eighty-three thousand of that"
+    ],
+    [
+     "img",
+     "racial-hierarchy-doc",
+     "Many of the restricted properties belonged to the university itself"
+    ],
+    [
+     "img",
+     "dd-color-line-3",
+     "an editorial in the Chicago Defender, the city's great Black newspaper"
+    ],
+    [
+     "img",
+     "dd-color-line-10",
+     "Robert Maynard Hutchins, who led the university from 1929"
+    ],
+    [
+     "img",
+     "dd-redlining-11",
+     "asked him to stop the university from backing the covenants"
+    ],
+    [
+     "img",
+     "dd-color-line-12",
+     "the United States Supreme Court ruled in Shelley versus Kraemer"
+    ],
+    [
+     "stat",
+     "covenants-end",
+     "they lost their teeth"
+    ],
+    [
+     "img",
+     "dd-university-8",
+     "also paid lawyers to keep a line drawn around the campus"
+    ],
+    [
+     "img",
+     "dd-present-7",
+     "The towers are still here"
+    ],
+    [
+     "img",
+     "protective-club-era",
+     "who the neighborhood was built for, and who it was built to keep out"
+    ]
+   ],
+   "callouts": [
+    [
+     "Covenant spending",
+     "$83,000+",
+     "More than eighty-three thousand of that"
+    ],
+    [
+     "Struck down",
+     "1948",
+     "the United States Supreme Court ruled in Shelley versus Kraemer"
+    ]
+   ]
+  }
+ ]
 }

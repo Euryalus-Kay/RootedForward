@@ -139,10 +139,6 @@
    "Greystones on Ellis Avenue",
    "Kenwood, the older apartment stock that drew the newest arrivals"
   ],
-  "racial-hierarchy-doc": [
-   "An Exclusionary Covenant",
-   "A racial restriction deed of the kind the Supreme Court struck down"
-  ],
   "dd-redlining-14": [
    "The Supreme Court",
    "Where the restrictive covenants were finally struck down"
@@ -198,6 +194,10 @@
   "dd-urban-renewal-2": [
    "63rd Street in Woodlawn",
    "John H. White, NARA, the busy commercial corridor below the Midway"
+  ],
+  "dd-color-line-2": [
+   "A Block by Block Survey",
+   "Sanborn fire-insurance map of the South Side, the parcel grid the renewal worked lot by lot"
   ]
  },
  "sections": [
@@ -260,7 +260,7 @@
     ],
     [
      "img",
-     "dd-redlining-4a",
+     "dd-present-7",
      "a corporate lawyer named Julian Levi"
     ],
     [
@@ -301,7 +301,7 @@
     ],
     [
      "img",
-     "dd-redlining-4a",
+     "dd-color-line-2",
      "Levi understood something most reformers didn't"
     ],
     [
@@ -473,17 +473,17 @@
     ],
     [
      "img",
-     "dd-redlining-4a",
+     "dd-color-line-2",
      "Two sociologists, Peter Rossi and Robert Dentler"
     ],
     [
-     "stat",
-     "white46",
+     "img",
+     "dd-present-4",
      "forty-six percent of the white families"
     ],
     [
-     "stat",
-     "black17",
+     "img",
+     "black-belt-street",
      "it was about seventeen percent"
     ],
     [
@@ -645,7 +645,7 @@
     ],
     [
      "img",
-     "dd-urban-renewal-1",
+     "dd-color-line-2",
      "That line at 61st Street held for decades"
     ],
     [
