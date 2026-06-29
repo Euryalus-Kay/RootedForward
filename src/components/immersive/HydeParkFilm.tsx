@@ -466,7 +466,7 @@ export default function HydeParkFilm({
       <div className="mx-auto max-w-6xl px-6 pb-4 pt-14">
         <div className="flex flex-wrap items-center justify-between gap-y-2">
           <div className="flex items-center gap-3">
-            <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
+            <span className="h-5 w-5 bg-[#C45A33] shadow-[0_0_14px_rgba(196,90,51,0.6)]" aria-hidden />
             <p className="font-body text-[11px] font-semibold uppercase tracking-[0.35em] text-[#C45A33]">
               The timeline &middot; scrub the reel
             </p>
@@ -480,16 +480,27 @@ export default function HydeParkFilm({
             glowing playhead, and oversized Baskerville year-numerals as stations.
             Hidden on phones, where 8 stations are too tight to tap; see the
             tappable list below. */}
-        <div className="relative mt-8 hidden h-[150px] select-none overflow-hidden rounded-[2px] border border-[#2A2622] bg-gradient-to-b from-[#141512] to-[#101109] sm:block">
-          {/* faint baseline graduation, reads as an engraved rail */}
+        <div className="relative mt-8 hidden h-[168px] select-none overflow-hidden rounded-[2px] border border-[#3A352E] bg-gradient-to-b from-[#17120E] to-[#0B0C09] shadow-[inset_0_1px_0_rgba(196,90,51,0.18),inset_0_0_70px_rgba(0,0,0,0.55)] sm:block">
+          {/* warm ember bloom behind the rail, so nothing reads cold */}
           <div
             aria-hidden
-            className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 opacity-60 [background-image:repeating-linear-gradient(90deg,transparent_0,transparent_calc(8.333%-1px),#2A2622_calc(8.333%-1px),#2A2622_8.333%)]"
+            className="pointer-events-none absolute inset-x-0 top-1/2 h-40 -translate-y-1/2 [background:radial-gradient(60%_120%_at_50%_50%,rgba(224,106,58,0.14),transparent_70%)]"
+          />
+          {/* a pool of warm light travelling with the playhead */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 h-[120px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C45A33]/12 blur-2xl"
+            style={{ left: `${pct}%` }}
+          />
+          {/* faint baseline graduation, reads as an engraved rail, sits under the action */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 opacity-45 [background-image:repeating-linear-gradient(90deg,transparent_0,transparent_calc(8.333%-1px),#241F1A_calc(8.333%-1px),#241F1A_8.333%)]"
           />
 
-          {/* the seekable rail */}
+          {/* the seekable rail, a carved channel */}
           <div
-            className="group absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 cursor-pointer bg-[#3A352E]"
+            className="group absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 cursor-pointer rounded-full bg-[#2A2622] shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)]"
             onClick={trackClick}
             role="slider"
             aria-label="Film timeline"
@@ -498,14 +509,29 @@ export default function HydeParkFilm({
             aria-valuenow={Math.round(t)}
             tabIndex={0}
           >
-            {/* progress, emitting rust light */}
+            {/* the traveled span, burning from deep ember to a bright leading edge */}
             <div
-              className="absolute left-0 top-0 h-full bg-[#C45A33] shadow-[0_0_12px_rgba(196,90,51,0.6)]"
+              className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#A8431F] via-[#C45A33] to-[#E0703F] shadow-[0_0_10px_rgba(196,90,51,0.85),0_0_22px_rgba(224,106,58,0.4)]"
               style={{ width: `${pct}%` }}
-            />
-            {/* rust diamond playhead with a pulse halo */}
+            >
+              <span
+                aria-hidden
+                className="absolute right-0 top-0 h-full w-px bg-[#F0A878] shadow-[0_0_6px_rgba(240,168,120,0.9)]"
+              />
+            </div>
+            {/* the playhead: a vertical beam, a pulsing halo, and a bone-hot diamond */}
             <div
-              className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#C45A33] ring-1 ring-[#0E0F0D] shadow-[0_0_0_4px_rgba(196,90,51,0.16),0_0_16px_rgba(196,90,51,0.7)]"
+              aria-hidden
+              className="pointer-events-none absolute top-1/2 h-[64px] w-[2px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-[#C45A33]/55 to-transparent"
+              style={{ left: `${pct}%` }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-[#C45A33]/25 blur-[6px]"
+              style={{ left: `${pct}%` }}
+            />
+            <div
+              className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[1px] bg-[#F4D9CC] ring-1 ring-[#7A2E16] shadow-[0_0_0_4px_rgba(196,90,51,0.22),0_0_14px_rgba(224,116,74,0.95),0_0_30px_rgba(196,90,51,0.55)]"
               style={{ left: `${pct}%` }}
             />
           </div>
@@ -541,29 +567,33 @@ export default function HydeParkFilm({
                 <span
                   className={`block transition-colors ${
                     isActive
-                      ? "h-7 w-[3px] bg-[#C45A33] shadow-[0_0_8px_rgba(196,90,51,0.6)]"
-                      : "h-7 w-px bg-[#4A443B] group-hover:bg-[#C45A33]"
+                      ? "h-8 w-[3px] rounded-full bg-gradient-to-t from-[#E0703F] to-[#C45A33] shadow-[0_0_10px_rgba(224,106,58,0.75)]"
+                      : "h-7 w-px bg-[#6A4A36] group-hover:bg-[#C45A33]"
                   }`}
                 />
-                {/* the year-numeral + sub, above or below the rail */}
+                {/* the year-numeral + sub, above or below the rail. The active
+                    year is stamped into a solid rust block, the single hottest
+                    thing on the page; the rest recede to quiet warm engraving. */}
                 <span
                   className={`absolute flex w-40 flex-col ${labelPos} ${
                     c.above ? "bottom-6" : "top-6"
                   }`}
                 >
                   <span
-                    className={`relative inline-block font-display leading-none transition-all ${
+                    className={`font-display leading-none transition-all ${
                       isActive
-                        ? "text-[26px] text-[#E8E2D6] after:mt-1 after:block after:h-0.5 after:w-full after:bg-[#C45A33] md:text-[34px]"
-                        : "text-xl text-[#C7BFB0] group-hover:-translate-y-0.5 group-hover:text-[#E8E2D6] md:text-[28px]"
+                        ? "inline-block rounded-[3px] bg-[#C45A33] px-3 py-1 text-[28px] font-semibold text-[#FBEFE0] shadow-[0_0_26px_rgba(196,90,51,0.5),inset_0_1px_0_rgba(255,233,221,0.4)] [filter:drop-shadow(0_0_10px_rgba(224,106,58,0.35))] md:text-[38px]"
+                        : "relative inline-block text-xl text-[#D9C2A8] group-hover:-translate-y-0.5 group-hover:text-[#F0E6D6] md:text-[26px]"
                     }`}
                   >
                     {big}
                   </span>
                   {sub && (
                     <span
-                      className={`mt-1 hidden font-body text-[10px] uppercase tracking-[0.18em] transition-colors sm:block ${
-                        isActive ? "text-[#E8E2D6]" : "text-[#9C9384] group-hover:text-[#E8E2D6]"
+                      className={`mt-1.5 hidden font-body text-[10px] uppercase tracking-[0.22em] transition-colors sm:block ${
+                        isActive
+                          ? "font-semibold text-[#E8E2D6]"
+                          : "text-[#B89A7E] group-hover:text-[#E8D8C4]"
                       }`}
                     >
                       {sub}
@@ -589,21 +619,23 @@ export default function HydeParkFilm({
                     setPopoutDive(null);
                     seek(c.startSec);
                   }}
-                  className={`flex w-full items-center gap-4 px-4 py-4 text-left transition-colors active:bg-[#1c1d16] ${
-                    isActive ? "bg-[#1a1b14]" : ""
+                  className={`flex w-full items-center gap-4 border-l-[3px] px-4 py-4 text-left transition-colors active:bg-[#1c1d16] ${
+                    isActive
+                      ? "border-[#C45A33] bg-[#C45A33]/[0.10]"
+                      : "border-transparent"
                   }`}
                   aria-label={`Jump to ${c.title}`}
                 >
                   <span
                     className={`w-16 shrink-0 font-display text-2xl leading-none ${
-                      isActive ? "text-[#E8E2D6]" : "text-[#C7BFB0]"
+                      isActive ? "text-[#FBEFE0]" : "text-[#D9C2A8]"
                     }`}
                   >
                     {c.year}
                   </span>
                   <span
                     className={`flex-1 font-body text-[11px] font-semibold uppercase tracking-[0.18em] ${
-                      isActive ? "text-[#E8E2D6]" : "text-[#9C9384]"
+                      isActive ? "text-[#E8E2D6]" : "text-[#B89A7E]"
                     }`}
                   >
                     {SHORT_LABEL[c.id] ?? c.era}
