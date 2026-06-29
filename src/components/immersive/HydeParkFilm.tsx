@@ -78,20 +78,6 @@ const REVEAL_SPOTS = [
   { id: "present", location: "The University of Chicago now", framing: "The Gothic main quadrangle, today." },
 ];
 
-// One-line context for the clickable timeline's info panel, per chapter.
-const CHAPTER_INFO: Record<string, string> = {
-  opening: "A South Side neighborhood that powerful institutions kept reshaping, and the people left to wonder who it was for.",
-  intro: "Seven miles south of the Loop, Hyde Park runs to Lake Michigan. Almost none of it was here a hundred and seventy years ago.",
-  land: "Before Hyde Park, the lakefront was Potawatomi land. After the 1832 Black Hawk War, the U.S. pressed the Three Fires nations into the 1833 Treaty of Chicago, and removal followed.",
-  formation: "In 1853 Paul Cornell bought 300 acres, dealt land to the Illinois Central, and sold the new suburb as selective, sorted from the start.",
-  university: "Rockefeller's University of Chicago rose in 1890. By 1901 the neighborhood held its value, people said, protected by the parks, the lake, and the university.",
-  "worlds-fair": "The 1893 World's Fair built the White City in Jackson Park, staged a racial hierarchy as science, and raised the tracks that split the neighborhood in two.",
-  "color-line": "From 1908, a homeowners' club and racially restrictive covenants walled Black families out, with more than $83,000 of the university's money behind them.",
-  redlining: "A University of Chicago economist ranked races by their effect on land values. The logic became federal redlining, and spread across the country.",
-  "urban-renewal": "In 1958 the university drove an 856-acre renewal that marked 638 buildings to fall and pushed out about 4,000 families.",
-  present: "The Obama Center opened in 2026 on the old fairgrounds, as the wealth gap that began with the covenants endures, more than six to one.",
-};
-
 // The per-chapter DEEP-DIVE films. The overview is the main film; each of these
 // is a separate, longer film (about 10 to 12 minutes) on that one chapter, in
 // the same style. `video` is set once a deep-dive has been produced and hosted;
@@ -587,107 +573,107 @@ export default function HydeParkFilm({
           })}
         </div>
 
-        {/* the selected chapter's deep-dive opens in the shared vitrine; here it
-            shows the chapter's poster, title, and intro. Updates as the playhead
-            crosses chapters and on a marker tap. */}
-        {chapters[active] && (() => {
+        {/* When the active chapter has its OWN film, a clearly separate feature
+            card invites you to open it in the theater. It is deliberately framed
+            and worded so it does not read as more of the timeline. Chapters with
+            no deep-dive (the title + orientation) show nothing here. */}
+        {chapters[active] && DEEP_DIVES[chapters[active].id] && (() => {
           const ch = chapters[active];
           const dive = DEEP_DIVES[ch.id];
+          if (!dive) return null;
           const video = ddVideo(ch.id);
           const poster = ddPoster(ch.id);
+          const openDive = () => {
+            if (!video) return;
+            videoRef.current?.pause();
+            setPopoutDive(ch.id);
+          };
           return (
-            <div ref={diveRef} className="mt-10 scroll-mt-6">
-              <div className="flex flex-wrap items-center justify-between gap-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
-                  <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
-                    {dive ? "Go deeper into this chapter" : "On the timeline"}
-                    {ch.year ? ` · ${ch.year}` : ""}
+            <div ref={diveRef} className="mt-12 scroll-mt-6">
+              <div className="overflow-hidden rounded-[3px] border border-[#3A2018] bg-gradient-to-b from-[#17160F] to-[#100F0A] shadow-[0_24px_70px_-30px_rgba(0,0,0,0.8)]">
+                {/* header: what this is, stated plainly against the timeline */}
+                <div className="border-b border-[#26231E] px-5 py-4 md:px-7">
+                  <div className="flex flex-wrap items-center justify-between gap-y-2">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#C45A33] pl-0.5 text-[11px] leading-none text-[#0E0F0D]">
+                        &#9658;
+                      </span>
+                      <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
+                        Go deeper &middot; the full film on this chapter
+                      </p>
+                    </div>
+                    <p className="font-body text-xs uppercase tracking-[0.2em] text-[#A89F90]">
+                      A separate film &middot; {dive.runtime}
+                    </p>
+                  </div>
+                  <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-[#C7BFB0]">
+                    The timeline above scrubs the twelve minute overview. This is a
+                    separate, longer film on {ch.year ? `${ch.year}, ` : ""}this one
+                    chapter, and it opens in the theater.
                   </p>
                 </div>
-                <p className="font-body text-xs uppercase tracking-[0.2em] text-[#8A8276]">
-                  {dive ? `A detailed film · ${dive.runtime}` : "Part of the overview"}
-                </p>
-              </div>
-              <h2 className="mt-3 font-display text-2xl text-[#E8E2D6] md:text-3xl">
-                {dive?.title ?? ch.title}
-              </h2>
 
-              <div className="mt-5 grid gap-5 md:grid-cols-[1.5fr_1fr] md:items-start">
-                {/* a poster that rises into the vitrine, or its production state */}
-                <div className="overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#0A0B09] p-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!video) return;
-                      videoRef.current?.pause();
-                      setPopoutDive(ch.id);
-                    }}
-                    className="group relative block w-full overflow-hidden rounded-[1px]"
-                    aria-label={video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
-                    style={{ cursor: video ? "pointer" : "default" }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={poster ?? `/media/hyde-park/video/thumbs/${ch.id}.jpg`}
-                      alt=""
-                      loading="lazy"
-                      className="block aspect-video w-full object-cover"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.opacity = "0";
-                      }}
-                    />
-                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-[#0A0B09]/55">
-                      {video ? (
-                        <>
-                          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#C45A33] pl-1 text-2xl leading-none text-[#0E0F0D] shadow-[0_0_24px_rgba(196,90,51,0.5)] transition-transform group-hover:scale-105">
-                            &#9658;
-                          </span>
-                          <span className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#E8E2D6]">
-                            Watch the detailed film &middot; {dive.runtime}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="rounded-full border border-[#C45A33]/50 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C45A33]">
-                            {dive ? "Detailed film in production" : "Covered in the overview"}
-                          </span>
-                          {dive && (
-                            <span className="font-body text-xs text-[#8A8276]">
-                              Planned runtime {dive.runtime}
-                            </span>
-                          )}
-                        </>
-                      )}
-                    </span>
-                  </button>
-                </div>
-
-                {/* the intro + actions */}
-                <div className="min-w-0">
-                  <p className="font-body text-sm leading-relaxed text-[#E8E2D6]/75 md:text-base">
-                    {dive?.blurb ?? CHAPTER_INFO[ch.id]}
-                  </p>
-                  <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+                <div className="p-5 md:p-7">
+                  <h2 className="font-display text-2xl text-[#E8E2D6] md:text-3xl">
+                    {dive.title}
+                  </h2>
+                  <div className="mt-5 grid gap-5 md:grid-cols-[1.5fr_1fr] md:items-start">
+                    {/* the poster, which rises into the theater vitrine on play */}
                     <button
                       type="button"
-                      onClick={() => {
-                        setPopoutDive(null);
-                        seek(ch.startSec);
-                        wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-                      }}
-                      className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#C45A33] transition-opacity hover:opacity-70"
+                      onClick={openDive}
+                      className="group relative block w-full overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#0A0B09]"
+                      aria-label={`Play the full film on ${dive.title}`}
                     >
-                      Watch this in the overview
-                      <span aria-hidden="true">&uarr;</span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={poster ?? `/media/hyde-park/video/thumbs/${ch.id}.jpg`}
+                        alt=""
+                        loading="lazy"
+                        className="block aspect-video w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.opacity = "0";
+                        }}
+                      />
+                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#0A0B09]/55 transition-colors group-hover:bg-[#0A0B09]/35">
+                        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#C45A33] pl-1 text-2xl leading-none text-[#0E0F0D] shadow-[0_0_28px_rgba(196,90,51,0.55)] transition-transform group-hover:scale-105">
+                          &#9658;
+                        </span>
+                        <span className="font-body text-xs font-semibold uppercase tracking-[0.22em] text-[#E8E2D6]">
+                          Play the full film &middot; {dive.runtime}
+                        </span>
+                      </span>
                     </button>
+
+                    {/* the synopsis + the secondary "jump in the overview" link */}
+                    <div className="min-w-0">
+                      <p className="font-body text-sm leading-relaxed text-[#E8E2D6]/80 md:text-base">
+                        {dive.blurb}
+                      </p>
+                      <div className="mt-5 flex flex-col gap-3">
+                        <button
+                          type="button"
+                          onClick={openDive}
+                          className="inline-flex w-fit items-center gap-2 rounded-[2px] bg-[#C45A33] px-4 py-2 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#0E0F0D] transition-colors hover:bg-[#d56a42]"
+                        >
+                          <span aria-hidden="true">&#9658;</span>
+                          Open in the theater
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPopoutDive(null);
+                            seek(ch.startSec);
+                            wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                          }}
+                          className="inline-flex w-fit items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#A89F90] transition-colors hover:text-[#E8E2D6]"
+                        >
+                          Or jump to this moment in the overview
+                          <span aria-hidden="true">&uarr;</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  {dive && !video && (
-                    <p className="mt-4 font-body text-xs leading-relaxed text-[#6B645A]">
-                      The detailed films are produced one chapter at a time, in the
-                      same style as the overview. This one is on the way.
-                    </p>
-                  )}
                 </div>
               </div>
             </div>
