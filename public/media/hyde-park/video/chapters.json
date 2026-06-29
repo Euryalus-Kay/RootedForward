@@ -48,8 +48,8 @@
     {
       "id": "color-line",
       "title": "The Color Line Comes to Hyde Park",
-      "era": "1920s to 1948",
-      "year": 1909,
+      "era": "1908 to 1948",
+      "year": 1908,
       "startSec": 358.68
     },
     {
@@ -87,8 +87,8 @@
     },
     {
       "cid": "present",
-      "startSec": 665.62,
-      "endSec": 681.93
+      "startSec": 694.95,
+      "endSec": 712.85
     }
   ]
 }
