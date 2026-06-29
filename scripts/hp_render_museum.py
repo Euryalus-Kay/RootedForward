@@ -717,7 +717,8 @@ def animated_divider(out, n, era, title, dur=4.2, tl_year=None):
     lines = wrap(ImageDraw.Draw(Image.new("RGB", (8, 8))), title, fnt, 1360)
     def fn(t):
         b = Image.new("RGBA", (W, H), CREAM + (255,)); cx = W // 2
-        e = ease_out(elem(t, 0.10, 0.6)); b = put_text(b, (cx, 330), f"CHAPTER {n:02d}", sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 13, "ma")
+        kicker = "INTRODUCTION" if n <= 0 else f"CHAPTER {n:02d}"
+        e = ease_out(elem(t, 0.10, 0.6)); b = put_text(b, (cx, 330), kicker, sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 13, "ma")
         e = ease_out(elem(t, 0.25, 0.6)); b = put_text(b, (cx, 384), era.upper(), sans(23, "light"), WARM, int(255*e), int((1-e)*10), 9, "ma")
         lh = 110; total = (len(lines)-1)*lh; ty = 560 - total/2
         for j, ln in enumerate(lines):
@@ -1264,7 +1265,9 @@ ANNOT = {
  "color-line-4": ("The Hansberry House", "On South Rhodes Avenue"),
  "urban-renewal-1": ("Hyde Park before clearance", "Photographed in 1928"),
  "urban-renewal-3": ("University Apartments", "Built on cleared land"),
- "land-potawatomi": ("The first people", "Potawatomi, of the Three Fires"),
+ "urban-renewal-4": ("55th Street today", "The corridor renewal rebuilt"),
+ "university-5": ("Marshall Field", "Gave the first ten acres"),
+ "land-potawatomi": ("Chief Wabaunsee", "A Potawatomi leader of the Three Fires"),
  "land-treaty-chicago": ("The Treaty of Chicago", "Signed in 1833"),
  "land-early-chicago": ("Chicago in 1833", "Prairie at the river's mouth"),
  "formation-ic-train": ("The Illinois Central", "The railroad that made the suburb"),
@@ -1326,6 +1329,7 @@ STORY = {
      ("img", "first-uofc", "not the first University"), # the first U of C (Douglas land)
      ("img", "university-3", "one man's money"),        # Rockefeller
      ("stat", "pledge", "six hundred thousand"),        # $600,000 pledge
+     ("img", "university-5", "Marshall Field gave"),    # Marshall Field, the land gift (breaks the stat hold)
      ("img", "university-2", "William Rainey Harper"),  # Harper
      ("img", "university-1", "Gothic quads"),           # Cobb Hall, historic
      ("clip", "campus-quads", "you still walk through"),# the quads today
@@ -1371,6 +1375,7 @@ STORY = {
  "urban-renewal": {
    "shots": [
      ("img", "urban-renewal-1", "In 1952"),             # the 1928 aerial, the Commission
+     ("img", "urban-renewal-4", "Julian Levi ran it"),  # the corridor today (breaks the long aerial)
      ("stat", "acres", "eight hundred fifty-six"),      # 856 acres in the plan
      ("stat", "buildings", "six hundred thirty-eight"), # 638 buildings marked to fall
      ("stat", None, "four thousand"),                   # ~4,000 families displaced
@@ -1423,16 +1428,33 @@ def build_story_chapter(cid, seq, vodur, cues):
     for i in range(n):
         nxt = T[i + 1] if i + 1 < n else (vodur + 1.0)
         durs.append(max(2.8, (nxt - T[i]) + XFADE))
-    # A chart should not hold longer than CHART_CAP, but it must still report
-    # its full declared duration to the crossfade chain or the next offset lands
-    # past the (shorter) chart clip and truncates the whole chapter, cutting the
-    # narration. So cap the chart visually and hand the saved time to the final
-    # shot, keeping the chapter long enough to carry the full voiceover.
-    CHART_CAP = 9.2
+    # Full-frame cards (stat count-ups, charts, graphics) read as static after
+    # their reveal, so they should not hold the screen too long. Cap each kind
+    # and spread the saved time across the real images and clips, which hold
+    # gracefully under a slow push. sum(durs) is preserved, so the chapter still
+    # covers the full voiceover and the crossfade offsets stay aligned (the chart
+    # clip is rendered at its capped dur, matching what the chain expects).
+    CAP = {"stat": 10.5, "chart": 9.2, "graphic": 10.5}
+    IMG_CAP = 13.0
+    saved = 0.0
     for i in range(n):
-        if shots[i][0] == "chart" and durs[i] > CHART_CAP and i != n - 1:
-            durs[-1] += durs[i] - CHART_CAP
-            durs[i] = CHART_CAP
+        ki = shots[i][0]
+        if ki in CAP and durs[i] > CAP[ki]:
+            saved += durs[i] - CAP[ki]
+            durs[i] = CAP[ki]
+    # give the saved time only to images/clips that still have room (so an
+    # already-long establishing shot never gets longer), capping each at IMG_CAP
+    for _ in range(6):
+        room = [k for k in range(n) if shots[k][0] in ("img", "clip") and durs[k] < IMG_CAP - 0.05]
+        if saved <= 0.1 or not room:
+            break
+        per = saved / len(room)
+        for k in room:
+            add = min(per, IMG_CAP - durs[k])
+            durs[k] += add
+            saved -= add
+    if saved > 0.1:  # nowhere left that wants it; let the final shot hold it
+        durs[-1] += saved
     # assign each callout to the shot that is on screen when it is said
     assign = {}
     for lab, val, anc in cos:
@@ -1554,14 +1576,19 @@ stops = {s["id"]: s for s in tour["stops"]}
 CHAPTER_MARKS = []  # for the website's clickable timeline
 PANO_SEGS = []      # absolute time windows of the 360 beats, for the web player
 
+_chnum = 0
 for ci, cid in enumerate(order, start=1):
     stop = stops[cid]
     rc = research.get(cid, {})
     era = rc.get("era", stop.get("kicker",""))
     title = rc.get("working", stop["title"])
+    # the intro is unnumbered; the real chapters count 01..08 from "The Ground Before"
+    if cid != "intro":
+        _chnum += 1
     # animated divider (a short one for the intro so narration starts sooner)
     dvc = os.path.join(TMP, f"scene_div_{cid}.mp4")
-    animated_divider(dvc, ci, era, title, 2.4 if cid == "intro" else 4.2, DIV_YEAR.get(cid))
+    animated_divider(dvc, _chnum if cid != "intro" else 0, era, title,
+                     2.4 if cid == "intro" else 4.2, DIV_YEAR.get(cid))
     CHAPTER_MARKS.append({"id": cid, "title": title, "era": era, "year": DIV_YEAR.get(cid), "sceneIdx": len(scenes)})
     scenes.append(dvc)
 

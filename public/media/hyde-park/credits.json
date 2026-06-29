@@ -307,15 +307,15 @@
   },
   "land-potawatomi": {
     "id": "land-potawatomi",
-    "query": "Potawatomi people George Catlin painting",
+    "query": "Wa-baun-see a Pottawatomie chief",
     "file": "/media/hyde-park/img/land-potawatomi.jpg",
-    "commonsTitle": "File:George Catlin - Na-pów-sa, Bear Traveling at Night, a Chief - 1985.66.238 - Smithsonian American Art Museum.jpg",
-    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:George_Catlin_-_Na-p%C3%B3w-sa,_Bear_Traveling_at_Night,_a_Chief_-_1985.66.238_-_Smithsonian_American_Art_Museum.jpg",
+    "commonsTitle": "File:Wa-baun-see, a Pottawatomie chief LCCN2003670113.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Wa-baun-see,_a_Pottawatomie_chief_LCCN2003670113.jpg",
     "license": "Public domain",
-    "artist": "George Catlin",
-    "credit": "http://americanart.si.edu/collections/search/artwork/?id=3900",
-    "date": "1830",
-    "bytes": 148559
+    "artist": "Popular Graphic Arts",
+    "credit": "Library of Congress Catalog: http://lccn.loc.gov/2003670113 Image download: https://cdn.loc.gov/service/pnp/cph/3a20000/3a21000/3a21600/3a21660r.jpg Original ur",
+    "date": "",
+    "bytes": 694893
   },
   "land-treaty-chicago": {
     "id": "land-treaty-chicago",

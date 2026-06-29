@@ -56,3 +56,6 @@ public/media/hyde-park/slates/
 
 # raw drone + 360 + archival footage (render inputs, not runtime)
 Live Media/
+
+# the film master is hosted on a GitHub Release, not in the repo
+public/media/hyde-park/video/hyde-park-museum.mp4

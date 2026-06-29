@@ -1,14 +1,14 @@
 {
-  "video": "/media/hyde-park/video/hyde-park-museum.mp4",
+  "video": "https://github.com/Euryalus-Kay/RootedForward/releases/download/hyde-park-film/hyde-park-museum.mp4",
   "poster": "/media/hyde-park/video/poster.jpg",
-  "duration": 735.09,
+  "duration": 735.17,
   "chapters": [
     {
       "id": "opening",
       "title": "Hyde Park, Built and Rebuilt",
       "era": "Begin",
       "year": null,
-      "startSec": 0.0
+      "startSec": 0
     },
     {
       "id": "intro",
@@ -50,45 +50,45 @@
       "title": "The Color Line Comes to Hyde Park",
       "era": "1920s to 1948",
       "year": 1909,
-      "startSec": 357.84
+      "startSec": 357.88
     },
     {
       "id": "redlining",
       "title": "How Hyde Park Drew the Lines",
       "era": "1930s to 1948",
       "year": 1940,
-      "startSec": 449.3
+      "startSec": 449.34
     },
     {
       "id": "urban-renewal",
       "title": "The University Rebuilds the Neighborhood",
       "era": "1952 to 1970s",
       "year": 1958,
-      "startSec": 512.97
+      "startSec": 513.01
     },
     {
       "id": "present",
       "title": "Hyde Park Now",
       "era": "Today",
       "year": 2026,
-      "startSec": 603.26
+      "startSec": 603.34
     }
   ],
   "panos": [
     {
       "cid": "land",
-      "startSec": 110.4,
-      "endSec": 124.7
+      "startSec": 108.2,
+      "endSec": 122.5
     },
     {
       "cid": "university",
-      "startSec": 256.78,
-      "endSec": 270.78
+      "startSec": 256.13,
+      "endSec": 270.13
     },
     {
       "cid": "present",
-      "startSec": 655.74,
-      "endSec": 672.06
+      "startSec": 664.82,
+      "endSec": 681.13
     }
   ]
 }
