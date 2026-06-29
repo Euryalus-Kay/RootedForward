@@ -49,8 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/research`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${BASE_URL}/policy`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${BASE_URL}/education`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/curriculum`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    // /education (now redirects to /tours) and /curriculum are hidden for now.
   ];
 
   const cityPages = CITIES.map((city) => ({

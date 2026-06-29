@@ -114,6 +114,33 @@ logged download via `/api/research/data/file`.
 
 ---
 
+## Hidden sections (curriculum and the education landing page)
+
+By the owner's request (June 2026) the curriculum and the standalone
+education landing page are hidden, not deleted. The full original pages
+are preserved next to their routes as `page.hidden.tsx` so restoring
+them is a rename, not a rewrite.
+
+- **Curriculum.** `/curriculum` serves a 404 (`notFound()` in
+  `src/app/curriculum/page.tsx`). The real page is preserved at
+  `src/app/curriculum/page.hidden.tsx`, and the request form still lives
+  at `src/components/forms/CurriculumRequestForm.tsx`. The "Curriculum"
+  link was removed from the Education dropdown in
+  `src/components/layout/Navbar.tsx`.
+- **Education landing page.** There is no `/education` landing page. The
+  route now redirects to `/tours` (`redirect()` in
+  `src/app/education/page.tsx`), the original landing page is preserved
+  at `src/app/education/page.hidden.tsx`, and both the navbar "Education"
+  link and the home-page Education pillar (`src/app/page.tsx`) point
+  straight at `/tours`.
+- Both routes were dropped from `src/app/sitemap.ts`.
+
+To restore either one: delete the stub `page.tsx`, rename
+`page.hidden.tsx` back to `page.tsx`, re-add the nav/home links and the
+sitemap rows. Each stub file has the same checklist in a comment.
+
+---
+
 ## Branch and deploy
 
 - Working branch: `claude/rooted-forward-site-avKps`. Never push to `main`.

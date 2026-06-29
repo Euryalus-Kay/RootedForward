@@ -83,11 +83,11 @@ const PILLARS = [
   {
     icon: "book",
     title: "Education",
-    href: "/education",
+    href: "/tours",
     bg: "bg-forest",
     desc:
-      "The story of how American cities got segregated does not fit in one form, so we tell it in three. Walking tours you take on foot, a podcast with the people who lived it, and a free curriculum built for the classroom.",
-    items: ["Walking tours", "Podcast", "Curriculum"],
+      "The story of how American cities got segregated does not fit in one form, so we tell it in two. Walking tours you take on foot and a podcast with the people who lived it.",
+    items: ["Walking tours", "Podcast"],
     cta: "See how we teach it",
   },
   {

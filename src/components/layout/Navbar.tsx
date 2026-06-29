@@ -18,12 +18,14 @@ const NAV_LINKS = [
     ],
   },
   {
+    // Education has no landing page for now; the top-level link goes
+    // straight to the walking tours. Curriculum is hidden (see
+    // src/app/curriculum/page.tsx) so it is left out of the dropdown.
     label: "Education",
-    href: "/education",
+    href: "/tours",
     children: [
       { label: "Walking Tours", href: "/tours" },
       { label: "Podcast", href: "/podcasts" },
-      { label: "Curriculum", href: "/curriculum" },
     ],
   },
   { label: "Policy", href: "/policy" },
