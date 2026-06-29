@@ -168,22 +168,6 @@
   "formation-6": [
    "Great Central Station Trainshed, 1856",
    "The Illinois Central terminal Cornell's depot fed into"
-  ],
-  "formation-ic-train": [
-   "Illinois Central Locomotive, 1893",
-   "The railroad Cornell's depot tied Hyde Park into"
-  ],
-  "formation-ic-train2": [
-   "Illinois Central Steam Locomotive",
-   "Rolling stock of the line that built the lakefront"
-  ],
-  "dd-formation-7": [
-   "Hyde Park Township, Cook County",
-   "The township grid laid over Cornell's lakefront purchase"
-  ],
-  "dd-formation-1": [
-   "Hyde Park, London",
-   "The English park Cornell borrowed the name from"
   ]
  },
  "sections": [
@@ -200,13 +184,13 @@
      "there was prairie and marsh sloping down to the lake"
     ],
     [
-     "pano",
-     "pano-founding",
+     "img",
+     "land-potawatomi",
      "Sand ridges with bur oaks"
     ],
     [
-     "clip",
-     "lakefront-reveal",
+     "pano",
+     "pano-founding",
      "A grassland that ran flat to the horizon"
     ],
     [
@@ -216,13 +200,8 @@
     ],
     [
      "img",
-     "dd-land-8",
-     "an alliance called the Council of Three Fires"
-    ],
-    [
-     "img",
      "land-potawatomi",
-     "They had lived, hunted, and traded along these shores"
+     "an alliance called the Council of Three Fires"
     ],
     [
      "img",
@@ -231,13 +210,8 @@
     ],
     [
      "img",
-     "dd-land-4",
-     "the traders called Mud Lake"
-    ],
-    [
-     "img",
      "dd-land-6",
-     "you could float a canoe from the Great Lakes almost to the Mississippi"
+     "the traders called Mud Lake"
     ],
     [
      "stat",
@@ -251,7 +225,7 @@
     ],
     [
      "img",
-     "dd-land-8",
+     "dd-land-4",
      "the first Europeans known to stand on the site of Chicago"
     ],
     [
@@ -302,18 +276,13 @@
     ],
     [
      "img",
-     "dd-land-4",
+     "dd-land-3",
      "A sandbar shaped like an elephant's trunk blocked the harbor"
     ],
     [
      "img",
      "dd-land-3",
      "destroyed in a battle with Potawatomi warriors"
-    ],
-    [
-     "img",
-     "land-potawatomi",
-     "For most of three decades that fort was nearly all that passed for a town"
     ],
     [
      "img",
@@ -358,7 +327,7 @@
     ],
     [
      "img",
-     "dd-land-8",
+     "dd-land-1",
      "After lead was found around Galena in the 1820s"
     ],
     [
@@ -373,12 +342,12 @@
     ],
     [
      "img",
-     "dd-land-7",
+     "dd-land-1",
      "a disputed 1804 treaty had signed away"
     ],
     [
      "img",
-     "land-potawatomi",
+     "dd-land-9",
      "The Black Hawk War lasted from April to August"
     ],
     [
@@ -394,11 +363,11 @@
     [
      "img",
      "dd-land-7",
-     "Native nations that stayed could be removed"
+     "the Northwest could be opened to settlers"
     ],
     [
      "img",
-     "dd-land-8",
+     "dd-land-7",
      "The Indian Removal Act of 1830"
     ]
    ],
@@ -424,7 +393,7 @@
     ],
     [
      "img",
-     "land-early-chicago",
+     "land-treaty-chicago",
      "federal commissioners gathered thousands of Potawatomi"
     ],
     [
@@ -443,8 +412,8 @@
      "fourteen thousand dollars in cash a year for twenty years"
     ],
     [
-     "img",
-     "land-potawatomi",
+     "stat",
+     "schoolsPromised",
      "seventy thousand dollars for schools"
     ],
     [
@@ -459,7 +428,7 @@
     ],
     [
      "img",
-     "dd-land-7",
+     "land-early-chicago",
      "crossed the north branch and were gone"
     ],
     [
@@ -509,14 +478,14 @@
      "The route ran roughly 660 miles over 61 days"
     ],
     [
-     "img",
-     "land-potawatomi",
-     "most of them children, of typhoid and exhaustion"
-    ],
-    [
      "stat",
      "trailDeaths",
      "More than forty people died on the way"
+    ],
+    [
+     "img",
+     "dd-land-5",
+     "History remembers that march as the Trail of Death"
     ],
     [
      "img",
@@ -530,7 +499,7 @@
     ],
     [
      "img",
-     "land-early-chicago",
+     "formation-4",
      "the city at the river mouth took off"
     ],
     [
@@ -541,11 +510,6 @@
     [
      "img",
      "formation-4",
-     "gave the river a real harbor"
-    ],
-    [
-     "img",
-     "formation-ic-train",
      "the panic of 1837 wiped out the easy money"
     ]
    ],
@@ -581,7 +545,7 @@
     ],
     [
      "img",
-     "dd-formation-7",
+     "dd-land-11",
      "It followed the old Sauk Trail"
     ],
     [
@@ -603,11 +567,6 @@
      "stat",
      "cornellBuy",
      "he bought three hundred acres of lakefront that no one else wanted"
-    ],
-    [
-     "img",
-     "dd-formation-1",
-     "He named the place Hyde Park, after the London park"
     ],
     [
      "img",

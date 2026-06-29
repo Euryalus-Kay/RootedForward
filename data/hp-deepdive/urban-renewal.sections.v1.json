@@ -119,22 +119,6 @@
    "Harper Memorial Library",
    "University of Chicago, the kind of campus whose presidents lobbied Congress together"
   ],
-  "dd-university-7": [
-   "The Tower Group",
-   "University of Chicago, the stone campus its trustees feared would be stranded"
-  ],
-  "dd-university-8": [
-   "Cobb Gate",
-   "University of Chicago, the carved face the campus turned to its changing block"
-  ],
-  "dd-present-7": [
-   "The University of Chicago, About 1907",
-   "George R. Lawrence, the campus as its trustees pictured it"
-  ],
-  "dd-color-line-14": [
-   "Hull Gate",
-   "University of Chicago, the quadrangle the trustees feared losing"
-  ],
   "protective-club-era": [
    "Greystones on Ellis Avenue",
    "Kenwood, the older apartment stock that drew the newest arrivals"
@@ -155,29 +139,9 @@
    "Inside a Kitchenette Flat",
    "Russell Lee, FSA, 1941, washday in the crowded rooms that were cleared"
   ],
-  "black-belt-street": [
-   "A South Side Workroom",
-   "Russell Lee, FSA, 1941, the Black Belt life packed into the blocks marked as blight"
-  ],
-  "color-line-5": [
-   "The Black Belt",
-   "Russell Lee, FSA, 1941, the dense South Side rooms the plan defined as blight"
-  ],
-  "dd-present-4": [
-   "An Old South Side Street",
-   "3240 Rhodes Avenue, 1941, the older housing the renewal language called too far gone"
-  ],
   "dd-redlining-4a": [
    "The Chicago Sociologist",
    "University of Chicago social science, which named and mapped blight"
-  ],
-  "dd-color-line-3": [
-   "Selling the Defender",
-   "Jack Delano, 1942, the South Side press the displaced carried with them"
-  ],
-  "dd-university-9": [
-   "The Chicago Defender Building",
-   "Bronzeville, the Black South Side the cleared families were pushed back toward"
   ],
   "urban-renewal-3": [
    "The University Apartments",
@@ -210,12 +174,12 @@
    "shots": [
     [
      "img",
-     "racial-hierarchy-doc",
+     "urban-renewal-1",
      "the restrictive covenants were gone"
     ],
     [
      "img",
-     "dd-redlining-14",
+     "racial-hierarchy-doc",
      "struck down by the Supreme Court"
     ],
     [
@@ -227,11 +191,6 @@
      "img",
      "university-1",
      "an island of stone buildings"
-    ],
-    [
-     "img",
-     "dd-university-7",
-     "its faculty wouldn't live and its trustees didn't recognize"
     ],
     [
      "clip",
@@ -252,11 +211,6 @@
      "stat",
      "secc",
      "the South East Chicago Commission"
-    ],
-    [
-     "img",
-     "dd-university-8",
-     "drive crime and corruption from the neighborhood"
     ],
     [
      "img",
@@ -296,7 +250,7 @@
     ],
     [
      "img",
-     "dd-university-7",
+     "university-1",
      "Kimpton put the stakes plainly"
     ],
     [
@@ -326,7 +280,7 @@
     ],
     [
      "img",
-     "dd-color-line-14",
+     "urban-renewal-1",
      "the tools the whole country would use"
     ],
     [
@@ -366,24 +320,14 @@
      "covered eight hundred fifty-six acres"
     ],
     [
-     "img",
-     "urban-renewal-1",
-     "most of the neighborhood"
-    ],
-    [
      "stat",
      "buildings",
      "six hundred thirty-eight buildings to come down"
     ],
     [
      "img",
-     "dd-present-4",
-     "the older, cut-up apartment buildings"
-    ],
-    [
-     "img",
      "protective-club-era",
-     "the cheaper rooms where the newest arrivals"
+     "the older, cut-up apartment buildings"
     ],
     [
      "stat",
@@ -404,11 +348,6 @@
      "clip",
      "old-new-pan",
      "all of it was on the map to be erased"
-    ],
-    [
-     "img",
-     "black-belt-street",
-     "in the language of the plan they were blight"
     ],
     [
      "stat",
@@ -488,18 +427,13 @@
     ],
     [
      "img",
-     "color-line-5",
+     "color-line-7",
      "the cheap rooms were what the plan defined as blight"
     ],
     [
      "img",
-     "dd-color-line-3",
-     "the people who couldn't were scattered to the South and West Sides"
-    ],
-    [
-     "img",
      "dd-urban-renewal-3",
-     "into neighborhoods that were themselves getting more crowded"
+     "scattered to the South and West Sides"
     ]
    ],
    "callouts": [
@@ -544,23 +478,18 @@
     ],
     [
      "img",
-     "woodlawn-hist",
+     "urban-renewal-3",
      "a dense, messy, mixed-race commercial strip used to be"
     ],
     [
      "img",
-     "urban-renewal-3",
+     "urban-renewal-4",
      "rows of low row houses that people nicknamed the toasters"
     ],
     [
      "stat",
      "displaced15k",
      "more than fifteen thousand residents"
-    ],
-    [
-     "img",
-     "urban-renewal-1",
-     "the numbers tell the same story the towers do"
     ],
     [
      "stat",
@@ -574,18 +503,13 @@
     ],
     [
      "img",
-     "urban-renewal-4",
+     "urban-renewal-1",
      "integration was engineered"
     ],
     [
      "img",
-     "dd-university-9",
-     "already crowded Black neighborhoods to the south and west"
-    ],
-    [
-     "img",
      "dd-urban-renewal-3",
-     "the somewhere else rarely had a university to write its laws"
+     "already crowded Black neighborhoods to the south and west"
     ]
    ],
    "callouts": [
@@ -630,7 +554,7 @@
     ],
     [
      "img",
-     "dd-color-line-3",
+     "woodlawn-hist",
      "Woodlawn pushed back in a way Hyde Park's displaced never could"
     ],
     [
@@ -649,14 +573,9 @@
      "That line at 61st Street held for decades"
     ],
     [
-     "img",
-     "urban-renewal-3",
-     "the towers on 55th Street"
-    ],
-    [
      "clip",
      "old-new-pan",
-     "in the line at 61st"
+     "the towers on 55th Street and in the line at 61st"
     ]
    ],
    "callouts": [

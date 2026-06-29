@@ -89,10 +89,6 @@
       "Sanborn Fire Map of the South Side",
       "A period Chicago plat showing platted lots and footprints"
     ],
-    "dd-formation-7": [
-      "Hyde Park Township",
-      "The South Side township whose blocks the club set out to seal"
-    ],
     "fannie-barrier-williams": [
       "Fannie Barrier Williams, c.1880",
       "First Black woman admitted to the Chicago Woman's Club"
@@ -101,25 +97,13 @@
       "The Scott family arrives, 1920",
       "Great Migration arrivals photographed for the Chicago Defender"
     ],
-    "color-line-1": [
-      "An African American family, South Chicago, 1922",
-      "Newcomers settling on the South Side during the Great Migration"
-    ],
     "formation-ic-train": [
       "Illinois Central locomotive",
       "The rail line that carried migrants straight into Chicago"
     ],
-    "ic-embankment-hist": [
-      "Illinois Central tracks, 1943",
-      "Trains running the line that fed the South Side"
-    ],
     "dd-color-line-3": [
       "A newsboy and the Defender",
       "The paper's masthead, the engine of the Great Northern Drive"
-    ],
-    "dd-university-9": [
-      "The Chicago Defender building",
-      "Home of the paper that drove the Great Northern Drive"
     ],
     "color-line-5": [
       "Black Belt tenement court, 1941",
@@ -128,10 +112,6 @@
     "black-belt-street": [
       "Chicago Defender pressroom, 1941",
       "Linotype operators at the city's great Black newspaper"
-    ],
-    "dd-present-4": [
-      "An old South Side residential street, 1941",
-      "Rhodes Avenue greystones in the heart of the Black Belt"
     ],
     "color-line-7": [
       "Washday in a kitchenette, 1941",
@@ -165,14 +145,6 @@
       "Hull Gate, University of Chicago",
       "The wrought-iron threshold between campus and the streets"
     ],
-    "dd-university-8": [
-      "Cobb Gate, University of Chicago",
-      "A carved campus threshold facing the surrounding streets"
-    ],
-    "dd-present-7": [
-      "University of Chicago, c.1907",
-      "The campus at the dawn of the covenant era"
-    ],
     "university-4": [
       "Harper Memorial Library, 1920",
       "The University of Chicago at the height of the covenant era"
@@ -196,10 +168,6 @@
     "dd-color-line-10": [
       "The Court in session",
       "The bench that ruled six to nothing in Shelley v. Kraemer"
-    ],
-    "dd-redlining-15": [
-      "The Shelley house, St. Louis",
-      "The home at the center of Shelley v. Kraemer"
     ],
     "urban-renewal-4": [
       "55th Street, Hyde Park today",
@@ -236,13 +204,13 @@
         ],
         [
           "img",
-          "dd-formation-7",
+          "dd-color-line-2",
           "they had decided that Hyde Park would be a white neighborhood"
         ],
         [
           "img",
-          "dd-color-line-2",
-          "The club set out to undo that, block by block."
+          "racial-hierarchy-doc",
+          "The methods were not subtle."
         ],
         [
           "img",
@@ -287,13 +255,13 @@
         ],
         [
           "img",
-          "color-line-6",
-          "The Great Migration was on."
+          "fannie-barrier-williams",
+          "exactly the kind of accomplished, settled, professional neighbor the club claimed it did not want"
         ],
         [
           "img",
-          "color-line-1",
-          "Black families were leaving sharecropping, lynching, and Jim Crow"
+          "color-line-6",
+          "The Great Migration was on."
         ],
         [
           "img",
@@ -312,7 +280,7 @@
         ],
         [
           "img",
-          "dd-university-9",
+          "dd-color-line-3",
           "called for a Great Northern Drive in the spring of 1917"
         ],
         [
@@ -358,18 +326,18 @@
         ],
         [
           "img",
-          "dd-present-4",
-          "It ran for miles north to south but was only a few blocks wide."
-        ],
-        [
-          "img",
           "color-line-5",
-          "Inside it, demand far outran supply, and landlords took full advantage."
+          "It ran for miles north to south but was only a few blocks wide."
         ],
         [
           "img",
           "color-line-7",
           "They chopped single apartments into tiny units called kitchenettes"
+        ],
+        [
+          "img",
+          "color-line-7",
+          "Six or seven families might crowd into a flat once leased to two."
         ],
         [
           "stat",
@@ -404,13 +372,13 @@
       "shots": [
         [
           "img",
-          "dd-present-4",
-          "rent or buy on a white block"
+          "racial-hierarchy-doc",
+          "the answer was often a bomb"
         ],
         [
           "img",
-          "racial-hierarchy-doc",
-          "the answer was often a bomb"
+          "dd-color-line-7",
+          "roughly two dozen Black homes were bombed in Chicago"
         ],
         [
           "stat",
@@ -419,7 +387,7 @@
         ],
         [
           "img",
-          "color-line-5",
+          "dd-color-line-7",
           "Almost none of the cases were ever solved"
         ],
         [
@@ -429,7 +397,7 @@
         ],
         [
           "img",
-          "color-line-1",
+          "dd-color-line-7",
           "A white man threw rocks, one struck him, and he drowned."
         ],
         [
@@ -444,7 +412,7 @@
         ],
         [
           "img",
-          "black-belt-street",
+          "dd-color-line-7",
           "about a thousand Black families had lost their homes to arson"
         ]
       ],
@@ -475,7 +443,7 @@
         ],
         [
           "img",
-          "dd-present-4",
+          "jesse-binga",
           "In 1917 he bought a house at 5922 South Park Avenue, on a white block."
         ],
         [
@@ -485,7 +453,7 @@
         ],
         [
           "img",
-          "dd-present-4",
+          "jesse-binga",
           "I will not run, he said, and he stayed."
         ],
         [
@@ -500,13 +468,13 @@
         ],
         [
           "img",
-          "racial-hierarchy-doc",
-          "The racially restrictive covenant."
+          "jesse-binga",
+          "a man who would not run from a bomb"
         ],
         [
           "img",
-          "dd-color-line-2",
-          "A covenant was a clause written into a property deed."
+          "racial-hierarchy-doc",
+          "The racially restrictive covenant."
         ],
         [
           "img",
@@ -541,6 +509,11 @@
         ],
         [
           "img",
+          "racial-hierarchy-doc",
+          "drafted a model covenant in 1927 that real estate boards handed out across the city"
+        ],
+        [
+          "img",
           "homer-hoyt",
           "covenants swept across the white neighborhoods ringing the Black Belt"
         ],
@@ -548,11 +521,6 @@
           "img",
           "dd-color-line-14",
           "And the University of Chicago was not a bystander to this."
-        ],
-        [
-          "img",
-          "dd-university-8",
-          "the university spent more than 110,000 dollars on what it politely called community interests"
         ],
         [
           "stat",
@@ -602,8 +570,8 @@
       "shots": [
         [
           "img",
-          "dd-redlining-15",
-          "the decisive case came not from Chicago but from St. Louis"
+          "dd-color-line-12",
+          "The covenants finally fell in 1948"
         ],
         [
           "img",

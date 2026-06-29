@@ -134,54 +134,6 @@
     "dd-color-line-11b": [
       "Chief Justice Fred M. Vinson",
       "Author of the Shelley v. Kraemer opinion, 1948"
-    ],
-    "university-1": [
-      "Cobb Hall, University of Chicago",
-      "The oldest building on the Hyde Park campus"
-    ],
-    "university-4": [
-      "Harper Memorial Library",
-      "The University of Chicago, around 1920"
-    ],
-    "formation-4": [
-      "Chicago From the Air, 1857",
-      "The young city whose dirt Hoyt would price block by block"
-    ],
-    "dd-land-2": [
-      "A Botanical Plate, 1913",
-      "The plant biology the Chicago School borrowed for the city"
-    ],
-    "dd-university-1": [
-      "A Run on the Bank, 1857",
-      "The kind of panic the FHA was built to prevent"
-    ],
-    "dd-present-4": [
-      "An Old South Side Street",
-      "Rhodes Avenue, Chicago, 1941"
-    ],
-    "dd-color-line-1c": [
-      "Drexel Boulevard, 1902",
-      "A South Side block club of the covenant era"
-    ],
-    "protective-club-era": [
-      "Kenwood Greystones",
-      "The kind of block whose owners signed covenants"
-    ],
-    "dd-color-line-10": [
-      "Inside the Supreme Court",
-      "The Court in session, 1937"
-    ],
-    "dd-color-line-3": [
-      "Selling the Chicago Defender",
-      "Jack Delano, South Side Chicago, 1942"
-    ],
-    "great-migration": [
-      "Newcomers to Chicago",
-      "Great Migration arrivals, the Chicago Defender, 1920"
-    ],
-    "color-line-6": [
-      "The Arthur Family, 1920",
-      "A Black family arriving on the South Side"
     ]
   },
   "sections": [
@@ -219,11 +171,6 @@
         ],
         [
           "img",
-          "dd-color-line-2",
-          "page after page of tables and curves"
-        ],
-        [
-          "img",
           "racial-hierarchy-doc",
           "One table is not"
         ],
@@ -233,13 +180,13 @@
           "Hoyt ranked races and nationalities by their supposed effect on land values"
         ],
         [
-          "img",
-          "dd-university-7",
-          "He had taken an old prejudice and dressed it as economics"
+          "stat",
+          "hoytBook",
+          "At the very bottom he wrote Negroes, and then Mexicans"
         ],
         [
           "img",
-          "dd-color-line-1c",
+          "dd-color-line-2",
           "It read like a footnote, calm and precise"
         ]
       ],
@@ -279,19 +226,9 @@
           "a Black family moving onto a block"
         ],
         [
-          "img",
-          "protective-club-era",
-          "The language made segregation sound like a law of nature"
-        ],
-        [
           "graphic",
           "wealth-gap",
           "Hoyt took that frame and gave it a dollar sign"
-        ],
-        [
-          "img",
-          "color-line-6",
-          "Did the value fall because Black families moved in"
         ],
         [
           "img",
@@ -307,6 +244,11 @@
           "stat",
           "fhaCreated",
           "Congress created the Federal Housing Administration"
+        ],
+        [
+          "stat",
+          "fhaCreated",
+          "Homer Hoyt became its chief land economist"
         ],
         [
           "img",
@@ -346,12 +288,12 @@
         ],
         [
           "img",
-          "dd-university-2",
+          "dd-color-line-2",
           "whether incompatible racial groups are present near a property"
         ],
         [
           "img",
-          "urban-renewal-1",
+          "dd-urban-renewal-1",
           "a river, a wide road, a park"
         ],
         [
@@ -360,9 +302,9 @@
           "openly recommends a deed clause barring the wrong people"
         ],
         [
-          "img",
-          "protective-club-era",
-          "A white family in a quiet suburb was a safe bet"
+          "graphic",
+          "wealth-gap",
+          "that wealth built the American middle class one mortgage at a time"
         ],
         [
           "img",
@@ -370,13 +312,13 @@
           "A Black family on the South Side was a hazard by definition"
         ],
         [
-          "stat",
-          "blackLoans",
+          "chart",
+          "return-rate",
           "Black Americans received less than two percent of all federally insured home loans"
         ],
         [
-          "img",
-          "woodlawn-hist",
+          "stat",
+          "blackLoans",
           "a generation of equity piled up on one side of the line"
         ]
       ],
@@ -417,6 +359,11 @@
         ],
         [
           "img",
+          "homer-hoyt",
+          "Red was D, hazardous, the lowest grade"
+        ],
+        [
+          "img",
           "dd-color-line-2",
           "The notes the surveyors wrote down explain the colors"
         ],
@@ -424,11 +371,6 @@
           "img",
           "homer-hoyt",
           "the Black Belt on the South Side was washed in red"
-        ],
-        [
-          "img",
-          "black-belt-street",
-          "It was about who lived inside them"
         ],
         [
           "img",
@@ -442,7 +384,7 @@
         ],
         [
           "img",
-          "woodlawn-hist",
+          "homer-hoyt",
           "The map became a wall, and the wall became real"
         ]
       ],
@@ -468,17 +410,17 @@
       "shots": [
         [
           "img",
-          "dd-redlining-8b",
+          "homer-hoyt",
           "cities in nearly every corner of the country"
         ],
         [
           "img",
-          "color-line-3",
+          "dd-redlining-8b",
           "from Atlanta to Los Angeles, from Boston to Birmingham"
         ],
         [
           "img",
-          "dd-university-7",
+          "dd-redlining-8b",
           "had been turned into a national machine"
         ],
         [
@@ -488,8 +430,8 @@
         ],
         [
           "img",
-          "dd-color-line-1c",
-          "block clubs went door to door collecting names"
+          "racial-hierarchy-doc",
+          "never be sold or rented to Black residents"
         ],
         [
           "img",
@@ -554,13 +496,13 @@
         ],
         [
           "img",
-          "dd-present-4",
+          "dd-redlining-11",
           "seven year old Lorraine Hansberry"
         ],
         [
           "img",
-          "racial-hierarchy-doc",
-          "covered by a covenant barring Black occupants"
+          "color-line-4",
+          "the new neighbors filed suit to force the family out"
         ],
         [
           "img",
@@ -579,7 +521,7 @@
         ],
         [
           "img",
-          "dd-color-line-1c",
+          "woodlawn-hist",
           "The wall itself still stood"
         ],
         [
@@ -625,7 +567,7 @@
         ],
         [
           "img",
-          "dd-color-line-10",
+          "dd-color-line-12",
           "the government became the enforcer"
         ],
         [

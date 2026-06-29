@@ -154,6 +154,17 @@ const DEEP_DIVES: Record<string, DeepDive> = {
   },
 };
 
+// The deep-dive films live as assets on the same public GitHub Release as the
+// overview. A chapter's detailed film lights up the moment its id is added to
+// DD_AVAILABLE (set once the film has rendered and uploaded).
+const DD_RELEASE =
+  "https://github.com/Euryalus-Kay/RootedForward/releases/download/hyde-park-film/";
+const DD_AVAILABLE = new Set<string>([]);
+const ddVideo = (id: string) =>
+  DD_AVAILABLE.has(id) ? `${DD_RELEASE}deepdive-${id}.mp4` : undefined;
+const ddPoster = (id: string) =>
+  DD_AVAILABLE.has(id) ? `/media/hyde-park/video/deepdive-${id}-poster.jpg` : undefined;
+
 function fmt(s: number) {
   const m = Math.floor(s / 60);
   const sec = Math.floor(s % 60);
@@ -492,7 +503,9 @@ export default function HydeParkFilm({
         {chapters[active] && (() => {
           const ch = chapters[active];
           const dive = DEEP_DIVES[ch.id];
-          const playing = openDive === ch.id && !!dive?.video;
+          const video = ddVideo(ch.id);
+          const poster = ddPoster(ch.id);
+          const playing = openDive === ch.id && !!video;
           return (
             <div ref={diveRef} className="mt-8 scroll-mt-6">
               <div className="flex items-baseline justify-between gap-4">
@@ -515,8 +528,8 @@ export default function HydeParkFilm({
                     <video
                       key={ch.id}
                       className="block aspect-video w-full bg-black"
-                      src={dive!.video}
-                      poster={dive!.poster}
+                      src={video}
+                      poster={poster}
                       controls
                       controlsList="nofullscreen"
                       autoPlay
@@ -526,16 +539,16 @@ export default function HydeParkFilm({
                     <button
                       type="button"
                       onClick={() => {
-                        if (!dive?.video) return;
+                        if (!video) return;
                         videoRef.current?.pause();
                         setOpenDive(ch.id);
                       }}
                       className="group relative block w-full cursor-default"
-                      aria-label={dive?.video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
+                      aria-label={video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`/media/hyde-park/video/thumbs/${ch.id}.jpg`}
+                        src={poster ?? `/media/hyde-park/video/thumbs/${ch.id}.jpg`}
                         alt=""
                         loading="lazy"
                         className="block aspect-video w-full object-cover"
@@ -544,7 +557,7 @@ export default function HydeParkFilm({
                         }}
                       />
                       <span className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-ink/50">
-                        {dive?.video ? (
+                        {video ? (
                           <>
                             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-rust pl-1 text-2xl leading-none text-white shadow-lg transition-transform group-hover:scale-105">
                               &#9658;
@@ -598,7 +611,7 @@ export default function HydeParkFilm({
                       </button>
                     )}
                   </div>
-                  {dive && !dive.video && (
+                  {dive && !video && (
                     <p className="mt-4 font-body text-xs leading-relaxed text-ink/45">
                       The detailed films are produced one chapter at a time, in the
                       same style as the overview. This one is on the way.

@@ -15,14 +15,11 @@
   "annot": {
     "formation-1": ["Paul Cornell", "Developer of Hyde Park, 1822 to 1904"],
     "land-early-chicago": ["Chicago in 1833", "The frontier boomtown Cornell walked into"],
-    "land-treaty-chicago": ["Treaty of Chicago", "The 1833 cession that opened the land"],
     "formation-4": ["Bird's-eye View of Chicago", "Lithograph, 1857, the river-hemmed city"],
     "douglas-portrait": ["Senator Stephen A. Douglas", "Advised Cornell to buy south of downtown"],
-    "dd-formation-5": ["South Side Plat Map", "Washington Park Club map detail, 1886"],
+    "dd-formation-5": ["South Side Plat Map", "Blanchard's Guide Map detail, 1886"],
     "dd-formation-1": ["Hyde Park, London", "Illustrated London News engraving, 1856"],
     "formation-ic-train": ["Illinois Central Locomotive", "Period IC steam equipment, Library of Congress"],
-    "formation-ic-train2": ["Period Steam Train", "Nineteenth-century mainline equipment"],
-    "ic-embankment-hist": ["The Illinois Central", "Trains on the lakefront line, 1943"],
     "formation-6": ["Great Central Station", "The downtown depot trains ran into, 1856"],
     "formation-5": ["The Hyde Park House", "Cornell's lakefront resort hotel, 1857 to 1879"],
     "formation-2": ["Mary Todd Lincoln", "Stayed the summer of 1865 after the assassination"],
@@ -30,10 +27,7 @@
     "dd-formation-3": ["Albert Edward, Prince of Wales", "Dined at the hotel on his 1860 tour"],
     "dd-formation-9": ["1871 Fire Ruins", "Period Chicago fire destruction, gutted stone"],
     "dd-formation-4": ["Frederick Law Olmsted", "Designer of Jackson and Washington Parks"],
-    "dd-urban-renewal-1": ["Midway Plaisance Plan", "The South Parks plan drawing Olmsted shaped"],
-    "dd-formation-7": ["Hyde Park Township", "Boundary traced on the modern South Side"],
-    "urban-renewal-1": ["Hyde Park From The Air", "The lakefront Cornell assembled, 1928 aerial"],
-    "dd-university-1": ["Panic of 1857", "The financial squeeze of the hotel years"]
+    "dd-formation-7": ["Hyde Park Township", "Boundary traced on the modern South Side"]
   },
   "sections": [
     {
@@ -46,12 +40,12 @@
         ["img", "formation-1", "In 1847 a young lawyer stepped off into Chicago"],
         ["stat", "arrival", "a satchel, a fresh law license, and a dollar and a quarter"],
         ["img", "formation-1", "Paul Cornell was twenty-five"],
-        ["img", "land-treaty-chicago", "He was born in White Creek, New York, in 1822"],
         ["img", "land-early-chicago", "The Chicago he walked into was a muddy boomtown"],
-        ["img", "formation-4", "hemmed in along the river, planked sidewalks over the mud"],
-        ["clip", "lakefront-reveal", "the lake at its edge and prairie at its back"],
+        ["img", "land-early-chicago", "hemmed in along the river, planked sidewalks over the mud"],
+        ["img", "formation-4", "the lake at its edge and prairie at its back"],
         ["img", "land-early-chicago", "Cornell took work at a law firm his very first day"],
-        ["img", "douglas-portrait", "the way he got the land tells you what kind of man he was"]
+        ["clip", "lakefront-reveal", "He spent the next six years getting both"],
+        ["img", "formation-1", "the way he got the land tells you what kind of man he was"]
       ],
       "callouts": [
         ["Born", "1822, White Creek NY", "He was born in White Creek, New York, in 1822"]
@@ -69,13 +63,12 @@
         ["stat", "acres", "by 1853 he held about 300 acres along the lake"],
         ["img", "dd-formation-5", "between what we now call 51st and 55th streets"],
         ["clip", "lakefront-reveal", "It sat roughly six miles south of downtown"],
-        ["img", "urban-renewal-1", "It was prairie and sand and shoreline"],
         ["img", "formation-4", "the kind of land people called worthless to your face"],
-        ["clip", "old-new-pan", "the first thing he gave it was not a road or a house"],
+        ["clip", "lakefront-reveal", "the first thing he gave it was not a road or a house"],
         ["img", "dd-formation-1", "He called it Hyde Park, after the park in London"],
-        ["img", "urban-renewal-1", "the name carried the sound of elegant estates and old money"],
+        ["img", "dd-formation-1", "the name carried the sound of elegant estates and old money"],
         ["img", "land-early-chicago", "the comfortable Chicago businessmen and their families"],
-        ["img", "formation-1", "He was selling an idea before he had sold a single lot"]
+        ["img", "dd-formation-5", "He was selling an idea before he had sold a single lot"]
       ],
       "callouts": [
         ["The land", "Prairie, sand, shoreline", "It was prairie and sand and shoreline"]
@@ -94,11 +87,10 @@
         ["clip", "ic-tracks-detail", "In return he got a station at 53rd Street"],
         ["img", "formation-6", "a daily service into the Great Central Depot downtown"],
         ["stat", "commute", "The first passenger runs came in 1856"],
-        ["img", "formation-ic-train2", "Cornell gave away a fifth of his land"],
         ["clip", "old-new-pan", "the moment it was reachable, prairie started turning into suburb"],
-        ["img", "ic-embankment-hist", "the train is what turned distance from a liability into a luxury"],
+        ["img", "formation-ic-train", "the train is what turned distance from a liability into a luxury"],
         ["img", "formation-5", "In 1857 he put up the Hyde Park House"],
-        ["img", "dd-university-1", "Cornell said later that the cost of it almost broke him"],
+        ["img", "formation-5", "views straight out over Lake Michigan"],
         ["img", "formation-5", "looked at the empty lots and started to imagine a house there"]
       ],
       "callouts": [
@@ -118,14 +110,12 @@
         ["img", "formation-2", "Mary Todd Lincoln came to the Hyde Park House"],
         ["img", "dd-formation-2", "with her sons Robert and Tad"],
         ["img", "formation-2", "The lake was meant to offer some quiet for a grief nobody could fix"],
-        ["img", "urban-renewal-1", "as good a marker as any of how fast this place had arrived"],
+        ["img", "formation-5", "as good a marker as any of how fast this place had arrived"],
         ["img", "dd-formation-9", "It burned to the ground in a fire in 1879"],
         ["img", "dd-formation-7", "petitioned to organize as Hyde Park Township"],
-        ["img", "formation-1", "He kept buying and shaping land"],
         ["img", "dd-formation-7", "sprawled across dozens of square miles of the South Side"],
         ["img", "dd-formation-4", "Frederick Law Olmsted and Calvert Vaux would lay out in Jackson and Washington Parks"],
-        ["img", "dd-urban-renewal-1", "The parks were good civic work"],
-        ["clip", "jackson-lagoon", "they were also good for the value of everything nearby"]
+        ["clip", "jackson-lagoon", "The parks were good civic work"]
       ],
       "callouts": [
         ["Her stay", "Summer 1865, about 2.5 months", "She stayed about two and a half months before moving downtown"],
@@ -142,13 +132,13 @@
         ["img", "dd-formation-7", "And the place filled up fast"],
         ["stat", "population", "By the end of the decade it held roughly 85,000"],
         ["img", "dd-formation-9", "After the lessons of the great fire of 1871"],
-        ["img", "land-early-chicago", "a township government built for a few thousand farmers and resort-goers"],
+        ["img", "formation-4", "a township government built for a few thousand farmers and resort-goers"],
         ["img", "formation-4", "Chicago was right next door, hungry to grow"],
         ["img", "dd-formation-7", "on June 29th, 1889, the question went to a vote"],
         ["stat", "annexation", "the largest single annexation in the city's history"],
-        ["img", "urban-renewal-1", "Hyde Park was the prize at the center of it"],
-        ["img", "dd-formation-5", "got the city's water mains, its sewer lines, and its fire and police protection"],
-        ["clip", "old-new-pan", "the suburb dissolved into the very metropolis"]
+        ["img", "dd-formation-5", "Hyde Park was the prize at the center of it"],
+        ["clip", "old-new-pan", "got the city's water mains, its sewer lines, and its fire and police protection"],
+        ["clip", "lakefront-reveal", "the suburb dissolved into the very metropolis"]
       ],
       "callouts": [
         ["1880", "About 15,700", "In 1880 the township counted about 15,700 people"],
@@ -163,14 +153,14 @@
       "voiceover": "But look closely at how Cornell built it, because the sorting was there from the very start. This was never meant to be a place for everyone, and he never pretended otherwise. He marketed Hyde Park as selective by design. He sold large lots, the kind only the well-off could afford, and he leaned hard on the lake in every advertisement, fine lake views, room to breathe, the right sort of neighbors. The closer you stood to the water, the more the ground was worth. He kept heavy industry out of the heart of his development so the smoke and the noise and the men who worked in them would stay somewhere else. The factories and the cheaper workers' cottages went to other parts of the sprawling township, away from the shoreline, while the lakefront stayed expensive and quiet. From the very beginning, then, the map had a grain to it. Wealth gathered by the lake in the north, and everything cheaper was pushed outward and southward. Cornell did not stumble into that pattern. He priced it in.",
       "shots": [
         ["img", "dd-formation-5", "the sorting was there from the very start"],
-        ["img", "dd-formation-1", "He marketed Hyde Park as selective by design"],
+        ["img", "dd-formation-5", "He marketed Hyde Park as selective by design"],
         ["img", "dd-formation-5", "He sold large lots, the kind only the well-off could afford"],
         ["clip", "lakefront-reveal", "he leaned hard on the lake in every advertisement"],
-        ["img", "urban-renewal-1", "The closer you stood to the water, the more the ground was worth"],
+        ["img", "formation-4", "The closer you stood to the water, the more the ground was worth"],
         ["img", "dd-formation-7", "The factories and the cheaper workers' cottages went to other parts of the sprawling township"],
         ["graphic", "wealth-gap", "Wealth gathered by the lake in the north"],
-        ["clip", "old-new-pan", "everything cheaper was pushed outward and southward"],
-        ["graphic", "wealth-gap", "Cornell did not stumble into that pattern. He priced it in"]
+        ["graphic", "wealth-gap", "everything cheaper was pushed outward and southward"],
+        ["clip", "lakefront-reveal", "Cornell did not stumble into that pattern. He priced it in"]
       ],
       "callouts": [
         ["By design", "Selective, by price", "He marketed Hyde Park as selective by design"]
@@ -191,7 +181,7 @@
         ["img", "formation-1", "Paul Cornell bought a stretch of empty lakefront in 1853"],
         ["clip", "lakefront-reveal", "he could sell distance and exclusivity to a crowded city"],
         ["stat", "lifespan", "he died a rich and honored man in 1904"],
-        ["clip", "jackson-lagoon", "The shape of that win is still under our feet"]
+        ["clip", "lakefront-reveal", "The shape of that win is still under our feet"]
       ],
       "callouts": [
         ["Paul Cornell", "1822 to 1904", "he died a rich and honored man in 1904"]
