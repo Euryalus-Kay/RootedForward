@@ -433,19 +433,24 @@ def _parse_stat(value):
     # a bare four-digit year (1673, 1893, 1948, 2022) must never get a thousands
     # comma; only true magnitudes >= 1000 do
     is_year = bool(re.fullmatch(r"(1\d{3}|20\d{2})", value.strip()))
+    is_range = bool(re.search(r"\d\s*(?:to|–|—|-)\s*\d", value))
     comma = ("," in value) or (isinstance(target, int) and target >= 1000 and not is_year)
-    return (value[:m.start()], target, value[m.end():], comma)
+    # count up only for plain integer magnitudes; never odometer through a year,
+    # a date range, or a decimal/price (those fade in at their real value)
+    count = isinstance(target, int) and not is_year and not is_range
+    return (value[:m.start()], target, value[m.end():], comma, count)
 
 def _fmt_num(n, comma):
     n = int(round(n)); return f"{n:,}" if comma else str(n)
 
 def stat_scene(out, label, value, context, src="", dur=4.4, bg=FOREST):
-    prefix, target, suffix, comma = _parse_stat(value)
+    prefix, target, suffix, comma, count = _parse_stat(value)
     def fn(t):
         b = Image.new("RGBA", (W, H), bg + (255,)); cx = W // 2
         e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 360), label.upper(), sans(27, "semi"), RUST, int(255*e), int((1-e)*14), 11, "ma")
         cu = ease_out(elem(t, 0.28, 1.05))
-        shown = (prefix + _fmt_num(target*cu, comma) + suffix) if target is not None else value
+        disp = target * cu if count else target
+        shown = (prefix + _fmt_num(disp, comma) + suffix) if target is not None else value
         # the hero number is extruded into depth for a dimensional read; it also
         # eases up a few pixels as it lands, like settling onto the wall
         e2 = ease_out(elem(t, 0.28, 0.5))
@@ -731,8 +736,7 @@ def animated_sources(out, dur=7.0):
     lines = ["Archival images via Wikimedia Commons, including the Library of",
              "Congress, The New York Public Library, and Creative Commons",
              "contributors, each credited on screen.", "",
-             "Narration here is a scratch recording, to be replaced with a read.",
-             "Drone footage by Rooted Forward. The 360 look-arounds are real captures."]
+             "Drone footage and 360 captures by Rooted Forward."]
     def fn(t):
         b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2
         e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 300), "SOURCES AND CREDITS", sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 12, "ma")
@@ -1088,11 +1092,12 @@ CREDIT_OVERRIDE = {
 }
 
 def credit_text(clipid):
+    import html
     if clipid in CREDIT_OVERRIDE:
         return CREDIT_OVERRIDE[clipid]
     c = credits.get(clipid)
     if not c: return None
-    art = (c.get("artist") or "").strip()
+    art = html.unescape((c.get("artist") or "").strip())
     is_pd = "public domain" in (c.get("license") or "").lower()
     who = re.sub(r"\(?\d{3,4}[-–]\d{0,4}\)?", "", art).strip(" ,")
     who = re.sub(r",?\s*(photographer|publisher).*$", "", who, flags=re.I).strip(" ,")
@@ -1671,7 +1676,13 @@ def render_deepdive(ddid):
         scenes.append(dvc)
         vo_path = os.path.join(VO_DIR, f"vo-{fsid}.mp3")
         vodur = probe(vo_path)
-        cues = make_cues(s["voiceover"], vodur)
+        # prefer force-aligned cues (captions + shots land on the actual voice);
+        # fall back to proportional timing if alignment hasn't been run
+        cue_path = os.path.join(ROOT, "data/hp-deepdive/cues", f"{fsid}.json")
+        if os.path.exists(cue_path):
+            cues = json.load(open(cue_path))
+        else:
+            cues = make_cues(s["voiceover"], vodur)
         shot_files, durs = build_story_chapter(fsid, {"assets": {}}, vodur, cues)
         silent = os.path.join(TMP, f"dd_{fsid}_silent.mp4")
         xfade_chain(shot_files, durs, silent)
