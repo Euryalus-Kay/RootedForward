@@ -234,16 +234,28 @@ def credit_overlay(path, text):
 
 def annotation_label(path, label, sub):
     """A curator's wall label in the upper-left safe zone: a serif name over a
-    tracked sans line, joined by the fixed rust tick. Emerges, then rests."""
-    img = Image.new("RGBA", (W, H), (0,0,0,0))
-    d = ImageDraw.Draw(img)
+    tracked sans line, joined by the fixed rust tick. A soft gradient scrim
+    behind it keeps the text legible over any image, light or busy."""
     x, y = 132, 156
-    d.rectangle([x, y+2, x+5, y+54], fill=RUST)
-    d.text((x+24, y-6), label, font=serif(50, "reg"),
-           fill=(CREAM[0],CREAM[1],CREAM[2],255))
-    draw_tracked(d, (x+26, y+58), sub.upper(), sans(21, "semi"),
-                 (214,209,199,235), tracking=5, shadow=(1,1,(0,0,0,150)))
-    return _drop(img, path)
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    # gradient scrim: dark at the upper-left, fading to clear toward the right
+    # and below, so the name + sub read on light documents and bright skies
+    xx = np.clip(1.0 - (np.arange(W) - (x - 40)) / 780.0, 0, 1) ** 1.25
+    ywin = np.zeros(H)
+    ywin[max(0, y - 84):min(H, y + 106)] = 1.0
+    a = (np.outer(ywin, xx) * 190.0).astype("uint8")
+    sa = Image.fromarray(a, "L").filter(ImageFilter.GaussianBlur(28))
+    dark = Image.new("RGBA", (W, H), (6, 9, 8, 255))
+    dark.putalpha(sa)
+    img = Image.alpha_composite(img, dark)
+    d = ImageDraw.Draw(img)
+    d.rectangle([x, y + 2, x + 5, y + 54], fill=RUST)
+    d.text((x + 25, y - 4), label, font=serif(50, "reg"), fill=(0, 0, 0, 160))  # shadow
+    d.text((x + 24, y - 6), label, font=serif(50, "reg"), fill=(CREAM[0], CREAM[1], CREAM[2], 255))
+    draw_tracked(d, (x + 26, y + 58), sub.upper(), sans(21, "semi"),
+                 (216, 211, 201, 245), tracking=5, shadow=(1, 1, (0, 0, 0, 165)))
+    img.save(path)
+    return path
 
 def _drop(img, path):
     # render a faint blurred dark copy behind the text for contrast
@@ -503,8 +515,8 @@ def chart_wealthgap_scene(out, dur=6.8):
             la = ease_out(elem(t, 1.2 + k*0.9, 0.6)); b = put_text(b, (x+bw//2, base+40), lab, sans(24, "semi"), (214, 209, 199), int(255*la), 0, 4, "ma"); d = ImageDraw.Draw(b)
         rc = ease_out(elem(t, 3.0, 0.9))
         if rc > 0:
-            b = put_text(b, (cx, 560), "MORE THAN", sans(22, "light"), WARM, int(220*rc), 0, 6, "ma")
-            b = put_text(b, (cx, 596), "6 to 1", serif(76, "semi"), CREAM, int(255*rc), 0, 0, "mm"); d = ImageDraw.Draw(b)
+            b = put_text(b, (cx, 506), "MORE THAN", sans(22, "semi"), (210, 150, 110), int(235*rc), 0, 7, "ma")
+            b = put_text(b, (cx, 584), "6 to 1", serif(78, "semi"), CREAM, int(255*rc), 0, 0, "mm"); d = ImageDraw.Draw(b)
         e = ease_out(elem(t, 3.7, 0.8)); b = put_text(b, (cx, 958), "SOURCE  FEDERAL RESERVE, 2022 SURVEY OF CONSUMER FINANCES", sans(16, "light"), (132, 150, 138), int(210*e), 0, 6, "mm")
         return b.convert("RGB")
     seq_clip(fn, dur, out)
@@ -1102,7 +1114,7 @@ scenes.append(mp)
 
 # which point on the timeline each chapter sits at, for the divider ribbon
 DIV_YEAR = {"land": 1833, "formation": 1853, "university": 1890, "worlds-fair": 1893,
-            "color-line": 1909, "redlining": 1940, "urban-renewal": 1958, "present": 2026}
+            "color-line": 1908, "redlining": 1940, "urban-renewal": 1958, "present": 2026}
 
 # ---- real footage clips ----------------------------------------------------
 # id -> (source path, in-point seconds, grade mode, extra video_shot opts).
@@ -1174,7 +1186,7 @@ SHOT_DESC = {
 PANO_FILE = {
  "pano-founding": ("public/media/hyde-park/360/founding-rock.jpg", "Where it began", 0.30),
  "pano-cobb":     ("public/media/hyde-park/360/cobb-hall.jpg",     "Outside Cobb Hall", 0.12),
- "pano-quad-now": ("public/media/hyde-park/360/modern-quad.jpg",   "Hyde Park today", 0.0),
+ "pano-quad-now": ("public/media/hyde-park/360/modern-quad.jpg",   "The University of Chicago now", 0.0),
 }
 
 def pano_card(ref, dur, out):
@@ -1189,13 +1201,14 @@ def pano_card(ref, dur, out):
     def fn(tt):
         x = (start + int((tt / dur) * 1000)) % 2160   # slow drift, ~half a turn
         frame = strip.crop((x, 0, x + W, H)).convert("RGBA")
+        # label rides the TOP so it never collides with the bottom subtitles
         scrim = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(scrim).rectangle([0, 858, W, H], fill=(8, 13, 10, 150))
+        ImageDraw.Draw(scrim).rectangle([0, 0, W, 232], fill=(8, 13, 10, 150))
         scrim = scrim.filter(ImageFilter.GaussianBlur(30))
         frame = Image.alpha_composite(frame, scrim)
         e = ease_out(elem(tt, 0.2, 0.7)); cx = W // 2
-        frame = put_text(frame, (cx, 916), title, serif(46, "reg"), CREAM, int(245 * e), 0, 0, "mm")
-        frame = put_text(frame, (cx, 968), "DRAG TO LOOK AROUND ON THE WEBSITE", sans(20, "light"), (200, 196, 186), int(210 * e), 0, 6, "mm")
+        frame = put_text(frame, (cx, 96), title, serif(46, "reg"), CREAM, int(245 * e), 0, 0, "mm")
+        frame = put_text(frame, (cx, 150), "DRAG TO LOOK AROUND ON THE WEBSITE", sans(20, "light"), (200, 196, 186), int(210 * e), 0, 6, "mm")
         return frame.convert("RGB")
     seq_clip(fn, dur, out)
 
@@ -1243,7 +1256,11 @@ ANNOT = {
  "worlds-fair-10": ("The Court of Honor", "From the Administration Building"),
  "worlds-fair-8": ("Olmsted's lagoon", "The Wooded Island, 1893"),
  "color-line-5": ("Chicago's Black Belt", "Photographed in 1941"),
- "color-line-4": ("The Hansberry House", "On South Rhodes Avenue"),
+ "color-line-4": ("A covenanted block", "The clause was in the deed"),
+ "ic-embankment-hist": ("The Illinois Central tracks", "The rail line that split the lakefront"),
+ "midway-village-hist": ("The Midway Plaisance", "Peoples staged as exhibits, 1893"),
+ "homer-hoyt": ("The redlining map", "Federal security grades, Chicago"),
+ "woodlawn-hist": ("Chicago's South Side", "The Black Belt, 1941"),
  "urban-renewal-1": ("Hyde Park before clearance", "Photographed in 1928"),
  "urban-renewal-3": ("University Apartments", "Built on cleared land"),
  "urban-renewal-4": ("55th Street today", "The corridor renewal rebuilt"),
@@ -1295,7 +1312,8 @@ STORY = {
  },
  "formation": {
    "shots": [
-     ("img", "formation-ic-train", "handed the Illinois Central"),  # the historic IC
+     ("img", "formation-1", "named it Hyde Park"),      # Paul Cornell opens the chapter on the naming
+     ("img", "formation-ic-train", "handed the Illinois Central"),  # the historic IC, on its real line
      ("clip", "ic-tracks", "six trains a day"),         # the tracks today, then-and-now
      ("img", "formation-5", "four-story wood hotel"),   # the Hyde Park House
      ("img", "formation-2", "Mary Todd Lincoln"),       # Mary Todd Lincoln
@@ -1324,9 +1342,9 @@ STORY = {
      ("img", "worlds-fair-10", "not a park"),           # the fair, establishing
      ("img", "worlds-fair-8", "lagoons"),               # Olmsted's lagoons
      ("img", "white-city-night", "Court of Honor"),     # the White City
-     ("img", "midway-1893-crowd", "Past the White City"),  # the Midway, the racial spectacle
+     ("img", "midway-village-hist", "set other peoples on display"),  # the real 1893 Midway ethnographic exhibit
      ("stat", None, "twenty-seven million"),            # 27 million visitors
-     ("clip", "ic-tracks-detail", "split the neighborhood"),  # the dividing embankment, today
+     ("img", "ic-embankment-hist", "wall of earth"),    # the historical IC tracks that split the neighborhood
      ("clip", "jackson-lagoon", "valuable ground"),     # the fairgrounds, today
    ],
    "callouts": [],
@@ -1346,10 +1364,10 @@ STORY = {
  },
  "redlining": {
    "shots": [
-     ("graphic", "hierarchy", "authority of science"),  # the racial-hierarchy ladder
-     ("img", "color-line-3", "drawn onto maps"),        # the HOLC redlining map
-     ("clip", "campus-quads2", "Hyde Park classroom"),  # the campus, where the idea was built
-     ("img", "color-line-4", "Shelley versus Kraemer"), # the covenanted house, the legal end
+     ("graphic", "hierarchy", "ranked races"),          # the ladder owns the "ranked races" line
+     ("img", "homer-hoyt", "drawn onto maps"),          # the real Chicago HOLC redlining map
+     ("img", "university-1", "Hyde Park classroom"),    # the U of C, where the idea was built (historical)
+     ("img", "color-line-4", "Not until 1948"),         # the covenanted house, re-anchored onto the Shelley line
    ],
    "callouts": [("Covenants struck down", "1948", "Shelley")],
  },
@@ -1368,12 +1386,13 @@ STORY = {
  },
  "present": {
    "shots": [
-     ("clip", "obama-hero", "Obama Presidential Center opened"),  # the Obama hero aerial
-     ("clip", "obama-aerial2", "two hundred twenty-five feet"),   # a second Obama angle
-     ("clip", "jackson-lagoon", "held the 1893 World's Fair"),    # the fairgrounds, ties back
-     ("pano", "pano-quad-now", "still affordable"),     # a look-around, today
-     ("stat", "color-tax", "three to four billion"),    # the color tax
+     ("clip", "obama-hero", "Obama Presidential Center opened"),  # the Obama Center, one example
+     ("clip", "jackson-lagoon", "held the 1893 World's Fair"),    # Jackson Park, ties back to the fair
+     ("clip", "old-new-pan", "home prices doubled"),    # the changing blocks, old beside new (broadens past Obama)
+     ("img", "woodlawn-hist", "bought on contract"),    # the older wound, South Side contract-era housing
+     ("stat", "color-tax", "three to four billion"),    # the color tax (carries "simply vanished")
      ("graphic", "wealth-gap", "six to one"),           # the wealth-gap bars
+     ("pano", "pano-quad-now", "An institution arrives"),  # the University of Chicago now, the institution
      ("card", "host-close", "who this ground is for"),  # the host closes to camera
    ],
    "callouts": [],

@@ -38,14 +38,14 @@ const PANO_MEDIA: Record<string, Media360> = {
     kind: "photo360",
     src: "/media/hyde-park/360/founding-rock.jpg",
     poster: "/media/hyde-park/360/founding-rock-poster.jpg",
-    initialYawDeg: 108,
+    initialYawDeg: 0,
     note: "The lakefront where the neighborhood began.",
   },
   university: {
     kind: "photo360",
     src: "/media/hyde-park/360/cobb-hall.jpg",
     poster: "/media/hyde-park/360/cobb-hall-poster.jpg",
-    initialYawDeg: 40,
+    initialYawDeg: 0,
     note: "Outside Cobb Hall, the first building of the University of Chicago.",
   },
   present: {
@@ -53,7 +53,7 @@ const PANO_MEDIA: Record<string, Media360> = {
     src: "/media/hyde-park/360/modern-quad.jpg",
     poster: "/media/hyde-park/360/modern-quad-poster.jpg",
     initialYawDeg: 0,
-    note: "Hyde Park today.",
+    note: "The University of Chicago Gothic quadrangle today.",
   },
 };
 
@@ -68,14 +68,14 @@ const SHORT_LABEL: Record<string, string> = {
   "color-line": "The color line",
   redlining: "Redlining",
   "urban-renewal": "Urban renewal",
-  present: "The Obama Center",
+  present: "Hyde Park now",
 };
 
 // The 360 look-around spots, in film order (each maps to a real capture above).
 const REVEAL_SPOTS = [
   { id: "land", location: "Where it began", framing: "Promontory Point and the lakefront." },
   { id: "university", location: "Outside Cobb Hall", framing: "The first building of the University of Chicago." },
-  { id: "present", location: "Hyde Park today", framing: "A campus courtyard, now." },
+  { id: "present", location: "The University of Chicago now", framing: "The Gothic main quadrangle, today." },
 ];
 
 // One-line context for the clickable timeline's info panel, per chapter.
@@ -233,6 +233,8 @@ export default function HydeParkFilm({
             src={man?.video}
             poster={man?.poster}
             controls
+            controlsList="nofullscreen"
+            disablePictureInPicture
             playsInline
             preload="metadata"
             onTimeUpdate={onTime}

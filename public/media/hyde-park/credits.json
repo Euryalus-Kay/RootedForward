@@ -496,5 +496,53 @@
     "credit": "Own work",
     "date": "04/02/2008",
     "bytes": 87739
+  },
+  "ic-embankment-hist": {
+    "id": "ic-embankment-hist",
+    "query": "Trains Chicago Skyline Jack Delano 1943 Illinois Central",
+    "file": "/media/hyde-park/img/ic-embankment-hist.jpg",
+    "commonsTitle": "File:No Known Restrictions Trains and Chicago Skyline by Jack Delano, 1943 (LOC) (471324544).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:No_Known_Restrictions_Trains_and_Chicago_Skyline_by_Jack_Delano,_1943_(LOC)_(471324544).jpg",
+    "license": "Public domain",
+    "artist": "Jack Delano",
+    "credit": "No Known Restrictions: Trains and Chicago Skyline by Jack Delano, 1943 (LOC)",
+    "date": "1943-04",
+    "bytes": 451596
+  },
+  "midway-village-hist": {
+    "id": "midway-village-hist",
+    "query": "Street of Cairo section Midway World's Columbian Exposition Chicago LCCN2014645370",
+    "file": "/media/hyde-park/img/midway-village-hist.jpg",
+    "commonsTitle": "File:Street of Cairo section of the Midway at the World's Columbian Exposition, Chicago, Illinois LCCN2014645370.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Street_of_Cairo_section_of_the_Midway_at_the_World%27s_Columbian_Exposition,_Chicago,_Illinois_LCCN2014645370.jpg",
+    "license": "Public domain",
+    "artist": "Miscellaneous Items in High Demand, PPOC, Library of Congress",
+    "credit": "Library of Congress Catalog: https://lccn.loc.gov/2014645370 Image download: https://cdn.loc.gov/service/pnp/ds/05100/05104v.jpg Original url: https://www.loc.g",
+    "date": "1893",
+    "bytes": 811386
+  },
+  "woodlawn-hist": {
+    "id": "woodlawn-hist",
+    "query": "Chicagoblackbelt South Side black belt 1941",
+    "file": "/media/hyde-park/img/woodlawn-hist.jpg",
+    "commonsTitle": "File:Chicagoblackbelt.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Chicagoblackbelt.jpg",
+    "license": "Public domain",
+    "artist": "Russell Lee",
+    "credit": "This image is available from the United States Library of Congress's Prints and Photographs division under the digital ID ppmsca.01561.This tag does not indicat",
+    "date": "1941-04",
+    "bytes": 200678
+  },
+  "homer-hoyt": {
+    "id": "homer-hoyt",
+    "query": "HOLC Chicago map",
+    "file": "/media/hyde-park/img/homer-hoyt.jpg",
+    "commonsTitle": "File:Holc-chicago.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Holc-chicago.jpg",
+    "license": "CC0",
+    "artist": "U.S. Home Owners Loan Corporation",
+    "credit": "Home Owners Loan Corporation (HOLC), Residential Security Map of Chicago, c.1940 / Wikimedia Commons (CC0)",
+    "date": "c.1940",
+    "bytes": 1260620
   }
 }
