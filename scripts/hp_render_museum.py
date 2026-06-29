@@ -1311,8 +1311,8 @@ STORY = {
  # (clip), archival film, 360 panos, graphics and stat cards all crossfade as one.
  "intro": {
    "shots": [
-     ("card", "host-intro", "On the South Side"),       # the host opens to camera
-     ("clip", "lakefront-reveal", "Lake Michigan"),     # the lakefront, today
+     # opens on the real lakefront reveal, carrying "runs right up to Lake Michigan"
+     ("clip", "lakefront-reveal", "On the South Side"),  # the lakefront, today
      ("clip", "greystone-rise", "look permanent"),      # greystones
      ("clip", "campus-quads2", "Then a university"),    # the campus
      ("clip", "obama-aerial2", "This is the story"),    # hand to the deep history
@@ -1413,8 +1413,8 @@ STORY = {
      ("img", "woodlawn-hist", "bought on contract"),    # the older wound, South Side contract-era housing
      ("stat", "color-tax", "three to four billion"),    # the color tax (carries "simply vanished")
      ("graphic", "wealth-gap", "six to one"),           # the wealth-gap bars
-     ("pano", "pano-quad-now", "An institution arrives"),  # the University of Chicago now, the institution
-     ("card", "host-close", "who this ground is for"),  # the host closes to camera
+     # closes on the slowly panning Gothic quad as the final question lands
+     ("pano", "pano-quad-now", "An institution arrives"),  # the University of Chicago now
    ],
    "callouts": [],
  },
@@ -1561,7 +1561,12 @@ def build_story_chapter(cid, seq, vodur, cues):
             overlays.append({"png": p, "a": 0.7, "b": min(dur - 0.5, 4.6)})
         for j, (lab, val, lt) in enumerate(assign.get(i, [])):
             p = os.path.join(TMP, f"{cid}_st{i}_lt{j}.png"); lower_third(p, lab, val)
-            overlays.append({"png": p, "a": lt, "b": min(dur - 0.3, lt + 3.6), "slide": 18})
+            # keep the chip entirely inside the shot's solid window, never bleeding
+            # into the cross-dissolve, so two callouts can never ghost together
+            a = max(lt, XFADE + 0.1)
+            b = min(dur - XFADE - 0.15, a + 3.6)
+            if b > a + 0.6:
+                overlays.append({"png": p, "a": a, "b": b, "slide": 18})
         # the curator's wall label, emerging once the still has settled
         if ref in ANNOT and dur > 3.0:
             p = os.path.join(TMP, f"{cid}_st{i}_an.png"); annotation_label(p, *ANNOT[ref])

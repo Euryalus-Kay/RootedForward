@@ -35,7 +35,7 @@ def transcribe_words(mp3):
     return out.get("words", [])
 
 def sentences(vo):
-    return [s.strip() for s in re.split(r"(?<=[.?!])\s+", vo.strip()) if s.strip()]
+    return [s.strip() for s in re.split(r"(?<=[.?!])(?<![A-Z][.?!])\s+", vo.strip()) if s.strip()]
 
 def align(sents, words, dur):
     W = len(words); wi = 0; cues = []
