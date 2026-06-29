@@ -159,7 +159,7 @@ const DEEP_DIVES: Record<string, DeepDive> = {
 // DD_AVAILABLE (set once the film has rendered and uploaded).
 const DD_RELEASE =
   "https://github.com/Euryalus-Kay/RootedForward/releases/download/hyde-park-film/";
-const DD_AVAILABLE = new Set<string>([]);
+const DD_AVAILABLE = new Set<string>(["land"]);
 const ddVideo = (id: string) =>
   DD_AVAILABLE.has(id) ? `${DD_RELEASE}deepdive-${id}.mp4` : undefined;
 const ddPoster = (id: string) =>
