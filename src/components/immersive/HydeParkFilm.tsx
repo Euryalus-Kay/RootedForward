@@ -738,67 +738,9 @@ export default function HydeParkFilm({
         )}
       </div>
 
-      {/* The 360 look-around, kept inside the room */}
-      <div className="border-t border-[#26231E] bg-[#0E0F0D]">
-        <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
-                <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
-                  Look around &middot; 360 and 3D
-                </p>
-              </div>
-              <h2 className="mt-3 font-display text-2xl text-[#E8E2D6] md:text-3xl">
-                Stand on the ground the film is about
-              </h2>
-            </div>
-            <p className="max-w-sm font-body text-sm leading-relaxed text-[#E8E2D6]/55">
-              Drag the frame to look around. These are real 360 captures from
-              three spots the film visits, where it began on the lakefront,
-              outside Cobb Hall, and the University of Chicago today.
-            </p>
-          </div>
-
-          <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_260px]">
-            <div className="overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#0A0B09] p-2">
-              <div className="overflow-hidden rounded-[1px]">
-                <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
-              </div>
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-3 pb-1 pt-3">
-                <p className="font-body text-sm font-semibold text-[#E8E2D6]">
-                  {REVEAL_SPOTS[reveal].location}
-                </p>
-                <p className="font-body text-xs text-[#8A8276]">
-                  {REVEAL_SPOTS[reveal].framing}
-                </p>
-              </div>
-            </div>
-            <ol className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-2 lg:overflow-visible">
-              {REVEAL_SPOTS.map((s, i) => (
-                <li key={s.id} className="shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setReveal(i)}
-                    className={`w-full rounded-[2px] border px-4 py-3 text-left transition-colors ${
-                      i === reveal
-                        ? "border-[#C45A33] bg-[#C45A33]/10"
-                        : "border-[#3A352E] bg-[#141512] hover:border-[#C45A33]/50"
-                    }`}
-                  >
-                    <span className="block font-body text-[11px] font-semibold uppercase tracking-wider text-[#C45A33]">
-                      Reveal {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mt-0.5 block font-body text-sm leading-snug text-[#E8E2D6]">
-                      {s.location}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </div>
+      {/* The standalone "Look around" 360 section was removed at the owner's
+          request; the 3D look-around still lives in the film itself via the
+          "View in 3D" button, which opens the shared vitrine below. */}
 
       {/* step back up into the cream lobby */}
       <div aria-hidden className="h-16 w-full bg-gradient-to-b from-[#0E0F0D] to-cream" />
