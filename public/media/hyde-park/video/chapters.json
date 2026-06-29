@@ -1,7 +1,7 @@
 {
   "video": "/media/hyde-park/video/hyde-park-museum.mp4",
   "poster": "/media/hyde-park/video/poster.jpg",
-  "duration": 515.59,
+  "duration": 735.09,
   "chapters": [
     {
       "id": "opening",
@@ -18,58 +18,77 @@
       "startSec": 10.22
     },
     {
+      "id": "land",
+      "title": "The Ground Before",
+      "era": "Before 1853",
+      "year": 1833,
+      "startSec": 63.09
+    },
+    {
       "id": "formation",
       "title": "Paul Cornell's Lakefront Bet",
       "era": "1853 to 1889",
       "year": 1853,
-      "startSec": 61.97
+      "startSec": 132.63
     },
     {
       "id": "university",
       "title": "Rockefeller's University Rises",
       "era": "1890 to 1910",
       "year": 1890,
-      "startSec": 134.18
+      "startSec": 201.67
     },
     {
       "id": "worlds-fair",
       "title": "The White City in Jackson Park",
       "era": "1893",
       "year": 1893,
-      "startSec": 190.59
+      "startSec": 275.13
     },
     {
       "id": "color-line",
       "title": "The Color Line Comes to Hyde Park",
       "era": "1920s to 1948",
-      "year": 1948,
-      "startSec": 252.34
+      "year": 1909,
+      "startSec": 357.84
+    },
+    {
+      "id": "redlining",
+      "title": "How Hyde Park Drew the Lines",
+      "era": "1930s to 1948",
+      "year": 1940,
+      "startSec": 449.3
     },
     {
       "id": "urban-renewal",
       "title": "The University Rebuilds the Neighborhood",
       "era": "1952 to 1970s",
       "year": 1958,
-      "startSec": 327.09
+      "startSec": 512.97
     },
     {
       "id": "present",
       "title": "Hyde Park Now",
       "era": "Today",
       "year": 2026,
-      "startSec": 417.38
+      "startSec": 603.26
     }
   ],
   "panos": [
     {
-      "cid": "intro",
-      "startSec": 26.19,
-      "endSec": 48.38
+      "cid": "land",
+      "startSec": 110.4,
+      "endSec": 124.7
+    },
+    {
+      "cid": "university",
+      "startSec": 256.78,
+      "endSec": 270.78
     },
     {
       "cid": "present",
-      "startSec": 443.75,
-      "endSec": 478.94
+      "startSec": 655.74,
+      "endSec": 672.06
     }
   ]
 }

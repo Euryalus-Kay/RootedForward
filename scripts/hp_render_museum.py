@@ -181,7 +181,7 @@ def sources_card(path):
         "contributors, each credited on screen.",
         "",
         "Narration here is a scratch recording, to be replaced with a read.",
-        "Host segments and 360 look-arounds are placeholders, to be filmed.",
+        "Drone footage by Rooted Forward. The 360 look-arounds are real captures.",
     ]
     y = 500
     for ln in lines:
@@ -503,6 +503,78 @@ def chart_bars_scene(out, dur=6.0):
         return b.convert("RGB")
     seq_clip(fn, dur, out)
 
+def chart_wealthgap_scene(out, dur=6.8):
+    """The racial wealth gap today, in the same pseudo-3D bars as the renewal
+    chart, so the film closes on the line it has been drawing all along.
+    Median family wealth, Federal Reserve 2022 Survey of Consumer Finances."""
+    base, topY = 824, 392; full = base - topY
+    mx = 300000.0
+    cols = [("WHITE FAMILIES", 285000, CREAM, 540),
+            ("BLACK FAMILIES", 45000, RUST, 1180)]
+    bw = 200
+    def fn(t):
+        b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2; d = ImageDraw.Draw(b)
+        e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 214), "THE GAP IT LEFT", sans(28, "semi"), RUST, int(255*e), int((1-e)*12), 11, "ma")
+        e = ease_out(elem(t, 0.35, 0.6)); b = put_text(b, (cx, 274), "Median family wealth in America today", sans(30, "light"), (214, 209, 199), int(255*e), 0, 0, "mm")
+        d = ImageDraw.Draw(b)
+        bl = ease_io(elem(t, 0.5, 0.7)); d.line([(480, base), (480 + int(960*bl), base)], fill=(120, 110, 96), width=2)
+        for k, (lab, val, col, x) in enumerate(cols):
+            ga = ease_out(elem(t, 1.0 + k*0.9, 1.5)); bh = int(full * (val/mx) * ga); y = base - bh
+            if bh > 2:
+                d.polygon([(x+bw, y), (x+bw+24, y-15), (x+bw+24, base-15), (x+bw, base)], fill=tuple(int(c*0.55) for c in col))
+                d.polygon([(x, y), (x+24, y-15), (x+bw+24, y-15), (x+bw, y)], fill=tuple(int(c*0.80) for c in col))
+                d.rectangle([x, y, x+bw, base], fill=col)
+                cu = int(round(val * ga / 1000.0))
+                b = put_text(b, (x+bw//2, y-58), f"${cu}K", serif(80, "semi"), col, 255, 0, 0, "mm"); d = ImageDraw.Draw(b)
+            la = ease_out(elem(t, 1.2 + k*0.9, 0.6)); b = put_text(b, (x+bw//2, base+40), lab, sans(24, "semi"), (214, 209, 199), int(255*la), 0, 4, "ma"); d = ImageDraw.Draw(b)
+        rc = ease_out(elem(t, 3.0, 0.9))
+        if rc > 0:
+            b = put_text(b, (cx, 560), "MORE THAN", sans(22, "light"), WARM, int(220*rc), 0, 6, "ma")
+            b = put_text(b, (cx, 596), "6 to 1", serif(76, "semi"), CREAM, int(255*rc), 0, 0, "mm"); d = ImageDraw.Draw(b)
+        e = ease_out(elem(t, 3.7, 0.8)); b = put_text(b, (cx, 958), "SOURCE  FEDERAL RESERVE, 2022 SURVEY OF CONSUMER FINANCES", sans(16, "light"), (132, 150, 138), int(210*e), 0, 6, "mm")
+        return b.convert("RGB")
+    seq_clip(fn, dur, out)
+
+def chart_hierarchy_scene(out, dur=7.2):
+    """The racial 'desirability' ladder Chicago's real-estate industry built and
+    Homer Hoyt carried to Washington. Shown to indict, not endorse, the invented
+    logic at the root of redlining."""
+    rows = [("English, German, Scandinavian", 1.00, CREAM),
+            ("Northern Italians",              0.72, (206, 178, 120)),
+            ("Poles, Lithuanians, Greeks",     0.56, (196, 150, 96)),
+            ("Southern Italians",              0.44, (190, 128, 84)),
+            ("Jews and Mexicans",              0.30, (178, 100, 70)),
+            ("Black and Asian Americans",      0.13, RUST)]
+    lx, bx, bw, topY, rh = 540, 920, 540, 360, 86
+    def fn(t):
+        b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2
+        e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 182), "RANKED BY THEIR EFFECT ON LAND VALUES", sans(25, "semi"), RUST, int(255*e), int((1-e)*10), 8, "ma")
+        e = ease_out(elem(t, 0.35, 0.6)); b = put_text(b, (cx, 236), "The hierarchy Chicago's real-estate industry invented, then taught the nation", sans(25, "light"), (214, 209, 199), int(255*e), 0, 0, "mm")
+        for i, (name, frac, col) in enumerate(rows):
+            ra = ease_out(elem(t, 0.85 + i*0.34, 0.7))
+            if ra <= 0:
+                continue
+            y = topY + i*rh
+            b = put_text(b, (lx, y + 20), name, sans(27, "light"), (224, 219, 209), int(255*ra), 0, 0, "rm")
+            d = ImageDraw.Draw(b); w = int(bw * frac * ra)
+            d.rectangle([bx, y + 8, bx + max(2, w), y + 50], fill=col)
+        e = ease_out(elem(t, 2.7, 0.7)); b = put_text(b, (bx, topY - 24), "MOST VALUED", sans(15, "light"), WARM, int(200*e), 0, 4, "la")
+        e = ease_out(elem(t, 3.1, 0.7)); b = put_text(b, (bx, topY + len(rows)*rh + 6), "DEEMED HARMFUL", sans(15, "light"), WARM, int(200*e), 0, 4, "la")
+        e = ease_out(elem(t, 3.7, 0.8)); b = put_text(b, (cx, 962), "SOURCE  CHICAGO REAL-ESTATE APPRAISAL, 1920s TO 1930s", sans(16, "light"), (132, 150, 138), int(210*e), 0, 6, "mm")
+        return b.convert("RGB")
+    seq_clip(fn, dur, out)
+
+GRAPHICS = {"wealth-gap": chart_wealthgap_scene, "hierarchy": chart_hierarchy_scene}
+
+if "--probegfx" in sys.argv:
+    chart_wealthgap_scene(os.path.join(TMP, "g_wealth.mp4"), 6.0)
+    chart_hierarchy_scene(os.path.join(TMP, "g_hier.mp4"), 6.0)
+    for nm in ["g_wealth", "g_hier"]:
+        run(["-sseof", "-1.5", "-i", os.path.join(TMP, nm + ".mp4"), "-frames:v", "1",
+             os.path.join("/tmp", nm + ".jpg")])
+    print("PROBEGFX done")
+    sys.exit(0)
+
 def chart_area_scene(out, dur=6.6):
     """Chicago's Black population 1910 to 1940, an area-over-time reveal. Real
     U.S. Census counts; the curve steepens through the 1920s like the migration
@@ -662,7 +734,7 @@ def animated_sources(out, dur=7.0):
              "Congress, The New York Public Library, and Creative Commons",
              "contributors, each credited on screen.", "",
              "Narration here is a scratch recording, to be replaced with a read.",
-             "Host segments and 360 look-arounds are placeholders, to be filmed."]
+             "Drone footage by Rooted Forward. The 360 look-arounds are real captures."]
     def fn(t):
         b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2
         e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 300), "SOURCES AND CREDITS", sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 12, "ma")
@@ -797,6 +869,74 @@ def render_shot(src, dur, grade, out, kb_idx=0, overlays=None):
     fc = ";".join(parts)
     run([*inputs, "-filter_complex", fc, "-map", last, "-t", f"{dur}", "-r", str(FPS),
          "-c:v","libx264","-preset","veryfast","-crf","20","-pix_fmt","yuv420p", out])
+
+# Flat HLG drone footage -> the film's warm archival tone. Tonemap runs after the
+# downscale to 1080 so it is fast; the look stays full color (so "now" reads
+# against the sepia "then") but tonally married to the archival grade.
+GRADE_DRONE = (
+    # scale/zoompan upstream drop the HLG color tags, so force the input
+    # interpretation (BT.2020 / HLG) before tonemapping to BT.709.
+    "zscale=tin=arib-std-b67:min=2020_ncl:pin=2020:t=linear:npl=100,"
+    "tonemap=hable:desat=0,"
+    "zscale=t=bt709:m=bt709:p=bt709:r=tv,format=gbrp,"
+    "eq=contrast=1.06:saturation=0.9:gamma=0.97:gamma_r=1.03:gamma_b=0.95,"
+    "colorbalance=rm=.04:rh=.03:bh=-.04:bs=-.03,unsharp=3:3:0.4"
+)
+# Old SDR archival film (1897 Edison, 1941). No tonemap; lift contrast and warm
+# it toward the sepia stills so it lives in the same world.
+GRADE_FILM = (
+    "eq=contrast=1.12:brightness=0.015:saturation=0.65:gamma=0.98,"
+    "colorbalance=rm=.07:rh=.06:gh=.01:bh=-.06:bs=-.05,unsharp=3:3:0.3"
+)
+GRADE_MODES = {"drone": GRADE_DRONE, "film": GRADE_FILM}
+
+def video_shot(src, in_sec, dur, out, overlays=None, kb_idx=0, mode="drone",
+               stabilize=False, speed=1.0, crop=None, push=0.0):
+    """A real footage clip: trim + (optional crop / speed / stabilize) + grade +
+    scale-to-fill 1920x1080 + the film's vignette/grain + the same overlay system
+    as render_shot, so it drops into xfade_chain like any other shot. `crop` is a
+    4K crop string w:h:x:y for a punch-in; `push` adds a slow zoom for life;
+    `mode` picks the grade (drone HLG vs old archival film)."""
+    pre = []
+    trf = None
+    if crop:
+        pre.append(f"crop={crop}")
+    pre.append("scale=1920:1080:force_original_aspect_ratio=increase,setsar=1,crop=1920:1080")
+    if stabilize:
+        trf = out + ".trf"
+        run(["-ss", f"{in_sec:.3f}", "-t", f"{dur:.3f}", "-i", src, "-vf",
+             ("crop=" + crop + "," if crop else "") +
+             "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,"
+             "vidstabdetect=shakiness=6:result=" + trf, "-f", "null", "-"])
+        pre.append(f"vidstabtransform=input={trf}:zoom=4:smoothing=22:optzoom=1")
+    # grade FIRST (the HLG tonemap needs the upstream colorspace intact), then
+    # an optional slow push, then vignette/grain. zoompan after the grade keeps
+    # it clear of the colorspace conversion.
+    pre.append(GRADE_MODES.get(mode, GRADE_DRONE))
+    pre.append("format=yuv420p")
+    if push and push > 0.001:
+        frames = max(2, int(round(dur*FPS)))
+        z = f"1.0+{push:.4f}*(1-1/(1+on*0.03))"
+        pre.append(f"zoompan=z='{z}':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={W}x{H}:fps={FPS}")
+    grain = 6 if mode == "drone" else 10
+    pre.append(f"vignette=PI/4.8,noise=alls={grain}:allf=t+u,format=yuv420p")
+    if abs(speed-1.0) > 1e-3:
+        pre.append(f"setpts={1.0/speed:.4f}*PTS")
+    base = f"[0:v]{','.join(pre)}[base]"
+    inputs = ["-ss", f"{in_sec:.3f}", "-t", f"{dur:.3f}", "-i", src]
+    parts = [base]; last = "[base]"
+    for i, ov in enumerate(overlays or []):
+        png, a, b = ov["png"], ov["a"], ov["b"]; slide = ov.get("slide", 0)
+        inputs += ["-loop","1","-t",f"{dur}","-i", png]; idx = i+1
+        parts.append(f"[{idx}:v]format=rgba,fade=t=in:st={a:.2f}:d=0.5:alpha=1,"
+                     f"fade=t=out:st={max(a,b-0.5):.2f}:d=0.5:alpha=1[o{idx}]")
+        yexpr = f"'max(0,{slide}-(t-{a:.2f})*{slide/0.45:.0f})'" if slide else "0"
+        parts.append(f"{last}[o{idx}]overlay=x=0:y={yexpr}:enable='between(t,{a:.2f},{b:.2f})'[c{idx}]")
+        last = f"[c{idx}]"
+    run([*inputs, "-filter_complex", ";".join(parts), "-map", last, "-t", f"{dur}", "-r", str(FPS),
+         "-c:v","libx264","-preset","veryfast","-crf","20","-pix_fmt","yuv420p", out])
+    if trf and os.path.exists(trf):
+        os.remove(trf)
 
 def xfade_chain(files, durs, out):
     if len(files) == 1:
@@ -979,8 +1119,51 @@ mp = os.path.join(TMP, "scene_map.mp4"); map_scene(mp, 5.8)
 scenes.append(mp)
 
 # which point on the timeline each chapter sits at, for the divider ribbon
-DIV_YEAR = {"formation": 1853, "university": 1890, "worlds-fair": 1893,
-            "color-line": 1948, "urban-renewal": 1958, "present": 2026}
+DIV_YEAR = {"land": 1833, "formation": 1853, "university": 1890, "worlds-fair": 1893,
+            "color-line": 1909, "redlining": 1940, "urban-renewal": 1958, "present": 2026}
+
+# ---- real footage clips ----------------------------------------------------
+# id -> (source path, in-point seconds, grade mode, extra video_shot opts).
+# Display duration comes from the storyboard anchors, like any still. Drone is
+# the owner's 4K HLG (graded warm, full color = "now"); film is public-domain
+# archival (graded toward the sepia stills = "then"), labeled honestly.
+CLIPS = {
+ "cornell-stone":    ("Live Media/DJI_0156.MP4",  1.0, "drone", {}),
+ "lakefront-reveal": ("Live Media/DJI_0160.MP4",  2.0, "drone", {}),
+ "greystone-rise":   ("Live Media/DJI_0158.MP4",  1.0, "drone", {}),
+ "ic-tracks":        ("Live Media/DJI_0162.MP4",  9.0, "drone", {}),
+ "ic-tracks-detail": ("Live Media/DJI_0166.MP4",  0.3, "drone", {}),
+ "old-new-pan":      ("Live Media/DJI_0163.MP4",  2.0, "drone", {}),
+ "campus-quads":     ("Live Media/DJI_0172.MP4",  5.0, "drone", {}),
+ "campus-quads2":    ("Live Media/DJI_0175.MP4",  3.0, "drone", {}),
+ "midway-now":       ("Live Media/DJI_0169.MP4", 16.0, "drone", {}),
+ "jackson-lagoon":   ("Live Media/DJI_0179.MP4", 17.0, "drone", {}),
+ "obama-aerial":     ("Live Media/DJI_0176.MP4",  0.5, "drone", {}),
+ "obama-aerial2":    ("Live Media/DJI_0177.MP4",  2.0, "drone", {}),
+ "obama-hero":       ("Live Media/DJI_0180.MP4", 35.0, "drone", {}),
+ "film-1897-street": ("Live Media/archival/1897_edison_corner-madison-state-chicago_LOC-00694183.mp4",  8.0, "film", {}),
+ "film-1897-trolley":("Live Media/archival/1897_edison_armours-electric-trolley_LOC-00694146.mp4",       6.0, "film", {}),
+ "film-1941-city":   ("Live Media/archival/1941_lets-see-chicago_LOC-2023600637.mp4",                   75.0, "film", {}),
+}
+# wall label + sub + credit per clip (the curator's quiet caption on footage)
+CLIP_INFO = {
+ "cornell-stone":    ("Paul Cornell's stone", "Promontory Point, today", "Drone, Rooted Forward"),
+ "lakefront-reveal": ("Hyde Park, today", "Seven miles south of the Loop", "Drone, Rooted Forward"),
+ "greystone-rise":   ("Hyde Park, today", "The greystones Cornell sold", "Drone, Rooted Forward"),
+ "ic-tracks":        ("The Illinois Central, today", "Still on the lakefront it built", "Drone, Rooted Forward"),
+ "ic-tracks-detail": ("The tracks today", "The embankment that split the neighborhood", "Drone, Rooted Forward"),
+ "old-new-pan":      ("Hyde Park, today", "Old and new, side by side", "Drone, Rooted Forward"),
+ "campus-quads":     ("The University of Chicago, today", "The Gothic quads Cobb laid out", "Drone, Rooted Forward"),
+ "campus-quads2":    ("The main quadrangles, today", "", "Drone, Rooted Forward"),
+ "midway-now":       ("The Midway Plaisance, today", "The green spine the fair left", "Drone, Rooted Forward"),
+ "jackson-lagoon":   ("Jackson Park, today", "The 1893 fairgrounds from the air", "Drone, Rooted Forward"),
+ "obama-aerial":     ("The Obama Center, today", "On the ground that held the fair", "Drone, Rooted Forward"),
+ "obama-aerial2":    ("The Obama Center", "Jackson Park, today", "Drone, Rooted Forward"),
+ "obama-hero":       ("The Obama Center", "Jackson Park, today", "Drone, Rooted Forward"),
+ "film-1897-street": ("Chicago, 1897", "Madison and State Streets", "Edison, Library of Congress"),
+ "film-1897-trolley":("Chicago, 1897", "An electric line through the yards", "Edison, Library of Congress"),
+ "film-1941-city":   ("Chicago, 1941", "from 'Let's See Chicago'", "Library of Congress"),
+}
 
 CARD_CLIPS = {"host-intro":("HOST ON CAMERA","Open with you to camera","Film your intro piece. The script is in the shot list."),
               "host-close":("HOST ON CAMERA","Close with you to camera","Film your closing piece to camera."),
@@ -1003,29 +1186,34 @@ SHOT_DESC = {
    "Walk a Jackson Park path with the Obama Center over your shoulder, the operator tracking alongside, framed medium in warm late daylight. Deliver the closing question to camera, then stop and hold as you look back toward the Center."),
 }
 
-def pano_card(clipid, dur, out):
-    """The 360 placeholder, auto-panned so the flat film previews a real
-    look-around. On the website this exact spot is a drag-to-look-around
-    viewer; the flat MP4 cannot move, so it pans on its own."""
-    title = SHOT_DESC.get(clipid, ("360 look-around", ""))[0]
-    src = os.path.join(ROOT, "public/media/360/test-pano.jpg")
+# Real 360 captures (Insta360), used as the auto-panning beat in the flat film
+# and as the drag-to-look-around viewer on the website. ref -> (equirect jpg,
+# on-screen title, initial yaw fraction 0..1).
+PANO_FILE = {
+ "pano-founding": ("public/media/hyde-park/360/founding-rock.jpg", "Where it began", 0.30),
+ "pano-cobb":     ("public/media/hyde-park/360/cobb-hall.jpg",     "Outside Cobb Hall", 0.12),
+ "pano-quad-now": ("public/media/hyde-park/360/modern-quad.jpg",   "Hyde Park today", 0.0),
+}
+
+def pano_card(ref, dur, out):
+    """A real 360 capture, auto-panned so the flat film previews the look-around.
+    On the website this exact spot becomes a drag-to-look-around viewer; the flat
+    MP4 cannot move, so it pans on its own and invites the viewer to the site."""
+    rel, title, yaw0 = PANO_FILE.get(ref, ("public/media/hyde-park/360/cobb-hall.jpg", "Look around", 0.0))
+    src = os.path.join(ROOT, rel)
     pano = Image.open(src).convert("RGB").resize((2160, H))
-    pano = pano.point(lambda v: int(v * 0.78))
     strip = Image.new("RGB", (4320, H)); strip.paste(pano, (0, 0)); strip.paste(pano, (2160, 0))
-    note = "Drag to look around on the website. This pattern is a placeholder for your on-site 3D capture."
+    start = int(yaw0 * 2160)
     def fn(tt):
-        x = int((tt / dur) * 2160) % 2160
+        x = (start + int((tt / dur) * 1000)) % 2160   # slow drift, ~half a turn
         frame = strip.crop((x, 0, x + W, H)).convert("RGBA")
-        dd = ImageDraw.Draw(frame)
-        dd.rectangle([70, 70, W - 70, H - 70], outline=(CREAM[0], CREAM[1], CREAM[2], 140), width=2)
         scrim = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(scrim).rectangle([0, 772, W, H], fill=(8, 13, 10, 180))
-        scrim = scrim.filter(ImageFilter.GaussianBlur(26))
+        ImageDraw.Draw(scrim).rectangle([0, 858, W, H], fill=(8, 13, 10, 150))
+        scrim = scrim.filter(ImageFilter.GaussianBlur(30))
         frame = Image.alpha_composite(frame, scrim)
         e = ease_out(elem(tt, 0.2, 0.7)); cx = W // 2
-        frame = put_text(frame, (cx, 852), "360 AND 3D LOOK-AROUND . TO BE FILMED", sans(24, "semi"), RUST, int(255 * e), 0, 11, "ma")
-        frame = put_text(frame, (cx, 906), title, serif(54, "reg"), CREAM, int(255 * e), 0, 0, "mm")
-        frame = put_text(frame, (cx, 966), note, sans(26, "light"), (214, 209, 199), int(235 * e), 0, 0, "mm")
+        frame = put_text(frame, (cx, 916), title, serif(46, "reg"), CREAM, int(245 * e), 0, 0, "mm")
+        frame = put_text(frame, (cx, 968), "DRAG TO LOOK AROUND ON THE WEBSITE", sans(20, "light"), (200, 196, 186), int(210 * e), 0, 6, "mm")
         return frame.convert("RGB")
     seq_clip(fn, dur, out)
 
@@ -1048,6 +1236,10 @@ STATS = {
  "acres":     ("Acres in the renewal plan", "856", "across Hyde Park and Kenwood, the largest such plan in the country", "Hyde Park-Kenwood Urban Renewal Plan, 1958"),
  "buildings": ("Buildings marked to fall", "638", "the first came down May 10, 1955, before the City Council approved the plan in 1958", "South East Chicago Commission"),
  "fell":      ("Black population after renewal", "down 40%", "and then the university looked south, toward Woodlawn", "Hyde Park-Kenwood, 1950 to 1970"),
+ "acres-ceded":("Acres ceded in 1833", "5 million", "the last great tract east of the Mississippi, the Chicago region among it", "Treaty of Chicago, 1833"),
+ "uofc-covenant":("The university spent defending covenants", "$83,000", "between 1933 and 1947, to keep the blocks around its campus white", "Hirsch, Making the Second Ghetto"),
+ "club":      ("Members of the Protective Club", "350", "white Hyde Park homeowners organized to push Black residents out, from 1908", "Spear, Black Chicago"),
+ "color-tax": ("Stripped from Black Chicago", "$3 billion", "and more, in markups on homes sold to Black families on contract, 1950s to 1960s", "Duke and NCRC, 2019"),
 }
 
 # Museum wall labels. Each names a detail that has been visually confirmed in
@@ -1072,6 +1264,19 @@ ANNOT = {
  "color-line-4": ("The Hansberry House", "On South Rhodes Avenue"),
  "urban-renewal-1": ("Hyde Park before clearance", "Photographed in 1928"),
  "urban-renewal-3": ("University Apartments", "Built on cleared land"),
+ "land-potawatomi": ("The first people", "Potawatomi, of the Three Fires"),
+ "land-treaty-chicago": ("The Treaty of Chicago", "Signed in 1833"),
+ "land-early-chicago": ("Chicago in 1833", "Prairie at the river's mouth"),
+ "formation-ic-train": ("The Illinois Central", "The railroad that made the suburb"),
+ "douglas-portrait": ("Senator Stephen Douglas", "His land held the first university"),
+ "first-uofc": ("The first University of Chicago", "Founded in the 1850s, closed 1886"),
+ "fannie-barrier-williams": ("Fannie Barrier Williams", "A resident who refused to leave"),
+ "jesse-binga": ("Jesse Binga", "The banker who lent to Black families"),
+ "racial-hierarchy-doc": ("A restrictive covenant", "A line written into the deed"),
+ "great-migration": ("The Great Migration", "Arriving in Chicago"),
+ "black-belt-street": ("Inside the Black Belt", "Photographed in 1941"),
+ "white-city-night": ("The Court of Honor", "They called it the White City"),
+ "midway-1893-crowd": ("The Midway Plaisance", "Beyond the White City"),
 }
 
 # ---- narration-synced storyboards (history chapters) ----
@@ -1081,55 +1286,87 @@ ANNOT = {
 # callouts are (label, value, anchor) and attach to whatever shot covers
 # their moment.
 STORY = {
- # Finer beats so no still holds more than ~9s and each image lands on its line.
+ # Every chapter is a narration-synced storyboard now, so stills, real footage
+ # (clip), archival film, 360 panos, graphics and stat cards all crossfade as one.
+ "intro": {
+   "shots": [
+     ("card", "host-intro", "On the South Side"),       # the host opens to camera
+     ("clip", "lakefront-reveal", "Lake Michigan"),     # the lakefront, today
+     ("clip", "greystone-rise", "look permanent"),      # greystones
+     ("clip", "campus-quads2", "Then a university"),    # the campus
+     ("clip", "obama-aerial2", "This is the story"),    # hand to the deep history
+   ],
+   "callouts": [],
+ },
+ "land": {
+   "shots": [
+     ("img", "land-early-chicago", "prairie and marsh"),
+     ("img", "land-potawatomi", "Potawatomi land"),
+     ("img", "land-treaty-chicago", "Black Hawk War"),
+     ("stat", "acres-ceded", "five million"),
+     ("pano", "pano-founding", "the old trail"),        # the lakefront today (then-and-now)
+     ("clip", "cornell-stone", "Paul Cornell bought"),  # hand-off to Cornell
+   ],
+   "callouts": [],
+ },
  "formation": {
    "shots": [
-     ("img", "formation-1", "In 1853"),                 # Paul Cornell
-     ("stat", None, "three hundred"),                   # 300 acres
-     ("img", "formation-6", "Illinois Central"),        # the rail deal, station, prairie to suburb
+     ("img", "formation-ic-train", "handed the Illinois Central"),  # the historic IC
+     ("clip", "ic-tracks", "six trains a day"),         # the tracks today, then-and-now
      ("img", "formation-5", "four-story wood hotel"),   # the Hyde Park House
-     ("img", "formation-2", "Mary Todd Lincoln"),       # Mary Todd Lincoln stayed there
-     ("stat", "pop", "15,716"),                         # the population leaps to 85k by 1889
-     ("img", "formation-4", "sold the place as selective"),  # the bird's-eye, ends the chapter
+     ("img", "formation-2", "Mary Todd Lincoln"),       # Mary Todd Lincoln
+     ("stat", "pop", "eighty-five thousand"),           # population to 85k by 1889
+     ("img", "formation-4", "sold the place as selective"),  # the bird's-eye, the sorting begins
    ],
-   "callouts": [("Deeded for the rail station", "60 acres", "sixty acres")],
- },
- "worlds-fair": {
-   "shots": [
-     ("img", "worlds-fair-10", "wasn't a park"),        # the fair, establishing
-     ("img", "worlds-fair-4", "opened May 1"),          # Burnham's construction
-     ("img", "worlds-fair-8", "lagoons"),               # Olmsted's lagoons, Wooded Island
-     ("img", "worlds-fair-1", "Court of Honor"),        # the Court of Honor itself
-     ("img", "worlds-fair-6", "White City"),            # the Ferris Wheel, electric marvel
-     ("stat", None, "twenty-seven million"),            # 27 million visitors
-     ("img", "worlds-fair-7", "built to last"),         # the Midway, none of it permanent
-     ("img", "worlds-fair-3", "Palace of Fine Arts"),   # the one survivor, becomes the MSI
-   ],
-   "callouts": [("Reopened as a museum", "1933", "reopened in 1933")],
+   "callouts": [("Deeded to the railroad", "60 acres", "sixty acres"),
+                ("A lakefront house, vs the south", "$7,000 to $2,000", "seven thousand")],
  },
  "university": {
    "shots": [
-     ("img", "university-3", "Rockefeller pledged"),    # Rockefeller
-     ("stat", "pledge", "six hundred thousand"),        # $600,000 founding pledge
-     ("stat", "match", "match four hundred thousand"),  # the $400,000 match condition
-     ("img", "university-5", "Marshall Field"),         # Marshall Field, the land gift
-     ("img", "university-2", "William Rainey Harper"),  # Harper, first president
-     ("stat", None, "five hundred ninety-four"),        # 594 opening-day students
-     ("img", "university-1", "Cobb"),                   # Cobb's Gothic quads
-     ("img", "university-4", "later decide"),           # the quads now, the foreshadow line
+     ("img", "first-uofc", "not the first University"), # the first U of C (Douglas land)
+     ("img", "university-3", "one man's money"),        # Rockefeller
+     ("stat", "pledge", "six hundred thousand"),        # $600,000 pledge
+     ("img", "university-2", "William Rainey Harper"),  # Harper
+     ("img", "university-1", "Gothic quads"),           # Cobb Hall, historic
+     ("clip", "campus-quads", "you still walk through"),# the quads today
+     ("pano", "pano-cobb", "protected"),                # the Cobb Hall 360
+     ("img", "university-4", "decide who got to live"), # the foreshadow
+   ],
+   "callouts": [],
+ },
+ "worlds-fair": {
+   "shots": [
+     ("img", "worlds-fair-10", "not a park"),           # the fair, establishing
+     ("img", "worlds-fair-8", "lagoons"),               # Olmsted's lagoons
+     ("img", "white-city-night", "Court of Honor"),     # the White City
+     ("img", "midway-1893-crowd", "Past the White City"),  # the Midway, the racial spectacle
+     ("stat", None, "twenty-seven million"),            # 27 million visitors
+     ("clip", "ic-tracks-detail", "split the neighborhood"),  # the dividing embankment, today
+     ("clip", "jackson-lagoon", "valuable ground"),     # the fairgrounds, today
    ],
    "callouts": [],
  },
  "color-line": {
    "shots": [
-     ("img", "color-line-4", "6140 South Rhodes"),      # the actual covenanted house
-     ("img", "color-line-3", "racially restrictive covenant"),  # the redlining / covenant map
-     ("img", "color-line-6", "Black Chicago kept growing"),  # a Great Migration family
-     ("chart", "great-migration", "278,000"),           # the population growth, 1910 to 1940
-     ("img", "color-line-5", "the Black Belt"),         # the Black Belt the covenants built
-     ("img", "color-line-7", "kitchenette apartments"), # kitchenette life inside it
+     ("img", "protective-club-era", "started with a club"),  # Hyde Park, the era
+     ("stat", "club", "three hundred and fifty"),       # 350 members
+     ("img", "fannie-barrier-williams", "Fannie Barrier Williams"),  # her portrait
+     ("img", "racial-hierarchy-doc", "racially restrictive covenant"),  # the covenant
+     ("stat", "uofc-covenant", "eighty-three thousand"),  # $83k university funding
+     ("chart", "great-migration", "two hundred seventy-eight thousand"),  # migration
+     ("img", "color-line-5", "the Black Belt"),         # the real Black Belt tenement, 1941
+     ("img", "color-line-7", "kitchenette apartments"), # kitchenette life
    ],
-   "callouts": [("Covenants made unenforceable", "1948", "Shelley")],
+   "callouts": [],
+ },
+ "redlining": {
+   "shots": [
+     ("graphic", "hierarchy", "authority of science"),  # the racial-hierarchy ladder
+     ("img", "color-line-3", "drawn onto maps"),        # the HOLC redlining map
+     ("clip", "campus-quads2", "Hyde Park classroom"),  # the campus, where the idea was built
+     ("img", "color-line-4", "Shelley versus Kraemer"), # the covenanted house, the legal end
+   ],
+   "callouts": [("Covenants struck down", "1948", "Shelley")],
  },
  "urban-renewal": {
    "shots": [
@@ -1142,6 +1379,18 @@ STORY = {
      ("stat", "fell", "fell by about forty percent"),   # Black population down 40%, then Woodlawn
    ],
    "callouts": [("The university's own money", "$29M", "twenty-nine million")],
+ },
+ "present": {
+   "shots": [
+     ("clip", "obama-hero", "Obama Presidential Center opened"),  # the Obama hero aerial
+     ("clip", "obama-aerial2", "two hundred twenty-five feet"),   # a second Obama angle
+     ("clip", "jackson-lagoon", "held the 1893 World's Fair"),    # the fairgrounds, ties back
+     ("pano", "pano-quad-now", "still affordable"),     # a look-around, today
+     ("stat", "color-tax", "three to four billion"),    # the color tax
+     ("graphic", "wealth-gap", "six to one"),           # the wealth-gap bars
+     ("card", "host-close", "who this ground is for"),  # the host closes to camera
+   ],
+   "callouts": [],
  },
 }
 
@@ -1195,13 +1444,13 @@ def build_story_chapter(cid, seq, vodur, cues):
             if T[i] <= tc:
                 idx = i
         # never put a callout on a full-frame stat or chart; use the nearest image
-        if shots[idx][0] in ("stat", "chart"):
+        if shots[idx][0] in ("stat", "chart", "graphic", "card", "pano"):
             j = idx + 1
-            while j < n and shots[j][0] in ("stat", "chart"):
+            while j < n and shots[j][0] in ("stat", "chart", "graphic", "card", "pano"):
                 j += 1
             if j >= n:
                 j = idx - 1
-                while j >= 0 and shots[j][0] in ("stat", "chart"):
+                while j >= 0 and shots[j][0] in ("stat", "chart", "graphic", "card", "pano"):
                     j -= 1
             idx = max(0, min(n - 1, j))
         lt = max(0.6, min(tc - T[idx], durs[idx] - 3.2))
@@ -1222,6 +1471,40 @@ def build_story_chapter(cid, seq, vodur, cues):
                 chart_bars_scene(out, dur=dur)
             elif ref == "great-migration":
                 chart_area_scene(out, dur=dur)
+            files.append(out)
+            continue
+        if kind == "graphic":
+            GRAPHICS[ref](out, dur)
+            files.append(out)
+            continue
+        if kind == "clip":
+            src, in0, mode, opts = CLIPS[ref]
+            overlays = []
+            lab, sub, cred = CLIP_INFO.get(ref, ("", "", ""))
+            if cred:
+                p = os.path.join(TMP, f"{cid}_st{i}_cr.png"); credit_overlay(p, cred)
+                overlays.append({"png": p, "a": 0.7, "b": min(dur - 0.5, 4.6)})
+            if lab and dur > 3.0:
+                p = os.path.join(TMP, f"{cid}_st{i}_an.png"); annotation_label(p, lab, sub)
+                a0 = min(1.3, dur * 0.16)
+                overlays.append({"png": p, "a": a0, "b": min(dur - 0.4, a0 + 4.4), "slide": 16})
+            if i == 0 and cid in DIV_YEAR:
+                p = os.path.join(TMP, f"{cid}_st0_rib.png"); ribbon_overlay(p, DIV_YEAR[cid])
+                overlays.insert(0, {"png": p, "a": 0.0, "b": 2.0})
+            video_shot(os.path.join(ROOT, src), in0, dur, out,
+                       overlays=overlays, kb_idx=i, mode=mode, **opts)
+            files.append(out)
+            continue
+        if kind == "card":
+            ttl, instr = SHOT_DESC.get(ref, ("Footage to film", "Film the location named in the shot list."))
+            p = os.path.join(TMP, f"{cid}_st{i}_ph.png")
+            placeholder_card(p, "HOST ON CAMERA . TO BE FILMED", ttl, instr)
+            render_card_clip(p, dur, out, zoom=True)
+            files.append(out)
+            continue
+        if kind == "pano":
+            pano_card(ref, dur, out)
+            PANO_SEGS.append({"cid": cid, "off": sum(durs[:i]) - i * XFADE, "dur": dur})
             files.append(out)
             continue
         asset = seq["assets"].get(ref)
@@ -1266,7 +1549,7 @@ if "--probe3d" in sys.argv:
     print("PROBE3D done")
     sys.exit(0)
 
-order = ["intro","formation","university","worlds-fair","color-line","urban-renewal","present"]
+order = ["intro","land","formation","university","worlds-fair","color-line","redlining","urban-renewal","present"]
 stops = {s["id"]: s for s in tour["stops"]}
 CHAPTER_MARKS = []  # for the website's clickable timeline
 PANO_SEGS = []      # absolute time windows of the 360 beats, for the web player

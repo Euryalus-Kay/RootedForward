@@ -325,13 +325,335 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       }
     },
     {
+      "id": "land",
+      "title": "The Ground Before",
+      "kicker": "Before 1853 / The lakefront",
+      "depthLabel": "The land",
+      "lat": 41.8,
+      "lng": -87.585,
+      "body": "Before any of this, the ground was prairie and marsh, sloping down to the lake. It was Potawatomi land, part of the Council of Three Fires, who had lived and traded along these shores for generations. They did not fight the Black Hawk War of 1832, but in its wake the United States pressed the Three Fires nations into the Treaty of Chicago, in 1833. With one signing they gave up some five million acres, this lakefront among them, and within a few years they were marched west. Around 1835 a settler named Nathan Watson raised a tavern near what is now 53rd Street and the water, on the old trail the Potawatomi had walked. The first taking set the pattern. This ground would be claimed, cleared, and remade, again and again, by whoever held the deed and the plan. In 1853 a young lawyer named Paul Cornell bought three hundred acres from Watson's widow.",
+      "facts": [],
+      "sources": [
+        "Image. George Catlin - Na-pów-sa, Bear Traveling at Night, a Chief - 1985.66.238 - Smithsonian American Art Museum, by George Catlin. Public domain, Wikimedia Commons.",
+        "Image. Ratified Indian Treaty 189- United Chippewa, Ottawa and Potawatomi - Chicago, Illinois, September 26, 1833 - DPLA - 030705056c8ce8116f8d02be6c0f889e (page 60), by U.S. Government. 3/4/1789. Public domain, Wikimedia Commons.",
+        "Image. COLBERT(1871) p037 CHICAGO IN 1833, by Unknown. Public domain, Wikimedia Commons."
+      ],
+      "media": null,
+      "sequence": {
+        "version": 1,
+        "title": "The Ground Before",
+        "notes": "",
+        "aspect": "16:9",
+        "voiceover": {
+          "clipId": "vo-land",
+          "volume": 1,
+          "fadeInSec": 0.4,
+          "fadeOutSec": 0.8,
+          "loop": false,
+          "offsetSec": 0,
+          "muted": false
+        },
+        "subtitles": [
+          {
+            "id": "land-c1",
+            "startSec": 0.2,
+            "endSec": 1.5,
+            "text": "Before any of this"
+          },
+          {
+            "id": "land-c2",
+            "startSec": 1.5,
+            "endSec": 4,
+            "text": "the ground was prairie and marsh"
+          },
+          {
+            "id": "land-c3",
+            "startSec": 4,
+            "endSec": 5.9,
+            "text": "sloping down to the lake."
+          },
+          {
+            "id": "land-c4",
+            "startSec": 5.9,
+            "endSec": 7.6,
+            "text": "It was Potawatomi land"
+          },
+          {
+            "id": "land-c5",
+            "startSec": 7.6,
+            "endSec": 10.2,
+            "text": "part of the Council of Three Fires"
+          },
+          {
+            "id": "land-c6",
+            "startSec": 10.2,
+            "endSec": 13.9,
+            "text": "who had lived and traded along these shores for"
+          },
+          {
+            "id": "land-c7",
+            "startSec": 13.9,
+            "endSec": 15,
+            "text": "generations."
+          },
+          {
+            "id": "land-c8",
+            "startSec": 14.8,
+            "endSec": 18.3,
+            "text": "They did not fight the Black Hawk War of 1832"
+          },
+          {
+            "id": "land-c9",
+            "startSec": 18.3,
+            "endSec": 21.7,
+            "text": "but in its wake the United States pressed the"
+          },
+          {
+            "id": "land-c10",
+            "startSec": 21.7,
+            "endSec": 25.3,
+            "text": "Three Fires nations into the Treaty of Chicago"
+          },
+          {
+            "id": "land-c11",
+            "startSec": 25.3,
+            "endSec": 26.4,
+            "text": "in 1833."
+          },
+          {
+            "id": "land-c12",
+            "startSec": 25.9,
+            "endSec": 29.5,
+            "text": "With one signing they gave up some five million"
+          },
+          {
+            "id": "land-c13",
+            "startSec": 29.5,
+            "endSec": 30.6,
+            "text": "acres"
+          },
+          {
+            "id": "land-c14",
+            "startSec": 30,
+            "endSec": 31.9,
+            "text": "this lakefront among them"
+          },
+          {
+            "id": "land-c15",
+            "startSec": 31.9,
+            "endSec": 35.4,
+            "text": "and within a few years they were marched west."
+          },
+          {
+            "id": "land-c16",
+            "startSec": 35.4,
+            "endSec": 39.3,
+            "text": "Around 1835 a settler named Nathan Watson raised a"
+          },
+          {
+            "id": "land-c17",
+            "startSec": 39.3,
+            "endSec": 43.1,
+            "text": "tavern near what is now 53rd Street and the water"
+          },
+          {
+            "id": "land-c18",
+            "startSec": 43.1,
+            "endSec": 46.4,
+            "text": "on the old trail the Potawatomi had walked."
+          },
+          {
+            "id": "land-c19",
+            "startSec": 46.4,
+            "endSec": 48.9,
+            "text": "The first taking set the pattern."
+          },
+          {
+            "id": "land-c20",
+            "startSec": 48.9,
+            "endSec": 51.1,
+            "text": "This ground would be claimed"
+          },
+          {
+            "id": "land-c21",
+            "startSec": 51.1,
+            "endSec": 52.2,
+            "text": "cleared"
+          },
+          {
+            "id": "land-c22",
+            "startSec": 51.6,
+            "endSec": 52.7,
+            "text": "and remade"
+          },
+          {
+            "id": "land-c23",
+            "startSec": 52.4,
+            "endSec": 53.5,
+            "text": "again and again"
+          },
+          {
+            "id": "land-c24",
+            "startSec": 53.5,
+            "endSec": 56.5,
+            "text": "by whoever held the deed and the plan."
+          },
+          {
+            "id": "land-c25",
+            "startSec": 56.5,
+            "endSec": 60.2,
+            "text": "In 1853 a young lawyer named Paul Cornell bought"
+          },
+          {
+            "id": "land-c26",
+            "startSec": 60.2,
+            "endSec": 63.3,
+            "text": "three hundred acres from Watson's widow."
+          }
+        ],
+        "segments": [
+          {
+            "id": "land-s1",
+            "clipId": "land-potawatomi",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 21.7,
+            "transitionIn": {
+              "type": "cut",
+              "durationSec": 0
+            },
+            "kenBurns": {
+              "fromScale": 1,
+              "toScale": 1.12,
+              "fromX": -0.18,
+              "fromY": -0.08,
+              "toX": 0.18,
+              "toY": 0.08
+            },
+            "overlays": [
+              {
+                "kind": "caption",
+                "text": "Source. George Catlin, 1830. Public domain.",
+                "startSec": 0.6,
+                "endSec": 4.2,
+                "position": "upper",
+                "style": {
+                  "size": "sm",
+                  "color": "cream",
+                  "background": true
+                },
+                "anim": "fade"
+              }
+            ],
+            "muted": true
+          },
+          {
+            "id": "land-s2",
+            "clipId": "land-treaty-chicago",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 21.7,
+            "transitionIn": {
+              "type": "crossfade",
+              "durationSec": 0.9
+            },
+            "kenBurns": {
+              "fromScale": 1.08,
+              "toScale": 1.1,
+              "fromX": -0.4,
+              "fromY": 0,
+              "toX": 0.4,
+              "toY": 0
+            },
+            "overlays": [
+              {
+                "kind": "caption",
+                "text": "Source. U.S. Government. 3/4/1789. Public domain.",
+                "startSec": 0.6,
+                "endSec": 4.2,
+                "position": "upper",
+                "style": {
+                  "size": "sm",
+                  "color": "cream",
+                  "background": true
+                },
+                "anim": "fade"
+              }
+            ],
+            "muted": true
+          },
+          {
+            "id": "land-s3",
+            "clipId": "land-early-chicago",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 21.7,
+            "transitionIn": {
+              "type": "dip-black",
+              "durationSec": 0.6
+            },
+            "kenBurns": {
+              "fromScale": 1.12,
+              "toScale": 1,
+              "fromX": 0.18,
+              "fromY": 0.1,
+              "toX": -0.18,
+              "toY": -0.08
+            },
+            "overlays": [
+              {
+                "kind": "caption",
+                "text": "Source. Unknown, 1871. Public domain.",
+                "startSec": 0.6,
+                "endSec": 4.2,
+                "position": "upper",
+                "style": {
+                  "size": "sm",
+                  "color": "cream",
+                  "background": true
+                },
+                "anim": "fade"
+              }
+            ],
+            "muted": true
+          }
+        ],
+        "assets": {
+          "vo-land": {
+            "url": "/media/hyde-park/vo/vo-land.mp3",
+            "kind": "audio",
+            "is360": false,
+            "poster": null
+          },
+          "land-potawatomi": {
+            "url": "/media/hyde-park/img/land-potawatomi.jpg",
+            "kind": "image",
+            "is360": false,
+            "poster": null
+          },
+          "land-treaty-chicago": {
+            "url": "/media/hyde-park/img/land-treaty-chicago.jpg",
+            "kind": "image",
+            "is360": false,
+            "poster": null
+          },
+          "land-early-chicago": {
+            "url": "/media/hyde-park/img/land-early-chicago.jpg",
+            "kind": "image",
+            "is360": false,
+            "poster": null
+          }
+        }
+      }
+    },
+    {
       "id": "formation",
       "title": "Paul Cornell's Lakefront Bet",
       "kicker": "1853 / Lakefront",
       "depthLabel": "Founding",
       "lat": 41.8005,
       "lng": -87.5905,
-      "body": "In 1853 a young lawyer named Paul Cornell bought three hundred acres of lakefront and named it Hyde Park, after the one in London. The land was useless if you couldn't get there. So Cornell handed the Illinois Central Railroad sixty acres, and the railroad gave him a station at 53rd Street and six trains a day downtown. Prairie turned into suburb. In 1857 he put up a four-story wood hotel by the water, the Hyde Park House. Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad, a few months after her husband was killed. Within ten years a thousand people lived here. The township held 15,716 people in 1880. By 1889 it held about eighty-five thousand, and that year the voters chose to join Chicago for the water and the sewers. From the start, Cornell sold the place as selective, a retreat for people with means, a clean distance from the city’s crowds.",
+      "body": "He named it Hyde Park, after the park in London, and sold it as the one thing a crowded city could not offer, room to breathe. The land was useless if you could not get there, so Cornell handed the Illinois Central Railroad sixty acres, and the railroad gave him a station at 53rd Street and six trains a day downtown. Prairie turned into suburb. In 1857 he put up a four-story wood hotel by the water, the Hyde Park House. Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad, a few months after her husband was killed. By 1889 the township held about eighty-five thousand people, and that year they voted to join Chicago for the water and the sewers. From the start, Cornell sold the place as selective. Near the lake, in the north, a house might cost seven thousand dollars, against two thousand to the south. The sorting of Hyde Park had already begun.",
       "facts": [
         "Paul Cornell (August 5, 1822 to March 3, 1904) passed the Illinois bar and moved to Chicago in 1847. He worked as a lawyer and real estate speculator and was a cousin of Ezra Cornell, the founder of Cornell University.",
         "In 1853, on the advice of Senator Stephen Douglas, Cornell bought 300 acres of lakefront land between 51st and 55th Streets and named the tract Hyde Park after the London park.",
@@ -345,6 +667,8 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
         "Encyclopedia of Chicago, Annexation, encyclopedia.chicagohistory.org/pages/53.html",
         "Chicago's Hyde Park Historical Society, Paul Cornell, hydeparkhistory.org/paul-cornell",
         "Wikipedia, Paul Cornell (lawyer), en.wikipedia.org/wiki/Paul_Cornell_(lawyer)",
+        "Image. No. 1376 Illinois Central R.R. Used on Chicago World's Fair trains LCCN2017658614.tif, by Van Name, Willard G. (Willard Gibbs). Public domain, Wikimedia Commons.",
+        "Image. Twentieth Century Limited, circa 1912 - Chesterton, Indiana (4155545794), by Steve Shook from Moscow, Idaho, USA. CC BY 2.0, Wikimedia Commons.",
         "Image. Paul Cornell (1822-1904), by TonyTheTiger at en.wikipedia. Public domain, Wikimedia Commons.",
         "Image. Mary Todd Lincoln restored, by Nicolas H. ShepherdJebulon for restoration and upload. Public domain, Wikimedia Commons.",
         "Image. 1857 Bird's Eye View of Chicago - LOC, by Lithograph by Christian Inger, based on a drawing by I. T. Palmatary. Published by Braunhold &amp; Sonne.. Public domain, Wikimedia Commons.",
@@ -370,161 +694,179 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "formation-c1",
             "startSec": 0.2,
-            "endSec": 3.9,
-            "text": "In 1853 a young lawyer named Paul Cornell bought"
+            "endSec": 1.7,
+            "text": "He named it Hyde Park"
           },
           {
             "id": "formation-c2",
-            "startSec": 3.9,
-            "endSec": 7.8,
-            "text": "three hundred acres of lakefront and named it Hyde"
+            "startSec": 1.7,
+            "endSec": 3.5,
+            "text": "after the park in London"
           },
           {
             "id": "formation-c3",
-            "startSec": 7.8,
-            "endSec": 8.9,
-            "text": "Park"
+            "startSec": 3.5,
+            "endSec": 7.2,
+            "text": "and sold it as the one thing a crowded city could"
           },
           {
             "id": "formation-c4",
-            "startSec": 8.2,
-            "endSec": 10.1,
-            "text": "after the one in London."
+            "startSec": 7.2,
+            "endSec": 8.3,
+            "text": "not offer"
           },
           {
             "id": "formation-c5",
-            "startSec": 10.1,
-            "endSec": 13.8,
-            "text": "The land was useless if you couldn't get there."
+            "startSec": 7.9,
+            "endSec": 9.1,
+            "text": "room to breathe."
           },
           {
             "id": "formation-c6",
-            "startSec": 13.8,
-            "endSec": 17.4,
-            "text": "So Cornell handed the Illinois Central Railroad"
+            "startSec": 9.1,
+            "endSec": 12.6,
+            "text": "The land was useless if you could not get there"
           },
           {
             "id": "formation-c7",
-            "startSec": 17.4,
-            "endSec": 18.5,
-            "text": "sixty acres"
+            "startSec": 12.6,
+            "endSec": 16.2,
+            "text": "so Cornell handed the Illinois Central Railroad"
           },
           {
             "id": "formation-c8",
-            "startSec": 18.3,
-            "endSec": 22.2,
-            "text": "and the railroad gave him a station at 53rd Street"
+            "startSec": 16.2,
+            "endSec": 17.3,
+            "text": "sixty acres"
           },
           {
             "id": "formation-c9",
-            "startSec": 22.2,
-            "endSec": 24.5,
-            "text": "and six trains a day downtown."
+            "startSec": 17,
+            "endSec": 20.7,
+            "text": "and the railroad gave him a station at 53rd Street"
           },
           {
             "id": "formation-c10",
-            "startSec": 24.5,
-            "endSec": 26.6,
-            "text": "Prairie turned into suburb."
+            "startSec": 20.7,
+            "endSec": 23,
+            "text": "and six trains a day downtown."
           },
           {
             "id": "formation-c11",
-            "startSec": 26.6,
-            "endSec": 30.4,
-            "text": "In 1857 he put up a four-story wood hotel by the"
+            "startSec": 23,
+            "endSec": 25,
+            "text": "Prairie turned into suburb."
           },
           {
             "id": "formation-c12",
-            "startSec": 30.4,
-            "endSec": 31.5,
-            "text": "water"
+            "startSec": 25,
+            "endSec": 28.6,
+            "text": "In 1857 he put up a four-story wood hotel by the"
           },
           {
             "id": "formation-c13",
-            "startSec": 30.8,
-            "endSec": 32.4,
-            "text": "the Hyde Park House."
+            "startSec": 28.6,
+            "endSec": 29.7,
+            "text": "water"
           },
           {
             "id": "formation-c14",
-            "startSec": 32.4,
-            "endSec": 36,
-            "text": "Mary Todd Lincoln stayed there in 1865 with her"
+            "startSec": 29.1,
+            "endSec": 30.6,
+            "text": "the Hyde Park House."
           },
           {
             "id": "formation-c15",
-            "startSec": 36,
-            "endSec": 37.5,
-            "text": "sons Robert and Tad"
+            "startSec": 30.6,
+            "endSec": 34.1,
+            "text": "Mary Todd Lincoln stayed there in 1865 with her"
           },
           {
             "id": "formation-c16",
-            "startSec": 37.5,
-            "endSec": 40.8,
-            "text": "a few months after her husband was killed."
+            "startSec": 34.1,
+            "endSec": 35.5,
+            "text": "sons Robert and Tad"
           },
           {
             "id": "formation-c17",
-            "startSec": 40.8,
-            "endSec": 44.4,
-            "text": "Within ten years a thousand people lived here."
+            "startSec": 35.5,
+            "endSec": 38.7,
+            "text": "a few months after her husband was killed."
           },
           {
             "id": "formation-c18",
-            "startSec": 44.4,
-            "endSec": 47.5,
-            "text": "The township held 15,716 people in 1880."
+            "startSec": 38.7,
+            "endSec": 41.9,
+            "text": "By 1889 the township held about eighty-five"
           },
           {
             "id": "formation-c19",
-            "startSec": 47.5,
-            "endSec": 50.8,
-            "text": "By 1889 it held about eighty-five thousand"
+            "startSec": 41.9,
+            "endSec": 43.1,
+            "text": "thousand people"
           },
           {
             "id": "formation-c20",
-            "startSec": 50.8,
-            "endSec": 54.7,
-            "text": "and that year the voters chose to join Chicago for"
+            "startSec": 43.1,
+            "endSec": 46.7,
+            "text": "and that year they voted to join Chicago for the"
           },
           {
             "id": "formation-c21",
-            "startSec": 54.7,
-            "endSec": 56.6,
-            "text": "the water and the sewers."
+            "startSec": 46.7,
+            "endSec": 48.2,
+            "text": "water and the sewers."
           },
           {
             "id": "formation-c22",
-            "startSec": 56.6,
-            "endSec": 57.7,
+            "startSec": 48.2,
+            "endSec": 49.3,
             "text": "From the start"
           },
           {
             "id": "formation-c23",
-            "startSec": 57.7,
-            "endSec": 60.4,
-            "text": "Cornell sold the place as selective"
+            "startSec": 49.3,
+            "endSec": 52,
+            "text": "Cornell sold the place as selective."
           },
           {
             "id": "formation-c24",
-            "startSec": 60.4,
-            "endSec": 62.8,
-            "text": "a retreat for people with means"
+            "startSec": 52,
+            "endSec": 53.1,
+            "text": "Near the lake"
           },
           {
             "id": "formation-c25",
-            "startSec": 62.8,
-            "endSec": 65.9,
-            "text": "a clean distance from the city’s crowds."
+            "startSec": 53,
+            "endSec": 54.1,
+            "text": "in the north"
+          },
+          {
+            "id": "formation-c26",
+            "startSec": 53.9,
+            "endSec": 57,
+            "text": "a house might cost seven thousand dollars"
+          },
+          {
+            "id": "formation-c27",
+            "startSec": 57,
+            "endSec": 59.5,
+            "text": "against two thousand to the south."
+          },
+          {
+            "id": "formation-c28",
+            "startSec": 59.5,
+            "endSec": 62.8,
+            "text": "The sorting of Hyde Park had already begun."
           }
         ],
         "segments": [
           {
             "id": "formation-s1",
-            "clipId": "formation-1",
+            "clipId": "formation-ic-train",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.5,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -553,7 +895,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
               },
               {
                 "kind": "caption",
-                "text": "Source. TonyTheTiger at en.wikipedia, 1904. Public domain.",
+                "text": "Source. Van Name, Willard G. (Willard Gibbs), 1893. Public domain.",
                 "startSec": 0.6,
                 "endSec": 4.2,
                 "position": "upper",
@@ -569,10 +911,10 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           },
           {
             "id": "formation-s2",
-            "clipId": "formation-2",
+            "clipId": "formation-ic-train2",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.5,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -583,6 +925,102 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
               "fromX": -0.4,
               "fromY": 0,
               "toX": 0.4,
+              "toY": 0
+            },
+            "overlays": [
+              {
+                "kind": "caption",
+                "text": "Source. Steve Shook from Moscow, Idaho, USA, 2003. CC BY 2.0.",
+                "startSec": 0.6,
+                "endSec": 4.2,
+                "position": "upper",
+                "style": {
+                  "size": "sm",
+                  "color": "cream",
+                  "background": true
+                },
+                "anim": "fade"
+              },
+              {
+                "kind": "lower-third",
+                "text": "300 acres bought in 1853, between 51st and 55th",
+                "startSec": 2,
+                "endSec": 8.1,
+                "position": "lower",
+                "style": {
+                  "size": "md",
+                  "color": "rust",
+                  "background": true
+                },
+                "anim": "slide-up"
+              }
+            ],
+            "muted": true
+          },
+          {
+            "id": "formation-s3",
+            "clipId": "formation-1",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 8.5,
+            "transitionIn": {
+              "type": "dip-black",
+              "durationSec": 0.6
+            },
+            "kenBurns": {
+              "fromScale": 1.12,
+              "toScale": 1,
+              "fromX": 0.18,
+              "fromY": 0.1,
+              "toX": -0.18,
+              "toY": -0.08
+            },
+            "overlays": [
+              {
+                "kind": "caption",
+                "text": "Source. TonyTheTiger at en.wikipedia, 1904. Public domain.",
+                "startSec": 0.6,
+                "endSec": 4.2,
+                "position": "upper",
+                "style": {
+                  "size": "sm",
+                  "color": "cream",
+                  "background": true
+                },
+                "anim": "fade"
+              },
+              {
+                "kind": "lower-third",
+                "text": "60 acres deeded for a 53rd Street rail station",
+                "startSec": 2,
+                "endSec": 8.1,
+                "position": "lower",
+                "style": {
+                  "size": "md",
+                  "color": "rust",
+                  "background": true
+                },
+                "anim": "slide-up"
+              }
+            ],
+            "muted": true
+          },
+          {
+            "id": "formation-s4",
+            "clipId": "formation-2",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 8.5,
+            "transitionIn": {
+              "type": "slide-left",
+              "durationSec": 0.8
+            },
+            "kenBurns": {
+              "fromScale": 1.1,
+              "toScale": 1.08,
+              "fromX": 0.4,
+              "fromY": 0,
+              "toX": -0.4,
               "toY": 0
             },
             "overlays": [
@@ -601,9 +1039,9 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
               },
               {
                 "kind": "lower-third",
-                "text": "300 acres bought in 1853, between 51st and 55th",
+                "text": "Township, 15,716 in 1880 to about 85,000 by 1889",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.1,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -616,22 +1054,22 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "muted": true
           },
           {
-            "id": "formation-s3",
+            "id": "formation-s5",
             "clipId": "formation-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.5,
             "transitionIn": {
-              "type": "dip-black",
-              "durationSec": 0.6
+              "type": "crossfade",
+              "durationSec": 0.9
             },
             "kenBurns": {
-              "fromScale": 1.12,
-              "toScale": 1,
-              "fromX": 0.18,
-              "fromY": 0.1,
-              "toX": -0.18,
-              "toY": -0.08
+              "fromScale": 1.05,
+              "toScale": 1.14,
+              "fromX": 0,
+              "fromY": 0.3,
+              "toX": 0,
+              "toY": -0.3
             },
             "overlays": [
               {
@@ -649,9 +1087,9 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
               },
               {
                 "kind": "lower-third",
-                "text": "60 acres deeded for a 53rd Street rail station",
+                "text": "Source. Encyclopedia of Chicago; Hyde Park Historical Society",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.1,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -664,22 +1102,22 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "muted": true
           },
           {
-            "id": "formation-s4",
+            "id": "formation-s6",
             "clipId": "formation-5",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.5,
             "transitionIn": {
-              "type": "slide-left",
-              "durationSec": 0.8
+              "type": "wipe",
+              "durationSec": 0.9
             },
             "kenBurns": {
-              "fromScale": 1.1,
-              "toScale": 1.08,
-              "fromX": 0.4,
-              "fromY": 0,
-              "toX": -0.4,
-              "toY": 0
+              "fromScale": 1,
+              "toScale": 1.12,
+              "fromX": -0.18,
+              "fromY": -0.08,
+              "toX": 0.18,
+              "toY": 0.08
             },
             "overlays": [
               {
@@ -694,40 +1132,27 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                   "background": true
                 },
                 "anim": "fade"
-              },
-              {
-                "kind": "lower-third",
-                "text": "Township, 15,716 in 1880 to about 85,000 by 1889",
-                "startSec": 2,
-                "endSec": 11.299999999999999,
-                "position": "lower",
-                "style": {
-                  "size": "md",
-                  "color": "rust",
-                  "background": true
-                },
-                "anim": "slide-up"
               }
             ],
             "muted": true
           },
           {
-            "id": "formation-s5",
+            "id": "formation-s7",
             "clipId": "formation-6",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.5,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
             },
             "kenBurns": {
-              "fromScale": 1.05,
-              "toScale": 1.14,
-              "fromX": 0,
-              "fromY": 0.3,
-              "toX": 0,
-              "toY": -0.3
+              "fromScale": 1.08,
+              "toScale": 1.1,
+              "fromX": -0.4,
+              "fromY": 0,
+              "toX": 0.4,
+              "toY": 0
             },
             "overlays": [
               {
@@ -742,32 +1167,19 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                   "background": true
                 },
                 "anim": "fade"
-              },
-              {
-                "kind": "lower-third",
-                "text": "Source. Encyclopedia of Chicago; Hyde Park Historical Society",
-                "startSec": 2,
-                "endSec": 11.299999999999999,
-                "position": "lower",
-                "style": {
-                  "size": "md",
-                  "color": "rust",
-                  "background": true
-                },
-                "anim": "slide-up"
               }
             ],
             "muted": true
           },
           {
-            "id": "formation-s6",
+            "id": "formation-s8",
             "clipId": "present-formation",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 9.2,
             "transitionIn": {
-              "type": "wipe",
-              "durationSec": 0.9
+              "type": "zoom",
+              "durationSec": 0.8
             },
             "kenBurns": {
               "fromScale": 1,
@@ -784,6 +1196,18 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           "vo-formation": {
             "url": "/media/hyde-park/vo/vo-formation.mp3",
             "kind": "audio",
+            "is360": false,
+            "poster": null
+          },
+          "formation-ic-train": {
+            "url": "/media/hyde-park/img/formation-ic-train.jpg",
+            "kind": "image",
+            "is360": false,
+            "poster": null
+          },
+          "formation-ic-train2": {
+            "url": "/media/hyde-park/img/formation-ic-train2.jpg",
+            "kind": "image",
             "is360": false,
             "poster": null
           },
@@ -833,7 +1257,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "The university",
       "lat": 41.7886,
       "lng": -87.5987,
-      "body": "The campus started with one man’s money. In 1889, John D. Rockefeller pledged six hundred thousand dollars for a new Baptist university in Chicago. He set one condition. Other donors had to match four hundred thousand more, and they did. The school incorporated in 1890. Marshall Field, the department store man, gave the first ten acres in Hyde Park. Rockefeller picked William Rainey Harper to run it, a Yale doctorate he had earned in his teens. Harper built a research university from nothing. Classes opened in 1892 with five hundred ninety-four men and women. Henry Ives Cobb laid out the gray Gothic quads you still walk through. The same institution that built them would later decide who got to live around them.",
+      "body": "This was not the first University of Chicago. An earlier one opened in the 1850s on land from Senator Stephen Douglas, and went bankrupt in 1886. The second began with one man's money. In 1889, John D. Rockefeller pledged six hundred thousand dollars for a new university in Chicago, on one condition, that other donors match four hundred thousand more. They did, and it incorporated in 1890. Marshall Field gave the first ten acres in Hyde Park. Rockefeller picked William Rainey Harper to run it, and Henry Ives Cobb laid out the gray Gothic quads you still walk through. Classes opened in 1892. By 1901, as other Chicago neighborhoods began to slip, Hyde Park held its value, protected, people said, by the parks, the lake, and the university. That word, protected, would soon come to mean something darker. The same institution that built these quads would help decide who got to live around them.",
       "facts": [
         "The new University of Chicago was incorporated on September 10, 1890; it dates its founding to July 1, 1891, when Harper took office; first classes met October 1, 1892.",
         "John D. Rockefeller pledged his first $600,000 toward the endowment in May 1889, conditioned on $400,000 in matching gifts raised within a set window.",
@@ -878,134 +1302,200 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "university-c1",
             "startSec": 0.2,
-            "endSec": 3,
-            "text": "The campus started with one man’s money."
+            "endSec": 3.7,
+            "text": "This was not the first University of Chicago."
           },
           {
             "id": "university-c2",
-            "startSec": 3,
-            "endSec": 4.1,
-            "text": "In 1889"
+            "startSec": 3.7,
+            "endSec": 7.4,
+            "text": "An earlier one opened in the 1850s on land from"
           },
           {
             "id": "university-c3",
-            "startSec": 3.5,
-            "endSec": 4.6,
-            "text": "John D."
+            "startSec": 7.4,
+            "endSec": 9.2,
+            "text": "Senator Stephen Douglas"
           },
           {
             "id": "university-c4",
-            "startSec": 4,
-            "endSec": 7.5,
-            "text": "Rockefeller pledged six hundred thousand dollars"
+            "startSec": 9.2,
+            "endSec": 11.2,
+            "text": "and went bankrupt in 1886."
           },
           {
             "id": "university-c5",
-            "startSec": 7.5,
-            "endSec": 10.3,
-            "text": "for a new Baptist university in Chicago."
+            "startSec": 11.2,
+            "endSec": 14.2,
+            "text": "The second began with one man's money."
           },
           {
             "id": "university-c6",
-            "startSec": 10.3,
-            "endSec": 11.8,
-            "text": "He set one condition."
+            "startSec": 14.2,
+            "endSec": 15.3,
+            "text": "In 1889"
           },
           {
             "id": "university-c7",
-            "startSec": 11.8,
-            "endSec": 15.2,
-            "text": "Other donors had to match four hundred thousand"
+            "startSec": 14.7,
+            "endSec": 15.8,
+            "text": "John D."
           },
           {
             "id": "university-c8",
-            "startSec": 15.2,
-            "endSec": 16.3,
-            "text": "more"
+            "startSec": 15.3,
+            "endSec": 19,
+            "text": "Rockefeller pledged six hundred thousand dollars"
           },
           {
             "id": "university-c9",
-            "startSec": 15.6,
-            "endSec": 16.7,
-            "text": "and they did."
+            "startSec": 19,
+            "endSec": 21.4,
+            "text": "for a new university in Chicago"
           },
           {
             "id": "university-c10",
-            "startSec": 16.5,
-            "endSec": 18.8,
-            "text": "The school incorporated in 1890."
+            "startSec": 21.4,
+            "endSec": 22.7,
+            "text": "on one condition"
           },
           {
             "id": "university-c11",
-            "startSec": 18.8,
-            "endSec": 19.9,
-            "text": "Marshall Field"
+            "startSec": 22.7,
+            "endSec": 26.2,
+            "text": "that other donors match four hundred thousand"
           },
           {
             "id": "university-c12",
-            "startSec": 19.8,
-            "endSec": 21.6,
-            "text": "the department store man"
+            "startSec": 26.2,
+            "endSec": 27.3,
+            "text": "more."
           },
           {
             "id": "university-c13",
-            "startSec": 21.6,
-            "endSec": 24.3,
-            "text": "gave the first ten acres in Hyde Park."
+            "startSec": 26.7,
+            "endSec": 27.8,
+            "text": "They did"
           },
           {
             "id": "university-c14",
-            "startSec": 24.3,
-            "endSec": 27.9,
-            "text": "Rockefeller picked William Rainey Harper to run it"
+            "startSec": 27.3,
+            "endSec": 29.5,
+            "text": "and it incorporated in 1890."
           },
           {
             "id": "university-c15",
-            "startSec": 27.9,
-            "endSec": 31,
-            "text": "a Yale doctorate he had earned in his teens."
+            "startSec": 29.5,
+            "endSec": 33.2,
+            "text": "Marshall Field gave the first ten acres in Hyde"
           },
           {
             "id": "university-c16",
-            "startSec": 31,
-            "endSec": 34.4,
-            "text": "Harper built a research university from nothing."
+            "startSec": 33.2,
+            "endSec": 34.3,
+            "text": "Park."
           },
           {
             "id": "university-c17",
-            "startSec": 34.4,
-            "endSec": 37.3,
-            "text": "Classes opened in 1892 with five hundred"
+            "startSec": 33.7,
+            "endSec": 37.6,
+            "text": "Rockefeller picked William Rainey Harper to run it"
           },
           {
             "id": "university-c18",
-            "startSec": 37.3,
-            "endSec": 39.2,
-            "text": "ninety-four men and women."
+            "startSec": 37.6,
+            "endSec": 41.5,
+            "text": "and Henry Ives Cobb laid out the gray Gothic quads"
           },
           {
             "id": "university-c19",
-            "startSec": 39.2,
-            "endSec": 42.7,
-            "text": "Henry Ives Cobb laid out the gray Gothic quads you"
+            "startSec": 41.5,
+            "endSec": 43.3,
+            "text": "you still walk through."
           },
           {
             "id": "university-c20",
-            "startSec": 42.7,
-            "endSec": 44.1,
-            "text": "still walk through."
+            "startSec": 43.3,
+            "endSec": 45.1,
+            "text": "Classes opened in 1892."
           },
           {
             "id": "university-c21",
-            "startSec": 44.1,
-            "endSec": 47.5,
-            "text": "The same institution that built them would later"
+            "startSec": 45.1,
+            "endSec": 46.2,
+            "text": "By 1901"
           },
           {
             "id": "university-c22",
-            "startSec": 47.5,
-            "endSec": 50.1,
-            "text": "decide who got to live around them."
+            "startSec": 45.6,
+            "endSec": 49.1,
+            "text": "as other Chicago neighborhoods began to slip"
+          },
+          {
+            "id": "university-c23",
+            "startSec": 49.1,
+            "endSec": 50.9,
+            "text": "Hyde Park held its value"
+          },
+          {
+            "id": "university-c24",
+            "startSec": 50.9,
+            "endSec": 52,
+            "text": "protected"
+          },
+          {
+            "id": "university-c25",
+            "startSec": 51.7,
+            "endSec": 52.8,
+            "text": "people said"
+          },
+          {
+            "id": "university-c26",
+            "startSec": 52.5,
+            "endSec": 53.6,
+            "text": "by the parks"
+          },
+          {
+            "id": "university-c27",
+            "startSec": 53.5,
+            "endSec": 54.6,
+            "text": "the lake"
+          },
+          {
+            "id": "university-c28",
+            "startSec": 54.1,
+            "endSec": 55.6,
+            "text": "and the university."
+          },
+          {
+            "id": "university-c29",
+            "startSec": 55.6,
+            "endSec": 56.7,
+            "text": "That word"
+          },
+          {
+            "id": "university-c30",
+            "startSec": 56.3,
+            "endSec": 57.4,
+            "text": "protected"
+          },
+          {
+            "id": "university-c31",
+            "startSec": 57,
+            "endSec": 60.2,
+            "text": "would soon come to mean something darker."
+          },
+          {
+            "id": "university-c32",
+            "startSec": 60.2,
+            "endSec": 64,
+            "text": "The same institution that built these quads would"
+          },
+          {
+            "id": "university-c33",
+            "startSec": 64,
+            "endSec": 67.1,
+            "text": "help decide who got to live around them."
           }
         ],
         "segments": [
@@ -1014,7 +1504,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "university-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10.7,
+            "outSec": 14.1,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -1062,7 +1552,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "university-2",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10.7,
+            "outSec": 14.1,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -1093,7 +1583,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "$600,000 pledge, May 1889, conditioned on a $400,000 match",
                 "startSec": 2,
-                "endSec": 10.299999999999999,
+                "endSec": 13.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1110,7 +1600,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "university-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10.7,
+            "outSec": 14.1,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -1141,7 +1631,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "594 students on opening day, October 1, 1892",
                 "startSec": 2,
-                "endSec": 10.299999999999999,
+                "endSec": 13.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1158,7 +1648,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "university-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10.7,
+            "outSec": 14.1,
             "transitionIn": {
               "type": "slide-left",
               "durationSec": 0.8
@@ -1189,7 +1679,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "$35 million in Rockefeller gifts by 1910",
                 "startSec": 2,
-                "endSec": 10.299999999999999,
+                "endSec": 13.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1206,7 +1696,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "university-5",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 10.7,
+            "outSec": 14.1,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -1237,7 +1727,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Goodspeed, The Story of the University of Chicago",
                 "startSec": 2,
-                "endSec": 10.299999999999999,
+                "endSec": 13.7,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1297,7 +1787,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "The fair",
       "lat": 41.7903,
       "lng": -87.5829,
-      "body": "For six months in 1893, Jackson Park wasn't a park. It was a fair. The World's Columbian Exposition opened May 1 and ran to October 30, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted, who'd helped design Central Park, turned the marshy lakefront into lagoons. At the center stood the Court of Honor, white plaster halls, lit up at night by electricity. People called it the White City. About twenty-seven million came. Almost none of it was built to last. The Palace of Fine Arts was the exception. It reopened in 1933 as the Museum of Science and Industry. The fair made this lakefront valuable ground. The fight over who it belonged to was still ahead.",
+      "body": "For six months in 1893, Jackson Park was not a park. It was a fair. The World's Columbian Exposition opened that May, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted turned the marshy lakefront into lagoons. At the center stood the Court of Honor, white plaster halls lit at night by electricity. People called it the White City. It was beautiful, and it was an argument. The fair staged the world as a ladder, with white northern Europe on top. Past the White City ran the Midway, where the fair set other peoples on display as a descending scale of civilization, a spectacle it dressed up as science. About twenty-seven million people came. Almost none of it was built to last. To move the crowds, the Illinois Central lifted its tracks onto an embankment above the streets. That wall of earth split the neighborhood in two, and the blocks toward the lake became a place apart, Hyde Park East. The fair made this lakefront valuable ground. The fight over who it belonged to was just ahead.",
       "facts": [
         "The World's Columbian Exposition was held in Jackson Park and on the Midway Plaisance, opening to the public May 1 and closing October 30, 1893.",
         "The fair was dedicated on October 21, 1892, but did not open to the public until May 1, 1893.",
@@ -1344,134 +1834,188 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "worlds-fair-c1",
             "startSec": 0.2,
-            "endSec": 1.9,
+            "endSec": 1.8,
             "text": "For six months in 1893"
           },
           {
             "id": "worlds-fair-c2",
-            "startSec": 1.9,
-            "endSec": 4,
-            "text": "Jackson Park wasn't a park."
+            "startSec": 1.8,
+            "endSec": 3.8,
+            "text": "Jackson Park was not a park."
           },
           {
             "id": "worlds-fair-c3",
-            "startSec": 4,
-            "endSec": 5.1,
+            "startSec": 3.8,
+            "endSec": 4.9,
             "text": "It was a fair."
           },
           {
             "id": "worlds-fair-c4",
-            "startSec": 5.1,
-            "endSec": 8.9,
-            "text": "The World's Columbian Exposition opened May 1 and"
+            "startSec": 4.9,
+            "endSec": 8.4,
+            "text": "The World's Columbian Exposition opened that May"
           },
           {
             "id": "worlds-fair-c5",
-            "startSec": 8.9,
-            "endSec": 10.2,
-            "text": "ran to October 30"
-          },
-          {
-            "id": "worlds-fair-c6",
-            "startSec": 10.2,
-            "endSec": 13.9,
+            "startSec": 8.4,
+            "endSec": 11.9,
             "text": "built to mark four hundred years since Columbus"
           },
           {
-            "id": "worlds-fair-c7",
-            "startSec": 13.9,
-            "endSec": 15.5,
+            "id": "worlds-fair-c6",
+            "startSec": 11.9,
+            "endSec": 13.4,
             "text": "reached the Americas."
           },
           {
-            "id": "worlds-fair-c8",
-            "startSec": 15.5,
-            "endSec": 18.3,
+            "id": "worlds-fair-c7",
+            "startSec": 13.4,
+            "endSec": 16.1,
             "text": "Daniel Burnham ran the construction."
           },
           {
+            "id": "worlds-fair-c8",
+            "startSec": 16.1,
+            "endSec": 19.7,
+            "text": "Frederick Law Olmsted turned the marshy lakefront"
+          },
+          {
             "id": "worlds-fair-c9",
-            "startSec": 18.3,
-            "endSec": 20,
-            "text": "Frederick Law Olmsted"
+            "startSec": 19.7,
+            "endSec": 20.8,
+            "text": "into lagoons."
           },
           {
             "id": "worlds-fair-c10",
-            "startSec": 20,
-            "endSec": 22.5,
-            "text": "who'd helped design Central Park"
-          },
-          {
-            "id": "worlds-fair-c11",
-            "startSec": 22.5,
-            "endSec": 25.7,
-            "text": "turned the marshy lakefront into lagoons."
-          },
-          {
-            "id": "worlds-fair-c12",
-            "startSec": 25.7,
-            "endSec": 28.6,
+            "startSec": 20.7,
+            "endSec": 23.5,
             "text": "At the center stood the Court of Honor"
           },
           {
+            "id": "worlds-fair-c11",
+            "startSec": 23.5,
+            "endSec": 27,
+            "text": "white plaster halls lit at night by electricity."
+          },
+          {
+            "id": "worlds-fair-c12",
+            "startSec": 27,
+            "endSec": 29.4,
+            "text": "People called it the White City."
+          },
+          {
             "id": "worlds-fair-c13",
-            "startSec": 28.6,
-            "endSec": 30.1,
-            "text": "white plaster halls"
+            "startSec": 29.4,
+            "endSec": 30.6,
+            "text": "It was beautiful"
           },
           {
             "id": "worlds-fair-c14",
-            "startSec": 30.1,
-            "endSec": 32.5,
-            "text": "lit up at night by electricity."
+            "startSec": 30.6,
+            "endSec": 32.3,
+            "text": "and it was an argument."
           },
           {
             "id": "worlds-fair-c15",
-            "startSec": 32.5,
+            "startSec": 32.3,
             "endSec": 35,
-            "text": "People called it the White City."
+            "text": "The fair staged the world as a ladder"
           },
           {
             "id": "worlds-fair-c16",
             "startSec": 35,
             "endSec": 37.5,
-            "text": "About twenty-seven million came."
+            "text": "with white northern Europe on top."
           },
           {
             "id": "worlds-fair-c17",
             "startSec": 37.5,
-            "endSec": 40.3,
-            "text": "Almost none of it was built to last."
+            "endSec": 40,
+            "text": "Past the White City ran the Midway"
           },
           {
             "id": "worlds-fair-c18",
-            "startSec": 40.3,
+            "startSec": 40,
             "endSec": 43.6,
-            "text": "The Palace of Fine Arts was the exception."
+            "text": "where the fair set other peoples on display as a"
           },
           {
             "id": "worlds-fair-c19",
             "startSec": 43.6,
-            "endSec": 47.3,
-            "text": "It reopened in 1933 as the Museum of Science and"
+            "endSec": 45.9,
+            "text": "descending scale of civilization"
           },
           {
             "id": "worlds-fair-c20",
-            "startSec": 47.3,
-            "endSec": 48.4,
-            "text": "Industry."
+            "startSec": 45.9,
+            "endSec": 48.7,
+            "text": "a spectacle it dressed up as science."
           },
           {
             "id": "worlds-fair-c21",
-            "startSec": 48,
+            "startSec": 48.7,
             "endSec": 51.6,
-            "text": "The fair made this lakefront valuable ground."
+            "text": "About twenty-seven million people came."
           },
           {
             "id": "worlds-fair-c22",
             "startSec": 51.6,
+            "endSec": 54.2,
+            "text": "Almost none of it was built to last."
+          },
+          {
+            "id": "worlds-fair-c23",
+            "startSec": 54.2,
             "endSec": 55.5,
-            "text": "The fight over who it belonged to was still ahead."
+            "text": "To move the crowds"
+          },
+          {
+            "id": "worlds-fair-c24",
+            "startSec": 55.5,
+            "endSec": 58.9,
+            "text": "the Illinois Central lifted its tracks onto an"
+          },
+          {
+            "id": "worlds-fair-c25",
+            "startSec": 58.9,
+            "endSec": 61.1,
+            "text": "embankment above the streets."
+          },
+          {
+            "id": "worlds-fair-c26",
+            "startSec": 61.1,
+            "endSec": 64.6,
+            "text": "That wall of earth split the neighborhood in two"
+          },
+          {
+            "id": "worlds-fair-c27",
+            "startSec": 64.6,
+            "endSec": 68,
+            "text": "and the blocks toward the lake became a place"
+          },
+          {
+            "id": "worlds-fair-c28",
+            "startSec": 68,
+            "endSec": 69.1,
+            "text": "apart"
+          },
+          {
+            "id": "worlds-fair-c29",
+            "startSec": 68.4,
+            "endSec": 69.5,
+            "text": "Hyde Park East."
+          },
+          {
+            "id": "worlds-fair-c30",
+            "startSec": 69.5,
+            "endSec": 72.8,
+            "text": "The fair made this lakefront valuable ground."
+          },
+          {
+            "id": "worlds-fair-c31",
+            "startSec": 72.8,
+            "endSec": 76.5,
+            "text": "The fight over who it belonged to was just ahead."
           }
         ],
         "segments": [
@@ -1480,7 +2024,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -1528,7 +2072,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -1559,7 +2103,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Public run, May 1 to October 30, 1893",
                 "startSec": 2,
-                "endSec": 8.299999999999999,
+                "endSec": 11.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1576,7 +2120,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -1607,7 +2151,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "About 27 million visitors over six months",
                 "startSec": 2,
-                "endSec": 8.299999999999999,
+                "endSec": 11.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1624,7 +2168,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-6",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "slide-left",
               "durationSec": 0.8
@@ -1655,7 +2199,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Palace of Fine Arts reopened, 1933",
                 "startSec": 2,
-                "endSec": 8.299999999999999,
+                "endSec": 11.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1672,7 +2216,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-7",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -1703,7 +2247,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Sources. Britannica; Chicago Architecture Center",
                 "startSec": 2,
-                "endSec": 8.299999999999999,
+                "endSec": 11.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1720,7 +2264,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-8",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "wipe",
               "durationSec": 0.9
@@ -1751,7 +2295,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Museum of Science and Industry, Chicago",
                 "startSec": 2,
-                "endSec": 8.299999999999999,
+                "endSec": 11.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -1768,7 +2312,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-10",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 8.7,
+            "outSec": 11.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -1858,7 +2402,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "The color line",
       "lat": 41.8027,
       "lng": -87.5953,
-      "body": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white. Black Chicago kept growing the whole time, about 40,000 people in 1910, around 278,000 by 1940. Most were pressed into a narrow corridor on the South Side that people called the Black Belt, a few blocks wide and miles long, fenced in by the same covenants. Inside it, families paid more for less, carved into kitchenette apartments, because the color line left them nowhere else to go. Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn't enforce them anymore.",
+      "body": "It started with a club. In 1908, white homeowners formed the Hyde Park Improvement Protective Club, three hundred and fifty strong, with a single aim, to remove every Black resident and worker from the neighborhood. They pledged to fire their Black servants, to boycott any agent who sold to a Black family, and to buy out the Black households who had lived here for years. One of them, Fannie Barrier Williams, a longtime resident, refused to leave. When pressure was not enough, they turned to the deed. A racially restrictive covenant was a line written into the title, barring sale or rent to anyone who was not white. Neighbors signed in blocs, so a single clause could seal a whole block. And the University of Chicago was not a bystander. Between 1933 and 1947 it spent more than eighty-three thousand dollars defending the covenants around its campus. Black Chicago kept growing the whole time, from about forty thousand people in 1910 to two hundred seventy-eight thousand by 1940. Most were pressed into a narrow corridor called the Black Belt, a few blocks wide and miles long. Inside it families paid more for less, carved into kitchenette apartments, because the color line left them nowhere else to go.",
       "facts": [
         "Chicago's Black population grew from about 40,000 in 1910 to roughly 234,000 in 1930 and about 278,000 by 1940 during the Great Migration.",
         "Racially restrictive covenants spread across the white neighborhoods ringing the Black Belt beginning in the late 1920s, including Kenwood, Hyde Park, Woodlawn, and Englewood. The Washington Park subdivision covenant later litigated in Hansberry was signed September 30, 1927 and recorded February 1, 1928.",
@@ -1898,170 +2442,224 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "color-line-c1",
             "startSec": 0.2,
-            "endSec": 3,
-            "text": "At 6140 South Rhodes Avenue in Woodlawn"
+            "endSec": 1.8,
+            "text": "It started with a club."
           },
           {
             "id": "color-line-c2",
-            "startSec": 3,
-            "endSec": 6.6,
-            "text": "one line in the deed barred selling or renting to"
+            "startSec": 1.8,
+            "endSec": 2.9,
+            "text": "In 1908"
           },
           {
             "id": "color-line-c3",
-            "startSec": 6.6,
-            "endSec": 8.4,
-            "text": "anyone who wasn't white."
+            "startSec": 2.3,
+            "endSec": 5.9,
+            "text": "white homeowners formed the Hyde Park Improvement"
           },
           {
             "id": "color-line-c4",
-            "startSec": 8.4,
-            "endSec": 11.8,
-            "text": "They called it a racially restrictive covenant."
+            "startSec": 5.9,
+            "endSec": 7,
+            "text": "Protective Club"
           },
           {
             "id": "color-line-c5",
-            "startSec": 11.8,
-            "endSec": 13.7,
-            "text": "Neighbors signed in blocs"
+            "startSec": 7,
+            "endSec": 9.2,
+            "text": "three hundred and fifty strong"
           },
           {
             "id": "color-line-c6",
-            "startSec": 13.7,
-            "endSec": 16.5,
-            "text": "so the clause covered the whole block."
+            "startSec": 9.2,
+            "endSec": 10.4,
+            "text": "with a single aim"
           },
           {
             "id": "color-line-c7",
-            "startSec": 16.5,
-            "endSec": 20.1,
-            "text": "Hyde Park and Woodlawn leaned on these covenants."
+            "startSec": 10.4,
+            "endSec": 14.1,
+            "text": "to remove every Black resident and worker from the"
           },
           {
             "id": "color-line-c8",
-            "startSec": 20.1,
-            "endSec": 23.7,
-            "text": "And the University of Chicago was not a bystander."
+            "startSec": 14.1,
+            "endSec": 15.2,
+            "text": "neighborhood."
           },
           {
             "id": "color-line-c9",
-            "startSec": 23.7,
-            "endSec": 26.9,
-            "text": "It put money behind defending them in court"
+            "startSec": 15,
+            "endSec": 18,
+            "text": "They pledged to fire their Black servants"
           },
           {
             "id": "color-line-c10",
-            "startSec": 26.9,
-            "endSec": 30.1,
-            "text": "to keep the blocks around its campus white."
+            "startSec": 18,
+            "endSec": 21.4,
+            "text": "to boycott any agent who sold to a Black family"
           },
           {
             "id": "color-line-c11",
-            "startSec": 30.1,
-            "endSec": 33.1,
-            "text": "Black Chicago kept growing the whole time"
+            "startSec": 21.4,
+            "endSec": 25,
+            "text": "and to buy out the Black households who had lived"
           },
           {
             "id": "color-line-c12",
-            "startSec": 33.1,
-            "endSec": 35.1,
-            "text": "about 40,000 people in 1910"
+            "startSec": 25,
+            "endSec": 26.1,
+            "text": "here for years."
           },
           {
             "id": "color-line-c13",
-            "startSec": 35.1,
-            "endSec": 36.8,
-            "text": "around 278,000 by 1940."
+            "startSec": 26.1,
+            "endSec": 27.2,
+            "text": "One of them"
           },
           {
             "id": "color-line-c14",
-            "startSec": 36.8,
-            "endSec": 40.2,
-            "text": "Most were pressed into a narrow corridor on the"
+            "startSec": 26.9,
+            "endSec": 28.6,
+            "text": "Fannie Barrier Williams"
           },
           {
             "id": "color-line-c15",
-            "startSec": 40.2,
-            "endSec": 43.5,
-            "text": "South Side that people called the Black Belt"
+            "startSec": 28.6,
+            "endSec": 29.9,
+            "text": "a longtime resident"
           },
           {
             "id": "color-line-c16",
-            "startSec": 43.5,
-            "endSec": 45.8,
-            "text": "a few blocks wide and miles long"
+            "startSec": 29.9,
+            "endSec": 31.2,
+            "text": "refused to leave."
           },
           {
             "id": "color-line-c17",
-            "startSec": 45.8,
-            "endSec": 48.2,
-            "text": "fenced in by the same covenants."
+            "startSec": 31.2,
+            "endSec": 33.2,
+            "text": "When pressure was not enough"
           },
           {
             "id": "color-line-c18",
-            "startSec": 48.2,
-            "endSec": 49.3,
-            "text": "Inside it"
+            "startSec": 33.2,
+            "endSec": 35,
+            "text": "they turned to the deed."
           },
           {
             "id": "color-line-c19",
-            "startSec": 48.8,
-            "endSec": 50.8,
-            "text": "families paid more for less"
+            "startSec": 35,
+            "endSec": 38.6,
+            "text": "A racially restrictive covenant was a line written"
           },
           {
             "id": "color-line-c20",
-            "startSec": 50.8,
-            "endSec": 53.3,
-            "text": "carved into kitchenette apartments"
+            "startSec": 38.6,
+            "endSec": 39.7,
+            "text": "into the title"
           },
           {
             "id": "color-line-c21",
-            "startSec": 53.3,
-            "endSec": 56.8,
-            "text": "because the color line left them nowhere else to"
+            "startSec": 39.6,
+            "endSec": 43.2,
+            "text": "barring sale or rent to anyone who was not white."
           },
           {
             "id": "color-line-c22",
-            "startSec": 56.8,
-            "endSec": 57.9,
-            "text": "go."
+            "startSec": 43.2,
+            "endSec": 45,
+            "text": "Neighbors signed in blocs"
           },
           {
             "id": "color-line-c23",
-            "startSec": 57.3,
-            "endSec": 60.7,
-            "text": "Not until 1948 did the Supreme Court take their"
+            "startSec": 45,
+            "endSec": 48.2,
+            "text": "so a single clause could seal a whole block."
           },
           {
             "id": "color-line-c24",
-            "startSec": 60.7,
-            "endSec": 61.8,
-            "text": "force away"
+            "startSec": 48.2,
+            "endSec": 51.9,
+            "text": "And the University of Chicago was not a bystander."
           },
           {
             "id": "color-line-c25",
-            "startSec": 61.5,
-            "endSec": 62.6,
-            "text": "in Shelley v."
+            "startSec": 51.9,
+            "endSec": 54.8,
+            "text": "Between 1933 and 1947 it spent more than"
           },
           {
             "id": "color-line-c26",
-            "startSec": 62.4,
-            "endSec": 63.5,
-            "text": "Kraemer."
+            "startSec": 54.8,
+            "endSec": 57.9,
+            "text": "eighty-three thousand dollars defending the"
           },
           {
             "id": "color-line-c27",
-            "startSec": 63,
-            "endSec": 65.4,
-            "text": "The clauses stayed in the deeds."
+            "startSec": 57.9,
+            "endSec": 59.9,
+            "text": "covenants around its campus."
           },
           {
             "id": "color-line-c28",
-            "startSec": 65.4,
-            "endSec": 68.4,
-            "text": "Courts just couldn't enforce them anymore."
+            "startSec": 59.9,
+            "endSec": 62.9,
+            "text": "Black Chicago kept growing the whole time"
+          },
+          {
+            "id": "color-line-c29",
+            "startSec": 62.9,
+            "endSec": 66.4,
+            "text": "from about forty thousand people in 1910 to two"
+          },
+          {
+            "id": "color-line-c30",
+            "startSec": 66.4,
+            "endSec": 69.2,
+            "text": "hundred seventy-eight thousand by 1940."
+          },
+          {
+            "id": "color-line-c31",
+            "startSec": 69.2,
+            "endSec": 72.6,
+            "text": "Most were pressed into a narrow corridor called"
+          },
+          {
+            "id": "color-line-c32",
+            "startSec": 72.6,
+            "endSec": 73.7,
+            "text": "the Black Belt"
+          },
+          {
+            "id": "color-line-c33",
+            "startSec": 73.6,
+            "endSec": 76,
+            "text": "a few blocks wide and miles long."
+          },
+          {
+            "id": "color-line-c34",
+            "startSec": 76,
+            "endSec": 78.7,
+            "text": "Inside it families paid more for less"
+          },
+          {
+            "id": "color-line-c35",
+            "startSec": 78.7,
+            "endSec": 81.2,
+            "text": "carved into kitchenette apartments"
+          },
+          {
+            "id": "color-line-c36",
+            "startSec": 81.2,
+            "endSec": 84.7,
+            "text": "because the color line left them nowhere else to"
+          },
+          {
+            "id": "color-line-c37",
+            "startSec": 84.7,
+            "endSec": 85.8,
+            "text": "go."
           }
         ],
         "segments": [
@@ -2070,7 +2668,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -2118,7 +2716,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2149,7 +2747,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Chicago's Black population, ~40,000 in 1910 to ~278,000 by 1940",
                 "startSec": 2,
-                "endSec": 11.7,
+                "endSec": 14.5,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2166,7 +2764,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -2197,7 +2795,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Shelley v. Kraemer, decided May 3, 1948, 6 to 0",
                 "startSec": 2,
-                "endSec": 11.7,
+                "endSec": 14.5,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2214,7 +2812,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-5",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "slide-left",
               "durationSec": 0.8
@@ -2245,7 +2843,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Chicago Public Library, The Great Migration",
                 "startSec": 2,
-                "endSec": 11.7,
+                "endSec": 14.5,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2262,7 +2860,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-6",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2293,7 +2891,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Shelley v. Kraemer, 334 U.S. 1 (1948), Justia",
                 "startSec": 2,
-                "endSec": 11.7,
+                "endSec": 14.5,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2310,7 +2908,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "color-line-7",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 12.1,
+            "outSec": 14.9,
             "transitionIn": {
               "type": "wipe",
               "durationSec": 0.9
@@ -2380,6 +2978,215 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           },
           "color-line-7": {
             "url": "/media/hyde-park/img/color-line-7.jpg",
+            "kind": "image",
+            "is360": false,
+            "poster": null
+          }
+        }
+      }
+    },
+    {
+      "id": "redlining",
+      "title": "How Hyde Park Drew the Lines",
+      "kicker": "1930s / The campus",
+      "depthLabel": "Redlining",
+      "lat": 41.7886,
+      "lng": -87.5987,
+      "body": "The belief that a Black family lowered the value of a block was not only prejudice. It was given the authority of science, right here. A University of Chicago economist named Homer Hoyt ranked races and nationalities by their supposed effect on land values. Then he carried that logic to Washington, as the federal government's chief land economist, where it was drawn onto maps. Block by block, neighborhoods with Black residents were outlined and marked hazardous, then cut off from loans. The country would come to call it redlining, and it spread to nearly every major city in America. An idea built in a Hyde Park classroom helped wall off the whole country. Not until 1948 did the Supreme Court take the covenants' force away, in Shelley versus Kraemer. The clauses stayed in the deeds. The courts just could not enforce them anymore.",
+      "facts": [],
+      "sources": [],
+      "media": null,
+      "sequence": {
+        "version": 1,
+        "title": "How Hyde Park Drew the Lines",
+        "notes": "",
+        "aspect": "16:9",
+        "voiceover": {
+          "clipId": "vo-redlining",
+          "volume": 1,
+          "fadeInSec": 0.4,
+          "fadeOutSec": 0.8,
+          "loop": false,
+          "offsetSec": 0,
+          "muted": false
+        },
+        "subtitles": [
+          {
+            "id": "redlining-c1",
+            "startSec": 0.2,
+            "endSec": 3.5,
+            "text": "The belief that a Black family lowered the value"
+          },
+          {
+            "id": "redlining-c2",
+            "startSec": 3.5,
+            "endSec": 5.9,
+            "text": "of a block was not only prejudice."
+          },
+          {
+            "id": "redlining-c3",
+            "startSec": 5.9,
+            "endSec": 8.6,
+            "text": "It was given the authority of science"
+          },
+          {
+            "id": "redlining-c4",
+            "startSec": 8.6,
+            "endSec": 9.7,
+            "text": "right here."
+          },
+          {
+            "id": "redlining-c5",
+            "startSec": 9.3,
+            "endSec": 12.9,
+            "text": "A University of Chicago economist named Homer Hoyt"
+          },
+          {
+            "id": "redlining-c6",
+            "startSec": 12.9,
+            "endSec": 16.3,
+            "text": "ranked races and nationalities by their supposed"
+          },
+          {
+            "id": "redlining-c7",
+            "startSec": 16.3,
+            "endSec": 17.8,
+            "text": "effect on land values."
+          },
+          {
+            "id": "redlining-c8",
+            "startSec": 17.8,
+            "endSec": 20.6,
+            "text": "Then he carried that logic to Washington"
+          },
+          {
+            "id": "redlining-c9",
+            "startSec": 20.6,
+            "endSec": 24,
+            "text": "as the federal government's chief land economist"
+          },
+          {
+            "id": "redlining-c10",
+            "startSec": 24,
+            "endSec": 26.1,
+            "text": "where it was drawn onto maps."
+          },
+          {
+            "id": "redlining-c11",
+            "startSec": 26.1,
+            "endSec": 27.2,
+            "text": "Block by block"
+          },
+          {
+            "id": "redlining-c12",
+            "startSec": 27.1,
+            "endSec": 30.4,
+            "text": "neighborhoods with Black residents were outlined"
+          },
+          {
+            "id": "redlining-c13",
+            "startSec": 30.4,
+            "endSec": 31.9,
+            "text": "and marked hazardous"
+          },
+          {
+            "id": "redlining-c14",
+            "startSec": 31.9,
+            "endSec": 33.6,
+            "text": "then cut off from loans."
+          },
+          {
+            "id": "redlining-c15",
+            "startSec": 33.6,
+            "endSec": 36.6,
+            "text": "The country would come to call it redlining"
+          },
+          {
+            "id": "redlining-c16",
+            "startSec": 36.6,
+            "endSec": 39.6,
+            "text": "and it spread to nearly every major city in"
+          },
+          {
+            "id": "redlining-c17",
+            "startSec": 39.6,
+            "endSec": 40.7,
+            "text": "America."
+          },
+          {
+            "id": "redlining-c18",
+            "startSec": 40.2,
+            "endSec": 43.7,
+            "text": "An idea built in a Hyde Park classroom helped wall"
+          },
+          {
+            "id": "redlining-c19",
+            "startSec": 43.7,
+            "endSec": 45.3,
+            "text": "off the whole country."
+          },
+          {
+            "id": "redlining-c20",
+            "startSec": 45.3,
+            "endSec": 48.5,
+            "text": "Not until 1948 did the Supreme Court take the"
+          },
+          {
+            "id": "redlining-c21",
+            "startSec": 48.5,
+            "endSec": 49.9,
+            "text": "covenants' force away"
+          },
+          {
+            "id": "redlining-c22",
+            "startSec": 49.9,
+            "endSec": 51.8,
+            "text": "in Shelley versus Kraemer."
+          },
+          {
+            "id": "redlining-c23",
+            "startSec": 51.8,
+            "endSec": 54,
+            "text": "The clauses stayed in the deeds."
+          },
+          {
+            "id": "redlining-c24",
+            "startSec": 54,
+            "endSec": 57.4,
+            "text": "The courts just could not enforce them anymore."
+          }
+        ],
+        "segments": [
+          {
+            "id": "redlining-s1",
+            "clipId": "present-broll",
+            "mode": "2d",
+            "inSec": 0,
+            "outSec": 58.3,
+            "transitionIn": {
+              "type": "cut",
+              "durationSec": 0
+            },
+            "kenBurns": {
+              "fromScale": 1,
+              "toScale": 1.12,
+              "fromX": -0.18,
+              "fromY": -0.08,
+              "toX": 0.18,
+              "toY": 0.08
+            },
+            "muted": true
+          }
+        ],
+        "assets": {
+          "vo-redlining": {
+            "url": "/media/hyde-park/vo/vo-redlining.mp3",
+            "kind": "audio",
+            "is360": false,
+            "poster": null
+          },
+          "present-broll": {
+            "url": "/media/hyde-park/slates/present-broll.jpg",
             "kind": "image",
             "is360": false,
             "poster": null
@@ -2832,7 +3639,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "Now",
       "lat": 41.7843,
       "lng": -87.5872,
-      "body": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable. It is a pattern the neighborhood has run before. An institution arrives, the ground around it gains value, and the people already there are left to wonder if the new Hyde Park has room for them. A hundred and seventy years after Paul Cornell sold these blocks as a retreat for people with means, the question underneath it all, who this ground is for, still isn't settled.",
+      "body": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked in 2016. A group called Protect Our Parks sued over and over to stop it. Every suit failed. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable. The pattern that began with the covenants never really broke. When Black families finally bought here, and across the South and West Sides, many bought on contract, at markups that stripped an estimated three to four billion dollars from Black Chicago. Money that should have become wealth, handed down, simply vanished. You can still measure the hole it left. Today the median white family in America holds about two hundred eighty-five thousand dollars. The median Black family holds about forty-five thousand. A gap of more than six to one. It is a pattern the neighborhood has run before. An institution arrives, the ground around it gains value, and the people already there are left to wonder if the new Hyde Park has room for them. A hundred and seventy years after Paul Cornell bought these blocks, the question underneath it all, who this ground is for, still is not settled.",
       "facts": [
         "The Obama Presidential Center opened to the public on June 19, 2026 (Juneteenth), after a dedication ceremony held June 18, 2026. Grand Opening Weekend events followed June 20 to 21. (Confirmed: Obama Foundation, Wikipedia, CBS News, Newsweek.)",
         "Construction began in August 2021, and the groundbreaking ceremony with the Obamas, Gov. J.B. Pritzker, and former Mayor Lori Lightfoot was held September 28, 2021. The delay followed a multi-year federal review that concluded in 2021. (Confirmed: Obama Foundation press release, PBS, Wikipedia.)",
@@ -2866,212 +3673,302 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "present-c1",
             "startSec": 0.2,
-            "endSec": 3.7,
+            "endSec": 3.6,
             "text": "The Obama Presidential Center opened on June 19"
           },
           {
             "id": "present-c2",
-            "startSec": 3.7,
-            "endSec": 4.8,
+            "startSec": 3.6,
+            "endSec": 4.7,
             "text": "2026."
           },
           {
             "id": "present-c3",
-            "startSec": 4.1,
-            "endSec": 5.2,
+            "startSec": 4,
+            "endSec": 5.1,
             "text": "Juneteenth."
           },
           {
             "id": "present-c4",
-            "startSec": 5,
-            "endSec": 7.9,
+            "startSec": 4.8,
+            "endSec": 7.6,
             "text": "The museum tower runs about two hundred"
           },
           {
             "id": "present-c5",
-            "startSec": 7.9,
-            "endSec": 10.6,
+            "startSec": 7.6,
+            "endSec": 10.1,
             "text": "twenty-five feet over Jackson Park."
           },
           {
             "id": "present-c6",
-            "startSec": 10.6,
-            "endSec": 13.8,
+            "startSec": 10.1,
+            "endSec": 13.3,
             "text": "Olmsted and Vaux laid out this park in 1871"
           },
           {
             "id": "present-c7",
-            "startSec": 13.8,
-            "endSec": 17,
+            "startSec": 13.3,
+            "endSec": 16.4,
             "text": "and it's the same ground that held the 1893"
           },
           {
             "id": "present-c8",
-            "startSec": 17,
-            "endSec": 18.1,
+            "startSec": 16.4,
+            "endSec": 17.5,
             "text": "World's Fair."
           },
           {
             "id": "present-c9",
-            "startSec": 18,
-            "endSec": 21.7,
+            "startSec": 17.3,
+            "endSec": 20.9,
             "text": "The campus cost about eight hundred fifty million"
           },
           {
             "id": "present-c10",
-            "startSec": 21.7,
-            "endSec": 22.8,
+            "startSec": 20.9,
+            "endSec": 22,
             "text": "dollars."
           },
           {
             "id": "present-c11",
-            "startSec": 22.3,
-            "endSec": 25.5,
+            "startSec": 21.4,
+            "endSec": 24.5,
             "text": "No presidential center has ever cost more."
           },
           {
             "id": "present-c12",
-            "startSec": 25.5,
-            "endSec": 27.6,
+            "startSec": 24.5,
+            "endSec": 26.5,
             "text": "Getting it built took years."
           },
           {
             "id": "present-c13",
-            "startSec": 27.6,
-            "endSec": 29.7,
+            "startSec": 26.5,
+            "endSec": 28.5,
             "text": "The site was picked in 2016."
           },
           {
             "id": "present-c14",
-            "startSec": 29.7,
-            "endSec": 33.2,
+            "startSec": 28.5,
+            "endSec": 31.9,
             "text": "A group called Protect Our Parks sued over and"
           },
           {
             "id": "present-c15",
-            "startSec": 33.2,
-            "endSec": 34.4,
+            "startSec": 31.9,
+            "endSec": 33,
             "text": "over to stop it."
           },
           {
             "id": "present-c16",
-            "startSec": 34.4,
-            "endSec": 35.7,
+            "startSec": 33,
+            "endSec": 34.3,
             "text": "Every suit failed."
           },
           {
             "id": "present-c17",
-            "startSec": 35.7,
-            "endSec": 37.9,
+            "startSec": 34.3,
+            "endSec": 36.4,
             "text": "Construction started in 2021."
           },
           {
             "id": "present-c18",
-            "startSec": 37.9,
-            "endSec": 40,
+            "startSec": 36.4,
+            "endSec": 38.5,
             "text": "And while the Center went up"
           },
           {
             "id": "present-c19",
-            "startSec": 40,
-            "endSec": 42.1,
+            "startSec": 38.5,
+            "endSec": 40.5,
             "text": "Woodlawn got more expensive."
           },
           {
             "id": "present-c20",
-            "startSec": 42.1,
-            "endSec": 44.2,
+            "startSec": 40.5,
+            "endSec": 42.5,
             "text": "On the blocks closest to it"
           },
           {
             "id": "present-c21",
-            "startSec": 44.2,
-            "endSec": 46.5,
+            "startSec": 42.5,
+            "endSec": 44.7,
             "text": "home prices doubled after 2019."
           },
           {
             "id": "present-c22",
-            "startSec": 46.5,
-            "endSec": 47.6,
+            "startSec": 44.7,
+            "endSec": 45.8,
             "text": "By 2024"
           },
           {
             "id": "present-c23",
-            "startSec": 47,
-            "endSec": 50.7,
+            "startSec": 45.2,
+            "endSec": 48.8,
             "text": "less than a third of the housing nearby was still"
           },
           {
             "id": "present-c24",
-            "startSec": 50.7,
-            "endSec": 51.8,
+            "startSec": 48.8,
+            "endSec": 49.9,
             "text": "affordable."
           },
           {
             "id": "present-c25",
-            "startSec": 51.6,
-            "endSec": 55.2,
-            "text": "It is a pattern the neighborhood has run before."
+            "startSec": 49.6,
+            "endSec": 53,
+            "text": "The pattern that began with the covenants never"
           },
           {
             "id": "present-c26",
-            "startSec": 55.2,
-            "endSec": 56.8,
-            "text": "An institution arrives"
+            "startSec": 53,
+            "endSec": 54.1,
+            "text": "really broke."
           },
           {
             "id": "present-c27",
-            "startSec": 56.8,
-            "endSec": 59.3,
-            "text": "the ground around it gains value"
+            "startSec": 53.9,
+            "endSec": 56.7,
+            "text": "When Black families finally bought here"
           },
           {
             "id": "present-c28",
-            "startSec": 59.3,
-            "endSec": 63,
-            "text": "and the people already there are left to wonder if"
+            "startSec": 56.7,
+            "endSec": 59.3,
+            "text": "and across the South and West Sides"
           },
           {
             "id": "present-c29",
-            "startSec": 63,
-            "endSec": 65.7,
-            "text": "the new Hyde Park has room for them."
+            "startSec": 59.3,
+            "endSec": 60.9,
+            "text": "many bought on contract"
           },
           {
             "id": "present-c30",
-            "startSec": 65.7,
-            "endSec": 69.2,
-            "text": "A hundred and seventy years after Paul Cornell"
+            "startSec": 60.9,
+            "endSec": 64.3,
+            "text": "at markups that stripped an estimated three to"
           },
           {
             "id": "present-c31",
-            "startSec": 69.2,
-            "endSec": 72.7,
-            "text": "sold these blocks as a retreat for people with"
+            "startSec": 64.3,
+            "endSec": 67.2,
+            "text": "four billion dollars from Black Chicago."
           },
           {
             "id": "present-c32",
-            "startSec": 72.7,
-            "endSec": 73.8,
-            "text": "means"
+            "startSec": 67.2,
+            "endSec": 69.8,
+            "text": "Money that should have become wealth"
           },
           {
             "id": "present-c33",
-            "startSec": 73.1,
-            "endSec": 75.4,
-            "text": "the question underneath it all"
+            "startSec": 69.8,
+            "endSec": 70.9,
+            "text": "handed down"
           },
           {
             "id": "present-c34",
-            "startSec": 75.4,
-            "endSec": 77,
-            "text": "who this ground is for"
+            "startSec": 70.6,
+            "endSec": 71.7,
+            "text": "simply vanished."
           },
           {
             "id": "present-c35",
-            "startSec": 77,
-            "endSec": 78.5,
-            "text": "still isn't settled."
+            "startSec": 71.7,
+            "endSec": 74.5,
+            "text": "You can still measure the hole it left."
+          },
+          {
+            "id": "present-c36",
+            "startSec": 74.5,
+            "endSec": 77.9,
+            "text": "Today the median white family in America holds"
+          },
+          {
+            "id": "present-c37",
+            "startSec": 77.9,
+            "endSec": 81.3,
+            "text": "about two hundred eighty-five thousand dollars."
+          },
+          {
+            "id": "present-c38",
+            "startSec": 81.3,
+            "endSec": 84.6,
+            "text": "The median Black family holds about forty-five"
+          },
+          {
+            "id": "present-c39",
+            "startSec": 84.6,
+            "endSec": 85.7,
+            "text": "thousand."
+          },
+          {
+            "id": "present-c40",
+            "startSec": 85.3,
+            "endSec": 87.4,
+            "text": "A gap of more than six to one."
+          },
+          {
+            "id": "present-c41",
+            "startSec": 87.4,
+            "endSec": 90.9,
+            "text": "It is a pattern the neighborhood has run before."
+          },
+          {
+            "id": "present-c42",
+            "startSec": 90.9,
+            "endSec": 92.5,
+            "text": "An institution arrives"
+          },
+          {
+            "id": "present-c43",
+            "startSec": 92.5,
+            "endSec": 94.8,
+            "text": "the ground around it gains value"
+          },
+          {
+            "id": "present-c44",
+            "startSec": 94.8,
+            "endSec": 98.4,
+            "text": "and the people already there are left to wonder if"
+          },
+          {
+            "id": "present-c45",
+            "startSec": 98.4,
+            "endSec": 101.1,
+            "text": "the new Hyde Park has room for them."
+          },
+          {
+            "id": "present-c46",
+            "startSec": 101.1,
+            "endSec": 104.4,
+            "text": "A hundred and seventy years after Paul Cornell"
+          },
+          {
+            "id": "present-c47",
+            "startSec": 104.4,
+            "endSec": 105.8,
+            "text": "bought these blocks"
+          },
+          {
+            "id": "present-c48",
+            "startSec": 105.8,
+            "endSec": 107.9,
+            "text": "the question underneath it all"
+          },
+          {
+            "id": "present-c49",
+            "startSec": 107.9,
+            "endSec": 109.5,
+            "text": "who this ground is for"
+          },
+          {
+            "id": "present-c50",
+            "startSec": 109.5,
+            "endSec": 111.1,
+            "text": "still is not settled."
           }
         ],
         "segments": [
@@ -3080,7 +3977,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "present-present",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 22.8,
+            "outSec": 32,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -3115,7 +4012,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "pano-obama-center",
             "mode": "pano360",
             "inSec": 0,
-            "outSec": 34.8,
+            "outSec": 48.9,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -3146,7 +4043,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "host-close",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 22.8,
+            "outSec": 32,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6

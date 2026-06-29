@@ -32,35 +32,65 @@ interface Manifest {
   panos?: Pano[];
 }
 
-const TEST_PANO: Media360 = {
-  kind: "photo360",
-  src: "/media/360/test-pano.jpg",
-  poster: "/media/360/test-pano-poster.jpg",
-  initialYawDeg: 0,
-  note: "Test capture. Replace with your on-site 360 / 3D footage.",
+// Real on-site 360 captures (Insta360), keyed to the chapter they live in.
+const PANO_MEDIA: Record<string, Media360> = {
+  land: {
+    kind: "photo360",
+    src: "/media/hyde-park/360/founding-rock.jpg",
+    poster: "/media/hyde-park/360/founding-rock-poster.jpg",
+    initialYawDeg: 108,
+    note: "The lakefront where the neighborhood began.",
+  },
+  university: {
+    kind: "photo360",
+    src: "/media/hyde-park/360/cobb-hall.jpg",
+    poster: "/media/hyde-park/360/cobb-hall-poster.jpg",
+    initialYawDeg: 40,
+    note: "Outside Cobb Hall, the first building of the University of Chicago.",
+  },
+  present: {
+    kind: "photo360",
+    src: "/media/hyde-park/360/modern-quad.jpg",
+    poster: "/media/hyde-park/360/modern-quad-poster.jpg",
+    initialYawDeg: 0,
+    note: "Hyde Park today.",
+  },
 };
 
-// Short, single-line labels for the timeline so they never wrap into the
-// header or each other. The big label is the year; this is the line beneath.
+// Short, single-line labels for the timeline so they never wrap.
 const SHORT_LABEL: Record<string, string> = {
   opening: "",
   intro: "The neighborhood",
+  land: "The land before",
   formation: "Cornell's bet",
   university: "The University",
   "worlds-fair": "The World's Fair",
   "color-line": "The color line",
+  redlining: "Redlining",
   "urban-renewal": "Urban renewal",
   present: "The Obama Center",
 };
 
-// Where the owner films a real-time 360 / 3D look-around, keyed to a chapter.
+// The 360 look-around spots, in film order (each maps to a real capture above).
 const REVEAL_SPOTS = [
-  { id: "intro", location: "57th Street Beach", framing: "Face the skyline across the lakefront." },
-  { id: "university", location: "The Main Quadrangles", framing: "Turn slowly across the Gothic courts." },
-  { id: "worlds-fair", location: "Jackson Park", framing: "Over the lagoon by the Wooded Island." },
-  { id: "urban-renewal", location: "55th Street", framing: "The rebuilt corridor, east and west." },
-  { id: "present", location: "The Obama Center site", framing: "A full turn from the park lawn." },
+  { id: "land", location: "Where it began", framing: "Promontory Point and the lakefront." },
+  { id: "university", location: "Outside Cobb Hall", framing: "The first building of the University of Chicago." },
+  { id: "present", location: "Hyde Park today", framing: "A campus courtyard, now." },
 ];
+
+// One-line context for the clickable timeline's info panel, per chapter.
+const CHAPTER_INFO: Record<string, string> = {
+  opening: "A South Side neighborhood that powerful institutions kept reshaping, and the people left to wonder who it was for.",
+  intro: "Seven miles south of the Loop, Hyde Park runs to Lake Michigan. Almost none of it was here a hundred and seventy years ago.",
+  land: "Before Hyde Park, the lakefront was Potawatomi land. After the 1832 Black Hawk War, the U.S. pressed the Three Fires nations into the 1833 Treaty of Chicago, and removal followed.",
+  formation: "In 1853 Paul Cornell bought 300 acres, dealt land to the Illinois Central, and sold the new suburb as selective, sorted from the start.",
+  university: "Rockefeller's University of Chicago rose in 1890. By 1901 the neighborhood held its value, people said, protected by the parks, the lake, and the university.",
+  "worlds-fair": "The 1893 World's Fair built the White City in Jackson Park, staged a racial hierarchy as science, and raised the tracks that split the neighborhood in two.",
+  "color-line": "From 1908, a homeowners' club and racially restrictive covenants walled Black families out, with more than $83,000 of the university's money behind them.",
+  redlining: "A University of Chicago economist ranked races by their effect on land values. The logic became federal redlining, and spread across the country.",
+  "urban-renewal": "In 1958 the university drove an 856-acre renewal that marked 638 buildings to fall and pushed out about 4,000 families.",
+  present: "The Obama Center opened in 2026 on the old fairgrounds, as the wealth gap that began with the covenants endures, more than six to one.",
+};
 
 function fmt(s: number) {
   const m = Math.floor(s / 60);
@@ -217,13 +247,13 @@ export default function HydeParkFilm({
               onClick={() => activePano && open3D(revealForCid(activePano.cid))}
               aria-hidden={!activePano}
               tabIndex={activePano ? 0 : -1}
-              className={`absolute right-3 top-3 z-20 inline-flex items-center gap-2 rounded-full bg-rust px-4 py-2 font-body text-xs font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-all duration-500 hover:scale-105 ${
+              className={`absolute right-2 top-2 z-20 inline-flex items-center gap-1.5 rounded-full bg-rust px-3 py-1.5 font-body text-[11px] font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-all duration-500 hover:scale-105 sm:right-3 sm:top-3 sm:gap-2 sm:px-4 sm:py-2 sm:text-xs ${
                 activePano
                   ? "translate-y-0 opacity-100"
                   : "pointer-events-none -translate-y-1 opacity-0"
               }`}
             >
-              <span aria-hidden="true" className="rounded-full bg-white/25 px-1.5 py-0.5 text-[10px] leading-none">360°</span>
+              <span aria-hidden="true" className="rounded-full bg-white/25 px-1.5 py-0.5 text-[9px] leading-none sm:text-[10px]">360&deg;</span>
               View in 3D
             </button>
           )}
@@ -245,7 +275,7 @@ export default function HydeParkFilm({
                 </button>
               </div>
               <div className="relative min-h-0 flex-1">
-                <PanoViewer media={TEST_PANO} label={REVEAL_SPOTS[reveal].location} />
+                <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
               </div>
               <div className="flex flex-wrap items-center gap-2 border-t border-white/10 px-4 py-3">
                 <span className="mr-1 font-body text-[11px] uppercase tracking-wider text-white/50">
@@ -305,7 +335,7 @@ export default function HydeParkFilm({
 
         {/* the labels live above and below the track inside this reserved
             height, so they never wrap up into the header */}
-        <div className="relative mt-10 h-[132px] select-none">
+        <div className="relative mt-8 h-16 select-none sm:mt-10 sm:h-[132px]">
           <div
             className="group absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 cursor-pointer rounded-full bg-border"
             onClick={trackClick}
@@ -344,9 +374,10 @@ export default function HydeParkFilm({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
+                    setActive(i);
                     seek(c.startSec);
                   }}
-                  className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 p-2 sm:p-0"
                   style={{ left: `${c.leftPct}%` }}
                   aria-label={`Jump to ${c.title}`}
                 >
@@ -358,7 +389,7 @@ export default function HydeParkFilm({
                     }`}
                   />
                   <span
-                    className={`absolute w-40 whitespace-nowrap ${labelPos} ${
+                    className={`absolute hidden w-40 whitespace-nowrap sm:block ${labelPos} ${
                       c.above ? "bottom-6" : "top-6"
                     }`}
                   >
@@ -380,6 +411,39 @@ export default function HydeParkFilm({
             })}
           </div>
         </div>
+
+        {/* the active moment's expansion: a still and a short explanation that
+            updates as the playhead crosses chapters, and on a marker tap */}
+        {chapters[active] && CHAPTER_INFO[chapters[active].id] && (
+          <div className="mt-6 flex flex-col gap-4 rounded-sm border border-border bg-cream p-4 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/media/hyde-park/video/thumbs/${chapters[active].id}.jpg`}
+              alt=""
+              loading="lazy"
+              className="aspect-video w-full shrink-0 rounded-sm border border-border object-cover sm:w-56 md:w-64"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
+              }}
+            />
+            <div className="min-w-0">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-rust">
+                {chapters[active].year ?? chapters[active].era} &middot; {chapters[active].title}
+              </p>
+              <p className="mt-2 font-body text-sm leading-relaxed text-ink/75 md:text-base">
+                {CHAPTER_INFO[chapters[active].id]}
+              </p>
+              <button
+                type="button"
+                onClick={() => seek(chapters[active].startSec)}
+                className="mt-3 inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-opacity hover:opacity-70"
+              >
+                Jump to this moment
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {!man && (
           <p className="mt-2 font-body text-sm text-warm-gray">
@@ -409,7 +473,7 @@ export default function HydeParkFilm({
 
           <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_260px]">
             <div className="overflow-hidden rounded-sm border border-border">
-              <PanoViewer media={TEST_PANO} label={REVEAL_SPOTS[reveal].location} />
+              <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border bg-cream-dark/60 px-4 py-3">
                 <p className="font-body text-sm font-semibold text-forest">
                   {REVEAL_SPOTS[reveal].location}
