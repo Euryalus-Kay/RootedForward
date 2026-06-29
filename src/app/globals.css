@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 @import "tailwindcss";
 
+/* projection-room: lets the film wrapper go edge-to-edge cinema in native fullscreen */
+@custom-variant fullscreen (&:fullscreen);
+
 @theme inline {
   --color-cream: #F5F0E8;
   --color-cream-dark: #EDE6D8;

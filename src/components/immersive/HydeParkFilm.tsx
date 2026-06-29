@@ -5,11 +5,11 @@ import PanoViewer from "./PanoViewer";
 import type { Media360 } from "@/lib/immersive/types";
 
 /* ------------------------------------------------------------------ */
-/*  HydeParkFilm: a single, full-screen-able film with a big clickable */
-/*  timeline beneath it. Press an event on the timeline and the video  */
-/*  jumps there. A 360 / 3D look-around is embedded below as a slot    */
-/*  for the owner's on-site capture. The flat MP4 carries placeholders */
-/*  for the same moments.                                              */
+/*  HydeParkFilm: the overview film and its clickable timeline, staged */
+/*  as a "projection room", a near-black warm-charcoal cinema dropped  */
+/*  into the cream site. One rust accent, a graphic Baskerville-year    */
+/*  timeline, and one shared pop-out vitrine that the 360 look-around   */
+/*  and every per-chapter deep-dive film rise into over the dimmed page.*/
 /* ------------------------------------------------------------------ */
 
 interface Chapter {
@@ -191,8 +191,13 @@ export default function HydeParkFilm({
   const [active, setActive] = useState(0);
   const [reveal, setReveal] = useState(0);
   const [open3d, setOpen3d] = useState(false);
-  // which chapter's deep-dive film is open/playing (null = none)
-  const [openDive, setOpenDive] = useState<string | null>(null);
+  // which chapter's deep-dive film is open in the pop-out vitrine (null = none)
+  const [popoutDive, setPopoutDive] = useState<string | null>(null);
+  // drives the vitrine rise-and-settle entrance
+  const [mounted, setMounted] = useState(false);
+  // true only while the wrapper itself is the native fullscreen element, so the
+  // 3D look-around can stay inline over the video inside theater mode
+  const [isFs, setIsFs] = useState(false);
 
   const open3D = useCallback((i?: number) => {
     if (typeof i === "number") setReveal(i);
@@ -201,6 +206,16 @@ export default function HydeParkFilm({
   }, []);
   const close3D = useCallback(() => {
     setOpen3d(false);
+    videoRef.current?.play().catch(() => {});
+  }, []);
+
+  // the 360 look-around (outside fullscreen) and every deep-dive share one
+  // fixed vitrine that rises over the dimmed page
+  const vitrineOpen = (open3d && !isFs) || !!popoutDive;
+  const closeVitrine = useCallback(() => {
+    setMounted(false);
+    setOpen3d(false);
+    setPopoutDive(null);
     videoRef.current?.play().catch(() => {});
   }, []);
 
@@ -215,6 +230,30 @@ export default function HydeParkFilm({
       alive = false;
     };
   }, [man]);
+
+  // track when the wrapper enters / leaves native fullscreen
+  useEffect(() => {
+    const onFs = () => setIsFs(document.fullscreenElement === wrapRef.current);
+    document.addEventListener("fullscreenchange", onFs);
+    return () => document.removeEventListener("fullscreenchange", onFs);
+  }, []);
+
+  // while the vitrine is open: lock page scroll, run the entrance, close on Esc
+  useEffect(() => {
+    if (!vitrineOpen) return;
+    const raf = requestAnimationFrame(() => setMounted(true));
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeVitrine();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      cancelAnimationFrame(raf);
+      setMounted(false); // reset so the next open replays the entrance
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [vitrineOpen, closeVitrine]);
 
   const chapters = man?.chapters ?? [];
   // prefer the manifest duration so marker positions don't shift when the
@@ -251,7 +290,7 @@ export default function HydeParkFilm({
     }
   };
 
-  const fullscreen = () => {
+  const enterTheater = () => {
     // fullscreen the WRAPPER, not the bare video, so the 3D popup can render
     // over the video while in fullscreen
     const el = wrapRef.current;
@@ -282,36 +321,47 @@ export default function HydeParkFilm({
     [man, total]
   );
 
+  const pct = Math.min(100, (t / total) * 100);
+  const popDive = popoutDive ? DEEP_DIVES[popoutDive] : null;
+  const popVideo = popoutDive ? ddVideo(popoutDive) : undefined;
+  const popChapter = popoutDive ? chapters.find((c) => c.id === popoutDive) : null;
+
   return (
-    <div className="bg-cream">
+    <div className="relative bg-[#0E0F0D] pb-20 text-[#E8E2D6]">
+      {/* the lights go down: the one place cream touches the room */}
+      <div aria-hidden className="h-16 w-full bg-gradient-to-b from-cream to-[#0E0F0D]" />
+
       {/* Title */}
-      <div className="mx-auto max-w-6xl px-6 pt-10 md:pt-14">
-        <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-          A Rooted Forward film &middot; The overview
-        </p>
-        <h1 className="mt-3 max-w-3xl font-display text-3xl leading-tight text-forest md:text-5xl">
+      <div className="mx-auto max-w-6xl px-6 pt-6 md:pt-10">
+        <div className="flex items-center gap-4">
+          <span className="h-6 w-6 shrink-0 bg-[#C45A33]" aria-hidden />
+          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.35em] text-[#C45A33]">
+            A Rooted Forward film &middot; The overview
+          </p>
+          <span className="hidden h-px flex-1 bg-[#3A2018] sm:block" aria-hidden />
+        </div>
+        <h1 className="mt-5 max-w-3xl font-display text-3xl leading-tight text-[#E8E2D6] md:text-5xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/70 md:text-lg">
+        <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-[#E8E2D6]/65 md:text-lg">
           {dek}
         </p>
-        <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-ink/55">
+        <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-[#E8E2D6]/45">
           Start here. This film tells the whole story in about twelve minutes.
-          Then press any chapter on the timeline and scroll down to open its own
-          detailed film, a deeper, longer look at that single moment, in the same
-          style.
+          Then press any chapter on the timeline and open its own detailed film,
+          a deeper, longer look at that single moment, in the same style.
         </p>
       </div>
 
-      {/* The film, full width, fullscreen-able */}
-      <div className="mx-auto mt-8 max-w-6xl px-6">
+      {/* The film, framed like a projected plate, fullscreen-able */}
+      <div className="mx-auto mt-8 max-w-5xl px-6">
         <div
           ref={wrapRef}
-          className="relative overflow-hidden rounded-sm border border-border bg-ink shadow-sm"
+          className="relative overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#141512] p-2 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.7)] fullscreen:flex fullscreen:items-center fullscreen:justify-center fullscreen:border-0 fullscreen:bg-[#0A0B09] fullscreen:p-0"
         >
           <video
             ref={videoRef}
-            className="block aspect-video w-full bg-black"
+            className="block aspect-video w-full rounded-[1px] bg-black shadow-[inset_0_0_0_1px_rgba(0,0,0,0.6)] fullscreen:aspect-auto fullscreen:h-auto fullscreen:max-h-screen fullscreen:w-auto fullscreen:max-w-full fullscreen:rounded-none fullscreen:shadow-none"
             src={man?.video}
             poster={man?.poster}
             controls
@@ -323,6 +373,12 @@ export default function HydeParkFilm({
             onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
           />
 
+          {/* soft projection vignette */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-2 rounded-[1px] [box-shadow:inset_0_0_120px_24px_rgba(0,0,0,0.55)] fullscreen:hidden"
+          />
+
           {/* "View in 3D" appears only while a 360 beat is actually on screen,
               and opens that look-around spot. It fades in and out with the beat. */}
           {!open3d && (
@@ -331,38 +387,40 @@ export default function HydeParkFilm({
               onClick={() => activePano && open3D(revealForCid(activePano.cid))}
               aria-hidden={!activePano}
               tabIndex={activePano ? 0 : -1}
-              className={`absolute right-2 top-2 z-20 inline-flex items-center gap-1.5 rounded-full bg-rust px-3 py-1.5 font-body text-[11px] font-bold uppercase tracking-widest text-white shadow-lg ring-2 ring-white/30 transition-all duration-500 hover:scale-105 sm:right-3 sm:top-3 sm:gap-2 sm:px-4 sm:py-2 sm:text-xs ${
+              className={`absolute right-3 top-3 z-20 inline-flex items-center gap-2 rounded-[2px] border border-[#C45A33]/50 bg-[#0E0F0D]/70 px-3 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#C45A33] shadow-[0_0_20px_rgba(196,90,51,0.35)] backdrop-blur transition-all duration-500 hover:bg-[#C45A33] hover:text-[#0E0F0D] ${
                 activePano
                   ? "translate-y-0 opacity-100"
                   : "pointer-events-none -translate-y-1 opacity-0"
               }`}
             >
-              <span aria-hidden="true" className="rounded-full bg-white/25 px-1.5 py-0.5 text-[9px] leading-none sm:text-[10px]">360&deg;</span>
+              <span aria-hidden="true" className="rounded-[2px] bg-[#C45A33]/20 px-1.5 py-0.5 text-[9px] leading-none">360&deg;</span>
               View in 3D
             </button>
           )}
 
-          {/* 3D popup, rendered inside the wrapper so it shows in fullscreen */}
-          {open3d && (
-            <div className="absolute inset-0 z-30 flex flex-col bg-ink/95 backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.22em] text-rust">
-                  Look around in 3D &middot; {REVEAL_SPOTS[reveal].location}
+          {/* 3D popup, rendered inside the wrapper ONLY in native fullscreen so
+              the look-around works inside theater mode. Outside fullscreen the
+              same 360 opens in the shared vitrine below. */}
+          {open3d && isFs && (
+            <div className="absolute inset-0 z-30 flex flex-col bg-[#0A0B09]/95 backdrop-blur-sm">
+              <div className="flex items-center justify-between border-b border-[#26231E] px-4 py-3">
+                <p className="font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C45A33]">
+                  Look around &middot; {REVEAL_SPOTS[reveal].location}
                 </p>
                 <button
                   type="button"
                   onClick={close3D}
                   aria-label="Close 3D view"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white transition-colors hover:bg-white/20"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#3A352E] text-lg leading-none text-[#E8E2D6] transition-colors hover:border-[#C45A33] hover:text-[#C45A33]"
                 >
                   ×
                 </button>
               </div>
               <div className="relative min-h-0 flex-1">
-                <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
+                <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} heightClass="h-full" />
               </div>
-              <div className="flex flex-wrap items-center gap-2 border-t border-white/10 px-4 py-3">
-                <span className="mr-1 font-body text-[11px] uppercase tracking-wider text-white/50">
+              <div className="flex flex-wrap items-center gap-2 border-t border-[#26231E] px-4 py-3">
+                <span className="mr-1 font-body text-[11px] uppercase tracking-wider text-[#8A8276]">
                   Jump to
                 </span>
                 {REVEAL_SPOTS.map((s, i) => (
@@ -370,10 +428,10 @@ export default function HydeParkFilm({
                     key={s.id}
                     type="button"
                     onClick={() => setReveal(i)}
-                    className={`rounded-full px-3 py-1 font-body text-xs transition-colors ${
+                    className={`rounded-[2px] px-3 py-1 font-body text-xs transition-colors ${
                       i === reveal
-                        ? "bg-rust text-white"
-                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                        ? "bg-[#C45A33] text-[#0E0F0D]"
+                        : "border border-[#3A352E] text-[#8A8276] hover:border-[#C45A33] hover:text-[#E8E2D6]"
                     }`}
                   >
                     {s.location}
@@ -382,46 +440,62 @@ export default function HydeParkFilm({
               </div>
             </div>
           )}
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border bg-cream-dark/60 px-4 py-3">
-            <p className="font-body text-sm text-ink/70">
+
+          {/* slate caption + theater control, hidden in fullscreen */}
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-[#26231E] bg-[#141512] px-4 py-3 fullscreen:hidden">
+            <div className="flex items-baseline gap-2">
               {chapters[active] ? (
                 <>
-                  <span className="font-semibold text-forest">
+                  <span className="font-display text-2xl leading-none text-[#E8E2D6] md:text-3xl">
                     {chapters[active].year ?? chapters[active].era}
-                  </span>{" "}
-                  &middot; {chapters[active].title}
+                  </span>
+                  <span className="font-body text-sm text-[#8A8276]">
+                    &middot; {chapters[active].title}
+                  </span>
                 </>
               ) : (
-                "Press play, or jump to any moment on the timeline below"
+                <span className="font-body text-sm text-[#8A8276]">
+                  Press play, or jump to any moment on the timeline below
+                </span>
               )}
-            </p>
+            </div>
             <button
               type="button"
-              onClick={fullscreen}
-              className="inline-flex items-center gap-2 rounded-sm border border-rust px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:bg-rust hover:text-white"
+              onClick={enterTheater}
+              className="inline-flex items-center gap-2 rounded-[2px] border border-[#C45A33]/40 px-3 py-1.5 font-body text-xs font-semibold uppercase tracking-[0.25em] text-[#C45A33] transition-colors hover:bg-[#C45A33] hover:text-[#0E0F0D]"
             >
-              Watch fullscreen
+              Enter the theater
             </button>
           </div>
         </div>
       </div>
 
-      {/* The big clickable timeline */}
-      <div className="mx-auto max-w-6xl px-6 pb-4 pt-12">
-        <div className="flex items-baseline justify-between">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            The timeline
-          </p>
-          <p className="font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
-            Press a moment to jump there &middot; {fmt(t)} / {fmt(total)}
+      {/* The graphic timeline spine */}
+      <div className="mx-auto max-w-6xl px-6 pb-4 pt-14">
+        <div className="flex flex-wrap items-center justify-between gap-y-2">
+          <div className="flex items-center gap-3">
+            <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
+            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.35em] text-[#C45A33]">
+              The timeline &middot; scrub the reel
+            </p>
+          </div>
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-[#8A8276]">
+            Press a moment to jump &middot; {fmt(t)} / {fmt(total)}
           </p>
         </div>
 
-        {/* the labels live above and below the track inside this reserved
-            height, so they never wrap up into the header */}
-        <div className="relative mt-8 h-16 select-none sm:mt-10 sm:h-[132px]">
+        {/* the milled spine band: ruler texture, a seekable rail, a glowing
+            playhead, and oversized Baskerville year-numerals as stations */}
+        <div className="relative mt-8 h-[120px] select-none overflow-hidden rounded-[2px] border border-[#2A2622] bg-gradient-to-b from-[#141512] to-[#101109] sm:h-[150px]">
+          {/* faint baseline graduation, reads as an engraved rail */}
           <div
-            className="group absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 cursor-pointer rounded-full bg-border"
+            aria-hidden
+            className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 opacity-60 [background-image:repeating-linear-gradient(90deg,transparent_0,transparent_calc(8.333%-1px),#2A2622_calc(8.333%-1px),#2A2622_8.333%)]"
+          />
+
+          {/* the seekable rail */}
+          <div
+            className="group absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 cursor-pointer bg-[#3A352E]"
             onClick={trackClick}
             role="slider"
             aria-label="Film timeline"
@@ -430,189 +504,180 @@ export default function HydeParkFilm({
             aria-valuenow={Math.round(t)}
             tabIndex={0}
           >
-            {/* progress */}
+            {/* progress, emitting rust light */}
             <div
-              className="absolute left-0 top-0 h-full rounded-full bg-rust/70"
-              style={{ width: `${Math.min(100, (t / total) * 100)}%` }}
+              className="absolute left-0 top-0 h-full bg-[#C45A33] shadow-[0_0_12px_rgba(196,90,51,0.6)]"
+              style={{ width: `${pct}%` }}
             />
-            {/* playhead */}
+            {/* rust diamond playhead with a pulse halo */}
             <div
-              className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-rust bg-cream shadow"
-              style={{ left: `${Math.min(100, (t / total) * 100)}%` }}
+              className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#C45A33] ring-1 ring-[#0E0F0D] shadow-[0_0_0_4px_rgba(196,90,51,0.16),0_0_16px_rgba(196,90,51,0.7)]"
+              style={{ left: `${pct}%` }}
             />
-            {/* event markers */}
-            {placed.map((c, i) => {
-              // keep the first and last labels from clipping off the edges
-              const edge = c.leftPct <= 6 ? "left" : c.leftPct >= 82 ? "right" : "center";
-              const labelPos =
-                edge === "left"
-                  ? "left-0 text-left"
-                  : edge === "right"
-                    ? "right-0 text-right"
-                    : "left-1/2 -translate-x-1/2 text-center";
-              const big = c.year ?? (c.era === "Begin" ? "Start" : "Today");
-              const sub = SHORT_LABEL[c.id] ?? c.era;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActive(i);
-                    setOpenDive(null);
-                    seek(c.startSec);
-                  }}
-                  className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 p-2 sm:p-0"
-                  style={{ left: `${c.leftPct}%` }}
-                  aria-label={`Jump to ${c.title}`}
+          </div>
+
+          {/* the chapter stations: oversized year-numerals, alternating above /
+              below, with a tick rising from the rail */}
+          {placed.map((c, i) => {
+            const isActive = i === active;
+            const edge = c.leftPct <= 6 ? "left" : c.leftPct >= 82 ? "right" : "center";
+            const labelPos =
+              edge === "left"
+                ? "left-0 items-start text-left"
+                : edge === "right"
+                  ? "right-0 items-end text-right"
+                  : "left-1/2 -translate-x-1/2 items-center text-center";
+            const big = c.year ?? (c.era === "Begin" ? "Start" : "Today");
+            const sub = SHORT_LABEL[c.id] ?? c.era;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActive(i);
+                  setPopoutDive(null);
+                  seek(c.startSec);
+                }}
+                className="group absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${c.leftPct}%` }}
+                aria-label={`Jump to ${c.title}`}
+              >
+                {/* the tick through the rail */}
+                <span
+                  className={`block transition-colors ${
+                    isActive
+                      ? "h-7 w-[3px] bg-[#C45A33] shadow-[0_0_8px_rgba(196,90,51,0.6)]"
+                      : "h-7 w-px bg-[#4A443B] group-hover:bg-[#C45A33]"
+                  }`}
+                />
+                {/* the year-numeral + sub, above or below the rail */}
+                <span
+                  className={`absolute flex w-40 flex-col ${labelPos} ${
+                    c.above ? "bottom-6" : "top-6"
+                  }`}
                 >
                   <span
-                    className={`block rounded-full border transition-all ${
-                      i === active
-                        ? "h-4 w-4 border-rust bg-rust"
-                        : "h-3 w-3 border-warm-gray/70 bg-cream hover:border-rust hover:bg-rust/30"
-                    }`}
-                  />
-                  <span
-                    className={`absolute hidden w-40 whitespace-nowrap sm:block ${labelPos} ${
-                      c.above ? "bottom-6" : "top-6"
+                    className={`relative inline-block font-display leading-none transition-all ${
+                      isActive
+                        ? "text-[26px] text-[#E8E2D6] after:mt-1 after:block after:h-0.5 after:w-full after:bg-[#C45A33] md:text-[34px]"
+                        : "text-xl text-[#8A8276] group-hover:-translate-y-0.5 group-hover:text-[#E8E2D6] md:text-[28px]"
                     }`}
                   >
+                    {big}
+                  </span>
+                  {sub && (
                     <span
-                      className={`block font-display text-lg leading-none ${
-                        i === active ? "text-rust" : "text-forest"
+                      className={`mt-1 hidden font-body text-[10px] uppercase tracking-[0.18em] transition-colors sm:block ${
+                        isActive ? "text-[#E8E2D6]" : "text-[#6B645A] group-hover:text-[#E8E2D6]"
                       }`}
                     >
-                      {big}
+                      {sub}
                     </span>
-                    {sub && (
-                      <span className="mt-1 block font-body text-[11px] leading-tight text-ink/55">
-                        {sub}
-                      </span>
-                    )}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                  )}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* the selected chapter opens its own detailed film here, below the
-            timeline, with a short intro. Updates as the playhead crosses
-            chapters and on a marker tap. */}
+        {/* the selected chapter's deep-dive opens in the shared vitrine; here it
+            shows the chapter's poster, title, and intro. Updates as the playhead
+            crosses chapters and on a marker tap. */}
         {chapters[active] && (() => {
           const ch = chapters[active];
           const dive = DEEP_DIVES[ch.id];
           const video = ddVideo(ch.id);
           const poster = ddPoster(ch.id);
-          const playing = openDive === ch.id && !!video;
           return (
-            <div ref={diveRef} className="mt-8 scroll-mt-6">
-              <div className="flex items-baseline justify-between gap-4">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                  {dive ? "Go deeper into this chapter" : "On the timeline"}
-                  {ch.year ? ` · ${ch.year}` : ""}
-                </p>
-                <p className="font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
+            <div ref={diveRef} className="mt-10 scroll-mt-6">
+              <div className="flex flex-wrap items-center justify-between gap-y-2">
+                <div className="flex items-center gap-3">
+                  <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
+                  <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
+                    {dive ? "Go deeper into this chapter" : "On the timeline"}
+                    {ch.year ? ` · ${ch.year}` : ""}
+                  </p>
+                </div>
+                <p className="font-body text-xs uppercase tracking-[0.2em] text-[#8A8276]">
                   {dive ? `A detailed film · ${dive.runtime}` : "Part of the overview"}
                 </p>
               </div>
-              <h2 className="mt-2 font-display text-2xl text-forest md:text-3xl">
+              <h2 className="mt-3 font-display text-2xl text-[#E8E2D6] md:text-3xl">
                 {dive?.title ?? ch.title}
               </h2>
 
               <div className="mt-5 grid gap-5 md:grid-cols-[1.5fr_1fr] md:items-start">
-                {/* the detailed film, or a poster with its state */}
-                <div className="overflow-hidden rounded-sm border border-border bg-ink">
-                  {playing ? (
-                    <video
-                      key={ch.id}
-                      className="block aspect-video w-full bg-black"
-                      src={video}
-                      poster={poster}
-                      controls
-                      controlsList="nofullscreen"
-                      autoPlay
-                      playsInline
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!video) return;
-                        videoRef.current?.pause();
-                        setOpenDive(ch.id);
+                {/* a poster that rises into the vitrine, or its production state */}
+                <div className="overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#0A0B09] p-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!video) return;
+                      videoRef.current?.pause();
+                      setPopoutDive(ch.id);
+                    }}
+                    className="group relative block w-full overflow-hidden rounded-[1px]"
+                    aria-label={video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
+                    style={{ cursor: video ? "pointer" : "default" }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={poster ?? `/media/hyde-park/video/thumbs/${ch.id}.jpg`}
+                      alt=""
+                      loading="lazy"
+                      className="block aspect-video w-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.opacity = "0";
                       }}
-                      className="group relative block w-full cursor-default"
-                      aria-label={video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={poster ?? `/media/hyde-park/video/thumbs/${ch.id}.jpg`}
-                        alt=""
-                        loading="lazy"
-                        className="block aspect-video w-full object-cover"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.opacity = "0";
-                        }}
-                      />
-                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-ink/50">
-                        {video ? (
-                          <>
-                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-rust pl-1 text-2xl leading-none text-white shadow-lg transition-transform group-hover:scale-105">
-                              &#9658;
+                    />
+                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-[#0A0B09]/55">
+                      {video ? (
+                        <>
+                          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#C45A33] pl-1 text-2xl leading-none text-[#0E0F0D] shadow-[0_0_24px_rgba(196,90,51,0.5)] transition-transform group-hover:scale-105">
+                            &#9658;
+                          </span>
+                          <span className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#E8E2D6]">
+                            Watch the detailed film &middot; {dive.runtime}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="rounded-full border border-[#C45A33]/50 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C45A33]">
+                            {dive ? "Detailed film in production" : "Covered in the overview"}
+                          </span>
+                          {dive && (
+                            <span className="font-body text-xs text-[#8A8276]">
+                              Planned runtime {dive.runtime}
                             </span>
-                            <span className="font-body text-xs font-semibold uppercase tracking-widest text-white">
-                              Watch the detailed film &middot; {dive.runtime}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="rounded-full border border-white/45 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-widest text-white/90">
-                              {dive ? "Detailed film in production" : "Covered in the overview"}
-                            </span>
-                            {dive && (
-                              <span className="font-body text-xs text-white/65">
-                                Planned runtime {dive.runtime}
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </span>
-                    </button>
-                  )}
+                          )}
+                        </>
+                      )}
+                    </span>
+                  </button>
                 </div>
 
                 {/* the intro + actions */}
                 <div className="min-w-0">
-                  <p className="font-body text-sm leading-relaxed text-ink/75 md:text-base">
+                  <p className="font-body text-sm leading-relaxed text-[#E8E2D6]/75 md:text-base">
                     {dive?.blurb ?? CHAPTER_INFO[ch.id]}
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
                     <button
                       type="button"
                       onClick={() => {
-                        setOpenDive(null);
+                        setPopoutDive(null);
                         seek(ch.startSec);
                         wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
                       }}
-                      className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-opacity hover:opacity-70"
+                      className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#C45A33] transition-opacity hover:opacity-70"
                     >
                       Watch this in the overview
                       <span aria-hidden="true">&uarr;</span>
                     </button>
-                    {playing && (
-                      <button
-                        type="button"
-                        onClick={() => setOpenDive(null)}
-                        className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray transition-colors hover:text-rust"
-                      >
-                        Close the detailed film
-                      </button>
-                    )}
                   </div>
                   {dive && !video && (
-                    <p className="mt-4 font-body text-xs leading-relaxed text-ink/45">
+                    <p className="mt-4 font-body text-xs leading-relaxed text-[#6B645A]">
                       The detailed films are produced one chapter at a time, in the
                       same style as the overview. This one is on the way.
                     </p>
@@ -624,25 +689,28 @@ export default function HydeParkFilm({
         })()}
 
         {!man && (
-          <p className="mt-2 font-body text-sm text-warm-gray">
+          <p className="mt-2 font-body text-sm text-[#8A8276]">
             Loading the film and its timeline.
           </p>
         )}
       </div>
 
-      {/* Embedded 3D / 360 reveal */}
-      <div className="border-t border-border bg-cream-dark/30">
-        <div className="mx-auto max-w-6xl px-6 py-12">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      {/* The 360 look-around, kept inside the room */}
+      <div className="border-t border-[#26231E] bg-[#0E0F0D]">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
             <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                Look around &middot; 360 and 3D
-              </p>
-              <h2 className="mt-2 font-display text-2xl text-forest md:text-3xl">
+              <div className="flex items-center gap-3">
+                <span className="h-5 w-5 bg-[#C45A33]" aria-hidden />
+                <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
+                  Look around &middot; 360 and 3D
+                </p>
+              </div>
+              <h2 className="mt-3 font-display text-2xl text-[#E8E2D6] md:text-3xl">
                 Stand on the ground the film is about
               </h2>
             </div>
-            <p className="max-w-sm font-body text-sm leading-relaxed text-ink/60">
+            <p className="max-w-sm font-body text-sm leading-relaxed text-[#E8E2D6]/55">
               Drag the frame to look around. These are real 360 captures from
               three spots the film visits, where it began on the lakefront,
               outside Cobb Hall, and the University of Chicago today.
@@ -650,13 +718,15 @@ export default function HydeParkFilm({
           </div>
 
           <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_260px]">
-            <div className="overflow-hidden rounded-sm border border-border">
-              <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border bg-cream-dark/60 px-4 py-3">
-                <p className="font-body text-sm font-semibold text-forest">
+            <div className="overflow-hidden rounded-[2px] border border-[#3A2018] bg-[#0A0B09] p-2">
+              <div className="overflow-hidden rounded-[1px]">
+                <PanoViewer media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land} label={REVEAL_SPOTS[reveal].location} />
+              </div>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-3 pb-1 pt-3">
+                <p className="font-body text-sm font-semibold text-[#E8E2D6]">
                   {REVEAL_SPOTS[reveal].location}
                 </p>
-                <p className="font-body text-xs text-ink/55">
+                <p className="font-body text-xs text-[#8A8276]">
                   {REVEAL_SPOTS[reveal].framing}
                 </p>
               </div>
@@ -667,16 +737,16 @@ export default function HydeParkFilm({
                   <button
                     type="button"
                     onClick={() => setReveal(i)}
-                    className={`w-full rounded-sm border px-4 py-3 text-left transition-colors ${
+                    className={`w-full rounded-[2px] border px-4 py-3 text-left transition-colors ${
                       i === reveal
-                        ? "border-rust bg-rust/10"
-                        : "border-border bg-cream hover:border-rust/50"
+                        ? "border-[#C45A33] bg-[#C45A33]/10"
+                        : "border-[#3A352E] bg-[#141512] hover:border-[#C45A33]/50"
                     }`}
                   >
-                    <span className="block font-body text-[11px] font-semibold uppercase tracking-wider text-rust">
+                    <span className="block font-body text-[11px] font-semibold uppercase tracking-wider text-[#C45A33]">
                       Reveal {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="mt-0.5 block font-body text-sm leading-snug text-forest">
+                    <span className="mt-0.5 block font-body text-sm leading-snug text-[#E8E2D6]">
                       {s.location}
                     </span>
                   </button>
@@ -684,12 +754,126 @@ export default function HydeParkFilm({
               ))}
             </ol>
           </div>
+
+          {heroNote && (
+            <p className="mt-10 font-body text-xs leading-relaxed text-[#6B645A]">{heroNote}</p>
+          )}
         </div>
       </div>
 
-      {heroNote && (
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <p className="font-body text-xs leading-relaxed text-ink/45">{heroNote}</p>
+      {/* step back up into the cream lobby */}
+      <div aria-hidden className="h-16 w-full bg-gradient-to-b from-[#0E0F0D] to-cream" />
+
+      {/* ONE shared vitrine: the 360 look-around (outside fullscreen) and every
+          deep-dive film rise into it over the dimmed page */}
+      {vitrineOpen && (
+        <div
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-[#0A0B09]/92 p-4 backdrop-blur-md sm:p-8"
+          onClick={closeVitrine}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className={`relative w-[94vw] max-w-6xl origin-center overflow-hidden rounded-[3px] border border-[#3A2018] bg-[#141512] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] transition-all duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              mounted ? "translate-y-0 scale-100 opacity-100" : "translate-y-3 scale-[0.985] opacity-0"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* top cartouche */}
+            <div className="relative flex items-center justify-between border-b border-[#26231E] px-5 py-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="h-5 w-5 shrink-0 bg-[#C45A33]" aria-hidden />
+                <p className="truncate font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C45A33]">
+                  {popoutDive
+                    ? `The detailed film · ${popDive?.runtime ?? ""}`
+                    : `Look around · ${REVEAL_SPOTS[reveal].location}`}
+                </p>
+              </div>
+              {popoutDive && popChapter?.year != null && (
+                <span aria-hidden className="pointer-events-none absolute right-16 top-1 hidden font-display text-4xl text-[#C45A33]/25 sm:block">
+                  {popChapter.year}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={closeVitrine}
+                aria-label="Close"
+                className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#3A352E] text-lg leading-none text-[#E8E2D6] transition-colors hover:border-[#C45A33] hover:text-[#C45A33]"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* the mat + stage */}
+            <div className="p-2">
+              {popoutDive ? (
+                <div className="overflow-hidden rounded-[1px] md:grid md:grid-cols-[1.65fr_1fr]">
+                  <video
+                    key={popoutDive}
+                    className="block aspect-video w-full bg-black"
+                    src={popVideo}
+                    poster={ddPoster(popoutDive)}
+                    controls
+                    controlsList="nofullscreen"
+                    autoPlay
+                    playsInline
+                  />
+                  <div className="border-t border-[#26231E] bg-[#0E0F0D] px-5 py-4 md:border-l md:border-t-0">
+                    <h3 className="font-display text-xl text-[#E8E2D6]">{popDive?.title}</h3>
+                    <p className="mt-3 font-body text-sm leading-relaxed text-[#E8E2D6]/70">
+                      {popDive?.blurb}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="overflow-hidden rounded-[1px] bg-[#0A0B09]">
+                  <PanoViewer
+                    media={PANO_MEDIA[REVEAL_SPOTS[reveal].id] ?? PANO_MEDIA.land}
+                    label={REVEAL_SPOTS[reveal].location}
+                    heightClass="h-[52vh] max-h-[620px] min-h-[320px]"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* bottom action rail */}
+            <div className="flex flex-wrap items-center gap-2 border-t border-[#26231E] px-5 py-3">
+              {popoutDive ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const s = popChapter?.startSec ?? 0;
+                    closeVitrine();
+                    seek(s);
+                    wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }}
+                  className="rounded-[2px] border border-[#3A352E] px-3 py-1 font-body text-xs uppercase tracking-[0.18em] text-[#8A8276] transition-colors hover:border-[#C45A33] hover:text-[#E8E2D6]"
+                >
+                  Back to the overview
+                </button>
+              ) : (
+                <>
+                  <span className="mr-1 font-body text-[11px] uppercase tracking-wider text-[#8A8276]">
+                    Jump to
+                  </span>
+                  {REVEAL_SPOTS.map((s, i) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setReveal(i)}
+                      className={`rounded-[2px] px-3 py-1 font-body text-xs transition-colors ${
+                        i === reveal
+                          ? "bg-[#C45A33] text-[#0E0F0D]"
+                          : "border border-[#3A352E] text-[#8A8276] hover:border-[#C45A33] hover:text-[#E8E2D6]"
+                      }`}
+                    >
+                      {s.location}
+                    </button>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
