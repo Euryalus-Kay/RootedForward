@@ -1,7 +1,7 @@
 {
   "video": "https://github.com/Euryalus-Kay/RootedForward/releases/download/hyde-park-film/hyde-park-museum.mp4",
   "poster": "/media/hyde-park/video/poster.jpg",
-  "duration": 735.17,
+  "duration": 735.97,
   "chapters": [
     {
       "id": "opening",
@@ -15,80 +15,80 @@
       "title": "Hyde Park, Ground That Keeps Moving",
       "era": "Today",
       "year": null,
-      "startSec": 10.22
+      "startSec": 11.02
     },
     {
       "id": "land",
       "title": "The Ground Before",
       "era": "Before 1853",
       "year": 1833,
-      "startSec": 63.09
+      "startSec": 63.89
     },
     {
       "id": "formation",
       "title": "Paul Cornell's Lakefront Bet",
       "era": "1853 to 1889",
       "year": 1853,
-      "startSec": 132.63
+      "startSec": 133.43
     },
     {
       "id": "university",
       "title": "Rockefeller's University Rises",
       "era": "1890 to 1910",
       "year": 1890,
-      "startSec": 201.67
+      "startSec": 202.47
     },
     {
       "id": "worlds-fair",
       "title": "The White City in Jackson Park",
       "era": "1893",
       "year": 1893,
-      "startSec": 275.13
+      "startSec": 275.93
     },
     {
       "id": "color-line",
       "title": "The Color Line Comes to Hyde Park",
       "era": "1920s to 1948",
       "year": 1909,
-      "startSec": 357.88
+      "startSec": 358.68
     },
     {
       "id": "redlining",
       "title": "How Hyde Park Drew the Lines",
       "era": "1930s to 1948",
       "year": 1940,
-      "startSec": 449.34
+      "startSec": 450.14
     },
     {
       "id": "urban-renewal",
       "title": "The University Rebuilds the Neighborhood",
       "era": "1952 to 1970s",
       "year": 1958,
-      "startSec": 513.01
+      "startSec": 513.81
     },
     {
       "id": "present",
       "title": "Hyde Park Now",
       "era": "Today",
       "year": 2026,
-      "startSec": 603.34
+      "startSec": 604.14
     }
   ],
   "panos": [
     {
       "cid": "land",
-      "startSec": 108.2,
-      "endSec": 122.5
+      "startSec": 109,
+      "endSec": 123.3
     },
     {
       "cid": "university",
-      "startSec": 256.13,
-      "endSec": 270.13
+      "startSec": 256.93,
+      "endSec": 270.93
     },
     {
       "cid": "present",
-      "startSec": 664.82,
-      "endSec": 681.13
+      "startSec": 665.62,
+      "endSec": 681.93
     }
   ]
 }
