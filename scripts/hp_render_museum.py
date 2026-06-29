@@ -349,92 +349,66 @@ LAKE = (26, 49, 55)
 NBLINE = (48, 60, 52)
 PARK = (46, 82, 58)
 PARKLINE = (70, 112, 84)
-HP_MAP = json.load(open(os.path.join(ROOT, "data/hp-map.json")))
-_MAP_LAYERS = None
+_REALMAP = None
 
-def _build_map_layers():
-    m = HP_MAP
-    pg = lambda p: [tuple(c) for c in p]
-    mask = Image.new("L", (W, H), 0); md = ImageDraw.Draw(mask)
-    for n in m["neighborhoods"]:
-        for path in n["paths"]: md.polygon(pg(path), fill=255)
-    arr = np.array(mask)
-    shore = np.array([(np.where(r > 0)[0].max() if r.any() else -1) for r in arr], float)
-    v = np.where(shore >= 0)[0]
-    if len(v):
-        shore[:v[0]] = shore[v[0]]; shore[v[-1] + 1:] = shore[v[-1]]
-    def _med(a, k):
-        pad = np.pad(a, (k, k), "edge")
-        return np.array([np.median(pad[i:i + 2 * k + 1]) for i in range(len(a))])
-    shore = _med(shore, 40)
-    pad = np.pad(shore, (30, 30), "edge")
-    shore = np.convolve(pad, np.ones(61) / 61, "same")[30:-30].astype(int)
-    # land + faint neighborhood dividers
-    land = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(land)
-    for n in m["neighborhoods"]:
-        for path in n["paths"]: ld.polygon(pg(path), fill=MAP_LAND + (255,))
-    for n in m["neighborhoods"]:
-        if n["hp"]: continue
-        for path in n["paths"]: ld.line(pg(path), fill=NBLINE + (150,), width=1, joint="curve")
-    # lake east of the real shoreline, gently graded for depth
-    lakearr = np.zeros((H, W, 4), np.uint8); xx = np.arange(W)
-    for y in range(H):
-        s = max(0, int(shore[y])); grad = np.clip((xx - s) / 420.0, 0, 1)[s:]
-        lakearr[y, s:, :3] = np.outer(1 - 0.35 * grad, np.array(LAKE)).astype(np.uint8)
-        lakearr[y, s:, 3] = 255
-    lake = Image.fromarray(lakearr, "RGBA").filter(ImageFilter.GaussianBlur(2))
-    # the two parks and the Midway between them
-    parks = Image.new("RGBA", (W, H), (0, 0, 0, 0)); pd = ImageDraw.Draw(parks)
-    for p in m["parks"]:
-        pd.polygon(pg(p["path"]), fill=PARK + (240,), outline=PARKLINE + (255,), width=2)
-    # Hyde Park highlight, semi-transparent so the Midway reads through it
-    hp = next(n for n in m["neighborhoods"] if n["hp"])
-    hpl = Image.new("RGBA", (W, H), (0, 0, 0, 0)); hd = ImageDraw.Draw(hpl)
-    for path in hp["paths"]:
-        hd.polygon(pg(path), fill=RUST + (118,), outline=RUST + (255,), width=4)
-    # labels: (x, y, text, font, color, tracking, anchor, reveal_start)
-    labels = [(hp["label"][0] - 8, hp["label"][1], "HYDE PARK", serif(52, "semi"), CREAM, 0, "mm", 3.0)]
-    for p in m["parks"]:
-        if p.get("thin"): continue
-        for i, w in enumerate(p["name"].upper().split(" ")):
-            labels.append((p["label"][0], p["label"][1] - 12 + i * 22, w, sans(15, "light"), (150, 186, 162), 3, "mm", 3.5))
-    mid = m["parks"][2]
-    labels.append((mid["label"][0] - 150, mid["label"][1] + 4, "THE MIDWAY", sans(13, "light"), (150, 186, 162), 3, "rm", 3.7))
-    for n in m["neighborhoods"]:
-        if n["hp"] or n["name"] not in ("Kenwood", "Woodlawn"): continue
-        labels.append((n["label"][0], n["label"][1], n["name"].upper(), sans(15, "light"), WARM, 2, "mm", 3.7))
-    return land, lake, parks, hpl, labels, (hp["label"][0], hp["label"][1])
+def _real_map_layers():
+    # the real CARTO/OSM dark street map graded to the film palette, plus the
+    # true Hyde Park boundary as a glow + translucent fill + crisp rim.
+    mp = json.load(open(os.path.join(ROOT, "data/hp-map-real.json")))
+    bw, bh = mp["size"]; sx, sy = W / bw, H / bh
+    base = Image.open(os.path.join(ROOT, "data/hp-basemap.png")).convert("RGB").resize((W, H), Image.LANCZOS).convert("RGBA")
+    poly = [(x * sx, y * sy) for x, y in mp["hp_polygon"]]
+    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).line(poly + [poly[0]], fill=RUST + (255,), width=15, joint="curve")
+    glow = glow.filter(ImageFilter.GaussianBlur(11))
+    hp = Image.new("RGBA", (W, H), (0, 0, 0, 0)); hd = ImageDraw.Draw(hp)
+    hd.polygon(poly, fill=(214, 108, 64, 60))
+    hd.line(poly + [poly[0]], fill=(238, 152, 98, 255), width=3, joint="curve")
+    hp_layer = Image.alpha_composite(glow, hp)
+    hpc = (mp["hp_center"][0] * sx, mp["hp_center"][1] * sy)
+    role = {
+        "hero": (serif(52, "semi"), CREAM, 1),
+        "nbr":  (sans(17, "light"), WARM, 2),
+        "park": (sans(15, "light"), (150, 186, 162), 3),
+        "thin": (sans(13, "light"), (150, 186, 162), 3),
+        "lake": (sans(25, "light"), (150, 176, 180), 8),
+    }
+    start = {"hero": 1.2, "nbr": 1.7, "park": 2.0, "thin": 2.1, "lake": 2.3}
+    labels = []
+    for L in mp["labels"]:
+        fnt, col, tr = role[L["role"]]
+        labels.append((L["t"], L["xy"][0] * sx, L["xy"][1] * sy, fnt, col, tr, start[L["role"]], L["role"]))
+    return base, hp_layer, labels, hpc, mp.get("attribution", "")
 
-def map_scene(out, dur=7.2):
-    global _MAP_LAYERS
-    if _MAP_LAYERS is None:
-        _MAP_LAYERS = _build_map_layers()
-    land, lake, parks, hpl, labels, hpc = _MAP_LAYERS
-    bg = Image.new("RGBA", (W, H), MAP_INK + (255,))
-    def _fade(layer, a):
-        if a <= 0: return None
-        if a >= 1: return layer
-        l2 = layer.copy(); l2.putalpha(layer.split()[3].point(lambda v: int(v * a)))
-        return l2
+def map_scene(out, dur=7.6):
+    global _REALMAP
+    if _REALMAP is None:
+        _REALMAP = _real_map_layers()
+    base, hp_layer, labels, hpc, attrib = _REALMAP
     def fn(t):
-        f = bg.copy()
-        for lay, st, sp in [(land, 0.1, 1.1), (lake, 0.4, 1.2), (parks, 1.3, 0.9), (hpl, 2.0, 0.9)]:
-            l = _fade(lay, ease_out(elem(t, st, sp)))
-            if l is not None: f = Image.alpha_composite(f, l)
-        for (x, y, txt, fnt, col, tr, anc, st) in labels:
+        f = base.copy()
+        a = ease_out(elem(t, 0.5, 1.1))
+        if a > 0:
+            lay = hp_layer.copy(); lay.putalpha(hp_layer.split()[3].point(lambda v: int(v * a)))
+            f = Image.alpha_composite(f, lay)
+        for (txt, x, y, fnt, col, tr, st, rl) in labels:
             e = ease_out(elem(t, st, 0.7))
-            if e > 0: f = put_text(f, (x, y), txt, fnt, col, int(255 * e), 0, tr, anc)
-        e = ease_out(elem(t, 0.7, 0.8))
-        f = put_text(f, (1600, 286), "LAKE MICHIGAN", sans(28, "light"), (150, 176, 180), int(165 * e), 0, 9, "mm")
-        # a gentle push-in toward Hyde Park
-        z = 1.0 + 0.05 * ease_io(elem(t, 0.0, dur * 0.92))
+            if e <= 0: continue
+            if rl == "hero":
+                f = put_text(f, (int(x), int(y)), txt, fnt, INK, int(140 * e), 7, tr, "mm")
+            f = put_text(f, (int(x), int(y)), txt, fnt, col, int(255 * e), 0, tr, "mm")
+        # gentle push-in toward Hyde Park (map + geographic labels move together)
+        z = 1.0 + 0.055 * ease_io(elem(t, 0.0, dur * 0.95))
         if z > 1.001:
-            cw, chh = int(W / z), int(H / z)
+            cw, ch = int(W / z), int(H / z)
             x0 = int(max(0, min(W - cw, hpc[0] - cw / 2)))
-            y0 = int(max(0, min(H - chh, hpc[1] - chh / 2)))
-            f = f.crop((x0, y0, x0 + cw, y0 + chh)).resize((W, H), Image.BICUBIC)
+            y0 = int(max(0, min(H - ch, hpc[1] - ch / 2)))
+            f = f.crop((x0, y0, x0 + cw, y0 + ch)).resize((W, H), Image.BICUBIC)
+        # fixed UI layer: eyebrow + map attribution
         et = ease_out(elem(t, 0.1, 0.7))
-        f = put_text(f, (W // 2, 104), "ON THE SOUTH SIDE OF CHICAGO", sans(26, "semi"), RUST, int(255 * et), int((1 - et) * 12), 12, "ma")
+        f = put_text(f, (W // 2, 96), "ON THE SOUTH SIDE OF CHICAGO", sans(26, "semi"), RUST, int(255 * et), int((1 - et) * 12), 12, "ma")
+        at = ease_out(elem(t, 2.7, 0.9))
+        f = put_text(f, (W - 26, H - 28), attrib, sans(12, "light"), (122, 122, 118), int(140 * at), 0, 1, "rm")
         return f.convert("RGB")
     seq_clip(fn, dur, out)
 
@@ -573,6 +547,13 @@ if "--probegfx" in sys.argv:
         run(["-sseof", "-1.5", "-i", os.path.join(TMP, nm + ".mp4"), "-frames:v", "1",
              os.path.join("/tmp", nm + ".jpg")])
     print("PROBEGFX done")
+    sys.exit(0)
+
+if "--map" in sys.argv:
+    map_scene(os.path.join(TMP, "g_map.mp4"), 7.6)
+    for t in ["0.8", "2.6", "5.0", "7.2"]:
+        run(["-ss", t, "-i", os.path.join(TMP, "g_map.mp4"), "-frames:v", "1", f"/tmp/map_t{t}.jpg"])
+    print("MAP done")
     sys.exit(0)
 
 def chart_area_scene(out, dur=6.6):
@@ -1116,7 +1097,7 @@ def credit_text(clipid):
 scenes = []
 ttl = os.path.join(TMP, "scene_title.mp4"); animated_title(ttl, 4.4)
 scenes.append(ttl)
-mp = os.path.join(TMP, "scene_map.mp4"); map_scene(mp, 5.8)
+mp = os.path.join(TMP, "scene_map.mp4"); map_scene(mp, 6.6)
 scenes.append(mp)
 
 # which point on the timeline each chapter sits at, for the divider ribbon
