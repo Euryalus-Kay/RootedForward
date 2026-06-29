@@ -430,7 +430,11 @@ def _parse_stat(value):
     numstr = m.group(1).replace(",", "")
     try: target = float(numstr) if "." in numstr else int(numstr)
     except: return ("", None, value, False)
-    return (value[:m.start()], target, value[m.end():], ("," in value or (isinstance(target,int) and target >= 1000)))
+    # a bare four-digit year (1673, 1893, 1948, 2022) must never get a thousands
+    # comma; only true magnitudes >= 1000 do
+    is_year = bool(re.fullmatch(r"(1\d{3}|20\d{2})", value.strip()))
+    comma = ("," in value) or (isinstance(target, int) and target >= 1000 and not is_year)
+    return (value[:m.start()], target, value[m.end():], comma)
 
 def _fmt_num(n, comma):
     n = int(round(n)); return f"{n:,}" if comma else str(n)
@@ -1629,11 +1633,17 @@ def render_deepdive(ddid):
         STORY[fsid] = {"shots": [tuple(x) for x in s["shots"]], "callouts": [tuple(c) for c in s.get("callouts", [])]}
         DIV_YEAR[fsid] = s.get("year")
     # validate every image ref resolves before spending render time
+    def _imgfile_ok(ref):
+        fp = credits.get(ref, {}).get("file")
+        if not fp:
+            return False
+        fs = os.path.join(ROOT, "public" + fp) if fp.startswith("/media/") else os.path.join(ROOT, fp)
+        return os.path.exists(fs)
     missing = []
     for s in secs:
         for kind, ref, _ in s["shots"]:
-            if kind == "img" and ref not in credits:
-                missing.append(ref)
+            if kind == "img" and not _imgfile_ok(ref):
+                missing.append(f"img:{ref}")
             if kind == "stat" and ref and ref not in STATS:
                 missing.append(f"stat:{ref}")
             if kind == "clip" and ref not in CLIPS:
