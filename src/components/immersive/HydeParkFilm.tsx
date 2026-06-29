@@ -174,11 +174,12 @@ function fmt(s: number) {
 export default function HydeParkFilm({
   title,
   dek,
-  heroNote,
   manifest,
 }: {
   title: string;
   dek: string;
+  // heroNote is still accepted from the page but no longer shown (it disclosed
+  // the placeholder host clips + scratch VO, which undercut the finished film)
   heroNote?: string;
   manifest?: Manifest | null;
 }) {
@@ -311,15 +312,20 @@ export default function HydeParkFilm({
   };
 
   // alternate event labels above / below so they never collide
-  const placed = useMemo(
-    () =>
-      (man?.chapters ?? []).map((c, i) => ({
+  // only the dated history chapters get a marker; the title + orientation
+  // (no year) would crowd the left edge, so they are left off the spine while
+  // still seekable by scrubbing. `idx` keeps each marker's true chapter index.
+  const placed = useMemo(() => {
+    let vi = 0;
+    return (man?.chapters ?? [])
+      .map((c, idx) => ({
         ...c,
+        idx,
         leftPct: Math.min(98, Math.max(0, (c.startSec / total) * 100)),
-        above: i % 2 === 0,
-      })),
-    [man, total]
-  );
+      }))
+      .filter((c) => c.year != null)
+      .map((c) => ({ ...c, above: vi++ % 2 === 0 }));
+  }, [man, total]);
 
   const pct = Math.min(100, (t / total) * 100);
   const popDive = popoutDive ? DEEP_DIVES[popoutDive] : null;
@@ -479,7 +485,7 @@ export default function HydeParkFilm({
               The timeline &middot; scrub the reel
             </p>
           </div>
-          <p className="font-body text-xs uppercase tracking-[0.2em] text-[#8A8276]">
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-[#A89F90]">
             Press a moment to jump &middot; {fmt(t)} / {fmt(total)}
           </p>
         </div>
@@ -518,8 +524,8 @@ export default function HydeParkFilm({
 
           {/* the chapter stations: oversized year-numerals, alternating above /
               below, with a tick rising from the rail */}
-          {placed.map((c, i) => {
-            const isActive = i === active;
+          {placed.map((c) => {
+            const isActive = c.idx === active;
             const edge = c.leftPct <= 6 ? "left" : c.leftPct >= 82 ? "right" : "center";
             const labelPos =
               edge === "left"
@@ -535,7 +541,7 @@ export default function HydeParkFilm({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActive(i);
+                  setActive(c.idx);
                   setPopoutDive(null);
                   seek(c.startSec);
                 }}
@@ -561,7 +567,7 @@ export default function HydeParkFilm({
                     className={`relative inline-block font-display leading-none transition-all ${
                       isActive
                         ? "text-[26px] text-[#E8E2D6] after:mt-1 after:block after:h-0.5 after:w-full after:bg-[#C45A33] md:text-[34px]"
-                        : "text-xl text-[#8A8276] group-hover:-translate-y-0.5 group-hover:text-[#E8E2D6] md:text-[28px]"
+                        : "text-xl text-[#C7BFB0] group-hover:-translate-y-0.5 group-hover:text-[#E8E2D6] md:text-[28px]"
                     }`}
                   >
                     {big}
@@ -569,7 +575,7 @@ export default function HydeParkFilm({
                   {sub && (
                     <span
                       className={`mt-1 hidden font-body text-[10px] uppercase tracking-[0.18em] transition-colors sm:block ${
-                        isActive ? "text-[#E8E2D6]" : "text-[#6B645A] group-hover:text-[#E8E2D6]"
+                        isActive ? "text-[#E8E2D6]" : "text-[#9C9384] group-hover:text-[#E8E2D6]"
                       }`}
                     >
                       {sub}
@@ -754,10 +760,6 @@ export default function HydeParkFilm({
               ))}
             </ol>
           </div>
-
-          {heroNote && (
-            <p className="mt-10 font-body text-xs leading-relaxed text-[#6B645A]">{heroNote}</p>
-          )}
         </div>
       </div>
 
