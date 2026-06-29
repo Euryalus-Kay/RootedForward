@@ -92,6 +92,68 @@ const CHAPTER_INFO: Record<string, string> = {
   present: "The Obama Center opened in 2026 on the old fairgrounds, as the wealth gap that began with the covenants endures, more than six to one.",
 };
 
+// The per-chapter DEEP-DIVE films. The overview is the main film; each of these
+// is a separate, longer film (about 10 to 12 minutes) on that one chapter, in
+// the same style. `video` is set once a deep-dive has been produced and hosted;
+// until then the chapter shows an "in production" state with this intro.
+interface DeepDive {
+  title: string;
+  blurb: string;
+  runtime: string;
+  video?: string;
+  poster?: string;
+}
+const DEEP_DIVES: Record<string, DeepDive> = {
+  land: {
+    title: "The Ground Before Hyde Park",
+    blurb:
+      "Before Paul Cornell, this lakefront was Potawatomi ground, part of the Council of Three Fires. The detailed film traces the 1832 Black Hawk War, the 1833 Treaty of Chicago, the cession of some five million acres, and the removal that cleared the land the suburb would rise on.",
+    runtime: "~11 min",
+  },
+  formation: {
+    title: "Paul Cornell's Lakefront Bet",
+    blurb:
+      "How a young lawyer turned prairie into a selective suburb. The detailed film follows Cornell's 1853 purchase, the sixty acres he handed the Illinois Central for a station and six trains a day, and the price map that sorted the neighborhood from its first decade.",
+    runtime: "~11 min",
+  },
+  university: {
+    title: "Rockefeller's University Rises",
+    blurb:
+      "The University of Chicago rose from John D. Rockefeller's money in 1890. The detailed film covers the founding, Marshall Field's land gift, William Rainey Harper's research university, and how an institution built to last began to shape who could live around it.",
+    runtime: "~12 min",
+  },
+  "worlds-fair": {
+    title: "The White City and the Color Line",
+    blurb:
+      "For six months in 1893 Jackson Park was the White City. The detailed film looks at Burnham and Olmsted's fair, the racial hierarchy it staged as science along the Midway, and the raised Illinois Central embankment that split the neighborhood into Hyde Park East.",
+    runtime: "~12 min",
+  },
+  "color-line": {
+    title: "The Color Line Comes to Hyde Park",
+    blurb:
+      "How the color line was drawn block by block. The detailed film covers the 1908 Hyde Park Improvement Protective Club, the racially restrictive covenants, the more than eighty-three thousand dollars the University of Chicago spent defending them, and the Black Belt those walls created.",
+    runtime: "~12 min",
+  },
+  redlining: {
+    title: "The Idea That Redlined a Nation",
+    blurb:
+      "An idea built in a Hyde Park classroom that walled off the country. The detailed film follows the University of Chicago economist Homer Hoyt, the racial land-value hierarchy he ranked, its journey to Washington as federal redlining, and the 1948 Shelley v. Kraemer ruling.",
+    runtime: "~12 min",
+  },
+  "urban-renewal": {
+    title: "The University Rebuilds the Neighborhood",
+    blurb:
+      "When the university remade the neighborhood. The detailed film traces the 1952 South East Chicago Commission, the 856-acre plan, the 638 buildings marked to fall, the roughly four thousand families displaced, and who was able to come back.",
+    runtime: "~12 min",
+  },
+  present: {
+    title: "Hyde Park Now",
+    blurb:
+      "Hyde Park today, and the ground still moving under it. The detailed film looks at the Obama Presidential Center on the old fairgrounds, the rising prices in Woodlawn, and the wealth gap, more than six to one, that the covenants and contract selling left behind.",
+    runtime: "~12 min",
+  },
+};
+
 function fmt(s: number) {
   const m = Math.floor(s / 60);
   const sec = Math.floor(s % 60);
@@ -111,12 +173,15 @@ export default function HydeParkFilm({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const diveRef = useRef<HTMLDivElement>(null);
   const [man, setMan] = useState<Manifest | null>(manifest ?? null);
   const [t, setT] = useState(0);
   const [dur, setDur] = useState(0);
   const [active, setActive] = useState(0);
   const [reveal, setReveal] = useState(0);
   const [open3d, setOpen3d] = useState(false);
+  // which chapter's deep-dive film is open/playing (null = none)
+  const [openDive, setOpenDive] = useState<string | null>(null);
 
   const open3D = useCallback((i?: number) => {
     if (typeof i === "number") setReveal(i);
@@ -211,13 +276,19 @@ export default function HydeParkFilm({
       {/* Title */}
       <div className="mx-auto max-w-6xl px-6 pt-10 md:pt-14">
         <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-          A Rooted Forward film
+          A Rooted Forward film &middot; The overview
         </p>
         <h1 className="mt-3 max-w-3xl font-display text-3xl leading-tight text-forest md:text-5xl">
           {title}
         </h1>
         <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/70 md:text-lg">
           {dek}
+        </p>
+        <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-ink/55">
+          Start here. This film tells the whole story in about twelve minutes.
+          Then press any chapter on the timeline and scroll down to open its own
+          detailed film, a deeper, longer look at that single moment, in the same
+          style.
         </p>
       </div>
 
@@ -377,6 +448,7 @@ export default function HydeParkFilm({
                   onClick={(e) => {
                     e.stopPropagation();
                     setActive(i);
+                    setOpenDive(null);
                     seek(c.startSec);
                   }}
                   className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 p-2 sm:p-0"
@@ -414,38 +486,129 @@ export default function HydeParkFilm({
           </div>
         </div>
 
-        {/* the active moment's expansion: a still and a short explanation that
-            updates as the playhead crosses chapters, and on a marker tap */}
-        {chapters[active] && CHAPTER_INFO[chapters[active].id] && (
-          <div className="mt-6 flex flex-col gap-4 rounded-sm border border-border bg-cream p-4 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/media/hyde-park/video/thumbs/${chapters[active].id}.jpg`}
-              alt=""
-              loading="lazy"
-              className="aspect-video w-full shrink-0 rounded-sm border border-border object-cover sm:w-56 md:w-64"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
-              }}
-            />
-            <div className="min-w-0">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-rust">
-                {chapters[active].year ?? chapters[active].era} &middot; {chapters[active].title}
-              </p>
-              <p className="mt-2 font-body text-sm leading-relaxed text-ink/75 md:text-base">
-                {CHAPTER_INFO[chapters[active].id]}
-              </p>
-              <button
-                type="button"
-                onClick={() => seek(chapters[active].startSec)}
-                className="mt-3 inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-opacity hover:opacity-70"
-              >
-                Jump to this moment
-                <span aria-hidden="true">&rarr;</span>
-              </button>
+        {/* the selected chapter opens its own detailed film here, below the
+            timeline, with a short intro. Updates as the playhead crosses
+            chapters and on a marker tap. */}
+        {chapters[active] && (() => {
+          const ch = chapters[active];
+          const dive = DEEP_DIVES[ch.id];
+          const playing = openDive === ch.id && !!dive?.video;
+          return (
+            <div ref={diveRef} className="mt-8 scroll-mt-6">
+              <div className="flex items-baseline justify-between gap-4">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+                  {dive ? "Go deeper into this chapter" : "On the timeline"}
+                  {ch.year ? ` · ${ch.year}` : ""}
+                </p>
+                <p className="font-body text-xs uppercase tracking-[0.2em] text-warm-gray">
+                  {dive ? `A detailed film · ${dive.runtime}` : "Part of the overview"}
+                </p>
+              </div>
+              <h2 className="mt-2 font-display text-2xl text-forest md:text-3xl">
+                {dive?.title ?? ch.title}
+              </h2>
+
+              <div className="mt-5 grid gap-5 md:grid-cols-[1.5fr_1fr] md:items-start">
+                {/* the detailed film, or a poster with its state */}
+                <div className="overflow-hidden rounded-sm border border-border bg-ink">
+                  {playing ? (
+                    <video
+                      key={ch.id}
+                      className="block aspect-video w-full bg-black"
+                      src={dive!.video}
+                      poster={dive!.poster}
+                      controls
+                      controlsList="nofullscreen"
+                      autoPlay
+                      playsInline
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!dive?.video) return;
+                        videoRef.current?.pause();
+                        setOpenDive(ch.id);
+                      }}
+                      className="group relative block w-full cursor-default"
+                      aria-label={dive?.video ? `Play the detailed film on ${dive.title}` : "Detailed film in production"}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`/media/hyde-park/video/thumbs/${ch.id}.jpg`}
+                        alt=""
+                        loading="lazy"
+                        className="block aspect-video w-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.opacity = "0";
+                        }}
+                      />
+                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-ink/50">
+                        {dive?.video ? (
+                          <>
+                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-rust pl-1 text-2xl leading-none text-white shadow-lg transition-transform group-hover:scale-105">
+                              &#9658;
+                            </span>
+                            <span className="font-body text-xs font-semibold uppercase tracking-widest text-white">
+                              Watch the detailed film &middot; {dive.runtime}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="rounded-full border border-white/45 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-widest text-white/90">
+                              {dive ? "Detailed film in production" : "Covered in the overview"}
+                            </span>
+                            {dive && (
+                              <span className="font-body text-xs text-white/65">
+                                Planned runtime {dive.runtime}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </span>
+                    </button>
+                  )}
+                </div>
+
+                {/* the intro + actions */}
+                <div className="min-w-0">
+                  <p className="font-body text-sm leading-relaxed text-ink/75 md:text-base">
+                    {dive?.blurb ?? CHAPTER_INFO[ch.id]}
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOpenDive(null);
+                        seek(ch.startSec);
+                        wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                      }}
+                      className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-opacity hover:opacity-70"
+                    >
+                      Watch this in the overview
+                      <span aria-hidden="true">&uarr;</span>
+                    </button>
+                    {playing && (
+                      <button
+                        type="button"
+                        onClick={() => setOpenDive(null)}
+                        className="inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-widest text-warm-gray transition-colors hover:text-rust"
+                      >
+                        Close the detailed film
+                      </button>
+                    )}
+                  </div>
+                  {dive && !dive.video && (
+                    <p className="mt-4 font-body text-xs leading-relaxed text-ink/45">
+                      The detailed films are produced one chapter at a time, in the
+                      same style as the overview. This one is on the way.
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {!man && (
           <p className="mt-2 font-body text-sm text-warm-gray">
@@ -467,9 +630,9 @@ export default function HydeParkFilm({
               </h2>
             </div>
             <p className="max-w-sm font-body text-sm leading-relaxed text-ink/60">
-              Drag the frame to look around. These are placeholder captures. Your
-              on-site 360 and 3D clips drop into the same five spots, and the flat
-              MP4 keeps a labeled placeholder for each.
+              Drag the frame to look around. These are real 360 captures from
+              three spots the film visits, where it began on the lakefront,
+              outside Cobb Hall, and the University of Chicago today.
             </p>
           </div>
 
