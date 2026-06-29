@@ -432,12 +432,14 @@ def _parse_stat(value):
     except: return ("", None, value, False)
     # a bare four-digit year (1673, 1893, 1948, 2022) must never get a thousands
     # comma; only true magnitudes >= 1000 do
-    is_year = bool(re.fullmatch(r"(1\d{3}|20\d{2})", value.strip()))
+    v = value.strip()
+    is_year = bool(re.fullmatch(r"1[5-9]\d{2}|20\d{2}", numstr))   # the leading number is a year
     is_range = bool(re.search(r"\d\s*(?:to|–|—|-)\s*\d", value))
-    comma = ("," in value) or (isinstance(target, int) and target >= 1000 and not is_year)
-    # count up only for plain integer magnitudes; never odometer through a year,
-    # a date range, or a decimal/price (those fade in at their real value)
-    count = isinstance(target, int) and not is_year and not is_range
+    has_month = bool(re.match(r"(?i)(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b", v))
+    comma = isinstance(target, int) and target >= 1000
+    # `count` marks a plain magnitude integer that gets comma-grouped; years,
+    # date ranges, month-dates, prices, and decimals render exactly as authored
+    count = isinstance(target, int) and not is_year and not is_range and not has_month
     return (value[:m.start()], target, value[m.end():], comma, count)
 
 def _fmt_num(n, comma):
@@ -448,9 +450,9 @@ def stat_scene(out, label, value, context, src="", dur=4.4, bg=FOREST):
     def fn(t):
         b = Image.new("RGBA", (W, H), bg + (255,)); cx = W // 2
         e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 360), label.upper(), sans(27, "semi"), RUST, int(255*e), int((1-e)*14), 11, "ma")
-        cu = ease_out(elem(t, 0.28, 1.05))
-        disp = target * cu if count else target
-        shown = (prefix + _fmt_num(disp, comma) + suffix) if target is not None else value
+        # no count-up: comma-group a plain magnitude, otherwise show the value
+        # exactly as authored (years, ranges, dates, prices stay literal)
+        shown = (prefix + _fmt_num(target, comma) + suffix) if count else value
         # the hero number is extruded into depth for a dimensional read; it also
         # eases up a few pixels as it lands, like settling onto the wall
         e2 = ease_out(elem(t, 0.28, 0.5))
@@ -1037,7 +1039,7 @@ PANO_INSTR = {
 # reproductions of a historical subject and otherwise break the period tone
 FORCE_ARCHIVAL = {
     "dd-land-5", "dd-redlining-14", "dd-redlining-15", "protective-club-era",
-    "dd-university-5", "dd-university-8",
+    "dd-university-5", "dd-university-8", "dd-color-line-14",
 }
 
 def chapter_image_grade(clipid):
@@ -1111,6 +1113,7 @@ def credit_text(clipid):
     who = re.sub(r",?\s*(photographer|publisher).*$", "", who, flags=re.I).strip(" ,")
     who = re.sub(r"\s+from\s+.*$", "", who, flags=re.I).strip(" ,")
     who = who.split(",")[0].strip()
+    who = re.sub(r"\s*\(.*$", "", who).strip()  # drop parenthetical aliases / open parens
     # Commons uploader handle or unknown author -> clean museum credit
     handle = (not who) or re.search(r"wiki(p|m)edia|user:|\bat en\b|^unknown", who + " " + art, re.I)
     if (is_pd and handle) or not who or re.match(r"^unknown", who, re.I):
@@ -1397,7 +1400,8 @@ STORY = {
      ("stat", None, "four thousand"),                   # ~4,000 families displaced
      ("img", "urban-renewal-3", "twenty-nine million"), # the rebuilt blocks, $29M of its own money
      ("chart", "return-rate", "forty-six"),             # who got to stay, 46% vs 17%
-     ("stat", "fell", "fell by about forty percent"),   # Black population down 40%, then Woodlawn
+     ("stat", "fell", "fell by about forty percent"),   # Black population down 40%
+     ("img", "woodlawn-hist", "toward Woodlawn"),       # the next target, breaks the long stat hold
    ],
    "callouts": [("The university's own money", "$29M", "twenty-nine million")],
  },
