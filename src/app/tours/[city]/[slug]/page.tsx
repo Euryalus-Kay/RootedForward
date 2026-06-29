@@ -193,7 +193,6 @@ export default async function StopDetailPage({ params }: PageProps) {
           <HydeParkFilm
             title={immersive.title}
             dek={immersive.dek}
-            heroNote={immersive.heroNote}
             manifest={manifest}
           />
         </PageTransition>
