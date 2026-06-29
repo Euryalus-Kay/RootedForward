@@ -476,9 +476,11 @@ export default function HydeParkFilm({
           </p>
         </div>
 
-        {/* the milled spine band: ruler texture, a seekable rail, a glowing
-            playhead, and oversized Baskerville year-numerals as stations */}
-        <div className="relative mt-8 h-[120px] select-none overflow-hidden rounded-[2px] border border-[#2A2622] bg-gradient-to-b from-[#141512] to-[#101109] sm:h-[150px]">
+        {/* the milled spine band (desktop): ruler texture, a seekable rail, a
+            glowing playhead, and oversized Baskerville year-numerals as stations.
+            Hidden on phones, where 8 stations are too tight to tap; see the
+            tappable list below. */}
+        <div className="relative mt-8 hidden h-[150px] select-none overflow-hidden rounded-[2px] border border-[#2A2622] bg-gradient-to-b from-[#141512] to-[#101109] sm:block">
           {/* faint baseline graduation, reads as an engraved rail */}
           <div
             aria-hidden
@@ -572,6 +574,55 @@ export default function HydeParkFilm({
             );
           })}
         </div>
+
+        {/* the timeline as a tappable chapter list on phones: full-width rows are
+            easy to press, where the spine's stations are not */}
+        <ol className="mt-6 divide-y divide-[#26231E] overflow-hidden rounded-[2px] border border-[#2A2622] bg-gradient-to-b from-[#141512] to-[#101109] sm:hidden">
+          {placed.map((c) => {
+            const isActive = c.idx === active;
+            return (
+              <li key={c.id}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActive(c.idx);
+                    setPopoutDive(null);
+                    seek(c.startSec);
+                  }}
+                  className={`flex w-full items-center gap-4 px-4 py-4 text-left transition-colors active:bg-[#1c1d16] ${
+                    isActive ? "bg-[#1a1b14]" : ""
+                  }`}
+                  aria-label={`Jump to ${c.title}`}
+                >
+                  <span
+                    className={`w-16 shrink-0 font-display text-2xl leading-none ${
+                      isActive ? "text-[#E8E2D6]" : "text-[#C7BFB0]"
+                    }`}
+                  >
+                    {c.year}
+                  </span>
+                  <span
+                    className={`flex-1 font-body text-[11px] font-semibold uppercase tracking-[0.18em] ${
+                      isActive ? "text-[#E8E2D6]" : "text-[#9C9384]"
+                    }`}
+                  >
+                    {SHORT_LABEL[c.id] ?? c.era}
+                  </span>
+                  {isActive ? (
+                    <span
+                      aria-hidden
+                      className="h-2.5 w-2.5 shrink-0 rotate-45 bg-[#C45A33] shadow-[0_0_10px_rgba(196,90,51,0.6)]"
+                    />
+                  ) : (
+                    <span className="shrink-0 font-body text-[10px] uppercase tracking-[0.2em] text-[#6B645A]">
+                      {fmt(c.startSec)}
+                    </span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ol>
 
         {/* When the active chapter has its OWN film, a clearly separate feature
             card invites you to open it in the theater. It is deliberately framed
