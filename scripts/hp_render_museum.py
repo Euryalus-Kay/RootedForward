@@ -240,11 +240,11 @@ def annotation_label(path, label, sub):
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     # gradient scrim: dark at the upper-left, fading to clear toward the right
     # and below, so the name + sub read on light documents and bright skies
-    xx = np.clip(1.0 - (np.arange(W) - (x - 40)) / 780.0, 0, 1) ** 1.25
+    xx = np.clip(1.0 - (np.arange(W) - (x - 40)) / 820.0, 0, 1) ** 1.2
     ywin = np.zeros(H)
-    ywin[max(0, y - 84):min(H, y + 106)] = 1.0
-    a = (np.outer(ywin, xx) * 190.0).astype("uint8")
-    sa = Image.fromarray(a, "L").filter(ImageFilter.GaussianBlur(28))
+    ywin[max(0, y - 90):min(H, y + 120)] = 1.0
+    a = (np.outer(ywin, xx) * 232.0).astype("uint8")
+    sa = Image.fromarray(a, "L").filter(ImageFilter.GaussianBlur(30))
     dark = Image.new("RGBA", (W, H), (6, 9, 8, 255))
     dark.putalpha(sa)
     img = Image.alpha_composite(img, dark)
@@ -528,7 +528,7 @@ def chart_wealthgap_scene(out, dur=6.8):
         if rc > 0:
             b = put_text(b, (cx, 506), "MORE THAN", sans(22, "semi"), (210, 150, 110), int(235*rc), 0, 7, "ma")
             b = put_text(b, (cx, 584), "6 to 1", serif(78, "semi"), CREAM, int(255*rc), 0, 0, "mm"); d = ImageDraw.Draw(b)
-        e = ease_out(elem(t, 3.7, 0.8)); b = put_text(b, (cx, 958), "SOURCE  FEDERAL RESERVE, 2022 SURVEY OF CONSUMER FINANCES", sans(16, "light"), (132, 150, 138), int(210*e), 0, 6, "mm")
+        e = ease_out(elem(t, 3.7, 0.8)); b = put_text(b, (cx, 892), "SOURCE  FEDERAL RESERVE, 2022 SURVEY OF CONSUMER FINANCES", sans(16, "light"), (132, 150, 138), int(210*e), 0, 6, "mm")
         return b.convert("RGB")
     seq_clip(fn, dur, out)
 
