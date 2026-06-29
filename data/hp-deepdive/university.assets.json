@@ -1,0 +1,122 @@
+[
+  {
+    "id": "first-uofc",
+    "need": "Engraving or photograph of the Old University of Chicago building at Cottage Grove Avenue and 35th Street, 1860s-1880s (public domain)",
+    "shows": "Delegates to the Baptist Convention posed in front of the Old University of Chicago building, 1867 (Samuel Montague Fassett, UChicago photo archive). Reused from the overview set; genuine period image of the original university building.",
+    "ok": true
+  },
+  {
+    "id": "douglas-portrait",
+    "need": "Portrait of U.S. Senator Stephen A. Douglas (public domain)",
+    "shows": "Photographic portrait of Senator Stephen A. Douglas, E. Anthony studio, 1860 (Library of Congress). Reused from the overview set.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-1",
+    "need": "Period illustration of the Financial Panic of 1857, a bank run or Wall Street scene (public domain)",
+    "shows": "Engraving 'Run on the Seamen's Savings' Bank during the Panic of 1857' showing a crowd of top-hatted men crowding a New York bank during the panic (Library of Congress, public domain). Verified by opening the file.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-2",
+    "need": "Printed page or facsimile of the Kansas-Nebraska Act of 1854 (public domain)",
+    "shows": "McConnell's historical map captioned 'KANSAS-NEBRASKA ACT, 1854' showing free states, slave states, and the Kansas and Nebraska territories, with an explanatory text block about the act (McConnell Map Co., public domain). A period documentary map of the act rather than a printed page of the statute text; clearly depicts and names the Kansas-Nebraska Act. Verified by opening the file.",
+    "ok": true
+  },
+  {
+    "id": "university-3",
+    "need": "Portrait photograph of John D. Rockefeller, 1880s-1890s (public domain)",
+    "shows": "Portrait of J. D. Rockefeller, 1895 (Scientific American, public domain). Reused from the overview set.",
+    "ok": true
+  },
+  {
+    "id": "university-5",
+    "need": "Portrait photograph or engraving of Marshall Field (public domain)",
+    "shows": "Marshall Field illustration from the Chicago Inter Ocean, 1893 (public domain). Reused from the overview set.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-10",
+    "need": "1890s plat or survey map of Hyde Park showing the University of Chicago campus footprint, the Midway Plaisance, and Jackson and Washington parks (public domain)",
+    "shows": "Bird's-eye view of the World's Columbian Exposition grounds in Jackson Park, looking west, plus a lagoon view, from the Columbian World's Fair Atlas, 1893 (public domain). This is a fairgrounds bird's-eye view of the Jackson Park / Midway area adjacent to the campus, NOT a Hyde Park plat map showing the campus footprint and parks. Best public-domain geographic match found on Commons; the exact 1890s plat map of the campus footprint could not be sourced public-domain. Verified by opening the file.",
+    "ok": false
+  },
+  {
+    "id": "university-2",
+    "need": "Portrait photograph of William Rainey Harper, first president (public domain)",
+    "shows": "Bust portrait of William Rainey Harper, 1903 (Library of Congress). Reused from the overview set.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-5",
+    "need": "Early photograph of Johns Hopkins University, 1870s-1880s, as the first American research university (public domain)",
+    "shows": "Section of Gilman Hall on Bowman Drive, the Johns Hopkins University Homewood campus landmark, modern color photograph (chris.rycroft, CC BY 2.0). Genuinely depicts Johns Hopkins University, but it is a present-day photo of a building opened in 1916, not an 1870s-1880s period image. A period photograph of the original 1876 downtown Howard Street campus could not be sourced public-domain on Commons.",
+    "ok": false
+  },
+  {
+    "id": "dd-university-12-MISS",
+    "need": "Photograph of an early University of Chicago class or the University of Chicago Press, 1890s (public domain)",
+    "shows": "No usable public-domain file found. Repeated Commons searches for early classes, women students, graduating-class group photos, the Press building, and Cobb Hall interiors returned either nothing licensed or modern unrelated campus buildings (Reynolds Club, Auditorium Building) which were rejected and deleted. Skipped.",
+    "ok": false
+  },
+  {
+    "id": "dd-university-4",
+    "need": "Photograph of Amos Alonzo Stagg with an early University of Chicago Maroons football team, 1890s (public domain)",
+    "shows": "Coach A. A. Stagg of the University of Chicago in consultation with Maroon captain Fred Henderson, 1925 Chicago Tribune photo captioned 'Old Man of the Midway Counsels Maroon Captain' (public domain). Genuinely Stagg with his Chicago Maroons program; 1925 rather than 1890s. Paired with dd-university-6 for the team shot. Verified by opening the file.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-6",
+    "need": "Photograph of Amos Alonzo Stagg with an early University of Chicago Maroons football team, 1890s (public domain)",
+    "shows": "1905 University of Chicago Maroons football team group portrait posed before a Gothic doorway (University of Chicago, public domain). A genuine early Maroons team photo from Stagg's coaching era. Verified by opening the file.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-7",
+    "need": "Henry Ives Cobb's original campus plan drawing of the six quadrangles (public domain)",
+    "shows": "Tower Group of the University of Chicago, early 20th century photograph showing the Gothic limestone quadrangle buildings, central tower, crenellations and grotesques in winter (Percy H. Sloan, public domain). NOT Cobb's plan drawing; it is a period photograph of the realized Cobb quadrangle architecture. Cobb's original six-quadrangle plan drawing could not be sourced public-domain on Commons; this period campus photo stands in for the Gothic-quadrangle beat. Verified by opening the file.",
+    "ok": false
+  },
+  {
+    "id": "university-1",
+    "need": "1892-1900 photograph of newly constructed Cobb Hall (public domain)",
+    "shows": "Cobb Hall of the University of Chicago, Tichnor Brothers postcard, circa 1930-1945 (Boston Public Library, public domain). Reused from the overview set. Genuinely Cobb Hall, though the print dates to the 1930s-40s rather than 1892-1900. The earliest public-domain Cobb Hall photo available; period-accurate Gothic exterior also shown in dd-university-7.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-8",
+    "need": "Detail photographs of Gothic gargoyles, grotesques, and crenellations on the University of Chicago main quadrangle limestone buildings",
+    "shows": "Cobb Gate at the University of Chicago, 57th Street, showing the carved grotesques climbing the gabled limestone gate against the sky, modern photograph (Warren LeMay, CC BY-SA 2.0). Directly depicts the quad's Gothic carved-stone detail. Verified by opening the file.",
+    "ok": true
+  },
+  {
+    "id": "worlds-fair-1",
+    "need": "Photographs of the 1893 World's Columbian Exposition White City and the original Ferris wheel on the Midway Plaisance (public domain)",
+    "shows": "The Court of Honor, Official Views of the World's Columbian Exposition, 1893 (C. D. Arnold, public domain). Reused from the overview set; the White City Court of Honor.",
+    "ok": true
+  },
+  {
+    "id": "worlds-fair-6",
+    "need": "Photographs of the 1893 World's Columbian Exposition White City and the original Ferris wheel on the Midway Plaisance (public domain)",
+    "shows": "The Ferris Wheel, Official Views of the World's Columbian Exposition, 1893 (C. D. Arnold, public domain). Reused from the overview set; the original Ferris wheel.",
+    "ok": true
+  },
+  {
+    "id": "midway-1893-crowd",
+    "need": "Photographs of the 1893 World's Columbian Exposition White City and the original Ferris wheel on the Midway Plaisance (public domain)",
+    "shows": "The Ferris wheel on the Midway Plaisance, Columbian Exposition, 1893 (Rijksmuseum, CC0). Reused from the overview set; Ferris wheel on the Midway.",
+    "ok": true
+  },
+  {
+    "id": "dd-university-9",
+    "need": "Masthead or front page of the Chicago Defender from the 1920s-1940s (public domain)",
+    "shows": "The Chicago Defender Building (former headquarters), modern color photograph (TonyTheTiger, CC BY-SA 3.0). Genuinely the Chicago Defender's building, but NOT a masthead or front page; a present-day exterior shot. A public-domain Defender masthead or front page could not be sourced on Commons. Note: the overview set's 'great-migration' id is a real 1920 Chicago Defender image that could substitute for newspaper context.",
+    "ok": false
+  },
+  {
+    "id": "homer-hoyt",
+    "need": "1920s map of Chicago's Black Belt and the Woodlawn neighborhood relative to the University of Chicago campus",
+    "shows": "Home Owners' Loan Corporation Residential Security (redlining) map of Chicago, c. 1940 (HOLC, CC0). Reused from the overview set. A Chicago race-and-housing map showing the South Side graded zones including the Black Belt and Woodlawn; 1940 HOLC rather than a 1920s Black Belt map. Closest public-domain map available; a 1920s Black Belt/Woodlawn map could not be sourced on Commons.",
+    "ok": true
+  }
+]

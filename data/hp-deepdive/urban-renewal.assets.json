@@ -1,0 +1,98 @@
+[
+  {
+    "id": "urban-renewal-1",
+    "need": "Early-1950s aerial or street photograph of the University of Chicago campus within dense Hyde Park apartment blocks",
+    "shows": "Reused from the overview. Genuine vintage (Chicago Aerial Survey Co.) high-altitude aerial of Hyde Park showing dense gridded apartment blocks, the lakefront, and the new University Apartments tower rising from the cleared median. Stands in for the campus-within-dense-blocks framing.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Portrait of Chancellor Lawrence A. Kimpton",
+    "shows": "No public-domain or CC portrait of Lawrence A. Kimpton exists on Wikimedia Commons. A search returned only an unrelated church ('St Lawrence'), which was deleted. Skipped; will need a graphic stat/quote card or a licensed UChicago archive image instead.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Portrait of Julian H. Levi, executive director of the South East Chicago Commission",
+    "shows": "No public-domain or CC portrait of Julian H. Levi found on Wikimedia Commons. Skipped; render as a quote/stat card naming him.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "South East Chicago Commission letterhead or a 1952 founding document",
+    "shows": "No public-domain SECC letterhead or founding document found on Commons. Skipped; treat as a typeset graphic card (SECC, 1952, reported 32% crime rise).",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Title page or text of the 1953 Illinois Urban Community Conservation Act",
+    "shows": "No public-domain scan of the 1953 Illinois Urban Community Conservation Act found on Commons. Skipped; render as a graphic title card. (Source text exists in Illinois session laws but is not on Commons as an image.)",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Official Hyde Park-Kenwood urban renewal map showing the 856-acre boundary and buildings marked for demolition",
+    "shows": "No public-domain Hyde Park-Kenwood renewal/clearance map found on Commons (multiple query phrasings tried). Skipped as a true archival still; the 856-acre / 638-building boundary should be rendered as an original graphic. Partial geographic stand-in available via dd-urban-renewal-1 (Midway Plaisance plan map showing 56th-61st and Woodlawn Ave).",
+    "ok": false
+  },
+  {
+    "id": "woodlawn-hist",
+    "need": "Archival 1950s street photographs of old 55th Street: taverns, jazz clubs, rooming houses, kitchenette apartment buildings",
+    "shows": "Reused from the overview. Russell Lee, Chicago 1941 (FSA/OWI, public domain): a densely packed South Side tenement block with wooden back porches, children in a bare dirt yard. Depicts the cheap, dense, 'alive' kitchenette/rooming-house housing the plan defined as blight. No PD photo of 55th Street specifically exists on Commons; this FSA Black Belt image is the honest stand-in for that housing type. Pair with color-line-7 (kitchenette interior).",
+    "ok": true
+  },
+  {
+    "id": "color-line-7",
+    "need": "Archival 1950s street photographs of old 55th Street: taverns, jazz clubs, rooming houses, kitchenette apartment buildings (interior life)",
+    "shows": "Reused from the overview. Russell Lee FSA/OWI (PD): interior of a Chicago kitchenette flat, a woman doing wash by the bathtub. Conveys the crowded kitchenette-flat life that the renewal plan cleared. Supplementary to woodlawn-hist for this same need.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Photograph of mid-1950s demolition or land clearance in Hyde Park with wrecking equipment",
+    "shows": "No public-domain photo of 1950s Hyde Park demolition/land clearance found on Commons. Off-subject hits (a Halifax tea warehouse, a modern U.S. Navy hospital demolition) were rejected and deleted as wrong subject and wrong era. Skipped; the cleared-ground reality is partly visible in the reused urban-renewal-1 aerial (raw graded land around the new tower).",
+    "ok": false
+  },
+  {
+    "id": "urban-renewal-3",
+    "need": "Archival construction photographs of the I.M. Pei University Apartments, 1959 to 1961 / the two University Apartments towers on the 55th Street median",
+    "shows": "Reused from the overview. The I.M. Pei / Araldo Cossutta University Apartments slab on the 55th Street median (present-day color photo). No archival 1959-61 construction photo of the building is on Commons; this is the closest honest depiction of the actual building the script names. Pair with urban-renewal-1 (the same tower seen rising in the vintage aerial).",
+    "ok": true
+  },
+  {
+    "id": "urban-renewal-1",
+    "need": "Present-day photograph of the two University Apartments towers on the 55th Street median (owner can capture via drone/360)",
+    "shows": "Owner intends to capture this present-day via drone/360. Interim stand-in: the reused urban-renewal-1 vintage aerial shows the tower on its 55th Street median island. Marked ok as a placeholder pending the owner's own present-day capture.",
+    "ok": true
+  },
+  {
+    "id": "dd-urban-renewal-1",
+    "need": "Map of the Midway Plaisance as the Hyde Park / Woodlawn border with the proposed South Campus strip shaded",
+    "shows": "Goodspeed plan of the Midway Plaisance (public domain, from a UChicago history): a clean street-grid map labeling 56th through 61st Streets, Woodlawn/Kimbark/Kenwood/Dorchester avenues, with the Midway Plaisance as the central east-west band. Establishes the exact Hyde-Park-north / Woodlawn-south geography and the 60th-61st strip the South Campus expansion targeted. The South Campus shading itself is an original graphic overlay the film adds.",
+    "ok": true
+  },
+  {
+    "id": "dd-urban-renewal-2",
+    "need": "Archival 1960s street photograph of 63rd Street or commercial Woodlawn",
+    "shows": "NARA / John H. White, EPA Documerica (public domain): 63rd Street in Chicago under the elevated tracks, storefronts (drugs, liquor), cars, and pedestrians. Captioned 'once one of Chicago's busy thoroughfares, 63rd Street has changed with the character of the city.' Directly depicts commercial Woodlawn's main drag (early 1970s rather than early 1960s, but the same street and corridor).",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Portrait of Reverend Arthur M. Brazier",
+    "shows": "No public-domain or CC portrait of Rev. Arthur M. Brazier found on Commons (he died in 2010; available images are copyrighted). Skipped; render his 'Woodlawn is not their private colony' line as a quote card.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Photograph of a The Woodlawn Organization (TWO) meeting or march, early 1960s",
+    "shows": "No public-domain TWO meeting/march photograph found on Commons. The only PD Saul Alinsky file on Commons is a bare autograph (not a usable visual), which was rejected and deleted. Skipped. Supplementary present-day South Side context available via dd-urban-renewal-3 (John H. White NARA newsstand at 22nd & State).",
+    "ok": false
+  },
+  {
+    "id": "dd-urban-renewal-3",
+    "need": "South Side street life into which displaced Black families were scattered (supports 'scattered to the South and West Sides' beat)",
+    "shows": "NARA / John H. White, EPA Documerica (public domain): a Black man operating a newsstand at 22nd and South State Street on the South Side, with high-rise housing behind. Honest depiction of the dense South Side commercial street life of the neighborhoods that absorbed the displaced. Not in the explicit imageNeeds list but supports the 'who came back / where the rest went' beats.",
+    "ok": true
+  }
+]

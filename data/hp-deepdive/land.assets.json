@@ -1,0 +1,152 @@
+[
+  {
+    "id": "dd-land-2",
+    "need": "Botanical illustration of Allium tricoccum (wild leek / ramp)",
+    "shows": "Black-and-white botanical line drawing of Allium tricoccum (wild leek) from Britton & Brown's Illustrated Flora (1913), showing leaves, flower umbel, and bulb. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-1",
+    "need": "Portrait of Black Hawk, the Sauk leader",
+    "shows": "The famous Charles Bird King color portrait of Black Hawk (Ma-ka-tai-me-she-kia-kiak) in a red cloak with roached hair and a peace medal. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-3",
+    "need": "Engraving of Fort Dearborn at the mouth of the Chicago River (1803-1830s)",
+    "shows": "Period color postcard view captioned 'Second Fort Dearborn, Built in 1816, Abandoned in 1823 - Chicago', depicting the rebuilt fort at the river mouth with canoes and boats in the foreground. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-4",
+    "need": "Period map of the 1673 Jolliet-Marquette expedition return route via the Chicago Portage",
+    "shows": "Thevenot's 1681 'Carte de la decouverte faite l'an 1673' engraved map of the Marquette-Jolliet discovery, showing the Mississippi (R. Mitchisipi), the Illinois country, portages, and Lac de Michigami. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-6",
+    "need": "Map of the Chicago Portage linking the Chicago and Des Plaines Rivers, with Mud Lake marked",
+    "shows": "Historical survey map of the Chicago Portage area from Knight & Zeuch, showing the Des Plaines River, land parcels, and Lawton's old trading house near the portage crossing. Public domain. (Mud Lake region; dd-land-4 also depicts the portage at regional scale.)",
+    "ok": true
+  },
+  {
+    "id": "dd-land-8",
+    "need": "Early French map of the region showing the spelling Chicagou",
+    "shows": "Delisle/Buache 'Carte de la Louisiane et du cours du Mississipi' (early 18th c.), a French map of the Mississippi watershed, Great Lakes (Lac Michigan), Illinois country and Canada. Public domain. Serves as the period French regional map; the legibility of the exact 'Chicagou' label at this scale was not separately verified.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-7",
+    "need": "Map of the 1816 Treaty of St. Louis twenty-mile cession strip and the Indian Boundary Line across Chicagoland",
+    "shows": "Charles C. Royce 'Illinois 1' Indian land-cessions map from the Bureau of American Ethnology 18th Annual Report, color-coded and numbered cessions across Illinois including the northeastern Chicago-region cessions. Public domain. Authoritative cession reference standing in for the boundary-line strip.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-9",
+    "need": "Campaign map of the 1832 Black Hawk War ending at the Battle of Bad Axe",
+    "shows": "Henry Lewis period lithograph of the Battle of Bad Axe (Aug 1832) showing the steamboat Warrior firing on Sauk people at the riverbank. Public domain. Depicts the war's terminal event rather than a campaign map (no PD campaign map was found).",
+    "ok": true
+  },
+  {
+    "id": "land-treaty-chicago",
+    "need": "Image of the 1833 Treaty of Chicago document (public-domain treaty text or facsimile)",
+    "shows": "Handwritten manuscript page of the ratified 1833 Treaty of Chicago with the United Chippewa, Ottawa and Potawatomi, signature marks visible. Public domain (National Archives via DPLA). Reused from the existing overview credits.json.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-5",
+    "need": "Route map of the 1838 Potawatomi Trail of Death from Twin Lakes, Indiana to Osawatomie, Kansas",
+    "shows": "Bronze Trail of Death memorial plaque on a boulder in Liberty, IL, carrying the route map of the 1838 forced march and the inscription describing the 859 Potawatomi removed. CC BY-SA 4.0. Marker stands in for a dedicated route map.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-10",
+    "need": "Map of the federally recognized Potawatomi nations today (Prairie Band, Pokagon Band, Citizen Nation, others)",
+    "shows": "Captioned portrait of Chief Leopold Pokagon, founder of the Pokagon Band of Potawatomi who kept his band in southwestern Michigan. Public domain. Stands in for the 'Potawatomi today' / Pokagon Band content; no PD present-day nations map was found.",
+    "ok": true
+  },
+  {
+    "id": "land-shabbona",
+    "need": "Present-day photo of the Prairie Band Potawatomi Nation and the 2024 Shabbona land restoration in Illinois",
+    "shows": "Chief Shabbona trail map graphic tied to the Shabbona, Illinois site whose ground was placed back in Prairie Band Potawatomi trust in 2024. CC BY-SA 4.0. Reused from the existing overview credits.json.",
+    "ok": true
+  },
+  {
+    "id": "land-early-chicago",
+    "need": "Early lithograph or panoramic view of Chicago in the 1830s",
+    "shows": "Engraving captioned 'Chicago in 1833' showing log cabins and the marshy river at the town's founding. Public domain (Colbert 1871, from a British Library scan). Reused from the existing overview credits.json.",
+    "ok": true
+  },
+  {
+    "id": "formation-4",
+    "need": "Early lithograph or panoramic view of Chicago in the 1830s (secondary)",
+    "shows": "1857 Bird's-Eye View of Chicago lithograph (Inger/Palmatary), Library of Congress. Public domain. Reused; provides a panoramic early-Chicago view shortly after the 1830s boom.",
+    "ok": true
+  },
+  {
+    "id": "formation-1",
+    "need": "Portrait of Paul Cornell",
+    "shows": "Portrait of Paul Cornell (1822-1904), founder of Hyde Park. Public domain. Reused from the existing overview credits.json.",
+    "ok": true
+  },
+  {
+    "id": "dd-land-11",
+    "need": "Early Hyde Park plat map (1850s-1860s)",
+    "shows": "1861 Van Vechten 'Map of Cook County, Illinois' with township grid south of Chicago covering the Hyde Park area, an inset map of Chicago, and decorative building vignettes. Public domain. Period regional plat-era map for Cornell's purchase era; not a parcel-level Hyde Park subdivision plat.",
+    "ok": true
+  },
+  {
+    "id": "formation-6",
+    "need": "Archival image of the Illinois Central depot at 53rd Street / early Hyde Park station",
+    "shows": "1856 engraving of the Great Central Station trainshed of the Illinois Central in Chicago (Leslie's Illustrated). Public domain. Reused; depicts the Illinois Central terminal of the era rather than the specific 53rd Street suburban depot.",
+    "ok": true
+  },
+  {
+    "id": "formation-ic-train",
+    "need": "Archival image of the Illinois Central depot at 53rd Street / early Hyde Park station (rolling stock, secondary)",
+    "shows": "Illinois Central R.R. locomotive No. 1376 used on Chicago World's Fair trains, 1893, Library of Congress. Public domain. Reused; Illinois Central rolling stock to support the depot/railroad beat.",
+    "ok": true
+  },
+  {
+    "id": "land-potawatomi",
+    "need": "Potawatomi land / Council of Three Fires people (supporting the homelands beat)",
+    "shows": "Library of Congress lithograph portrait of Wa-baun-see, a Potawatomi chief. Public domain. Reused from the existing overview credits.json to anchor the Potawatomi/Three Fires content.",
+    "ok": true
+  },
+  {
+    "id": "need-three-fires-map",
+    "need": "Map of the Council of Three Fires homelands around the Great Lakes and the straits of Michilimackinac",
+    "shows": "No dedicated public-domain Council of Three Fires homelands map was found on Commons. Partial coverage by dd-land-8 (French Great Lakes map) and dd-land-7 (Illinois cessions). Recommend an in-film graphic.",
+    "ok": false
+  },
+  {
+    "id": "need-sandbar-survey",
+    "need": "Early survey map showing the Chicago River bending south behind the sandbar before reaching the lake",
+    "shows": "No public-domain early survey map isolating the elephant's-trunk sandbar and the river's southward bend was found. Recommend an in-film map graphic; the Fort Dearborn postcard (dd-land-3) hints at the river mouth.",
+    "ok": false
+  },
+  {
+    "id": "need-sauk-trail",
+    "need": "Map of the Sauk Trail from Rock Island to Detroit overlaid on the present-day Chicago-area road network",
+    "shows": "No public-domain Sauk Trail map or marker image was found. Recommend an in-film map graphic.",
+    "ok": false
+  },
+  {
+    "id": "need-1835-procession",
+    "need": "Archival illustration of the August 1835 Potawatomi procession through early Chicago",
+    "shows": "No authentic public-domain illustration of the 1835 Potawatomi mourning procession exists on Commons; candidate hits were unrelated dances of other nations and were rejected. Recommend a Caton pull-quote card plus a route-map graphic.",
+    "ok": false
+  },
+  {
+    "id": "need-petit-portrait",
+    "need": "Portrait or historical marker image of Father Benjamin Marie Petit",
+    "shows": "No public-domain portrait or marker image of Father Benjamin Petit was found on Commons. The Trail of Death marker (dd-land-5) covers the same beat. Recommend a text/quote card for Petit.",
+    "ok": false
+  },
+  {
+    "id": "need-presettlement-landcover",
+    "need": "Pre-settlement Chicago lakefront landscape: sand ridges with bur oaks, swales, open prairie (illustration or historical land-cover map)",
+    "shows": "No specific public-domain pre-settlement Chicago land-cover illustration or map was found. The script's own drone footage plus a land-cover graphic overlay covers this beat as written.",
+    "ok": false
+  }
+]

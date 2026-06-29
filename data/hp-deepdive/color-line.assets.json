@@ -1,0 +1,116 @@
+[
+  {
+    "id": "dd-color-line-1c",
+    "need": "Early-1900s Hyde Park residential street scene, graystones and three-flats (public domain or institutional archive)",
+    "shows": "1902 newspaper halftone of a Victorian building at 4043-4045 Drexel Boulevard (Oakland/Kenwood area, adjacent to Hyde Park), captioned 'New Home for Waubansee (Oakland) Club.' Genuine period exterior of a South Side boulevard building.",
+    "ok": true
+  },
+  {
+    "id": "protective-club-era",
+    "need": "Early-1900s Hyde Park residential street scene, graystones and three-flats (reuse for period-style street block)",
+    "shows": "Ellis Avenue, Kenwood greystone and brick mansions on a tree-lined block. Present-day color photo (Warren LeMay, CC BY-SA) but the housing stock is the same 1900s-era greystones the club fought over. Already in the overview credits.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-2",
+    "need": "Period map of Hyde Park / Kenwood / Woodlawn, 1900s-1920s",
+    "shows": "Sanborn Fire Insurance Map of Chicago (Library of Congress, public domain), a South Side sheet showing W 61st-63rd Streets and S Albany/Whipple/Sacramento with platted lots and footprints. Authentic period Chicago street plat; usable as a map texture/overlay though it is a fire-insurance sheet rather than a labeled neighborhood map.",
+    "ok": true
+  },
+  {
+    "id": "fannie-barrier-williams",
+    "need": "Portrait photograph of Fannie Barrier Williams, clubwoman and activist (public domain)",
+    "shows": "Sepia studio portrait of Fannie Barrier Williams, c.1880, public domain. Verified likeness. Already in the overview credits (reuse).",
+    "ok": true
+  },
+  {
+    "id": "great-migration",
+    "need": "Black migrants arriving by train in Chicago during the Great Migration, with Illinois Central context, 1910s-1920s",
+    "shows": "The Scott/Arthur family of eight, Great Migration arrivals, with their luggage, published in the Chicago Defender, 1920. Public domain. Already in the overview credits (reuse). Pair with formation-ic-train (Illinois Central locomotive, LOC) for the rail context.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-3",
+    "need": "Chicago Defender front page or Great Northern Drive notice, 1917",
+    "shows": "Jack Delano FSA/OWI photograph (LOC, public domain) of a Chicago newsboy holding the Chicago Defender with its masthead and front-page headlines clearly legible. Substitutes for a Defender front-page reproduction; it is a 1942 image, not 1917, so the masthead is right but the date is later.",
+    "ok": true
+  },
+  {
+    "id": "color-line-5",
+    "need": "Chicago Black Belt / State Street South Side street scene, 1920s-1930s",
+    "shows": "Russell Lee FSA photo (LOC, public domain), 1941, of a Black Belt tenement court with wooden back-porch staircases and residents in the yard. Black Belt exterior street scene. Already in the overview credits (reuse).",
+    "ok": true
+  },
+  {
+    "id": "color-line-7",
+    "need": "Interior of a kitchenette apartment in the Chicago Black Belt, 1930s-1940s",
+    "shows": "Russell Lee FSA photo (LOC, public domain), April 1941, 'Washday of family on relief, Chicago' - a woman doing laundry in a cramped, makeshift kitchen/bath room of a subdivided Black Belt flat. Strong kitchenette-conditions interior. Already in the overview credits (reuse).",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-7",
+    "need": "Chicago newspaper front page reporting a home bombing, 1917-1921",
+    "shows": "Public-domain 1919 composite (Wikimedia, sourced from Grand Forks Herald and other July 1919 papers) titled 'The Riot Area Extending Over the Black Belt,' carrying riot/violence newspaper headlines ('CHICAGO RACE RIOTS CAUSE TWENTY-FOUR FATALITIES,' 'PERSONS KILLED IN CHICAGO RIOTS'). Closest public-domain newspaper-page artifact found; it reports the 1919 riot rather than a specific home bombing, so it stands in for the bombing-headline beat. No standalone PD Chicago home-bombing front page surfaced on Commons.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-7",
+    "need": "Chicago race riot of 1919 photograph (29th Street beach, National Guard, or burned homes)",
+    "shows": "Same 1919 public-domain composite: a hot-spots map marking the 29th Street Beach where the riot began, Stock Yards and police-station icons, an inset photograph of soldiers/police with rifles on a South Side street, and period headlines. Directly depicts the 1919 riot, National Guard, and the 29th Street beach trigger point.",
+    "ok": true
+  },
+  {
+    "id": "jesse-binga",
+    "need": "Portrait of Jesse Binga and an exterior photo of his home at 5922 South Park Avenue",
+    "shows": "Bust portrait of Jesse Binga, 1923, public domain. Verified likeness. Already in the overview credits (reuse). No public-domain photograph of the 5922 South Park Avenue house was found on Commons; see dd-color-line-15 for the period Binga Bank interior as a substitute.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-15",
+    "need": "Portrait of Jesse Binga and an exterior photo of his home at 5922 South Park Avenue (Binga institution substitute for the home exterior)",
+    "shows": "Period interior photograph of the Binga Bank banking hall (men in suits at the counters, vault door visible), public domain (Julius F. Taylor). Supports the Binga story (his bank, opened 1908). Low resolution (~340px wide), so best used small or as a brief insert. Not the house exterior, which has no PD image.",
+    "ok": true
+  },
+  {
+    "id": "racial-hierarchy-doc",
+    "need": "Scan of an actual Chicago racially restrictive covenant deed page with the restricting clause",
+    "shows": "Public-domain period real-estate notice headed 'Only Members of the Caucasian Race,' quoting a deed clause barring sale or conveyance to 'any person not of the Caucasian race' (Kimball & Richards land merchants). Already in the overview credits (reuse). It is a covenant advertisement, not a Chicago deed page specifically; no scan of an actual Chicago covenant deed page was found in public domain on Commons.",
+    "ok": true
+  },
+  {
+    "id": "color-line-3",
+    "need": "Map of the ring of covenanted neighborhoods around the Black Belt (Chicago Covenants Project basis)",
+    "shows": "HOLC neighborhood redlining-grade map of Chicago (CC BY-SA, Joelean Hall) showing the graded ring of South Side neighborhoods around the Black Belt. Already in the overview credits (reuse). Stands in for the covenant ring as the closest available graded-neighborhood map; homer-hoyt (original 1940 HOLC Residential Security Map, CC0) is an alternate period basemap.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-14",
+    "need": "University of Chicago campus edge meeting the surrounding neighborhood, 1930s-1940s",
+    "shows": "Hull Gate at the University of Chicago, the wrought-iron threshold between the quadrangles and the surrounding streets (CC BY-SA). Present-day color photo, so it reads as the campus edge but not period. university-4 (Harper Memorial Library, 1920, public domain) is the period reuse for the campus itself.",
+    "ok": true
+  },
+  {
+    "id": "color-line-4",
+    "need": "Hansberry house at 6140 South Rhodes Avenue, Woodlawn, and a portrait of Lorraine Hansberry",
+    "shows": "Exterior of the Lorraine Hansberry House (the family's Woodlawn home), CC BY-SA. Already in the overview credits (reuse). Covers the house. No public-domain portrait of Lorraine Hansberry herself was found on Commons (her photos remain under copyright), so the portrait half of this need is unmet.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-12",
+    "need": "U.S. Supreme Court building, 1948, and a portrait of Chief Justice Fred M. Vinson (Court building)",
+    "shows": "OWI photograph (Marjory Collins, LOC, public domain), 1943, of the U.S. Supreme Court building front facade and steps with figures descending. Period Court exterior, close to the 1948 decision date.",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-11b",
+    "need": "U.S. Supreme Court building, 1948, and a portrait of Chief Justice Fred M. Vinson (Vinson portrait)",
+    "shows": "Harris & Ewing photograph (LOC, public domain) of Fred M. Vinson in judicial robes standing by law-report shelves. A genuine photographic portrait of Vinson (preferred over the painted official portrait, which was discarded).",
+    "ok": true
+  },
+  {
+    "id": "dd-color-line-10",
+    "need": "U.S. Supreme Court building, 1948, and a portrait of Chief Justice Fred M. Vinson (Court-in-session bonus for the ruling beat)",
+    "shows": "Public-domain photograph of the U.S. Supreme Court in session, June 1937, justices on the bench behind the velvet curtain with a packed gallery. Period interior to underscore the Shelley v. Kraemer ruling moment.",
+    "ok": true
+  }
+]

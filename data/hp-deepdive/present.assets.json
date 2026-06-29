@@ -1,0 +1,56 @@
+[
+  {
+    "id": "dd-present-2",
+    "need": "Frederick Law Olmsted and Calvert Vaux plan or period view of Jackson Park, 1871 (public domain)",
+    "shows": "Period bust portrait of Frederick Law Olmsted (James Notman photograph, later engraved for Century Magazine), public domain. No public-domain 1871 Olmsted-Vaux South Park plan or period plan-map of Jackson Park exists on Wikimedia Commons, so this co-designer portrait anchors the 1871 plan reference. The existing worlds-fair-8 and dd-present-3 supply period views of the Olmsted lagoon landscape itself.",
+    "ok": true
+  },
+  {
+    "id": "dd-present-1",
+    "need": "1893 World's Columbian Exposition in Jackson Park, wide view of the White City (public domain)",
+    "shows": "Wide 1893 view of the Manufactures Building seen across the Court of Honor basin, World's Columbian Exposition, with crowds along the basin. Classic White City panorama, public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-present-3",
+    "need": "Jackson Park Olmsted lagoon and Wooded Island, archival or period photograph",
+    "shows": "1893 Official Views photograph looking across the Exposition lagoon to the Japanese Tea House (Ho-o-den) on the Wooded Island, the Olmsted-designed lagoon and island in Jackson Park. Public domain (C. D. Arnold). Directly depicts the Olmsted lagoon and Wooded Island.",
+    "ok": true
+  },
+  {
+    "id": "dd-present-4",
+    "need": "1950s-1960s Chicago contract-sale residential block on the South or West Side (archival news photo)",
+    "shows": "An aging South Side Chicago residential street (greystone and brick two-flats with columned porches, 3240 Rhodes Ave.), the kind of older Black-Belt housing commonly sold on contract. NARA/DOCUMERICA-era federal photo, CC BY 2.0 (IMLS Digital Collections). Genuinely depicts the subject. Note: original is only 600x416, just under the 700px target, but it is the strongest public-domain match for an aging South/West Side block.",
+    "ok": true
+  },
+  {
+    "id": "dd-present-5-SKIPPED",
+    "need": "Contract Buyers League protest, meeting, or picket in North Lawndale, late 1960s (archival news photo)",
+    "shows": "No public-domain or CC image found. Wikimedia Commons returns no Contract Buyers League protest, meeting, or 1968 North Lawndale picket photographs. Surviving images are 1968-69 press photos still under copyright. Skipped rather than fill with a wrong-subject still.",
+    "ok": false
+  },
+  {
+    "id": "dd-present-6-SKIPPED",
+    "need": "Portrait of Clyde Ross or Contract Buyers League leadership (archival)",
+    "shows": "No public-domain or CC portrait of Clyde Ross or Contract Buyers League leadership exists on Wikimedia Commons. Available portraits are recent copyrighted press/magazine photographs. Skipped.",
+    "ok": false
+  },
+  {
+    "id": "urban-renewal-3",
+    "need": "Mid-century University of Chicago urban renewal clearance in Hyde Park-Kenwood, 1950s (archival)",
+    "shows": "REUSE of existing still. University Apartments (the I. M. Pei mid-rise towers built on the 55th Street land cleared by Hyde Park-Kenwood urban renewal), CC BY-SA 4.0. No public-domain photograph of the clearance/demolition in progress exists on Commons (those negatives are held by the University of Chicago and Chicago History Museum under copyright); this image shows what the renewal produced on the cleared ground. Existing urban-renewal-1 (1928 Hyde Park aerial) is also available as the before-state.",
+    "ok": true
+  },
+  {
+    "id": "dd-present-7",
+    "need": "University of Chicago campus rising in the 1890s near the Midway Plaisance (public domain)",
+    "shows": "Period panoramic aerial postcard of the University of Chicago campus by George R. Lawrence (Geo. R. Lawrence Co.), public domain, with the Gothic quadrangles and the wide Midway Plaisance green strip clearly visible along the right. Directly depicts the early campus near the Midway.",
+    "ok": true
+  },
+  {
+    "id": "formation-1",
+    "need": "Portrait or period image of Paul Cornell, Hyde Park founder (public domain)",
+    "shows": "REUSE of existing still. Period portrait photograph of Paul Cornell (1822-1904), the Hyde Park founder, public domain (Commons File:Paul Cornell (1822-1904).jpg). Already verified and present at /media/hyde-park/img/formation-1.jpg.",
+    "ok": true
+  }
+]

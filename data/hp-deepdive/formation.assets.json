@@ -1,0 +1,104 @@
+[
+  {
+    "id": "formation-1",
+    "need": "Portrait of Paul Cornell (photograph or engraving), public domain, 19th century",
+    "shows": "Reused from overview. Portrait of Paul Cornell (1822-1904), the Hyde Park developer. Public domain on Wikimedia Commons.",
+    "ok": true
+  },
+  {
+    "id": "land-early-chicago",
+    "need": "1840s or early 1850s view of muddy Chicago along the Chicago River with planked sidewalks",
+    "shows": "Reused from overview. Engraving 'Chicago in 1833' from Colbert (1871), a low frontier-town view of early Chicago. Closest public-domain early-Chicago view available; stands in for the muddy 1840s boomtown. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "formation-4",
+    "need": "1840s or early 1850s view of muddy Chicago along the Chicago River (supporting still)",
+    "shows": "Reused from overview. 1857 lithograph bird's-eye view of Chicago (Library of Congress), shows the river-hemmed boomtown shortly after Cornell's arrival. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-1",
+    "need": "Period engraving of Hyde Park, London, for the borrowed-name visual",
+    "shows": "Illustrated London News 1856 wood engraving of Hyde Park, London (Fireworks Building for the Peace Celebration), with crowds, trees, and London buildings behind. Exactly the borrowed-name source park. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-5",
+    "need": "Early Hyde Park Chicago real estate advertisement or subdivision plat emphasizing lake views and large lots",
+    "shows": "1886 Blanchard's Guide Map of Chicago detail showing the gridded Hyde Park / Washington Park / Jackson Park area, named streets and lots, the Illinois Central line, and the lakefront parks. A period plat-style map of the subdivision area rather than an ad. (A clean public-domain Cornell-era lot advertisement did not surface on Commons; this period map is the best available stand-in.) Public domain.",
+    "ok": true
+  },
+  {
+    "id": "SKIP-real-estate-ad",
+    "need": "Early Hyde Park Chicago real estate advertisement (a true printed lot broadside / ad)",
+    "shows": "No genuinely public-domain Cornell-era Hyde Park lot advertisement or broadside could be sourced on Wikimedia Commons after many query phrasings. Need partially covered by dd-formation-5 (1886 South Side plat map) and formation-4 (1857 bird's-eye view). Skipped rather than accept a wrong-subject file.",
+    "ok": false
+  },
+  {
+    "id": "SKIP-ic-route-map",
+    "need": "Historic Illinois Central Railroad lakefront route map of the 1850s",
+    "shows": "No public-domain 1850s Illinois Central lakefront route map surfaced on Commons; queries returned an unrelated Mississippi River survey, a modern Champaign station photo, and a 1970 diesel locomotive, all deleted as wrong-subject. The railroad beat is instead covered by formation-ic-train (authentic 1893 IC train, LOC) and formation-6 (Great Central Station trainshed, 1856). Skipped the standalone route map.",
+    "ok": false
+  },
+  {
+    "id": "formation-ic-train",
+    "need": "Archival photograph or engraving of an early Illinois Central steam commuter train and/or the 53rd Street station",
+    "shows": "Reused from overview. Library of Congress photo of an Illinois Central locomotive (No. 1376) used on Chicago World's Fair trains, 1893. Authentic period IC steam equipment. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "formation-6",
+    "need": "Early Illinois Central depot / downtown terminus (supporting the 53rd St station and Great Central Depot)",
+    "shows": "Reused from overview. 1856 Leslie's Illustrated engraving of the Great Central Station trainshed in Chicago, the downtown IC terminus the commuter trains ran into. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "formation-5",
+    "need": "Archival engraving or photograph of the Hyde Park House hotel on the lakefront",
+    "shows": "Reused from overview. Archival photograph of the four-story Hyde Park House hotel with verandas, carriages out front. Verified to depict the hotel. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "formation-2",
+    "need": "Portrait of Mary Todd Lincoln from the 1860s",
+    "shows": "Reused from overview. Restored portrait photograph of Mary Todd Lincoln (Library of Congress, Shepherd, dated 1846). A bit earlier than the 1860s but a clean, recognizable portrait of the correct person. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-2",
+    "need": "Portrait of Robert Todd Lincoln (1860s)",
+    "shows": "Mathew Brady carte-de-visite of Robert Todd Lincoln, ca. 1865, young man with crossed arms. Correct person, correct era. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-3",
+    "need": "Portrait of the Prince of Wales / Albert Edward circa 1860",
+    "shows": "Harper's Weekly cover, October 6, 1860, engraved portrait of Albert Edward, Prince of Wales (future Edward VII), seated. Correct subject and exactly the 1860 North American tour year. Library of Congress, public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-9",
+    "need": "Period illustration or photograph evoking the 1879 Hyde Park House fire",
+    "shows": "Photograph of buildings destroyed in the 1871 Great Chicago Fire (gutted stone arcade ruins). Not the 1879 Hyde Park House fire specifically, but authentic period Chicago fire-destruction imagery; the voiceover explicitly invokes the great fire of 1871. Use labeled as 1871 fire ruins. Public domain.",
+    "ok": true
+  },
+  {
+    "id": "dd-formation-4",
+    "need": "Portrait of Frederick Law Olmsted and an Olmsted & Vaux South Parks plan drawing",
+    "shows": "Photographic portrait of Frederick Law Olmsted (James Notman / Century Magazine). Correct person. Public domain. The companion South Parks plan drawing is approximated by dd-formation-5 (1886 map of Washington and Jackson Parks).",
+    "ok": true
+  },
+  {
+    "id": "SKIP-annexation-newspaper",
+    "need": "1889 Chicago newspaper headline or article on the Hyde Park annexation",
+    "shows": "No public-domain 1889 Chicago newspaper page on the annexation could be sourced from Wikimedia Commons. Skipped; this lower-third is best produced as a typeset graphic from the documented June 29, 1889 facts rather than filled with a wrong-subject scan.",
+    "ok": false
+  },
+  {
+    "id": "dd-formation-7",
+    "need": "Historic map showing the boundaries of Hyde Park Township overlaid on the South Side",
+    "shows": "Map of the Hyde Park Township boundary outlined on a present-day South Side / lakefront street base (OpenStreetMap, CC BY-SA). Exactly the township-boundaries-overlaid-on-the-modern-South-Side visual the beat calls for. Freely licensed (CC BY-SA).",
+    "ok": true
+  }
+]

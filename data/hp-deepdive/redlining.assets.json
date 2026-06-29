@@ -1,0 +1,134 @@
+[
+  {
+    "id": null,
+    "need": "Cover and title page of Homer Hoyt's One Hundred Years of Land Values in Chicago, University of Chicago Press, 1933 (Internet Archive scan, public domain).",
+    "shows": "No public-domain cover or title-page scan of Hoyt's 1933 book is available on Wikimedia Commons. The Internet Archive holds the volume but its page scans are not mirrored to Commons under a usable license, and the fetcher is Commons-only. Needs a manual Internet Archive grab if required.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Page scan of Hoyt's table ranking races and nationalities by effect on land values, from the 1933 book.",
+    "shows": "Not found as a public-domain file on Commons. The specific ranking-table page is not on Commons; would have to be extracted from an Internet Archive scan of the book directly.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Portrait photograph of economist Homer Hoyt.",
+    "shows": "No public-domain portrait of Homer Hoyt found on Commons across several query phrasings (economist, land economist, real estate). Skipped.",
+    "ok": false
+  },
+  {
+    "id": "dd-redlining-4a",
+    "need": "Portraits of University of Chicago sociologists Robert E. Park and Ernest Burgess (Robert E. Park half).",
+    "shows": "Period black-and-white studio portrait of an elderly bespectacled white man in a suit, consistent with sociologist Robert E. Park. Commons file File:Robert E. Park.jpg, Public domain.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Portraits of University of Chicago sociologists Robert E. Park and Ernest Burgess (Ernest Burgess half).",
+    "shows": "No usable portrait of sociologist Ernest W. Burgess found on Commons. A file named Burgess.jpg turned out to be an RAF war-grave headstone for a different Burgess (deleted). Burgess portrait skipped.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Ernest Burgess concentric-zone diagram of Chicago (the classic urban-ecology rings).",
+    "shows": "Not found as a public-domain file on Commons. A file named Burgess Model L was a biplane aircraft, not the concentric-zone diagram (deleted). The canonical concentric-ring diagram redrawings on Commons are not under a clearly free license that the fetcher accepts. Skipped.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "1934 federal or newspaper announcement of the Federal Housing Administration / National Housing Act.",
+    "shows": "No public-domain FHA / National Housing Act 1934 announcement, letterhead, or poster found on Commons across several phrasings. Skipped.",
+    "ok": false
+  },
+  {
+    "id": null,
+    "need": "Scan of the FHA Underwriting Manual, 1938 edition, showing the incompatible racial groups and adverse influences passages.",
+    "shows": "No public-domain page scan of the 1938 FHA Underwriting Manual found on Commons. Excerpt scans circulate via Arlington County and the Bill of Rights Institute but are not on Commons under a fetchable license. Skipped.",
+    "ok": false
+  },
+  {
+    "id": "homer-hoyt",
+    "need": "HOLC residential security map of Chicago (Mapping Inequality / National Archives) showing A green through D red zones (existing asset reused).",
+    "shows": "HOLC Residential Security Map of Chicago, c.1940, with the A/B/C/D color grading. Existing credits.json asset (File:Holc-chicago.jpg, CC0). Note: this id is misnamed 'homer-hoyt' but is in fact the Chicago HOLC map.",
+    "ok": true
+  },
+  {
+    "id": "color-line-3",
+    "need": "HOLC residential security map of Chicago showing A green through D red zones (second existing asset, modern reconstruction).",
+    "shows": "Modern data reconstruction of HOLC neighborhood redlining grades for Chicago. Existing credits.json asset (File:Home Owners' Loan Corp. (HOLC) Neighborhood Redlining Grade in Chicago, Illinois.png, CC BY-SA 4.0). Reused.",
+    "ok": true
+  },
+  {
+    "id": "dd-redlining-8b",
+    "need": "A HOLC residential security map example for the national-spread montage (It Spread To A Nation beat).",
+    "shows": "Genuine 1938 HOLC Residential Security Map of Brooklyn, New York, on a Hagstrom street base, with First/Second/Third/Fourth-grade color legend (green/blue/yellow/red). Federal-government original; Mapping Inequality release is public domain. Serves as a non-Chicago HOLC example for the national-machine beat; NOT a Chicago map.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "A HOLC area-description sheet for a Chicago South Side district with the surveyor's notes.",
+    "shows": "No public-domain HOLC area-description sheet (the clearance/notes form) for a Chicago South Side district found on Commons. A residential-security map that surfaced was Denver, not a Chicago description sheet (deleted). Skipped.",
+    "ok": false
+  },
+  {
+    "id": "woodlawn-hist",
+    "need": "Photograph of a Chicago South Side / Black Belt street in the late 1930s (existing asset reused).",
+    "shows": "Russell Lee, FSA, 1941, Chicago South Side Black Belt scene. Existing credits.json asset (File:Chicagoblackbelt.jpg, Public domain, Library of Congress). Reused; also available as id color-line-5.",
+    "ok": true
+  },
+  {
+    "id": "black-belt-street",
+    "need": "Photograph of a Chicago South Side / Black Belt street in the late 1930s (second existing asset reused).",
+    "shows": "Russell Lee, FSA, 1941, Linotype operators of the Chicago Defender, South Side Chicago. Existing credits.json asset (Public domain, Library of Congress ppmsca.01614). Reused as period South Side imagery.",
+    "ok": true
+  },
+  {
+    "id": "dd-redlining-11",
+    "need": "Photograph of Carl A. Hansberry, Black Chicago real estate broker.",
+    "shows": "Studio portrait of Carl Augustus Hansberry, Chicago real estate broker and father of Lorraine Hansberry, dated 1940. NYPL Digital Collections, Public domain. Correctly depicts Carl Hansberry.",
+    "ok": true
+  },
+  {
+    "id": "color-line-4",
+    "need": "Photograph of the Hansberry three-flat at 6140 South Rhodes Avenue or the Washington Park subdivision (existing asset reused).",
+    "shows": "The Lorraine Hansberry House, the Chicago landmark three-flat tied to the Hansberry family. Existing credits.json asset (File:Lorraine Hansberry House.jpg, CC BY-SA 4.0). Reused for the Rhodes Avenue / Washington Park block.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Portrait of a young Lorraine Hansberry.",
+    "shows": "No public-domain portrait of Lorraine Hansberry found on Commons. Queries returned her New York apartment building, not a portrait (deleted). Most Hansberry portraits remain under copyright. Skipped.",
+    "ok": false
+  },
+  {
+    "id": "dd-redlining-14",
+    "need": "Exterior of the United States Supreme Court, circa 1940.",
+    "shows": "Front elevation of the United States Supreme Court Building at dusk, columns lit. Correct subject and building (completed 1935, unchanged exterior), but a modern color photograph, not a circa-1940 image. CC BY-SA 3.0, Joe Ravi. Usable as the SCOTUS exterior; note it is present-day, not period.",
+    "ok": true
+  },
+  {
+    "id": "dd-redlining-15",
+    "need": "Photograph of the Shelley house on Labadie Avenue, St. Louis.",
+    "shows": "Two-story brick rowhouse at 4600 Labadie Avenue, St. Louis, the Shelley House National Historic Landmark, with the bronze landmark plaque visible in the front yard. CC BY 3.0. Correct subject.",
+    "ok": true
+  },
+  {
+    "id": null,
+    "need": "Portraits of attorneys Thurgood Marshall and Loren Miller (Thurgood Marshall half).",
+    "shows": "No usable public-domain or CC portrait of Thurgood Marshall found on Commons across several phrasings. Most are rights-reserved. Skipped.",
+    "ok": false
+  },
+  {
+    "id": "dd-redlining-16b",
+    "need": "Portraits of attorneys Thurgood Marshall and Loren Miller (Loren Miller half).",
+    "shows": "Period photograph of Loren Miller, civil-rights attorney and later Los Angeles County Superior Court judge. CC BY 4.0, Los Angeles Times. Correct subject.",
+    "ok": true
+  },
+  {
+    "id": "racial-hierarchy-doc",
+    "need": "Modern scan of a Chicago property deed showing a racially restrictive covenant clause still printed in the text (existing asset reused as a covenant document).",
+    "shows": "Period 'Only Members of the Caucasian Race' restrictive-covenant advertisement (Kimball & Richards, Land Merchants). Existing credits.json asset (File:Exclusionary Covenants.jpg, Public domain). It is a genuine racially restrictive covenant document but is a Salt Lake City Highland Park promotion, NOT a Chicago deed scan. Reused as a stand-in for the covenant-clause visual; an actual Chicago deed scan was not found public-domain on Commons.",
+    "ok": true
+  }
+]

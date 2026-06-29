@@ -1107,10 +1107,11 @@ def credit_text(clipid):
 # timeline lives on every chapter divider's "you are here" ribbon, so the
 # standalone hero timeline is dropped from the open.
 scenes = []
-ttl = os.path.join(TMP, "scene_title.mp4"); animated_title(ttl, 4.4)
-scenes.append(ttl)
-mp = os.path.join(TMP, "scene_map.mp4"); map_scene(mp, 6.6)
-scenes.append(mp)
+if "--deepdive" not in sys.argv:
+    ttl = os.path.join(TMP, "scene_title.mp4"); animated_title(ttl, 4.4)
+    scenes.append(ttl)
+    mp = os.path.join(TMP, "scene_map.mp4"); map_scene(mp, 6.6)
+    scenes.append(mp)
 
 # which point on the timeline each chapter sits at, for the divider ribbon
 DIV_YEAR = {"land": 1833, "formation": 1853, "university": 1890, "worlds-fair": 1893,
@@ -1569,6 +1570,139 @@ if "--probe3d" in sys.argv:
         run(["-sseof", "-2", "-i", os.path.join(TMP, nm + ".mp4"), "-frames:v", "1",
              os.path.join("/tmp", nm + ".jpg")])
     print("PROBE3D done")
+    sys.exit(0)
+
+# ====================================================================
+#  DEEP-DIVE MODE: render one chapter's standalone ~12-minute film from
+#  data/hp-deepdive/<id>.sections.json, reusing the whole overview engine
+#  (build_story_chapter, dividers, grade, stats, graphics, sources/end).
+#  Each "section" of the deep dive is rendered exactly like an overview
+#  history chapter. VO is read from vo-<id>__<sectionId>.mp3 (generated
+#  separately by scripts/hp-vo-openai.mjs).
+# ====================================================================
+def deepdive_title(out, title, sub, dur=4.6):
+    fnt = serif(150) if len(title) <= 22 else (serif(120) if len(title) <= 30 else serif(92))
+    lines = wrap(ImageDraw.Draw(Image.new("RGB", (8, 8))), title, fnt, 1500)
+    lh = int(fnt.size * 1.06)
+    def fn(t):
+        b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2
+        e = ease_out(elem(t, 0.15, 0.7)); b = put_text(b, (cx, 300), "ROOTED FORWARD . A DETAILED FILM", sans(26, "light"), RUST, int(255 * e), int((1 - e) * 16), 10, "ma")
+        total = (len(lines) - 1) * lh; ty = 545 - total // 2
+        for j, ln in enumerate(lines):
+            e = ease_out(elem(t, 0.40 + j * 0.13, 0.85)); b = put_text(b, (cx, int(ty + j * lh)), ln, fnt, CREAM, int(255 * e), int((1 - e) * 30), 0, "mm")
+        e = ease_out(elem(t, 0.55 + len(lines) * 0.13, 0.7))
+        if e > 0:
+            dd = ImageDraw.Draw(b); w = int(130 * e); ry = int(ty + len(lines) * lh + 30); dd.rectangle([cx - w // 2, ry, cx + w // 2, ry + 3], fill=RUST + (255,))
+        if sub:
+            e = ease_out(elem(t, 0.9 + len(lines) * 0.13, 0.9)); b = put_text(b, (cx, int(ty + len(lines) * lh + 96)), sub.upper(), sans(23, "light"), CREAM, int(215 * e), int((1 - e) * 12), 6, "ma")
+        return b.convert("RGB")
+    seq_clip(fn, dur, out)
+
+def make_cues(vo, vodur):
+    """Approximate subtitle cues by splitting the narration into sentences and
+    distributing the measured VO duration by word count. Good enough to pin the
+    captions and to time each shot to its anchor phrase."""
+    import re as _re
+    sents = [s.strip() for s in _re.split(r'(?<=[.?!])\s+', vo.strip()) if s.strip()]
+    wc = [max(1, len(s.split())) for s in sents]
+    tot = sum(wc)
+    cues, acc = [], 0.0
+    for s, w in zip(sents, wc):
+        d = vodur * w / tot
+        cues.append({"startSec": round(acc, 2), "endSec": round(acc + d, 2), "text": s})
+        acc += d
+    return cues
+
+def render_deepdive(ddid):
+    global research, STORY, STATS, DIV_YEAR, scenes, CHAPTER_MARKS, PANO_SEGS
+    dd = json.load(open(os.path.join(ROOT, "data", "hp-deepdive", f"{ddid}.sections.json")))
+    secs = dd["sections"]
+    # merge the deep dive's stats / wall labels into the shared dicts
+    for k, v in dd.get("stats", {}).items():
+        STATS[k] = tuple(v)
+    for k, v in dd.get("annot", {}).items():
+        ANNOT[k] = tuple(v)
+    # register each section as a "chapter" the engine already knows how to build
+    for s in secs:
+        fsid = f"{ddid}__{s['id']}"
+        research[fsid] = {"script": {"voiceover": s["voiceover"]}, "era": s.get("era", ""), "working": s["title"]}
+        STORY[fsid] = {"shots": [tuple(x) for x in s["shots"]], "callouts": [tuple(c) for c in s.get("callouts", [])]}
+        DIV_YEAR[fsid] = s.get("year")
+    # validate every image ref resolves before spending render time
+    missing = []
+    for s in secs:
+        for kind, ref, _ in s["shots"]:
+            if kind == "img" and ref not in credits:
+                missing.append(ref)
+            if kind == "stat" and ref and ref not in STATS:
+                missing.append(f"stat:{ref}")
+            if kind == "clip" and ref not in CLIPS:
+                missing.append(f"clip:{ref}")
+            if kind == "graphic" and ref not in GRAPHICS:
+                missing.append(f"graphic:{ref}")
+    if missing:
+        print("DEEPDIVE MISSING REFS:", sorted(set(missing)))
+        sys.exit(2)
+
+    CHAPTER_MARKS = []
+    PANO_SEGS = []
+    tcard = os.path.join(TMP, f"dd_{ddid}_title.mp4")
+    deepdive_title(tcard, dd["title"], dd.get("subtitle", ""), 4.6)
+    scenes = [tcard]
+    for si, s in enumerate(secs, start=1):
+        fsid = f"{ddid}__{s['id']}"
+        dvc = os.path.join(TMP, f"dd_{fsid}_div.mp4")
+        animated_divider(dvc, si, s.get("era", ""), s["title"], 4.0, s.get("year"))
+        CHAPTER_MARKS.append({"id": s["id"], "title": s["title"], "era": s.get("era", ""), "year": s.get("year"), "sceneIdx": len(scenes)})
+        scenes.append(dvc)
+        vo_path = os.path.join(VO_DIR, f"vo-{fsid}.mp3")
+        vodur = probe(vo_path)
+        cues = make_cues(s["voiceover"], vodur)
+        shot_files, durs = build_story_chapter(fsid, {"assets": {}}, vodur, cues)
+        silent = os.path.join(TMP, f"dd_{fsid}_silent.mp4")
+        xfade_chain(shot_files, durs, silent)
+        chdur = probe(silent)
+        ass = os.path.join(TMP, f"dd_{fsid}.ass"); write_ass(cues, ass)
+        chap = os.path.join(TMP, f"dd_{fsid}_chap.mp4")
+        finish_chapter(silent, max(chdur, vodur + 0.5), vo_path, ass, chap)
+        scenes.append(chap)
+        print(f"  section {s['id']}: {len(shot_files)} shots, {chdur:.1f}s", flush=True)
+    scc = os.path.join(TMP, f"dd_{ddid}_src.mp4"); animated_sources(scc, 7.0); scenes.append(scc)
+    ecc = os.path.join(TMP, f"dd_{ddid}_end.mp4"); animated_end(ecc, 7.0); scenes.append(ecc)
+
+    listf = os.path.join(TMP, f"dd_{ddid}_scenes.txt")
+    with open(listf, "w") as f:
+        for s in scenes:
+            f.write(f"file '{s}'\n")
+    out = os.path.join(OUTDIR, f"deepdive-{ddid}.mp4")
+    run(["-f", "concat", "-safe", "0", "-i", listf, "-c:v", "libx264", "-preset", "slow",
+         "-crf", "18", "-pix_fmt", "yuv420p", "-x264-params", "ref=5:bframes=4",
+         "-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "192k", "-movflags", "+faststart", out])
+    print("WROTE", out, f"{probe(out):.1f}s")
+    run(["-ss", "2.4", "-i", out, "-frames:v", "1", "-q:v", "3", os.path.join(OUTDIR, f"deepdive-{ddid}-poster.jpg")])
+    cum, starts = 0.0, []
+    for s in scenes:
+        starts.append(cum); cum += probe(s)
+    chapters_out = [{"id": "opening", "title": dd["title"], "era": "Begin", "year": None, "startSec": 0.0}]
+    for m in CHAPTER_MARKS:
+        chapters_out.append({"id": m["id"], "title": m["title"], "era": m["era"], "year": m["year"], "startSec": round(starts[m["sceneIdx"]], 2)})
+    mark_scene = {m["id"]: m["sceneIdx"] for m in CHAPTER_MARKS}
+    panos_out = []
+    for ps in PANO_SEGS:
+        # ps cid is the full section id "<dd>__<sid>"; map back to the section id
+        sid = ps["cid"].split("__", 1)[-1]
+        if sid not in mark_scene:
+            continue
+        base = starts[mark_scene[sid] + 1]; s0 = base + ps["off"]
+        panos_out.append({"cid": sid, "startSec": round(s0, 2), "endSec": round(s0 + ps["dur"], 2)})
+    json.dump({"video": f"/media/hyde-park/video/deepdive-{ddid}.mp4",
+               "poster": f"/media/hyde-park/video/deepdive-{ddid}-poster.jpg",
+               "duration": round(cum, 2), "chapters": chapters_out, "panos": panos_out},
+              open(os.path.join(OUTDIR, f"deepdive-{ddid}.chapters.json"), "w"), indent=2)
+    print("WROTE", f"deepdive-{ddid}.chapters.json", len(chapters_out), "sections, total", round(cum, 1), "s")
+
+if "--deepdive" in sys.argv:
+    render_deepdive(sys.argv[sys.argv.index("--deepdive") + 1])
     sys.exit(0)
 
 order = ["intro","land","formation","university","worlds-fair","color-line","redlining","urban-renewal","present"]

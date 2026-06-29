@@ -1,0 +1,182 @@
+[
+  {
+    "id": "dd-worlds-fair-1",
+    "need": "Bird's-eye lithograph or aerial photograph of the full 1893 World's Columbian Exposition grounds in Jackson Park",
+    "shows": "Bird's-eye view looking northwest from the Liberal Arts Building, an Official Views plate of the 1893 Exposition grounds showing the lagoon, wooded island, the domed Administration Building, and the surrounding white halls along the lakefront",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-21",
+    "need": "Bird's-eye lithograph or aerial photograph of the full 1893 World's Columbian Exposition grounds in Jackson Park (period plan map alternate)",
+    "shows": "1893 Columbian Novelty Co. map of the Chicago World's Fair showing the fair plan along Lake Michigan (Manufactures and Liberal Arts building, lagoons, Midway) plus a second panel of the South Side street grid and lakefront rail lines; doubles as the Hyde Park / Jackson Park area map",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-2",
+    "need": "Opening day engraving or photograph, May 1 1893, platform and crowd at the Court of Honor",
+    "shows": "NOT SOURCED. No clean public-domain image of the May 1 1893 opening-day platform and crowd surfaced on Wikimedia Commons. The reused Court of Honor and Statue of the Republic stills (worlds-fair-1, dd-worlds-fair-8) stand in for the location.",
+    "ok": false
+  },
+  {
+    "id": "dd-worlds-fair-3",
+    "need": "Period image of the giant Allis steam engine in Machinery Hall",
+    "shows": "Palace of Mechanic Arts (Machinery Hall) exterior, Official Views plate, the building that housed the Allis steam engine. No clean public-domain photo of the engine itself was found; this exterior is the honest available stand-in for the hall.",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-4",
+    "need": "Portrait photograph of Daniel Burnham",
+    "shows": "Single-subject standing portrait of Daniel Burnham in a light suit, public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-5",
+    "need": "Portrait photograph of Frederick Law Olmsted",
+    "shows": "Classic bust portrait of Frederick Law Olmsted, bearded, in a fur-collared coat (US Capitol collection), public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-8",
+    "need": "Photograph of the Court of Honor with the Statue of the Republic and the Grand Basin",
+    "shows": "William Henry Jackson 1893 photograph of the Statue of the Republic standing in the Grand Basin in front of the peristyle, Court of Honor",
+    "ok": true
+  },
+  {
+    "id": "worlds-fair-1",
+    "need": "Photograph of the Court of Honor with the Statue of the Republic and the Grand Basin (existing overview still, reused)",
+    "shows": "The Court of Honor, Official Views of the World's Columbian Exposition plate 15; already in the overview credits.json",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-7",
+    "need": "Photograph of the Manufactures and Liberal Arts Building exterior",
+    "shows": "Manufactures and Liberal Arts Building exterior across the lagoon with a gondola, Official Views plate 1",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-6",
+    "need": "Administration Building by Hunt (beat visual)",
+    "shows": "Richard Morris Hunt's domed Administration Building, Official Views plate 23",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-9",
+    "need": "Sullivan's Transportation Building and Golden Door (beat visual)",
+    "shows": "The Golden Door of Louis Sullivan's Transportation Building reflected in the lagoon, Official Views plate 41",
+    "ok": true
+  },
+  {
+    "id": "white-city-night",
+    "need": "Night photograph or print of the electrically illuminated Court of Honor / Grand Basin",
+    "shows": "John Henry Twachtman 1893 painting of the Court of Honor, World's Columbian Exposition; public domain. Reused from overview as the night/illumination image since no clean public-domain night photograph of the lit basin surfaced.",
+    "ok": true
+  },
+  {
+    "id": "worlds-fair-7",
+    "need": "Photograph of crowds on the Midway Plaisance",
+    "shows": "The Midway Looking West, Official Views plate 97, with crowds along the strip; reused from overview credits.json",
+    "ok": true
+  },
+  {
+    "id": "midway-1893-crowd",
+    "need": "Photograph of crowds on the Midway Plaisance (alternate, with Ferris Wheel)",
+    "shows": "Rijksmuseum 1893 photograph of the Ferris Wheel rising over the Midway Plaisance crowd, CC0; reused from overview",
+    "ok": true
+  },
+  {
+    "id": "midway-village-hist",
+    "need": "Photograph of a Midway ethnographic village (Cairo street, Dahomey village, or similar), to be captioned honestly",
+    "shows": "Street of Cairo section of the Midway at the World's Columbian Exposition, Library of Congress 1893; reused from overview, to be captioned honestly",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-10",
+    "need": "Portrait photograph of Frederic Ward Putnam",
+    "shows": "Engraved portrait of Frederic Ward Putnam from Popular Science Monthly, the Harvard ethnologist who organized the Midway anthropology displays",
+    "ok": true
+  },
+  {
+    "id": "worlds-fair-6",
+    "need": "Photograph of the original 1893 Ferris Wheel rising over the Midway",
+    "shows": "The Ferris Wheel, Official Views plate 91; reused from overview credits.json",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-20",
+    "need": "Photograph of the fair entrance gates with crowds",
+    "shows": "NOT SOURCED as a dedicated entrance-gate-and-turnstile shot; no clean public-domain image surfaced. Covered instead by reused Midway crowd stills (worlds-fair-7, midway-1893-crowd) and the Court of Honor views.",
+    "ok": false
+  },
+  {
+    "id": "dd-worlds-fair-15",
+    "need": "Title page / cover scan of the pamphlet 'The Reason Why the Colored American Is Not in the World's Columbian Exposition' (Wikisource, Duke Library Exhibits)",
+    "shows": "NOT SOURCED. The pamphlet title page is on Wikisource and Duke Library Exhibits but no clean public-domain scan surfaced through the Wikimedia Commons fetcher. Two candidate fetches returned wrong-subject images and were deleted. Recommend a manual pull from Wikisource or Duke for this slot.",
+    "ok": false
+  },
+  {
+    "id": "dd-worlds-fair-15-preface",
+    "need": "Scan of the pamphlet preface page written by Ida B. Wells",
+    "shows": "NOT SOURCED. Same source gap as the pamphlet title page; available on Wikisource/Penn digital edition but not through the Commons fetcher. Best handled as a typeset pull-quote graphic in the renderer.",
+    "ok": false
+  },
+  {
+    "id": "dd-worlds-fair-12",
+    "need": "Portrait photograph of Ida B. Wells",
+    "shows": "Mary Garrity circa 1893 studio portrait of Ida B. Wells-Barnett (restoration crop), public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-13",
+    "need": "Portrait photograph of Frederick Douglass, elderly (early 1890s)",
+    "shows": "Frederick Douglass studio portrait (George Kendall Warren), seated, with white hair and beard, reading as the elder Douglass of the early-fair years; public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-16",
+    "need": "Photograph of the Haitian Pavilion at the 1893 fair",
+    "shows": "Library of Congress lithographic rendering of the Pavilion of the Republic of Haiti at the 1893 Chicago Exposition, captioned in French, the building where Douglass gave Wells a desk",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-14",
+    "need": "Portrait photograph of young Paul Laurence Dunbar",
+    "shows": "Portrait of poet Paul Laurence Dunbar, hand to chin, public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-19",
+    "need": "Archival image of the Memphis Free Speech masthead",
+    "shows": "NOT SOURCED. No clean public-domain scan of the Memphis Free Speech and Headlight masthead surfaced on Wikimedia Commons. The reused Ida B. Wells portrait (dd-worlds-fair-12) carries the Memphis-journalist beat instead.",
+    "ok": false
+  },
+  {
+    "id": "ic-embankment-hist",
+    "need": "Archival photograph or HAER drawing of the elevated Illinois Central Railroad embankment in Hyde Park",
+    "shows": "Jack Delano 1943 Library of Congress photograph of Illinois Central trains and the Chicago skyline along the raised lakefront line; reused from overview as the period IC embankment image",
+    "ok": true
+  },
+  {
+    "id": "formation-ic-train",
+    "need": "Archival photograph of the Illinois Central railroad used for World's Fair traffic (supporting the track-raising beat)",
+    "shows": "Library of Congress photo of Illinois Central R.R. locomotive No. 1376 used on Chicago World's Fair trains, 1893; reused from overview",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-17",
+    "need": "Photograph of the 1894 fire that destroyed much of the White City",
+    "shows": "NOT SOURCED for the specific January/July 1894 destruction of the White City. A candidate returned the July 1893 Cold Storage Building fire (a different event, and a watermarked stereo card) and was deleted. No clean public-domain image of the 1894 fire surfaced.",
+    "ok": false
+  },
+  {
+    "id": "dd-worlds-fair-18",
+    "need": "Archival portrait of Mayor Carter Harrison (assassinated two days before the fair closed)",
+    "shows": "Brady-Handy studio portrait of Carter Harrison Sr., the Chicago mayor shot in October 1893; verified Sr. (not the later Carter Harrison Jr.), public domain",
+    "ok": true
+  },
+  {
+    "id": "dd-worlds-fair-21-map",
+    "need": "Map of Hyde Park showing the area east of the Illinois Central tracks (Hyde Park East) along the lake",
+    "shows": "Same 1893 Columbian Novelty Co. fair map (dd-worlds-fair-21); its South Side panel shows the Hyde Park street grid, the lakefront, and the rail lines, suitable for annotating Hyde Park East between the tracks and the lake",
+    "ok": true
+  }
+]
