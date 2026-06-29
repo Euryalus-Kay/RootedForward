@@ -1515,7 +1515,7 @@ def build_story_chapter(cid, seq, vodur, cues):
                 p = os.path.join(TMP, f"{cid}_st{i}_an.png"); annotation_label(p, lab, sub)
                 a0 = min(1.3, dur * 0.16)
                 overlays.append({"png": p, "a": a0, "b": min(dur - 0.4, a0 + 4.4), "slide": 16})
-            if i == 0 and cid in DIV_YEAR:
+            if i == 0 and DIV_YEAR.get(cid) is not None:
                 p = os.path.join(TMP, f"{cid}_st0_rib.png"); ribbon_overlay(p, DIV_YEAR[cid])
                 overlays.insert(0, {"png": p, "a": 0.0, "b": 2.0})
             video_shot(os.path.join(ROOT, src), in0, dur, out,
@@ -1631,7 +1631,11 @@ def render_deepdive(ddid):
         fsid = f"{ddid}__{s['id']}"
         research[fsid] = {"script": {"voiceover": s["voiceover"]}, "era": s.get("era", ""), "working": s["title"]}
         STORY[fsid] = {"shots": [tuple(x) for x in s["shots"]], "callouts": [tuple(c) for c in s.get("callouts", [])]}
-        DIV_YEAR[fsid] = s.get("year")
+        # only register a timeline year when the section actually has one; a None
+        # here would make build_story_chapter's `cid in DIV_YEAR` true and crash
+        # ribbon_overlay(None)
+        if s.get("year") is not None:
+            DIV_YEAR[fsid] = s.get("year")
     # validate every image ref resolves before spending render time
     def _imgfile_ok(ref):
         fp = credits.get(ref, {}).get("file")
