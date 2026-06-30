@@ -98,6 +98,30 @@
    "60",
    "For a depot at 53rd Street and daily trains",
    "Hyde Park Historical Society"
+  ],
+  "galenaLead": [
+   "YEAR MINERS STRUCK ORE AT GALENA",
+   "1820s",
+   "Lead drew settlers onto Sauk and Meskwaki farmland and forced them west",
+   "Black Hawk War background"
+  ],
+  "removalAct": [
+   "INDIAN REMOVAL ACT SIGNED",
+   "1830",
+   "Andrew Jackson's law that made the removal of Native nations federal policy",
+   "Indian Removal Act, 1830"
+  ],
+  "shabbonaTrust": [
+   "SHABBONA RETURNED TO TRUST",
+   "2024",
+   "Prairie Band became the first federally recognized tribe to hold land in Illinois again",
+   "Prairie Band Potawatomi Nation, 2024"
+  ],
+  "sandbarSurvey": [
+   "RIVER MOUTH SURVEYED",
+   "1830",
+   "Thompson's plat of the sandbar that bent the river south before any harbor existed",
+   "Thompson plat of Chicago, 1830"
   ]
  },
  "annot": {
@@ -193,67 +217,62 @@
     [
      "clip",
      "lakefront-reveal",
-     "there was prairie and marsh sloping down to the lake"
+     "sloping down to the lake"
     ],
     [
-     "pano",
-     "pano-founding",
-     "Sand ridges with bur oaks"
+     "img",
+     "land-presettlement-oak",
+     "Sand ridges hold bur oaks"
     ],
     [
-     "clip",
-     "lakefront-reveal",
-     "A grassland that ran flat to the horizon"
+     "img",
+     "land-prairie-wildflower",
+     "Swales hold wildflowers"
     ],
     [
      "img",
      "land-potawatomi",
-     "This was Potawatomi land"
+     "The Potawatomi hold this land in common with the Ojibwe and the Odawa"
     ],
     [
      "img",
-     "dd-land-8",
-     "an alliance called the Council of Three Fires"
+     "land-threefires-wampum",
+     "an alliance they call the Council of Three Fires"
     ],
     [
      "img",
-     "land-potawatomi",
-     "They had lived, hunted, and traded along these shores"
+     "land-michilimackinac",
+     "near the straits of Michilimackinac"
     ],
     [
      "img",
+     "land-marquette-portrait",
+     "a Jesuit priest, Jacques Marquette"
+    ],
+    [
+     "img",
+     "land-jolliet-portrait",
+     "a French fur trader, Louis Jolliet"
+    ],
+    [
+     "map",
      "dd-land-6",
-     "the Chicago Portage"
-    ],
-    [
-     "img",
-     "dd-land-4",
-     "the traders called Mud Lake"
-    ],
-    [
-     "img",
-     "dd-land-6",
-     "you could float a canoe from the Great Lakes almost to the Mississippi"
+     "a low seven-mile stretch of wet ground"
     ],
     [
      "stat",
      "portage1673",
-     "In the summer of 1673"
+     "Then, in the summer of 1673"
     ],
     [
-     "img",
+     "map",
      "dd-land-4",
-     "a French fur trader, Louis Jolliet"
-    ],
-    [
-     "img",
-     "dd-land-8",
-     "the first Europeans known to stand on the site of Chicago"
+     "They become the first Europeans known to stand on the site of Chicago"
     ],
     [
      "stat",
      "canalLag",
-     "It took 175 years for anyone to dig it"
+     "Digging it would take 175 years"
     ]
    ],
    "callouts": [
@@ -279,32 +298,22 @@
     [
      "img",
      "dd-land-2",
-     "a Miami-Illinois word, shikaakwa, for the wild leek"
+     "a Miami-Illinois word for the wild leek"
     ],
     [
-     "img",
+     "map",
      "dd-land-8",
      "In 1687 one of La Salle's men wrote"
     ],
     [
      "img",
-     "dd-land-2",
-     "The city is named for an onion"
-    ],
-    [
-     "img",
-     "land-early-chicago",
+     "land-fort-dearborn-1812",
      "built Fort Dearborn at the mouth of the river"
     ],
     [
-     "img",
-     "dd-land-4",
+     "map",
+     "land-river-sandbar-survey",
      "A sandbar shaped like an elephant's trunk blocked the harbor"
-    ],
-    [
-     "img",
-     "land-potawatomi",
-     "destroyed in a battle with Potawatomi warriors"
     ],
     [
      "img",
@@ -313,11 +322,11 @@
     ],
     [
      "img",
-     "formation-4",
-     "For most of three decades that fort was nearly all that passed for a town"
+     "land-early-chicago",
+     "that lone fort was nearly all that passed for a town"
     ],
     [
-     "img",
+     "map",
      "dd-land-7",
      "signed the Treaty of St. Louis and ceded a strip about twenty miles wide"
     ],
@@ -328,8 +337,8 @@
     ],
     [
      "img",
-     "dd-land-11",
-     "They drew it as the Indian Boundary Line"
+     "land-sauk-trail-marker",
+     "A few Chicago streets still run that old diagonal today"
     ]
    ],
    "callouts": [
@@ -353,34 +362,29 @@
    "voiceover": "The land here emptied partly because of a war the Potawatomi never fought. It started with lead. After miners struck ore around Galena in the 1820s, they poured onto ground the Sauk and Meskwaki still farmed and shoved them west of the Mississippi. Black Hawk would not stay shoved. In the spring of 1832, the sixty-five-year-old Sauk leader led about a thousand Sauk, Meskwaki, and Kickapoo back across the river, most of them women and children, to plant corn on land a disputed 1804 treaty had signed away. Black Hawk and others called that treaty worthless. The men who signed it, he said, never had the right to sell. Illinois settlers raised a militia anyway. The Black Hawk War ran from April to August. It ended on the second of August at the mouth of the Bad Axe River in Wisconsin, where soldiers and militia opened fire on people waving a white flag, trying to surrender. A thousand had crossed in spring. Roughly a hundred and fifty lived to see the fall. The war was short, and the government read its lesson plainly. Native nations that stayed could be removed, and the Northwest thrown open to settlers. The Indian Removal Act of 1830 had already written that into law. Now the army had proven it could be done.",
    "shots": [
     [
-     "img",
-     "dd-land-1",
-     "a war the Potawatomi did not fight"
+     "stat",
+     "galenaLead",
+     "It started with lead"
+    ],
+    [
+     "stat",
+     "trailRemoved",
+     "shoved them west of the Mississippi"
     ],
     [
      "img",
-     "dd-land-9",
-     "After lead was found around Galena in the 1820s"
-    ],
-    [
-     "img",
      "dd-land-1",
-     "a sixty-five-year-old Sauk leader named Black Hawk"
+     "the sixty-five-year-old Sauk leader"
     ],
     [
      "stat",
      "blackhawkBand",
-     "led about a thousand Sauk, Meskwaki, and Kickapoo people"
+     "led about a thousand Sauk, Meskwaki, and Kickapoo"
     ],
     [
-     "img",
-     "dd-land-7",
-     "a disputed 1804 treaty had signed away"
-    ],
-    [
-     "img",
-     "dd-land-1",
-     "The Black Hawk War lasted from April to August"
+     "map",
+     "land-blackhawk-warmap",
+     "back across the river"
     ],
     [
      "img",
@@ -390,17 +394,12 @@
     [
      "stat",
      "badAxeSurvivors",
-     "roughly a hundred and fifty survived"
+     "Roughly a hundred and fifty lived to see the fall"
     ],
     [
      "img",
-     "dd-land-9",
-     "Native nations that stayed could be removed"
-    ],
-    [
-     "img",
-     "dd-land-7",
-     "The Indian Removal Act of 1830"
+     "land-removal-act-1830",
+     "The Indian Removal Act of 1830 had already written that into law"
     ]
    ],
    "callouts": [
@@ -420,18 +419,13 @@
    "shots": [
     [
      "img",
-     "land-treaty-chicago",
-     "The taking near Chicago came by treaty, not battle"
-    ],
-    [
-     "img",
-     "land-early-chicago",
-     "federal commissioners gathered thousands of Potawatomi"
+     "land-1833-council",
+     "federal commissioners called thousands of Potawatomi"
     ],
     [
      "img",
      "land-treaty-chicago",
-     "the men who finally put their marks on the paper"
+     "pressed them to sign"
     ],
     [
      "stat",
@@ -444,29 +438,29 @@
      "fourteen thousand dollars in cash a year for twenty years"
     ],
     [
-     "img",
-     "land-treaty-chicago",
+     "stat",
+     "schoolsPromised",
      "seventy thousand dollars for schools"
     ],
     [
      "img",
-     "formation-4",
-     "About eight hundred men began to dance through the streets of Chicago"
+     "land-agency-house",
+     "gathered at the agency house for their last annuity payment"
     ],
     [
      "stat",
      "lastDancers",
-     "tied hawk and eagle feathers nearly to the ground"
+     "About eight hundred men rose and danced through the streets of Chicago"
+    ],
+    [
+     "map",
+     "dd-land-6alt-northbranch",
+     "crossed the north branch, and were gone"
     ],
     [
      "img",
-     "dd-land-6",
-     "crossed the north branch and were gone"
-    ],
-    [
-     "img",
-     "dd-land-10",
-     "a kind of funeral for old associations and memories"
+     "land-caton-portrait",
+     "the last dance on their native soil"
     ]
    ],
    "callouts": [
@@ -492,16 +486,11 @@
     [
      "img",
      "dd-land-5",
-     "when militia forced about 859 Potawatomi out of Indiana"
-    ],
-    [
-     "stat",
-     "trailRemoved",
-     "marched them to eastern Kansas"
+     "militia forced about 859 Potawatomi out of Indiana"
     ],
     [
      "img",
-     "dd-land-10",
+     "land-trail-of-death-map",
      "The march began at Twin Lakes, near Plymouth, Indiana"
     ],
     [
@@ -510,24 +499,19 @@
      "The route ran roughly 660 miles over 61 days"
     ],
     [
-     "img",
-     "dd-land-5",
-     "most of them children, of typhoid and exhaustion"
-    ],
-    [
      "stat",
      "trailDeaths",
-     "More than forty people died on the way"
-    ],
-    [
-     "img",
-     "dd-land-10",
-     "Chief Leopold Pokagon kept about 280 people in southwestern Michigan"
+     "More than forty died on the way, most of them children"
     ],
     [
      "stat",
      "pokagonToday",
      "more than six thousand citizens today"
+    ],
+    [
+     "img",
+     "dd-land-10",
+     "Chief Leopold Pokagon kept about 280 people in southwestern Michigan"
     ],
     [
      "img",
@@ -542,11 +526,11 @@
     [
      "img",
      "formation-6",
-     "gave the river a real harbor"
+     "finally gave the river a real harbor"
     ],
     [
      "img",
-     "land-early-chicago",
+     "land-panic-1837",
      "the panic of 1837 wiped out the easy money"
     ]
    ],
@@ -576,34 +560,29 @@
      "The lakefront that became Hyde Park stayed empty a while longer"
     ],
     [
-     "img",
+     "map",
      "dd-land-11",
-     "near the Chicago-to-Detroit wagon road, around what is now 53rd Street and Lake Park"
+     "around what is now 53rd Street and Lake Park"
     ],
     [
-     "img",
+     "map",
      "dd-formation-7",
      "It followed the old Sauk Trail"
     ],
     [
-     "img",
-     "dd-land-11",
-     "kept it as a boarding house and farm"
-    ],
-    [
      "clip",
-     "lakefront-reveal",
-     "Sand ridges with bur oaks, swales of wildflowers, prairie to the horizon"
+     "cornell-stone",
+     "the only real structure for miles along that shore"
     ],
     [
      "img",
      "formation-1",
-     "Paul Cornell rode six miles south from the city most mornings"
+     "A young lawyer rode straight into that country in 1853"
     ],
     [
      "stat",
      "cornellBuy",
-     "he bought three hundred acres of lakefront that no one else wanted"
+     "He bought three hundred acres of lakefront that no one else wanted"
     ],
     [
      "img",
@@ -618,17 +597,17 @@
     [
      "stat",
      "icDeed",
-     "a depot at 53rd Street and a commitment of daily trains"
+     "a depot at 53rd Street and a promise of daily trains"
+    ],
+    [
+     "map",
+     "land-cook-county-1853-plat",
+     "Whoever held the paper would claim this ground"
     ],
     [
      "clip",
-     "ic-tracks",
-     "So was the deed, passed from a tavern keeper's widow to a man with a plan"
-    ],
-    [
-     "clip",
-     "old-new-pan",
-     "claimed, cleared, and remade, by whoever held the paper, again and again"
+     "greystone-rise",
+     "clear it, and remake it, again and again"
     ]
    ],
    "callouts": [

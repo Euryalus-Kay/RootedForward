@@ -1799,6 +1799,9 @@ def render_deepdive(ddid):
         STATS[k] = tuple(v)
     for k, v in dd.get("annot", {}).items():
         ANNOT[k] = tuple(v)
+    # the per-chapter animated map highlights (image id -> {kind, pts, label, focus})
+    MAP_HILITE.clear()
+    MAP_HILITE.update(dd.get("maps", {}))
     # register each section as a "chapter" the engine already knows how to build
     for s in secs:
         fsid = f"{ddid}__{s['id']}"
