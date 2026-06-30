@@ -37,6 +37,32 @@ def transcribe_words(mp3):
 def sentences(vo):
     return [s.strip() for s in re.split(r"(?<=[.?!])(?<![A-Z][.?!])(?<!St\.)(?<!Mr\.)(?<!Mt\.)(?<!No\.)(?<!Dr\.)(?<!Ms\.)(?<!Mrs\.)\s+", vo.strip()) if s.strip()]
 
+def chunk_sentence(s, maxw=15):
+    """Break a long sentence into <=~2-line caption chunks at clause boundaries
+    (commas, semicolons, colons), so a caption never overflows its scrim box."""
+    if len(s.split()) <= maxw:
+        return [s]
+    clauses = re.split(r"(?<=[,;:])\s+", s)
+    chunks, cur = [], ""
+    for cl in clauses:
+        cand = (cur + " " + cl).strip()
+        if cur and len(cand.split()) > maxw:
+            chunks.append(cur.strip()); cur = cl
+        else:
+            cur = cand
+    if cur.strip():
+        chunks.append(cur.strip())
+    # a single clause longer than the limit hard-wraps by word count as a last resort
+    out = []
+    for c in chunks:
+        cw = c.split()
+        if len(cw) <= maxw + 3:
+            out.append(c)
+        else:
+            for k in range(0, len(cw), maxw):
+                out.append(" ".join(cw[k:k + maxw]))
+    return out
+
 def align(sents, words, dur):
     W = len(words); wi = 0; cues = []
     for s in sents:
@@ -48,9 +74,15 @@ def align(sents, words, dur):
         for j in range(wi, min(W, wi + 8)):
             if norm(words[j].get("word", "")) == toks[0]:
                 start_wi = j; break
-        start = words[start_wi]["start"] if start_wi < W else (cues[-1]["startSec"] + 1.5 if cues else 0.0)
+        # split a long sentence into <=2-line chunks, each timed to its own first
+        # spoken word, so no caption card runs more than two lines off the box
+        ci = start_wi
+        for ch in chunk_sentence(s):
+            cw = len([norm(t) for t in ch.split() if norm(t)])
+            st = words[ci]["start"] if ci < W else (cues[-1]["startSec"] + 1.2 if cues else 0.0)
+            cues.append({"startSec": round(st, 2), "text": ch})
+            ci = min(W, ci + cw)
         wi = min(W, start_wi + len(toks))
-        cues.append({"startSec": round(start, 2), "text": s})
     for i in range(len(cues) - 1):
         cues[i]["endSec"] = cues[i + 1]["startSec"]
     if cues:

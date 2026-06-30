@@ -29,7 +29,7 @@ os.makedirs(OUTDIR, exist_ok=True)
 
 W, H, FPS = 1920, 1080, 24
 XFADE = 0.9            # crossfade between shots inside a chapter
-EDGE = 0.6            # fade from / to black at chapter and card edges
+EDGE = 0.4            # fade from / to black at chapter and card edges
 
 # ---- palette (site tokens) ----
 CREAM = (245, 240, 232)
@@ -462,26 +462,25 @@ def stat_scene(out, label, value, context, src="", dur=4.4, bg=FOREST):
     prefix, target, suffix, comma, count = _parse_stat(value)
     def fn(t):
         b = Image.new("RGBA", (W, H), bg + (255,)); cx = W // 2
-        e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, 360), label.upper(), sans(27, "semi"), RUST, int(255*e), int((1-e)*14), 11, "ma")
-        # no count-up: comma-group a plain magnitude, otherwise show the value
-        # exactly as authored (years, ranges, dates, prices stay literal)
-        shown = (prefix + _fmt_num(target, comma) + suffix) if count else value
-        # the hero number is extruded into depth for a dimensional read; it also
-        # eases up a few pixels as it lands, like settling onto the wall
+        dr = t * 3.0  # a slow continuous rise so the card is never a frozen frame
+        e = ease_out(elem(t, 0.1, 0.6)); b = put_text(b, (cx, int(360 - dr)), label.upper(), sans(27, "semi"), RUST, int(255*e), int((1-e)*14), 11, "ma")
+        # the hero number counts UP on entry for plain magnitudes (years, ranges,
+        # dates, prices stay literal so they never odometer through wrong values)
         e2 = ease_out(elem(t, 0.28, 0.5))
         if e2 > 0:
+            shown = (prefix + _fmt_num(int(round(target * e2)), comma) + suffix) if count else value
             rise = int((1 - e2) * 26)
-            lyr, ox, oy = extruded_text(shown, serif(186, "semi"), CREAM, depth=17, alpha=int(255*e2))
-            b.alpha_composite(lyr, (cx - lyr.width//2, 548 - lyr.height//2 + rise))
+            lyr, ox, oy = extruded_text(shown, serif(186, "semi"), CREAM, depth=17, alpha=255)
+            b.alpha_composite(lyr, (cx - lyr.width//2, int(548 - lyr.height//2 + rise - dr)))
         e3 = ease_out(elem(t, 0.7, 0.6))
         if e3 > 0:
-            d = ImageDraw.Draw(b); w = int(120*e3); d.rectangle([cx-w//2, 694, cx+w//2, 697], fill=RUST+(255,))
-        e4 = ease_out(elem(t, 0.9, 0.9)); b = put_text(b, (cx, 772), context, sans(31, "light"), (214,209,199), int(255*e4), int((1-e4)*12), 0, "mm")
+            d = ImageDraw.Draw(b); w = int(120*e3); ry = int(694 - dr); d.rectangle([cx-w//2, ry, cx+w//2, ry+3], fill=RUST+(255,))
+        e4 = ease_out(elem(t, 0.9, 0.9)); b = put_text(b, (cx, int(772 - dr)), context, sans(31, "light"), (214,209,199), int(255*e4), int((1-e4)*12), 0, "mm")
         # a quiet on-screen source line, so every number on the wall is attributable
         if src:
             e5 = ease_out(elem(t, 1.15, 0.9))
             if e5 > 0:
-                b = put_text(b, (cx, 840), "SOURCE  " + src.upper(), sans(16, "light"), (132, 150, 138), int(210*e5), 0, 6, "mm")
+                b = put_text(b, (cx, int(840 - dr)), "SOURCE  " + src.upper(), sans(16, "light"), (132, 150, 138), int(210*e5), 0, 6, "mm")
         return b.convert("RGB")
     seq_clip(fn, dur, out)
 
@@ -733,16 +732,19 @@ def animated_divider(out, n, era, title, dur=4.2, tl_year=None):
     fnt = serif(92)
     lines = wrap(ImageDraw.Draw(Image.new("RGB", (8, 8))), title, fnt, 1360)
     def fn(t):
-        b = Image.new("RGBA", (W, H), CREAM + (255,)); cx = W // 2
+        # dark "projection room" card, NOT cream: a near-white divider after the
+        # cross-fade dip read as a black-to-white strobe at every chapter break
+        b = Image.new("RGBA", (W, H), (17, 21, 18) + (255,)); cx = W // 2
+        dr = t * 4.0  # a slow continuous drift so the card never sits frozen
         kicker = "INTRODUCTION" if n <= 0 else f"CHAPTER {n:02d}"
-        e = ease_out(elem(t, 0.10, 0.6)); b = put_text(b, (cx, 330), kicker, sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 13, "ma")
-        e = ease_out(elem(t, 0.25, 0.6)); b = put_text(b, (cx, 384), era.upper(), sans(23, "light"), WARM, int(255*e), int((1-e)*10), 9, "ma")
-        lh = 110; total = (len(lines)-1)*lh; ty = 560 - total/2
+        e = ease_out(elem(t, 0.10, 0.6)); b = put_text(b, (cx, int(330 - dr)), kicker, sans(26, "semi"), RUST, int(255*e), int((1-e)*12), 13, "ma")
+        e = ease_out(elem(t, 0.25, 0.6)); b = put_text(b, (cx, int(384 - dr)), era.upper(), sans(23, "light"), (192, 182, 167), int(255*e), int((1-e)*10), 9, "ma")
+        lh = 110; total = (len(lines)-1)*lh; ty = 560 - total/2 - dr
         for j, ln in enumerate(lines):
-            e = ease_out(elem(t, 0.45 + j*0.13, 0.7)); b = put_text(b, (cx, int(ty + j*lh)), ln, fnt, INK, int(255*e), int((1-e)*22), 0, "mm")
+            e = ease_out(elem(t, 0.45 + j*0.13, 0.7)); b = put_text(b, (cx, int(ty + j*lh)), ln, fnt, CREAM, int(255*e), int((1-e)*22), 0, "mm")
         e = ease_out(elem(t, 0.45 + len(lines)*0.13, 0.6))
         if e > 0:
-            d = ImageDraw.Draw(b); w = int(110*e); ry = int(560 + total/2 + 70); d.rectangle([cx-w//2, ry, cx+w//2, ry+3], fill=RUST+(255,))
+            d = ImageDraw.Draw(b); w = int(110*e); ry = int(560 + total/2 + 70 - dr); d.rectangle([cx-w//2, ry, cx+w//2, ry+3], fill=RUST+(255,))
         b = _divider_ribbon(b, t, tl_year)
         return b.convert("RGB")
     seq_clip(fn, dur, out)
@@ -767,15 +769,16 @@ def animated_sources(out, dur=7.0):
 def animated_end(out, dur=8.5):
     def fn(t):
         b = Image.new("RGBA", (W, H), FOREST + (255,)); cx = W // 2
-        e = ease_out(elem(t, 0.2, 0.9)); b = put_text(b, (cx, 372), "Rooted Forward", serif(108), CREAM, int(255*e), int((1-e)*26), 0, "mm")
+        dr = t * 2.4  # a slow continuous rise so the closing card is never frozen
+        e = ease_out(elem(t, 0.2, 0.9)); b = put_text(b, (cx, int(372 - dr)), "Rooted Forward", serif(108), CREAM, int(255*e), int((1-e)*26), 0, "mm")
         e = ease_out(elem(t, 0.6, 0.6))
         if e > 0:
-            d = ImageDraw.Draw(b); w = int(120*e); d.rectangle([cx-w//2, 466, cx+w//2, 469], fill=RUST+(255,))
-        e = ease_out(elem(t, 0.85, 0.9)); b = put_text(b, (cx, 556), "The ground keeps moving.", serif(54, "italic"), CREAM, int(255*e), int((1-e)*16), 0, "mm")
+            d = ImageDraw.Draw(b); w = int(120*e); ry = int(466 - dr); d.rectangle([cx-w//2, ry, cx+w//2, ry+3], fill=RUST+(255,))
+        e = ease_out(elem(t, 0.85, 0.9)); b = put_text(b, (cx, int(556 - dr)), "The ground keeps moving.", serif(54, "italic"), CREAM, int(255*e), int((1-e)*16), 0, "mm")
         # the open question resolves into a live call, not a full stop
-        e = ease_out(elem(t, 1.25, 0.9)); b = put_text(b, (cx, 678), "Who gets to stay is still being decided.", serif(34), CREAM2, int(220*e), int((1-e)*12), 0, "mm")
-        e = ease_out(elem(t, 1.55, 0.8)); b = put_text(b, (cx, 742), "Follow the work at rooted-forward.org", sans(25, "semi"), RUST, int(255*e), 0, 1, "mm")
-        e = ease_out(elem(t, 1.95, 0.9)); b = put_text(b, (cx, 838), "HYDE PARK . CHICAGO", sans(22, "light"), WARM, int(255*e), 0, 8, "ma")
+        e = ease_out(elem(t, 1.25, 0.9)); b = put_text(b, (cx, int(678 - dr)), "Who gets to stay is still being decided.", serif(34), CREAM2, int(220*e), int((1-e)*12), 0, "mm")
+        e = ease_out(elem(t, 1.55, 0.8)); b = put_text(b, (cx, int(742 - dr)), "Follow the work at rooted-forward.org", sans(25, "semi"), RUST, int(255*e), 0, 1, "mm")
+        e = ease_out(elem(t, 1.95, 0.9)); b = put_text(b, (cx, int(838 - dr)), "HYDE PARK . CHICAGO", sans(22, "light"), WARM, int(255*e), 0, 8, "ma")
         return b.convert("RGB")
     seq_clip(fn, dur, out)
 
@@ -1620,7 +1623,7 @@ def build_story_chapter(cid, seq, vodur, cues):
     # gracefully under a slow push. sum(durs) is preserved, so the chapter still
     # covers the full voiceover and the crossfade offsets stay aligned (the chart
     # clip is rendered at its capped dur, matching what the chain expects).
-    CAP = {"stat": 9.0, "chart": 9.0, "graphic": 10.0}
+    CAP = {"stat": 5.6, "chart": 9.0, "graphic": 10.0}
     IMG_CAP = 11.5
     saved = 0.0
     for i in range(n):
@@ -1649,19 +1652,24 @@ def build_story_chapter(cid, seq, vodur, cues):
                 durs[k] += per
         else:
             durs[-1] += saved
-    # split any over-long single still into a wide shot + a punch-in cut, so no
-    # image sits static past ~15s (the panel's "refined slideshow" complaint).
-    # No new image needed: the framing visibly reframes. Maps self-animate, skip.
-    SPLIT = 15.5
+    # split any over-long single still into multiple framings (wide, then
+    # progressively tighter punch-ins), so no image sits static past ~13s (the
+    # panel's "refined slideshow" / dead-hold complaint). No new image needed:
+    # the framing visibly reframes each cut. Maps self-animate, so they're skipped.
+    PFRAC = [72, 58, 47]  # each extra piece crops tighter, so cuts never look identical
     k = 0
     while k < len(shots):
-        if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > SPLIT:
-            d = durs[k]; d1 = round(d * 0.54, 3)
-            shots.insert(k + 1, [shots[k][0], shots[k][1] + "@punch", shots[k][2]])
-            durs.insert(k + 1, round(d - d1, 3))
-            durs[k] = d1
-            T.insert(k + 1, T[k] + d1)
-            k += 2
+        if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > 13.5:
+            base = list(shots[k]); d = durs[k]
+            npc = min(4, max(2, int(math.ceil(d / 12.5))))
+            piece = d / npc; t0 = T[k]
+            durs[k] = round(piece, 3)
+            for j in range(1, npc):
+                fr = PFRAC[min(j - 1, len(PFRAC) - 1)]
+                shots.insert(k + j, [base[0], f"{base[1]}@p{fr}", base[2]])
+                durs.insert(k + j, round(piece, 3))
+                T.insert(k + j, t0 + piece * j)
+            k += npc
         else:
             k += 1
     n = len(shots)
@@ -1739,8 +1747,10 @@ def build_story_chapter(cid, seq, vodur, cues):
             PANO_SEGS.append({"cid": cid, "off": sum(durs[:i]) - i * XFADE, "dur": dur})
             files.append(out)
             continue
-        is_punch = ref.endswith("@punch")
-        base = ref[:-6] if is_punch else ref
+        if "@p" in ref:
+            base, _frc = ref.split("@p"); is_punch = True; pfrac = max(0.40, int(_frc) / 100.0)
+        else:
+            base, is_punch, pfrac = ref, False, 0.66
         asset = seq["assets"].get(base)
         url = asset["url"] if asset else (credits[base]["file"] if base in credits else None)
         if not url:
@@ -1748,7 +1758,7 @@ def build_story_chapter(cid, seq, vodur, cues):
         src_img = local(url)
         if is_punch:  # render a center-cropped (zoomed) copy: a visible reframe cut
             cp = os.path.join(TMP, f"{cid}_st{i}_punch.jpg")
-            _center_crop(src_img, cp, 0.66)
+            _center_crop(src_img, cp, pfrac)
             src_img = cp
         overlays = []
         ct = credit_text(base)
