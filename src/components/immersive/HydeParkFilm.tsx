@@ -902,7 +902,7 @@ export default function HydeParkFilm({
                 <span className="h-5 w-5 shrink-0 bg-[#C45A33]" aria-hidden />
                 <p className="truncate font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C45A33]">
                   {popoutDive
-                    ? `The detailed film · ${popDive?.runtime ?? ""}`
+                    ? "The detailed film"
                     : `Look around · ${REVEAL_SPOTS[reveal].location}`}
                 </p>
               </div>
@@ -931,7 +931,6 @@ export default function HydeParkFilm({
                     src={popVideo}
                     poster={ddPoster(popoutDive)}
                     controls
-                    controlsList="nofullscreen"
                     autoPlay
                     playsInline
                   />
