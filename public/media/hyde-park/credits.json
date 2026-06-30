@@ -1505,18 +1505,6 @@
     "date": "1869date QS:P571,+1869-00-00T00:00:00Z/9",
     "bytes": 1151523
   },
-  "land-threefires-wampum": {
-    "id": "land-threefires-wampum",
-    "query": "wampum belt",
-    "file": "/media/hyde-park/img/land-threefires-wampum.jpg",
-    "commonsTitle": "File:Wampum at Seneca Iroquois National Museum.jpg",
-    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Wampum_at_Seneca_Iroquois_National_Museum.jpg",
-    "license": "CC0",
-    "artist": "Nosferattus",
-    "credit": "Own work",
-    "date": "2022-03-28 13:49:16",
-    "bytes": 696657
-  },
   "land-river-sandbar-survey": {
     "id": "land-river-sandbar-survey",
     "query": "Map of Chicago 1830 Thompson plat",

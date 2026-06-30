@@ -1589,8 +1589,17 @@ def anchor_time(cues, kw, vo, vodur, fallback=None):
         return (idx / len(vo)) * vodur
     return fallback
 
+def _center_crop(src, out, frac=0.66):
+    """Save a centered crop of `src` (keeping `frac` of each side) so a re-render
+    reads as a punch-in on the same still. Used to break over-long static holds."""
+    im = Image.open(src).convert("RGB")
+    w, h = im.size
+    cw, ch = int(w * frac), int(h * frac)
+    x, y = (w - cw) // 2, int((h - ch) * 0.42)  # bias slightly up toward faces
+    im.crop((x, y, x + cw, y + ch)).save(out, quality=92)
+
 def build_story_chapter(cid, seq, vodur, cues):
-    shots = STORY[cid]["shots"]
+    shots = [list(s) for s in STORY[cid]["shots"]]  # copy: we may split shots below
     cos = STORY[cid].get("callouts", [])
     vo = research.get(cid, {}).get("script", {}).get("voiceover", "") or ""
     n = len(shots)
@@ -1640,6 +1649,22 @@ def build_story_chapter(cid, seq, vodur, cues):
                 durs[k] += per
         else:
             durs[-1] += saved
+    # split any over-long single still into a wide shot + a punch-in cut, so no
+    # image sits static past ~15s (the panel's "refined slideshow" complaint).
+    # No new image needed: the framing visibly reframes. Maps self-animate, skip.
+    SPLIT = 15.5
+    k = 0
+    while k < len(shots):
+        if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > SPLIT:
+            d = durs[k]; d1 = round(d * 0.54, 3)
+            shots.insert(k + 1, [shots[k][0], shots[k][1] + "@punch", shots[k][2]])
+            durs.insert(k + 1, round(d - d1, 3))
+            durs[k] = d1
+            T.insert(k + 1, T[k] + d1)
+            k += 2
+        else:
+            k += 1
+    n = len(shots)
     # assign each callout to the shot that is on screen when it is said
     assign = {}
     for lab, val, anc in cos:
@@ -1714,13 +1739,20 @@ def build_story_chapter(cid, seq, vodur, cues):
             PANO_SEGS.append({"cid": cid, "off": sum(durs[:i]) - i * XFADE, "dur": dur})
             files.append(out)
             continue
-        asset = seq["assets"].get(ref)
-        url = asset["url"] if asset else (credits[ref]["file"] if ref in credits else None)
+        is_punch = ref.endswith("@punch")
+        base = ref[:-6] if is_punch else ref
+        asset = seq["assets"].get(base)
+        url = asset["url"] if asset else (credits[base]["file"] if base in credits else None)
         if not url:
             continue
+        src_img = local(url)
+        if is_punch:  # render a center-cropped (zoomed) copy: a visible reframe cut
+            cp = os.path.join(TMP, f"{cid}_st{i}_punch.jpg")
+            _center_crop(src_img, cp, 0.66)
+            src_img = cp
         overlays = []
-        ct = credit_text(ref)
-        if ct:
+        ct = credit_text(base)
+        if ct and not is_punch:  # the wide half already carried the credit + label
             p = os.path.join(TMP, f"{cid}_st{i}_cr.png"); credit_overlay(p, ct)
             overlays.append({"png": p, "a": 0.7, "b": min(dur - 0.5, 4.6)})
         for j, (lab, val, lt) in enumerate(assign.get(i, [])):
@@ -1732,8 +1764,8 @@ def build_story_chapter(cid, seq, vodur, cues):
             if b > a + 0.6:
                 overlays.append({"png": p, "a": a, "b": b, "slide": 18})
         # the curator's wall label, emerging once the still has settled
-        if ref in ANNOT and dur > 3.0:
-            p = os.path.join(TMP, f"{cid}_st{i}_an.png"); annotation_label(p, *ANNOT[ref])
+        if base in ANNOT and not is_punch and dur > 3.0:
+            p = os.path.join(TMP, f"{cid}_st{i}_an.png"); annotation_label(p, *ANNOT[base])
             a0 = min(1.3, dur * 0.16)
             overlays.append({"png": p, "a": a0, "b": min(dur - 0.4, a0 + 4.4), "slide": 16})
         # the timeline spine carries across the dip: the chapter's first shot
@@ -1743,11 +1775,12 @@ def build_story_chapter(cid, seq, vodur, cues):
             overlays.insert(0, {"png": p, "a": 0.0, "b": 2.0})
         # a map shot draws its specific place/route on top, animated, instead of
         # holding a dead still; it carries its own label + credit
-        if ref in MAP_HILITE:
-            map_highlight_clip(local(url), dur, out, MAP_HILITE[ref], credit_text(ref))
+        if base in MAP_HILITE:
+            map_highlight_clip(local(url), dur, out, MAP_HILITE[base], credit_text(base))
             files.append(out)
             continue
-        render_shot(local(url), dur, chapter_image_grade(ref), out, kb_idx=i, overlays=overlays)
+        render_shot(src_img, dur, chapter_image_grade(base), out,
+                    kb_idx=(i + 5 if is_punch else i), overlays=overlays)
         files.append(out)
     return files, durs
 
