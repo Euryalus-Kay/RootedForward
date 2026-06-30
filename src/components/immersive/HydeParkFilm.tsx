@@ -180,6 +180,9 @@ export default function HydeParkFilm({
   const [open3d, setOpen3d] = useState(false);
   // which chapter's deep-dive film is open in the pop-out vitrine (null = none)
   const [popoutDive, setPopoutDive] = useState<string | null>(null);
+  // a chapter whose "go deeper" nudge popup is showing. Surfaced when a moment on
+  // the timeline is pressed, so the deep-dive is impossible to miss (null = none)
+  const [nudge, setNudge] = useState<string | null>(null);
   // drives the vitrine rise-and-settle entrance
   const [mounted, setMounted] = useState(false);
   // true only while the wrapper itself is the native fullscreen element, so the
@@ -263,6 +266,25 @@ export default function HydeParkFilm({
     v.currentTime = Math.max(0, sec + 0.04);
     if (play) v.play().catch(() => {});
   }, []);
+
+  // pressing a moment on the timeline jumps the overview there AND surfaces the
+  // "go deeper" nudge for that chapter, so its in-depth film gets noticed
+  const pressMoment = useCallback(
+    (idx: number, id: string, startSec: number) => {
+      setActive(idx);
+      setPopoutDive(null);
+      seek(startSec);
+      setNudge(DEEP_DIVES[id] ? id : null);
+    },
+    [seek]
+  );
+
+  // the nudge auto-dismisses so it never lingers
+  useEffect(() => {
+    if (!nudge) return;
+    const id = setTimeout(() => setNudge(null), 8000);
+    return () => clearTimeout(id);
+  }, [nudge]);
 
   const onTime = () => {
     const v = videoRef.current;
@@ -566,9 +588,7 @@ export default function HydeParkFilm({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActive(c.idx);
-                  setPopoutDive(null);
-                  seek(c.startSec);
+                  pressMoment(c.idx, c.id, c.startSec);
                 }}
                 className="group absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
                 style={{ left: `${c.leftPct}%` }}
@@ -625,11 +645,7 @@ export default function HydeParkFilm({
               <li key={c.id}>
                 <button
                   type="button"
-                  onClick={() => {
-                    setActive(c.idx);
-                    setPopoutDive(null);
-                    seek(c.startSec);
-                  }}
+                  onClick={() => pressMoment(c.idx, c.id, c.startSec)}
                   className={`flex w-full items-center gap-4 border-l-[3px] px-4 py-4 text-left transition-colors active:bg-[#1c1d16] ${
                     isActive
                       ? "border-[#C45A33] bg-[#C45A33]/[0.10]"
@@ -685,25 +701,14 @@ export default function HydeParkFilm({
           return (
             <div ref={diveRef} className="mt-12 scroll-mt-6">
               <div className="overflow-hidden rounded-[3px] border border-[#3A2018] bg-gradient-to-b from-[#17160F] to-[#100F0A] shadow-[0_24px_70px_-30px_rgba(0,0,0,0.8)]">
-                {/* header: what this is, stated plainly against the timeline */}
-                <div className="border-b border-[#26231E] px-5 py-4 md:px-7">
-                  <div className="flex flex-wrap items-center justify-between gap-y-2">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#C45A33] pl-0.5 text-[11px] leading-none text-[#0E0F0D]">
-                        &#9658;
-                      </span>
-                      <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
-                        Go deeper &middot; the full film on this chapter
-                      </p>
-                    </div>
-                    <p className="font-body text-xs uppercase tracking-[0.2em] text-[#A89F90]">
-                      A separate film &middot; {dive.runtime}
-                    </p>
-                  </div>
-                  <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-[#C7BFB0]">
-                    The timeline above scrubs the twelve minute overview. This is a
-                    separate, longer film on {ch.year ? `${ch.year}, ` : ""}this one
-                    chapter, and it opens in the theater.
+                {/* header: just "go deeper" now; the popup that springs up on a
+                    timeline press carries the "separate film" message */}
+                <div className="flex items-center gap-3 border-b border-[#26231E] px-5 py-4 md:px-7">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#C45A33] pl-0.5 text-[11px] leading-none text-[#0E0F0D]">
+                    &#9658;
+                  </span>
+                  <p className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-[#C45A33]">
+                    Go deeper
                   </p>
                 </div>
 
@@ -787,6 +792,94 @@ export default function HydeParkFilm({
 
       {/* step back up into the cream lobby */}
       <div aria-hidden className="h-16 w-full bg-gradient-to-b from-[#0E0F0D] to-cream" />
+
+      {/* the "go deeper" nudge: springs up when a moment on the timeline is
+          pressed, so the in-depth film for that chapter is impossible to miss.
+          Non-blocking and auto-dismissing. */}
+      {nudge && DEEP_DIVES[nudge] && (() => {
+        const nd = DEEP_DIVES[nudge];
+        if (!nd) return null;
+        const nch = chapters.find((c) => c.id === nudge);
+        const np = ddPoster(nudge);
+        const watch = () => {
+          videoRef.current?.pause();
+          setPopoutDive(nudge);
+          setNudge(null);
+        };
+        return (
+          <div className="pointer-events-none fixed inset-x-0 bottom-5 z-[80] flex justify-center px-4">
+            <div
+              role="dialog"
+              aria-label="Go deeper into this chapter"
+              className="pointer-events-auto relative flex w-full max-w-md animate-[nudgeRise_360ms_cubic-bezier(0.16,1,0.3,1)] items-stretch gap-3 overflow-hidden rounded-[4px] border border-[#C45A33]/45 bg-[#15130E]/95 p-2.5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_44px_rgba(196,90,51,0.18)] backdrop-blur-md"
+            >
+              {/* poster */}
+              <button
+                type="button"
+                onClick={watch}
+                aria-label={`Play the full film on ${nd.title}`}
+                className="group relative hidden w-28 shrink-0 overflow-hidden rounded-[2px] sm:block"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={np ?? `/media/hyde-park/video/thumbs/${nudge}.jpg`}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.opacity = "0";
+                  }}
+                />
+                <span className="absolute inset-0 flex items-center justify-center bg-[#0A0B09]/45 transition-colors group-hover:bg-[#0A0B09]/25">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#C45A33] pl-0.5 text-sm leading-none text-[#0E0F0D] shadow-[0_0_18px_rgba(196,90,51,0.6)] transition-transform group-hover:scale-105">
+                    &#9658;
+                  </span>
+                </span>
+              </button>
+
+              {/* copy + actions */}
+              <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5 pr-5">
+                <div>
+                  <p className="font-body text-[10px] font-bold uppercase tracking-[0.28em] text-[#C45A33]">
+                    Go deeper{nch?.year ? ` · ${nch.year}` : ""}
+                  </p>
+                  <p className="mt-1 truncate font-display text-base leading-tight text-[#E8E2D6]">
+                    {nd.title}
+                  </p>
+                  <p className="font-body text-[11px] leading-snug text-[#B89A7E]">
+                    Its own in-depth film, not the overview.
+                  </p>
+                </div>
+                <div className="mt-2.5 flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={watch}
+                    className="inline-flex items-center gap-1.5 rounded-[2px] bg-[#C45A33] px-3 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.16em] text-[#0E0F0D] transition-colors hover:bg-[#d56a42]"
+                  >
+                    <span aria-hidden="true">&#9658;</span> Watch the full film
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setNudge(null)}
+                    className="font-body text-[11px] uppercase tracking-[0.16em] text-[#8A8276] transition-colors hover:text-[#E8E2D6]"
+                  >
+                    Not now
+                  </button>
+                </div>
+              </div>
+
+              {/* close */}
+              <button
+                type="button"
+                onClick={() => setNudge(null)}
+                aria-label="Dismiss"
+                className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full text-base leading-none text-[#8A8276] transition-colors hover:text-[#E8E2D6]"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ONE shared vitrine: the 360 look-around (outside fullscreen) and every
           deep-dive film rise into it over the dimmed page */}

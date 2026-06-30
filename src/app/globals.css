@@ -4,6 +4,12 @@
 /* projection-room: lets the film wrapper go edge-to-edge cinema in native fullscreen */
 @custom-variant fullscreen (&:fullscreen);
 
+/* the "go deeper" nudge that springs up when a timeline moment is pressed */
+@keyframes nudgeRise {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
 @theme inline {
   --color-cream: #F5F0E8;
   --color-cream-dark: #EDE6D8;
