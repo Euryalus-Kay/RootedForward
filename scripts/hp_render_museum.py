@@ -15,9 +15,9 @@
 # Output: public/media/hyde-park/video/hyde-park-museum.mp4
 # ------------------------------------------------------------------
 
-import json, os, re, subprocess, sys, shutil
+import json, os, re, subprocess, sys, shutil, math
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 ROOT = os.getcwd()
 TMP = "/tmp/hpmuseum"
@@ -234,26 +234,39 @@ def credit_overlay(path, text):
 
 def annotation_label(path, label, sub):
     """A curator's wall label in the upper-left safe zone: a serif name over a
-    tracked sans line, joined by the fixed rust tick. A soft gradient scrim
-    behind it keeps the text legible over any image, light or busy."""
-    x, y = 132, 156
+    tracked sans line, on a SOLID dark plate so the text stays fully legible over
+    any image, light maps and bright skies included. Long names word-wrap and the
+    plate sizes itself to fit, so nothing overruns the frame."""
+    x, y = 132, 150
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    # gradient scrim: dark at the upper-left, fading to clear toward the right
-    # and below, so the name + sub read on light documents and bright skies
-    xx = np.clip(1.0 - (np.arange(W) - (x - 40)) / 820.0, 0, 1) ** 1.2
-    ywin = np.zeros(H)
-    ywin[max(0, y - 90):min(H, y + 120)] = 1.0
-    a = (np.outer(ywin, xx) * 232.0).astype("uint8")
-    sa = Image.fromarray(a, "L").filter(ImageFilter.GaussianBlur(30))
-    dark = Image.new("RGBA", (W, H), (6, 9, 8, 255))
-    dark.putalpha(sa)
-    img = Image.alpha_composite(img, dark)
     d = ImageDraw.Draw(img)
-    d.rectangle([x, y + 2, x + 5, y + 54], fill=RUST)
-    d.text((x + 25, y - 4), label, font=serif(50, "reg"), fill=(0, 0, 0, 160))  # shadow
-    d.text((x + 24, y - 6), label, font=serif(50, "reg"), fill=(CREAM[0], CREAM[1], CREAM[2], 255))
-    draw_tracked(d, (x + 26, y + 58), sub.upper(), sans(21, "semi"),
-                 (216, 211, 201, 245), tracking=5, shadow=(1, 1, (0, 0, 0, 165)))
+    tf = serif(48, "reg")
+    sf = sans(21, "semi")
+    tick_w, gap, lh = 6, 14, 56
+    pad_x, pad_y = 24, 16
+    # wrap the name so a long title never runs off the frame
+    lines = wrap(d, label, tf, 660) or [label]
+    title_w = max([d.textlength(ln, font=tf) for ln in lines] + [0.0])
+    sub_w = tracked_width(d, sub.upper(), sf, 5) if sub else 0.0
+    block_w = int(max(title_w, sub_w))
+    title_h = lh * len(lines)
+    block_h = title_h + (8 + 28 if sub else 0)
+    tx = x + tick_w + gap
+    # the solid plate, sized to the block, high-opacity so it reads on anything
+    d.rounded_rectangle(
+        [x - pad_x, y - pad_y, tx + block_w + pad_x, y + block_h + pad_y],
+        radius=4, fill=(9, 11, 10, 226),
+    )
+    # rust tick down the left edge of the title
+    d.rectangle([x, y + 2, x + tick_w - 1, y + title_h - 8], fill=RUST)
+    cy = y - 6
+    for ln in lines:
+        d.text((tx + 1, cy + 2), ln, font=tf, fill=(0, 0, 0, 150))  # shadow
+        d.text((tx, cy), ln, font=tf, fill=(245, 241, 234, 255))
+        cy += lh
+    if sub:
+        draw_tracked(d, (tx, cy + 4), sub.upper(), sf, (214, 209, 199, 250),
+                     tracking=5, shadow=(1, 1, (0, 0, 0, 170)))
     img.save(path)
     return path
 
@@ -831,12 +844,14 @@ def render_shot(src, dur, grade, out, kb_idx=0, overlays=None):
     the subject), over a blurred, darkened copy of itself that fills the
     16:9 frame. Motion comes from a slow drift on the backdrop."""
     frames = max(2, int(round(dur*FPS)))
-    # one decelerating push that arrives and effectively stops, instead of a
-    # perpetual creep (a constant drift reads as a screensaver at wall scale)
-    cap = [1.085, 1.072, 1.080, 1.068][kb_idx % 4]
-    bgz = f"1.0+({cap-1.0:.4f})*(1-1/(1+on*0.03))"
-    # the sharp foreground eases from a small offset to home, then holds still
-    dx = [13, -11, 9, -12][kb_idx % 4]; dy = [-8, 9, -11, 7][kb_idx % 4]
+    # a gentle CONTINUOUS zoom across the whole shot on the blurred backdrop, so
+    # the frame keeps breathing end to end instead of locking after a couple
+    # seconds (the old decelerate-to-stop read as static)
+    cap = [1.18, 1.165, 1.185, 1.16][kb_idx % 4]
+    bgz = f"1.0+{(cap-1.0)/frames:.6f}*on"
+    # the sharp foreground slowly pans the FULL duration (a continuous drift from
+    # one side to the other), never holding. No scale, so the subject never crops.
+    dx = [26, -24, 22, -28][kb_idx % 4]; dy = [-16, 14, -18, 15][kb_idx % 4]
     color = GRADE_COLOR.get(grade, "")
     # contain box leaves a margin so nothing ever touches the frame edge
     fw, fh = int(W * 0.865), int(H * 0.915)
@@ -850,10 +865,9 @@ def render_shot(src, dur, grade, out, kb_idx=0, overlays=None):
         f"zoompan=z='{bgz}':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={W}x{H}:fps={FPS},"
         f"gblur=sigma=38,eq=brightness=-0.26:saturation=0.38[bgb];"
         f"[fg]{fg}[fgc];"
-        # gentle parallax: the crisp foreground eases from a small offset to
-        # home over ~2.4s against the slowly settling backdrop, then holds, so
-        # the shot arrives and stops rather than drifting forever
-        f"[bgb][fgc]overlay=x='(W-w)/2+({dx})*(1-min(1,t/2.4))':y='(H-h)/2+({dy})*(1-min(1,t/2.6))',"
+        # continuous parallax: the crisp foreground drifts slowly across the full
+        # shot (from +offset to -offset) so it is always in motion, never locking
+        f"[bgb][fgc]overlay=x='(W-w)/2+({dx})*(1-2*t/{dur:.3f})':y='(H-h)/2+({dy})*(1-2*t/{dur:.3f})',"
         f"vignette=PI/4.2,noise=alls=7:allf=t+u,format=yuv420p[base]"
     )
     inputs = ["-i", src]
@@ -873,6 +887,137 @@ def render_shot(src, dur, grade, out, kb_idx=0, overlays=None):
     fc = ";".join(parts)
     run([*inputs, "-filter_complex", fc, "-map", last, "-t", f"{dur}", "-r", str(FPS),
          "-c:v","libx264","-preset","veryfast","-crf","20","-pix_fmt","yuv420p", out])
+
+# ---- animated map highlights ----------------------------------------------
+# When a deep-dive shows a historical map, we don't just hold the still: we draw
+# the SPECIFIC thing being narrated on top of it and animate it in, a pulsing
+# point, a route that draws on, or an outlined region, with a label and a slow
+# focus push toward it. Driven by MAP_HILITE (image id -> spec), populated per
+# chapter. spec = {"kind": "point"|"route"|"region", "pts": [[nx,ny], ...],
+# "label": "...", "focus": [nx,ny] (optional)} with coords normalized 0..1 of the
+# map image.
+MAP_HILITE = {}
+_GLOW = (230, 122, 80)
+_GLOW_HOT = (246, 206, 162)
+
+def _map_archival(im):
+    """A gentle warm archival tone for maps so they marry the film, keeping the
+    document fully legible (light grade, not a heavy sepia that hides detail)."""
+    im = ImageEnhance.Color(im).enhance(0.62)
+    im = ImageEnhance.Contrast(im).enhance(1.05)
+    a = np.asarray(im).astype(np.float32)
+    a[..., 0] = np.clip(a[..., 0] * 1.05 + 6, 0, 255)
+    a[..., 2] = np.clip(a[..., 2] * 0.92, 0, 255)
+    return Image.fromarray(a.astype("uint8"))
+
+def _polyline_partial(P, frac):
+    """The polyline drawn up to `frac` of its total length (last segment lerped)."""
+    if frac <= 0:
+        return [P[0]]
+    if frac >= 1:
+        return list(P)
+    segs = [(P[i], P[i + 1], math.hypot(P[i + 1][0] - P[i][0], P[i + 1][1] - P[i][1]))
+            for i in range(len(P) - 1)]
+    total = sum(L for *_, L in segs) or 1.0
+    target = frac * total
+    acc, out = 0.0, [P[0]]
+    for a, b, L in segs:
+        if acc + L < target:
+            out.append(b); acc += L
+        else:
+            r = (target - acc) / L if L else 0
+            out.append((a[0] + (b[0] - a[0]) * r, a[1] + (b[1] - a[1]) * r))
+            break
+    return out
+
+def _map_label(fr, text, anchor, alpha):
+    """A compact, fully-legible label plate near the highlight."""
+    d = ImageDraw.Draw(fr, "RGBA")
+    f = sans(27, "semi")
+    tw = d.textlength(text, font=f)
+    ax, ay = anchor
+    bx = int(min(max(ax - tw / 2 - 18, 44), W - tw - 64))
+    by = int(min(max(ay - 26, 30), H - 92))
+    d.rounded_rectangle([bx, by, bx + tw + 36, by + 48], radius=4,
+                        fill=(9, 11, 10, int(0.88 * alpha)))
+    d.rectangle([bx + 9, by + 11, bx + 13, by + 37], fill=RUST + (alpha,))
+    d.text((bx + 22, by + 9), text, font=f, fill=(245, 241, 234, alpha))
+
+def map_highlight_clip(img_path, dur, out, spec, credit=None):
+    """Render a map with an animated highlight of the place/route being narrated,
+    plus a slow focus push so the eye is led to the exact spot."""
+    src = _map_archival(Image.open(img_path).convert("RGB"))
+    fw, fh = int(W * 0.93), int(H * 0.94)
+    r = min(fw / src.width, fh / src.height)
+    fgw, fgh = max(1, int(src.width * r)), max(1, int(src.height * r))
+    fg = src.resize((fgw, fgh), Image.LANCZOS)
+    ox, oy = (W - fgw) // 2, (H - fgh) // 2
+    bg = src.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(42))
+    bg = ImageEnhance.Brightness(bg).enhance(0.40)
+    base = bg.convert("RGBA")
+    base.alpha_composite(fg.convert("RGBA"), (ox, oy))
+    P = [(ox + nx * fgw, oy + ny * fgh) for nx, ny in spec.get("pts", [])]
+    kind = spec.get("kind", "point")
+    label = spec.get("label", "")
+    if spec.get("focus"):
+        fx, fy = ox + spec["focus"][0] * fgw, oy + spec["focus"][1] * fgh
+    elif P:
+        fx, fy = sum(p[0] for p in P) / len(P), sum(p[1] for p in P) / len(P)
+    else:
+        fx, fy = W / 2, H / 2
+
+    def fn(t):
+        fr = base.copy()
+        d = ImageDraw.Draw(fr, "RGBA")
+        e = ease_out(min(1.0, (t - 0.3) / max(0.8, dur * 0.42)))
+        pulse = 0.5 + 0.5 * math.sin(t * 3.0)
+        if kind == "region" and len(P) >= 3:
+            hole = Image.new("L", (W, H), 175)
+            ImageDraw.Draw(hole).polygon(P, fill=0)
+            dim = Image.new("RGBA", (W, H), (6, 8, 9, 255)); dim.putalpha(hole)
+            fr.alpha_composite(dim)
+            d = ImageDraw.Draw(fr, "RGBA")
+            d.line(list(P) + [P[0]], fill=_GLOW + (255,), width=5, joint="curve")
+        elif kind == "route" and len(P) >= 2:
+            seg = _polyline_partial(P, e)
+            if len(seg) >= 2:
+                d.line(seg, fill=(60, 30, 18, 220), width=11, joint="curve")  # halo
+                d.line(seg, fill=_GLOW + (255,), width=6, joint="curve")
+                hx, hy = seg[-1]; rr = 9 + 5 * pulse
+                d.ellipse([hx - rr, hy - rr, hx + rr, hy + rr],
+                          outline=_GLOW_HOT + (255,), width=3)
+        elif P:  # point
+            cx, cy = P[0]; rr = 16 + 11 * pulse
+            d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], outline=_GLOW + (255,), width=4)
+            d.ellipse([cx - 28, cy - 28, cx + 28, cy + 28], outline=(_GLOW[0], _GLOW[1], _GLOW[2], int(120 * pulse)), width=2)
+            d.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=RUST + (255,))
+        if label and e > 0.1:
+            la = int(255 * ease_out(min(1.0, (t - 0.5) / 0.6)))
+            if kind == "route" and len(P) >= 2:
+                anchor = (P[-1][0], P[-1][1] - 40)
+            elif kind == "region":
+                anchor = (sum(p[0] for p in P) / len(P), min(p[1] for p in P) - 40)
+            elif P:
+                anchor = (P[0][0], P[0][1] - 44)
+            else:
+                anchor = (W / 2, 120)
+            _map_label(fr, label, anchor, la)
+        # gentle continuous focus push toward the highlighted spot
+        z = 1.0 + 0.13 * ease_io(min(1.0, t / dur))
+        cw, ch = int(W / z), int(H / z)
+        cx = int(min(max(fx - cw / 2, 0), W - cw))
+        cy = int(min(max(fy - ch / 2, 0), H - ch))
+        fr = fr.crop((cx, cy, cx + cw, cy + ch)).resize((W, H), Image.LANCZOS)
+        # the attribution, in fixed screen space (drawn after the crop), bottom-right
+        if credit:
+            dc = ImageDraw.Draw(fr, "RGBA")
+            cf = sans(20, "light")
+            cw2 = dc.textlength(credit.upper(), font=cf)
+            dc.text((W - cw2 - 46 + 1, H - 50 + 1), credit.upper(), font=cf, fill=(0, 0, 0, 150))
+            dc.text((W - cw2 - 46, H - 50), credit.upper(), font=cf, fill=(206, 200, 190, 220))
+        return fr.convert("RGB")
+
+    seq_clip(fn, dur, out, fade=True)
 
 # Flat HLG drone footage -> the film's warm archival tone. Tonemap runs after the
 # downscale to 1080 so it is fast; the look stays full color (so "now" reads
@@ -970,8 +1115,10 @@ ASS_HEADER = (
     "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, "
     "BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, "
     "BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
-    "Style: Default,Gill Sans,44,&H00E8F0F5,&H000000FF,&HA01A1512,&H64000000,"
-    "0,0,0,0,100,100,0,0,1,2,2,2,260,260,70,1\n\n"
+    # bright near-white text with a thick FULLY-OPAQUE dark outline + strong drop
+    # shadow, so the caption stays legible over any image, including white maps
+    "Style: Default,Gill Sans,46,&H00F4F7FB,&H000000FF,&H00121011,&H28000000,"
+    "0,0,0,0,100,100,0,0,1,3,2,2,230,230,74,1\n\n"
     "[Events]\n"
     "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
 )
@@ -1576,6 +1723,12 @@ def build_story_chapter(cid, seq, vodur, cues):
         if i == 0 and cid in DIV_YEAR:
             p = os.path.join(TMP, f"{cid}_st0_rib.png"); ribbon_overlay(p, DIV_YEAR[cid])
             overlays.insert(0, {"png": p, "a": 0.0, "b": 2.0})
+        # a map shot draws its specific place/route on top, animated, instead of
+        # holding a dead still; it carries its own label + credit
+        if ref in MAP_HILITE:
+            map_highlight_clip(local(url), dur, out, MAP_HILITE[ref], credit_text(ref))
+            files.append(out)
+            continue
         render_shot(local(url), dur, chapter_image_grade(ref), out, kb_idx=i, overlays=overlays)
         files.append(out)
     return files, durs
