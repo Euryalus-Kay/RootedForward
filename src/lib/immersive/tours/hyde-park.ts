@@ -21,7 +21,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
   "stops": [
     {
       "id": "intro",
-      "title": "Hyde Park, Ground That Keeps Moving",
+      "title": "Hyde Park, the Ground That Keeps Moving",
       "kicker": "Today / 57th Street",
       "depthLabel": "Street level",
       "lat": 41.7943,
@@ -44,7 +44,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "media": null,
       "sequence": {
         "version": 1,
-        "title": "Hyde Park, Ground That Keeps Moving",
+        "title": "Hyde Park, the Ground That Keeps Moving",
         "notes": "Present-day handheld opener with the host on a Hyde Park sidewalk, lakefront and stone two-flats in frame. B-roll of older greystone houses, the University of Chicago Gothic quad, and the Olmsted parkland along the lake. Establishing wide of the neighborhood from a high vantage to sell the seven-miles-south-of-the-Loop geography. A 360 capture in Jackson Park near the Obama Presidential Center campus to set up the present-day foreshadow, framed so the same parkland that held the 1893 fair is visible. Talking-head beat for the host close-out question, framed medium, warm daylight. Hold a slow push on a quiet residential block for the line about people living on the ground.",
         "aspect": "16:9",
         "voiceover": {
@@ -334,7 +334,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "body": "Before any of this, the ground was prairie and marsh, sloping down to the lake. It was Potawatomi land, part of the Council of Three Fires, who had lived and traded along these shores for generations. They did not fight the Black Hawk War of 1832, but in its wake the United States pressed the Three Fires nations into the Treaty of Chicago, in 1833. With one signing they gave up some five million acres, this lakefront among them, and within a few years they were marched west. Around 1835 a settler named Nathan Watson raised a tavern near what is now 53rd Street and the water, on the old trail the Potawatomi had walked. The first taking set the pattern. This ground would be claimed, cleared, and remade, again and again, by whoever held the deed and the plan. In 1853 a young lawyer named Paul Cornell bought three hundred acres from Watson's widow.",
       "facts": [],
       "sources": [
-        "Image. George Catlin - Na-pów-sa, Bear Traveling at Night, a Chief - 1985.66.238 - Smithsonian American Art Museum, by George Catlin. Public domain, Wikimedia Commons.",
+        "Image. Wa-baun-see, a Pottawatomie chief LCCN2003670113, by Popular Graphic Arts. Public domain, Wikimedia Commons.",
         "Image. Ratified Indian Treaty 189- United Chippewa, Ottawa and Potawatomi - Chicago, Illinois, September 26, 1833 - DPLA - 030705056c8ce8116f8d02be6c0f889e (page 60), by U.S. Government. 3/4/1789. Public domain, Wikimedia Commons.",
         "Image. COLBERT(1871) p037 CHICAGO IN 1833, by Unknown. Public domain, Wikimedia Commons."
       ],
@@ -533,7 +533,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "overlays": [
               {
                 "kind": "caption",
-                "text": "Source. George Catlin, 1830. Public domain.",
+                "text": "Source. Popular Graphic Arts. Public domain.",
                 "startSec": 0.6,
                 "endSec": 4.2,
                 "position": "upper",
@@ -1787,7 +1787,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
       "depthLabel": "The fair",
       "lat": 41.7903,
       "lng": -87.5829,
-      "body": "For six months in 1893, Jackson Park was not a park. It was a fair. The World's Columbian Exposition opened that May, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted turned the marshy lakefront into lagoons. At the center stood the Court of Honor, white plaster halls lit at night by electricity. People called it the White City. It was beautiful, and it was an argument. The fair staged the world as a ladder, with white northern Europe on top. Past the White City ran the Midway, where the fair set other peoples on display as a descending scale of civilization, a spectacle it dressed up as science. About twenty-seven million people came. Almost none of it was built to last. To move the crowds, the Illinois Central lifted its tracks onto an embankment above the streets. That wall of earth split the neighborhood in two, and the blocks toward the lake became a place apart, Hyde Park East. The fair made this lakefront valuable ground. The fight over who it belonged to was just ahead.",
+      "body": "For six months in 1893, Jackson Park was not a park. It was a fair. The World's Columbian Exposition opened that May, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted turned the marshy lakefront into lagoons. At the center stood the Court of Honor, white plaster halls lit at night by electricity. People called it the White City. About twenty-seven million people came. Almost none of it was built to last. To move the crowds, the Illinois Central lifted its tracks onto an embankment above the streets. That wall of earth split the neighborhood in two, and the blocks toward the lake became a place apart, Hyde Park East. The fair made this lakefront valuable ground. The fight over who it belonged to was just ahead.",
       "facts": [
         "The World's Columbian Exposition was held in Jackson Park and on the Midway Plaisance, opening to the public May 1 and closing October 30, 1893.",
         "The fair was dedicated on October 21, 1892, but did not open to the public until May 1, 1893.",
@@ -1834,187 +1834,139 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
           {
             "id": "worlds-fair-c1",
             "startSec": 0.2,
-            "endSec": 1.8,
+            "endSec": 1.7,
             "text": "For six months in 1893"
           },
           {
             "id": "worlds-fair-c2",
-            "startSec": 1.8,
-            "endSec": 3.8,
+            "startSec": 1.7,
+            "endSec": 3.7,
             "text": "Jackson Park was not a park."
           },
           {
             "id": "worlds-fair-c3",
-            "startSec": 3.8,
-            "endSec": 4.9,
+            "startSec": 3.7,
+            "endSec": 4.8,
             "text": "It was a fair."
           },
           {
             "id": "worlds-fair-c4",
-            "startSec": 4.9,
-            "endSec": 8.4,
+            "startSec": 4.7,
+            "endSec": 8.2,
             "text": "The World's Columbian Exposition opened that May"
           },
           {
             "id": "worlds-fair-c5",
-            "startSec": 8.4,
-            "endSec": 11.9,
+            "startSec": 8.2,
+            "endSec": 11.5,
             "text": "built to mark four hundred years since Columbus"
           },
           {
             "id": "worlds-fair-c6",
-            "startSec": 11.9,
-            "endSec": 13.4,
+            "startSec": 11.5,
+            "endSec": 13,
             "text": "reached the Americas."
           },
           {
             "id": "worlds-fair-c7",
-            "startSec": 13.4,
-            "endSec": 16.1,
+            "startSec": 13,
+            "endSec": 15.6,
             "text": "Daniel Burnham ran the construction."
           },
           {
             "id": "worlds-fair-c8",
-            "startSec": 16.1,
-            "endSec": 19.7,
+            "startSec": 15.6,
+            "endSec": 19.1,
             "text": "Frederick Law Olmsted turned the marshy lakefront"
           },
           {
             "id": "worlds-fair-c9",
-            "startSec": 19.7,
-            "endSec": 20.8,
+            "startSec": 19.1,
+            "endSec": 20.2,
             "text": "into lagoons."
           },
           {
             "id": "worlds-fair-c10",
-            "startSec": 20.7,
-            "endSec": 23.5,
+            "startSec": 20,
+            "endSec": 22.7,
             "text": "At the center stood the Court of Honor"
           },
           {
             "id": "worlds-fair-c11",
-            "startSec": 23.5,
-            "endSec": 27,
+            "startSec": 22.7,
+            "endSec": 26.2,
             "text": "white plaster halls lit at night by electricity."
           },
           {
             "id": "worlds-fair-c12",
-            "startSec": 27,
-            "endSec": 29.4,
+            "startSec": 26.2,
+            "endSec": 28.5,
             "text": "People called it the White City."
           },
           {
             "id": "worlds-fair-c13",
-            "startSec": 29.4,
-            "endSec": 30.6,
-            "text": "It was beautiful"
-          },
-          {
-            "id": "worlds-fair-c14",
-            "startSec": 30.6,
-            "endSec": 32.3,
-            "text": "and it was an argument."
-          },
-          {
-            "id": "worlds-fair-c15",
-            "startSec": 32.3,
-            "endSec": 35,
-            "text": "The fair staged the world as a ladder"
-          },
-          {
-            "id": "worlds-fair-c16",
-            "startSec": 35,
-            "endSec": 37.5,
-            "text": "with white northern Europe on top."
-          },
-          {
-            "id": "worlds-fair-c17",
-            "startSec": 37.5,
-            "endSec": 40,
-            "text": "Past the White City ran the Midway"
-          },
-          {
-            "id": "worlds-fair-c18",
-            "startSec": 40,
-            "endSec": 43.6,
-            "text": "where the fair set other peoples on display as a"
-          },
-          {
-            "id": "worlds-fair-c19",
-            "startSec": 43.6,
-            "endSec": 45.9,
-            "text": "descending scale of civilization"
-          },
-          {
-            "id": "worlds-fair-c20",
-            "startSec": 45.9,
-            "endSec": 48.7,
-            "text": "a spectacle it dressed up as science."
-          },
-          {
-            "id": "worlds-fair-c21",
-            "startSec": 48.7,
-            "endSec": 51.6,
+            "startSec": 28.5,
+            "endSec": 31.3,
             "text": "About twenty-seven million people came."
           },
           {
-            "id": "worlds-fair-c22",
-            "startSec": 51.6,
-            "endSec": 54.2,
+            "id": "worlds-fair-c14",
+            "startSec": 31.3,
+            "endSec": 33.8,
             "text": "Almost none of it was built to last."
           },
           {
-            "id": "worlds-fair-c23",
-            "startSec": 54.2,
-            "endSec": 55.5,
+            "id": "worlds-fair-c15",
+            "startSec": 33.8,
+            "endSec": 35.1,
             "text": "To move the crowds"
           },
           {
-            "id": "worlds-fair-c24",
-            "startSec": 55.5,
-            "endSec": 58.9,
+            "id": "worlds-fair-c16",
+            "startSec": 35.1,
+            "endSec": 38.4,
             "text": "the Illinois Central lifted its tracks onto an"
           },
           {
-            "id": "worlds-fair-c25",
-            "startSec": 58.9,
-            "endSec": 61.1,
+            "id": "worlds-fair-c17",
+            "startSec": 38.4,
+            "endSec": 40.5,
             "text": "embankment above the streets."
           },
           {
-            "id": "worlds-fair-c26",
-            "startSec": 61.1,
-            "endSec": 64.6,
+            "id": "worlds-fair-c18",
+            "startSec": 40.5,
+            "endSec": 43.9,
             "text": "That wall of earth split the neighborhood in two"
           },
           {
-            "id": "worlds-fair-c27",
-            "startSec": 64.6,
-            "endSec": 68,
+            "id": "worlds-fair-c19",
+            "startSec": 43.9,
+            "endSec": 47.1,
             "text": "and the blocks toward the lake became a place"
           },
           {
-            "id": "worlds-fair-c28",
-            "startSec": 68,
-            "endSec": 69.1,
+            "id": "worlds-fair-c20",
+            "startSec": 47.1,
+            "endSec": 48.2,
             "text": "apart"
           },
           {
-            "id": "worlds-fair-c29",
-            "startSec": 68.4,
-            "endSec": 69.5,
+            "id": "worlds-fair-c21",
+            "startSec": 47.6,
+            "endSec": 48.7,
             "text": "Hyde Park East."
           },
           {
-            "id": "worlds-fair-c30",
-            "startSec": 69.5,
-            "endSec": 72.8,
+            "id": "worlds-fair-c22",
+            "startSec": 48.6,
+            "endSec": 51.8,
             "text": "The fair made this lakefront valuable ground."
           },
           {
-            "id": "worlds-fair-c31",
-            "startSec": 72.8,
-            "endSec": 76.5,
+            "id": "worlds-fair-c23",
+            "startSec": 51.8,
+            "endSec": 55.4,
             "text": "The fight over who it belonged to was just ahead."
           }
         ],
@@ -2024,7 +1976,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-1",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "cut",
               "durationSec": 0
@@ -2072,7 +2024,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-3",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2103,7 +2055,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Public run, May 1 to October 30, 1893",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2120,7 +2072,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-4",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "dip-black",
               "durationSec": 0.6
@@ -2151,7 +2103,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "About 27 million visitors over six months",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2168,7 +2120,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-6",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "slide-left",
               "durationSec": 0.8
@@ -2199,7 +2151,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Palace of Fine Arts reopened, 1933",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2216,7 +2168,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-7",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9
@@ -2247,7 +2199,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Sources. Britannica; Chicago Architecture Center",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2264,7 +2216,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-8",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "wipe",
               "durationSec": 0.9
@@ -2295,7 +2247,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
                 "kind": "lower-third",
                 "text": "Source. Museum of Science and Industry, Chicago",
                 "startSec": 2,
-                "endSec": 11.299999999999999,
+                "endSec": 8.299999999999999,
                 "position": "lower",
                 "style": {
                   "size": "md",
@@ -2312,7 +2264,7 @@ export const HYDE_PARK_TOUR: ImmersiveTour = {
             "clipId": "worlds-fair-10",
             "mode": "2d",
             "inSec": 0,
-            "outSec": 11.7,
+            "outSec": 8.7,
             "transitionIn": {
               "type": "crossfade",
               "durationSec": 0.9

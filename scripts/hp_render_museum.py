@@ -1362,7 +1362,6 @@ STORY = {
      ("img", "worlds-fair-10", "not a park"),           # the fair, establishing
      ("img", "worlds-fair-8", "lagoons"),               # Olmsted's lagoons
      ("img", "white-city-night", "Court of Honor"),     # the White City
-     ("img", "midway-village-hist", "set other peoples on display"),  # the real 1893 Midway ethnographic exhibit
      ("stat", None, "twenty-seven million"),            # 27 million visitors
      ("img", "ic-embankment-hist", "wall of earth"),    # the historical IC tracks that split the neighborhood
      ("clip", "jackson-lagoon", "valuable ground"),     # the fairgrounds, today
