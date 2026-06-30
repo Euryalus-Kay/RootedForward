@@ -1517,18 +1517,6 @@
     "date": "2022-03-28 13:49:16",
     "bytes": 696657
   },
-  "land-michilimackinac": {
-    "id": "land-michilimackinac",
-    "query": "Fort Michilimackinac",
-    "file": "/media/hyde-park/img/land-michilimackinac.jpg",
-    "commonsTitle": "File:Fort Michilimackinac 2022.jpg",
-    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fort_Michilimackinac_2022.jpg",
-    "license": "CC BY-SA 4.0",
-    "artist": "WMrapids",
-    "credit": "Own work",
-    "date": "2022-10-11 12:33:09",
-    "bytes": 783552
-  },
   "land-river-sandbar-survey": {
     "id": "land-river-sandbar-survey",
     "query": "Map of Chicago 1830 Thompson plat",
@@ -1564,18 +1552,6 @@
     "credit": "[1]",
     "date": "probably 1857",
     "bytes": 614551
-  },
-  "land-1833-council": {
-    "id": "land-1833-council",
-    "query": "Treaty of Chicago 1833 council Potawatomi",
-    "file": "/media/hyde-park/img/land-1833-council.jpg",
-    "commonsTitle": "File:The Negotiator Billy Caldwell Documentary.jpg",
-    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:The_Negotiator_Billy_Caldwell_Documentary.jpg",
-    "license": "CC BY 4.0",
-    "artist": "Landlubbber21",
-    "credit": "Own work",
-    "date": "2021-08-02",
-    "bytes": 1831136
   },
   "land-prairie-wildflower": {
     "id": "land-prairie-wildflower",

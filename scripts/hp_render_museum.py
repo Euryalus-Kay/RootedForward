@@ -1115,10 +1115,11 @@ ASS_HEADER = (
     "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, "
     "BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, "
     "BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
-    # bright near-white text with a thick FULLY-OPAQUE dark outline + strong drop
-    # shadow, so the caption stays legible over any image, including white maps
-    "Style: Default,Gill Sans,46,&H00F4F7FB,&H000000FF,&H00121011,&H28000000,"
-    "0,0,0,0,100,100,0,0,1,3,2,2,230,230,74,1\n\n"
+    # bright near-white text on a semi-opaque dark BOX (BorderStyle 3), so the
+    # caption is guaranteed legible over any background, bright maps included.
+    # OutlineColour is the box fill (~75% opaque warm near-black); Outline = box pad
+    "Style: Default,Gill Sans,46,&H00F4F7FB,&H000000FF,&H40120F0E,&H90000000,"
+    "0,0,0,0,100,100,0,0,3,7,0,2,260,260,74,1\n\n"
     "[Events]\n"
     "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
 )
@@ -1261,9 +1262,18 @@ def credit_text(clipid):
     who = re.sub(r"\s+from\s+.*$", "", who, flags=re.I).strip(" ,")
     who = who.split(",")[0].strip()
     who = re.sub(r"\s*\(.*$", "", who).strip()  # drop parenthetical aliases / open parens
-    # Commons uploader handle or unknown author -> clean museum credit
-    handle = (not who) or re.search(r"wiki(p|m)edia|user:|\bat en\b|^unknown", who + " " + art, re.I)
-    if (is_pd and handle) or not who or re.match(r"^unknown", who, re.I):
+    # OpenStreetMap-derived maps get the data credit, not the wiki editor handle
+    if "openstreetmap" in art.lower():
+        return "OpenStreetMap"
+    # Commons uploader handle / wiki username / unknown -> clean museum credit, on
+    # ANY license (not just PD): a bare one-token name, a name with a digit, or a
+    # "user:" / wiki marker reads as a handle, never a real attribution
+    handle = (
+        (not who)
+        or re.search(r"wiki(p|m)edia|user:|\bat en\b|^unknown", who + " " + art, re.I)
+        or bool(re.search(r"\d", who))   # a name with a digit is a Commons handle, not an artist
+    )
+    if handle:
         return "Wikimedia Commons"
     # only show a plausible photo-era year, not a subject's death year
     yr = re.search(r"\b(18\d\d|19[0-2]\d)\b", c.get("date", "") or "")
@@ -1601,8 +1611,8 @@ def build_story_chapter(cid, seq, vodur, cues):
     # gracefully under a slow push. sum(durs) is preserved, so the chapter still
     # covers the full voiceover and the crossfade offsets stay aligned (the chart
     # clip is rendered at its capped dur, matching what the chain expects).
-    CAP = {"stat": 10.5, "chart": 9.2, "graphic": 10.5}
-    IMG_CAP = 13.0
+    CAP = {"stat": 9.0, "chart": 9.0, "graphic": 10.0}
+    IMG_CAP = 11.5
     saved = 0.0
     for i in range(n):
         ki = shots[i][0]
@@ -1620,8 +1630,16 @@ def build_story_chapter(cid, seq, vodur, cues):
             add = min(per, IMG_CAP - durs[k])
             durs[k] += add
             saved -= add
-    if saved > 0.1:  # nowhere left that wants it; let the final shot hold it
-        durs[-1] += saved
+    # any remainder is spread EVENLY across all image/clip shots, never dumped on
+    # one shot (which used to make a single still hold 30-48s and read as dead)
+    if saved > 0.1:
+        imgs = [k for k in range(n) if shots[k][0] in ("img", "clip")]
+        if imgs:
+            per = saved / len(imgs)
+            for k in imgs:
+                durs[k] += per
+        else:
+            durs[-1] += saved
     # assign each callout to the shot that is on screen when it is said
     assign = {}
     for lab, val, anc in cos:

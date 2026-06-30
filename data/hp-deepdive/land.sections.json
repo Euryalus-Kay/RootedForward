@@ -241,11 +241,6 @@
     ],
     [
      "img",
-     "land-michilimackinac",
-     "near the straits of Michilimackinac"
-    ],
-    [
-     "img",
      "land-marquette-portrait",
      "a Jesuit priest, Jacques Marquette"
     ],
@@ -268,11 +263,6 @@
      "map",
      "dd-land-4",
      "They become the first Europeans known to stand on the site of Chicago"
-    ],
-    [
-     "stat",
-     "canalLag",
-     "Digging it would take 175 years"
     ]
    ],
    "callouts": [
@@ -367,19 +357,9 @@
      "It started with lead"
     ],
     [
-     "stat",
-     "trailRemoved",
-     "shoved them west of the Mississippi"
-    ],
-    [
      "img",
      "dd-land-1",
      "the sixty-five-year-old Sauk leader"
-    ],
-    [
-     "stat",
-     "blackhawkBand",
-     "led about a thousand Sauk, Meskwaki, and Kickapoo"
     ],
     [
      "map",
@@ -419,11 +399,6 @@
    "shots": [
     [
      "img",
-     "land-1833-council",
-     "federal commissioners called thousands of Potawatomi"
-    ],
-    [
-     "img",
      "land-treaty-chicago",
      "pressed them to sign"
     ],
@@ -431,16 +406,6 @@
      "stat",
      "acresCeded",
      "gave up about five million acres"
-    ],
-    [
-     "stat",
-     "cashPromised",
-     "fourteen thousand dollars in cash a year for twenty years"
-    ],
-    [
-     "stat",
-     "schoolsPromised",
-     "seventy thousand dollars for schools"
     ],
     [
      "img",
@@ -479,7 +444,7 @@
   {
    "id": "s5",
    "title": "The Trail of Death and What Survived",
-   "era": "1838 to 1837",
+   "era": "1838",
    "year": 1838,
    "voiceover": "Removal did not happen in a single day. It dragged on for years, and it kept finding crueler forms. The worst came in 1838, when Chicago itself was already a city. That year, militia forced about 859 Potawatomi out of Indiana and marched them to eastern Kansas. The march began at Twin Lakes, near Plymouth, Indiana. It ended on the fourth of November along the Osage River, near present-day Osawatomie. The route ran roughly 660 miles over 61 days. People died as they walked. More than forty died on the way, most of them children, of typhoid and exhaustion. A young priest, Father Benjamin Petit, walked the whole distance beside them and kept a journal. The march broke him too. He died the next year in St. Louis, at twenty-seven. History remembers that march as the Trail of Death. They scattered the Potawatomi. They did not erase them. The bands they marched to Kansas became the Prairie Band Potawatomi Nation. In 2024 the Prairie Band won back a piece of its ancestral ground at Shabbona, placed in trust, and became the first federally recognized tribe to hold land in Illinois again. And one band never left. Chief Leopold Pokagon kept about 280 people in southwestern Michigan, and by 1838 they had bought 874 acres of their own land near Dowagiac. Their descendants are the Pokagon Band of Potawatomi, more than six thousand citizens today. The people who held this lakefront are still here. Now the land sat legally cleared, and the city at the river mouth took off. Chicago incorporated as a town in 1833, the same year as the treaty, with about three hundred residents. By 1837 it was a city of more than four thousand. Soldiers cut a channel straight through the sandbar and finally gave the river a real harbor. Speculators bought the wet lots and flipped them faster than anyone could build, until the panic of 1837 wiped out the easy money and a good many of the speculators with it.",
    "shots": [
@@ -487,11 +452,6 @@
      "img",
      "dd-land-5",
      "militia forced about 859 Potawatomi out of Indiana"
-    ],
-    [
-     "img",
-     "land-trail-of-death-map",
-     "The march began at Twin Lakes, near Plymouth, Indiana"
     ],
     [
      "stat",
@@ -504,9 +464,14 @@
      "More than forty died on the way, most of them children"
     ],
     [
+     "img",
+     "land-trail-of-death-map",
+     "walked the whole distance beside them"
+    ],
+    [
      "stat",
-     "pokagonToday",
-     "more than six thousand citizens today"
+     "shabbonaTrust",
+     "won back a piece of its ancestral ground at Shabbona"
     ],
     [
      "img",
@@ -514,19 +479,14 @@
      "Chief Leopold Pokagon kept about 280 people in southwestern Michigan"
     ],
     [
+     "stat",
+     "pokagonToday",
+     "more than six thousand citizens today"
+    ],
+    [
      "img",
      "formation-4",
      "the city at the river mouth took off"
-    ],
-    [
-     "stat",
-     "chicagoPop",
-     "By 1837 it was a city of more than four thousand"
-    ],
-    [
-     "img",
-     "formation-6",
-     "finally gave the river a real harbor"
     ],
     [
      "img",
@@ -578,11 +538,6 @@
      "img",
      "formation-1",
      "A young lawyer rode straight into that country in 1853"
-    ],
-    [
-     "stat",
-     "cornellBuy",
-     "He bought three hundred acres of lakefront that no one else wanted"
     ],
     [
      "img",
