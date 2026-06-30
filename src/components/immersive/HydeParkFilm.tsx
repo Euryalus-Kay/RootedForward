@@ -353,7 +353,11 @@ export default function HydeParkFilm({
         >
           <video
             ref={videoRef}
-            className="block aspect-video w-full rounded-[1px] bg-black shadow-[inset_0_0_0_1px_rgba(0,0,0,0.6)] fullscreen:aspect-auto fullscreen:h-auto fullscreen:max-h-screen fullscreen:w-auto fullscreen:max-w-full fullscreen:rounded-none fullscreen:shadow-none"
+            className={`block bg-black ${
+              isFs
+                ? "aspect-auto h-auto max-h-screen w-auto max-w-full rounded-none shadow-none"
+                : "aspect-video w-full rounded-[1px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.6)]"
+            }`}
             src={man?.video}
             poster={man?.poster}
             controls
@@ -368,7 +372,9 @@ export default function HydeParkFilm({
           {/* soft projection vignette */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-2 rounded-[1px] [box-shadow:inset_0_0_120px_24px_rgba(0,0,0,0.55)] fullscreen:hidden"
+            className={`pointer-events-none absolute inset-2 rounded-[1px] [box-shadow:inset_0_0_120px_24px_rgba(0,0,0,0.55)] ${
+              isFs ? "hidden" : ""
+            }`}
           />
 
           {/* "View in 3D" appears only while a 360 beat is actually on screen,
@@ -433,8 +439,13 @@ export default function HydeParkFilm({
             </div>
           )}
 
-          {/* slate caption + theater control, hidden in fullscreen */}
-          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-[#26231E] bg-[#141512] px-4 py-3 fullscreen:hidden">
+          {/* slate caption + theater control, hidden in fullscreen (you are
+              already in the theater) */}
+          <div
+            className={`mt-2 flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-[#26231E] bg-[#141512] px-4 py-3 ${
+              isFs ? "hidden" : "flex"
+            }`}
+          >
             <div className="flex items-baseline gap-2">
               {chapters[active] ? (
                 <>
