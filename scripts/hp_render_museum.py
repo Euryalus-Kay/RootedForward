@@ -339,9 +339,12 @@ def seq_clip(frame_fn, dur, out, silent=True, fade=True):
     shutil.rmtree(d, ignore_errors=True); os.makedirs(d, exist_ok=True)
     for i in range(n):
         frame_fn(i / FPS).save(os.path.join(d, f"{i:05d}.png"))
-    # keep the flat motion cards clean: a faint vignette for depth, no grain
-    # (temporal noise read as low quality on the type-heavy cards)
-    vf = "vignette=PI/6,format=yuv420p"
+    # a slow continuous camera drift + slight zoom so NO type card is ever a frozen
+    # frame (the panel flagged stat/title cards at ~zero motion). A gentle eased
+    # vertical push keeps text centred while every pixel moves frame to frame.
+    vf = (f"scale={int(W*1.05)}:{int(H*1.05)},"
+          f"crop={W}:{H}:x='(in_w-{W})/2':y='(in_h-{H})*(0.5-0.42*cos(PI*t/{dur:.3f}))',"
+          f"vignette=PI/6,format=yuv420p")
     if fade:
         vf = f"fade=t=in:st=0:d=0.4,fade=t=out:st={dur-0.45:.2f}:d=0.45," + vf
     args = ["-framerate", str(FPS), "-i", os.path.join(d, "%05d.png")]
@@ -850,11 +853,12 @@ def render_shot(src, dur, grade, out, kb_idx=0, overlays=None):
     # a gentle CONTINUOUS zoom across the whole shot on the blurred backdrop, so
     # the frame keeps breathing end to end instead of locking after a couple
     # seconds (the old decelerate-to-stop read as static)
-    cap = [1.18, 1.165, 1.185, 1.16][kb_idx % 4]
+    cap = [1.27, 1.255, 1.275, 1.25][kb_idx % 4]
     bgz = f"1.0+{(cap-1.0)/frames:.6f}*on"
-    # the sharp foreground slowly pans the FULL duration (a continuous drift from
-    # one side to the other), never holding. No scale, so the subject never crops.
-    dx = [26, -24, 22, -28][kb_idx % 4]; dy = [-16, 14, -18, 15][kb_idx % 4]
+    # the sharp foreground pans the FULL duration (a continuous drift from one side
+    # to the other), never holding. Rate bumped ~1.7x so movement reads within any
+    # 1-2s window, not only across the whole hold. No scale, so subject never crops.
+    dx = [44, -40, 38, -46][kb_idx % 4]; dy = [-26, 23, -28, 25][kb_idx % 4]
     color = GRADE_COLOR.get(grade, "")
     # contain box leaves a margin so nothing ever touches the frame edge
     fw, fh = int(W * 0.865), int(H * 0.915)
@@ -1305,7 +1309,7 @@ DIV_YEAR = {"land": 1833, "formation": 1853, "university": 1890, "worlds-fair": 
 CLIPS = {
  "cornell-stone":    ("Live Media/DJI_0156.MP4",  1.0, "drone", {}),
  "lakefront-reveal": ("Live Media/DJI_0160.MP4",  2.0, "drone", {}),
- "greystone-rise":   ("Live Media/DJI_0158.MP4",  1.0, "drone", {}),
+ "greystone-rise":   ("Live Media/DJI_0158.MP4",  3.5, "drone", {}),
  "ic-tracks":        ("Live Media/DJI_0162.MP4",  9.0, "drone", {}),
  "ic-tracks-detail": ("Live Media/DJI_0166.MP4",  0.3, "drone", {}),
  "old-new-pan":      ("Live Media/DJI_0163.MP4",  2.0, "drone", {}),
@@ -1668,9 +1672,9 @@ def build_story_chapter(cid, seq, vodur, cues):
     # the framing visibly reframes each cut. Maps self-animate, so they're skipped.
     k = 0
     while k < len(shots):
-        if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > 13.5:
+        if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > 11.0:
             base = list(shots[k]); d = durs[k]
-            npc = min(4, max(2, int(math.ceil(d / 12.5))))
+            npc = min(5, max(2, int(math.ceil(d / 10.0))))
             piece = d / npc; t0 = T[k]
             durs[k] = round(piece, 3)
             for j in range(1, npc):
@@ -1759,7 +1763,7 @@ def build_story_chapter(cid, seq, vodur, cues):
             # successive pieces of one still frame different regions: wide-ish,
             # then a detail left, a detail right, a tight top, so it reads as an
             # edit scanning the image rather than a concentric zoom
-            PAN = [(0.72, 0.50, 0.40), (0.56, 0.34, 0.44), (0.58, 0.68, 0.50), (0.48, 0.50, 0.32)]
+            PAN = [(0.72, 0.50, 0.40), (0.56, 0.34, 0.44), (0.58, 0.68, 0.50), (0.48, 0.50, 0.30), (0.62, 0.50, 0.66)]
             base, _j = ref.split("@pc"); is_punch = True
             pfrac, pcx, pcy = PAN[min(int(_j) - 1, len(PAN) - 1)]
         else:
