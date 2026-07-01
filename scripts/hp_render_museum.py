@@ -29,7 +29,7 @@ os.makedirs(OUTDIR, exist_ok=True)
 
 W, H, FPS = 1920, 1080, 24
 XFADE = 0.9            # crossfade between shots inside a chapter
-EDGE = 0.4            # fade from / to black at chapter and card edges
+EDGE = 0.22           # fade from / to black at chapter and card edges (short dip)
 
 # ---- palette (site tokens) ----
 CREAM = (245, 240, 232)
@@ -213,13 +213,20 @@ def placeholder_card(path, eyebrow, title, instruction):
 def lower_third(path, label, value):
     img = Image.new("RGBA", (W, H), (0,0,0,0))
     d = ImageDraw.Draw(img)
-    x, y = 130, 812
+    x, y = 130, 786   # lifted clear of the bottom-center caption lane
+    lf = sans(23, "semi"); vf = serif(52, "reg")
+    lab_w = tracked_width(d, label.upper(), lf, 6)
+    val_w = d.textlength(value, font=vf)
+    block_w = int(max(lab_w, val_w))
+    px, py = 22, 14
+    # a SOLID dark plate, sized to the text, so the chip stays legible on bright
+    # shots (light maps, parchment) like every other label and the caption box
+    d.rounded_rectangle([x-px, y-py, x+26+block_w+px, y+96+py], radius=4, fill=(9, 11, 10, 224))
     d.rectangle([x, y+6, x+6, y+92], fill=RUST)
-    draw_tracked(d, (x+26, y), label.upper(), sans(23, "semi"),
+    draw_tracked(d, (x+26, y), label.upper(), lf,
                  (CREAM[0],CREAM[1],CREAM[2],255), tracking=6,
                  shadow=(2,2,(0,0,0,160)))
-    d.text((x+26, y+38), value, font=serif(52, "reg"), fill=(CREAM[0],CREAM[1],CREAM[2],255))
-    # soft shadow for legibility on bright footage
+    d.text((x+26, y+38), value, font=vf, fill=(CREAM[0],CREAM[1],CREAM[2],255))
     return _drop(img, path)
 
 def credit_overlay(path, text):
@@ -471,7 +478,10 @@ def stat_scene(out, label, value, context, src="", dur=4.4, bg=FOREST):
         # dates, prices stay literal so they never odometer through wrong values)
         e2 = ease_out(elem(t, 0.28, 0.5))
         if e2 > 0:
-            shown = (prefix + _fmt_num(int(round(target * e2)), comma) + suffix) if count else value
+            # show the final value immediately (no count-up: it briefly rendered a
+            # wrong-but-plausible number like "544 mi" en route to 660). The slow
+            # camera push on the card carries the motion instead.
+            shown = (prefix + _fmt_num(target, comma) + suffix) if count else value
             rise = int((1 - e2) * 26)
             lyr, ox, oy = extruded_text(shown, serif(186, "semi"), CREAM, depth=17, alpha=255)
             b.alpha_composite(lyr, (cx - lyr.width//2, int(548 - lyr.height//2 + rise - dr)))
@@ -1094,7 +1104,11 @@ def video_shot(src, in_sec, dur, out, overlays=None, kb_idx=0, mode="drone",
     if trf and os.path.exists(trf):
         os.remove(trf)
 
-def xfade_chain(files, durs, out):
+def xfade_chain(files, durs, out, cuts=None):
+    # `cuts` = set of boundary indices k where the transition INTO file k is a HARD
+    # CUT (a ~2-frame snap) instead of a 0.9s dissolve, so the edit has real cuts
+    # and doesn't read as one continuous slideshow.
+    cuts = cuts or set()
     if len(files) == 1:
         shutil.copy(files[0], out); return
     inputs = []
@@ -1104,11 +1118,12 @@ def xfade_chain(files, durs, out):
     cur = "[0:v]"
     running = durs[0]
     for k in range(1, len(files)):
-        off = running - XFADE
+        xf = 0.08 if k in cuts else XFADE
+        off = running - xf
         nxt = f"[x{k}]" if k < len(files)-1 else "[vout]"
-        parts.append(f"{cur}[{k}:v]xfade=transition=fade:duration={XFADE}:offset={off:.3f}{nxt}")
+        parts.append(f"{cur}[{k}:v]xfade=transition=fade:duration={xf}:offset={off:.3f}{nxt}")
         cur = nxt
-        running = running + durs[k] - XFADE
+        running = running + durs[k] - xf
     run([*inputs, "-filter_complex", ";".join(parts), "-map", "[vout]",
          "-r", str(FPS), "-c:v","libx264","-preset","veryfast","-crf","20",
          "-pix_fmt","yuv420p", out])
@@ -1708,6 +1723,7 @@ def build_story_chapter(cid, seq, vodur, cues):
         lt = max(0.6, min(tc - T[idx], durs[idx] - 3.2))
         assign.setdefault(idx, []).append((lab, val, lt))
     files = []
+    cut_idx = set()  # file positions whose transition IN is a hard cut (reframes)
     for i, (kind, ref, anchor) in enumerate(shots):
         dur = durs[i]
         out = os.path.join(TMP, f"{cid}_st{i}.mp4")
@@ -1806,10 +1822,12 @@ def build_story_chapter(cid, seq, vodur, cues):
             map_highlight_clip(local(url), dur, out, MAP_HILITE[base], credit_text(base))
             files.append(out)
             continue
+        if is_punch:  # a reframe cut-in: snap to it, don't dissolve
+            cut_idx.add(len(files))
         render_shot(src_img, dur, chapter_image_grade(base), out,
                     kb_idx=(i + 5 if is_punch else i), overlays=overlays)
         files.append(out)
-    return files, durs
+    return files, durs, cut_idx
 
 if "--probe3d" in sys.argv:
     chart_bars_scene(os.path.join(TMP, "p_bars.mp4"), 6.6)
@@ -1932,9 +1950,9 @@ def render_deepdive(ddid):
             cues = json.load(open(cue_path))
         else:
             cues = make_cues(s["voiceover"], vodur)
-        shot_files, durs = build_story_chapter(fsid, {"assets": {}}, vodur, cues)
+        shot_files, durs, cuts = build_story_chapter(fsid, {"assets": {}}, vodur, cues)
         silent = os.path.join(TMP, f"dd_{fsid}_silent.mp4")
-        xfade_chain(shot_files, durs, silent)
+        xfade_chain(shot_files, durs, silent, cuts)
         chdur = probe(silent)
         ass = os.path.join(TMP, f"dd_{fsid}.ass"); write_ass(cues, ass)
         chap = os.path.join(TMP, f"dd_{fsid}_chap.mp4")
@@ -2006,7 +2024,7 @@ for ci, cid in enumerate(order, start=1):
 
     if cid in STORY:
         # history chapters: every shot synced to the narration
-        shot_files, durs = build_story_chapter(cid, seq, vodur, cues)
+        shot_files, durs, cuts = build_story_chapter(cid, seq, vodur, cues)
     else:
         # framing chapters: host / 360 / present cards, plus the intro montage
         segs = list(seq["segments"])
@@ -2055,7 +2073,7 @@ for ci, cid in enumerate(order, start=1):
             shot_files.append(out)
 
     silent = os.path.join(TMP, f"{cid}_silent.mp4")
-    xfade_chain(shot_files, durs, silent)
+    xfade_chain(shot_files, durs, silent, cuts)
     chdur = probe(silent)
     # subtitles, pinned to the bottom via ASS
     cues = seq.get("subtitles", [])
