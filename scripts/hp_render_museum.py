@@ -1592,13 +1592,16 @@ def anchor_time(cues, kw, vo, vodur, fallback=None):
         return (idx / len(vo)) * vodur
     return fallback
 
-def _center_crop(src, out, frac=0.66):
-    """Save a centered crop of `src` (keeping `frac` of each side) so a re-render
-    reads as a punch-in on the same still. Used to break over-long static holds."""
+def _region_crop(src, out, frac=0.62, cx=0.5, cy=0.42):
+    """Crop a sub-region of `src` (keeping `frac` of each side, its left/top edge
+    placed at normalized cx/cy), so successive pieces of one still frame DIFFERENT
+    parts of it (wide, then a detail left, then a detail right) and read as an
+    edit examining the artifact, not a concentric zoom on the same spot."""
     im = Image.open(src).convert("RGB")
     w, h = im.size
     cw, ch = int(w * frac), int(h * frac)
-    x, y = (w - cw) // 2, int((h - ch) * 0.42)  # bias slightly up toward faces
+    x = int((w - cw) * min(max(cx, 0.0), 1.0))
+    y = int((h - ch) * min(max(cy, 0.0), 1.0))
     im.crop((x, y, x + cw, y + ch)).save(out, quality=92)
 
 def build_story_chapter(cid, seq, vodur, cues):
@@ -1606,9 +1609,16 @@ def build_story_chapter(cid, seq, vodur, cues):
     cos = STORY[cid].get("callouts", [])
     vo = research.get(cid, {}).get("script", {}).get("voiceover", "") or ""
     n = len(shots)
-    # find the moment each shot is narrated, keep them in order
+    # find the moment each shot is narrated
     T = [anchor_time(cues, sh[2], vo, vodur, vodur * i / n) for i, sh in enumerate(shots)]
     T[0] = 0.0
+    # keep shots in NARRATED order. A storyboard that lists a shot out of VO order
+    # would otherwise clamp the tail together and pin the earlier still on screen
+    # for the whole gap (e.g. a portrait held 60s). Sort the tail by anchor time,
+    # carrying each shot with its T; shot 0 always opens the chapter.
+    order = sorted(range(1, n), key=lambda i: T[i])
+    shots = [shots[0]] + [shots[i] for i in order]
+    T = [T[0]] + [T[i] for i in order]
     for i in range(1, n):
         if T[i] < T[i - 1] + 2.8:
             T[i] = T[i - 1] + 2.8
@@ -1656,7 +1666,6 @@ def build_story_chapter(cid, seq, vodur, cues):
     # progressively tighter punch-ins), so no image sits static past ~13s (the
     # panel's "refined slideshow" / dead-hold complaint). No new image needed:
     # the framing visibly reframes each cut. Maps self-animate, so they're skipped.
-    PFRAC = [72, 58, 47]  # each extra piece crops tighter, so cuts never look identical
     k = 0
     while k < len(shots):
         if shots[k][0] == "img" and shots[k][1] not in MAP_HILITE and durs[k] > 13.5:
@@ -1665,8 +1674,7 @@ def build_story_chapter(cid, seq, vodur, cues):
             piece = d / npc; t0 = T[k]
             durs[k] = round(piece, 3)
             for j in range(1, npc):
-                fr = PFRAC[min(j - 1, len(PFRAC) - 1)]
-                shots.insert(k + j, [base[0], f"{base[1]}@p{fr}", base[2]])
+                shots.insert(k + j, [base[0], f"{base[1]}@pc{j}", base[2]])
                 durs.insert(k + j, round(piece, 3))
                 T.insert(k + j, t0 + piece * j)
             k += npc
@@ -1747,18 +1755,23 @@ def build_story_chapter(cid, seq, vodur, cues):
             PANO_SEGS.append({"cid": cid, "off": sum(durs[:i]) - i * XFADE, "dur": dur})
             files.append(out)
             continue
-        if "@p" in ref:
-            base, _frc = ref.split("@p"); is_punch = True; pfrac = max(0.40, int(_frc) / 100.0)
+        if "@pc" in ref:
+            # successive pieces of one still frame different regions: wide-ish,
+            # then a detail left, a detail right, a tight top, so it reads as an
+            # edit scanning the image rather than a concentric zoom
+            PAN = [(0.72, 0.50, 0.40), (0.56, 0.34, 0.44), (0.58, 0.68, 0.50), (0.48, 0.50, 0.32)]
+            base, _j = ref.split("@pc"); is_punch = True
+            pfrac, pcx, pcy = PAN[min(int(_j) - 1, len(PAN) - 1)]
         else:
-            base, is_punch, pfrac = ref, False, 0.66
+            base, is_punch = ref, False
         asset = seq["assets"].get(base)
         url = asset["url"] if asset else (credits[base]["file"] if base in credits else None)
         if not url:
             continue
         src_img = local(url)
-        if is_punch:  # render a center-cropped (zoomed) copy: a visible reframe cut
+        if is_punch:  # render a cropped region: a visible reframe to a new detail
             cp = os.path.join(TMP, f"{cid}_st{i}_punch.jpg")
-            _center_crop(src_img, cp, pfrac)
+            _region_crop(src_img, cp, pfrac, pcx, pcy)
             src_img = cp
         overlays = []
         ct = credit_text(base)
