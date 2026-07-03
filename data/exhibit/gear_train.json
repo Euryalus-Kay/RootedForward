@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "note": "The interlock animation unlocked by collecting all five machine cards. Captions hold in both drag directions.",
+  "links": [
+    { "from": "code", "to": "deed", "label": "The Code writes the Deed's language and hands it to every agent." },
+    { "from": "deed", "to": "map", "label": "The Deed's boundaries become the Map's grade lines." },
+    { "from": "map", "to": "contract", "label": "The Map starves lending and creates the Contract's captive market." },
+    { "from": "bulldozer", "to": "contract", "label": "The Bulldozer's displacements deliver that market its customers." },
+    { "from": "contract", "to": "code", "label": "The Contract's profits reward the pricing the Code enforced." }
+  ],
+  "lesson": "Drag any gear and all five turn. There was no first cause to fix in isolation."
+}

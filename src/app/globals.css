@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 /* projection-room: lets the film wrapper go edge-to-edge cinema in native fullscreen */
@@ -26,6 +26,22 @@
 
   --font-display: 'Fraunces', serif;
   --font-body: 'DM Sans', sans-serif;
+
+  /* The Ground Keeps Moving exhibit palette. Document-derived colors:
+     plat-book linen, carbon ink, HOLC survey blue, appraisal gold.
+     exh-red is SEMANTIC ONLY (extraction, exclusion, the D grade);
+     exh-green is used exactly once, for the CBL credit entry. */
+  --color-exh-linen: #EDE6D6;
+  --color-exh-linen-deep: #E2D8C2;
+  --color-exh-ink: #1C1A17;
+  --color-exh-ink-soft: #4A453D;
+  --color-exh-blue: #4A6B8A;
+  --color-exh-gold: #C9A227;
+  --color-exh-red: #B0322B;
+  --color-exh-green: #3E6B4F;
+
+  --font-plat: 'Archivo Narrow', 'Arial Narrow', sans-serif;
+  --font-ledger: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 :root {
@@ -407,4 +423,56 @@ h1, h2, h3, h4, h5, h6 {
     orphans: 3;
     widows: 3;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/*  The Ground Keeps Moving exhibit (Hyde Park). Scoped to             */
+/*  .exhibit-root so the document-derived look never leaks into the    */
+/*  rest of the site. Motion respects [data-motion="off"], set from    */
+/*  prefers-reduced-motion and from the chapter-level no-motion rule.  */
+/* ------------------------------------------------------------------ */
+.exhibit-root {
+  background: var(--color-exh-linen);
+  color: var(--color-exh-ink);
+  font-family: var(--font-body);
+}
+.exhibit-root .exh-serif { font-family: var(--font-display); }
+.exhibit-root .exh-plat { font-family: var(--font-plat); }
+.exhibit-root .exh-mono { font-family: var(--font-ledger); font-variant-numeric: tabular-nums; }
+
+/* the ink stamp used by DECLINED, ledger posts, and case verdicts */
+@keyframes exhStamp {
+  0% { opacity: 0; transform: scale(1.35) rotate(-4deg); }
+  55% { opacity: 1; transform: scale(0.96) rotate(-2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-2deg); }
+}
+.exhibit-root .exh-stamp { animation: exhStamp 240ms ease-out both; }
+.exhibit-root[data-motion="off"] .exh-stamp { animation: none; }
+
+/* brass lamp glow states on the Machine Status Board */
+@keyframes exhLampPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+}
+.exhibit-root .exh-lamp-armed { animation: exhLampPulse 2s ease-in-out infinite; }
+.exhibit-root[data-motion="off"] .exh-lamp-armed { animation: none; opacity: 0.6; }
+
+/* ledger entry settle */
+@keyframes exhLedgerIn {
+  from { opacity: 0; transform: translateY(-8px) rotate(-1.2deg) scale(1.06); }
+  to { opacity: 1; transform: none; }
+}
+.exhibit-root .exh-ledger-in { animation: exhLedgerIn 320ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+.exhibit-root[data-motion="off"] .exh-ledger-in { animation: none; }
+
+/* faint plat-paper grain, cheaper than the site paper-texture (no overlay node) */
+.exhibit-root .exh-paper {
+  background-color: var(--color-exh-linen);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* focus ring that reads on linen */
+.exhibit-root :focus-visible {
+  outline: 2px solid var(--color-exh-blue);
+  outline-offset: 2px;
 }

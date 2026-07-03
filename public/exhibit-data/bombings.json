@@ -1,0 +1,1030 @@
+{
+  "source": {
+    "title": "The Negro in Chicago",
+    "author": "Chicago Commission on Race Relations",
+    "year": 1922,
+    "url": "https://archive.org/details/negroinchicagost00chic",
+    "gutenberg": "https://www.gutenberg.org/ebooks/57343",
+    "publicDomain": true,
+    "cachedText": "data/exhibit-src/ccrr-negro-in-chicago.txt",
+    "excerptNote": "All excerpts are verbatim from the Gutenberg plain text with line-wrap whitespace collapsed. The generator re-verifies every excerpt against the cached text on each run."
+  },
+  "aggregates": {
+    "total": 58,
+    "periodStart": "1917-07-01",
+    "periodEnd": "1921-03-01",
+    "insideSquare": 32,
+    "square": {
+      "north": "41st St",
+      "south": "60th St",
+      "east": "Cottage Grove Ave",
+      "west": "State St"
+    },
+    "deaths": 2,
+    "damageUsd1921": 100000,
+    "arrests": 2,
+    "convictions": 0,
+    "excerpt": "From July 1, 1917, to March 1, 1921, the Negro housing problem was marked by fifty-eight bomb explosions. Two persons, both Negroes, were killed, a number of white and colored persons were injured, and the damage to property amounted to more than $100,000.",
+    "squareExcerpt": "Of these fifty-eight bombs, thirty-two were exploded within the square bounded by Forty-first and Sixtieth streets, Cottage Grove Avenue and State Street.",
+    "enforcementExcerpt": "With an average of one race bombing every twenty days for three years and eight months, the police and the state's attorney's office succeeded in apprehending but two persons suspected of participation in these acts of lawlessness.",
+    "convictionsExcerpts": [
+      "At the writing of this report, one year after the arrest, there has been no trial.",
+      "Yet in fifty-eight bombings of Negro homes only two suspects were ever arrested."
+    ],
+    "damageNote": "The text says damage amounted to more than $100,000; the figure is a floor, in 1921 dollars.",
+    "deathsNote": "Both persons killed were Black. One death is individually documented: a six-year-old child, per the illustration caption at 3365 Indiana Ave; the press chapter dates the fatal bombing May 1, 1919 and gives the address as 3401 Indiana Ave. Caption and press passage are treated as one event. The second death is not individually identified in the text.",
+    "progression": [
+      {
+        "asOf": "1919-02",
+        "window": "1918-02 to 1919-02",
+        "count": 11,
+        "excerpt": "During the time from February, 1918, to February, 1919, prior to the Chicago riot, there were eleven bombings in the city.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32385-32386"
+      },
+      {
+        "asOf": "1919-07-27",
+        "window": "1917-07-01 to riot start",
+        "count": 24,
+        "excerpt": "From July 1, 1917, to July 27, 1919, the day the riot began, twenty-four such bombs had been thrown.",
+        "locator": "Gutenberg #57343, ch. I \"The Chicago Riot\", background section",
+        "lines": "cached-file lines 1177-1179"
+      },
+      {
+        "asOf": "1919-07-27",
+        "window": "six weeks preceding the riot",
+        "count": 7,
+        "excerpt": "During the six weeks immediately preceding the Chicago race riot, there were seven racial bombings.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32388-32389"
+      },
+      {
+        "asOf": "1920-02",
+        "window": "homes of Negroes bombed to date",
+        "count": 21,
+        "excerpt": "apprehend those persons who have bombed the homes of twenty-one Negroes.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 3 \"Reaction of Negroes\" (Protective Circle constitution; homes of Negroes only)",
+        "lines": "cached-file lines 8601-8601"
+      },
+      {
+        "asOf": "1920-06-18",
+        "window": "1917-07-01 to 1920-06-18",
+        "count": 45,
+        "excerpt": "Of the forty-five racial bombings which took place in Chicago between July 1, 1917, and June 18, 1920, fourteen were not mentioned in any of the six large dailies of the city.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32180-32182"
+      },
+      {
+        "asOf": "1920-07-01",
+        "window": "1920-03-01 to 1920-07-01",
+        "count": 7,
+        "excerpt": "Seven bombings took place from March 1 to July 1.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32406-32407"
+      },
+      {
+        "asOf": "1920-12-31",
+        "window": "1917 to 1920",
+        "count": 52,
+        "excerpt": "depreciation in and near Negro areas; 52 house bombings, 1917-1920.",
+        "locator": "Gutenberg #57343, front matter, \"The Problem\" summary of materials",
+        "lines": "cached-file lines 881-882"
+      },
+      {
+        "asOf": "1921-02-14",
+        "window": "of recent record",
+        "count": 56,
+        "excerpt": "An editorial in the _Tribune_, February 14, 1921, condemning bombing made no reference to the fifty-six race bombings of recent record, but did refer to other bombing aimed at white citizens.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32423-32425"
+      },
+      {
+        "asOf": "1921-03-01",
+        "window": "full survey period",
+        "count": 58,
+        "excerpt": "From July 1, 1917, to March 1, 1921, the Negro housing problem was marked by fifty-eight bomb explosions. Two persons, both Negroes, were killed, a number of white and colored persons were injured, and the damage to property amounted to more than $100,000.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\"",
+        "lines": "cached-file lines 8033-8036"
+      }
+    ],
+    "contextQuotes": [
+      {
+        "key": "four-fifths",
+        "excerpt": "In the Hyde Park district, between Thirty-ninth and Forty-seventh streets and State Street and Cottage Grove Avenue, four-fifths of the bombings occurred.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\"",
+        "lines": "cached-file lines 8690-8692"
+      },
+      {
+        "key": "forty-families",
+        "excerpt": "Only two of the forty Negro families bombed have moved; the others have made repairs, secured private watchmen or themselves kept vigil for night bombers, and still occupy the properties.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 3 \"Reaction of Negroes\"",
+        "lines": "cached-file lines 8575-8577"
+      },
+      {
+        "key": "binga-six",
+        "excerpt": "Jesse Binga has been bombed six times but states he will not move.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 3 \"Reaction of Negroes\"",
+        "lines": "cached-file lines 8574-8575"
+      },
+      {
+        "key": "clarke-four",
+        "excerpt": "Mrs. Clarke was bombed four times; she still lives in the property and declares that she will not be driven out.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 3 \"Reaction of Negroes\"",
+        "lines": "cached-file lines 8572-8574"
+      },
+      {
+        "key": "binga-five-press",
+        "excerpt": "Jesse Binga, a Negro banker, was bombed five times.",
+        "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\"",
+        "lines": "cached-file lines 32242-32242"
+      },
+      {
+        "key": "advance-warning",
+        "excerpt": "News of threatened bombings in many cases was circulated well in advance of the actual occurrence. Negroes were warned of the exact date on which explosions would occur.",
+        "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\"",
+        "lines": "cached-file lines 8048-8050"
+      }
+    ]
+  },
+  "methods": {
+    "geocoding": "Deterministic street-grid method, no live geocoding services. Latitude from the south address number (800 units per mile south of 31st St), calibrated against the measured 39th St and 51st St edges of the Grand Boulevard community area in data/geo/ca.geojson. Longitude from a hand-built table of nominal grid units east of State St for the named north-south streets, anchored on the measured Cottage Grove Ave (800 E) community-area edge, at the measured degrees-per-mile scaled by cos(latitude). Vincennes Ave (diagonal) and Berkeley Ave (short irregular street) use fixed longitude anchors from the exhibit spec instead. Every point is stamped with its method and precisionMeters (address 120 m, block 250 m), validated by point-in-polygon against the community areas, and cross-checked against the extant Binga house at 5922 S King Dr. Points failing validation carry geo null.",
+    "incidentSelection": "One row per bombing that the 1922 text documents individually (commission narrative, quoted dated press item with a specific target, located pre-1919 cluster counts, or the captioned fatal bombing). Aggregate mentions without location or identifiable target (for example \"eight bombings in eight weeks\" or undated two-blast headlines) are not turned into rows, to avoid double counting; they are kept in aggregates and the extract notes. The 58-bombing total therefore exceeds the incident rows below by design.",
+    "targetTypeValues": [
+      "Black homeowner",
+      "Black tenants/residence",
+      "Black-owned business",
+      "Black organization/club",
+      "realtor/agent",
+      "banker",
+      "unknown"
+    ],
+    "dateFormat": "date is YYYY-MM-DD or YYYY-MM where the text supports it, null where the text gives none. dateApproximate true marks month-precision dates, dates computed from day-offset phrases, or press \"last night\" datelines."
+  },
+  "citywideFrame": {
+    "zoom": 11.2,
+    "centerLat": 41.845,
+    "centerLng": -87.675,
+    "width": 2560,
+    "height": 1440
+  },
+  "citywideFrameNote": null,
+  "incidents": [
+    {
+      "id": "b-berkeley-43rd-pre1919-1",
+      "date": null,
+      "dateApproximate": true,
+      "address": "Berkeley Ave just north of 43rd St",
+      "target": "property held by Black real estate agents",
+      "targetType": "realtor/agent",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Four of these were directed at properties merely held by Negro real estate men as agents, two of them in Berkeley Avenue just north of Forty-third Street, and near the lake.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8063-8065)",
+      "note": "Bombing 1 of 2 at this location. No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. Plotted mid-block at about 4270 S using the exhibit spec's Berkeley Ave longitude anchor.",
+      "geo": {
+        "lat": 41.81708,
+        "lng": -87.598,
+        "frame": {
+          "x": 1408.8,
+          "y": 782.7
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-berkeley-43rd-pre1919-2",
+      "date": null,
+      "dateApproximate": true,
+      "address": "Berkeley Ave just north of 43rd St",
+      "target": "property held by Black real estate agents",
+      "targetType": "realtor/agent",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Four of these were directed at properties merely held by Negro real estate men as agents, two of them in Berkeley Avenue just north of Forty-third Street, and near the lake.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8063-8065)",
+      "note": "Bombing 2 of 2 at this location. No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. Plotted mid-block at about 4270 S using the exhibit spec's Berkeley Ave longitude anchor.",
+      "geo": {
+        "lat": 41.81708,
+        "lng": -87.598,
+        "frame": {
+          "x": 1408.8,
+          "y": 782.7
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-vincennes-4500blk-pre1919-1",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4500 block Vincennes Ave",
+      "target": "buildings in the 4500 block of Vincennes Ave",
+      "targetType": "Black tenants/residence",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 1 of the remaining 4 of 5 in this block (the fifth is individually identified at 4529 Vincennes, May 1918). No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. The text adds: \"The four explosions in the 4500 block on Vincennes Avenue appear to have been deliberately aimed at the tenants. This block is at the center of the neighborhood most actively opposed to the coming in of Negroes.\" (The passage says five in one sentence and four in the next; both kept.)",
+      "geo": {
+        "lat": 41.81202,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 794
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-vincennes-4500blk-pre1919-2",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4500 block Vincennes Ave",
+      "target": "buildings in the 4500 block of Vincennes Ave",
+      "targetType": "Black tenants/residence",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 2 of the remaining 4 of 5 in this block (the fifth is individually identified at 4529 Vincennes, May 1918). No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. The text adds: \"The four explosions in the 4500 block on Vincennes Avenue appear to have been deliberately aimed at the tenants. This block is at the center of the neighborhood most actively opposed to the coming in of Negroes.\" (The passage says five in one sentence and four in the next; both kept.)",
+      "geo": {
+        "lat": 41.81202,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 794
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-vincennes-4500blk-pre1919-3",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4500 block Vincennes Ave",
+      "target": "buildings in the 4500 block of Vincennes Ave",
+      "targetType": "Black tenants/residence",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 3 of the remaining 4 of 5 in this block (the fifth is individually identified at 4529 Vincennes, May 1918). No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. The text adds: \"The four explosions in the 4500 block on Vincennes Avenue appear to have been deliberately aimed at the tenants. This block is at the center of the neighborhood most actively opposed to the coming in of Negroes.\" (The passage says five in one sentence and four in the next; both kept.)",
+      "geo": {
+        "lat": 41.81202,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 794
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-vincennes-4500blk-pre1919-4",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4500 block Vincennes Ave",
+      "target": "buildings in the 4500 block of Vincennes Ave",
+      "targetType": "Black tenants/residence",
+      "precision": "block",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 4 of the remaining 4 of 5 in this block (the fifth is individually identified at 4529 Vincennes, May 1918). No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. The text adds: \"The four explosions in the 4500 block on Vincennes Avenue appear to have been deliberately aimed at the tenants. This block is at the center of the neighborhood most actively opposed to the coming in of Negroes.\" (The passage says five in one sentence and four in the next; both kept.)",
+      "geo": {
+        "lat": 41.81202,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 794
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-wabash-4200-pre1919-1",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4200 Wabash Ave",
+      "target": "property at 4200 Wabash Ave",
+      "targetType": "unknown",
+      "precision": "address",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 1 of 2 at this address. No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917.",
+      "geo": {
+        "lat": 41.81835,
+        "lng": -87.62493,
+        "frame": {
+          "x": 1363.8,
+          "y": 779.8
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-wabash-4200-pre1919-2",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4200 Wabash Ave",
+      "target": "property at 4200 Wabash Ave",
+      "targetType": "unknown",
+      "precision": "address",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "Bombing 2 of 2 at this address. No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917.",
+      "geo": {
+        "lat": 41.81835,
+        "lng": -87.62493,
+        "frame": {
+          "x": 1363.8,
+          "y": 779.8
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-indiana-4732-pre1919",
+      "date": null,
+      "dateApproximate": true,
+      "address": "4732 Indiana Ave",
+      "target": "property at 4732 Indiana Ave",
+      "targetType": "unknown",
+      "precision": "address",
+      "sourceType": "aggregate-cluster",
+      "excerpt": "Five were in the 4500 block on Vincennes Avenue, two at 4200 Wabash Avenue, and one at 4732 Indiana Avenue.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8065-8067)",
+      "note": "No individual date given; the passage covers bombings before 1919, and the survey period opens July 1, 1917. Distinct from the April 1919 bombing of the Wimes & Lassiter office at 4722 Indiana Ave; the two addresses are one lot apart in the text and both are kept as written.",
+      "geo": {
+        "lat": 41.80872,
+        "lng": -87.62117,
+        "frame": {
+          "x": 1370.1,
+          "y": 801.4
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-motley-1917-07-01",
+      "date": "1917-07-01",
+      "dateApproximate": false,
+      "address": "5230 Maryland Ave",
+      "target": "S. P. Motley home (Black family, owners since 1913)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "damageUsd": 1000,
+      "excerpt": "On July 1, 1917, without warning or threat, a bomb was exploded in the vestibule of the house, and the front of the building was blown away. The damage amounted to $1,000.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8131-8134)",
+      "note": "Address from the same passage. \"In 1913 S. P. Motley, Negro, and his wife purchased a building at 5230 Maryland Avenue\". This is the earliest bombing in the 58-bombing survey period.",
+      "geo": {
+        "lat": 41.79972,
+        "lng": -87.60541,
+        "frame": {
+          "x": 1396.4,
+          "y": 821.6
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-vincennes-4529-1918-05-25",
+      "date": "1918-05-25",
+      "dateApproximate": true,
+      "address": "4529 Vincennes Ave",
+      "target": "building occupied by Black families (front porch wrecked)",
+      "targetType": "Black tenants/residence",
+      "precision": "address",
+      "sourceType": "press-quoted",
+      "excerpt": "A bomb exploded in the front of 4529 Vincennes Avenue early this morning, wrecked the front porch of the structure and broke windows for a block around. The building is occupied by Negro families. White residents objected to the Negroes.",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Herald-Examiner, May 25, 1918) (cached-file lines 32347-32350)",
+      "note": "\"Early this morning\" relative to the May 25, 1918 paper. Counted as one of the five pre-1919 bombings in the 4500 block of Vincennes Ave reported in ch. IV; the remaining four are carried as block-precision rows.",
+      "geo": {
+        "lat": 41.8124,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 793.2
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-agent-negro-1919-01",
+      "date": "1919-01",
+      "dateApproximate": true,
+      "address": null,
+      "target": "Black real estate agent (unnamed)",
+      "targetType": "realtor/agent",
+      "precision": "none",
+      "sourceType": "commission-narrative",
+      "excerpt": "In January, 1919, a white and a Negro real estate agent were bombed; in March, Jesse Binga's real estate office at 4724 State Street and an apartment at 4041 Calumet Avenue were bombed.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8074-8077)",
+      "note": "No location given in the text.",
+      "geo": null
+    },
+    {
+      "id": "b-agent-white-1919-01",
+      "date": "1919-01",
+      "dateApproximate": true,
+      "address": null,
+      "target": "white real estate agent (unnamed)",
+      "targetType": "realtor/agent",
+      "precision": "none",
+      "sourceType": "commission-narrative",
+      "excerpt": "In January, 1919, a white and a Negro real estate agent were bombed; in March, Jesse Binga's real estate office at 4724 State Street and an apartment at 4041 Calumet Avenue were bombed.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8074-8077)",
+      "note": "No location given in the text.",
+      "geo": null
+    },
+    {
+      "id": "b-binga-office-1919-03",
+      "date": "1919-03",
+      "dateApproximate": true,
+      "address": "4724 State St",
+      "target": "Jesse Binga real estate office (first Binga bombing)",
+      "targetType": "Black-owned business",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "In January, 1919, a white and a Negro real estate agent were bombed; in March, Jesse Binga's real estate office at 4724 State Street and an apartment at 4041 Calumet Avenue were bombed.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8074-8077)",
+      "note": "Corroborated by quoted press items of March 19-20, 1919 (Tribune \"BINGA PROPERTY WAS WRECKED\"). The commission adds that \"The first bombing of Binga does not appear to have been the result of resentment of neighbors in the vicinity of his home, for it was his office on State Street that was bombed.\"",
+      "geo": {
+        "lat": 41.80887,
+        "lng": -87.62602,
+        "frame": {
+          "x": 1361.9,
+          "y": 801.1
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-calumet-4041-1919-03",
+      "date": "1919-03",
+      "dateApproximate": true,
+      "address": "4041 Calumet Ave",
+      "target": "apartment building",
+      "targetType": "Black tenants/residence",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "In January, 1919, a white and a Negro real estate agent were bombed; in March, Jesse Binga's real estate office at 4724 State Street and an apartment at 4041 Calumet Avenue were bombed.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8074-8077)",
+      "note": "Occupant not named in the text.",
+      "geo": {
+        "lat": 41.82122,
+        "lng": -87.61768,
+        "frame": {
+          "x": 1375.9,
+          "y": 773.4
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-wimes-lassiter-1919-04",
+      "date": "1919-04",
+      "dateApproximate": true,
+      "address": "4722 Indiana Ave",
+      "target": "Wimes & Lassiter, Black real estate dealers (office)",
+      "targetType": "Black-owned business",
+      "precision": "address",
+      "sourceType": "press-quoted",
+      "excerpt": "a narrative of a racial bombing at 4722 Indiana Avenue where Wimes & Lassiter, Negro real-estate dealers, had an office.",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Herald-Examiner, April 20, 1919) (cached-file lines 32248-32250)",
+      "note": "The realty-office bombing of April 1919 referenced in the housing chapter (\"In April there were two more bombings, one of a realty office\").",
+      "geo": {
+        "lat": 41.80891,
+        "lng": -87.62117,
+        "frame": {
+          "x": 1370.1,
+          "y": 801
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-ellis-4212-1919-04",
+      "date": "1919-04-07",
+      "dateApproximate": true,
+      "address": "4212 Ellis Ave",
+      "target": "flat building occupied by Black families",
+      "targetType": "Black tenants/residence",
+      "precision": "address",
+      "sourceType": "press-quoted",
+      "excerpt": "A RACE WAR IS GENERALLY BELIEVED TO HAVE BEEN BEHIND A BOMB EXPLOSION EARLY THIS MORNING AT 4212 ELLIS AVE.",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Herald-Examiner, April 7, 1919) (cached-file lines 32226-32228)",
+      "note": "Same-day headlines quoted from the Journal (\"RACE HATRED BOMB HURLS SIX FAMILIES FROM BED\"), Post and Tribune describe the same April 7, 1919 explosion in a flat building. Consistent with the housing chapter's \"In April there were two more bombings, one of a realty office.\"",
+      "geo": {
+        "lat": 41.81813,
+        "lng": -87.60176,
+        "frame": {
+          "x": 1402.5,
+          "y": 780.3
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-indiana-3365-child-killed",
+      "date": "1919-05-01",
+      "dateApproximate": false,
+      "address": "3365 Indiana Ave (press chapter: 3401 Indiana Ave)",
+      "target": "building occupied by Black residents; a six-year-old child killed",
+      "targetType": "Black tenants/residence",
+      "precision": "block",
+      "sourceType": "illustration-caption",
+      "deaths": 1,
+      "excerpt": "This bomb was thrown into a building at 3365 Indiana Avenue, occupied by Negroes. A six-year-old Negro child was killed.",
+      "excerpt2": "except in the case of a bombing at 3401 Indiana Avenue, where a child was killed May 1, 1919. The _Chicago Tribune_ spoke of this death as an incident of that bombing.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", illustration caption \"Damage Done by a Bomb\" (cached-file lines 8442-8443)",
+      "note": "The commission's illustration caption places the fatal bombing at 3365 Indiana Ave; its press chapter dates it May 1, 1919 and gives 3401 Indiana Ave, one block north. Treated as one event, plotted at the caption address with block precision because of the address conflict. One of the two deaths in the aggregate; the second death is not individually identified anywhere in the text.",
+      "geo": {
+        "lat": 41.83345,
+        "lng": -87.62117,
+        "frame": {
+          "x": 1370.1,
+          "y": 745.9
+        },
+        "method": "street-grid",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-harrison-1919-05-17",
+      "date": "1919-05-17",
+      "dateApproximate": false,
+      "address": "4708 Grand Blvd",
+      "target": "Mrs. Gertrude Harrison home (Black woman living alone with her children)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "The following night, May 17, her house was bombed while the patrolman was \"punching his box\" two blocks away and the special watchman was at the rear.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8425-8427)",
+      "note": "Year 1919 from the same passage (\"In March, 1919, she moved in\"; warning received May 16). Corroborated by the quoted Tribune headline of May 18, 1919, \"NEGRO FAMILY ON GRAND BOULEVARD OBJECT OF BOMB\".",
+      "geo": {
+        "lat": 41.80916,
+        "lng": -87.61632,
+        "frame": {
+          "x": 1378.2,
+          "y": 800.5
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-harrison-1919-05-18",
+      "date": "1919-05-18",
+      "dateApproximate": false,
+      "address": "4708 Grand Blvd",
+      "target": "Mrs. Gertrude Harrison home (second attack, bomb thrown onto roof)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "The following night a bomb was thrown on the roof of the house from the window of a vacant flat in the adjoining apartment house.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8428-8430)",
+      "note": "\"The following night\" after May 17, 1919, while a police detail guarded front and rear.",
+      "geo": {
+        "lat": 41.80916,
+        "lng": -87.61632,
+        "frame": {
+          "x": 1378.2,
+          "y": 800.5
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-motley-adjacent-1919-06-04",
+      "date": "1919-06-04",
+      "dateApproximate": false,
+      "address": "house adjacent to 5230 Maryland Ave",
+      "target": "house adjacent to the Motley home (rumored Motley purchase)",
+      "targetType": "Black homeowner",
+      "precision": "block",
+      "sourceType": "commission-narrative",
+      "excerpt": "At 4:00 A.M. June 4, 1919, a dynamite bomb was exploded under the front of the house adjacent and tore up its stone front.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8142-8144)",
+      "note": "Plotted at 5230 Maryland with block precision; the text says only \"the house adjacent\".",
+      "geo": {
+        "lat": 41.79972,
+        "lng": -87.60541,
+        "frame": {
+          "x": 1396.4,
+          "y": 821.6
+        },
+        "method": "street-grid",
+        "precisionMeters": 250
+      }
+    },
+    {
+      "id": "b-binga-office-1919-11-12",
+      "date": "1919-11-12",
+      "dateApproximate": false,
+      "address": "4724 State St",
+      "target": "Jesse Binga real estate office (left in ruins)",
+      "targetType": "Black-owned business",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "On November 12, 1919, an automobile rolled by his realty office and a bomb was tossed from it. It left the office in ruins.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8186-8187)",
+      "note": "Office address from the same passage. \"his real estate office at 4724 State Street\".",
+      "geo": {
+        "lat": 41.80887,
+        "lng": -87.62602,
+        "frame": {
+          "x": 1361.9,
+          "y": 801.1
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-binga-home-1919-12-03",
+      "date": "1919-12-03",
+      "dateApproximate": true,
+      "address": "5922 South Park Ave",
+      "target": "Jesse Binga residence (bomb under front steps, failed to explode)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "Twenty-one days later an automobile drew up in front of Binga's home at 5922 South Park Avenue, and its occupants put a bomb under the front steps. It failed to explode.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8194-8196)",
+      "note": "Date computed from the text's \"twenty-one days later\" after November 12, 1919.",
+      "geo": {
+        "lat": 41.7872,
+        "lng": -87.6159,
+        "frame": {
+          "x": 1378.9,
+          "y": 849.7
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-coleman-1919-12-26",
+      "date": "1919-12-26",
+      "dateApproximate": false,
+      "address": null,
+      "target": "J. H. Coleman home (white real estate man who had sold a house to a Black buyer)",
+      "targetType": "realtor/agent",
+      "precision": "none",
+      "sourceType": "commission-narrative",
+      "excerpt": "On December 26 the home of J. H. Coleman, a white real estate man who had sold a house to a Negro, was bombed. The transaction was not public, and occupancy was not to take place for five months.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8103-8105)",
+      "note": "No address given in the text. Year 1919 from the surrounding passage.",
+      "geo": null
+    },
+    {
+      "id": "b-binga-home-1919-12-27",
+      "date": "1919-12-27",
+      "dateApproximate": false,
+      "address": "5922 South Park Ave",
+      "target": "Jesse Binga residence (porch torn up)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "On December 27 the home of Jesse Binga, a Negro real estate man, was bombed.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8105-8106)",
+      "note": "The narrative account (\"Twenty-five days later the bombers reappeared and left a third bomb. It tore up the porch of Binga's home.\") implies about December 28; the text's explicit date of December 27 is used. The quoted Herald-Examiner headline of December 28, 1919, \"RACE WAR BOMB INJURES WOMAN\", may report this explosion.",
+      "geo": {
+        "lat": 41.7872,
+        "lng": -87.6159,
+        "frame": {
+          "x": 1378.9,
+          "y": 849.7
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-clarke-1920-01-05",
+      "date": "1920-01-05",
+      "dateApproximate": false,
+      "address": "4404-4406 Grand Blvd",
+      "target": "Mrs. Mary Byron Clarke home (Black real estate dealer)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "damageUsd": 3360,
+      "excerpt": "On January 5, 1920, the house was bombed. The explosion caused $3,360 worth of damage.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8259-8260)",
+      "note": "Mrs. Clarke's own statement in the same passage puts the first damage at about $500 and the second at $3,360; the narrative assigns $3,360 to this first explosion. Both readings kept. The Post of January 6, 1920 reported \"A bomb early today damaged the residence at 4404 Grand Boulevard which was said to have been a Negro 'sniping-post' during the race riot last summer\"; the commission rebuts the sniping-post claim directly.",
+      "geo": {
+        "lat": 41.81466,
+        "lng": -87.61632,
+        "frame": {
+          "x": 1378.2,
+          "y": 788.1
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-austin-1920-01-06",
+      "date": "1920-01-06",
+      "dateApproximate": false,
+      "address": "North Side (no street address given)",
+      "target": "W. B. Austin home (white banker and real estate man who financed and sold to Black buyers)",
+      "targetType": "banker",
+      "precision": "none",
+      "sourceType": "commission-narrative",
+      "excerpt": "One week later, on January 6, came the bombing of W. B. Austin, on the North Side.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\" (cached-file lines 8106-8107)",
+      "note": "The deterministic South Side street-grid method cannot place a North Side incident without a street address; geo left null. Austin had been denounced by name in the Property Owners' Journal of December 13, 1919.",
+      "geo": null
+    },
+    {
+      "id": "b-appomattox-1920-02",
+      "date": "1920-02",
+      "dateApproximate": true,
+      "address": null,
+      "target": "building recently sold to the Appomattox Club (Black organization)",
+      "targetType": "Black organization/club",
+      "precision": "none",
+      "sourceType": "press-quoted",
+      "excerpt": "BUILDING RECENTLY SOLD TO APPOMATTOX CLUB, A NEGRO ORGANIZATION",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Daily News, February 10, 1920) (cached-file lines 32314-32314)",
+      "note": "Headline quoted by the commission among press reports of race bombings. No address given in the text.",
+      "geo": null
+    },
+    {
+      "id": "b-woodfolk-1920-02-01",
+      "date": "1920-02-01",
+      "dateApproximate": false,
+      "address": "4722 Calumet Ave",
+      "target": "R. W. Woodfolk flat building (Black banker, Merchants and Peoples' Bank)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "damageUsd": 1000,
+      "excerpt": "On the evening of February 1, 1920, a person with keys to the building locked the tenants in their apartments, sprung the locks of the doors leading to the street, and planted a bomb in the hallway.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8237-8240)",
+      "note": "Address from the same passage. \"purchased a flat at 4722 Calumet Avenue\". Corroborated by the quoted Daily News item of February 2, 1920.",
+      "geo": {
+        "lat": 41.80891,
+        "lng": -87.61768,
+        "frame": {
+          "x": 1375.9,
+          "y": 801
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-clarke-1920-02-12",
+      "date": "1920-02-12",
+      "dateApproximate": false,
+      "address": "4404-4406 Grand Blvd",
+      "target": "Mrs. Mary Byron Clarke home (dynamite bomb through plate-glass door)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "The building was again bombed February 12, 1920, this time with a dynamite bomb thrown through the plate-glass door in the hallway from a passing automobile.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8260-8262)",
+      "note": "The quoted Daily News item of February 13, 1920, \"TWO BOMBS TOSSED\", is consistent with this attack.",
+      "geo": {
+        "lat": 41.81466,
+        "lng": -87.61632,
+        "frame": {
+          "x": 1378.2,
+          "y": 788.1
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-binga-home-1920-02-28",
+      "date": "1920-02-28",
+      "dateApproximate": false,
+      "address": "5922 South Park Ave",
+      "target": "Jesse Binga residence (bomb tossed into yard during police guard change, fuse went out)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "In this unguarded interval an automobile swung around the corner, and as it passed the Binga home a man leaned out and tossed a bomb into the yard. The bomb lit in a puddle of water and the fuse went out.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8210-8213)",
+      "note": "\"On the night of February 28\" in the same passage; year 1920 from the narrative sequence.",
+      "geo": {
+        "lat": 41.7872,
+        "lng": -87.6159,
+        "frame": {
+          "x": 1378.9,
+          "y": 849.7
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-hyers-1920-03-05",
+      "date": "1920-03-05",
+      "dateApproximate": true,
+      "address": null,
+      "target": "George A. Hyers property",
+      "targetType": "unknown",
+      "precision": "none",
+      "sourceType": "commission-narrative",
+      "motiveDisputed": true,
+      "excerpt": "this paper took pains to explain that the bombing of George A. Hyers' property on March 5 was an outgrowth of labor troubles and not of a property owners' organization recently formed in this community.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 2 \"Reaction of Whites in Hyde Park\" (cached-file lines 8541-8544)",
+      "note": "The Kenwood and Hyde Park Property Owners' Association paper attributed this bombing to labor troubles; the quoted Journal headline of March 6, 1920, \"ATTRIBUTE BOMB TO SOUTH SIDE RACE WAR\", suggests contemporaries read it as racial. Motive disputed within the text; no address given. Year from surrounding 1920 context.",
+      "geo": null
+    },
+    {
+      "id": "b-fox-1920-03-10",
+      "date": "1920-03-10",
+      "dateApproximate": false,
+      "address": "442 E 45th St",
+      "target": "Moses Fox home (white real estate man who sold his house to Black buyers)",
+      "targetType": "realtor/agent",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "damageUsd": 1000,
+      "excerpt": "At 7:30 that evening an automobile was seen to drive slowly past his home three times, stopping each time just east of the building. On the last trip a man alighted, and deposited a long-fuse bomb in the vestibule.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8163-8166)",
+      "note": "Date and address from the same passage. \"Moses Fox, white, connected with a 'Loop' real estate firm, lived at 442 East Forty-fifth Street\"; the call warning him came March 10, 1920, and the bomb was placed at 7:30 that evening. The quoted Herald-Examiner headline of March 11, 1920, \"SOUTH SIDE HOUSE SOLD TO NEGROES BOMBED\", matches.",
+      "geo": {
+        "lat": 41.81292,
+        "lng": -87.6153,
+        "frame": {
+          "x": 1379.9,
+          "y": 792
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-jackson-48thpl-1920-04-03",
+      "date": "1920-04-03",
+      "dateApproximate": true,
+      "address": "423 E 48th Pl",
+      "target": "four-story flat building owned by Robert B. Jackson (Black owner-occupant)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "press-quoted",
+      "excerpt": "A black powder bomb was exploded last night in front of the vestibule of a four-story flat building 423 E. 48th Place, occupied by Negroes. The building is owned by Robert B. Jackson, who lives on the second floor.",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Herald-Examiner, April 4, 1920) (cached-file lines 32333-32336)",
+      "note": "Quoted in full by the commission as a typical press report. \"Last night\" relative to the April 4, 1920 article. 48th Place taken as 4850 S in grid units (midway between 48th and 49th).",
+      "geo": {
+        "lat": 41.80659,
+        "lng": -87.61576,
+        "frame": {
+          "x": 1379.1,
+          "y": 806.2
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-clarke-1920-04-13",
+      "date": "1920-04-13",
+      "dateApproximate": false,
+      "address": "4404-4406 Grand Blvd",
+      "target": "Mrs. Mary Byron Clarke home (third bombing, despite two special policemen)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "Tuesday evening, April 13, 1920, a third bomb was exploded in spite of the presence of the two special policemen.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8274-8275)",
+      "note": "A later passage states Mrs. Clarke was bombed four times in all; the fourth attack is not individually described in the text.",
+      "geo": {
+        "lat": 41.81466,
+        "lng": -87.61632,
+        "frame": {
+          "x": 1378.2,
+          "y": 788.1
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-hubbard-1920-04-25",
+      "date": "1920-04-25",
+      "dateApproximate": false,
+      "address": "4331 Vincennes Ave",
+      "target": "Crede Hubbard three-flat building (Black owner; pressured by the Hyde Park-Kenwood Association)",
+      "targetType": "Black homeowner",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "Following is part of Hubbard's statement to the police immediately after the bombing of his home at 4331 Vincennes Avenue on the night of April 25, 1920",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8310-8313)",
+      "note": "A letter quoted inside Hubbard's statement gives the address as 4332 Vincennes; the commission's own heading address of 4331 is used. His family was home; two boys slept ten feet from the blast.",
+      "geo": {
+        "lat": 41.81598,
+        "lng": -87.6135,
+        "frame": {
+          "x": 1382.9,
+          "y": 785.2
+        },
+        "method": "street-grid+anchor",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-club-1920-05",
+      "date": "1920-05",
+      "dateApproximate": true,
+      "address": null,
+      "target": "clubhouse of a Black club of 600 members (porch wrecked)",
+      "targetType": "Black organization/club",
+      "precision": "none",
+      "sourceType": "press-quoted",
+      "motiveDisputed": true,
+      "excerpt": "NEW RACE WAR WRECKS PORCH OF NEGROES' CLUB. THE CLUB IS COMPOSED OF 600 COLORED PERSONS",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Tribune and Herald-Examiner, May 25, 1920) (cached-file lines 32212-32213)",
+      "note": "The Herald-Examiner headline of the same day read \"NEGRO CLUB IS BOMBED. SOME BLAME POLITICS\". No address given in the text.",
+      "geo": null
+    },
+    {
+      "id": "b-binga-home-1920-06-18",
+      "date": "1920-06-18",
+      "dateApproximate": false,
+      "address": "5922 South Park Ave",
+      "target": "Jesse Binga residence (front of house nearly demolished)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "damageUsd": 4000,
+      "excerpt": "A police guard was still watching the house on the night of June 18, 1920 when the bombing car appeared again.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8218-8219)",
+      "note": "\"The explosion that followed almost demolished the front of the house and smashed windows throughout the block. This last explosion damaged the home to the extent of $4,000.\" Binga then offered a $1,000 reward. The press chapter calls this the fifth bombing directed against Mr. Binga; three papers quoted him as saying \"This is the limit; I am going\", words he denied. His actual statement: \"I will not run. The race is at stake and not myself.\"",
+      "geo": {
+        "lat": 41.7872,
+        "lng": -87.6159,
+        "frame": {
+          "x": 1378.9,
+          "y": 849.7
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-binga-home-1920-11-23",
+      "date": "1920-11-23",
+      "dateApproximate": false,
+      "address": "5922 South Park Ave",
+      "target": "Jesse Binga residence (sixth attack on Binga counted by the commission)",
+      "targetType": "banker",
+      "precision": "address",
+      "sourceType": "commission-narrative",
+      "excerpt": "On November 23 Binga was bombed again. This time the bomb damaged his neighbors more seriously than it did Binga's property.",
+      "locator": "Gutenberg #57343, ch. IV \"The Negro Population of Chicago\", sec. III \"Bombings\", subsec. 1 \"Typical Bombings\" (cached-file lines 8228-8230)",
+      "note": "Year 1920 from the narrative sequence (paragraph follows the June 18, 1920 attack).",
+      "geo": {
+        "lat": 41.7872,
+        "lng": -87.6159,
+        "frame": {
+          "x": 1378.9,
+          "y": 849.7
+        },
+        "method": "street-grid",
+        "precisionMeters": 120
+      }
+    },
+    {
+      "id": "b-apartment-1921-02",
+      "date": "1921-02",
+      "dateApproximate": true,
+      "address": null,
+      "target": "three-story apartment building (dynamite race bomb, menace to life)",
+      "targetType": "unknown",
+      "precision": "none",
+      "sourceType": "press-quoted",
+      "excerpt": "At the bottom of the adjoining column were four inches devoted to a dynamite race bomb which damaged a three-story apartment and involved menace to life.",
+      "locator": "Gutenberg #57343, ch. X \"Public Opinion in Race Relations (continued)\", \"Bombing publicity\" (Tribune, February 11, 1921) (cached-file lines 32417-32419)",
+      "note": "The commission contrasts the four inches given this bombing with seventeen front-page inches for theater \"odor bombs\" the same day. No address given. The latest individually documented bombing in the survey period, which closes March 1, 1921.",
+      "geo": null
+    }
+  ]
+}

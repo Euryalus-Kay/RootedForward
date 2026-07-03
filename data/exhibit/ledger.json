@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "note": "Entries post as chapters conclude. Values come from the fact registry only; the sign marks debits against the community and the single credit. Entries never carry independent numeric values.",
+  "entries": [
+    { "entryId": "land-taken", "chapter": "ch1", "year": 1833, "label": "Potawatomi land ceded under force", "factRef": "land.treaty_1833", "sign": "debit" },
+    { "entryId": "fair-stock", "chapter": "ch2", "year": 1893, "label": "Housing stock built for a six month fair", "factRef": "fair.building_boom", "sign": "note" },
+    { "entryId": "club-organizes", "chapter": "ch3", "year": 1908, "label": "A neighborhood organizes to remove its neighbors", "factRef": "colorline.club_founded", "sign": "debit" },
+    { "entryId": "red-summer", "chapter": "ch4", "year": 1919, "label": "Dead in the riot, families burned out", "factRefs": ["bombings.riot_1919_dead", "bombings.riot_homeless_1000"], "sign": "debit" },
+    { "entryId": "covenant-armor", "chapter": "ch5", "year": 1927, "label": "Residential Chicago closed by covenant", "factRef": "covenants.coverage_claim", "sign": "debit" },
+    { "entryId": "redlined", "chapter": "ch6", "year": 1939, "label": "Every Black neighborhood graded hazardous, federal credit denied", "factRef": "redlining.holc_survey_chicago", "sign": "debit" },
+    { "entryId": "covenants-fall", "chapter": "ch7", "year": 1948, "label": "Covenants lose the courts, the containment finds new tools", "factRef": "cases.shelley_1948", "sign": "note" },
+    { "entryId": "renewal-removals", "chapter": "ch8", "year": 1962, "label": "Families removed by the renewal", "factRefs": ["renewal.families_displaced", "renewal.buildings_638", "renewal.black_pop_drop_40pct"], "sign": "debit" },
+    { "entryId": "color-tax", "chapter": "ch9", "year": 1958, "label": "The color tax, per contract-buying family", "factRefs": ["contracts.avg_overpayment_71000", "contracts.share_75_95"], "sign": "debit" },
+    { "entryId": "cbl-credit", "chapter": "ch10", "year": 1970, "label": "Contract Buyers League renegotiations", "factRefs": ["cbl.renegotiated_155_by_1971", "cbl.savings"], "sign": "credit" },
+    { "entryId": "closing-totals", "chapter": "ch11", "year": 2026, "label": "Stripped from Black Chicago, gap outstanding", "factRefs": ["contracts.extraction_3_4b", "present.scf_white_285000", "present.scf_black_44900"], "sign": "debit" }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "note": "Manifest of exhibit components allowed to render facts with tier attributed. Such facts render only inside the visible attributed-claim frame. Referenced by scripts/exhibit-audit-facts.mjs invariant E.",
+  "attributionFramed": []
+}

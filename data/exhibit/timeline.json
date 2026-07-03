@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "spanStart": 1832,
+  "spanEnd": 2026,
+  "redSpan": { "start": 1921, "end": 1968, "note": "The years the machinery ran at full power." },
+  "nodes": [
+    { "id": "n1832", "year": 1832, "title": "Black Hawk War", "chapterId": "ch1", "factRef": "land.blackhawk_1832" },
+    { "id": "n1833", "year": 1833, "title": "Treaty of Chicago", "chapterId": "ch1", "factRef": "land.treaty_1833" },
+    { "id": "n1853", "year": 1853, "title": "Cornell buys the lakefront", "chapterId": "ch1", "factRef": "land.cornell_purchase_1853" },
+    { "id": "n1889", "year": 1889, "title": "Hyde Park joins Chicago", "chapterId": "ch1", "factRef": "formation.annexation_1889" },
+    { "id": "n1893", "year": 1893, "title": "The White City", "chapterId": "ch2", "factRef": "fair.opened_1893" },
+    { "id": "n1908", "year": 1908, "title": "The Protective Club", "chapterId": "ch3", "factRef": "colorline.club_founded", "machineIds": ["code"] },
+    { "id": "n1917", "year": 1917, "title": "Buchanan v. Warley", "chapterId": "ch3", "factRef": "cases.buchanan_1917" },
+    { "id": "n1919", "year": 1919, "title": "Red Summer", "chapterId": "ch4", "factRef": "bombings.riot_1919_dead" },
+    { "id": "n1921", "year": 1921, "title": "The board draws the line", "chapterId": "ch5", "factRef": "code.cireb_expulsion_1921", "machineIds": ["code"] },
+    { "id": "n1924", "year": 1924, "title": "The Code goes national", "chapterId": "ch5", "factRef": "code.nareb_article34_1924", "machineIds": ["code"] },
+    { "id": "n1926", "year": 1926, "title": "Corrigan v. Buckley", "chapterId": "ch5", "factRef": "cases.corrigan_1926", "machineIds": ["deed"] },
+    { "id": "n1934", "year": 1934, "title": "The FHA is born", "chapterId": "ch6", "factRef": "redlining.fha_1934", "machineIds": ["map"] },
+    { "id": "n1940", "year": 1940, "title": "Hansberry v. Lee", "chapterId": "ch7", "factRef": "cases.hansberry_1940" },
+    { "id": "n1948", "year": 1948, "title": "Shelley v. Kraemer", "chapterId": "ch7", "factRef": "cases.shelley_1948", "machineIds": ["deed"] },
+    { "id": "n1952", "year": 1952, "title": "The Commission forms", "chapterId": "ch8", "factRef": "renewal.secc_1952", "machineIds": ["bulldozer"] },
+    { "id": "n1955", "year": 1955, "title": "First building falls", "chapterId": "ch8", "factRef": "renewal.first_demolition_1955", "machineIds": ["bulldozer"] },
+    { "id": "n1958", "year": 1958, "title": "The plan is approved", "chapterId": "ch8", "factRef": "renewal.approved_1958", "machineIds": ["bulldozer"] },
+    { "id": "n1968", "year": 1968, "title": "Fair Housing, and the CBL", "chapterId": "ch10", "factRef": "cbl.founded_1968", "machineIds": ["map", "contract"] },
+    { "id": "n1970", "year": 1970, "title": "The ledger runs backward", "chapterId": "ch10", "factRef": "cbl.renegotiated_155_by_1971", "machineIds": ["contract"] },
+    { "id": "n2026", "year": 2026, "title": "The ground today", "chapterId": "ch11", "factRef": "present.obama_center_opened" }
+  ]
+}

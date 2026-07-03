@@ -1,0 +1,141 @@
+{
+  "source": {
+    "title": "HOLC Area Description form, Chicago 1939-40",
+    "via": "Mapping Inequality / HOLC_Area_Description_Data",
+    "url": "https://github.com/americanpanorama/HOLC_Area_Description_Data",
+    "formImage": "https://raw.githubusercontent.com/americanpanorama/HOLC_Area_Description_Data/master/Form_Schema/AD-Form-4.png"
+  },
+  "attribution": "Polygons and area descriptions from Mapping Inequality (Robert K. Nelson, LaDale Winling, et al., University of Richmond Digital Scholarship Lab), CC BY-NC 4.0. Underlying HOLC records are public domain.",
+  "fields": [
+    {
+      "fieldId": "occupation_or_type",
+      "formItem": "1-B",
+      "section": "1. POPULATION",
+      "historicalLabel": "Class and Occupation",
+      "type": "text"
+    },
+    {
+      "fieldId": "foreign_born_percent",
+      "formItem": "1-C-1",
+      "section": "1. POPULATION",
+      "historicalLabel": "Foreign Families ____ %",
+      "type": "percent"
+    },
+    {
+      "fieldId": "foreign_born_nationality",
+      "formItem": "1-C-2",
+      "section": "1. POPULATION",
+      "historicalLabel": "Nationalities",
+      "type": "text"
+    },
+    {
+      "fieldId": "negro_percent",
+      "formItem": "1-D",
+      "section": "1. POPULATION",
+      "historicalLabel": "Negro ____ %",
+      "type": "percent"
+    },
+    {
+      "fieldId": "infiltration_of",
+      "formItem": "1-E",
+      "section": "1. POPULATION",
+      "historicalLabel": "Shifting or Infiltration",
+      "type": "text"
+    },
+    {
+      "fieldId": "buildings_type",
+      "formItem": "2-A-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Type and Size",
+      "type": "text"
+    },
+    {
+      "fieldId": "construction",
+      "formItem": "2-B-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Construction",
+      "type": "select",
+      "options": [
+        "Brick",
+        "Frame",
+        "Frame- brick",
+        "Frame- few brick",
+        "Brick- frame",
+        "Frame and brick"
+      ]
+    },
+    {
+      "fieldId": "average_age",
+      "formItem": "2-C-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Average Age",
+      "type": "text"
+    },
+    {
+      "fieldId": "repair",
+      "formItem": "2-D-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Repair",
+      "type": "select",
+      "options": [
+        "Good",
+        "Fair",
+        "Poor",
+        "Fair to poor",
+        "Fairly good",
+        "Very good"
+      ]
+    },
+    {
+      "fieldId": "home_ownership",
+      "formItem": "2-F-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Owner-occupied",
+      "type": "percent"
+    },
+    {
+      "fieldId": "predicted_price_trend",
+      "formItem": "2-K-1",
+      "section": "2. BUILDINGS (Predominating)",
+      "historicalLabel": "Predicted Price Trend (next 6-12 months)",
+      "type": "select",
+      "options": [
+        "Firm",
+        "Static",
+        "Down",
+        "Up",
+        "Weak",
+        "No change"
+      ]
+    },
+    {
+      "fieldId": "mortagage_funds",
+      "formItem": "6",
+      "section": "6. MORTGAGE FUNDS",
+      "historicalLabel": "Mortgage Funds",
+      "type": "select",
+      "options": [
+        "Ample",
+        "Limited",
+        "None",
+        "FHA",
+        "Ample 5%",
+        "Very limited"
+      ]
+    }
+  ],
+  "lockRule": {
+    "fieldId": "negro_percent",
+    "note": "any nonzero entry locks grade to D"
+  },
+  "sampleAreas": [
+    1499,
+    1500,
+    1488,
+    1097,
+    1454,
+    1498,
+    1582,
+    1599
+  ]
+}

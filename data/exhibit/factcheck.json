@@ -1,0 +1,1211 @@
+{
+  "version": 1,
+  "domains": [
+    {
+      "domainId": "land",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-land-01",
+          "factId": "land.treaty_1833",
+          "claim": "The 1833 Treaty of Chicago ceded about 5 million acres from the Council of Three Fires.",
+          "verdict": "verified",
+          "note": "Signed September 26, 1833. Terms include $14,000 a year for twenty years and $70,000 for schools, matching the deep dive stats.",
+          "source": "Treaty of Chicago (1833); Rooted Forward land deep dive stats (acresCeded, cashPromised, schoolsPromised)"
+        },
+        {
+          "id": "fc-land-02",
+          "factId": "land.blackhawk_1832",
+          "claim": "The Black Hawk War of 1832 preceded and set up the cession, though the Potawatomi were not combatants.",
+          "verdict": "verified",
+          "note": "Band of about 1,000; roughly 150 survivors after Bad Axe, August 2, 1832. Repo verify note confirms Potawatomi non-combatant framing.",
+          "source": "hp-research.json land verify note; land deep dive s3"
+        },
+        {
+          "id": "fc-land-03",
+          "factId": "land.removal_west",
+          "claim": "The Potawatomi were marched west within a few years of the treaty.",
+          "verdict": "verified",
+          "note": "Three-year removal clause; last annuity dance August 1835; removals through 1838.",
+          "source": "hp-research.json land film script (fact-checked); land deep dive s4 and s5"
+        },
+        {
+          "id": "fc-land-04",
+          "factId": "land.cornell_purchase_1853",
+          "claim": "Paul Cornell bought 300 acres from Nathan Watson's widow in 1853.",
+          "verdict": "verified",
+          "note": "Film script names the widow purchase; the formation factcheck verified the 300 acres and 1853.",
+          "source": "hp-research.json land script; hp-factcheck.json formation chapter; Hyde Park Historical Society"
+        },
+        {
+          "id": "fc-land-05",
+          "factId": "land.last_dance_1835",
+          "claim": "About 800 men danced through Chicago at the last annuity payment in August 1835.",
+          "verdict": "verified",
+          "note": "Single eyewitness account by John Caton, so the fact ships at tier attributed.",
+          "source": "John Caton account via land deep dive stats (lastDancers)"
+        },
+        {
+          "id": "fc-land-06",
+          "factId": "land.trail_of_death_1838",
+          "claim": "In 1838 some 859 Potawatomi were force-marched 660 miles in 61 days; more than 40 died.",
+          "verdict": "verified",
+          "note": "Matches Trail of Death records carried in the deep dive.",
+          "source": "Potawatomi Trail of Death records; land deep dive s5 and stats"
+        },
+        {
+          "id": "fc-land-07",
+          "factId": "land.pokagon_today",
+          "claim": "The Pokagon Band counts more than 6,000 citizens today.",
+          "verdict": "verified",
+          "note": "As of 2023 per the deep dive stat.",
+          "source": "Pokagon Band of Potawatomi; land deep dive stats (pokagonToday)"
+        },
+        {
+          "id": "fc-land-08",
+          "factId": "land.shabbona_2024",
+          "claim": "In 2024 the Prairie Band became the first federally recognized tribe to hold trust land in Illinois again.",
+          "verdict": "verified",
+          "note": "Shabbona land placed in trust.",
+          "source": "Prairie Band Potawatomi Nation, 2024; land deep dive stats (shabbonaTrust)"
+        }
+      ]
+    },
+    {
+      "domainId": "formation",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-formation-01",
+          "factId": "formation.ic_deal_60_acres",
+          "claim": "Cornell deeded 60 acres to the Illinois Central for a 53rd Street station and six daily trains each way.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck.",
+          "source": "hp-factcheck.json formation chapter; Wikipedia, Paul Cornell (lawyer)"
+        },
+        {
+          "id": "fc-formation-02",
+          "factId": "formation.hp_house_1857",
+          "claim": "The Hyde Park House hotel opened in 1857.",
+          "verdict": "verified",
+          "note": "The destroying fire year is contested (1877 or 1879) and stays soft per the repo verify.",
+          "source": "hp-factcheck.json formation chapter; hp-research.json formation verify"
+        },
+        {
+          "id": "fc-formation-03",
+          "factId": "formation.lincoln_1865",
+          "claim": "Mary Todd Lincoln stayed at the Hyde Park House in summer 1865 with Robert and Tad.",
+          "verdict": "verified",
+          "note": "About two and a half months, a few months after the assassination.",
+          "source": "hp-factcheck.json formation chapter; Wikipedia, Hyde Park House"
+        },
+        {
+          "id": "fc-formation-04",
+          "factId": "formation.annexation_1889",
+          "claim": "Hyde Park Township, roughly 85,000 people, voted on June 29, 1889 to join Chicago.",
+          "verdict": "verified",
+          "note": "Motivated by water, sewers, and services per the film factcheck.",
+          "source": "hp-factcheck.json formation chapter; Encyclopedia of Chicago"
+        },
+        {
+          "id": "fc-formation-05",
+          "factId": "formation.price_sorting",
+          "claim": "Cornell priced the sorting in, keeping the lakefront expensive and pushing industry and cheaper housing outward and southward.",
+          "verdict": "corrected",
+          "correction": "The spec's north lakefront $7,000 versus $2,000 south lot prices are not in the corpus and were excluded; the qualitative sorting claim ships instead.",
+          "note": "Qualitative claim carried by the fact-checked formation deep dive s6.",
+          "source": "Rooted Forward formation deep dive s6"
+        },
+        {
+          "id": "fc-formation-06",
+          "factId": "formation.pop_1880_1889",
+          "claim": "Township population rose from 15,716 in 1880 to about 85,000 in 1889.",
+          "verdict": "verified",
+          "note": "15,716 checked against the 1880 census; 85,000 is an approximation for the annexation year.",
+          "source": "hp-factcheck.json formation chapter; Encyclopedia of Chicago"
+        },
+        {
+          "id": "fc-formation-07",
+          "factId": "formation.annexation_scale_1889",
+          "claim": "The 1889 annexation added about 125 square miles and 225,000 people to Chicago.",
+          "verdict": "verified",
+          "note": "Citywide 1889 annexation scale, of which Hyde Park Township was part.",
+          "source": "Encyclopedia of Chicago, Annexation; WBEZ via deep dive stats"
+        }
+      ]
+    },
+    {
+      "domainId": "university",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-university-01",
+          "factId": "university.rockefeller_pledge_600k",
+          "claim": "Rockefeller pledged $600,000 in May 1889, conditioned on matching gifts.",
+          "verdict": "verified",
+          "note": "The repo verify declines to assert the exact day of the May 1889 offer.",
+          "source": "Goodspeed (1925); hp-research.json university verify"
+        },
+        {
+          "id": "fc-university-02",
+          "factId": "university.match_400k",
+          "claim": "The American Baptist Education Society raised the $400,000 match through 1889 and 1890.",
+          "verdict": "verified",
+          "note": "Gates and Goodspeed ran the solicitations.",
+          "source": "Goodspeed (1925); hp-research.json university chapter"
+        },
+        {
+          "id": "fc-university-03",
+          "factId": "university.field_10_acres",
+          "claim": "Marshall Field donated the original ten-acre tract holding the main quadrangles.",
+          "verdict": "verified",
+          "note": "Repo verify carries this at medium confidence; Field later sold the university more land.",
+          "source": "hp-research.json university verify; deep dive stats (first-land)"
+        },
+        {
+          "id": "fc-university-04",
+          "factId": "university.incorporated_1890",
+          "claim": "The university was incorporated September 10, 1890.",
+          "verdict": "corrected",
+          "correction": "An earlier September 18, 1890 incorporation claim conflated incorporation with the date trustees elected Harper; the repo verify fixed it to September 10.",
+          "note": "Founding is dated by the university to July 1, 1891, when Harper took office.",
+          "source": "hp-research.json university verify; University of Chicago Office of the President history"
+        },
+        {
+          "id": "fc-university-05",
+          "factId": "university.classes_1892",
+          "claim": "First classes met October 1, 1892 with 594 students and about 120 faculty, including eight former college presidents.",
+          "verdict": "verified",
+          "note": "Figures trace to Goodspeed and are widely repeated; coeducational from the start.",
+          "source": "hp-research.json university verify; Goodspeed (1925)"
+        },
+        {
+          "id": "fc-university-06",
+          "factId": "university.first_university_bankrupt_1886",
+          "claim": "The first University of Chicago, on Douglas's donated land, closed in foreclosure in 1886.",
+          "verdict": "verified",
+          "note": "Film verify kept the 1856 charter framing; the deep dive stat uses 1857. The 1886 closing is consistent across both.",
+          "source": "hp-research.json university verify; Old University of Chicago records"
+        },
+        {
+          "id": "fc-university-07",
+          "factId": "university.rockefeller_total_35m",
+          "claim": "Rockefeller gave about $35 million by 1910, including a $10 million farewell gift.",
+          "verdict": "verified",
+          "note": "He kept his name off campus during his giving.",
+          "source": "hp-research.json university verify; UChicago Library exhibit"
+        },
+        {
+          "id": "fc-university-08",
+          "factId": "university.harper_first_president",
+          "claim": "Harper was elected September 18, 1890, took office July 1, 1891, and earned his Yale doctorate in his teens.",
+          "verdict": "corrected",
+          "correction": "The earlier claim of a Yale PhD at nineteen was softened to in his teens, around age eighteen, per the repo verify.",
+          "note": "Elected at 34, in office at 35.",
+          "source": "hp-research.json university verify; Harper College Archives"
+        }
+      ]
+    },
+    {
+      "domainId": "fair",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-fair-01",
+          "factId": "fair.opened_1893",
+          "claim": "The World's Columbian Exposition opened to the public May 1, 1893.",
+          "verdict": "verified",
+          "note": "Dedication was October 21, 1892.",
+          "source": "hp-research.json worlds-fair verify; Britannica"
+        },
+        {
+          "id": "fc-fair-02",
+          "factId": "fair.six_months",
+          "claim": "The fair ran six months, closing October 30, 1893.",
+          "verdict": "verified",
+          "note": "Closing ceremony canceled after Mayor Harrison's assassination.",
+          "source": "hp-research.json worlds-fair verify; Wikipedia"
+        },
+        {
+          "id": "fc-fair-03",
+          "factId": "fair.attendance_27m",
+          "claim": "About 27 million admissions, roughly 21.5 million of them paid.",
+          "verdict": "verified",
+          "note": "The repo verify flags double counting in the 27 to 28 million totals; the paid figure is the safest precise number.",
+          "source": "hp-research.json worlds-fair and intro verify; Britannica"
+        },
+        {
+          "id": "fc-fair-04",
+          "factId": "fair.ic_embankment",
+          "claim": "The Illinois Central tracks were raised onto an embankment, first ordinance May 1892, splitting off the blocks people called Hyde Park East.",
+          "verdict": "verified",
+          "note": "Carried by the fact-checked worlds-fair deep dive s6 with the Metra Electric National Register documentation.",
+          "source": "Rooted Forward worlds-fair deep dive s6 and stats (icOrdinance)"
+        },
+        {
+          "id": "fc-fair-05",
+          "factId": "fair.chicago_day_751026",
+          "claim": "Chicago Day, October 9, 1893, drew 751,026 admissions.",
+          "verdict": "corrected",
+          "correction": "The researcher's 716,881 was wrong; the repo verify corrected to about 751,026, with 761,942 in sources that add staff and exhibitors.",
+          "note": "A record outdoor event crowd for its time.",
+          "source": "hp-research.json worlds-fair verify; Wikipedia"
+        },
+        {
+          "id": "fc-fair-06",
+          "factId": "fair.ferris_wheel_264ft",
+          "claim": "The first Ferris Wheel stood 264 feet with 36 cars and more than 2,000 riders at once.",
+          "verdict": "verified",
+          "note": "Fifty cents a turn, same as fair admission.",
+          "source": "Wikipedia, Ferris Wheel (1893); worlds-fair deep dive stats (ferris)"
+        },
+        {
+          "id": "fc-fair-07",
+          "factId": "fair.construction_deaths_32",
+          "claim": "The fair's medical bureau counted 32 construction deaths.",
+          "verdict": "verified",
+          "note": "Bureau's own tally, carried in the deep dive.",
+          "source": "worldsfairchicago1893.com via worlds-fair deep dive stats (deaths)"
+        },
+        {
+          "id": "fc-fair-08",
+          "factId": "fair.msi_1933",
+          "claim": "The Palace of Fine Arts survived on its fireproof brick substructure and reopened as the Museum of Science and Industry in 1933.",
+          "verdict": "verified",
+          "note": "Housed the Field Columbian Museum until 1920; Rosenwald funded the rebirth.",
+          "source": "hp-research.json worlds-fair verify; Wikipedia, MSI"
+        },
+        {
+          "id": "fc-fair-09",
+          "factId": "fair.reason_why_10000",
+          "claim": "10,000 copies of The Reason Why were distributed at the fair's Haitian building.",
+          "verdict": "verified",
+          "note": "Ida B. Wells's protest pamphlet, with Douglass presiding at the Haiti building.",
+          "source": "Tennessee Historical Society account via worlds-fair deep dive stats (pamphlet)"
+        },
+        {
+          "id": "fc-fair-10",
+          "factId": "fair.colored_american_day",
+          "claim": "Colored American Day was August 25, 1893; Douglass spoke and Dunbar read.",
+          "verdict": "verified",
+          "note": "Carried in the deep dive stats.",
+          "source": "Living History of Illinois via worlds-fair deep dive stats (coloredDay)"
+        },
+        {
+          "id": "fc-fair-11",
+          "factId": "fair.building_boom",
+          "claim": "The 1893 fair drove a hotel and apartment building boom in Hyde Park, hotels east of the IC tracks, cottages west.",
+          "verdict": "verified",
+          "note": "Standard neighborhood history; Encyclopedia of Chicago Hyde Park entry documents the exposition boom.",
+          "source": "Encyclopedia of Chicago, Hyde Park"
+        }
+      ]
+    },
+    {
+      "domainId": "colorline",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-colorline-01",
+          "factId": "colorline.club_founded",
+          "claim": "The Hyde Park Improvement Protective Club formed in autumn 1908 with about 350 members under attorney Francis Harper.",
+          "verdict": "verified",
+          "note": "The spec allowed 1908 or 1909; the repo verified 1908 in both the film script and the deep dive, sourced to Spear.",
+          "source": "Allan Spear, Black Chicago; hp-research.json color-line film script; color-line deep dive s1"
+        },
+        {
+          "id": "fc-colorline-02",
+          "factId": "colorline.black_pop_1910_40k",
+          "claim": "Chicago's Black population in 1910 was about 44,000, roughly 2 percent of the city.",
+          "verdict": "corrected",
+          "correction": "The film said about 40,000; the repo factcheck flagged it imprecise and set about 44,000 (census 44,103). The correction is authoritative and ships.",
+          "note": "Encyclopedia of Chicago uses 44,000.",
+          "source": "hp-factcheck.json color-line chapter; 1910 U.S. Census"
+        },
+        {
+          "id": "fc-colorline-03",
+          "factId": "colorline.black_pop_1940_278k",
+          "claim": "By 1940 Chicago's Black population was about 278,000.",
+          "verdict": "verified",
+          "note": "1940 census 277,731.",
+          "source": "hp-factcheck.json color-line chapter; 1940 U.S. Census"
+        },
+        {
+          "id": "fc-colorline-04",
+          "factId": "colorline.kitchenettes",
+          "claim": "Black Belt apartments were carved into tiny kitchenettes at exploitative rents.",
+          "verdict": "verified",
+          "note": "Qualitative claim per Drake and Cayton and the fact-checked deep dive.",
+          "source": "Black Metropolis (1945); color-line deep dive s3"
+        },
+        {
+          "id": "fc-colorline-05",
+          "factId": "colorline.urban_league_664_50",
+          "claim": "In one day in summer 1917 the Chicago Urban League counted 664 applicants for houses with only fifty available.",
+          "verdict": "verified",
+          "note": "Verified against the primary text of the 1922 commission report. An appendix summary in the same report gives fifty-five dwellings; the housing chapter's figure of fifty ships.",
+          "source": "Chicago Commission on Race Relations, The Negro in Chicago (1922), Gutenberg etext 57343"
+        },
+        {
+          "id": "fc-colorline-06",
+          "factId": "colorline.kitchenette_rent_45pct",
+          "claim": "A late-1930s CHA study found 45 percent of kitchenette tenants paying over 30 percent of income for rent.",
+          "verdict": "verified",
+          "note": "Carried in the fact-checked deep dive stats.",
+          "source": "Chicago Housing Authority study via color-line deep dive stats (rent)"
+        },
+        {
+          "id": "fc-colorline-07",
+          "factId": "colorline.defender_125k",
+          "claim": "Chicago Defender circulation passed 125,000 by 1918 as it drove the Great Migration.",
+          "verdict": "verified",
+          "note": "Great Northern Drive called for spring 1917.",
+          "source": "color-line deep dive s2 and stats (defender)"
+        },
+        {
+          "id": "fc-colorline-08",
+          "factId": "colorline.line_held_40_years",
+          "claim": "The line the 1908 club drew held for about forty years, until 1948.",
+          "verdict": "verified",
+          "note": "Spear's framing, carried in the deep dive.",
+          "source": "Allan Spear, Black Chicago; color-line deep dive stats (fortyYears)"
+        }
+      ]
+    },
+    {
+      "domainId": "bombings",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-bombings-01",
+          "factId": "bombings.total_58",
+          "claim": "58 bombings of Black homes and of real estate men's properties, July 1, 1917 to March 1, 1921.",
+          "verdict": "verified",
+          "note": "Verified verbatim against the 1922 report's primary text.",
+          "source": "The Negro in Chicago (1922), Bombings section"
+        },
+        {
+          "id": "fc-bombings-02",
+          "factId": "bombings.square_32",
+          "claim": "32 of the 58 bombs exploded within the square bounded by 41st and 60th Streets, Cottage Grove Avenue and State Street.",
+          "verdict": "verified",
+          "note": "Verbatim from the report. The square borders Hyde Park and Kenwood.",
+          "source": "The Negro in Chicago (1922), Bombings section"
+        },
+        {
+          "id": "fc-bombings-03",
+          "factId": "bombings.deaths_2",
+          "claim": "Two people were killed by the bombs, both Black.",
+          "verdict": "verified",
+          "note": "Report also notes injuries to white and Black residents and over $100,000 in damage.",
+          "source": "The Negro in Chicago (1922), Bombings section"
+        },
+        {
+          "id": "fc-bombings-04",
+          "factId": "bombings.convictions_0",
+          "claim": "No one was convicted; only two suspects were ever arrested and neither was tried.",
+          "verdict": "verified",
+          "note": "One suspect released on $500 bond with no trial a year later, the other released after two days.",
+          "source": "The Negro in Chicago (1922), Bombings section"
+        },
+        {
+          "id": "fc-bombings-05",
+          "factId": "bombings.pace_20_days",
+          "claim": "The pace averaged one race bombing every twenty days for three years and eight months.",
+          "verdict": "verified",
+          "note": "Report's own arithmetic; the deep dive carries the same pace.",
+          "source": "The Negro in Chicago (1922); color-line deep dive stats (bombings)"
+        },
+        {
+          "id": "fc-bombings-06",
+          "factId": "bombings.damage_100k",
+          "claim": "Property damage from the bombings exceeded $100,000 in period dollars.",
+          "verdict": "verified",
+          "note": "As stated by the commission.",
+          "source": "The Negro in Chicago (1922), Bombings section"
+        },
+        {
+          "id": "fc-bombings-07",
+          "factId": "bombings.riot_1919_dead",
+          "claim": "The 1919 riot killed 38, twenty-three Black and fifteen white, with 537 injured.",
+          "verdict": "verified",
+          "note": "Matches the report's introduction and the deep dive.",
+          "source": "The Negro in Chicago (1922); color-line deep dive s4"
+        },
+        {
+          "id": "fc-bombings-08",
+          "factId": "bombings.riot_homeless_1000",
+          "claim": "About 1,000 people were left homeless by the riot.",
+          "verdict": "verified",
+          "note": "Report's casualty summary; the deep dive phrases it as about a thousand Black families burned out.",
+          "source": "The Negro in Chicago (1922); color-line deep dive s4"
+        },
+        {
+          "id": "fc-bombings-09",
+          "factId": "bombings.binga_target",
+          "claim": "Jesse Binga's home and offices were bombed at least five times between 1917 and 1921.",
+          "verdict": "verified",
+          "note": "The commission report devotes a case study to the Binga bombings; Hayner's biography supplies the at-least-five count carried in the corpus.",
+          "source": "Don Hayner, Binga (2019); The Negro in Chicago (1922)"
+        },
+        {
+          "id": "fc-bombings-10",
+          "factId": "bombings.williams_drowned_1919",
+          "claim": "Eugene Williams, seventeen, drowned July 27, 1919 after drifting past the color line in the water and being struck amid stone throwing; police refused the named arrest.",
+          "verdict": "verified",
+          "note": "Verified against the report's riot narrative.",
+          "source": "The Negro in Chicago (1922), riot narrative"
+        },
+        {
+          "id": "fc-bombings-11",
+          "factId": "bombings.ccrr_report",
+          "claim": "The 1922 commission report runs 672 pages.",
+          "verdict": "verified",
+          "note": "The Negro in Chicago, University of Chicago Press, 1922; xxiv + 672 pages.",
+          "source": "CCRR 1922, Internet Archive scan"
+        }
+      ]
+    },
+    {
+      "domainId": "covenants",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-covenants-01",
+          "factId": "covenants.corrigan_1926",
+          "claim": "After Corrigan v. Buckley (1926) racial covenants proliferated, sweeping the neighborhoods around the Black Belt from the late 1920s.",
+          "verdict": "verified",
+          "note": "Decision date May 24, 1926 from the court record; the covenant wave timing is in the fact-checked corpus and Covenants Project research.",
+          "source": "Corrigan v. Buckley, 271 U.S. 323; Chicago Covenants Project; color-line deep dive s6"
+        },
+        {
+          "id": "fc-covenants-02",
+          "factId": "covenants.uchicago_defense_83597",
+          "claim": "The University of Chicago paid $83,597.46 in subsidies to neighborhood associations defending covenants, 1933 to 1947.",
+          "verdict": "verified",
+          "note": "Precise figure per Hirsch as specified; the corpus independently carries more than $83,000 within a more than $110,000 community interests budget over the same years.",
+          "source": "Hirsch, Making the Second Ghetto, covenant subsidy accounting; corroborated by color-line deep dive s6"
+        },
+        {
+          "id": "fc-covenants-03",
+          "factId": "covenants.macchesney_template",
+          "claim": "Nathan MacChesney, NAREB general counsel, drafted the 1927 model covenant that real estate boards distributed across the country.",
+          "verdict": "verified",
+          "note": "NAREB role and 1927 drafting confirmed via the Chicago Covenants Project and Chicago Magazine; the corpus carries the 1927 model covenant callout.",
+          "source": "Chicago Covenants Project history; Chicago Magazine (June 2012); color-line deep dive s6"
+        },
+        {
+          "id": "fc-covenants-04",
+          "factId": "covenants.coverage_claim",
+          "claim": "By the 1940s hundreds of Cook County subdivisions carried racial covenants.",
+          "verdict": "corrected",
+          "correction": "The commonly cited claims that half, or 80 percent, of Chicago's residential land was covenanted could not be attributed to a verifiable named source and were not shipped. The corpus wording, hundreds of subdivisions, ships instead.",
+          "note": "The Chicago Covenants Project's mapped record supports the shipped version.",
+          "source": "Chicago Covenants Project; color-line deep dive s6"
+        },
+        {
+          "id": "fc-covenants-05",
+          "factId": "covenants.hansberry_frontage_54pct",
+          "claim": "The Washington Park covenant required signatures from owners of 95 percent of frontage; only about 54 percent had signed.",
+          "verdict": "verified",
+          "note": "From the Hansberry v. Lee record, carried in the redlining deep dive.",
+          "source": "Hansberry v. Lee, 311 U.S. 32; redlining deep dive stats (frontage)"
+        },
+        {
+          "id": "fc-covenants-06",
+          "factId": "covenants.defender_uc_agreement",
+          "claim": "The Chicago Defender called the covenants the University of Chicago Agreement to get rid of Negroes.",
+          "verdict": "verified",
+          "note": "Phrase carried in the fact-checked deep dive and covenant scholarship.",
+          "source": "Chicago Defender via color-line deep dive s6"
+        },
+        {
+          "id": "fc-covenants-07",
+          "factId": "covenants.chain_armor_quote",
+          "claim": "A 1928 Hyde Park Herald piece praised covenants as a marvelous delicately woven chain of armor.",
+          "verdict": "verified",
+          "note": "Quoted verbatim in Coates 2014, widely reproduced in covenant scholarship.",
+          "source": "Coates, The Case for Reparations, The Atlantic, 2014"
+        }
+      ]
+    },
+    {
+      "domainId": "code",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-code-01",
+          "factId": "code.cireb_expulsion_1921",
+          "claim": "In 1921 the Chicago Real Estate Board voted immediate expulsion for any member selling to a Black buyer on an all-white block.",
+          "verdict": "verified",
+          "note": "Unanimous vote dated May 4, 1921 in the EJI record; consistent with Hirsch and Satter.",
+          "source": "EJI calendar, May 4, 1921; Hirsch; Satter"
+        },
+        {
+          "id": "fc-code-02",
+          "factId": "code.nareb_article34_1924",
+          "claim": "NAREB's 1924 Code of Ethics, Article 34, barred Realtors from introducing members of any race or nationality detrimental to property values.",
+          "verdict": "verified",
+          "note": "Article text confirmed against archived code reproductions.",
+          "source": "NAREB Code of Ethics (1924); Oregon History Project records; Seattle Journal for Social Justice"
+        },
+        {
+          "id": "fc-code-03",
+          "factId": "code.deleted_1950",
+          "claim": "The explicit race and nationality language was removed from the code in 1950.",
+          "verdict": "verified",
+          "note": "The clause stood from 1924 to 1950; vaguer wording followed.",
+          "source": "NAREB code revision history; Home Ownership Matters, Illinois fair housing history"
+        },
+        {
+          "id": "fc-code-04",
+          "factId": "code.apology_2020",
+          "claim": "NAR formally apologized in November 2020, through president Charlie Oppler at its fair housing summit.",
+          "verdict": "verified",
+          "note": "First formal apology by the association; coverage dates the remarks November 19, 2020.",
+          "source": "RISMedia (Nov 19, 2020); The Seattle Times; The Real Deal"
+        }
+      ]
+    },
+    {
+      "domainId": "redlining",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-redlining-01",
+          "factId": "redlining.hoyt_hierarchy",
+          "claim": "Hoyt's 1933 One Hundred Years of Land Values in Chicago ranked races and nationalities by their supposed effect on land values, with Negroes then Mexicans at the bottom.",
+          "verdict": "verified",
+          "note": "Carried in the fact-checked redlining deep dive and film script.",
+          "source": "Homer Hoyt (1933); redlining deep dive s1; hp-research.json redlining script"
+        },
+        {
+          "id": "fc-redlining-02",
+          "factId": "redlining.hoyt_fha",
+          "claim": "Hoyt served as the FHA's chief land economist from 1934 to 1940.",
+          "verdict": "corrected",
+          "correction": "The spec used principal housing economist. Both titles circulate for the same post; the repo's fact-checked film and deep dive use chief land economist, so the corpus wording ships with the variant noted.",
+          "note": "Either title, the author of the racial land-value hierarchy wrote federal lending economics.",
+          "source": "hp-research.json redlining script; redlining deep dive stats (fhaCreated); Hoyt biographies"
+        },
+        {
+          "id": "fc-redlining-03",
+          "factId": "redlining.babcock_manual",
+          "claim": "The FHA Underwriting Manual, built under Frederick Babcock, told appraisers to check for incompatible racial groups and rewarded restrictive deed clauses.",
+          "verdict": "corrected",
+          "correction": "The spec's inharmonious racial groups wording was adjusted to the corpus-verified incompatible racial groups phrasing of the 1938 edition.",
+          "note": "The manual also praised barriers giving protection from adverse influences.",
+          "source": "FHA Underwriting Manual (1938) via redlining deep dive s3"
+        },
+        {
+          "id": "fc-redlining-04",
+          "factId": "redlining.holc_survey_chicago",
+          "claim": "On the Chicago HOLC residential security map the Black Belt was washed in red, with Black presence graded as hazard.",
+          "verdict": "corrected",
+          "correction": "The spec's claim that every Black neighborhood drew a D or C in a 1939-40 survey was softened to the corpus wording. The repo paper dates its Chicago map to 1938 and the deep dive dates the national survey 1935 to 1940.",
+          "note": "Area description sheets recorded race next to sewer access as the same kind of fact.",
+          "source": "Mapping Inequality; redlining deep dive s4; repo HOLC paper"
+        },
+        {
+          "id": "fc-redlining-05",
+          "factId": "redlining.fha_1934",
+          "claim": "Congress created the FHA in 1934 under the National Housing Act.",
+          "verdict": "verified",
+          "note": "Carried across the corpus.",
+          "source": "National Housing Act of 1934; redlining deep dive s2"
+        },
+        {
+          "id": "fc-redlining-06",
+          "factId": "redlining.holc_239_cities",
+          "claim": "HOLC graded 239 cities block by block, 1935 to 1940.",
+          "verdict": "verified",
+          "note": "A green through D red.",
+          "source": "HOLC City Survey via redlining deep dive stats (holcCities)"
+        },
+        {
+          "id": "fc-redlining-07",
+          "factId": "redlining.black_loans_under_2pct",
+          "claim": "Under 2 percent of federally insured home loans went to Black Americans between 1945 and 1959.",
+          "verdict": "verified",
+          "note": "Figure carried in the fact-checked deep dive; tier reported since it rides on secondary scholarship.",
+          "source": "redlining deep dive s3 and stats (blackLoans)"
+        },
+        {
+          "id": "fc-redlining-08",
+          "factId": "redlining.illinois_removal_2022",
+          "claim": "Illinois created its first formal covenant-language removal process in 2022.",
+          "verdict": "verified",
+          "note": "Public Act 102-0110.",
+          "source": "Illinois Public Act 102-0110; redlining deep dive s7"
+        },
+        {
+          "id": "fc-redlining-09",
+          "factId": "redlining.holc_refi_1m",
+          "claim": "New Deal agencies refinanced about one million home mortgages through the HOLC.",
+          "verdict": "verified",
+          "note": "HOLC program totals 1933-1936, just over one million loans.",
+          "source": "HOLC program records"
+        }
+      ]
+    },
+    {
+      "domainId": "cases",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-cases-01",
+          "factId": "cases.buchanan_1917",
+          "claim": "Buchanan v. Warley, 245 U.S. 60, decided November 5, 1917, struck down racial zoning ordinances.",
+          "verdict": "verified",
+          "note": "Public court record. Consequence, segregation shifted to private covenants.",
+          "source": "Buchanan v. Warley, 245 U.S. 60 (1917)"
+        },
+        {
+          "id": "fc-cases-02",
+          "factId": "cases.corrigan_1926",
+          "claim": "Corrigan v. Buckley, 271 U.S. 323, decided May 24, 1926, dismissed the constitutional challenge to a private covenant.",
+          "verdict": "verified",
+          "note": "Public court record. Consequence, covenants proliferated.",
+          "source": "Corrigan v. Buckley, 271 U.S. 323 (1926)"
+        },
+        {
+          "id": "fc-cases-03",
+          "factId": "cases.hansberry_1940",
+          "claim": "Hansberry v. Lee, 311 U.S. 32, decided November 12, 1940, was won on procedural due process grounds and left covenants standing.",
+          "verdict": "verified",
+          "note": "Matches the repo color-line verify, which stresses the case did not reach the merits.",
+          "source": "Hansberry v. Lee, 311 U.S. 32 (1940); hp-research.json color-line verify"
+        },
+        {
+          "id": "fc-cases-04",
+          "factId": "cases.shelley_1948",
+          "claim": "Shelley v. Kraemer, 334 U.S. 1, decided May 3, 1948, 6 to 0, barred judicial enforcement of racial covenants; the clauses remained in deeds.",
+          "verdict": "verified",
+          "note": "Vinson wrote; Jackson, Reed, and Rutledge recused. Verified in the film factcheck.",
+          "source": "Shelley v. Kraemer, 334 U.S. 1 (1948); hp-factcheck.json color-line chapter"
+        }
+      ]
+    },
+    {
+      "domainId": "renewal",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-renewal-01",
+          "factId": "renewal.secc_1952",
+          "claim": "The University of Chicago organized the South East Chicago Commission in 1952.",
+          "verdict": "corrected",
+          "correction": "An earlier established in May 1952 claim was removed by the repo verify; the documented public establishment meeting was March 27, 1952, so the year ships without a month.",
+          "note": "Kimpton later said the university used a sensational March 1952 crime to organize it.",
+          "source": "hp-research.json urban-renewal verify; CEGU (2023)"
+        },
+        {
+          "id": "fc-renewal-02",
+          "factId": "renewal.kimpton_levi",
+          "claim": "Kimpton chaired the SECC; Julian Levi was executive director and ran it to 1980.",
+          "verdict": "verified",
+          "note": "Some sources misname the chancellor as Hutchins; Kimpton is correct per the repo verify.",
+          "source": "hp-factcheck.json urban-renewal chapter; NYT Levi obituary (1996)"
+        },
+        {
+          "id": "fc-renewal-03",
+          "factId": "renewal.plan_856_acres",
+          "claim": "The renewal plan covered 856 acres.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck.",
+          "source": "hp-factcheck.json urban-renewal chapter; UChicago Library, Renewal and Revival"
+        },
+        {
+          "id": "fc-renewal-04",
+          "factId": "renewal.buildings_638",
+          "claim": "The plan marked 638 buildings for demolition.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck.",
+          "source": "hp-factcheck.json urban-renewal chapter; Hyde Park Herald, Lost Hyde Park"
+        },
+        {
+          "id": "fc-renewal-05",
+          "factId": "renewal.families_displaced",
+          "claim": "About 4,000 families were displaced over the program's full course.",
+          "verdict": "corrected",
+          "correction": "The film's phrasing that 4,000 were already pushed out by 1958 was fixed by the repo factcheck; 4,000 is the full-course total. The spec's more precise 4,371 households via Rossi and Dentler was not independently verified and ships only as a note.",
+          "note": "Rounded figure is consistent across the NYT obit, Chicago Magazine, and AAIHS.",
+          "source": "hp-factcheck.json urban-renewal chapter; Rossi and Dentler (1961)"
+        },
+        {
+          "id": "fc-renewal-06",
+          "factId": "renewal.first_demolition_1955",
+          "claim": "The first building fell May 10, 1955, before the plan was approved.",
+          "verdict": "verified",
+          "note": "CEGU timeline entry verified in the film factcheck.",
+          "source": "hp-factcheck.json urban-renewal chapter; CEGU (2023)"
+        },
+        {
+          "id": "fc-renewal-07",
+          "factId": "renewal.approved_1958",
+          "claim": "The City Council approved the plan November 7, 1958.",
+          "verdict": "verified",
+          "note": "Date verified across the corpus.",
+          "source": "hp-research.json intro and urban-renewal verify; UChicago Library"
+        },
+        {
+          "id": "fc-renewal-08",
+          "factId": "renewal.university_29m",
+          "claim": "The university committed about $29 million of its own money.",
+          "verdict": "verified",
+          "note": "Kimpton's own figure, quoted by CEGU and verified in the film factcheck.",
+          "source": "hp-factcheck.json urban-renewal chapter; CEGU (2023)"
+        },
+        {
+          "id": "fc-renewal-09",
+          "factId": "renewal.white_return_46pct",
+          "claim": "46.1 percent of displaced white families relocated within Hyde Park-Kenwood in the Hyde Park A and B projects.",
+          "verdict": "verified",
+          "note": "Scope limited to Hyde Park A and B per the repo verify; do not generalize to the full plan.",
+          "source": "CEGU (2023); hp-factcheck.json urban-renewal chapter"
+        },
+        {
+          "id": "fc-renewal-10",
+          "factId": "renewal.black_return_17pct",
+          "claim": "16.6 percent of displaced Black families relocated within Hyde Park-Kenwood in those projects.",
+          "verdict": "verified",
+          "note": "The film voiced seventeen percent; the exact CEGU figure is 16.6.",
+          "source": "CEGU (2023); hp-factcheck.json urban-renewal chapter"
+        },
+        {
+          "id": "fc-renewal-11",
+          "factId": "renewal.black_pop_drop_40pct",
+          "claim": "The neighborhood's Black population fell about 40 percent across the renewal.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck at medium confidence.",
+          "source": "hp-factcheck.json urban-renewal chapter; Wikipedia, Hyde Park, Chicago"
+        },
+        {
+          "id": "fc-renewal-12",
+          "factId": "renewal.displaced_15000",
+          "claim": "More than 15,000 residents were displaced.",
+          "verdict": "verified",
+          "note": "The figure the university's own sources use, verified for the film's cold open; Chicago Magazine cites 30,000 for the broader area, so 15,000 is not a ceiling.",
+          "source": "hp-research.json intro verify; UChicago Library exhibit"
+        },
+        {
+          "id": "fc-renewal-13",
+          "factId": "renewal.section_112_1959",
+          "claim": "Section 112 of the 1959 housing legislation let university spending count as the local urban renewal match; the university sponsored its drafting and Levi lobbied for it.",
+          "verdict": "verified",
+          "note": "The repo verify softened claims that Levi personally wrote the statute.",
+          "source": "hp-research.json urban-renewal verify; CEGU (2023); Leventhal Map Center"
+        },
+        {
+          "id": "fc-renewal-14",
+          "factId": "renewal.woodlawn_61st_1964",
+          "claim": "Woodlawn organizing won a 1964 commitment that the university would not expand south of 61st Street.",
+          "verdict": "verified",
+          "note": "Carried in the repo verify notes and deep dive stats.",
+          "source": "hp-research.json urban-renewal verify notes; urban-renewal deep dive stats (line61)"
+        },
+        {
+          "id": "fc-renewal-15",
+          "factId": "renewal.private_investment_250m",
+          "claim": "About $250 million in private investment was drawn in alongside the university's money.",
+          "verdict": "verified",
+          "note": "CEGU analysis figure carried in the deep dive stats.",
+          "source": "CEGU (2023) via urban-renewal deep dive stats (private)"
+        },
+        {
+          "id": "fc-renewal-16",
+          "factId": "renewal.kimpton_framing",
+          "claim": "Kimpton described renewal as a way of cutting down the number of Negroes in the neighborhood.",
+          "verdict": "verified",
+          "note": "Quoted by Chicago Magazine and noted in the repo intro verify; present it as an attributed quotation.",
+          "source": "Chicago Magazine (Jan 2018); hp-research.json intro verify notes"
+        },
+        {
+          "id": "fc-renewal-17",
+          "factId": "renewal.football_1939",
+          "claim": "The University of Chicago abolished varsity football in December 1939.",
+          "verdict": "verified",
+          "note": "Board action December 21, 1939 under Hutchins.",
+          "source": "University of Chicago histories"
+        }
+      ]
+    },
+    {
+      "domainId": "contracts",
+      "finalVerdict": "needs-fix",
+      "claims": [
+        {
+          "id": "fc-contracts-01",
+          "factId": "contracts.lenders_241_1",
+          "claim": "Of 241 white-run Cook County savings and loans, exactly one would lend to Black buyers.",
+          "verdict": "corrected",
+          "correction": "241, not the spec's 243.",
+          "note": "Satter's figure, pp. 44-45, confirmed against published summaries of Family Properties.",
+          "source": "Beryl Satter, Family Properties (2009), pp. 44-45"
+        },
+        {
+          "id": "fc-contracts-02",
+          "factId": "contracts.ross_contract_27500",
+          "claim": "Clyde Ross bought his North Lawndale home on contract for $27,500.",
+          "verdict": "corrected",
+          "correction": "$27,500, not the spec's $27,000, per Coates.",
+          "note": "The seller kept the deed until the final payment.",
+          "source": "Ta-Nehisi Coates, The Case for Reparations, The Atlantic (2014)"
+        },
+        {
+          "id": "fc-contracts-03",
+          "factId": "contracts.ross_speculator_12000",
+          "claim": "The speculator who sold to Ross had bought the house for $12,000 six months earlier.",
+          "verdict": "verified",
+          "note": "Per Coates.",
+          "source": "Ta-Nehisi Coates, The Case for Reparations (2014)"
+        },
+        {
+          "id": "fc-contracts-04",
+          "factId": "contracts.avg_overpayment_71000",
+          "claim": "Contract buyers paid an average of $71,000 more per home than with a conventional mortgage, adjusted for inflation.",
+          "verdict": "verified",
+          "note": "Study figure as reported in launch coverage.",
+          "source": "Duke Cook Center, The Plunder of Black Wealth in Chicago (2019); Chicago Sun-Times (May 30, 2019)"
+        },
+        {
+          "id": "fc-contracts-05",
+          "factId": "contracts.share_75_95",
+          "claim": "75 to 95 percent of homes sold to Black families in the 1950s and 60s were sold on contract.",
+          "verdict": "corrected",
+          "correction": "The spec's single 82 percent figure was replaced with the study's published 75 to 95 percent range.",
+          "note": "Range carried in the fact-checked corpus and the study.",
+          "source": "Duke Cook Center (2019); present deep dive s5"
+        },
+        {
+          "id": "fc-contracts-06",
+          "factId": "contracts.extra_monthly_587",
+          "claim": "The average contract buyer paid $587 more per month, in 2019 dollars, than a conventional mortgage would have cost.",
+          "verdict": "verified",
+          "note": "Ships as the monthly-cost framing in place of the unverified FHA-versus-contract terms comparison.",
+          "source": "Duke Cook Center (2019); WBEZ (May 30, 2019)"
+        },
+        {
+          "id": "fc-contracts-07",
+          "factId": "contracts.markup_84pct",
+          "claim": "The average contract markup was 84 percent.",
+          "verdict": "verified",
+          "note": "Study figure, carried in the corpus.",
+          "source": "Duke Cook Center (2019); present deep dive stats (contract)"
+        },
+        {
+          "id": "fc-contracts-08",
+          "factId": "contracts.extraction_3_4b",
+          "claim": "Contract selling stripped $3.2 to $4.0 billion from Black Chicago, in 2019 dollars.",
+          "verdict": "verified",
+          "note": "The film voices three to four billion; the study's published range is 3.2 to 4.0.",
+          "source": "Duke Cook Center (2019); hp-research.json present script"
+        },
+        {
+          "id": "fc-contracts-09",
+          "factId": "contracts.homes_60100",
+          "claim": "About 60,100 Chicago homes were bought by Black families on contract in the period.",
+          "verdict": "verified",
+          "note": "Study count as reported in launch coverage.",
+          "source": "Duke Cook Center (2019); WBEZ (May 30, 2019)"
+        },
+        {
+          "id": "fc-contracts-10",
+          "factId": "",
+          "claim": "FHA-versus-contract monthly terms comparison, a $15,000 home at $110 a month over 25 years against a $27,000 contract at $252 a month.",
+          "verdict": "unverified-pending",
+          "note": "Not sourceable in this pass and NOT included in facts.json. The Duke $587 per month framing (contracts.extra_monthly_587) is the shipping alternative.",
+          "source": ""
+        }
+      ]
+    },
+    {
+      "domainId": "cbl",
+      "finalVerdict": "needs-fix",
+      "claims": [
+        {
+          "id": "fc-cbl-01",
+          "factId": "cbl.founded_1968",
+          "claim": "The Contract Buyers League formed in 1968 out of meetings in the Presentation Catholic Church basement in North Lawndale, with organizing help from Jack Macnamara.",
+          "verdict": "verified",
+          "note": "First community meeting January 1968; Macnamara was a Jesuit seminarian working from Msgr. Egan's parish.",
+          "source": "Satter, Family Properties; Coates (2014); The Chicago Reporter"
+        },
+        {
+          "id": "fc-cbl-02",
+          "factId": "cbl.strike_500",
+          "claim": "More than 500 families joined the payment strike.",
+          "verdict": "verified",
+          "note": "Consistent between the Chicago Reporter account and the fact-checked corpus.",
+          "source": "The Chicago Reporter; present deep dive stats (league)"
+        },
+        {
+          "id": "fc-cbl-03",
+          "factId": "cbl.renegotiated_155_by_1971",
+          "claim": "155 contracts had been renegotiated by July 1971.",
+          "verdict": "corrected",
+          "correction": "The spec's more than 400 matches a Wikipedia line flagged citation needed, and the corpus line of more than 450 families could not be confirmed at its cited source. The verifiable named-source count, 155 by July 1971, ships as a floor.",
+          "note": "Renegotiations continued after July 1971; treat the shipped number as a dated floor rather than a lifetime total. Re-tiered reported at integration. The Chicago Reporter is a published investigative outlet; the attributed tier is reserved for single-source oral claims. Corroboration against Satter, Family Properties page cites remains open.",
+          "source": "The Chicago Reporter, Inside the Contract Buyers League's fight against housing discrimination"
+        },
+        {
+          "id": "fc-cbl-04",
+          "factId": "cbl.evicted_70",
+          "claim": "Approximately seventy families permanently lost their homes in the strike.",
+          "verdict": "corrected",
+          "correction": "The spec's about 50 evicted was replaced by the named source's approximately seventy families who permanently lost their homes.",
+          "note": "Many more eviction actions were filed and reversed when CBL crowds moved families back in. Re-tiered reported at integration. The Chicago Reporter is a published investigative outlet; the attributed tier is reserved for single-source oral claims. Corroboration against Satter, Family Properties page cites remains open.",
+          "source": "The Chicago Reporter"
+        },
+        {
+          "id": "fc-cbl-05",
+          "factId": "cbl.savings",
+          "claim": "Renegotiations saved an average of $14,000 per contract among the 155 counted by July 1971.",
+          "verdict": "corrected",
+          "correction": "The spec's $6 million total attributed to James Alan McPherson's 1972 Atlantic piece could not be verified in the corpus or online in this pass, so the per-contract average from a named source ships instead, in period dollars with no inflation adjustment.",
+          "note": "About half a typical contract purchase price per renegotiation. Re-tiered reported at integration. The Chicago Reporter is a published investigative outlet; the attributed tier is reserved for single-source oral claims. Corroboration against Satter, Family Properties page cites remains open.",
+          "source": "The Chicago Reporter"
+        }
+      ]
+    },
+    {
+      "domainId": "present",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-present-01",
+          "factId": "present.obama_center_opened",
+          "claim": "The Obama Presidential Center opened June 19, 2026.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck; dedication June 18.",
+          "source": "hp-factcheck.json present chapter; Obama Foundation"
+        },
+        {
+          "id": "fc-present-02",
+          "factId": "present.obama_cost",
+          "claim": "The campus cost about $850 million.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck; call it a presidential center, not a NARA library.",
+          "source": "hp-factcheck.json present chapter; CNN (June 2026)"
+        },
+        {
+          "id": "fc-present-03",
+          "factId": "present.woodlawn_prices",
+          "claim": "East Woodlawn's median single-family price doubled from 2019 to about $440,000 by 2025.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck against DePaul IHS data.",
+          "source": "hp-factcheck.json present chapter; Illinois Answers Project (May 2026)"
+        },
+        {
+          "id": "fc-present-04",
+          "factId": "present.woodlawn_affordable",
+          "claim": "By 2024 less than a third of nearby housing was still affordable, half the share of fifteen years earlier.",
+          "verdict": "verified",
+          "note": "Verified in the film factcheck.",
+          "source": "hp-factcheck.json present chapter; Illinois Answers Project"
+        },
+        {
+          "id": "fc-present-05",
+          "factId": "present.scf_white_285000",
+          "claim": "Median white family wealth was $285,010 in the 2022 SCF.",
+          "verdict": "verified",
+          "note": "Exact figure from the Fed's accessible data tables; the film rounds to about $285,000.",
+          "source": "FEDS Notes (Oct 18, 2023), accessible data"
+        },
+        {
+          "id": "fc-present-06",
+          "factId": "present.scf_black_44900",
+          "claim": "Median Black family wealth was $44,890 in the 2022 SCF.",
+          "verdict": "corrected",
+          "correction": "Two adjustments. The documentary-derived $117,000 versus $1,700 wealth comparison was DROPPED in favor of the SCF 2022 figures, and the spec's $44,900 press rounding was set to the Fed's published $44,890.",
+          "note": "The film voices about forty-five thousand.",
+          "source": "FEDS Notes (Oct 18, 2023), accessible data"
+        },
+        {
+          "id": "fc-present-07",
+          "factId": "present.gap_6to1",
+          "claim": "The white-to-Black median wealth gap runs more than six to one.",
+          "verdict": "verified",
+          "note": "$285,010 to $44,890 is about 6.3 to 1; the fact-checked film states more than six to one.",
+          "source": "FEDS Notes (2023); hp-research.json present script"
+        },
+        {
+          "id": "fc-present-08",
+          "factId": "present.black_wealth_growth_61pct",
+          "claim": "Black median wealth grew 61 percent from 2019 to 2022 against 31 percent for white families, and the dollar gap still widened.",
+          "verdict": "verified",
+          "note": "Median growth figures per the FEDS note, carried in the fact-checked deep dive.",
+          "source": "FEDS Notes (2023); present deep dive s5"
+        },
+        {
+          "id": "fc-present-09",
+          "factId": "present.site_2016",
+          "claim": "The Jackson Park site was selected in 2016, announced July 29, 2016.",
+          "verdict": "corrected",
+          "correction": "The film's around 2015 was ruled wrong by the repo factcheck; 2015 was the Chicago and university partnership decision, 2016 the site.",
+          "note": "The repo factcheck fix is authoritative.",
+          "source": "hp-factcheck.json present chapter; Obama Foundation press release (July 29, 2016)"
+        },
+        {
+          "id": "fc-present-10",
+          "factId": "present.woodlawn_ordinance_2020",
+          "claim": "The Woodlawn Housing Preservation Ordinance passed in September 2020, reserving 52 city lots with a loan fund, repair grants, and a tenant right of first refusal.",
+          "verdict": "verified",
+          "note": "The repo verify rejected earlier $6 million and 30 lot figures; 52 lots is the ordinance's real number.",
+          "source": "hp-research.json present verify; City of Chicago; Block Club Chicago (Sept 9, 2020)"
+        },
+        {
+          "id": "fc-present-11",
+          "factId": "present.audit_2026",
+          "claim": "By May 2026 exactly one project of 58 units was built on the 52 lots, zero right of first refusal notices had been generated, 36 repair grants had gone out, and about $2 million sat unspent.",
+          "verdict": "verified",
+          "note": "Illinois Answers audit, carried in the fact-checked deep dive.",
+          "source": "Illinois Answers Project (May 7, 2026); present deep dive s4"
+        },
+        {
+          "id": "fc-present-12",
+          "factId": "present.pilot_median_72k_330k",
+          "claim": "The Jackson Park pilot-area median sale price rose from $72,500 in 2016 to $330,000 in 2025.",
+          "verdict": "verified",
+          "note": "Carried in the deep dive stats.",
+          "source": "Illinois Answers Project (May 2026); present deep dive stats (pilotprice)"
+        },
+        {
+          "id": "fc-present-13",
+          "factId": "present.holc_income_gradient",
+          "claim": "2023 median household income runs $207,434 on former A land down to $65,240 on former D.",
+          "verdict": "verified",
+          "note": "Repo research paper, descriptive cross-section with the grade-A small-sample and top-code caveats.",
+          "source": "repo paper holc-redlining-present-day-outcomes-chicago; ACS 2023 B19013"
+        },
+        {
+          "id": "fc-present-14",
+          "factId": "present.holc_ownership_gradient",
+          "claim": "Homeownership runs 90.0 percent on former A land and 44.1 on former D.",
+          "verdict": "verified",
+          "note": "Repo research paper figures.",
+          "source": "repo paper; ACS 2023 B25003"
+        },
+        {
+          "id": "fc-present-15",
+          "factId": "present.holc_vacancy_gradient",
+          "claim": "Vacancy runs 5.1 percent on former A land and 11.3 on former D, with B and C tied at 8.6.",
+          "verdict": "verified",
+          "note": "Tie reported as found.",
+          "source": "repo paper; ACS 2023 B25002"
+        },
+        {
+          "id": "fc-present-16",
+          "factId": "present.holc_footprint_86pct",
+          "claim": "769 of Cook County's 1,332 tracts sit in a graded zone and 86 percent of those are on former C or D land.",
+          "verdict": "verified",
+          "note": "Repo research paper.",
+          "source": "repo paper holc-redlining-present-day-outcomes-chicago"
+        },
+        {
+          "id": "fc-present-17",
+          "factId": "present.holc_subsidy_siting",
+          "claim": "97 percent of affordable rental sites and 93 percent of TIF sites inside the graded footprint sit on former C or D land.",
+          "verdict": "verified",
+          "note": "Counts sites, not dollars.",
+          "source": "repo paper holc-redlining-present-day-outcomes-chicago; City of Chicago open data"
+        }
+      ]
+    },
+    {
+      "domainId": "people",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-people-01",
+          "factId": "people.baldwin_negro_removal",
+          "claim": "Baldwin said urban renewal means moving the Negroes out, adding, it means Negro removal, that is what it means.",
+          "verdict": "verified",
+          "note": "Verified against the AAPB record of the 1963 Clark interview, broadcast June 24, 1963. A national critique, not coined about Hyde Park, per the repo research caution.",
+          "source": "AAPB cpb-aacip_15-0v89g5gf5r; hp-research.json urban-renewal sources"
+        },
+        {
+          "id": "fc-people-02",
+          "factId": "people.fannie_barrier_williams",
+          "claim": "Fannie Barrier Williams, 1855 to 1944, was a longtime Hyde Park resident the 1908 club pressured, and she refused to leave.",
+          "verdict": "verified",
+          "note": "Fact-checked clean in the film; first Black woman admitted to the Chicago Woman's Club.",
+          "source": "hp-research.json color-line script; color-line deep dive stats (fannie)"
+        },
+        {
+          "id": "fc-people-03",
+          "factId": "people.binga_defiance",
+          "claim": "Binga answered the bombs with I will not run, and stayed.",
+          "verdict": "verified",
+          "note": "Short quotation carried by Hayner's biography via the fact-checked corpus; treat longer wordings as paraphrase.",
+          "source": "Don Hayner, Binga (2019); color-line deep dive s5"
+        },
+        {
+          "id": "fc-people-04",
+          "factId": "people.clyde_ross",
+          "claim": "Clyde Ross, a World War II veteran, bought on contract in 1961 and helped lead the CBL.",
+          "verdict": "verified",
+          "note": "Per Coates and the fact-checked corpus.",
+          "source": "Coates (2014); present deep dive s5"
+        },
+        {
+          "id": "fc-people-05",
+          "factId": "people.lorraine_hansberry",
+          "claim": "Lorraine Hansberry was a child in the covenant-fight house at 6140 South Rhodes and later wrote A Raisin in the Sun from the ordeal.",
+          "verdict": "verified",
+          "note": "Brick through the window the night of the June 15, 1937 move, per the landmark report via the corpus.",
+          "source": "City of Chicago landmark report; redlining deep dive s6; hp-research.json color-line verify"
+        },
+        {
+          "id": "fc-people-06",
+          "factId": "people.julian_levi",
+          "claim": "Julian Levi ran the SECC from 1952 to 1980.",
+          "verdict": "verified",
+          "note": "Per the NYT obituary and repo corpus.",
+          "source": "NYT obituary (Oct 1996); hp-research.json urban-renewal facts"
+        },
+        {
+          "id": "fc-people-07",
+          "factId": "people.ruth_wells",
+          "claim": "Ruth Wells was an early Contract Buyers League leader who publicly testified to what she had paid.",
+          "verdict": "verified",
+          "note": "Documented in Satter, Family Properties, and CBL press coverage; exact page cite open.",
+          "source": "Satter, Family Properties, 2009"
+        }
+      ]
+    }
+  ],
+  "needsFix": [
+    {
+      "item": "FHA-versus-contract monthly terms comparison ($15,000 at $110 a month over 25 years versus $27,000 at $252 a month)",
+      "status": "unverified-pending",
+      "resolution": "Excluded from facts.json. The Duke Cook Center $587 per month overpayment framing ships instead as contracts.extra_monthly_587.",
+      "claimId": "fc-contracts-10"
+    },
+    {
+      "item": "Daley donation claim",
+      "status": "excluded-single-source",
+      "resolution": "Not included in facts.json at all. Single-source and unverified in this pass; revisit only with a second independent named source."
+    },
+    {
+      "item": "McPherson 1972 Atlantic $6 million CBL savings total",
+      "status": "unverified-pending",
+      "resolution": "Could not be verified in the corpus or online. cbl.savings ships the Chicago Reporter average of $14,000 per renegotiated contract in period dollars."
+    },
+    {
+      "item": "CBL renegotiated-contracts total (spec 400 plus; deep dive corpus 450 plus)",
+      "status": "unresolved-conflict",
+      "resolution": "Wikipedia's 400 is flagged citation needed and the corpus 450 plus was not found at its cited source. cbl.renegotiated_400 ships the verifiable floor, 155 by July 1971, per The Chicago Reporter. If the 450 figure is later sourced, raise the value."
+    },
+    {
+      "item": "Rossi and Dentler 4,371 households displaced",
+      "status": "noted-unverified",
+      "resolution": "renewal.families_displaced ships about 4,000 families with the 4,371 figure held to a note pending page-level verification."
+    },
+    {
+      "item": "Formation lot-price sorting dollars ($7,000 north lakefront versus $2,000 south)",
+      "status": "excluded-unsourced",
+      "resolution": "Not in the repo corpus. formation.price_sorting ships the qualitative sorting claim from the fact-checked formation deep dive."
+    }
+  ]
+}

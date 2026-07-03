@@ -7,6 +7,7 @@ import CommentsSection from "@/components/tours/CommentsSection";
 import RelatedStops from "@/components/tours/RelatedStops";
 import ImmersiveTourExperience from "@/components/immersive/ImmersiveTourExperience";
 import HydeParkFilm from "@/components/immersive/HydeParkFilm";
+import ExhibitShell, { EXHIBIT_DEK, EXHIBIT_TITLE } from "@/components/exhibit/ExhibitShell";
 import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import { getImmersiveTour } from "@/lib/immersive/data";
 import type { TourStop } from "@/lib/types/database";
@@ -120,6 +121,15 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { city, slug } = await params;
 
+  // The Ground Keeps Moving exhibit (preview slug until the go-live swap)
+  if (city === "chicago" && slug === "hyde-park-exhibit") {
+    return {
+      title: `${EXHIBIT_TITLE} | Hyde Park | Rooted Forward`,
+      description: EXHIBIT_DEK.slice(0, 160),
+      robots: { index: false }, // unlinked preview build; indexing turns on at the swap
+    };
+  }
+
   // Immersive tours share this route and take precedence by slug
   const immersive = await getImmersiveTour(city, slug);
   if (immersive) {
@@ -143,6 +153,14 @@ export async function generateMetadata({
 
 export default async function StopDetailPage({ params }: PageProps) {
   const { city: citySlug, slug } = await params;
+
+  // The Ground Keeps Moving, the interactive Hyde Park exhibit. It lives on
+  // an unlinked preview slug while it is built phase by phase; the go-live
+  // swap moves it onto chicago/hyde-park. Intentionally outside
+  // PageTransition (QC screenshots must capture real frames).
+  if (citySlug === "chicago" && slug === "hyde-park-exhibit") {
+    return <ExhibitShell />;
+  }
 
   // Immersive tours (2D/3D hybrid routes) share this URL space. They are
   // matched first; stop slugs and tour slugs are distinct by construction.
