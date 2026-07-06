@@ -664,6 +664,138 @@ export const scenarios = [
     },
   },
   {
+    id: "room-deed-door",
+    milestone: "B2",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch5");
+      t.assert("deed door present", await page.$('[data-testid="door-deed"]'));
+      t.assert("code door present", await page.$('[data-testid="door-code"]'));
+      await dispatchClick(page, '[data-testid="door-enter-deed"]');
+      await new Promise((r) => setTimeout(r, 700));
+      t.assert("deed room opens", (await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room"))) === "deed");
+      const strike = await page.$eval('[data-testid="room-strike-clause"]', (el) => el.textContent || "");
+      t.assert("strike clause static panel", strike.includes("counsel review"));
+      const remounted = await page.$('[data-testid="room-overlay"] [data-testid="interactive-read-the-deed"]');
+      t.assert("read-the-deed not remounted", !remounted);
+      const missing = await page.$$eval("[data-fact-missing]", (els) => els.length);
+      t.assert("zero missing facts", missing === 0, `missing=${missing}`);
+      await dispatchClick(page, '[data-testid="room-close"]');
+      await new Promise((r) => setTimeout(r, 300));
+      t.assert("visit recorded", (await exhibitState(page))?.visitedRooms.includes("deed"));
+    },
+  },
+  {
+    id: "room-code-exam",
+    milestone: "B2",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch5");
+      await dispatchClick(page, '[data-testid="door-enter-code"]');
+      await new Promise((r) => setTimeout(r, 900));
+      t.assert("ethics exam mounted", await page.$('[data-testid="rigged-ethics-exam"]'));
+      const counter = await page.$eval('[data-testid="room-code-counter"]', (el) => el.textContent || "");
+      t.assert("96-year counter present", counter.includes("96 years between the rule and the apology"));
+    },
+  },
+  {
+    id: "room-counter-answer-key",
+    milestone: "B2",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch10");
+      await dispatchClick(page, '[data-testid="door-enter-counter"]');
+      await new Promise((r) => setTimeout(r, 700));
+      t.assert("counter room opens", (await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room"))) === "counter");
+      t.assert("no thesis lamp", !(await page.$('[data-testid="room-lamp"]')));
+      t.assert("gear train locked", (await page.$eval('[data-testid="gear-train"]', (el) => el.getAttribute("data-locked"))) === "true");
+      // pair all five machines correctly via the data map order
+      const pairs = [
+        ["deed", "deed"], ["map", "map"], ["code", "code"], ["contract", "contract"], ["bulldozer", "bulldozer"],
+      ];
+      for (const [m, c] of pairs) {
+        await dispatchClick(page, `[data-testid="answer-machine-${m}"]`);
+        await new Promise((r) => setTimeout(r, 150));
+        await dispatchClick(page, `[data-testid="answer-counter-${c}"]`);
+        await new Promise((r) => setTimeout(r, 200));
+      }
+      const matched = await page.$eval('[data-testid="answer-key"]', (el) => el.getAttribute("data-matched"));
+      t.assert("all five matched", matched === "5", `matched=${matched}`);
+      t.assert("bulldozer still contested", await page.$('[data-testid="answer-still-contested"]'));
+      t.assert("collection plate present", await page.$('[data-testid="room-collection-plate"]'));
+    },
+  },
+  {
+    id: "room-counter-gear-unlock",
+    milestone: "B2",
+    tags: ["rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      for (const m of ["map", "bulldozer", "contract", "deed", "code"]) {
+        await fire(page, { type: "OPEN_ROOM", roomId: m });
+        await new Promise((r) => setTimeout(r, 250));
+        await fire(page, { type: "CLOSE_ROOM" });
+        await new Promise((r) => setTimeout(r, 150));
+      }
+      await fire(page, { type: "OPEN_ROOM", roomId: "counter" });
+      await new Promise((r) => setTimeout(r, 700));
+      t.assert("gear train unlocked", (await page.$eval('[data-testid="gear-train"]', (el) => el.getAttribute("data-locked"))) === "false");
+      t.assert("unlock fired", (await exhibitState(page))?.firedOnce.includes("gear-train-unlocked"));
+      await page.focus('[data-testid="gear-train-handle-code"]');
+      for (let i = 0; i < 14; i++) {
+        await page.keyboard.press("ArrowRight");
+        await new Promise((r) => setTimeout(r, 80));
+      }
+      t.assert(
+        "gear train completes",
+        (await page.$eval('[data-testid="gear-train"]', (el) => el.getAttribute("data-complete"))) === "true"
+      );
+    },
+  },
+  {
+    id: "answer-wall-submit-pending",
+    milestone: "C1",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch11`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForFunction(
+        () => window.__exhibit?.state().pausePoint?.interactiveId === "gap-at-scale",
+        { timeout: 30000 }
+      );
+      await fire(page, { type: "COMPLETE_INTERACTIVE", interactiveId: "gap-at-scale" });
+      await fire(page, { type: "CONTINUE" });
+      await page.waitForFunction(
+        () => window.__exhibit?.state().pausePoint?.interactiveId === "answer-wall",
+        { timeout: 30000 }
+      );
+      t.assert("answer wall renders", await page.$('[data-testid="answer-wall"]'));
+      await page.$eval('[data-testid="answer-wall"]', (el) => el.scrollIntoView({ block: "center" }));
+      await page.type('[data-testid="aw-input"]', "Everyone who calls it home.");
+      await dispatchClick(page, '[data-testid="aw-submit"]');
+      await new Promise((r) => setTimeout(r, 900));
+      t.assert("own answer chip held for review", await page.$('[data-testid="aw-own"]'));
+      const s = await exhibitState(page);
+      t.assert("answer-wall completes on submit", s?.completedInteractives.includes("answer-wall"));
+      t.assert("terminal station framing", await page.$('[data-testid="continue-button"]'));
+    },
+  },
+  {
     id: "explore-ch4-advisory",
     milestone: "A2",
     tags: ["core", "sensitivity"],

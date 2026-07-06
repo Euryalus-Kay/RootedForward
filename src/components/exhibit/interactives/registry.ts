@@ -108,7 +108,11 @@ export const INTERACTIVE_REGISTRY: Record<InteractiveId, RegistryEntry> = {
     "Scroll the full height of the wealth gap.",
     () => import("./GapAtScale/GapAtScale")
   ),
-  "answer-wall": entry("The Wall", "Leave your answer among everyone else's."),
+  "answer-wall": entry(
+    "The Wall",
+    "Leave your answer among everyone else's.",
+    () => import("./AnswerWall/AnswerWall")
+  ),
 };
 
 /** chapter-boundary prefetch helper */

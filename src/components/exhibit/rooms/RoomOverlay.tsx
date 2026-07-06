@@ -16,19 +16,21 @@
 import { useEffect, useRef, type Dispatch } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import dynamic from "next/dynamic";
-import type { ExhibitAction, MachineId } from "@/lib/exhibit/types";
-import { isMachineId, machineOf } from "@/lib/exhibit/machines";
+import type { ExhibitAction } from "@/lib/exhibit/types";
+import { allMachines, COUNTER_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM } from "@/lib/exhibit/content/rooms";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { moveFocus } from "@/lib/exhibit/focus";
 import { machineTitle } from "../hud/BrassLamp";
 
 const HASH_PREFIX = "#room-";
 
-/** Parse a location hash into a known machine-room id, else null. */
-export function roomIdFromHash(hash: string | null | undefined): MachineId | null {
+/** Parse a location hash into a known room id (five machines plus the
+ *  counter room), else null. */
+export function roomIdFromHash(hash: string | null | undefined): RoomId | null {
   if (!hash || !hash.startsWith(HASH_PREFIX)) return null;
   const id = hash.slice(HASH_PREFIX.length);
-  return isMachineId(id) ? id : null;
+  return isRoomId(id) ? id : null;
 }
 
 /**
@@ -62,7 +64,16 @@ export default function RoomOverlay() {
   const dispatch = useExhibitDispatch();
 
   const openRoom = state.openRoom;
-  const machine = openRoom ? machineOf(openRoom) : undefined;
+  const isCounter = openRoom === COUNTER_ROOM_ID;
+  const machine = openRoom && !isCounter ? machineOf(openRoom) : undefined;
+
+  /* the collectible set: visiting a machine room collects its card
+     (derived from visitedRooms; the counter room is not a card) */
+  const cardCount = allMachines().filter((m) => state.visitedRooms.includes(m.machineId)).length;
+
+  const plateTitle = machine ? machineTitle(machine) : isCounter ? COUNTER_ROOM.title : undefined;
+  const platePlain = machine ? machine.plainName : isCounter ? COUNTER_ROOM.plainName : undefined;
+  const plateDescription = machine ? machine.definition : isCounter ? COUNTER_ROOM.definition : undefined;
 
   const openRoomRef = useRef<string | null>(openRoom);
   const lastRoomRef = useRef<string | null>(null);
@@ -142,15 +153,22 @@ export default function RoomOverlay() {
             <div className="min-w-0">
               <Dialog.Title asChild>
                 <h2 className="exh-plat truncate text-sm font-semibold uppercase tracking-[0.25em] text-exh-ink">
-                  {machine ? machineTitle(machine) : "Machine room"}
+                  {plateTitle ?? "Machine room"}
                 </h2>
               </Dialog.Title>
-              {machine ? (
+              {platePlain ? (
                 <p className="exh-plat mt-0.5 truncate text-[10px] uppercase tracking-[0.18em] text-exh-ink-soft">
-                  {machine.plainName}
+                  {platePlain}
                 </p>
               ) : null}
             </div>
+            <span
+              data-testid="machine-cards-chip"
+              className="exh-plat inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[2px] border border-exh-ink/30 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-exh-ink-soft"
+            >
+              Machine cards, <span className="exh-mono text-exh-ink">{cardCount}</span> of{" "}
+              <span className="exh-mono text-exh-ink">5</span>
+            </span>
             <Dialog.Close asChild>
               <button
                 type="button"
@@ -163,11 +181,11 @@ export default function RoomOverlay() {
           </div>
         </div>
 
-        {machine ? (
-          <Dialog.Description className="sr-only">{machine.definition}</Dialog.Description>
+        {plateDescription ? (
+          <Dialog.Description className="sr-only">{plateDescription}</Dialog.Description>
         ) : null}
 
-        {openRoom && isMachineId(openRoom) ? (
+        {openRoom && isRoomId(openRoom) ? (
           <MachineRoom roomId={openRoom} />
         ) : (
           <p className="exh-plat px-8 py-16 text-center text-xs uppercase tracking-[0.25em] text-exh-ink-soft">

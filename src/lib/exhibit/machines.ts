@@ -22,3 +22,17 @@ export function isMachineId(id: string): id is MachineId {
 export function allMachines(): MachineDef[] {
   return doc.machines;
 }
+
+/* ---- the sixth room ------------------------------------------------ */
+/* The Counter-Machine room (ch10 door) is a room without a machine:    */
+/* no machines.json entry, no lamp, no thesis wall. It shares the room  */
+/* plumbing (overlay, hash, visitedRooms), so the widened id check      */
+/* lives here beside the machine check it extends.                      */
+
+export const COUNTER_ROOM_ID = "counter" as const;
+
+export type RoomId = MachineId | typeof COUNTER_ROOM_ID;
+
+export function isRoomId(id: string): id is RoomId {
+  return isMachineId(id) || id === COUNTER_ROOM_ID;
+}

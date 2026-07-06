@@ -145,6 +145,24 @@
       "title": "B1 self-approved per D-A2-04. Rigged Instrument system (four configs on documented instruments) and Machine Rooms M1 to M3 with the six-station floor plan, room overlay with hash deep links, doors in ch6, ch8, and ch9. 115 of 115 checks across 26 scenarios. Facts registered for the rooms, fair_housing_1968 and post_2008_return.",
       "decision": "approved",
       "status": "honored"
+    },
+    {
+      "id": "D-B2-01",
+      "milestone": "B2",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "B2 self-approved per D-A2-04. Rooms for THE DEED and THE CODE, the counter-machine room with the Answer Key on registered facts, the gear train unlock, and machine cards. Strike the Clause ships as the static primary-text panel pending counsel review. Community build-back stories (Kimbark, Harper Court, the savings and loan) honestly plated as collection in progress pending sourced records. Galleries deferred to the sourcing effort.",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-C1-01",
+      "milestone": "C1",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "C1 self-approved per D-A2-04. Visitor input pipeline live behind migration 008 (exhibit_submissions, RLS, 101-term screen, admin queue). The Answer Wall takes the honest migration-pending path until the owner applies supabase/migrations/008_exhibit.sql in the SQL editor, the same procedure as 006. Memorial and oral-history stations ship with the galleries; their API kinds are already supported.",
+      "decision": "approved",
+      "status": "honored"
     }
   ]
 }

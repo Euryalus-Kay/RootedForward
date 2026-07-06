@@ -222,6 +222,10 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
         },
       ],
     },
+    tail: [
+      { kind: "door", roomId: "deed", label: "The Deed" },
+      { kind: "door", roomId: "code", label: "The Code" },
+    ],
   },
   ch6: {
     after: {
@@ -276,6 +280,9 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch9-b1": [{ kind: "quote", voiceId: "dempsey-travis" }],
     },
     tail: [{ kind: "door", roomId: "contract", label: "The Contract" }],
+  },
+  ch10: {
+    tail: [{ kind: "door", roomId: "counter", label: "The Counter-Machine" }],
   },
   ch11: {
     after: {

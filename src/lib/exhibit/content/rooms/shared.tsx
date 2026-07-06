@@ -16,7 +16,9 @@ import PaperCard from "@/components/exhibit/shared/PaperCard";
 export type RoomStationId = "instrument" | "paper" | "people" | "fight" | "still-running";
 
 export interface RoomStation {
-  id: RoomStationId;
+  /** the five machine rooms use RoomStationId; the counter room names
+   *  its own stations, so the contract stays a plain string */
+  id: string;
   /** the exh-plat station eyebrow, e.g. "THE INSTRUMENT" */
   eyebrow: string;
   /** one quiet serif line under the eyebrow */
@@ -115,11 +117,14 @@ export interface RecordCardProps {
   fields?: RecordField[];
   /** citation attach point; a registered fact id for the record */
   factId?: string;
+  /** the racist-language warning chip; on by default, off for period
+   *  quotes that carry no slur (the label still marks them period) */
+  warning?: boolean;
 }
 
 /** The period-language warning chip wording matches The Lens (ch6),
  *  the exhibit's one established convention for surveyor prose. */
-export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, factId }: RecordCardProps) {
+export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, factId, warning = true }: RecordCardProps) {
   return (
     <PaperCard tone="deep" data-testid="room-record-card" className="p-4 sm:p-5">
       <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
@@ -127,7 +132,11 @@ export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, fact
         {factId ? <FactValue id={factId} className="sr-only" /> : null}
       </p>
       <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
-        period document; contains the era&rsquo;s racist language
+        {warning ? (
+          <>period document; contains the era&rsquo;s racist language</>
+        ) : (
+          <>period document, quoted verbatim</>
+        )}
       </span>
       {fields && fields.length > 0 ? (
         <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 border-y border-exh-ink/15 py-2.5">

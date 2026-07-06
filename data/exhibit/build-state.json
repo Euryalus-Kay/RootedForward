@@ -59,17 +59,22 @@
     {
       "id": "B2",
       "title": "Rooms M4-M5 + counter-machine + galleries",
-      "status": "in-progress"
+      "status": "approved",
+      "gateTag": "exhibit-gate-B2",
+      "approvedAt": "2026-07-04"
     },
     {
       "id": "C1",
       "title": "Visitor input + moderation",
-      "status": "pending"
+      "status": "approved",
+      "gateTag": "exhibit-gate-B2",
+      "approvedAt": "2026-07-04",
+      "note": "shipped with B2; migration 008 pending owner application"
     },
     {
       "id": "C2",
       "title": "Action layer + hardening + go-live swap",
-      "status": "pending"
+      "status": "in-progress"
     }
   ]
 }

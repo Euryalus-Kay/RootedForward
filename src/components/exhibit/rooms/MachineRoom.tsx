@@ -11,16 +11,15 @@
 /*  quiet.                                                             */
 /* ------------------------------------------------------------------ */
 import { useMemo, type ReactNode } from "react";
-import type { MachineId } from "@/lib/exhibit/types";
-import { machineOf } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM_ID, machineOf, type RoomId } from "@/lib/exhibit/machines";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
-import { ROOM_STATIONS, type RoomStation } from "@/lib/exhibit/content/rooms";
+import { COUNTER_ROOM, ROOM_STATIONS, type RoomStation } from "@/lib/exhibit/content/rooms";
 import { InteractiveContext, type InteractiveApi } from "../interactives/InteractiveContext";
 import { LampDisc, MonoNumbers, machineTitle, stateSentence } from "../hud/BrassLamp";
 import PaperCard from "../shared/PaperCard";
 
 export interface MachineRoomProps {
-  roomId: MachineId;
+  roomId: RoomId;
 }
 
 /* Rooms mount Rigged Instrument stations, which read the same
@@ -72,10 +71,46 @@ function StationSection({ station }: { station: RoomStation }) {
   );
 }
 
+/* The counter room's wall: the module nameplate, the invitation, and
+ * deliberately no lamp and no armed/on/off ledger, because there is
+ * no machine behind this door. */
+function CounterWall() {
+  return (
+    <header data-testid="room-station-thesis" data-counter-wall="">
+      <p className="exh-plat text-xs font-semibold uppercase tracking-[0.3em] text-exh-ink-soft">
+        Machine room
+      </p>
+      <h2 className="mt-3 font-display text-3xl text-exh-ink md:text-4xl">{COUNTER_ROOM.title}</h2>
+      <p className="exh-plat mt-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+        {COUNTER_ROOM.plainName}
+      </p>
+      <p className="mt-6 border-b border-exh-ink/15 pb-8 font-display text-xl leading-relaxed text-exh-ink md:text-2xl">
+        {COUNTER_ROOM.definition}
+      </p>
+    </header>
+  );
+}
+
 export default function MachineRoom({ roomId }: MachineRoomProps) {
   const state = useExhibitState();
-  const machine = machineOf(roomId);
+  const isCounter = roomId === COUNTER_ROOM_ID;
+  const machine = isCounter ? undefined : machineOf(roomId);
   const stations = ROOM_STATIONS[roomId];
+
+  if (isCounter) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-5 pb-28 pt-10 sm:px-8 md:pt-14">
+        <CounterWall />
+        {stations ? (
+          <div className="mt-16 space-y-16 md:mt-20 md:space-y-20">
+            {stations.map((station) => (
+              <StationSection key={station.id} station={station} />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 
   if (!machine) return null;
   const lamp = state.machines[roomId];
