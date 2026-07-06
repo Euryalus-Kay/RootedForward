@@ -13,7 +13,7 @@
 /* ------------------------------------------------------------------ */
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useExhibitDispatch } from "@/lib/exhibit/ExhibitProvider";
+import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { useIdleContinue } from "../audio/useIdleContinue";
 import { subscribeInteraction } from "./InteractiveSlot";
 
@@ -38,6 +38,7 @@ export interface ContinueButtonProps {
 
 export default function ContinueButton({ terminal = false }: ContinueButtonProps) {
   const dispatch = useExhibitDispatch();
+  const state = useExhibitState();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const ringRef = useRef<SVGCircleElement | null>(null);
   const digitRef = useRef<HTMLSpanElement | null>(null);
@@ -48,7 +49,12 @@ export default function ContinueButton({ terminal = false }: ContinueButtonProps
   const [buttonInView, setButtonInView] = useState(true);
   const [chipHost, setChipHost] = useState<HTMLElement | null>(null);
 
-  const idle = useIdleContinue(!terminal, IDLE_SECONDS, () => dispatch({ type: "CONTINUE" }));
+  /* the idle walker waits at the door: a visitor deep in a machine
+     room must never have the tour continue behind the overlay. The
+     window restarts fresh when the room closes. */
+  const idle = useIdleContinue(!terminal && !state.openRoom, IDLE_SECONDS, () =>
+    dispatch({ type: "CONTINUE" })
+  );
 
   /* interactives report meaningful actions; each one restarts the window */
   useEffect(() => subscribeInteraction(() => idle.reset()), [idle]);

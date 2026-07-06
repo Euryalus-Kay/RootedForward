@@ -15,6 +15,7 @@ import CaptionBar from "./stage/CaptionBar";
 import TranscriptView from "./stage/TranscriptView";
 import ExhibitControls from "./shared/ExhibitControls";
 import HudFrame from "./hud/HudFrame";
+import RoomOverlay, { openRoomFromHash } from "./rooms/RoomOverlay";
 import { preloadInteractives } from "./interactives/registry";
 import type { InteractiveId, StageBlock } from "@/lib/exhibit/types";
 
@@ -51,6 +52,8 @@ function ExhibitRoot() {
     dispatch({ type: "SET_MODE", mode: "guided" });
     dispatch({ type: "BEGIN" });
     dispatch({ type: "JUMP_TO_CHAPTER", chapterIndex: idx });
+    // a #room-<id> hash on arrival opens that room over the landed chapter
+    openRoomFromHash(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,6 +82,7 @@ function ExhibitRoot() {
             <ChapterStage />
           </main>
           <CaptionBar />
+          <RoomOverlay />
           {state.transcriptOpen && <TranscriptView />}
         </>
       )}

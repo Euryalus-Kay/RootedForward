@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "note": "The Ethics Exam rigged instrument (Room M5, THE CODE). The article text is the documented 1924 language; scenario outcomes derive from the documented expulsion rule. The exam contains no morally correct answer a member could afford, and that is its lesson.",
+  "articleText": "A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.",
+  "articleTextHistorical": true,
+  "articleFactRef": "code.nareb_article34_1924",
+  "expulsionFactRef": "code.cireb_expulsion_1921",
+  "scenarios": [
+    {
+      "scenarioId": "surgeon",
+      "prompt": "A Black surgeon with flawless credit offers full asking price on a white block. You hold the listing.",
+      "sellOutcome": "Expulsion proceedings under the code. The license that feeds your family is gone.",
+      "refuseOutcome": "Ethical, in the code's own terms. The sale is refused and the line holds.",
+      "sellStamp": "EXPELLED",
+      "refuseStamp": "ETHICAL"
+    },
+    {
+      "scenarioId": "family",
+      "prompt": "A Black schoolteacher and her husband, savings in hand, ask to see a listing two blocks past the line.",
+      "sellOutcome": "The board reads the code the same way for every member. Expulsion.",
+      "refuseOutcome": "Ethical, in the code's own terms. The family keeps looking inside the Black Belt.",
+      "sellStamp": "EXPELLED",
+      "refuseStamp": "ETHICAL"
+    }
+  ],
+  "debrief": {
+    "heading": "There was no right answer at this desk",
+    "body": "The exam contained no morally correct answer a member could afford. That was its function. The code made the color line a professional duty, and a realtor who crossed it lost the livelihood that fed his family. The explicit language came out of the code in 1950. The association formally apologized in 2020.",
+    "factRefs": ["code.deleted_1950", "code.apology_2020"]
+  }
+}

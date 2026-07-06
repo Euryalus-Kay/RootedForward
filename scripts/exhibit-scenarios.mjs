@@ -561,6 +561,109 @@ export const scenarios = [
     },
   },
   {
+    id: "room-map-door",
+    milestone: "B1",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch6");
+      await page.$eval('[data-testid="door-map"]', (el) => el.scrollIntoView({ block: "center" })).catch(() => {});
+      t.assert("map door present", await page.$('[data-testid="door-map"]'));
+      await dispatchClick(page, '[data-testid="door-enter-map"]');
+      await new Promise((r) => setTimeout(r, 700));
+      const room = await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room"));
+      t.assert("map room opens", room === "map", `room=${room}`);
+      const stations = await page.$$eval('[data-testid^="room-station-"]', (els) => els.length);
+      t.assert("six stations render", stations >= 5, `stations=${stations}`);
+      t.assert("thesis lamp live", await page.$('[data-testid="room-lamp"]'));
+      const missing = await page.$$eval("[data-fact-missing]", (els) => els.length);
+      t.assert("zero missing facts in the room", missing === 0, `missing=${missing}`);
+      const hash = await page.evaluate(() => window.location.hash);
+      t.assert("hash synced", hash === "#room-map", hash);
+      await dispatchClick(page, '[data-testid="room-close"]');
+      await new Promise((r) => setTimeout(r, 400));
+      const s = await exhibitState(page);
+      t.assert("room closed", s?.openRoom === null);
+      t.assert("visit recorded", s?.visitedRooms.includes("map"));
+    },
+  },
+  {
+    id: "room-contract-dollar",
+    milestone: "B1",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch9");
+      await dispatchClick(page, '[data-testid="door-enter-contract"]');
+      await new Promise((r) => setTimeout(r, 700));
+      t.assert("crossref card present", await page.$('[data-testid="room-two-buyers-crossref"]'));
+      const remounted = await page.$('[data-testid="room-overlay"] [data-testid="interactive-two-buyers"]');
+      t.assert("two-buyers NOT remounted in room", !remounted);
+      await page.focus('[data-testid="follow-the-dollar-handle"]');
+      for (let i = 0; i < 7; i++) {
+        await page.keyboard.press("ArrowRight");
+        await new Promise((r) => setTimeout(r, 120));
+      }
+      const complete = await page.$eval('[data-testid="follow-the-dollar"]', (el) => el.getAttribute("data-complete"));
+      t.assert("dollar circle traced by keyboard", complete === "true", `complete=${complete}`);
+    },
+  },
+  {
+    id: "room-guided-pause",
+    milestone: "B1",
+    tags: ["rooms", "sensitivity"],
+    route: `${DEBUG}&ch=ch6`,
+    async run(page, t) {
+      await waitReady(page);
+      await fire(page, { type: "OPEN_ROOM", roomId: "map" });
+      await new Promise((r) => setTimeout(r, 400));
+      let s = await exhibitState(page);
+      t.assert("narration paused while room open", s?.playState === "paused", s?.playState);
+      await dispatchClick(page, '[data-testid="room-close"]');
+      await new Promise((r) => setTimeout(r, 300));
+      s = await exhibitState(page);
+      t.assert("still paused after close (visitor resumes)", s?.playState === "paused", s?.playState);
+    },
+  },
+  {
+    id: "rigged-gyb-lock",
+    milestone: "B1",
+    tags: ["core", "rooms"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch6");
+      await dispatchClick(page, '[data-testid="door-enter-map"]');
+      await new Promise((r) => setTimeout(r, 900));
+      const gyb = '[data-testid="rigged-grade-your-block"]';
+      await page.$eval(gyb, (el) => el.scrollIntoView({ block: "center" }));
+      const negro = await page.$(`[data-testid="rigged-field-grade-your-block-negro_percent"]`);
+      t.assert("infiltration field present", !!negro);
+      await page.evaluate(() => {
+        const sel = document.querySelector('[data-testid="rigged-field-grade-your-block-negro_percent"]');
+        const opts = [...sel.options].map((o) => o.value);
+        const nonzero = opts.find((v) => v && !/^0/.test(v)) ?? opts[opts.length - 1];
+        Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, "value").set.call(sel, nonzero);
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      await new Promise((r) => setTimeout(r, 300));
+      const locked = await page.$eval(gyb, (el) => el.getAttribute("data-locked"));
+      t.assert("form locks on infiltration", locked === "true", `locked=${locked}`);
+      await dispatchClick(page, '[data-testid="rigged-action-grade-your-block"]');
+      await new Promise((r) => setTimeout(r, 400));
+      const verdict = await page.$eval(gyb, (el) => el.textContent || "");
+      t.assert("HAZARDOUS verdict", verdict.includes("HAZARDOUS"));
+    },
+  },
+  {
     id: "explore-ch4-advisory",
     milestone: "A2",
     tags: ["core", "sensitivity"],

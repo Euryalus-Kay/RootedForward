@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "note": "The You Are the Commission rigged instrument (Room M2, THE BULLDOZER). Three parcel dossiers drawn from the documented categories the renewal plan condemned; each is a described composite of a documented building type, labeled as such on screen, never a fabricated address. The checklist mirrors the plan's own vocabulary.",
+  "checklistFactRef": "renewal.kimpton_framing",
+  "planFactRefs": ["renewal.plan_856_acres", "renewal.buildings_638", "renewal.families_displaced"],
+  "parcels": [
+    {
+      "parcelId": "kitchenette-firetrap",
+      "title": "A converted kitchenette building",
+      "described": "A fair-era six-flat cut into single rooms, hot plates in closets, one bath to a floor, the fire escape long gone. The type the plan photographed first.",
+      "checklist": { "age": true, "density": true, "mixedUse": false, "obsolescence": true },
+      "typeNote": "described composite of a documented building type"
+    },
+    {
+      "parcelId": "sound-six-flat",
+      "title": "A well-kept six-flat, fully occupied",
+      "described": "Structurally sound, taxes paid, gardens out front. Its tenants are the neighborhood's newest Black arrivals. The plan's surveys scored age and density, not upkeep.",
+      "checklist": { "age": true, "density": true, "mixedUse": false, "obsolescence": false },
+      "typeNote": "described composite of a documented building type"
+    },
+    {
+      "parcelId": "artist-storefronts",
+      "title": "The Fifty-Seventh Street art colony storefronts",
+      "described": "Wood storefronts from the fair itself, studios and shops for sixty years. Old, dense, and mixed use, which is all the checklist needed.",
+      "checklist": { "age": true, "density": true, "mixedUse": true, "obsolescence": true },
+      "typeNote": "a documented place, described from the record"
+    }
+  ],
+  "verdict": {
+    "approveStamp": "APPROVED FOR CLEARANCE",
+    "protectResult": "No statutory basis. The checklist recognizes no reason to keep a building.",
+    "lesson": "The checklist was written so that anything old, dense, or mixed could be condemned. That describes nearly every city block and almost no suburb, which was the point."
+  }
+}

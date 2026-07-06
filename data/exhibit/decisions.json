@@ -136,6 +136,15 @@
       "title": "A4 self-approved and phase A closed per D-A2-04. Full nine-lens panel ran on production; both P1s fixed (mobile HUD composed as one plated strip; universal redlining claims softened to the registry's corrected Black Belt scope with TTS regenerated) plus the full P2 batch (tour end plate, terminal final station, scoped explore playback, roving map tabindex, focus and announcement utility, HoldTheLine reword, credit formatter, figure recompression 6MB to 2MB, caption plating, dagger hit areas). Remaining P3s recorded. VO re-encode to 64 to 80 kbps folded into the phase B pipeline settings.",
       "decision": "approved",
       "status": "honored"
+    },
+    {
+      "id": "D-B1-01",
+      "milestone": "B1",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "B1 self-approved per D-A2-04. Rigged Instrument system (four configs on documented instruments) and Machine Rooms M1 to M3 with the six-station floor plan, room overlay with hash deep links, doors in ch6, ch8, and ch9. 115 of 115 checks across 26 scenarios. Facts registered for the rooms, fair_housing_1968 and post_2008_return.",
+      "decision": "approved",
+      "status": "honored"
     }
   ]
 }

@@ -25,7 +25,7 @@ export function machineTitle(machine: MachineDef): string {
 
 /** Wraps every digit run in exh-mono so prose from machines.json keeps
  *  the numbers-are-mono rule without hand-marking each sentence. */
-function MonoNumbers({ text }: { text: string }) {
+export function MonoNumbers({ text }: { text: string }) {
   const parts = text.split(/(\d[\d,.]*)/g);
   return (
     <>
@@ -42,7 +42,7 @@ function MonoNumbers({ text }: { text: string }) {
   );
 }
 
-function LampDisc({ lampState }: { lampState: LampState }) {
+export function LampDisc({ lampState }: { lampState: LampState }) {
   const base = "relative inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full";
   if (lampState === "dark") {
     return <span aria-hidden="true" className={cn(base, "ring-2 ring-inset ring-exh-ink/20")} />;
@@ -74,7 +74,7 @@ function LampDisc({ lampState }: { lampState: LampState }) {
   );
 }
 
-function stateSentence(machine: MachineDef, lampState: LampState): ReactNode {
+export function stateSentence(machine: MachineDef, lampState: LampState): ReactNode {
   switch (lampState) {
     case "dark":
       return (

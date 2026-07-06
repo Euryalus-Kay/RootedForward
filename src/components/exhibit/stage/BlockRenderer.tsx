@@ -3,7 +3,7 @@
 /*  One stage block on the linen. Narration prose in the document      */
 /*  serif, archival figures with their Commons credit lines, fact      */
 /*  stats through FactValue, voice medallions through VoiceCard,       */
-/*  interactive plinths, and doorway cards for the ship-later side     */
+/*  interactive plinths, and live doorway cards into the machine       */
 /*  rooms. The advisory kind renders nothing here; that gate is        */
 /*  global.                                                            */
 /* ------------------------------------------------------------------ */
@@ -12,6 +12,7 @@ import type { StageBlock } from "@/lib/exhibit/types";
 import { narrationBlock } from "@/lib/exhibit/content";
 import FactValue from "../shared/FactValue";
 import VoiceCard from "../shared/VoiceCard";
+import DoorCard from "../rooms/DoorCard";
 import InteractiveSlot from "./InteractiveSlot";
 
 export interface BlockRendererProps {
@@ -174,25 +175,7 @@ export default function BlockRenderer({ block, opening = false, noMotion = false
       );
 
     case "door":
-      return (
-        <div
-          data-room-id={block.roomId}
-          className="border border-dashed border-exh-ink/35 bg-exh-linen-deep/30 px-5 py-6"
-        >
-          <p className="exh-plat text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-            Side room
-          </p>
-          <p className="mt-2 font-display text-lg text-exh-ink">{block.label}</p>
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            className="exh-plat mt-4 min-h-12 cursor-not-allowed border border-exh-ink/30 px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink-soft"
-          >
-            Opening in the next phase
-          </button>
-        </div>
-      );
+      return <DoorCard roomId={block.roomId} label={block.label} />;
 
     case "advisory":
       return null;

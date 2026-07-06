@@ -653,6 +653,14 @@
           "verdict": "verified",
           "note": "HOLC program totals 1933-1936, just over one million loans.",
           "source": "HOLC program records"
+        },
+        {
+          "id": "fc-redlining-10",
+          "factId": "redlining.fair_housing_1968",
+          "claim": "The Fair Housing Act became law in April 1968.",
+          "verdict": "verified",
+          "note": "Public Law 90-284, Title VIII, signed April 11, 1968.",
+          "source": "United States Code, DOJ"
         }
       ]
     },
@@ -924,6 +932,14 @@
           "verdict": "unverified-pending",
           "note": "Not sourceable in this pass and NOT included in facts.json. The Duke $587 per month framing (contracts.extra_monthly_587) is the shipping alternative.",
           "source": ""
+        },
+        {
+          "id": "fc-contracts-11",
+          "factId": "contracts.post_2008_return",
+          "claim": "Contract-for-deed home selling returned at scale to Black neighborhoods after the 2008 foreclosure crisis.",
+          "verdict": "verified",
+          "note": "NCLC 2016 report documents investor land-contract sales concentrated in majority-Black areas.",
+          "source": "NCLC, Toxic Transactions, 2016"
         }
       ]
     },

@@ -1366,7 +1366,9 @@
         "Seattle Journal for Social Justice"
       ],
       "factcheckId": "fc-code-03",
-      "usedBy": [],
+      "usedBy": [
+        "ethics_exam"
+      ],
       "notes": "The words race and nationality were dropped from the code in 1950, two years after Shelley. Vaguer language about incompatible uses and occupancy lingered, and industry practice changed far more slowly than the text."
     },
     {
@@ -1388,7 +1390,9 @@
         "The Real Deal (November 20, 2020)"
       ],
       "factcheckId": "fc-code-04",
-      "usedBy": [],
+      "usedBy": [
+        "ethics_exam"
+      ],
       "notes": "Incoming NAR president Charlie Oppler apologized for the association's role in housing discrimination, saying what Realtors did was an outrage to our morals and our ideals. It was the 1.4 million member association's first formal apology, 96 years after Article 34."
     },
     {
@@ -3019,6 +3023,44 @@
         "voices"
       ],
       "notes": "Wells is documented across Satter and CBL histories as an early leader who testified to what she had paid."
+    },
+    {
+      "id": "redlining.fair_housing_1968",
+      "value": 1968,
+      "display": "the Fair Housing Act, April 1968",
+      "unit": "law",
+      "asOf": "1968-04-11",
+      "tier": "documented",
+      "source": {
+        "title": "Civil Rights Act of 1968, Title VIII (Fair Housing Act)",
+        "author": "United States Congress",
+        "year": 1968,
+        "url": "https://www.justice.gov/crt/fair-housing-act-1",
+        "locator": "Public Law 90-284, April 11, 1968"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-redlining-10",
+      "usedBy": [],
+      "notes": "The Map machine's statutory off switch. Enforcement, not the statute alone, does the work."
+    },
+    {
+      "id": "contracts.post_2008_return",
+      "value": 2016,
+      "display": "contract-for-deed selling returned to Black neighborhoods after the 2008 crash",
+      "unit": "finding",
+      "asOf": "2016",
+      "tier": "reported",
+      "source": {
+        "title": "Toxic Transactions, How Land Installment Contracts Once Again Threaten Communities of Color",
+        "author": "National Consumer Law Center",
+        "year": 2016,
+        "url": "https://www.nclc.org/resources/toxic-transactions-how-land-installment-contracts-once-again-threaten-communities-of-color/",
+        "locator": "report findings on post-crash investor land contracts"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-contracts-11",
+      "usedBy": [],
+      "notes": "The Contract machine's residue line, registered for the Machine Rooms."
     }
   ]
 }

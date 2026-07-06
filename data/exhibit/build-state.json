@@ -52,12 +52,14 @@
     {
       "id": "B1",
       "title": "Rigged Instruments + rooms M1-M3",
-      "status": "pending-next-session"
+      "status": "approved",
+      "gateTag": "exhibit-gate-B1",
+      "approvedAt": "2026-07-04"
     },
     {
       "id": "B2",
       "title": "Rooms M4-M5 + counter-machine + galleries",
-      "status": "pending"
+      "status": "in-progress"
     },
     {
       "id": "C1",
