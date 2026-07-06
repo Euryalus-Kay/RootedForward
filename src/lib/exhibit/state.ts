@@ -142,7 +142,9 @@ export function makeExhibitReducer(ctx: ReducerContext) {
           }
         }
         const meta = metaOf(target);
-        const needsAdvisory = !!meta?.advisoryBefore && !s.advisoryAccepted && state.mode === "guided";
+        // the content advisory guards its chapter on EVERY first entry,
+        // explore mode included (sensitivity rule, panel finding A2-P1)
+        const needsAdvisory = !!meta?.advisoryBefore && !s.advisoryAccepted;
         return {
           ...s,
           chapterIndex: target,
@@ -174,14 +176,25 @@ export function makeExhibitReducer(ctx: ReducerContext) {
         return { ...state, playState: "advisory" };
 
       case "ACCEPT_ADVISORY":
-        return { ...state, advisoryAccepted: true, playState: state.mode === "guided" ? "playing" : state.playState };
+        // explore's steady state is "ended" (free navigation); guided resumes playing
+        return {
+          ...state,
+          advisoryAccepted: true,
+          playState: state.mode === "guided" ? "playing" : "ended",
+        };
 
       case "SKIP_ADVISORY_CHAPTER": {
         // advisory offers Continue or Skip to ch5 (index of "ch5" in CHAPTER_ORDER)
         const ch5 = CHAPTER_ORDER.indexOf("ch5");
         let s = { ...state, advisoryAccepted: true };
         for (let i = s.chapterIndex; i < ch5; i++) s = applyChapterEffects(s, metaOf(i), true);
-        return { ...s, chapterIndex: ch5, blockIndex: 0, pausePoint: null, playState: "playing" };
+        return {
+          ...s,
+          chapterIndex: ch5,
+          blockIndex: 0,
+          pausePoint: null,
+          playState: state.mode === "guided" ? "playing" : "ended",
+        };
       }
 
       case "TOGGLE_MUTE":

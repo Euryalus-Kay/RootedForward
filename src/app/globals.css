@@ -476,3 +476,7 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid var(--color-exh-blue);
   outline-offset: 2px;
 }
+
+/* every exhibit control is visibly pressable (A2 panel finding); intentional
+   grab / ew-resize cursors on drag surfaces win by their own specificity */
+.exhibit-root button:not(:disabled) { cursor: pointer; }

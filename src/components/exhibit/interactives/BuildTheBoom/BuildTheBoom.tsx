@@ -29,7 +29,7 @@ const COUNTER_LABEL = "building forms, illustrative";
 const TARGET_LABEL = "raise the fair";
 const MIDWAY_TITLE = "The fair ranked people too";
 const MIDWAY_BODY =
-  "From the gates of the White City, Ida B. Wells and Frederick Douglass handed visitors a pamphlet, The Reason Why the Colored American Is Not in the World's Columbian Exposition. It answered the fair's exclusion of Black Americans point by point.";
+  "From the fair's Haiti building, Frederick Douglass and Ida B. Wells handed visitors a pamphlet, The Reason Why the Colored American Is Not in the World's Columbian Exposition. It answered the fair's exclusion of Black Americans point by point.";
 const CLOSING_LINE =
   "Remember these hotels and big apartments. In fifty years, they become the battleground.";
 

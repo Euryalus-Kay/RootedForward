@@ -414,6 +414,35 @@ export const scenarios = [
     },
   },
   {
+    id: "explore-ch4-advisory",
+    milestone: "A2",
+    tags: ["core", "sensitivity"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      await page.click('[data-testid="mode-explore"]');
+      await new Promise((r) => setTimeout(r, 400));
+      await exhibitGoto(page, "ch4");
+      let s = await exhibitState(page);
+      t.assert("advisory raised in explore", s?.playState === "advisory", s?.playState);
+      t.assert("advisory gate visible", await page.$('[data-testid="advisory-gate"]'));
+      await page.evaluate(() => {
+        [...document.querySelectorAll('[data-testid="advisory-gate"] button')]
+          .find((b) => b.textContent.trim() === "Continue")?.click();
+      });
+      await new Promise((r) => setTimeout(r, 300));
+      s = await exhibitState(page);
+      t.assert("explore not stuck after accept", s?.playState === "ended", s?.playState);
+      t.assert("on ch4", s?.chapterIndex === 5, `index=${s?.chapterIndex}`);
+      t.assert("stage renders", await page.$('[data-testid="chapter-stage"]'));
+      // second entry must not re-raise the gate
+      await exhibitGoto(page, "ch5");
+      await exhibitGoto(page, "ch4");
+      s = await exhibitState(page);
+      t.assert("no re-raise once accepted", s?.playState === "ended", s?.playState);
+    },
+  },
+  {
     id: "explore-mode",
     milestone: "A1",
     tags: ["core"],

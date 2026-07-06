@@ -30,7 +30,12 @@ export default function ContinueButton() {
 
   useEffect(() => {
     const unsubscribe = idle.subscribe((remaining) => {
-      const fraction = Math.max(0, Math.min(1, remaining / IDLE_SECONDS));
+      // under the no-motion rule (ch4, prefers-reduced-motion) the ring steps
+      // once per whole second instead of animating continuously
+      const motionOff =
+        document.querySelector('[data-testid="exhibit-root"]')?.getAttribute("data-motion") === "off";
+      const effective = motionOff ? Math.ceil(remaining) : remaining;
+      const fraction = Math.max(0, Math.min(1, effective / IDLE_SECONDS));
       if (ringRef.current) {
         ringRef.current.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - fraction));
       }

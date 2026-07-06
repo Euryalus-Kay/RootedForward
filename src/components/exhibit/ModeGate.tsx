@@ -129,6 +129,9 @@ export default function ModeGate() {
               About <span className="exh-mono">16</span> minutes. The exhibit walks you through,
               station by station, and pauses where there is something to do.
             </span>
+            <span className="exh-plat mt-5 block text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink underline decoration-exh-ink/40 underline-offset-4 group-hover:text-exh-linen group-hover:decoration-exh-linen/60">
+              Begin the tour
+            </span>
           </button>
           <button
             type="button"
@@ -145,6 +148,9 @@ export default function ModeGate() {
             <span className="mt-3 block font-body text-sm leading-relaxed text-exh-ink-soft group-hover:text-exh-linen/90">
               Every station open, read at your pace. You can start the narration from any chapter
               later.
+            </span>
+            <span className="exh-plat mt-5 block text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink underline decoration-exh-ink/40 underline-offset-4 group-hover:text-exh-linen group-hover:decoration-exh-linen/60">
+              Enter the exhibit
             </span>
           </button>
         </div>

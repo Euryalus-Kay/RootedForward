@@ -46,6 +46,30 @@ function loadCredits(): Promise<Record<string, CreditRecord>> {
   return creditsPromise;
 }
 
+/* The credits registry is scraped from Wikimedia Commons and carries its
+ * artifacts (doubled author strings, ISO timestamps, Wikidata QS suffixes).
+ * Museum labels get a cleaned line; the raw record stays in credits.json. */
+function composeCreditLine(credit: CreditRecord): string | null {
+  let artist = (credit.artist ?? "").trim();
+  const half = Math.floor(artist.length / 2);
+  if (half > 3 && artist.slice(0, half) === artist.slice(half)) artist = artist.slice(0, half);
+  artist = artist.replace(/\s+/g, " ").trim();
+
+  let date = (credit.date ?? "").trim();
+  date = date.replace(/date QS:.*$/i, "").trim();
+  const iso = date.match(/^(\d{4})-\d{2}-\d{2}/);
+  if (iso) {
+    date = iso[1];
+  } else {
+    const yr = date.match(/^(\d{4})(?:\D|$)/);
+    if (yr && date.length > 12) date = yr[1];
+  }
+
+  const license = (credit.license ?? "").trim();
+  const line = [artist, date, license].filter(Boolean).join(", ");
+  return line || null;
+}
+
 function FigureBlock({
   src,
   alt,
@@ -70,9 +94,7 @@ function FigureBlock({
     };
   }, [creditKey]);
 
-  const creditLine = credit
-    ? [credit.artist, credit.date, credit.license].filter(Boolean).join(", ")
-    : null;
+  const creditLine = credit ? composeCreditLine(credit) : null;
 
   return (
     <figure>

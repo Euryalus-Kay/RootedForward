@@ -253,7 +253,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
           src: "/media/hyde-park/img/dd-color-line-10.jpg",
           alt: "Interior of the Supreme Court Building during a session.",
           creditKey: "dd-color-line-10",
-          caption: "The room where the armor finally failed.",
+          caption: "The Supreme Court chamber, photographed in 1937, where the armor finally failed in 1948.",
         },
       ],
     },

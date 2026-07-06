@@ -35,7 +35,7 @@
       "blocks": [
         {
           "id": "ch1-b1",
-          "text": "Hyde Park sits on the South Side of Chicago, seven miles from the Loop, hard against Lake Michigan. The greystones and Gothic towers look as if they have always been here. A hundred and seventy years ago this was prairie and marsh, Potawatomi land, part of the Council of Three Fires. After the Black Hawk War of 1832, the United States pressed the Three Fires nations into the Treaty of Chicago, and with one signing in 1833 they gave up some five million acres, this lakefront among them. Within a few years they were marched west. The first taking set the pattern. Whoever held the deed, the capital, and the plan would decide who belonged on this ground.",
+          "text": "Hyde Park sits on the South Side of Chicago, seven miles from the Loop, hard against Lake Michigan. The greystones and Gothic towers look as if they have always been here. Two hundred years ago this was prairie and marsh, Potawatomi land, part of the Council of Three Fires. After the Black Hawk War of 1832, the United States pressed the Three Fires nations into the Treaty of Chicago, and with one signing in 1833 they gave up some five million acres, this lakefront among them. Within a few years they were marched west. The first taking set the pattern. Whoever held the deed, the capital, and the plan would decide who belonged on this ground.",
           "factRefs": ["land.blackhawk_1832", "land.treaty_1833", "land.removal_west"]
         },
         {
@@ -51,7 +51,7 @@
       "blocks": [
         {
           "id": "ch2-b1",
-          "text": "Then came 1893. Chicago won the World's Columbian Exposition and built it on the marshland of Jackson Park, at Hyde Park's edge. Frederick Law Olmsted turned the marsh into lagoons, Daniel Burnham ran the construction, and for six months the White City stood in plaster, lit at night by electricity. Some twenty-seven million admissions were counted. The fair also showed exactly who it was built for. At its gates, Ida B. Wells and Frederick Douglass handed out ten thousand copies of a pamphlet asking why the fair had shut Black Americans out.",
+          "text": "Then came 1893. Chicago won the World's Columbian Exposition and built it on the marshland of Jackson Park, at Hyde Park's edge. Frederick Law Olmsted turned the marsh into lagoons, Daniel Burnham ran the construction, and for six months the White City stood in plaster, lit at night by electricity. Some twenty-seven million admissions were counted. The fair also showed exactly who it was built for. Inside it, at the Haiti building, Frederick Douglass and Ida B. Wells handed out ten thousand copies of a pamphlet asking why the fair had shut Black Americans out.",
           "factRefs": ["fair.opened_1893", "fair.attendance_27m", "fair.six_months", "fair.reason_why_10000"]
         },
         {

@@ -1,0 +1,258 @@
+{
+  "milestone": "A2",
+  "date": "2026-07-04",
+  "panel": "mini-1 (curator, interaction, sensitivity, fact)",
+  "lenses": [
+    {
+      "findings": [
+        {
+          "title": "Figure credit lines leak raw scraped metadata and break the museum-label register",
+          "severity": "medium",
+          "where": "ch3 (Fannie Barrier Williams figure), ch4 (Jesse Binga), ch7 (Hansberry portrait, Supreme Court chamber); source: public/media/hyde-park/credits.json rendered by src/components/exhibit/stage/BlockRenderer.tsx",
+          "recommendation": "Clean credits.json before A2 closes. Visible captions currently read 'UNKNOWN AUTHORUNKNOWN AUTHOR, 1940, PUBLIC DOMAIN' (duplicated artist string, confirmed for jesse-binga, dd-color-line-10 family, and 6 more entries), raw ISO dates ('1880-06-04', '1937-06-07'), a life-dates parenthetical ('C. D. ARNOLD (1844-1927)' on the ch2 Court of Honor plate), and one entry (land-early-chicago) whose date field is the literal Wikidata string '1871date QS:P571,+1871-00-00T00:00:00Z/9'. Dedupe artist strings, humanize dates ('c. 1880', 'June 1937'), and strip QS artifacts, either in the JSON or in the creditLine formatter in BlockRenderer.tsx. Every other label on these walls is written in careful exhibit voice; these lines are the one place the seams show.",
+          "effort": "small"
+        },
+        {
+          "title": "Shelley (1948) caption sits over a photograph visibly dated 1937",
+          "severity": "low",
+          "where": "ch7-walls-crack desktop, second figure ('The room where the armor finally failed. UNKNOWN AUTHOR, 1937-06-07, PUBLIC DOMAIN')",
+          "recommendation": "The caption ties the image to the 1948 Shelley v. Kraemer moment while the credit line says 1937, an eleven-year contradiction a careful visitor will catch. Recaption to make the room-not-the-moment framing explicit, e.g. 'The Supreme Court chamber, photographed in 1937, where the armor finally failed in 1948', or pair the caption with a humanized date once credits are cleaned.",
+          "effort": "small"
+        },
+        {
+          "title": "ch5 era plate (1921 TO 1928) undersells the chapter's actual span",
+          "severity": "low",
+          "where": "ch5-hud-lamps desktop, chapter eyebrow; narration ch5-b3 in data/exhibit/narration.json",
+          "recommendation": "Block 3 covers the university's covenant spending 'between 1933 and 1947' and the covenant wall lacing across the map 'within a decade', well past 1928. Since ch6 opens at 1929 and ch7 at 1937, either extend the ch5 era label (e.g. '1921 to 1948', the deed machine's own off-year) or accept the overlap deliberately; the current label makes the chapter feel like it ends before its strongest evidence.",
+          "effort": "small"
+        },
+        {
+          "title": "Bombing-map docket reads as repetitive truncated rows",
+          "severity": "low",
+          "where": "ch4-witness desktop, The Bombing Map interactive (src/components/exhibit/interactives/BombingMap)",
+          "recommendation": "The docket column shows several near-identical entries ('pre-1919  property held by Black real estat…', 'pre-1919  buildings in the 4500 block of Vi…' repeated) truncated at the same point, so the list reads as filler rather than 32 distinct records. Widen the rows or wrap to two lines, and vary the visible fragment (address first, then description) so scanning the docket conveys breadth. In a chapter built on restraint, the record list is the argument; it should not look copy-pasted.",
+          "effort": "medium"
+        }
+      ],
+      "lens": "museum curator",
+      "overall": "The five-machines thesis lands. The cold open (tap the map, get DECLINED) is a genuinely strong museum gesture, and ch6 pays it off explicitly ('This is the same map you tapped at the start. Now you know who drew it'), the best bookend in the show. Chapter era plates and titles are clear and the chronology never wobbles. The Ledger works as a running argument: entries accrue in period voice with year, plain-language headline, mono detail, and source daggers, and it correctly back-fills in explore mode (verified live at ch7, 6 entries present). The machine-lamp rail lights progressively through ch4-ch7 and the red 1921-1968 band on the timeline spine reinforces the 'machinery at full power' claim. Pause points earn their interruptions: one or two per chapter, each tied to the block it follows (file the application, stamp the four case outcomes, drag a kitchenette wall). ch4 is handled with real restraint, no-motion sensitivity, Binga's portrait humanizing the bombing docket, the Eugene Williams witness beat isolated as its own pause, and the chapter's stats plate reinforcing rather than sensationalizing. The empty Case Files plate in the ch7 screenshot is a capture artifact; live in both guided and explore modes the four folders render and stamp correctly. What does break the spell is label craft at the edges: figure credit lines leak raw Wikimedia scrape artifacts ('UNKNOWN AUTHORUNKNOWN AUTHOR', ISO dates, a literal QS:P571 Wikidata string in credits.json), a 1937-dated photo carries the 1948 Shelley caption, and the ch5 era plate ends at 1928 while the chapter's evidence runs to 1947. All fixable with small edits; none blocks the milestone.",
+      "pass": true
+    },
+    {
+      "lens": "interaction design",
+      "pass": true,
+      "overall": "Drove the live exhibit through the gate and ch0, ch2, ch3, ch4, ch5, ch6, ch7 (plus explore mode and a return visit). The core interaction loop is in good shape. Every pause point auto-scrolls its station into view, tap feedback is effectively instant (DECLINED stamp and counter update in under 50ms, boom counter and midway card respond on first tap), every interactive teaches itself with a one-line imperative header (\"Tap any neighborhood. File the application.\", \"Drag a wall into a flat, or tab to a flat and press Enter.\"), and there are no dead ends. All eleven built stations completed honestly under real interaction, CONTINUE always exits, the 20-second idle auto-continue fired correctly at ch0 (advanced to the machine board after 23s idle), the ch4 advisory gate traps focus and offers Continue/Skip, explore mode has per-chapter Play/Next/Previous, and a return visit offers Resume. Keyboard paths are genuinely strong: HOLC areas are tabbable role=button paths, the lens takes arrow keys with Shift steps, the invisible line is a proper role=slider with Home/End, kitchenette flats split on Enter, and the invisible line hands focus to the story text when the handle disappears at reveal. Drag ergonomics all verified working with pointer-event drags: lens (150px handle, grab cursor), invisible line (48px handle, ew-resize), kitchenette walls (48px tray targets, drag ghost, drop on flat registered). Zero console errors across three full runs. The findings below are affordance and pacing polish, none blocking: the mode-gate cards and several key buttons lack any pressable affordance before touch, and the idle auto-continue can fire invisibly when the countdown ring is below the fold at tall stations.",
+      "findings": [
+        {
+          "title": "Mode-gate cards read as static info panels, not pressable choices",
+          "severity": "medium",
+          "where": "gate state (desktop + mobile shots; verified live). src/components/exhibit/ModeGate.tsx",
+          "recommendation": "The two entry cards (Guided tour / Explore on your own) are BUTTONs but render as plain hairline boxes: cursor is 'default', there is no action verb, arrow, or visible hover/press treatment, so nothing signals 'touch me' before touching. This is the very first interaction of the exhibit and it sets the visitor's model for everything after. Add cursor-pointer, a hover/focus-visible treatment (border weight or fill shift), and a small action cue on each card (e.g. a 'Begin' / 'Enter' plat-label line or an arrow glyph). Keyboard works (12 tabs through the site navbar reaches the card with a visible 2px outline; Enter starts the tour) so this is purely a pre-touch affordance fix.",
+          "effort": "small"
+        },
+        {
+          "title": "Idle auto-continue can fire with its countdown off-screen, and wheel scrolling does not reset it",
+          "severity": "medium",
+          "where": "ch4 bombing-map pause (Continue button top at 1070px in a 900px viewport) and ch6 holc-lens (902px-tall slot); src/components/exhibit/audio/useIdleContinue.ts + stage/ContinueButton.tsx",
+          "recommendation": "The 20s countdown ring lives only on the Continue button, which sits below the fold at tall stations, and useIdleContinue resets only on pointerdown/keydown/touchstart. A desktop visitor reading the bombing evidence with trackpad/wheel scrolling generates none of those events, so the tour walks on mid-read with no visible warning (the T-minus-5 announcement is aria-live only). Two small fixes: add 'wheel' (and optionally 'scroll' on the document, passive) to the reset-event list, and surface a compact countdown chip in the fixed HUD whenever the Continue button is outside the viewport during a pause point. Verified live: idle auto-continue itself works correctly (ch0 advanced after the window elapsed) and any tap or keypress resets it.",
+          "effort": "small"
+        },
+        {
+          "title": "Pressable-cursor affordance is inconsistent across exhibit controls",
+          "severity": "medium",
+          "where": "verified live across chapters: Continue button, deed clause rows (ch5), case-file folders (ch7), advisory-gate buttons (ch4), mode-gate cards all show cursor:default, while boom target, machinery cards, deed spread button, case stamp button, HOLC areas, and lens/wall handles correctly show pointer/grab. src/components/exhibit/stage/ContinueButton.tsx, interactives/ReadTheDeed/ReadTheDeed.tsx, interactives/CaseFiles/CaseFiles.tsx, AdvisoryGate.tsx, ModeGate.tsx",
+          "recommendation": "Tailwind v4 preflight leaves buttons at cursor:default unless styled, so roughly half the exhibit's clickables invite the mouse and half do not; the primary Continue CTA and the case-file folders (which look like flat paper tabs) are the worst hit. Add a scoped rule such as `.exhibit-root button:not(:disabled) { cursor: pointer; }` in the exhibit CSS (keeping the intentional grab/ew-resize cursors on the drag handles, which already win by specificity), or add cursor-pointer to the five listed components.",
+          "effort": "small"
+        },
+        {
+          "title": "Interactive plinths render as an empty titled frame while their code chunk loads",
+          "severity": "low",
+          "where": "ch7 screenshot (ch7-walls-crack--desktop.png shows 'THE CASE FILES' plinth with an empty body); src/components/exhibit/interactives/registry.ts + stage/InteractiveSlot.tsx",
+          "recommendation": "Each interactive is a next/dynamic component with no `loading` fallback, so on slow connections (or mid-hydration, as the A2 screenshot run caught) the visitor sees a framed, titled, empty box, which reads as broken. The registry already carries a one-line `blurb` per station; pass it into dynamic()'s `loading` option (or render the blurb + a quiet 'station warming up' line inside InteractiveSlot while the chunk resolves) so the plinth is never blank. Live on localhost the chunks load fast enough that all stations rendered and completed correctly, so this is resilience polish, not a functional break.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "lens": "sensitivity",
+      "pass": false,
+      "overall": "The chapter 4 witness machinery is largely built with real care and I verified most of the binding rules live. In guided mode the advisory gate fires at the ch3/ch4 boundary (playState \"advisory\", focus-trapped alertdialog, plain copy naming bombings and the killing of a teenager, working Continue and Skip-to-ch5 buttons), narration stays silent while it is up, and the ?ch=ch4 deep link also raises it. data-motion=off is on the exhibit root throughout ch4 (including when returning to ch4 later) and flips back to \"on\" at ch5. The BombingMap is silent ink with a single red element (the commission's square), verbatim CCRR excerpts sit behind a \"from the 1922 record\" label, the no-address incidents are disclosed, and the draw sequence is once-only. The InvisibleLine reveal is non-repeatable (firedOnce, handle removed, focus moved to the story), Eugene Williams is named with dignity in both narration and interactive, and there are no scores, replays, sound effects, or success states around any of it. MachineryCards and ReadTheDeed carry honest \"plain-language summaries, not facsimiles\" and \"facsimile pending\" labels, and HolcLens gates verbatim surveyor prose behind a \"period document; contains the era's racist language\" chip. The one defect that blocks: Explore mode bypasses the advisory entirely. I verified live that SET_MODE explore + jumping to ch4 renders the full bombing map and the Eugene Williams story with no advisory shown, because JUMP_TO_CHAPTER only raises the advisory when mode === \"guided\", and the mode gate copy (\"Every station open, read at your pace\") gives no content note. Explore is one of the two entry doors on the first screen, so the binding \"advisory gate before ch4\" rule fails for that whole path. Two low-severity polish items ride along: the JS-driven countdown ring on the Continue button is the one element that keeps moving inside the no-motion chapter, and the voices tray's \"Collect the nine voices\" copy applies collectible-game framing to witness testimony (the medallion mechanic itself is owner-locked per D-A1-01 and is not being re-raised, only the placeholder copy).",
+      "findings": [
+        {
+          "title": "Explore mode reaches chapter 4 with no content advisory",
+          "severity": "high",
+          "where": "state=explore/ch4 (verified live: advisoryShown=false, bombing map and Eugene Williams text rendered); src/lib/exhibit/state.ts line 145 (JUMP_TO_CHAPTER: needsAdvisory requires mode === \"guided\"); src/components/exhibit/ModeGate.tsx explore card copy",
+          "recommendation": "Show the advisory on first entry to an advisoryBefore chapter in explore mode too. Drop the mode === \"guided\" condition in JUMP_TO_CHAPTER, and fix ACCEPT_ADVISORY so explore mode does not get stuck (it currently returns state.playState, which would be \"advisory\" at that moment; restore explore's prior playState, e.g. \"ended\"). Alternatively render the same plain advisory card inline at the top of ch4's explore stage before any ch4 content. Either way, the guided path already proves the copy and buttons work; this is wiring, not new design.",
+          "effort": "small"
+        },
+        {
+          "title": "Continue button countdown ring keeps animating inside the no-motion chapter",
+          "severity": "low",
+          "where": "state=ch4 pause points (visible in ch4-witness--desktop.png as the ticking ring on \"Continue the tour\"); src/components/exhibit/stage/ContinueButton.tsx (strokeDashoffset updated ~5x/sec via refs, so [data-motion=off] CSS cannot suppress it)",
+          "recommendation": "In chapters with sensitivity \"no-motion\", render the countdown as the static digit only (no sweeping ring), or update the ring once per second in whole-second steps. The 20-second auto-advance itself is acceptable museum-guide behavior (BombingMap already holds a 15s dwell before arming), but the continuously sweeping ring is the one persistent moving element on the witness screen.",
+          "effort": "small"
+        },
+        {
+          "title": "Voices tray copy frames witness testimony as game collectibles",
+          "severity": "low",
+          "where": "state=any in-tour (Voices chip \"N of 9\"); src/components/exhibit/hud/VoiceMedallions.tsx lines 44 and 79 (\"Voices, N of 9 found\" aria-label and \"Collect the nine voices as you tour. Their cards gather here.\")",
+          "recommendation": "The medallion mechanic is owner-locked (D-A1-01) and is not the issue; the placeholder copy is. When the A2 voices pass replaces this A1 shell, soften the verbs: tray copy like \"Nine voices speak along the tour. Their cards gather here.\" and aria-label \"Voices, N of 9 heard\". Avoid \"collect\"/\"found\" wording around people like Jesse Binga whose card is reached through his bombing record.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "title": "Ch2 places the pamphlet handout 'at its gates', contradicting the exhibit's own verified factcheck (Haitian building)",
+          "severity": "medium",
+          "where": "ch2 state (narration block ch2-b1 in data/exhibit/narration.json, on screen and in the caption bar) and the Ida B. Wells voice card in data/exhibit/voices.json ('stood at the gates of the White City')",
+          "recommendation": "The registry fact fair.reason_why_10000 (locator: 'distributed at the Haitian building') and factcheck fc-fair-09 ('with Douglass presiding at the Haiti building') both place distribution inside the fair at the Haitian building, not at the gates. Reword ch2-b1 to 'Inside the fair, at the Haitian building, Ida B. Wells and Frederick Douglass handed out...' and fix the Wells paraphrase in voices.json to match; regenerate the one TTS block.",
+          "effort": "small"
+        },
+        {
+          "title": "Ch1 'A hundred and seventy years ago this was prairie and marsh, Potawatomi land' is off by two decades",
+          "severity": "medium",
+          "where": "ch1 state (narration block ch1-b1 in data/exhibit/narration.json, visible on screen in ch1-first-taking shots)",
+          "recommendation": "170 years before 2026 is 1856, which is after Cornell's 1853 purchase and roughly twenty years after Potawatomi removal (treaty 1833, removals through 1838, per the exhibit's own land.removal_west factcheck). The phrase slipped past the gate because it carries no factRef. Change to 'Two hundred years ago' or 'A hundred and ninety years ago' and regenerate the block's TTS. Consider adding a factRef so the number is gated.",
+          "effort": "small"
+        },
+        {
+          "title": "Figure credit lines pass raw Wikimedia metadata to visitors: 'UNKNOWN AUTHORUNKNOWN AUTHOR', HTML entity '&amp;', and false-precision dates",
+          "severity": "medium",
+          "where": "Observed in ch7-walls-crack shots (Carl Hansberry figure, creditKey dd-redlining-11) and ch3-machinery shots (Fannie Barrier Williams figure shows '1880-06-04' for a photo Commons dates only 'circa 1880'). Same defect pending in ch4 (jesse-binga artist 'Unknown authorUnknown author'), ch5 (racial-hierarchy-doc artist contains '&amp;', which React will render literally), and dd-color-line-12 carries Wikidata junk ('February 1942date QS:P571,...') if ever used. Root cause: src/components/exhibit/stage/BlockRenderer.tsx line 74 joins credit.artist/date/license verbatim from public/media/hyde-park/credits.json.",
+          "recommendation": "Sanitize the credit line in BlockRenderer (or clean the credits.json entries the exhibit uses): dedupe the doubled 'Unknown author' Commons artifact, decode HTML entities, strip Wikidata QS date suffixes, and render circa dates as 'c. 1880' instead of the Commons upload-precision '1880-06-04'. A provenance line with visible metadata garbage undercuts the exhibit's credibility claim.",
+          "effort": "small"
+        },
+        {
+          "title": "Audit gate cannot see on-screen fact usage inside interactives, so drift there would go undetected",
+          "severity": "low",
+          "where": "scripts/exhibit-audit-facts.mjs (usedBy scan covers only data/exhibit/*.json); on-screen numbers in ch4 BombingMap ('arrests 2', '32 of the 58', damage figures) come from public/exhibit-data/bombings.json aggregates, and ReadTheDeed/other interactives reference facts via FactValue ids in TSX. Result: 57 'unused fact' warnings for facts that are actually on screen (bombings.arrests_2, bombings.square_32, covenants.hansberry_frontage_54pct, etc.).",
+          "recommendation": "Values currently match (I verified the BombingMap aggregates verbatim against the cached CCRR text), so this is a process gap, not a data error. Extend the audit to also scan public/exhibit-data/*.json for aggregate values that shadow registry facts, and grep src/components/exhibit for FactValue id strings, so the usedBy write-back and tier gating cover what visitors actually see.",
+          "effort": "medium"
+        }
+      ],
+      "lens": "fact and provenance",
+      "overall": "exhibit-audit-facts PASSED (stage=full, 133 facts, 0 errors, 57 warnings, all unused-fact or missing-factcheckId). Beyond the script: every number, date, and named claim visible in the gate/ch0-ch7/explore shots traces to data/exhibit/facts.json with a plausible tier and a specific source; CCRR excerpts in the bombing machinery verify verbatim against the cached Gutenberg text; 8 spot-checked sources are real and specific (Treaty of Chicago 7 Stat. 431, Gutenberg 57343, Fed SCF 2022 note with the exact $285,000/$44,900 figures, chicagocovenants.com, cegu.uchicago.edu, AAPB Baldwin record, hydeparkhistory.org, obama.org); the single attributed-tier fact appears nowhere; verbatim record language is consistently plated as such (HolcLens '1939 to 1940 survey record', chain-armor 'from the record', Baldwin the only quoted voice and verbatim-documented; all other voices labeled paraphrase). Three real defects: the ch2 'at its gates' pamphlet location contradicts the exhibit's own verified factcheck (Haitian building), the ch1 'hundred and seventy years ago' chronology is off by about twenty years and slipped the gate because it carries no factRef, and figure credit lines pass raw Wikimedia metadata garbage ('UNKNOWN AUTHORUNKNOWN AUTHOR', '&amp;', false-precision circa dates) straight to visitors. All are small fixes; none is a fabrication or a sourcing failure, so the milestone is not blocked.",
+      "pass": true
+    }
+  ],
+  "chair": {
+    "verdict": "A2 does not pass yet, but it is one small wiring fix and two narration line edits away. All four lenses confirm the core build is sound: the five-machines thesis lands, the tap-the-map cold open pays off in ch6, every interactive completes honestly under live interaction with zero console errors, keyboard paths are strong, and the fact audit passed with every visible number tracing to a real, spot-checked source. Three P1s block: explore mode (one of the two front doors) reaches the ch4 bombing content with no advisory because JUMP_TO_CHAPTER only raises it when mode is guided, a binding sensitivity rule failure; and two narration lines are factually wrong, ch2 contradicts the exhibit's own verified factcheck on where the Wells/Douglass pamphlet was handed out, and ch1's 'hundred and seventy years ago' misses Potawatomi-era chronology by about twenty years. All three are small-effort fixes plus one TTS regen each; fix, re-verify the explore path live, and A2 clears. The remaining P2s (raw Wikimedia junk in visible credit lines, the 1937/1948 caption clash, invisible idle auto-advance, missing pressable affordance, the animating ring inside the no-motion chapter) should land within phase A; the P3s are polish.",
+    "pass": false,
+    "p1Count": 3,
+    "punchList": [
+      {
+        "p": 1,
+        "title": "Explore mode skips the ch4 content advisory",
+        "lens": "sensitivity",
+        "where": "src/lib/exhibit/state.ts line 145 (JUMP_TO_CHAPTER needsAdvisory requires mode === \"guided\"); verified live: explore + ch4 renders bombing map and Eugene Williams text with advisoryShown=false. Mode gate copy in src/components/exhibit/ModeGate.tsx gives no content note.",
+        "fix": "Drop the mode === \"guided\" condition so first entry to any advisoryBefore chapter raises the gate in explore too, and fix ACCEPT_ADVISORY so explore is not stuck (it currently returns state.playState, which is \"advisory\" at that moment; restore explore's prior playState, e.g. \"ended\"). The guided path already proves the copy, focus trap, and Continue/Skip buttons work; this is wiring only. Re-verify live via explore entry, in-tour jump, and the ?ch=ch4 deep link."
+      },
+      {
+        "p": 1,
+        "title": "Ch2 pamphlet location contradicts the exhibit's own factcheck",
+        "lens": "fact and provenance",
+        "where": "data/exhibit/narration.json block ch2-b1 ('at its gates', on screen and in the caption bar) and the Ida B. Wells card in data/exhibit/voices.json ('stood at the gates of the White City'). Registry fact fair.reason_why_10000 and factcheck fc-fair-09 both place distribution inside the fair at the Haitian building.",
+        "fix": "Reword ch2-b1 to place Wells and Douglass inside the fair at the Haitian building, fix the Wells paraphrase in voices.json to match, and regenerate the one TTS block."
+      },
+      {
+        "p": 1,
+        "title": "Ch1 'a hundred and seventy years ago' is off by two decades",
+        "lens": "fact and provenance",
+        "where": "data/exhibit/narration.json block ch1-b1, visible in ch1-first-taking. 170 years before 2026 is 1856, after Cornell's 1853 purchase and roughly twenty years after Potawatomi removal (treaty 1833, removals through 1838 per the exhibit's own land.removal_west factcheck). Slipped the gate because it carries no factRef.",
+        "fix": "Change to 'two hundred years ago' or 'a hundred and ninety years ago', regenerate the block's TTS, and add a factRef so the number is gated going forward."
+      },
+      {
+        "p": 2,
+        "title": "Figure credit lines leak raw Wikimedia scrape metadata",
+        "lens": "museum curator + fact and provenance",
+        "where": "public/media/hyde-park/credits.json rendered verbatim by src/components/exhibit/stage/BlockRenderer.tsx line 74. Confirmed on ch2, ch3, ch4, ch5, ch7: 'UNKNOWN AUTHORUNKNOWN AUTHOR' doubled-artist strings (jesse-binga, dd-color-line-10 family, 6 more), raw ISO dates ('1880-06-04' for a photo Commons dates only circa 1880; '1937-06-07'), a life-dates parenthetical on the ch2 Court of Honor plate, an '&amp;' entity that React renders literally (racial-hierarchy-doc), and literal Wikidata QS:P571 strings (land-early-chicago; dd-color-line-12 if ever used).",
+        "fix": "Sanitize in the creditLine formatter in BlockRenderer.tsx (or clean credits.json): dedupe the doubled 'Unknown author' Commons artifact, decode HTML entities, strip QS date suffixes, and humanize dates ('c. 1880', 'June 1937'). Then spot-check every rendered figure. Both the curator and fact lenses flagged this independently; it is the one place the seams show."
+      },
+      {
+        "p": 2,
+        "title": "Shelley (1948) caption sits over a photo credited 1937",
+        "lens": "museum curator",
+        "where": "ch7-walls-crack, second figure: caption 'The room where the armor finally failed' over a Supreme Court chamber photo whose credit reads 1937, an eleven-year contradiction a careful visitor will catch.",
+        "fix": "Recaption to make the room-not-the-moment framing explicit, e.g. 'The Supreme Court chamber, photographed in 1937, where the armor finally failed in 1948.' Do this together with the credit-date humanization so the pair reads consistently."
+      },
+      {
+        "p": 2,
+        "title": "Idle auto-continue can fire invisibly; wheel scrolling does not reset it",
+        "lens": "interaction design",
+        "where": "src/components/exhibit/audio/useIdleContinue.ts (resets only on pointerdown/keydown/touchstart) + stage/ContinueButton.tsx. At tall stations (ch4 bombing map Continue at 1070px in a 900px viewport, ch6 holc-lens 902px slot) the only countdown UI is below the fold, so a trackpad reader gets walked on mid-read of the bombing evidence with no visible warning.",
+        "fix": "Add 'wheel' (and passive document 'scroll') to the reset-event list, and surface a compact countdown chip in the fixed HUD whenever the Continue button is outside the viewport during a pause point. Extra weight because the worst case lands in the sensitivity chapter."
+      },
+      {
+        "p": 2,
+        "title": "Half the exhibit's clickables lack pressable affordance, worst at the mode gate",
+        "lens": "interaction design",
+        "where": "Verified live: ModeGate cards, ContinueButton, ReadTheDeed clause rows, CaseFiles folders, AdvisoryGate buttons all show cursor:default (Tailwind v4 preflight), while boom target, machinery cards, HOLC areas, and drag handles correctly show pointer/grab. The mode-gate cards are the very first interaction and read as static info panels: no action verb, arrow, or hover treatment.",
+        "fix": "Add a scoped rule such as .exhibit-root button:not(:disabled) { cursor: pointer; } (intentional grab/ew-resize cursors already win by specificity), then give the two mode-gate cards a hover/focus-visible treatment (border weight or fill shift) and a small action cue ('Begin' / 'Enter' plat-label line or arrow glyph). Keyboard path already works."
+      },
+      {
+        "p": 2,
+        "title": "Continue countdown ring keeps animating inside the no-motion chapter",
+        "lens": "sensitivity",
+        "where": "ch4 pause points; src/components/exhibit/stage/ContinueButton.tsx updates strokeDashoffset ~5x/sec via refs, so [data-motion=off] CSS cannot suppress it. It is the one persistent moving element on the witness screen.",
+        "fix": "When the chapter's sensitivity is no-motion, render the countdown as the static digit only, or step the ring once per second in whole-second increments. The 20s auto-advance itself is fine (BombingMap already holds a 15s dwell)."
+      },
+      {
+        "p": 3,
+        "title": "Ch5 era plate (1921 to 1928) undersells the chapter's span",
+        "lens": "museum curator",
+        "where": "ch5-hud-lamps chapter eyebrow vs narration ch5-b3 (data/exhibit/narration.json), which covers university covenant spending 'between 1933 and 1947'. ch6 opens at 1929 and ch7 at 1937, so overlap is already the norm.",
+        "fix": "Extend the label (e.g. '1921 to 1948', the deed machine's own off-year) or record the deliberate-overlap choice in data/exhibit/decisions.json so it stops resurfacing in review."
+      },
+      {
+        "p": 3,
+        "title": "Bombing-map docket reads as copy-pasted truncated rows",
+        "lens": "museum curator",
+        "where": "ch4 The Bombing Map docket column (src/components/exhibit/interactives/BombingMap): near-identical entries truncated at the same character, so 32 distinct records scan as filler.",
+        "fix": "Widen the rows or wrap to two lines, and vary the visible fragment (address first, then description) so scanning conveys breadth. In a chapter built on restraint the record list is the argument; it should not look duplicated. Effort medium; the only non-small item on the list."
+      },
+      {
+        "p": 3,
+        "title": "Interactive plinths render as empty titled frames while chunks load",
+        "lens": "interaction design",
+        "where": "src/components/exhibit/interactives/registry.ts + stage/InteractiveSlot.tsx: next/dynamic with no loading fallback; the A2 screenshot run caught 'THE CASE FILES' as a framed empty box mid-hydration.",
+        "fix": "Pass the registry's existing per-station blurb into dynamic()'s loading option (or render blurb plus a quiet 'station warming up' line in InteractiveSlot) so the plinth is never blank. Resilience polish; all stations load and complete fine locally."
+      },
+      {
+        "p": 3,
+        "title": "Voices tray copy frames witness testimony as collectibles",
+        "lens": "sensitivity",
+        "where": "src/components/exhibit/hud/VoiceMedallions.tsx lines 44 and 79: 'Voices, N of 9 found' aria-label and 'Collect the nine voices as you tour.' The medallion mechanic itself is owner-locked (D-A1-01) and is not being re-raised; only the placeholder copy is.",
+        "fix": "When the A2 voices pass replaces this A1 shell, soften the verbs: 'Nine voices speak along the tour. Their cards gather here.' and aria-label 'Voices, N of 9 heard'. Avoid collect/found wording around people like Jesse Binga whose card is reached through his bombing record."
+      }
+    ],
+    "recommendations": [
+      {
+        "title": "Re-verify the explore path end to end after the advisory fix, and add it to standing QC",
+        "tag": "recommend-fix-now",
+        "rationale": "Every binding sensitivity rule passed on the guided path and the one failure was explore-only wiring. After the state.ts fix, rerun the live checks (explore entry to ch4, in-tour jump, ?ch=ch4 deep link, ACCEPT_ADVISORY unsticking) and fold explore mode into the QC checklist so a guided-only verification can never sign off A3+ again."
+      },
+      {
+        "title": "Require a factRef on every dated or numeric narration claim",
+        "tag": "recommend-fix-now",
+        "rationale": "The ch1 chronology slip escaped precisely because the number carried no factRef, so the audit gate never saw it. A one-time sweep of data/exhibit/narration.json for ungated dates and quantities closes the class of bug behind one of the three P1s, cheaply."
+      },
+      {
+        "title": "Extend exhibit-audit-facts to interactives and public/exhibit-data aggregates",
+        "tag": "recommend-next-phase",
+        "rationale": "The audit's usedBy scan covers only data/exhibit/*.json, so on-screen numbers in BombingMap (arrests, the 32-of-58 square, damage figures) and FactValue ids in TSX are invisible to it, producing 57 false 'unused fact' warnings and a real drift blind spot. Values currently verify verbatim against the cached CCRR text, so this is a process gap, not a data error, but A3 will add more interactives."
+      },
+      {
+        "title": "Sanitize media credits at ingest, not only at render",
+        "tag": "recommend-next-phase",
+        "rationale": "The punch-list fix cleans what is on the walls today, but the doubled-author, QS-date, and HTML-entity artifacts came in through the Commons scrape. Adding the dedupe/decode/date-humanize pass to the media pipeline that writes credits.json means every future figure import lands clean instead of re-fighting this per milestone."
+      },
+      {
+        "title": "Preload interactive chunks as a chapter approaches",
+        "tag": "optional",
+        "rationale": "The loading-fallback punch item stops the plinth from ever looking broken; prefetching the next chapter's dynamic chunks during the current chapter's dwell would make the fallback nearly unreachable on slow connections. Nice-to-have on top of the P3 fix."
+      }
+    ]
+  }
+}

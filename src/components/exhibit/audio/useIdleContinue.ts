@@ -73,7 +73,9 @@ export function useIdleContinue(
 
     const target: EventTarget = scopeRef?.current ?? document;
     const onActivity = () => handle.reset();
-    const events = ["pointerdown", "keydown", "touchstart"] as const;
+    // wheel + scroll count as presence too; a visitor reading a long station
+    // while scrolling must never be yanked forward
+    const events = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"] as const;
     for (const ev of events) {
       target.addEventListener(ev, onActivity, { capture: true, passive: true });
     }

@@ -73,6 +73,33 @@
       "title": "Self-review recommendations (immersive chrome, tighter cold-open crop, visible board labels) deferred to the A4 polish gate",
       "decision": "next-phase",
       "status": "open"
+    },
+    {
+      "id": "D-A2-01",
+      "milestone": "A2",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "Panel P1s fixed before the gate. explore-mode advisory wiring, ch1 chronology (two hundred years), ch2 pamphlet at the Haiti building (narration + voice card + Midway panel, TTS regenerated)",
+      "decision": "fix-now",
+      "status": "done"
+    },
+    {
+      "id": "D-A2-02",
+      "milestone": "A2",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "Panel P2s fixed at the gate. credit-line sanitizer, Shelley caption dated, cursor affordance + mode-card action cues, idle timer resets on wheel/scroll, countdown ring steps whole seconds under no-motion",
+      "decision": "fix-now",
+      "status": "done"
+    },
+    {
+      "id": "D-A2-03",
+      "milestone": "A2",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "Deferred to A3 and A4. off-screen countdown chip in HUD, ch5 era plate span, bombing docket row layout, dynamic-chunk loading blurbs, voices tray collect-verbs copy, audit extension to interactive aggregates, credits ingest sanitizing",
+      "decision": "next-phase",
+      "status": "open"
     }
   ]
 }
