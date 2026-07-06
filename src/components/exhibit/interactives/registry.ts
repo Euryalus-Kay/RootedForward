@@ -48,14 +48,46 @@ export const INTERACTIVE_REGISTRY: Record<InteractiveId, RegistryEntry> = {
     "Drag between four claims on the same ground.",
     () => import("./LayerSlider/LayerSlider")
   ),
-  "build-the-boom": entry("Build the Boom", "Raise the fair and watch the neighborhood densify."),
-  "machinery-cards": entry("The Machinery of Exclusion", "Flip the club's three documents."),
-  "bombing-map": entry("The Bombing Map", "Evidence pins, one for each recorded attack."),
-  "invisible-line": entry("The Invisible Line", "Trace the line in the water at Twenty-Ninth Street."),
-  "read-the-deed": entry("Read the Deed", "Translate a real restrictive covenant, clause by clause."),
-  "holc-lens": entry("The Lens", "Drag the magnifier over the 1940 map and read the surveyors' words."),
-  "case-files": entry("The Case Files", "Open four folders and stamp the outcomes."),
-  "kitchenette": entry("The Kitchenette Splitter", "Drag walls into a six-flat and watch the count climb."),
+  "build-the-boom": entry(
+    "Build the Boom",
+    "Raise the fair and watch the neighborhood densify.",
+    () => import("./BuildTheBoom/BuildTheBoom")
+  ),
+  "machinery-cards": entry(
+    "The Machinery of Exclusion",
+    "Flip the club's three documents.",
+    () => import("./MachineryCards/MachineryCards")
+  ),
+  "bombing-map": entry(
+    "The Bombing Map",
+    "Evidence pins, one for each recorded attack.",
+    () => import("./BombingMap/BombingMap")
+  ),
+  "invisible-line": entry(
+    "The Invisible Line",
+    "Trace the line in the water at Twenty-Ninth Street.",
+    () => import("./InvisibleLine/InvisibleLine")
+  ),
+  "read-the-deed": entry(
+    "Read the Deed",
+    "Read a restrictive covenant the way a buyer did, clause by clause.",
+    () => import("./ReadTheDeed/ReadTheDeed")
+  ),
+  "holc-lens": entry(
+    "The Lens",
+    "Drag the magnifier over the 1940 map and read the surveyors' words.",
+    () => import("./HolcLens/HolcLens")
+  ),
+  "case-files": entry(
+    "The Case Files",
+    "Open four folders and stamp the outcomes.",
+    () => import("./CaseFiles/CaseFiles")
+  ),
+  "kitchenette": entry(
+    "The Kitchenette Splitter",
+    "Drag walls into a six-flat and watch the count climb.",
+    () => import("./Kitchenette/Kitchenette")
+  ),
   "planners-table": entry("The Planner's Table", "Work the renewal map the way the commission did."),
   "two-buyers": entry("Two Buyers, One House", "Slide the years and watch two families pay for the same house."),
   "hold-the-line": entry("Hold the Line", "Hold your payment in escrow as long as you can."),

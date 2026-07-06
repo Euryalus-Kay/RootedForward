@@ -408,7 +408,7 @@
     "commonsTitle": "File:Fannie Barrier Williams, circa 1880.jpg",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fannie_Barrier_Williams,_circa_1880.jpg",
     "license": "Public domain",
-    "artist": "Photographer unknow.",
+    "artist": "Photographer unknown",
     "credit": "Scan of a c1880 photograph of her.",
     "date": "1880-06-04",
     "bytes": 834944
@@ -1564,5 +1564,29 @@
     "credit": "J'ai pris moi-même ce cliché",
     "date": "photo: 12 juillet 2009",
     "bytes": 325058
+  },
+  "land-cession-map": {
+    "id": "land-cession-map",
+    "query": "Royce Indian land cessions Illinois map",
+    "file": "/media/hyde-park/img/land-cession-map.jpg",
+    "commonsTitle": "File:Map from Indian land cessions in the United States by Charles C. Royce 45.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Map_from_Indian_land_cessions_in_the_United_States_by_Charles_C._Royce_45.jpg",
+    "license": "Public domain",
+    "artist": "Charles C. Royce, Indian land cessions in the United States",
+    "credit": "This image is available from the United States Library of Congress's Geography &amp; Map Division under the digital ID g3701em.gct00002.This tag does not indica",
+    "date": "1899-01-01",
+    "bytes": 1443760
+  },
+  "land-illinois-1830": {
+    "id": "land-illinois-1830",
+    "query": "Illinois 1830 map",
+    "file": "/media/hyde-park/img/land-illinois-1830.png",
+    "commonsTitle": "File:Thompson plat of Chicago 1830.png",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Thompson_plat_of_Chicago_1830.png",
+    "license": "Public domain",
+    "artist": "James Thompson",
+    "credit": "Chicago History Museum, ICHi-034284, with restoration by John M Wolfson. According the Chicago History Museum, there are No known copyright restrictions associa",
+    "date": "1830-08-04",
+    "bytes": 3489948
   }
 }

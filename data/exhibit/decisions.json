@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "note": "Owner decisions at milestone gates. Milestone entry requires zero open fix-now items. Panel lenses receive this file so declined items are never re-raised.",
+  "decisions": [
+    {
+      "id": "D-SCOPE-01",
+      "milestone": "plan",
+      "date": "2026-07-03",
+      "source": "owner",
+      "title": "Full spec, phased, approval gates between phases",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-SCOPE-02",
+      "milestone": "plan",
+      "date": "2026-07-03",
+      "source": "owner",
+      "title": "Replace the tour page entirely at go-live; film player deleted",
+      "decision": "approved",
+      "status": "open"
+    },
+    {
+      "id": "D-SCOPE-03",
+      "milestone": "plan",
+      "date": "2026-07-03",
+      "source": "owner",
+      "title": "OpenAI TTS narration (ash) via existing pipeline; owner may record real VO later",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-SCOPE-04",
+      "milestone": "plan",
+      "date": "2026-07-03",
+      "source": "owner",
+      "title": "All visitor-input features behind one shared moderation queue",
+      "decision": "approved",
+      "status": "open"
+    },
+    {
+      "id": "D-0B-01",
+      "milestone": "0b",
+      "date": "2026-07-03",
+      "source": "integrator",
+      "title": "Chicago Reporter CBL figures re-tiered reported; ids renamed to match verified values (155 renegotiated by Jul 1971, about 70 evicted, $14,000 average saved)",
+      "decision": "adjudicated",
+      "status": "honored"
+    },
+    {
+      "id": "D-0B-02",
+      "milestone": "0b",
+      "date": "2026-07-03",
+      "source": "integrator",
+      "title": "Whisper word-level cue alignment deferred to A4; sentence-proportional captions until then",
+      "decision": "deferred",
+      "status": "open"
+    },
+    {
+      "id": "D-A1-01",
+      "milestone": "A1",
+      "date": "2026-07-04",
+      "source": "owner",
+      "title": "A1 approved as-is; interaction grammar locked, A2 authorized",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-A1-02",
+      "milestone": "A1",
+      "date": "2026-07-04",
+      "source": "owner",
+      "title": "Self-review recommendations (immersive chrome, tighter cold-open crop, visible board labels) deferred to the A4 polish gate",
+      "decision": "next-phase",
+      "status": "open"
+    }
+  ]
+}

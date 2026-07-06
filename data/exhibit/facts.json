@@ -712,7 +712,8 @@
       ],
       "factcheckId": "fc-fair-09",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Wells's pamphlet protesting Black exclusion from the fair was handed out at the Haitian building, where Douglass presided."
     },
@@ -1000,6 +1001,25 @@
       "notes": "Only two suspects were ever arrested. One was released on a $500 bond and never tried, the other was held two days and released. The report concludes the police accomplished nothing definite in all fifty-eight bombings."
     },
     {
+      "id": "bombings.arrests_2",
+      "value": 2,
+      "display": "2 arrests",
+      "unit": "arrests",
+      "asOf": "1917-1921",
+      "tier": "documented",
+      "source": {
+        "title": "The Negro in Chicago, A Study of Race Relations and a Race Riot",
+        "author": "Chicago Commission on Race Relations",
+        "year": 1922,
+        "url": "https://www.gutenberg.org/files/57343/57343-h/57343-h.htm",
+        "locator": "Bombings section"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-bombings-12",
+      "usedBy": [],
+      "notes": "Two arrests across all 58 recorded bombings, and no convictions. Same commission source as the convictions fact."
+    },
+    {
       "id": "bombings.pace_20_days",
       "value": 20,
       "display": "a bombing about every twenty days",
@@ -1114,7 +1134,8 @@
       ],
       "factcheckId": "fc-bombings-09",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "The 1922 commission report devotes a case study to the serial bombing of Binga's bank-connected realty office and his home on a white block. Hayner's biography counts at least five attacks between 1917 and 1921."
     },
@@ -2046,7 +2067,8 @@
       "secondarySources": [],
       "factcheckId": "fc-contracts-01",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Satter documents that of Cook County's 241 white-run savings and loan associations, exactly one would make mortgage loans to Black buyers. The spec's 243 was corrected to 241."
     },
@@ -2744,7 +2766,8 @@
       ],
       "factcheckId": "fc-people-01",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Baldwin, speaking of San Francisco and Northern cities generally, said urban renewal means moving the Negroes out, then added the sentence quoted. The repo research cautions it is a national critique applied here, not a Hyde Park quote."
     },
@@ -2768,7 +2791,8 @@
       ],
       "factcheckId": "fc-people-02",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Clubwoman, writer, and the first Black woman admitted to the Chicago Woman's Club. A longtime Hyde Park resident, she was exactly the settled professional neighbor the 1908 club campaigned against, and she refused to leave."
     },
@@ -2811,7 +2835,9 @@
         "Rooted Forward deep dive present.sections.json s5 (a World War II veteran named Clyde Ross helped lead it, fact-checked corpus)"
       ],
       "factcheckId": "fc-people-04",
-      "usedBy": [],
+      "usedBy": [
+        "voices"
+      ],
       "notes": "A World War II veteran from Clarksdale, Mississippi who bought his North Lawndale home on contract in 1961 and helped lead the Contract Buyers League."
     },
     {
@@ -2834,7 +2860,8 @@
       ],
       "factcheckId": "fc-people-05",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Seven years old when the family moved to 6140 South Rhodes and a brick came through the window. Her father's covenant fight became Hansberry v. Lee, and she later drew on the ordeal for A Raisin in the Sun."
     },
@@ -2988,7 +3015,8 @@
       ],
       "factcheckId": "fc-people-07",
       "usedBy": [
-        "narration"
+        "narration",
+        "voices"
       ],
       "notes": "Wells is documented across Satter and CBL histories as an early leader who testified to what she had paid."
     }

@@ -44,7 +44,27 @@ const STATES = [
     },
   },
   { id: "ch1-first-taking", route: `${DEBUG}&ch=ch1` },
+  { id: "ch2-fair-boom", route: `${DEBUG}&ch=ch2` },
+  { id: "ch3-machinery", route: `${DEBUG}&ch=ch3` },
+  {
+    id: "ch4-witness",
+    route: `${DEBUG}&ch=ch4`,
+    async setup(page) {
+      await page.evaluate(() => {
+        [...document.querySelectorAll('[data-testid="advisory-gate"] button')]
+          .find((b) => b.textContent.trim() === "Continue")?.click();
+      });
+      await page
+        .waitForFunction(
+          () => document.querySelector('[data-testid="bombing-marks"]')?.getAttribute("data-count") === "32",
+          { timeout: 20000 }
+        )
+        .catch(() => {});
+    },
+  },
   { id: "ch5-hud-lamps", route: `${DEBUG}&ch=ch5` },
+  { id: "ch6-lens", route: `${DEBUG}&ch=ch6` },
+  { id: "ch7-walls-crack", route: `${DEBUG}&ch=ch7` },
   { id: "ch8-mid-tour-hud", route: `${DEBUG}&ch=ch8` },
   { id: "ch11-closing", route: `${DEBUG}&ch=ch11` },
   {

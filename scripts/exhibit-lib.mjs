@@ -93,6 +93,16 @@ export async function drag(page, selector, dx, dy, steps = 8) {
   await new Promise((r) => setTimeout(r, 150));
 }
 
+/** synthetic dispatch click: required for controls under the fixed caption
+ * bar / spine overlay where real-mouse page.click misses (bottom ~220px) */
+export async function dispatchClick(page, selector) {
+  return page.evaluate((s) => {
+    const el = document.querySelector(s);
+    if (el) el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    return !!el;
+  }, selector);
+}
+
 /** collect console errors, filtered of known dev noise */
 export function trackConsoleErrors(page) {
   const errors = [];

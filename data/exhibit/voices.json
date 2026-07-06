@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "note": "The nine collectible voice medallions. Rule, enforced by the renderer: quotation marks appear on screen ONLY when quoteStatus begins with verbatim. Paraphrase cards are styled visibly differently (no quote marks, 'in summary' framing). Portraits only where a credited public-domain image exists in public/media/hyde-park/credits.json; everyone else gets a monogram medallion, never a stand-in photo.",
+  "voices": [
+    {
+      "personId": "ida-b-wells",
+      "name": "Ida B. Wells",
+      "years": "1862 to 1931",
+      "role": "Journalist and anti-lynching crusader, co-author of the pamphlet handed out at the 1893 fair",
+      "chapter": "ch2",
+      "paraphrase": {
+        "text": "With Frederick Douglass, she stood at the gates of the White City handing visitors The Reason Why the Colored American Is Not in the World's Columbian Exposition, the pamphlet that answered the fair's exclusion point by point.",
+        "source": "The Reason Why the Colored American Is Not in the World's Columbian Exposition, 1893, public domain"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "fair.reason_why_10000"
+    },
+    {
+      "personId": "fannie-barrier-williams",
+      "name": "Fannie Barrier Williams",
+      "years": "1855 to 1944",
+      "role": "Educator and clubwoman, the Hyde Park neighbor the Protective Club tried to remove",
+      "portrait": "/media/hyde-park/img/fannie-barrier-williams.jpg",
+      "chapter": "ch3",
+      "paraphrase": {
+        "text": "A longtime Hyde Park resident and the first Black woman admitted to the Chicago Woman's Club, she was exactly the settled professional neighbor the 1908 club campaigned against. She refused to leave.",
+        "source": "National Park Service biography; Chicago Woman's Club records"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "people.fannie_barrier_williams"
+    },
+    {
+      "personId": "jesse-binga",
+      "name": "Jesse Binga",
+      "years": "1865 to 1950",
+      "role": "Banker who wrote mortgages for Black families when almost no one else would",
+      "portrait": "/media/hyde-park/img/jesse-binga.jpg",
+      "chapter": "ch4",
+      "paraphrase": {
+        "text": "His home and his realty office were bombed again and again between 1917 and 1921, more than any other target the commission recorded. He would not move, and he said so publicly.",
+        "source": "The Negro in Chicago, 1922, bombing case studies; Hayner, Binga, 2019"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "bombings.binga_target"
+    },
+    {
+      "personId": "lorraine-hansberry",
+      "name": "Lorraine Hansberry",
+      "years": "1930 to 1965",
+      "role": "Playwright; the child in the house behind Hansberry v. Lee",
+      "chapter": "ch7",
+      "paraphrase": {
+        "text": "She was a child when her family moved into covenanted territory near Washington Park and a mob gathered outside. She grew up to put the memory on stage in A Raisin in the Sun.",
+        "source": "To Be Young, Gifted and Black, 1969; Hansberry v. Lee, 311 U.S. 32"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "people.lorraine_hansberry"
+    },
+    {
+      "personId": "james-baldwin",
+      "name": "James Baldwin",
+      "years": "1924 to 1987",
+      "role": "Writer; named what urban renewal was doing",
+      "chapter": "ch8",
+      "quote": {
+        "text": "urban renewal, which means moving the Negroes out... it means Negro removal, that is what it means",
+        "source": "Conversation with Kenneth Clark, WGBH, broadcast June 24, 1963, American Archive of Public Broadcasting cpb-aacip 15-0v89g5gf5r"
+      },
+      "quoteStatus": "verbatim-documented",
+      "factRef": "people.baldwin_negro_removal"
+    },
+    {
+      "personId": "dempsey-travis",
+      "name": "Dempsey Travis",
+      "years": "1920 to 2009",
+      "role": "Realtor and NAACP leader who surveyed the lenders",
+      "chapter": "ch9",
+      "paraphrase": {
+        "text": "His survey of Cook County's white-run savings and loans found two hundred forty-one institutions and exactly one willing to lend to a Black buyer crossing the line.",
+        "source": "Satter, Family Properties, 2009, pp. 44 to 45; Travis, An Autobiography of Black Chicago, 1981"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "contracts.lenders_241_1"
+    },
+    {
+      "personId": "clyde-ross",
+      "name": "Clyde Ross",
+      "years": "1923 to 2021",
+      "role": "Contract buyer in North Lawndale, Contract Buyers League organizer",
+      "chapter": "ch9",
+      "paraphrase": {
+        "text": "He came north from Mississippi, bought on contract at twenty-seven thousand five hundred dollars for a house the seller had bought at twelve thousand, and spent years organizing so the next family would know the trap.",
+        "source": "Coates, The Case for Reparations, The Atlantic, 2014"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "people.clyde_ross"
+    },
+    {
+      "personId": "ruth-wells",
+      "name": "Ruth Wells",
+      "years": "Contract Buyers League, 1968 to 1971",
+      "role": "Among the first to stand up in the church basement and say what she had paid",
+      "chapter": "ch10",
+      "paraphrase": {
+        "text": "When the neighbors compared their contracts, she was among the first to stand and read hers out loud. The league that followed renegotiated contract after contract at fair value.",
+        "source": "Satter, Family Properties, 2009, Contract Buyers League chapters"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": "people.ruth_wells"
+    },
+    {
+      "personId": "martin-luther-king",
+      "name": "Martin Luther King Jr.",
+      "years": "1929 to 1968",
+      "role": "Brought the movement to Chicago's housing in 1966",
+      "chapter": "ch11",
+      "paraphrase": {
+        "text": "He moved into a West Side flat in 1966 to make Chicago's housing the movement's northern front. The marches he led into all-white neighborhoods that summer pushed open housing onto the national agenda that produced the Fair Housing Act.",
+        "source": "Chicago Freedom Movement records, 1966; Fair Housing Act, 1968"
+      },
+      "quoteStatus": "paraphrase",
+      "factRef": null
+    }
+  ]
+}

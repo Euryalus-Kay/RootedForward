@@ -185,6 +185,7 @@ export interface VoiceDef {
   paraphrase?: { text: string; source: string };
   quoteStatus: "verbatim-documented" | "verbatim-reported" | "paraphrase";
   chapter: ChapterId;
+  factRef?: string | null;
 }
 
 /* ---------------- exhibit state ---------------- */

@@ -2,7 +2,7 @@
 /* ------------------------------------------------------------------ */
 /*  One stage block on the linen. Narration prose in the document      */
 /*  serif, archival figures with their Commons credit lines, fact      */
-/*  stats through FactValue, a quiet shell where voices will land,     */
+/*  stats through FactValue, voice medallions through VoiceCard,       */
 /*  interactive plinths, and doorway cards for the ship-later side     */
 /*  rooms. The advisory kind renders nothing here; that gate is        */
 /*  global.                                                            */
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import type { StageBlock } from "@/lib/exhibit/types";
 import { narrationBlock } from "@/lib/exhibit/content";
 import FactValue from "../shared/FactValue";
+import VoiceCard from "../shared/VoiceCard";
 import InteractiveSlot from "./InteractiveSlot";
 
 export interface BlockRendererProps {
@@ -132,16 +133,10 @@ export default function BlockRenderer({ block, opening = false, noMotion = false
       );
 
     case "quote":
-      /* placeholder shell; the voices land in a later phase */
       return (
-        <blockquote data-voice-id={block.voiceId} className="border-l-2 border-exh-ink/30 pl-5">
-          <p className="exh-plat text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-            A voice from the neighborhood
-          </p>
-          <p className="mt-2 font-display text-base italic leading-relaxed text-exh-ink-soft">
-            This account is being prepared for a later phase of the exhibit.
-          </p>
-        </blockquote>
+        <div data-voice-id={block.voiceId} className="flex justify-center py-2">
+          <VoiceCard personId={block.voiceId} size="md" />
+        </div>
       );
 
     case "interactive":

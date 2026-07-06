@@ -463,6 +463,14 @@
           "verdict": "verified",
           "note": "The Negro in Chicago, University of Chicago Press, 1922; xxiv + 672 pages.",
           "source": "CCRR 1922, Internet Archive scan"
+        },
+        {
+          "id": "fc-bombings-12",
+          "factId": "bombings.arrests_2",
+          "claim": "Two arrests were made across the 58 recorded bombings of 1917 to 1921.",
+          "verdict": "verified",
+          "note": "Verbatim in the CCRR aggregate passage alongside the zero convictions.",
+          "source": "The Negro in Chicago, 1922"
         }
       ]
     },

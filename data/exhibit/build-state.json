@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "exhibit": "the-ground-keeps-moving",
+  "previewSlug": "/tours/chicago/hyde-park-exhibit",
+  "liveSlug": "/tours/chicago/hyde-park",
+  "swapped": false,
+  "milestones": [
+    { "id": "0a", "title": "Data foundations", "status": "completed", "gateTag": null },
+    { "id": "0b", "title": "Narration + TTS", "status": "completed", "gateTag": null, "note": "Whisper word-level cue alignment deferred to A4; captions derive proportionally" },
+    { "id": "A1", "title": "Vertical slice, CH0-CH1 + HUD + harness", "status": "approved", "gateTag": "exhibit-gate-A1", "approvedAt": "2026-07-04", "reviewRef": null },
+    { "id": "A2", "title": "CH2-CH7 + interactives", "status": "in-progress" },
+    { "id": "A3", "title": "CH8-CH11 + TwoBuyers + PlannersTable", "status": "pending" },
+    { "id": "A4", "title": "HUD polish + audio pass + full panel", "status": "pending" },
+    { "id": "B1", "title": "Rigged Instruments + rooms M1-M3", "status": "pending" },
+    { "id": "B2", "title": "Rooms M4-M5 + counter-machine + galleries", "status": "pending" },
+    { "id": "C1", "title": "Visitor input + moderation", "status": "pending" },
+    { "id": "C2", "title": "Action layer + hardening + go-live swap", "status": "pending" }
+  ]
+}
