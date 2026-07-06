@@ -1,0 +1,358 @@
+{
+  "milestone": "C2",
+  "date": "2026-07-04",
+  "panel": "closing-7 (pre-swap)",
+  "lenses": [
+    {
+      "findings": [
+        {
+          "title": "Returning from a room detour leaves the tour silently paused behind a button that says \"Back to the tour\"",
+          "severity": "medium",
+          "where": "src/components/exhibit/rooms/RoomOverlay.tsx (room-close button, labeled \"Back to the tour\") + CLOSE_ROOM handling in src/lib/exhibit/state.ts; observed in the guided run after the counter-machine detour in ch10 (screenshots 28-32 in the curator run)",
+          "recommendation": "Observed: entering the counter-machine room in guided mode correctly pauses narration, but after clicking the header button labeled \"Back to the tour\" the tour stays paused (playState=paused) with only the small HUD play icon as a cue. The label promises a moving tour; the visitor gets a still one and must discover the play control. Either resume narration automatically on room close in guided mode (arguably too aggressive after a long detour), or keep the pause and add a one-time, dismissible \"Tour paused. Press play when you are ready\" cue anchored to the HUD play control the first time a room closes mid-tour. The existing announcement utility from A4 can carry the screen-reader half.",
+          "effort": "small"
+        },
+        {
+          "title": "End plate tallies \"You heard 0 of 9 voices\" for a guided visitor who was never prompted to open a medallion",
+          "severity": "low",
+          "where": "End plate copy (data/exhibit + src/components/exhibit/stage end plate; observed text \"The ledger closed at 11 entries. You heard 0 of 9 voices along the way.\") and VoiceCard.tsx, which only collects on medallion click",
+          "recommendation": "Observed: voices collect only when a medallion is clicked (COLLECT_VOICE in shared/VoiceCard.tsx), and a guided visitor who follows the narration end to end plausibly finishes at 0 of 9, so the closing plate opens with what reads as a demerit. Keep the honest count but invert the framing when the count is low, e.g. \"Nine voices are still waiting in the stations if you want to look back\" (or \"You heard N of 9\" only when N > 0). This is scoped to the end-plate sentence, not the voices tray copy already handled at A3/A4.",
+          "effort": "small"
+        },
+        {
+          "title": "The Bulldozer's final nameplate reads bare \"TIF\" with the expansion buried in the lamp popover",
+          "severity": "low",
+          "where": "data/exhibit/machines.json (bulldozer renamedTo: \"TIF\", renamedNote explains tax increment financing) rendered by hud/BrassLamp + MachineBoard; narration.json never says \"TIF\" or \"tax increment\"; observed on the machine board in ch11 and on the end plate (screenshot 39)",
+          "recommendation": "Observed: at the closing chapter the fifth nameplate switches from THE BULLDOZER to \"TIF\". The rename is a strong curatorial beat, but the expansion (\"Tax increment financing now steers the same power\") lives only in the renamedNote popover and a Bulldozer-room fact card, and the rename announcement is aria-live only. A visitor who never clicks the lamp meets an unexplained acronym at the emotional climax. Render the nameplate as \"TIF (the Bulldozer, renamed)\" or keep \"TIF\" with the existing plainName line beneath it, or plate the renamedNote sentence once in the ch11 stage.",
+          "effort": "small"
+        }
+      ],
+      "lens": "curator",
+      "pass": true,
+      "overall": "I drove the complete guided run under the audio stub on localhost (?debug=1) end to end: mode gate, all 13 chapters in order, the advisory gate before ch4 (accept path), all 15 interactives reached as pause points in narrative order (declined-map through answer-wall), a mid-tour detour into the counter-machine room at ch10 with the Answer Key, back out, and on to the wall and the end plate; I then smoke-checked production boot and the first station (identical behavior, zero console errors). The experience now reads as one finished exhibit rather than a film page with extras. The cold open lands its dare, the ledger accumulates dated, daggered, REPORTED-chipped receipts that pay off in the ch11 gap-at-scale tally, the machine board arms/lights/renames as promised, the advisory is sober and skippable, the counter-machine room answers the five machines without preaching, and the wall's migration-pending path is exactly as decided: the submission is held with an honest plate (\\\"The wall opens when the collection table is installed. Your words were not lost; write them down\\\") while the one 503 in the console is the designed API answer, handled by the UI. The end plate closes the ledger, names the tally, and offers restart or explore. Nothing observed is a launch blocker; the three findings are small polish items around re-entry from a room detour, the end plate's 0-of-9 voices framing, and the bare TIF nameplate. Run artifacts (39 screenshots, per-chapter copy captures, run log) are at /private/tmp/claude-501/-Users-zainzaidi-Desktop-Rooted-Forward/886913e7-af51-44fe-be2a-8f3684c0083c/scratchpad/curator/. Curator verdict: ready to replace the film page."
+    },
+    {
+      "lens": "room integrity",
+      "pass": true,
+      "overall": "All six rooms hold up under hands-on driving on localhost (debug contract) and production. Doors in ch5 (deed, code), ch6 (map), ch8 (bulldozer), ch9 (contract), and ch10 (counter) all open their rooms; every room renders its full station set with real content and zero missing facts (no built-fallback cards). All four instruments work end to end: GradeYourBlock locks on the infiltration field and returns HAZARDOUS, EthicsExam mounts with the 96-year counter, YouAreTheCommission rules all three parcels with the protect lever's dead line and the shared debrief, TestTheLaw stamps CONDEMNED with the refusal line and debrief. Answer Key pairings behave (five matches, bulldozer STILL CONTESTED, quiet wrong-pairing and pick-first notes, facts resolve). Gear train is locked with a visit counter until all five machine rooms are visited, unlocks with the once-per-session mark, and completes by keyboard. The cards chip counts correctly across visits and in the counter room. Focus is trapped across 25 tabs, Escape layering is correct (popover claims the first Escape, room the second), close returns focus to the entered door, Back closes and Forward reopens, and narration pauses while a room is open and stays paused after close. The shipped rooms harness passes 34/34 on both localhost and production. One real defect found: the bare #room-<id> deep link, the exact URL the room itself pushes into the address bar, is dropped on cold arrival (mode gate shows, room never opens, stale hash remains); only the ?ch=chN#room-<id> form is honored. Verified on production. It degrades sharing and has a minor downstream Back-button quirk but does not block the launch.",
+      "findings": [
+        {
+          "title": "Bare #room-<id> deep link dropped on cold arrival",
+          "severity": "medium",
+          "where": "src/components/exhibit/ExhibitApp.tsx lines 46-58 (openRoomFromHash only runs inside the ?ch= effect); src/components/exhibit/rooms/RoomOverlay.tsx mints the bare-hash URL via pushState",
+          "recommendation": "Opening a room pushes #room-map (no ?ch=) onto the address bar, so that is the URL visitors copy and share. On cold arrival it shows the mode gate, and after picking a mode the room never opens and the stale hash stays in the URL (observed on localhost and on production: openRoom=null, hash=#room-map, playState=ended). Downstream, the stale hash suppresses the pushState when that same room is later opened by its door, so Back while inside the room exits the exhibit instead of closing it. Fix: honor the hash once the tour mounts on every entry path, not just the ?ch= one. Simplest is to call openRoomFromHash(dispatch) when the visitor leaves the gate (after SET_MODE/BEGIN in ModeGate, including the saved-session continue path), or in ExhibitApp watch for inTour becoming true and run the existing helper once. The helper already exists and is documented for exactly this purpose in RoomOverlay.tsx.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "lens": "fact",
+      "pass": true,
+      "overall": "exhibit-audit-facts.mjs PASSED (stage=full, 135 facts, 57 warnings, all of the unused-fact variety, none blocking). Drove all six rooms live at localhost with debug=1 via the puppeteer harness: every on-screen figure in the five machine rooms and the counter-machine renders through FactValue with a registered fact id and zero data-fact-missing tokens (map 9 facts, bulldozer 10, contract 12, deed 14, code 9). The 96-year plate reads \"2020 - 1924 = 96\" and correctly labels the subtraction as the exhibit's own arithmetic, with both dates riding registered, documented facts (code.nareb_article34_1924, code.apology_2020). All five Answer Key pairings were driven to completion: stamps read Stopped 1948/1968/1950/1970 and the bulldozer correctly returns STILL CONTESTED with two dated lines instead of an off year, each backed by registered facts. Strike the Clause states Shelley's holding accurately, shows only registered facts, and honestly plates the counsel-review deferral (per decisions.json, not re-raised). The D74 record card quote was verified verbatim against data/exhibit/holc_descriptions.json areaId 1488 with an honest elision note, and the Mapping Inequality attribution ships with it. Spot-checked six sources externally, five confirmed exactly: NAR Oppler apology Nov 2020 incl. the \"outrage to our morals and our ideals\" quote (RISMedia); Hansberry v. Lee Nov 12 1940, 95 percent required vs about 54 percent signed, class-representation due process holding (Cornell LII); Chicago Reporter CBL figures (155 renegotiated by July 1971, about 70 families lost homes, $14,000 average saved); Woodlawn Housing Preservation Ordinance Sept 2020 with the 52 city-owned lots (Block Club/chicago.gov); Illinois P.A. 102-0110 covenant removal process effective 2022 (ILGA). No fabricated content found anywhere in the rooms. Four low-severity, non-blocking findings below: one attribution to re-verify, one display wording that overstates its own cited source by a hair, one map-year convention drift, and one audit-coverage gap.",
+      "findings": [
+        {
+          "title": "Chain-of-armor quote carrier and date need re-verification",
+          "severity": "low",
+          "where": "src/lib/exhibit/content/rooms/theDeed.tsx (RecordCard 'The boast. Hyde Park Herald, 1928') and data/exhibit/facts.json covenants.chain_armor_quote",
+          "recommendation": "The quote itself is genuine and widely reproduced, but secondary attributions split: hpherald.com's own retrospective dates it to the Herald in 1927, and the Dane County Historical Society attributes the 1928 use to the Chicago Real Estate Board. I could not find the phrase in two accessible mirrors of the cited carrier (Coates, The Case for Reparations, 2014; both mirrors are scanned PDFs without a text layer, so this is unconfirmed rather than disproven, and factcheck.json fc-covenants-07 asserts it is quoted verbatim there). Before launch, open the Atlantic piece in a browser and confirm it carries the quote with the 1928 Herald dating; if it does, no change; if not, re-source (Natalie Moore's The South Side, 2016, carries the Herald-1928 attribution) or soften the on-screen date to 'late 1920s'.",
+          "effort": "small"
+        },
+        {
+          "title": "cbl.strike_500 display says 'more than 500' where its sole cited source says 'about 500'",
+          "severity": "low",
+          "where": "data/exhibit/facts.json cbl.strike_500 (displayed in the contract room FIGHT station with a dagger citing the Chicago Reporter article)",
+          "recommendation": "The cited Chicago Reporter article reads 'about 500 families participating'. Change the display string to 'about 500 families on payment strike' (one word swap, narration uses the fact too so check the spoken line), or attach a corroborating source that supports 'more than' (some Satter-derived accounts say 'over 500'). The dagger popover cites the Reporter piece directly, so an attentive visitor can catch the mismatch.",
+          "effort": "small"
+        },
+        {
+          "title": "HOLC map-year convention drifts across rooms (1938 vs 1939 vs 1939-1940)",
+          "severity": "low",
+          "where": "data/exhibit/machines.json map.residue ('the 1939 grade lines', on the map room thesis wall); theBulldozer.tsx still-running copy ('the 1938 grades'); theMap.tsx D74 record card dated January 1, 1940; GradeYourBlock 'Chicago, 1939 to 1940'",
+          "recommendation": "Three dating conventions for the same instrument are visible across adjacent rooms: the map room thesis wall says 1939, its own survey sheet is dated January 1, 1940, and the bulldozer room plus the present.* facts (which inherit the repo paper's 1938 framing) say 1938. factcheck.json already acknowledges the split (the repo paper dates the Chicago map 1938, the deep dive dates the national survey 1935-1940). Pick one on-screen convention, e.g. change map.residue to 'still trace the grade lines of the 1939-1940 survey' and the bulldozer line to 'the old grades', keeping 1938 only where it cites the repo paper's specific analysis. Not a correctness blocker since each phrasing has a defensible referent, but the drift is visible to a careful visitor within a single room.",
+          "effort": "small"
+        },
+        {
+          "title": "Facts audit does not scan room content modules, so room fact references live outside the gate",
+          "severity": "low",
+          "where": "scripts/exhibit-audit-facts.mjs (57 'unused' warnings include facts rendered in rooms, e.g. renewal.woodlawn_61st_1964, covenants.hansberry_frontage_54pct, present.woodlawn_ordinance_2020); usedBy arrays in data/exhibit/facts.json stop at narration/timeline/ethics_exam",
+          "recommendation": "The audit's reference scan misses src/lib/exhibit/content/rooms/*.tsx and the ANSWER_KEY table, so a typo'd fact id in room copy would pass the gate (it fails loudly at runtime as a bracketed token, and my live drive of all six rooms found zero missing ids, so nothing is broken today). Extend the audit's usedBy scan to the room content modules and refresh the usedBy arrays; this also clears most of the 57 warnings and keeps the gate honest for future room edits.",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "lens": "sensitivity",
+      "pass": true,
+      "overall": "Re-ran the full sensitivity contract live against both the localhost debug build and production, plus a source pass over everything added since A4 (rooms, counter-machine, gear train, cards, wall). The binding rules all hold. The ch4 advisory fires in BOTH modes before any witness content (guided goto, explore goto, and the ?ch=ch4 deep link all raised the focus-trapped alertdialog; copy names bombings and the killing of a teenager plainly, offers Skip which verifiably lands on ch5), data-motion=off holds across ch4 in both modes on local and prod, restores at ch5, and re-entry keeps no-motion without re-raising the accepted advisory; advisoryAccepted and firedOnce persist in the durable slice so a reload cannot resurrect either. The TwoBuyers eviction is genuinely non-repeatable: fired once live, the control disabled and relabeled \"one event per visit\", the notice is a quiet stamped record with no game vocabulary, and it stayed disabled after reload + resume + re-entry. HoldTheLine carries no failure state anywhere (early release yielded exactly \"Real families held for over a year. Hold again if you like.\"), the reworded choice-framing prompt from D-A4-02 is in registry.ts:103 and the in-component header, and the ledger honestly posts the seventy evicted families as the strike's price. Room content is dignified end to end: the Contract room's people station gives Clyde Ross and Ruth Wells full VoiceCards, the eviction fact is framed as \"The strike had casualties,\" the collection-in-progress plate says precisely what is missing and why, the Answer Key marks the bulldozer STILL CONTESTED, and collectible verbs attach only to machines (voices tray now reads \"heard\"). The Binga arc (BombingMap, InvisibleLine) is untouched since the A4 gate where it passed 33/33 live assertions. The wall's migration-pending path is honest at the message level on production (\"Your words were not lost; write them down\"), but one contradiction survives: the optimistic chip above that message still carries a \"Held for review\" stamp when nothing was stored. That is the launch-state path every writing visitor will see, so it should be fixed before the C2 swap, but it is a two-line client fix on an otherwise-honest station, not a launch blocker. No decided items (migration-pending wall path itself, galleries, Strike the Clause static, map crop) are re-raised.",
+      "findings": [
+        {
+          "title": "Answer Wall chip stays stamped 'Held for review' on the migration-pending path, contradicting the honest message below it",
+          "severity": "medium",
+          "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx lines 149-151 (optimistic setOwn before the POST resolves), 282-296 (own chip always renders Stamp 'Held for review'), 307-316 (migration-pending message). Reproduced live on http://localhost:3000 and on production: after submit, data-submit-state=migrationPending, chip text 'Closing review probe / Held for review' renders directly above 'The wall opens when the collection table is installed. Your words were not lost; write them down.'",
+          "recommendation": "When the POST resolves 503 migrationPending, stop claiming the words are held: either clear own (the pending message already tells the visitor to write their words down) or swap the chip's stamp to true copy such as 'Not yet collected'. This is the exact state the exhibit launches in (migration 008 intentionally pending per D-C1-01), so every visitor who writes an answer sees the false stamp until the owner applies the migration. The decided migration-pending path itself is correct and is not being re-raised; only the stamp contradicts it.",
+          "effort": "small"
+        },
+        {
+          "title": "Empty wall reads 'The first answers are being gathered.' while the API says no gathering is possible yet",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx lines 107-117 (GET response's migrationPending:true flag is discarded; answers=[] falls through) and 332-336 (empty-state line). Production GET /api/exhibit/submissions?kind=answer_wall returns {\"answers\":[],\"migrationPending\":true} today.",
+          "recommendation": "The GET already tells the client the truth; use it. When migrationPending is true on fetch, render a truer empty-state line (e.g. 'The wall opens soon.') instead of implying answers are currently being gathered into a queue that does not exist yet. Once 008 is applied the existing line becomes accurate on its own.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "lens": "accessibility",
+      "pass": false,
+      "overall": "Keyboard-only operation of the machine rooms is genuinely strong and was verified live on localhost with real key presses. The full cycle works: Tab reaches the ch6 door in a sane order, Enter opens THE MAP room, focus lands on the room-close control inside the Radix dialog, Shift+Tab wraps to the last focusable inside the overlay (trap intact), the Grade Your Block instrument is fully operable through native selects, the 1-D/1-E hold announces through the shared #exh-live polite region the moment it engages, Escape closes an open citation popover first and the room second, and closing returns focus to the exact door the visitor entered through with the hash stripped and the visited ember set. The gear train handles are real 48px sliders with aria-valuetext that update on arrow keys and announce each mesh caption; the Answer Key announces matches (\"The Map matched. Movement and law.\"). The focus ring (2px exh-blue on linen) is visible everywhere it was checked. Two real defects block a clean pass: the Answer Key's selected machine card renders linen text on a linen background (the .exh-paper background rule beats bg-exh-ink), observed live as a fully blank card, which is a 1:1-contrast hard failure at the center of the counter-machine room; and the Answer Wall form unmounts on submit and drops keyboard focus to body with nothing spoken through #exh-live (its status texts sit in conditionally-mounted aria-live elements that most screen readers will not announce). Both fixes are small. The remaining findings are polish-level. The 390px pass was cut short by tooling (window resize and a second dev server were both blocked, and the Chrome MCP connection dropped mid-session), so the one mobile finding is computed from the SVG geometry rather than screenshotted; nothing in the room layout code (stacking grids, full-inset overlay, 48px minimum targets) suggests a structural 390px problem. No deferred or declined item from decisions.json is re-raised; the Answer Wall migration-pending path itself behaved exactly as designed when exercised.",
+      "findings": [
+        {
+          "title": "Answer Key selected machine card is blank: linen text on linen background (1:1 contrast)",
+          "severity": "high",
+          "where": "src/components/exhibit/rooms/AnswerKey.tsx:108-113 (active state 'exh-paper ... bg-exh-ink text-exh-linen') overridden by src/app/globals.css:469-472 ('.exhibit-root .exh-paper { background-color: var(--color-exh-linen) }'); observed live in the counter-machine room at #room-counter",
+          "recommendation": "Selecting any machine card in the counter-machine room's Answer Key makes its label vanish: the two-class selector '.exhibit-root .exh-paper' out-specifies the single-class 'bg-exh-ink' utility, so the card keeps the linen paper background while the text switches to text-exh-linen. Verified live: computed background and color are both rgb(237,230,214) and the screenshot shows an empty card with only a focus ring. aria-pressed still carries the state for screen readers, but every sighted visitor (keyboard or mouse) loses the card's name at the exact moment they select it, and the matching task depends on remembering it. Fix is one line: drop 'exh-paper' from the active branch, or use '!bg-exh-ink', or scope the paper rule to ':not([aria-pressed=\"true\"])'. Re-check the counter cards' done state after the change.",
+          "effort": "small"
+        },
+        {
+          "title": "Answer Wall submit drops keyboard focus to body and announces nothing",
+          "severity": "medium",
+          "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx:140-184 (locked state unmounts the form) and :273-316 (status texts on conditionally-mounted aria-live elements); observed live on ch11 via keyboard submit on the migration-pending path",
+          "recommendation": "After Enter on 'Add your answer' the form unmounts (locked covers both 'held' and 'migrationPending'), document.activeElement falls to BODY, and #exh-live stays empty. The held/migration-pending/error paragraphs each carry aria-live but mount together with their text, which most screen readers do not announce; so a keyboard or screen-reader visitor submits the exhibit's final question and gets silence plus a focus reset to the top of the document. Route the outcome line through the existing announce() helper in src/lib/exhibit/focus.ts and moveFocus() the visitor's own chip (aw-own) or the status paragraph when the form unmounts. The same pattern will fix the production 'held' path, not just the migration-pending one.",
+          "effort": "small"
+        },
+        {
+          "title": "Gear train's final mesh caption is never announced (lesson overwrites it synchronously)",
+          "severity": "low",
+          "where": "src/components/exhibit/rooms/GearTrain.tsx:91-98 (two announce() calls in the same effect pass; announce() replaces #exh-live textContent)",
+          "recommendation": "When the fifth mesh point lights, announce(line.label) is immediately overwritten by announce(GEAR_DOC.lesson) in the same tick, so a screen-reader visitor hears the lesson but never the fifth caption ('the bulldozer' link). Observed live: after the final arrow press #exh-live contained only the lesson text. Fast drags that jump revealed by 2+ also skip intermediate captions (only LINKS[revealed-1] is announced). Concatenate the final caption and the lesson into one announcement, and loop from revealedRef.current to revealed when announcing.",
+          "effort": "small"
+        },
+        {
+          "title": "Small-print labels using ink at 50-60% opacity fall below AA contrast on room and wall surfaces",
+          "severity": "low",
+          "where": "text-exh-ink/50 in src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx:333,338 ('The first answers are being gathered.', 'Reading the wall'); text-exh-ink/55 and /60 in src/components/exhibit/rigged/RiggedInstrument.tsx:543,575,599,633 (section headings, 'filing 1 of 3', 'The instrument returns'); tokens in src/app/globals.css:34-40",
+          "recommendation": "Against linen #EDE6D6, ink at 50% computes to about 3.2:1, 55% to 3.7:1, 60% to 4.2:1, all under the 4.5:1 AA minimum for the 9-12px uppercase labels they set (the solid exh-ink-soft token passes at 7.6:1). These are new B1/B2/C1 surfaces, so they were not covered by the A4 panel. Replace the sub-60% ink opacities on text with text-exh-ink-soft (visually close, passes), keeping opacity variants for rules and borders only.",
+          "effort": "small"
+        },
+        {
+          "title": "Gear train nameplates render around 7px at 390px width",
+          "severity": "low",
+          "where": "src/components/exhibit/rooms/GearTrain.tsx:34-36,227-238 (SVG viewBox 540 wide, fontSize 11 nameplates, fontSize 10 mesh numerals)",
+          "recommendation": "At a 390px viewport the room's content column is roughly 350px, scaling the 540-unit SVG to 0.65x, so the machine nameplates render at about 7px and mesh numerals about 6.5px. The SVG is aria-hidden and the handle aria-labels carry the names, so screen-reader use is fine, but sighted small-screen visitors cannot read which gear is which. Computed from geometry, not screenshotted (the 390px live pass was blocked by tooling). Either bump the SVG font sizes for small containers or add a media-query swap to a two-row 540x420 layout below 480px. Verify with a real 390px screenshot when a device pass is next run.",
+          "effort": "medium"
+        },
+        {
+          "title": "Timeline spine contributes 20 always-tabbable stops before the stage on every chapter",
+          "severity": "low",
+          "where": "src/components/exhibit/hud/TimelineSpine.tsx (spine-node-1832 through spine-node-2026); observed in the live focus-order listing on ch6",
+          "recommendation": "A keyboard visitor tabbing from the page top to the chapter content crosses all 20 year nodes every time (observed indices 14-33 in the focus order). The A4 fix gave the map a roving tabindex; apply the same pattern to the spine (one tab stop, arrow keys move between years) to cut the path to any door or interactive by 19 presses. Not a blocker; the exhibit remains fully operable.",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "lens": "performance",
+      "pass": true,
+      "overall": "Production performance has improved since the A4 baseline despite two full phases of new material (five machine rooms, counter-machine, gear train, machine cards, visitor-input wall). Cold load, measured with the same script and methodology as A4 (cache disabled, 1440x900, production, no debug flag): 482 KB over 33 requests with TTFB 110 ms, FCP 436 ms, LCP ~744 ms, load 632 ms, network idle at 2.56 s, and zero long tasks during load (A4 baseline: 455 KB / 31 requests, TTFB 207 ms, FCP 1088 ms, LCP ~1428 ms, load 1447 ms, idle 3.4 s). JS payload grew only 25.7 KB (415.7 to 441.4 KB) for all of phases B and C. Payload discipline still holds exactly: zero mp3s and zero /exhibit-data JSON before Begin; after Begin the same designed 1.4 MB burst as A4 (playing block 328.5 KB + preload-next 935.4 KB + holc-frames 107.5 KB + frame-layers 26.7 KB + cues 8.8 KB), with zero long tasks in the first 12 s. The MachineRoom dynamic chunk behaves as designed on production: it is not fetched on landing or during early guided play, the first door open fetches one ~1.9 KB compressed chunk and paints the room in 319 ms including the fetch, and a second room opens in 29 ms with zero new network requests (chunk resident, content already bundled). The wall API on its intentional migration-pending path answers 200 {answers:[], migrationPending:true} in 220-270 ms warm with one 907 ms cold start observed, and the POST validation path (honeypot, no write) answers in 160-210 ms; no 500s, so the honest-path design costs nothing measurable at the ch11 station. The A4 figure-recompression fix (D-A4-02) is verified live: the exhibit reads from /media/hyde-park/exhibit/fig/ (BlockRenderer via content/index.ts), jesse-binga.jpg is now 700 KB there (was 3.35 MB) and the whole figure set totals 2.4 MB. The one loose end is the other half of that same decision record. D-A4-02 says the VO re-encode to 64-80 kbps was folded into the phase B pipeline settings, but scripts/exhibit-vo.mjs still encodes at 160k and all 30 generated mp3s measure 160 kbps (19.5 MB library; the 935 KB preload file dominates the post-Begin burst). Not a launch blocker since audio loads strictly per block, but the decision record and the pipeline disagree. No regressions found; pass.",
+      "findings": [
+        {
+          "title": "VO re-encode recorded as done in D-A4-02 was never applied; pipeline still writes 160 kbps",
+          "severity": "medium",
+          "where": "scripts/exhibit-vo.mjs line 130 (\"-b:a\", \"160k\"); all 30 mp3s in public/media/hyde-park/vo/exhibit measure 160 kbps (19.5 MB total); vo-ex-ch0_5-b1.mp3 is 935 KB and dominates the 1.41 MB post-Begin burst on production",
+          "recommendation": "D-A4-02 records the 64-80 kbps re-encode as folded into the phase B pipeline settings, but the ffmpeg args were never changed and phase B regenerated files at 160k. Change -b:a to 80k (mono is fine for spoken VO), regenerate the 30 exhibit files, and redeploy. This halves every audio byte in the tour and brings the post-Begin burst under ~800 KB so the ch0 map data never contends with the overture download on slow connections. Do it before go-live so the pipeline setting is correct when the owner records real VO (D-SCOPE-03 keeps the same encoding). Also reconcile the D-A4-02 record so the decision log stays trustworthy.",
+          "effort": "small"
+        },
+        {
+          "title": "Wall API cold start adds ~700 ms to the first Answer Wall load",
+          "severity": "low",
+          "where": "GET https://rooted-forward.org/api/exhibit/submissions?kind=answer_wall&prompt=who-is-this-city-built-for: 907 ms first hit, then 218-268 ms warm; POST validation path 160-210 ms",
+          "recommendation": "Observed one 907 ms cold-start TTFB on the first GET (serverless cold function plus the intentional missing-table round trip), settling to ~230 ms warm. At the ch11 station the wall fetch happens while the visitor reads the prompt, so this is invisible in practice and needs no code change now. Worth one re-measure after migration 008 is applied, since the query will then do real RLS-filtered work instead of erroring fast on a missing table; if warm latency grows past ~500 ms, add an index check on (kind, status, created_at). No action required for launch.",
+          "effort": "small"
+        },
+        {
+          "title": "Machine-room content rides the shell bundle; the dynamic chunk is only 1.9 KB",
+          "severity": "low",
+          "where": "src/components/exhibit/rooms/RoomOverlay.tsx line 53 (dynamic import of MachineRoom); measured on production: first door open fetches a single ~1.9 KB compressed chunk, landing JS grew 415.7 to 441.4 KB since A4",
+          "recommendation": "The lazy-load mechanism works (nothing fetched until the first door opens, 319 ms to painted room including the fetch, second room 29 ms with zero requests), but the chunk is so small that the room bodies and their content (src/lib/exhibit/content/rooms and data imports) have evidently been pulled into the shared landing bundle, which accounts for most of the +25.7 KB shell growth across phases B and C. All cold-load timings still improved versus A4, so this is informational, not a fix-now item. If the shell ever approaches a budget line, audit what static imports (content/rooms, machines.json-derived modules) are reachable from ExhibitApp/RoomOverlay without the dynamic boundary and move them behind it.",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "lens": "copy",
+      "pass": true,
+      "overall": "The room and wall copy is launch-ready. No em-dashes anywhere in the exhibit tree, the copy lint gate passes on both data JSON and source strings (colon rule, AI-tell list), and the register is consistently museum-quiet with strong label craft (the five canonical station eyebrows, plated fact labels like \"The template\" / \"The boast\" / \"The signature count\", honest deferral chips worded plainly). The six rooms are live and verified: 137/137 harness checks pass locally, covering all five machine rooms, the counter-machine's Answer Key, gear train unlock, cards, collection plate, and the Answer Wall's migration-pending path. Verbatim period material is correctly flagged and exempted, the D74 excerpt carries its elision note, and the Mapping Inequality attribution ships as required. Two low-severity polish items remain: the numbers-are-mono rule is skipped in three room strings that render digits in the display face, and the Answer Wall's migration-pending state keeps a \"Held for review\" stamp on the visitor's chip that contradicts the message below it. Neither is a blocker.",
+      "findings": [
+        {
+          "title": "Mono-numbers rule skipped on three room strings with digits",
+          "severity": "low",
+          "where": "src/lib/exhibit/content/rooms/theContract.tsx:44 (ResidueCard renders CONTRACT.residue, which contains \"2008\", in font-display without MonoNumbers), src/lib/exhibit/content/rooms/theCode.tsx:31-33 (\"96 years between the rule and the apology.\" renders 96 in font-display), src/lib/exhibit/content/rooms/theDeed.tsx:185 (residue card renders DEED.residue plain; currently digit-free so invisible, but inconsistent with line 67 of the same file)",
+          "recommendation": "Wrap these strings in the existing MonoNumbers helper from src/components/exhibit/hud/BrassLamp.tsx, the way MachineRoom.tsx:140-171 and theDeed.tsx:67 already do for the identical machines.json lines. The contract room's STILL RUNNING? station is the only place a visitor currently sees a machines.json residue digit (2008) outside the mono face.",
+          "effort": "small"
+        },
+        {
+          "title": "Answer Wall migration-pending state stamps the chip \"Held for review\" while saying nothing was saved",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx:282-316 (the optimistic own-chip with its Stamp text=\"Held for review\" stays mounted in the migrationPending state, directly above the line \"The wall opens when the collection table is installed. Your words were not lost; write them down.\")",
+          "recommendation": "Make the stamp state-aware. In migrationPending, either drop the stamp or swap its text to something true, e.g. \"Not yet collected\". Optionally tighten the message so \"not lost\" and \"write them down\" stop pulling against each other, e.g. \"The wall is not collecting answers yet. Your words are still on this page; copy them down to keep them.\" This is a wording fix only; the migration-pending path itself is the decided, correct behavior per D-C1-01.",
+          "effort": "small"
+        }
+      ]
+    }
+  ],
+  "chair": {
+    "verdict": "Conditional go. Six of seven lenses pass and the seventh fails on a single verified one-line CSS bug, so the exhibit is not swappable as-is but is one small commit away. The P1 (Answer Key selected card renders linen-on-linen, confirmed in AnswerKey.tsx vs globals.css:469) blanks the central matching task of the counter-machine room for every sighted visitor and must land before the swap. Bundle the seven other small P2 fixes into the same pre-swap pass since they cluster in three files: the Answer Wall honesty and focus trio (the false 'Held for review' stamp is the launch-state path every writing visitor sees), the bare #room deep-link drop, the VO bitrate that contradicts decision record D-A4-02, two fact-precision items, and the silent pause behind 'Back to the tour'. Nothing else blocks. The remaining nine items are genuine polish and belong in the first post-swap patch. No decisions.json item is re-raised; the migration-pending wall path, Strike the Clause static, and galleries stand as decided. Once the P1 commit is verified live (re-drive the Answer Key selection and the counter cards' done state), swap the film page.",
+    "pass": false,
+    "p1Count": 1,
+    "punchList": [
+      {
+        "p": 1,
+        "title": "Answer Key selected machine card renders linen text on linen background (1:1 contrast, card goes blank on selection)",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/rooms/AnswerKey.tsx active branch keeps exh-paper alongside bg-exh-ink; .exhibit-root .exh-paper in src/app/globals.css:469 wins on specificity (verified in code by the panel)",
+        "fix": "Drop exh-paper from the active branch or use !bg-exh-ink, then re-check the done-state counter cards. One line."
+      },
+      {
+        "p": 2,
+        "title": "Answer Wall chip falsely stamped 'Held for review' on the migration-pending path, and empty state implies gathering that is not happening",
+        "lens": "sensitivity + copy (deduped)",
+        "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx:149-151, 282-316, 107-117, 332-336",
+        "fix": "On 503 migrationPending clear own or restamp 'Not yet collected'; when GET returns migrationPending:true render a truer empty line ('The wall opens soon.'). This is the exact state the exhibit launches in, so every writing visitor sees the false stamp until migration 008 is applied."
+      },
+      {
+        "p": 2,
+        "title": "Answer Wall submit drops keyboard focus to body and announces nothing",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx:140-184, 273-316",
+        "fix": "Route the outcome line through announce() in src/lib/exhibit/focus.ts and moveFocus() the own chip or status paragraph when the form unmounts. Also fixes the production 'held' path. Same file as the stamp fix; one commit."
+      },
+      {
+        "p": 2,
+        "title": "Bare #room-<id> deep link (the URL the room itself pushes) is dropped on cold arrival",
+        "lens": "room integrity",
+        "where": "src/components/exhibit/ExhibitApp.tsx:46-58 (openRoomFromHash only runs in the ?ch= effect); RoomOverlay.tsx mints the bare-hash URL",
+        "fix": "Call the existing openRoomFromHash(dispatch) helper once when the visitor leaves the gate on every entry path (SET_MODE/BEGIN including saved-session continue). Also clears the downstream Back-button quirk."
+      },
+      {
+        "p": 2,
+        "title": "VO pipeline still encodes 160 kbps; D-A4-02 records the 64-80k re-encode as done",
+        "lens": "performance",
+        "where": "scripts/exhibit-vo.mjs line 130 (-b:a 160k); 30 mp3s in public/media/hyde-park/vo/exhibit at 160 kbps, 19.5 MB",
+        "fix": "Change to 80k, regenerate the 30 files, redeploy, and reconcile the D-A4-02 record. Halves every audio byte and must be correct before the owner records real VO under the same settings (D-SCOPE-03)."
+      },
+      {
+        "p": 2,
+        "title": "cbl.strike_500 displays 'more than 500' where its sole cited source says 'about 500'",
+        "lens": "fact",
+        "where": "data/exhibit/facts.json cbl.strike_500, rendered daggered in the contract room FIGHT station; narration uses the fact too",
+        "fix": "One word swap to 'about 500 families on payment strike' (or attach a corroborating source for 'more than'); check the spoken line."
+      },
+      {
+        "p": 2,
+        "title": "Chain-of-armor quote carrier and 1928 Herald dating unverified against the cited Coates 2014 source",
+        "lens": "fact",
+        "where": "src/lib/exhibit/content/rooms/theDeed.tsx ('The boast. Hyde Park Herald, 1928') + facts.json covenants.chain_armor_quote; factcheck.json fc-covenants-07 asserts verbatim carriage",
+        "fix": "Open the Atlantic piece in a browser and confirm quote plus dating. If it does not carry the 1928 Herald attribution, re-source to Moore, The South Side (2016) or soften the on-screen date to 'late 1920s'. Real-data policy makes this a pre-swap check, not post-swap."
+      },
+      {
+        "p": 2,
+        "title": "Returning from a room detour leaves guided narration silently paused behind a button labeled 'Back to the tour'",
+        "lens": "curator",
+        "where": "RoomOverlay.tsx room-close button + CLOSE_ROOM in src/lib/exhibit/state.ts; observed after the ch10 counter-machine detour",
+        "fix": "Keep the pause but add a one-time dismissible 'Tour paused. Press play when you are ready' cue anchored to the HUD play control on first mid-tour room close, with the A4 announcement utility carrying the screen-reader half."
+      },
+      {
+        "p": 2,
+        "title": "New B1/B2/C1 small-print labels at ink 50-60% opacity fall below AA contrast on linen",
+        "lens": "accessibility",
+        "where": "AnswerWall.tsx:333,338; src/components/exhibit/rigged/RiggedInstrument.tsx:543,575,599,633; tokens in globals.css:34-40",
+        "fix": "Replace sub-60% ink opacities on text with text-exh-ink-soft (7.6:1, visually close); keep opacity variants for rules and borders only. Mechanical token swap."
+      },
+      {
+        "p": 3,
+        "title": "End plate opens with 'You heard 0 of 9 voices' for a guided visitor never prompted to open a medallion",
+        "lens": "curator",
+        "where": "End plate copy in data/exhibit + stage end plate; voices collect only on medallion click (VoiceCard.tsx COLLECT_VOICE)",
+        "fix": "Invert framing when count is low: 'Nine voices are still waiting in the stations' when N=0; 'You heard N of 9' only when N > 0."
+      },
+      {
+        "p": 3,
+        "title": "Final nameplate reads bare 'TIF' with the expansion buried in the lamp popover",
+        "lens": "curator",
+        "where": "data/exhibit/machines.json bulldozer renamedTo, rendered by BrassLamp/MachineBoard; narration never says 'TIF'",
+        "fix": "Render 'TIF (the Bulldozer, renamed)' or keep the plainName line beneath, or plate the renamedNote sentence once in the ch11 stage."
+      },
+      {
+        "p": 3,
+        "title": "HOLC map-year convention drifts across rooms (1938 vs 1939 vs 1939-1940)",
+        "lens": "fact",
+        "where": "machines.json map.residue; theBulldozer.tsx; theMap.tsx D74 card (Jan 1, 1940); GradeYourBlock ('1939 to 1940')",
+        "fix": "Pick one on-screen convention ('the 1939-1940 survey'), keep 1938 only where citing the repo paper's analysis. Each phrasing has a defensible referent so this is polish, not correctness."
+      },
+      {
+        "p": 3,
+        "title": "Facts audit does not scan room content modules, so room fact ids live outside the gate",
+        "lens": "fact",
+        "where": "scripts/exhibit-audit-facts.mjs; usedBy arrays in data/exhibit/facts.json stop at narration/timeline/ethics_exam",
+        "fix": "Extend the reference scan to src/lib/exhibit/content/rooms/*.tsx and the ANSWER_KEY table; refresh usedBy arrays. Clears most of the 57 warnings and keeps the gate honest for future room edits. Nothing broken today (live drive found zero missing ids)."
+      },
+      {
+        "p": 3,
+        "title": "Gear train's final mesh caption is overwritten by the lesson in the same announce tick; fast drags skip intermediate captions",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/rooms/GearTrain.tsx:91-98",
+        "fix": "Concatenate the final caption and lesson into one announcement; loop from revealedRef.current to revealed when announcing."
+      },
+      {
+        "p": 3,
+        "title": "Gear train nameplates render around 7px at 390px width (computed from geometry, not screenshotted)",
+        "lens": "accessibility",
+        "where": "GearTrain.tsx:34-36, 227-238 (540-unit viewBox, fontSize 11/10)",
+        "fix": "Bump SVG font sizes for small containers or swap to a two-row 540x420 layout below 480px; verify with a real 390px screenshot on the next device pass."
+      },
+      {
+        "p": 3,
+        "title": "Timeline spine adds 20 always-tabbable year stops before the stage on every chapter",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/hud/TimelineSpine.tsx (spine-node-1832 through spine-node-2026)",
+        "fix": "Apply the A4 roving-tabindex pattern (one tab stop, arrows move between years), cutting 19 presses off the path to any door."
+      },
+      {
+        "p": 3,
+        "title": "Mono-numbers rule skipped on three room strings with digits in the display face",
+        "lens": "copy",
+        "where": "theContract.tsx:44 ('2008'), theCode.tsx:31-33 ('96 years'), theDeed.tsx:185 (currently digit-free but inconsistent with line 67)",
+        "fix": "Wrap in the existing MonoNumbers helper from hud/BrassLamp.tsx, matching MachineRoom.tsx:140-171."
+      },
+      {
+        "p": 3,
+        "title": "Re-measure wall API latency after migration 008 is applied",
+        "lens": "performance",
+        "where": "GET /api/exhibit/submissions (907 ms cold, ~230 ms warm on the intentional missing-table path)",
+        "fix": "No code change now. After 008 lands, re-measure; if warm latency grows past ~500 ms add an index on (kind, status, created_at)."
+      }
+    ],
+    "recommendations": [
+      {
+        "title": "Land one pre-swap commit fixing the P1 plus the clustered small P2s, then re-verify live and swap",
+        "tag": "recommend-fix-now",
+        "rationale": "The blocker is a one-line CSS specificity fix, and five of the eight P2s live in just three files (AnswerKey.tsx, AnswerWall.tsx, ExhibitApp.tsx) plus a room-close cue. The Answer Wall stamp matters most: migration 008 is intentionally pending at launch, so the false 'Held for review' claim is the guaranteed path for every visitor who answers the exhibit's final question. Re-drive the Answer Key selection, the counter cards' done state, and a keyboard wall submit before flipping the page."
+      },
+      {
+        "title": "Re-encode VO at 80 kbps and reconcile decision record D-A4-02 before go-live",
+        "tag": "recommend-fix-now",
+        "rationale": "The decision log says this was done and it was not; a log that disagrees with the pipeline erodes the whole gated-decisions process the exhibit build runs on. The fix is one ffmpeg arg plus a regeneration pass, halves every audio byte, brings the post-Begin burst under ~800 KB, and must be in place before the owner records real VO under the same settings."
+      },
+      {
+        "title": "Close the two fact-precision items (chain-armor source check, strike_500 wording) before the swap",
+        "tag": "recommend-fix-now",
+        "rationale": "The site's hard real-data policy makes source-display mismatches pre-swap work even at low severity. One is a five-minute browser verification of the cited Coates carrier with a ready fallback source; the other is a one-word swap where the dagger popover itself lets an attentive visitor catch the overstatement."
+      },
+      {
+        "title": "Bundle the nine P3 items into the first post-swap patch, led by extending the facts audit to room modules",
+        "tag": "recommend-next-phase",
+        "rationale": "None affect launch correctness, but the audit-coverage gap is the one that compounds: future room edits can ship typo'd fact ids past the gate. Fold in the end-plate framing, TIF nameplate, HOLC year convention, mono numbers, gear-train announcements and small-screen type, spine roving tabindex, and the post-008 wall latency re-measure, and run the deferred real-device 390px pass in the same patch."
+      }
+    ]
+  }
+}

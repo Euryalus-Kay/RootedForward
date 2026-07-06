@@ -231,7 +231,7 @@ function GybRealRecord() {
             {sheet?.date ? `. ${sheet.date}.` : "."}
           </p>
           {area.excerptLabel && (
-            <p className="exh-mono mt-2 text-[10px] text-exh-ink/60">{area.excerptLabel}</p>
+            <p className="exh-mono mt-2 text-[10px] text-exh-ink-soft">{area.excerptLabel}</p>
           )}
           <blockquote className="exh-serif mt-1 text-sm leading-snug text-exh-ink italic">
             &ldquo;{area.excerpt.trim()}&rdquo;
@@ -240,13 +240,13 @@ function GybRealRecord() {
             <div className="mt-2 space-y-1 border-t border-exh-ink/15 pt-2">
               {RECORD_ROWS.filter((r) => sheet[r.key]).map((r) => (
                 <p key={r.key} className="exh-mono text-[11px] leading-snug text-exh-ink/85">
-                  <span className="text-exh-ink/55">{r.label}</span> {sheet[r.key]}
+                  <span className="text-exh-ink-soft">{r.label}</span> {sheet[r.key]}
                 </p>
               ))}
             </div>
           )}
           {attribution && (
-            <p className="mt-2 text-[10px] leading-snug text-exh-ink/60">{attribution}</p>
+            <p className="mt-2 text-[10px] leading-snug text-exh-ink-soft">{attribution}</p>
           )}
         </div>
       )}

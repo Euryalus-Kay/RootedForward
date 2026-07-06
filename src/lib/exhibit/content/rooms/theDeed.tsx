@@ -115,13 +115,11 @@ export const THE_DEED_STATIONS: RoomStation[] = [
           One printed form, drafted the year after Corrigan, let any block adopt the clause at
           once.
         </FactCard>
-        <RecordCard
-          eyebrow="The boast. Hyde Park Herald, 1928"
-          quote="a marvelous delicately woven chain of armor"
-          quoteNote="the Herald on the covenants around the neighborhood; carried in The Atlantic, 2014"
-          factId="covenants.chain_armor_quote"
-          warning={false}
-        />
+        <FactCard id="covenants.chain_armor_quote" label="The boast">
+          The neighborhood press praised the covenants as a chain of armor around the blocks. The
+          famous wording awaits its archival clipping, so the wall carries the characterization,
+          not the quotation.
+        </FactCard>
         <CardGrid>
           <FactCard id="covenants.uchicago_defense_83597" label="The budget">
             University subsidies to the neighborhood associations that ran the covenant defense,

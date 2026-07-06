@@ -74,7 +74,9 @@
     {
       "id": "C2",
       "title": "Action layer + hardening + go-live swap",
-      "status": "in-progress"
+      "status": "panel-passed-awaiting-swap",
+      "gateTag": "exhibit-gate-C2",
+      "reviewRef": "data/exhibit/reviews/C2.json"
     }
   ]
 }

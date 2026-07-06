@@ -105,12 +105,14 @@ export default function AnswerKey({ pairs, counterOrder, caption }: AnswerKeyPro
                   aria-disabled={done}
                   onClick={() => pickMachine(p.machineId)}
                   className={[
-                    "exh-paper min-h-12 cursor-pointer rounded-sm border px-4 py-2.5 text-left transition-colors duration-150 [[data-motion=off]_&]:transition-none",
+                    "min-h-12 cursor-pointer rounded-sm border px-4 py-2.5 text-left transition-colors duration-150 [[data-motion=off]_&]:transition-none",
+                    // exh-paper's linen background outranks utility classes, so
+                    // the selected ink card must not carry it (C2 panel P1)
                     done
-                      ? "cursor-default border-exh-ink/20 opacity-60"
+                      ? "exh-paper cursor-default border-exh-ink/20 opacity-60"
                       : active
                         ? "border-exh-ink bg-exh-ink text-exh-linen"
-                        : "border-exh-ink/40 bg-exh-linen hover:border-exh-ink",
+                        : "exh-paper border-exh-ink/40 bg-exh-linen hover:border-exh-ink",
                   ].join(" ")}
                 >
                   <span className="flex items-center justify-between gap-2">

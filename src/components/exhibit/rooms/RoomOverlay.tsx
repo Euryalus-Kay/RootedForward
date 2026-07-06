@@ -20,6 +20,7 @@ import type { ExhibitAction } from "@/lib/exhibit/types";
 import { allMachines, COUNTER_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
 import { COUNTER_ROOM } from "@/lib/exhibit/content/rooms";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
+import { announce } from "@/lib/exhibit/focus";
 import { moveFocus } from "@/lib/exhibit/focus";
 import { machineTitle } from "../hud/BrassLamp";
 
@@ -61,6 +62,10 @@ const MachineRoom = dynamic(() => import("./MachineRoom"), {
 
 export default function RoomOverlay() {
   const state = useExhibitState();
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
   const dispatch = useExhibitDispatch();
 
   const openRoom = state.openRoom;
@@ -116,7 +121,28 @@ export default function RoomOverlay() {
     return () => window.removeEventListener("popstate", onPop);
   }, [dispatch]);
 
-  const close = () => dispatch({ type: "CLOSE_ROOM" });
+  const close = () => {
+    dispatch({ type: "CLOSE_ROOM" });
+    // "Back to the tour" must not strand a guided visitor in silence: the
+    // tour stays paused by design, and the first time this happens we say
+    // so, out loud and in a brief chip near the play control (C2 curator)
+    if (stateRef.current.mode === "guided" && stateRef.current.playState === "paused") {
+      announce("Tour paused. Press play when you are ready.");
+      if (!stateRef.current.firedOnce.includes("room-pause-cue")) {
+        dispatch({ type: "MARK_FIRED", key: "room-pause-cue" });
+        const host = document.getElementById("exh-hud-continue-chip");
+        if (host) {
+          const chip = document.createElement("div");
+          chip.setAttribute("data-testid", "room-pause-chip");
+          chip.className =
+            "exh-plat flex min-h-12 items-center rounded-sm border border-exh-ink/15 bg-exh-linen px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)]";
+          chip.textContent = "Tour paused. Press play when you are ready.";
+          host.appendChild(chip);
+          setTimeout(() => chip.remove(), 8000);
+        }
+      }
+    }
+  };
 
   return (
     <Dialog.Root

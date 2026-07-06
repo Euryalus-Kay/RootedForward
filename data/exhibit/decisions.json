@@ -163,6 +163,15 @@
       "title": "C1 self-approved per D-A2-04. Visitor input pipeline live behind migration 008 (exhibit_submissions, RLS, 101-term screen, admin queue). The Answer Wall takes the honest migration-pending path until the owner applies supabase/migrations/008_exhibit.sql in the SQL editor, the same procedure as 006. Memorial and oral-history stations ship with the galleries; their API kinds are already supported.",
       "decision": "approved",
       "status": "honored"
+    },
+    {
+      "id": "D-C2-01",
+      "milestone": "C2",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "Closing panel P1 and all eight P2s fixed before the swap ask. Answer Key contrast, bare room deep links, the wall's honest not-yet-collected stamp with focus management, the strike figure softened to about 500, the armor phrasing displayed as characterization pending its archival clipping, the room-close pause cue, the AA contrast token sweep, and the audio fleet re-encoded to 80 kbps mono (18.9MB to 9.8MB). P3s recorded for post-swap polish, including the HOLC map-year convention pass, room-content audit coverage, gear caption timing, spine tab stops, and the wall latency re-measure after migration 008.",
+      "decision": "approved",
+      "status": "honored"
     }
   ]
 }

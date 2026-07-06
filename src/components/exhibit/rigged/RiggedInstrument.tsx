@@ -359,7 +359,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
     const labelBlock = (
       <span className="min-w-0 flex-1">
         <span className="exh-plat block text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
-          {f.formItem && <span className="exh-mono mr-1.5 text-exh-ink/60">{f.formItem}.</span>}
+          {f.formItem && <span className="exh-mono mr-1.5 text-exh-ink-soft">{f.formItem}.</span>}
           {f.label}
         </span>
         {f.note && <span className="mt-1 block text-sm leading-snug text-exh-ink-soft">{f.note}</span>}
@@ -480,7 +480,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
       return (
         <div key={f.id} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-3">
           <span className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
-            {f.formItem && <span className="exh-mono mr-1.5 text-exh-ink/60">{f.formItem}.</span>}
+            {f.formItem && <span className="exh-mono mr-1.5 text-exh-ink-soft">{f.formItem}.</span>}
             {f.label}
           </span>
           <span
@@ -540,7 +540,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
             return (
               <div key={f.id} className="border-b border-exh-ink/15">
                 {showSection && (
-                  <p className="exh-plat pt-3 text-[9px] font-semibold tracking-[0.25em] text-exh-ink/55 uppercase">
+                  <p className="exh-plat pt-3 text-[9px] font-semibold tracking-[0.25em] text-exh-ink-soft uppercase">
                     {section}
                   </p>
                 )}
@@ -572,7 +572,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
               </button>
             )}
             {maxAttempts > 1 && (
-              <span className="exh-mono text-xs text-exh-ink/60">
+              <span className="exh-mono text-xs text-exh-ink-soft">
                 filing {attempts + 1} of {maxAttempts}
               </span>
             )}
@@ -596,7 +596,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
               api.reducedMotion ? "" : "exh-ledger-in"
             }`}
           >
-            <p className="exh-plat text-[9px] font-semibold uppercase tracking-[0.2em] text-exh-ink/55">
+            <p className="exh-plat text-[9px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
               The instrument returns
             </p>
             <p className="exh-serif mt-0.5 text-sm leading-snug text-exh-ink">
@@ -630,7 +630,7 @@ export default function RiggedInstrument({ config }: RiggedInstrumentProps) {
                 >
                   Try again
                 </button>
-                <span className="exh-mono text-xs text-exh-ink/60">
+                <span className="exh-mono text-xs text-exh-ink-soft">
                   filed {attempts} of {maxAttempts}
                 </span>
               </div>

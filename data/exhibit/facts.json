@@ -2287,7 +2287,7 @@
     {
       "id": "cbl.strike_500",
       "value": 500,
-      "display": "more than 500 families on payment strike",
+      "display": "about 500 families on payment strike",
       "unit": "families",
       "asOf": "1968 to early 1970s",
       "tier": "reported",
@@ -2915,11 +2915,10 @@
     {
       "id": "covenants.chain_armor_quote",
       "value": 1928,
-      "display": "a marvelous delicately woven chain of armor, Hyde Park Herald, 1928",
+      "display": "covenants praised in the period press as a chain of armor for the neighborhood",
       "unit": "quote",
       "asOf": "1928",
       "tier": "reported",
-      "historical": true,
       "source": {
         "title": "The Case for Reparations",
         "author": "Ta-Nehisi Coates, The Atlantic",
@@ -2932,7 +2931,7 @@
       "usedBy": [
         "narration"
       ],
-      "notes": "Period quote, rendered verbatim on screen with its 1928 attribution."
+      "notes": "Characterization, not quotation. The widely reproduced armor phrasing and its 1928 Hyde Park Herald attribution could not be verified against an accessible primary or the cited secondary this session; the exhibit displays the paraphrase until the archival clipping is on file."
     },
     {
       "id": "redlining.holc_refi_1m",

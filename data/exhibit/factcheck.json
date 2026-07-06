@@ -531,9 +531,10 @@
           "id": "fc-covenants-07",
           "factId": "covenants.chain_armor_quote",
           "claim": "A 1928 Hyde Park Herald piece praised covenants as a marvelous delicately woven chain of armor.",
-          "verdict": "verified",
+          "verdict": "corrected",
           "note": "Quoted verbatim in Coates 2014, widely reproduced in covenant scholarship.",
-          "source": "Coates, The Case for Reparations, The Atlantic, 2014"
+          "source": "Coates, The Case for Reparations, The Atlantic, 2014",
+          "correction": "Displayed as characterization without quotation marks; verbatim wording and the 1928 Herald dating await the archival clipping."
         }
       ]
     },
@@ -959,9 +960,10 @@
           "id": "fc-cbl-02",
           "factId": "cbl.strike_500",
           "claim": "More than 500 families joined the payment strike.",
-          "verdict": "verified",
+          "verdict": "corrected",
           "note": "Consistent between the Chicago Reporter account and the fact-checked corpus.",
-          "source": "The Chicago Reporter; present deep dive stats (league)"
+          "source": "The Chicago Reporter; present deep dive stats (league)",
+          "correction": "Display softened to about 500, matching the cited source wording."
         },
         {
           "id": "fc-cbl-03",

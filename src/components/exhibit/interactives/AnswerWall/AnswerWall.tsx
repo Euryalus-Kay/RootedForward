@@ -15,6 +15,7 @@
 /*  visitor who reads the wall without writing still closes the tour.  */
 /* ------------------------------------------------------------------ */
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { announce, moveFocus } from "@/lib/exhibit/focus";
 import { useInteractive } from "../InteractiveContext";
 import PaperCard from "../../shared/PaperCard";
 import Stamp from "../../shared/Stamp";
@@ -39,7 +40,7 @@ interface WallAnswer {
 type SubmitState = "idle" | "submitting" | "held" | "migrationPending" | "error";
 
 const INPUT_CLASS =
-  "h-12 w-full rounded-[2px] border border-exh-ink/40 bg-exh-linen px-3 text-base text-exh-ink placeholder:text-exh-ink/35 focus:border-exh-ink focus:outline-none disabled:opacity-50";
+  "h-12 w-full rounded-[2px] border border-exh-ink/40 bg-exh-linen px-3 text-base text-exh-ink placeholder:text-exh-ink-soft focus:border-exh-ink focus:outline-none disabled:opacity-50";
 
 const LABEL_CLASS =
   "exh-plat mb-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft";
@@ -85,6 +86,7 @@ export default function AnswerWall() {
   const [own, setOwn] = useState<{ body: string; displayName: string | null } | null>(null);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [answers, setAnswers] = useState<WallAnswer[] | null>(null);
+  const [wallPending, setWallPending] = useState(false);
 
   const honeypotRef = useRef<HTMLInputElement | null>(null);
   const fetchedRef = useRef(false);
@@ -109,8 +111,10 @@ export default function AnswerWall() {
         );
         const json = (await res.json().catch(() => null)) as {
           answers?: WallAnswer[];
+          migrationPending?: boolean;
         } | null;
         if (cancelled) return;
+        if (json?.migrationPending) setWallPending(true);
         setAnswers(res.ok && Array.isArray(json?.answers) ? json.answers : []);
       } catch {
         if (!cancelled) setAnswers([]);
@@ -169,10 +173,18 @@ export default function AnswerWall() {
       } | null;
       if (res.status === 503 && json?.migrationPending) {
         setSubmitState("migrationPending");
+        announce("The wall is not collecting yet. Your answer was not saved.");
+        requestAnimationFrame(() =>
+          moveFocus(document.querySelector<HTMLElement>('[data-testid="aw-migration-pending"]'))
+        );
         return;
       }
       if (res.ok && json?.held) {
         setSubmitState("held");
+        announce("Your answer is held for review before it joins the wall.");
+        requestAnimationFrame(() =>
+          moveFocus(document.querySelector<HTMLElement>('[data-testid="aw-own"]'))
+        );
         return;
       }
       setOwn(null);
@@ -289,7 +301,13 @@ export default function AnswerWall() {
               </p>
             )}
             <div className="mt-2">
-              <Stamp text="Held for review" tone="ink" size="sm" />
+              {/* the stamp must never overclaim: on the migration-pending path
+                  nothing was collected (C2 sensitivity finding) */}
+              <Stamp
+                text={submitState === "migrationPending" ? "Not yet collected" : "Held for review"}
+                tone="ink"
+                size="sm"
+              />
             </div>
           </PaperCard>
         </div>
@@ -330,12 +348,14 @@ export default function AnswerWall() {
             ))}
         </div>
         {wallLoaded && answers.length === 0 && (
-          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink/50">
-            The first answers are being gathered.
+          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink-soft">
+            {wallPending || submitState === "migrationPending"
+              ? "The wall opens soon."
+              : "The first answers are being gathered."}
           </p>
         )}
         {!wallLoaded && (
-          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink/50">
+          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink-soft">
             Reading the wall
           </p>
         )}

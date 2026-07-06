@@ -150,7 +150,7 @@ export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, fact
           ))}
         </dl>
       ) : null}
-      {fieldLabel ? <p className="exh-mono mt-3 text-[10px] text-exh-ink/60">{fieldLabel}</p> : null}
+      {fieldLabel ? <p className="exh-mono mt-3 text-[10px] text-exh-ink-soft">{fieldLabel}</p> : null}
       <blockquote className="exh-serif mt-1.5 font-display text-base italic leading-relaxed text-exh-ink">
         &ldquo;{quote}&rdquo;
       </blockquote>

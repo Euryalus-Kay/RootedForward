@@ -318,7 +318,7 @@ export const scenarios = [
       t.assert("completes", (await exhibitState(page))?.completedInteractives.includes("read-the-deed"));
       await dispatchClick(page, '[data-testid="deed-signatures"]');
       const chain = await page.$eval('[data-testid="deed-chain-quote"]', (el) => el.textContent || "");
-      t.assert("chain quote verbatim", chain.includes("a marvelous delicately woven chain of armor"));
+      t.assert("chain characterization present", chain.includes("chain of armor laced around the blocks"));
       await dispatchClick(page, '[data-testid="deed-spread-button"]');
       await new Promise((r) => setTimeout(r, 600));
       t.assert(

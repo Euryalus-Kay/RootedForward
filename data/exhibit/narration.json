@@ -125,7 +125,7 @@
         },
         {
           "id": "ch5-b3",
-          "text": "In Hyde Park, the University of Chicago was not a bystander. Between 1933 and 1947 it spent more than eighty-three thousand dollars supporting the neighborhood associations that held the covenant wall around its campus. A Hyde Park paper praised the covenants as a marvelous, delicately woven chain of armor. Within a decade, that armor laced across the city's residential map. Terror needs bombers. Paper only needs signatures.",
+          "text": "In Hyde Park, the University of Chicago was not a bystander. Between 1933 and 1947 it spent more than eighty-three thousand dollars supporting the neighborhood associations that held the covenant wall around its campus. The neighborhood press praised the covenants as a kind of armor for the blocks. Within a decade, that armor laced across the city's residential map. Terror needs bombers. Paper only needs signatures.",
           "factRefs": ["covenants.uchicago_defense_83597", "covenants.chain_armor_quote", "covenants.coverage_claim"],
           "pausePointAfter": "read-the-deed"
         }
@@ -231,7 +231,7 @@
       "blocks": [
         {
           "id": "ch10-b1",
-          "text": "In 1968, in a Lawndale church basement, a Jesuit seminarian named Jack Macnamara and a room full of neighbors compared their paperwork and discovered they were all caught in the same scheme. Ruth Wells was among the first to stand and say out loud exactly what she had paid. They called themselves the Contract Buyers League and demanded renegotiation at fair value. The sellers refused. So more than five hundred families stopped paying and put every check in escrow.",
+          "text": "In 1968, in a Lawndale church basement, a Jesuit seminarian named Jack Macnamara and a room full of neighbors compared their paperwork and discovered they were all caught in the same scheme. Ruth Wells was among the first to stand and say out loud exactly what she had paid. They called themselves the Contract Buyers League and demanded renegotiation at fair value. The sellers refused. So about five hundred families stopped paying and put every check in escrow.",
           "factRefs": ["cbl.founded_1968", "people.ruth_wells", "cbl.strike_500"]
         },
         {

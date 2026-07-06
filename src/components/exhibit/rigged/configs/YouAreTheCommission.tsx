@@ -122,7 +122,7 @@ export default function YouAreTheCommission() {
                 aria-hidden="true"
                 className="mb-1.5 block h-1.5 w-10 rounded-t-sm border border-b-0 border-exh-ink/30 bg-exh-linen-deep"
               />
-              <p className="exh-mono text-[10px] text-exh-ink/60">Dossier {i + 1}</p>
+              <p className="exh-mono text-[10px] text-exh-ink-soft">Dossier {i + 1}</p>
               <h4 className="exh-serif mt-0.5 text-base leading-snug text-exh-ink sm:text-lg">
                 {parcel.title}
               </h4>

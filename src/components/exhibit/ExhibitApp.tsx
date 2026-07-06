@@ -3,7 +3,7 @@
 /*  Client root of the exhibit: provider, gates, HUD, stage, audio.    */
 /*  Composition only; every subsystem lives in its own module.         */
 /* ------------------------------------------------------------------ */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ExhibitProvider, useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { CHAPTER_DEFS, CHAPTER_META } from "@/lib/exhibit/content";
 import { CHAPTER_ORDER } from "@/lib/exhibit/types";
@@ -62,6 +62,16 @@ function ExhibitRoot() {
   useEffect(() => {
     preloadInteractives(interactivesOf(state.chapterIndex + 1));
   }, [state.chapterIndex]);
+
+  // bare #room-<id> links (the URL the room itself pushes) must survive a
+  // cold arrival: honor the hash once, on every path out of the gate
+  const wasInTour = useRef(false);
+  useEffect(() => {
+    if (inTour && !wasInTour.current) {
+      wasInTour.current = true;
+      openRoomFromHash(dispatch);
+    }
+  }, [inTour, dispatch]);
 
   return (
     <div

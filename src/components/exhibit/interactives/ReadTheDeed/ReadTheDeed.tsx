@@ -274,11 +274,15 @@ export default function ReadTheDeed() {
               className={`border-t border-exh-ink/15 px-3 py-3 ${api.reducedMotion ? "" : "exh-ledger-in"}`}
             >
               <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-                from the record
+                as the period press told it
               </p>
-              <blockquote className="exh-serif mt-1.5 text-base leading-snug text-exh-ink sm:text-lg">
-                &ldquo;a marvelous delicately woven chain of armor&rdquo;
-              </blockquote>
+              {/* characterization, not quotation: the famous armor phrasing is
+                  displayed without quote marks until the archival clipping is
+                  on file (C2 fact-lens correction) */}
+              <p className="exh-serif mt-1.5 text-base leading-snug text-exh-ink sm:text-lg">
+                The neighborhood press praised the covenants as a chain of armor laced around the
+                blocks.
+              </p>
               <div className="mt-1.5">
                 <FactValue id="covenants.chain_armor_quote" size="sm" />
               </div>

@@ -127,7 +127,7 @@ async function main() {
     const buf = await tts(block.text);
     await writeFile(raw, buf);
     await run("ffmpeg", ["-y", "-loglevel", "error", "-i", raw,
-      "-af", "loudnorm=I=-18:TP=-2:LRA=11", "-codec:a", "libmp3lame", "-b:a", "160k", out]);
+      "-af", "loudnorm=I=-18:TP=-2:LRA=11", "-codec:a", "libmp3lame", "-b:a", "80k", "-ac", "1", out]);
     await rm(raw, { force: true });
     const dur = await probe(out);
     durations[id] = dur;
