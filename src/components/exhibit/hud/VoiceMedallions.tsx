@@ -9,7 +9,7 @@ import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 
-/** the tour hides nine collectible voices */
+/** nine voices speak along the tour */
 const TOTAL_VOICES = 9;
 
 function PortraitIcon() {
@@ -41,16 +41,16 @@ export function VoiceMedallions() {
           type="button"
           data-testid="voices-chip"
           aria-haspopup="dialog"
-          aria-label={`Voices, ${found.length} of ${TOTAL_VOICES} found`}
+          aria-label={`Voices, ${found.length} of ${TOTAL_VOICES} heard`}
           className="flex min-h-12 items-center gap-1.5 rounded-sm border border-exh-ink/15 bg-exh-linen-deep px-2.5 text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)]"
         >
           <PortraitIcon />
           <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em]">
-            Voices
+            Voices,
           </span>
           <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em]">
             <span className="exh-mono text-xs tracking-normal">{found.length}</span> of{" "}
-            <span className="exh-mono text-xs tracking-normal">{TOTAL_VOICES}</span>
+            <span className="exh-mono text-xs tracking-normal">{TOTAL_VOICES}</span> heard
           </span>
         </button>
       </Dialog.Trigger>
@@ -76,7 +76,7 @@ export function VoiceMedallions() {
         </div>
         <div className="overflow-y-auto p-4">
           <p className="text-xs leading-relaxed text-exh-ink-soft">
-            Collect the nine voices as you tour. Their cards gather here.
+            Nine voices speak along the tour. Their cards gather here.
           </p>
           {found.length > 0 && (
             <ul className="mt-2 divide-y divide-exh-ink/10">

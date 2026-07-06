@@ -83,7 +83,7 @@ export const CHAPTER_META: ChapterMeta[] = [
     id: "ch5",
     index: 6,
     title: "Racism Goes Professional",
-    era: "1921 to 1928",
+    era: "1921 to 1948",
     spineYear: 1924,
     effects: { ledgerEntryIds: ["covenant-armor"], machineChanges: { code: "on", deed: "on" } },
   },

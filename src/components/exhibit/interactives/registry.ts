@@ -88,10 +88,26 @@ export const INTERACTIVE_REGISTRY: Record<InteractiveId, RegistryEntry> = {
     "Drag walls into a six-flat and watch the count climb.",
     () => import("./Kitchenette/Kitchenette")
   ),
-  "planners-table": entry("The Planner's Table", "Work the renewal map the way the commission did."),
-  "two-buyers": entry("Two Buyers, One House", "Slide the years and watch two families pay for the same house."),
-  "hold-the-line": entry("Hold the Line", "Hold your payment in escrow as long as you can."),
-  "gap-at-scale": entry("The Gap, at Scale", "Scroll the full height of the wealth gap."),
+  "planners-table": entry(
+    "The Planner's Table",
+    "Work the renewal map the way the commission did.",
+    () => import("./PlannersTable/PlannersTable")
+  ),
+  "two-buyers": entry(
+    "Two Buyers, One House",
+    "Slide the years and watch two families pay for the same house.",
+    () => import("./TwoBuyers/TwoBuyers")
+  ),
+  "hold-the-line": entry(
+    "Hold the Line",
+    "Hold your payment in escrow as long as you can.",
+    () => import("./HoldTheLine/HoldTheLine")
+  ),
+  "gap-at-scale": entry(
+    "The Gap, at Scale",
+    "Scroll the full height of the wealth gap.",
+    () => import("./GapAtScale/GapAtScale")
+  ),
   "answer-wall": entry("The Wall", "Leave your answer among everyone else's."),
 };
 

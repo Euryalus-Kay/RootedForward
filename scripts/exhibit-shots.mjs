@@ -66,6 +66,8 @@ const STATES = [
   { id: "ch6-lens", route: `${DEBUG}&ch=ch6` },
   { id: "ch7-walls-crack", route: `${DEBUG}&ch=ch7` },
   { id: "ch8-mid-tour-hud", route: `${DEBUG}&ch=ch8` },
+  { id: "ch9-two-buyers", route: `${DEBUG}&ch=ch9` },
+  { id: "ch10-hold-line", route: `${DEBUG}&ch=ch10` },
   { id: "ch11-closing", route: `${DEBUG}&ch=ch11` },
   {
     id: "explore-mode",

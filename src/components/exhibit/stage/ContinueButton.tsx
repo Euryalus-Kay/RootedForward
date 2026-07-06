@@ -5,9 +5,14 @@
 /*  seconds the tour continues by itself, museum-guide style. The      */
 /*  ring and digit update through refs so the countdown never          */
 /*  re-renders React. Announces the auto-continue at T minus five      */
-/*  seconds through the HUD live region.                               */
+/*  seconds through the HUD live region. When the button itself sits   */
+/*  outside the viewport (tall stations), a compact linen chip rides   */
+/*  the HudFrame portal near the top controls, "Continuing in Ns,      */
+/*  tap to stay"; tapping it resets the idle window and brings the     */
+/*  button back into view.                                             */
 /* ------------------------------------------------------------------ */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useExhibitDispatch } from "@/lib/exhibit/ExhibitProvider";
 import { useIdleContinue } from "../audio/useIdleContinue";
 import { subscribeInteraction } from "./InteractiveSlot";
@@ -16,12 +21,25 @@ const IDLE_SECONDS = 20;
 const RING_RADIUS = 15;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 const ANNOUNCE_TEXT = "Continuing in five seconds";
+const CHIP_HOST_ID = "exh-hud-continue-chip";
+
+function motionOff(): boolean {
+  return (
+    document.querySelector('[data-testid="exhibit-root"]')?.getAttribute("data-motion") === "off"
+  );
+}
 
 export default function ContinueButton() {
   const dispatch = useExhibitDispatch();
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const ringRef = useRef<SVGCircleElement | null>(null);
   const digitRef = useRef<HTMLSpanElement | null>(null);
+  const chipDigitRef = useRef<HTMLSpanElement | null>(null);
   const announcedRef = useRef(false);
+
+  /* the off-screen chip shows only while the button is out of view */
+  const [buttonInView, setButtonInView] = useState(true);
+  const [chipHost, setChipHost] = useState<HTMLElement | null>(null);
 
   const idle = useIdleContinue(true, IDLE_SECONDS, () => dispatch({ type: "CONTINUE" }));
 
@@ -29,19 +47,33 @@ export default function ContinueButton() {
   useEffect(() => subscribeInteraction(() => idle.reset()), [idle]);
 
   useEffect(() => {
+    const el = buttonRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    /* the observer's initial callback also resolves the portal host, so
+       everything here stays asynchronous and render-safe */
+    const io = new IntersectionObserver(([e]) => {
+      setButtonInView(e.isIntersecting);
+      setChipHost(document.getElementById(CHIP_HOST_ID));
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = idle.subscribe((remaining) => {
       // under the no-motion rule (ch4, prefers-reduced-motion) the ring steps
       // once per whole second instead of animating continuously
-      const motionOff =
-        document.querySelector('[data-testid="exhibit-root"]')?.getAttribute("data-motion") === "off";
-      const effective = motionOff ? Math.ceil(remaining) : remaining;
+      const effective = motionOff() ? Math.ceil(remaining) : remaining;
       const fraction = Math.max(0, Math.min(1, effective / IDLE_SECONDS));
       if (ringRef.current) {
         ringRef.current.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - fraction));
       }
-      if (digitRef.current) {
-        const whole = String(Math.max(0, Math.ceil(remaining)));
-        if (digitRef.current.textContent !== whole) digitRef.current.textContent = whole;
+      const whole = String(Math.max(0, Math.ceil(remaining)));
+      if (digitRef.current && digitRef.current.textContent !== whole) {
+        digitRef.current.textContent = whole;
+      }
+      if (chipDigitRef.current && chipDigitRef.current.textContent !== whole) {
+        chipDigitRef.current.textContent = whole;
       }
       if (remaining > 5) {
         announcedRef.current = false;
@@ -58,9 +90,18 @@ export default function ContinueButton() {
     };
   }, [idle]);
 
+  const stayHere = () => {
+    idle.reset();
+    buttonRef.current?.scrollIntoView({
+      behavior: motionOff() ? "auto" : "smooth",
+      block: "center",
+    });
+  };
+
   return (
     <div className="mt-6 flex justify-center">
       <button
+        ref={buttonRef}
         type="button"
         data-testid="continue-button"
         onClick={() => dispatch({ type: "CONTINUE" })}
@@ -98,6 +139,27 @@ export default function ContinueButton() {
           </span>
         </span>
       </button>
+
+      {!buttonInView &&
+        chipHost &&
+        createPortal(
+          <button
+            type="button"
+            data-testid="continue-countdown-chip"
+            onClick={stayHere}
+            aria-label="The tour continues soon. Tap to stay."
+            className="flex min-h-12 items-center rounded-sm border border-exh-ink/15 bg-exh-linen px-3 text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)]"
+          >
+            <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em]">
+              Continuing in{" "}
+              <span ref={chipDigitRef} className="exh-mono text-xs tracking-normal">
+                {IDLE_SECONDS}
+              </span>
+              s, tap to stay
+            </span>
+          </button>,
+          chipHost
+        )}
     </div>
   );
 }

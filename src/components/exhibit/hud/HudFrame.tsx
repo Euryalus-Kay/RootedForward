@@ -83,6 +83,16 @@ export function HudFrame() {
         <VoiceMedallions />
       </div>
 
+      {/* portal target for the pause-point countdown chip. ContinueButton
+          mounts a compact "Continuing in Ns, tap to stay" chip here only
+          while its own button sits outside the viewport, so the idle
+          auto-continue is never invisible at tall stations. Centered
+          under the control cluster, clear of the corner HUD systems. */}
+      <div
+        id="exh-hud-continue-chip"
+        className="fixed left-1/2 top-16 z-40 -translate-x-1/2 md:top-20"
+      />
+
       <TimelineSpine />
     </>
   );

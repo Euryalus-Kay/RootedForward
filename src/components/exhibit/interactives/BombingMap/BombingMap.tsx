@@ -634,24 +634,35 @@ export default function BombingMap() {
             </p>
           )}
           <ul className="mt-2 max-h-72 divide-y divide-exh-ink/10 overflow-y-auto border border-exh-ink/20 bg-exh-linen-deep/30">
-            {marks.map((m) => (
+            {marks.map((m, i) => (
               <li key={m.incident.id}>
+                {/* Docket rows are numbered like the record they come from,
+                    so the commission's repeat attacks at one address read
+                    as separate entries, never as an accidental duplicate. */}
                 <button
                   type="button"
                   onClick={() => openIncident(m.incident.id)}
                   aria-pressed={selectedId === m.incident.id}
                   aria-label={rowLabel(m.incident)}
-                  className={`flex min-h-12 w-full items-center gap-3 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
+                  className={`flex min-h-12 w-full items-baseline gap-2.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
                     selectedId === m.incident.id ? "bg-exh-linen-deep" : ""
                   }`}
                 >
-                  <span className="exh-mono w-24 shrink-0 text-[11px] text-exh-ink/75">
-                    {dateShort(m.incident)}
+                  <span className="exh-mono shrink-0 text-[11px] text-exh-ink/45">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="min-w-0 flex-1 truncate text-xs text-exh-ink">
-                    {m.incident.address
-                      ? `${m.incident.target}, ${m.incident.address}`
-                      : m.incident.target}
+                  <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span className="flex w-full items-baseline justify-between gap-3">
+                      <span className="exh-mono min-w-0 flex-1 truncate text-[11px] text-exh-ink">
+                        {m.incident.address ?? "address not in the record"}
+                      </span>
+                      <span className="exh-mono shrink-0 text-[11px] text-exh-ink/75">
+                        {dateShort(m.incident)}
+                      </span>
+                    </span>
+                    <span className="line-clamp-2 w-full text-xs leading-snug text-exh-ink-soft">
+                      {m.incident.target}
+                    </span>
                   </span>
                 </button>
               </li>
@@ -671,14 +682,14 @@ export default function BombingMap() {
                       onClick={() => openIncident(inc.id)}
                       aria-pressed={selectedId === inc.id}
                       aria-label={rowLabel(inc)}
-                      className={`flex min-h-12 w-full items-center gap-3 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
+                      className={`flex min-h-12 w-full flex-col justify-center gap-0.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
                         selectedId === inc.id ? "bg-exh-linen-deep" : ""
                       }`}
                     >
-                      <span className="exh-mono w-24 shrink-0 text-[11px] text-exh-ink/75">
+                      <span className="exh-mono w-full text-[11px] text-exh-ink/75">
                         {dateShort(inc)}
                       </span>
-                      <span className="min-w-0 flex-1 truncate text-xs text-exh-ink">
+                      <span className="line-clamp-2 w-full text-xs leading-snug text-exh-ink-soft">
                         {inc.target}
                       </span>
                     </button>

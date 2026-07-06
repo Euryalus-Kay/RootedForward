@@ -414,6 +414,153 @@ export const scenarios = [
     },
   },
   {
+    id: "ch8-planners-table",
+    milestone: "A3",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch8`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForFunction(() => window.__exhibit?.state().playState === "pause_point", { timeout: 30000 });
+      t.assert("pause is planners-table", (await exhibitState(page))?.pausePoint?.interactiveId === "planners-table");
+      await page.$eval('[data-testid="planners-table"]', (el) => el.scrollIntoView({ block: "center" }));
+      await page.evaluate(() => {
+        const btns = document.querySelectorAll('[data-testid="pt-switch"] button');
+        (btns[1] ?? btns[0])?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+      await new Promise((r) => setTimeout(r, 250));
+      const pos = await page.$eval('[data-testid="pt-switch"]', (el) => el.getAttribute("data-position"));
+      t.assert("switch flips to there", pos === "there", `pos=${pos}`);
+      const setYear = (y) =>
+        page.$eval(
+          '[data-testid="planners-table"] input[type="range"]',
+          (el, val) => {
+            Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set.call(el, String(val));
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+          },
+          y
+        );
+      await setYear(1957);
+      await new Promise((r) => setTimeout(r, 400));
+      const midDots = Number(await page.$eval('[data-testid="pt-dots"]', (el) => el.getAttribute("data-count")));
+      t.assert("dots present mid-slider", midDots > 0, `dots=${midDots}`);
+      await setYear(1962);
+      await new Promise((r) => setTimeout(r, 600));
+      const text = await page.$eval('[data-testid="planners-table"]', (el) => el.textContent || "");
+      t.assert("638 buildings landed", text.includes("638"));
+      t.assert("baldwin voice present", await page.$('[data-testid="voice-medallion-james-baldwin"]'));
+      await dispatchClick(page, '[data-testid="pt-envelope-renter"]');
+      await dispatchClick(page, '[data-testid="pt-envelope-owner"]');
+      await new Promise((r) => setTimeout(r, 250));
+      const envText = await page.$eval('[data-testid="planners-table"]', (el) => el.textContent || "");
+      t.assert("renter envelope documented framing", envText.includes("A relocation program existed for households"));
+      t.assert("owner envelope softened line", envText.includes("started over on their own"));
+      t.assert("completes", (await exhibitState(page))?.completedInteractives.includes("planners-table"));
+    },
+  },
+  {
+    id: "ch9-two-buyers",
+    milestone: "A3",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch9`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForFunction(() => window.__exhibit?.state().playState === "pause_point", { timeout: 45000 });
+      let s = await exhibitState(page);
+      t.assert("pause point is two-buyers", s?.pausePoint?.interactiveId === "two-buyers");
+      await page.$eval('[data-testid="two-buyers"]', (el) => el.scrollIntoView({ block: "center" }));
+      await page.$eval('[data-testid="twobuyers-slider"]', (el) => {
+        Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set.call(el, "60");
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await new Promise((r) => setTimeout(r, 200));
+      t.assert("month 60 on the root", (await page.$eval('[data-testid="two-buyers"]', (e) => e.dataset.month)) === "60");
+      t.assert(
+        "extra at 60 is 35220",
+        (await page.$eval('[data-testid="twobuyers-extra"]', (e) => e.dataset.usd)) === "35220"
+      );
+      t.assert("share at 60 is 25", (await page.$eval('[data-testid="twobuyers-share"]', (e) => e.dataset.pct)) === "25");
+      await dispatchClick(page, '[data-testid="twobuyers-life"]');
+      await new Promise((r) => setTimeout(r, 500));
+      s = await exhibitState(page);
+      t.assert("eviction fired once", s?.firedOnce.filter((k) => k === "twobuyers-eviction").length === 1);
+      t.assert("notice renders", await page.$('[data-testid="twobuyers-evicted"]'));
+      t.assert(
+        "kept figure transferred",
+        (await page.$eval('[data-testid="twobuyers-kept"]', (e) => e.dataset.usd)) === "35220"
+      );
+      t.assert("next family at month zero", (await page.$eval('[data-testid="two-buyers"]', (e) => e.dataset.month)) === "0");
+      await dispatchClick(page, '[data-testid="twobuyers-life"]');
+      await new Promise((r) => setTimeout(r, 300));
+      s = await exhibitState(page);
+      t.assert("second click is a no-op", s?.firedOnce.filter((k) => k === "twobuyers-eviction").length === 1);
+      t.assert("two-buyers completes", s?.completedInteractives.includes("two-buyers"));
+    },
+  },
+  {
+    id: "ch10-hold-the-line",
+    milestone: "A3",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch10`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForFunction(() => window.__exhibit?.state().playState === "pause_point", { timeout: 30000 });
+      t.assert("pause is hold-the-line", (await exhibitState(page))?.pausePoint?.interactiveId === "hold-the-line");
+      await page.$eval('[data-testid="htl-button"]', (el) => el.scrollIntoView({ block: "center" }));
+      // pointer hold long enough to accumulate 12+ months at ~6/sec
+      await page.evaluate(async () => {
+        const el = document.querySelector('[data-testid="htl-button"]');
+        const opts = { bubbles: true, pointerId: 7, isPrimary: true };
+        el.dispatchEvent(new PointerEvent("pointerdown", opts));
+        await new Promise((r) => setTimeout(r, 2400));
+        el.dispatchEvent(new PointerEvent("pointerup", opts));
+      });
+      await new Promise((r) => setTimeout(r, 400));
+      const months = Number(await page.$eval('[data-testid="hold-the-line"]', (el) => el.getAttribute("data-months")));
+      t.assert("months accumulated past 12", months >= 12, `months=${months}`);
+      t.assert("months capped at 14", months <= 14, `months=${months}`);
+      const text = await page.$eval('[data-testid="hold-the-line"]', (el) => el.textContent || "");
+      t.assert("resolution arithmetic present", text.includes("155"));
+      t.assert("ruth wells voice present", await page.$('[data-testid="voice-medallion-ruth-wells"]'));
+      t.assert("completes", (await exhibitState(page))?.completedInteractives.includes("hold-the-line"));
+    },
+  },
+  {
+    id: "gap-at-scale-climb",
+    milestone: "A3",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch11`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForFunction(
+        () => window.__exhibit?.state().pausePoint?.interactiveId === "gap-at-scale",
+        { timeout: 30000 }
+      );
+      t.assert("station renders", await page.$('[data-testid="gap-at-scale"]'));
+      const ratio = await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="gap-bar-white"]').getBoundingClientRect().height /
+          document.querySelector('[data-testid="gap-bar-black"]').getBoundingClientRect().height
+      );
+      t.assert("true ratio near 6.35", Math.abs(ratio - 285010 / 44890) < 0.02, String(ratio));
+      const at = (frac) =>
+        page.evaluate((f) => {
+          const el = document.querySelector('[data-testid="gap-scroll"]');
+          el.scrollTop = (el.scrollHeight - el.clientHeight) * (1 - f);
+          el.dispatchEvent(new Event("scroll"));
+          return new Promise((r) =>
+            setTimeout(
+              () => r(Number(document.querySelector('[data-testid="gap-at-scale"]').getAttribute("data-progress"))),
+              200
+            )
+          );
+        }, frac);
+      t.assert("progress climbs", (await at(0.5)) >= 45);
+      t.assert("no early completion", !(await exhibitState(page)).completedInteractives.includes("gap-at-scale"));
+      t.assert("top reached", (await at(1)) >= 90);
+      t.assert("completion fires", (await exhibitState(page)).completedInteractives.includes("gap-at-scale"));
+    },
+  },
+  {
     id: "explore-ch4-advisory",
     milestone: "A2",
     tags: ["core", "sensitivity"],

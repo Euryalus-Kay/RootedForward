@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "note": "Derivation constants for the Two Buyers simulator. Every figure traces to the fact registry; the simulator is denominated in the Duke study's own units (2019 dollars) and never invents interest rates or period payment schedules. The audit recomputes these invariants.",
+  "twoBuyers": {
+    "basisFactRefs": [
+      "contracts.extra_monthly_587",
+      "contracts.avg_overpayment_71000",
+      "contracts.markup_84pct",
+      "contracts.ross_contract_27500",
+      "contracts.ross_speculator_12000"
+    ],
+    "monthlyExtraUsd2019": 587,
+    "avgTotalOverpaymentUsd2019": 71000,
+    "monthsToAverageOverpayment": 121,
+    "monthsToAverageFormula": "round(71000 / 587)",
+    "markupAvgPct": 84,
+    "rossExample": {
+      "contractPriceUsd": 27500,
+      "speculatorPaidUsd": 12000,
+      "priceRatio": 2.29,
+      "priceRatioFormula": "27500 / 12000, rounded to 2 decimals",
+      "note": "Clyde Ross's documented case ran worse than the study's 84 percent average markup."
+    },
+    "equityRule": "The contract side holds zero equity until the final payment clears; the conventional side accrues a share of the house proportional to months elapsed over the term. The conventional share is rendered as a fraction, never as an invented dollar amount.",
+    "evictionRule": "One LIFE HAPPENS event per session. On the contract side it forfeits everything paid and relists the house; on the conventional side the family sells or refinances and keeps its accrued share."
+  }
+}

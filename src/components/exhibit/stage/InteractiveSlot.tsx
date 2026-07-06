@@ -99,9 +99,23 @@ export default function InteractiveSlot({
         </div>
         {Component ? (
           <div className="p-4 sm:p-6">
+            {/* While the station's dynamic chunk resolves, next/dynamic
+                renders nothing (its default fallback is null), so the
+                body div sits :empty and the sibling card below shows the
+                registry blurb instead of a bare titled frame. The moment
+                the chunk mounts, the card hides again. Pure CSS, so the
+                plinth is never blank even mid-hydration. */}
             <InteractiveContext.Provider value={api}>
-              <Component {...(componentProps ?? {})} />
+              <div className="peer" data-testid={`interactive-body-${id}`}>
+                <Component {...(componentProps ?? {})} />
+              </div>
             </InteractiveContext.Provider>
+            <div className="hidden py-6 text-center peer-empty:block" data-testid="interactive-loading">
+              <p className="font-display text-lg leading-relaxed text-exh-ink">{entry.blurb}</p>
+              <p className="exh-plat mt-4 text-xs uppercase tracking-[0.2em] text-exh-ink-soft">
+                Station warming up
+              </p>
+            </div>
           </div>
         ) : (
           <div className="px-4 py-10 text-center sm:px-6">

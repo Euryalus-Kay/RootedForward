@@ -260,7 +260,7 @@
         {
           "id": "ch11-b3",
           "text": "A hundred and seventy years after Paul Cornell bought these blocks, the question underneath it all is still open. Who is this city built for? Laws turned the machines off. Only people keep them off.",
-          "factRefs": [],
+          "factRefs": ["land.cornell_purchase_1853"],
           "pausePointAfter": "answer-wall"
         }
       ]

@@ -100,6 +100,24 @@
       "title": "Deferred to A3 and A4. off-screen countdown chip in HUD, ch5 era plate span, bombing docket row layout, dynamic-chunk loading blurbs, voices tray collect-verbs copy, audit extension to interactive aggregates, credits ingest sanitizing",
       "decision": "next-phase",
       "status": "open"
+    },
+    {
+      "id": "D-A2-04",
+      "milestone": "A2",
+      "date": "2026-07-04",
+      "source": "owner",
+      "title": "Standing authorization to proceed autonomously through the phases with the quality system as the gate. Milestones self-approve when the verify suite, audits, and review panels are green (P1 and P2 findings always fixed first, P3 deferrals recorded). The owner ask is reserved for the C2 go-live swap that replaces the public film page.",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-A3-01",
+      "milestone": "A3",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "A3 self-approved per standing authorization D-A2-04. 99 of 99 regression checks across 22 scenarios, all audits green, deferred P3 batch cleared. New finding carried to A4. the site navbar overlays the exhibit's top HUD strip at page top on desktop (merges with the immersive-chrome item).",
+      "decision": "approved",
+      "status": "honored"
     }
   ]
 }
