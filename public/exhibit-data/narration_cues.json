@@ -1,0 +1,1277 @@
+{
+  "version": 1,
+  "generated": "2026-07-06T19:23:57+00:00",
+  "blocks": {
+    "ch0-b1": [
+      {
+        "startSec": 0.0,
+        "text": "Pull up a map of Chicago and find a neighborhood where a Black family could",
+        "endSec": 5.4
+      },
+      {
+        "startSec": 5.4,
+        "text": "get a bank loan in 1940.",
+        "endSec": 8.72
+      },
+      {
+        "startSec": 8.72,
+        "text": "Take your time.",
+        "endSec": 10.06
+      },
+      {
+        "startSec": 10.06,
+        "text": "There were none.",
+        "endSec": 11.66
+      },
+      {
+        "startSec": 11.66,
+        "text": "This is the story of how that happened,",
+        "endSec": 13.86
+      },
+      {
+        "startSec": 13.86,
+        "text": "and it begins on one stretch of ground on the South Side.",
+        "endSec": 18.43
+      }
+    ],
+    "ch0_5-b1": [
+      {
+        "startSec": 0.0,
+        "text": "Before the story starts, learn the machinery.",
+        "endSec": 4.08
+      },
+      {
+        "startSec": 4.08,
+        "text": "Five machines built the gap this exhibit measures.",
+        "endSec": 7.54
+      },
+      {
+        "startSec": 7.54,
+        "text": "Machine One, the Map.",
+        "endSec": 9.66
+      },
+      {
+        "startSec": 9.66,
+        "text": "Redlining cut every Black neighborhood in this city off from credit.",
+        "endSec": 14.26
+      },
+      {
+        "startSec": 14.26,
+        "text": "Machine Two, the Bulldozer.",
+        "endSec": 16.76
+      },
+      {
+        "startSec": 16.76,
+        "text": "Urban renewal cleared those neighborhoods in the name of saving them.",
+        "endSec": 21.02
+      },
+      {
+        "startSec": 21.02,
+        "text": "Machine Three, the Contract.",
+        "endSec": 23.74
+      },
+      {
+        "startSec": 23.74,
+        "text": "Sale terms built so a Black family could pay for decades and own nothing.",
+        "endSec": 28.34
+      },
+      {
+        "startSec": 28.34,
+        "text": "Machine Four, the Deed.",
+        "endSec": 31.22
+      },
+      {
+        "startSec": 31.22,
+        "text": "Restrictive covenants made whole square miles white by signature.",
+        "endSec": 36.12
+      },
+      {
+        "startSec": 36.12,
+        "text": "Machine Five, the Code.",
+        "endSec": 38.1
+      },
+      {
+        "startSec": 38.1,
+        "text": "A national realtors' rule made selling to a Black family a professional offense.",
+        "endSec": 43.9
+      },
+      {
+        "startSec": 43.9,
+        "text": "Watch the board.",
+        "endSec": 45.22
+      },
+      {
+        "startSec": 45.22,
+        "text": "You will see each machine switch on.",
+        "endSec": 47.83
+      }
+    ],
+    "ch1-b1": [
+      {
+        "startSec": 0.0,
+        "text": "Hyde Park sits on the South Side of Chicago, seven miles from the Loop,",
+        "endSec": 5.68
+      },
+      {
+        "startSec": 5.68,
+        "text": "hard against Lake Michigan.",
+        "endSec": 8.02
+      },
+      {
+        "startSec": 8.02,
+        "text": "The greystones and Gothic towers look as if they have always been here.",
+        "endSec": 13.98
+      },
+      {
+        "startSec": 13.98,
+        "text": "Two hundred years ago this was prairie and marsh, Potawatomi land,",
+        "endSec": 18.68
+      },
+      {
+        "startSec": 18.68,
+        "text": "part of the Council of Three Fires.",
+        "endSec": 21.58
+      },
+      {
+        "startSec": 21.58,
+        "text": "After the Black Hawk War of 1832,",
+        "endSec": 24.56
+      },
+      {
+        "startSec": 24.56,
+        "text": "the United States pressed the Three Fires nations into the Treaty of Chicago,",
+        "endSec": 29.8
+      },
+      {
+        "startSec": 29.8,
+        "text": "and with one signing in 1833 they gave up some five million acres,",
+        "endSec": 35.48
+      },
+      {
+        "startSec": 35.48,
+        "text": "this lakefront among them.",
+        "endSec": 37.54
+      },
+      {
+        "startSec": 37.54,
+        "text": "Within a few years they were marched west.",
+        "endSec": 40.6
+      },
+      {
+        "startSec": 40.6,
+        "text": "The first taking set the pattern.",
+        "endSec": 43.46
+      },
+      {
+        "startSec": 43.46,
+        "text": "Whoever held the deed, the capital,",
+        "endSec": 45.48
+      },
+      {
+        "startSec": 45.48,
+        "text": "and the plan would decide who belonged on this ground.",
+        "endSec": 48.94
+      }
+    ],
+    "ch1-b2": [
+      {
+        "startSec": 0.0,
+        "text": "In 1853 a young lawyer named Paul Cornell bought three hundred acres of that prairie",
+        "endSec": 5.96
+      },
+      {
+        "startSec": 5.96,
+        "text": "and gave sixty of them to the Illinois Central Railroad in exchange for a station",
+        "endSec": 11.24
+      },
+      {
+        "startSec": 11.24,
+        "text": "and six trains a day downtown.",
+        "endSec": 14.06
+      },
+      {
+        "startSec": 14.06,
+        "text": "The prairie became a wealthy commuter suburb,",
+        "endSec": 16.82
+      },
+      {
+        "startSec": 16.82,
+        "text": "and from the start it was sold as selective.",
+        "endSec": 19.86
+      },
+      {
+        "startSec": 19.86,
+        "text": "By 1889 the township had eighty-five thousand people,",
+        "endSec": 23.92
+      },
+      {
+        "startSec": 23.92,
+        "text": "and that year they voted to join Chicago.",
+        "endSec": 26.69
+      }
+    ],
+    "ch2-b1": [
+      {
+        "startSec": 0.0,
+        "text": "Then came 1893.",
+        "endSec": 3.7
+      },
+      {
+        "startSec": 3.7,
+        "text": "Chicago won the World's Columbian Exposition and built it on the marshland of Jackson Park,",
+        "endSec": 8.66
+      },
+      {
+        "startSec": 8.66,
+        "text": "at Hyde Park's edge.",
+        "endSec": 10.64
+      },
+      {
+        "startSec": 10.64,
+        "text": "Frederick Law Olmsted turned the marsh into lagoons, Daniel Burnham ran the construction,",
+        "endSec": 15.94
+      },
+      {
+        "startSec": 15.94,
+        "text": "and for six months the White City stood in plaster, lit at night by electricity.",
+        "endSec": 21.84
+      },
+      {
+        "startSec": 21.84,
+        "text": "Some twenty-seven million admissions were counted.",
+        "endSec": 25.02
+      },
+      {
+        "startSec": 25.02,
+        "text": "The fair also showed exactly who it was built for.",
+        "endSec": 28.48
+      },
+      {
+        "startSec": 28.48,
+        "text": "Inside it, at the Haiti building,",
+        "endSec": 30.6
+      },
+      {
+        "startSec": 30.6,
+        "text": "Frederick Douglass and Ida B. Wells handed out ten thousand copies of a pamphlet asking",
+        "endSec": 35.46
+      },
+      {
+        "startSec": 35.46,
+        "text": "why the fair had shut Black Americans out.",
+        "endSec": 38.69
+      }
+    ],
+    "ch2-b2": [
+      {
+        "startSec": 0.0,
+        "text": "To house the crowds, Hyde Park built like it never had before.",
+        "endSec": 5.72
+      },
+      {
+        "startSec": 5.72,
+        "text": "Grand residential hotels rose east of the Illinois Central tracks,",
+        "endSec": 10.48
+      },
+      {
+        "startSec": 10.48,
+        "text": "and rows of cottages filled in to the west.",
+        "endSec": 13.96
+      },
+      {
+        "startSec": 13.96,
+        "text": "To move the crowds, the railroad lifted its tracks onto an embankment above the streets,",
+        "endSec": 20.88
+      },
+      {
+        "startSec": 20.88,
+        "text": "a wall of earth that split the neighborhood in two.",
+        "endSec": 25.0
+      },
+      {
+        "startSec": 25.0,
+        "text": "Within a few years a quiet suburb had become a dense neighborhood of apartments, hotels,",
+        "endSec": 31.1
+      },
+      {
+        "startSec": 31.1,
+        "text": "and shops.",
+        "endSec": 33.02
+      },
+      {
+        "startSec": 33.02,
+        "text": "Remember that housing stock.",
+        "endSec": 34.98
+      },
+      {
+        "startSec": 34.98,
+        "text": "In fifty years, it becomes the battleground.",
+        "endSec": 38.18
+      }
+    ],
+    "ch3-b1": [
+      {
+        "startSec": 0.0,
+        "text": "In 1910 about forty-four thousand Black Chicagoans lived in this city,",
+        "endSec": 5.94
+      },
+      {
+        "startSec": 5.94,
+        "text": "about two percent of it.",
+        "endSec": 8.32
+      },
+      {
+        "startSec": 8.32,
+        "text": "Doctors, lawyers, publishers, and entrepreneurs lived and worked across the city, including in Hyde Park.",
+        "endSec": 15.8
+      },
+      {
+        "startSec": 15.8,
+        "text": "Two years earlier, in the autumn of 1908,",
+        "endSec": 19.52
+      },
+      {
+        "startSec": 19.52,
+        "text": "white homeowners had organized the Hyde Park Improvement Protective Club with one stated aim,",
+        "endSec": 25.66
+      },
+      {
+        "startSec": 25.66,
+        "text": "to remove every Black resident and worker from the neighborhood.",
+        "endSec": 29.54
+      }
+    ],
+    "ch3-b2": [
+      {
+        "startSec": 0.0,
+        "text": "They pledged to fire their Black servants,",
+        "endSec": 3.16
+      },
+      {
+        "startSec": 3.16,
+        "text": "to boycott any agent who sold to a Black family,",
+        "endSec": 6.2
+      },
+      {
+        "startSec": 6.2,
+        "text": "and to buy out the Black homeowners who refused to leave.",
+        "endSec": 10.26
+      },
+      {
+        "startSec": 10.26,
+        "text": "The educator Fannie Barrier Williams had lived in Hyde Park for years when her own",
+        "endSec": 15.98
+      },
+      {
+        "startSec": 15.98,
+        "text": "neighbors asked her to go.",
+        "endSec": 17.64
+      },
+      {
+        "startSec": 17.64,
+        "text": "She refused.",
+        "endSec": 19.06
+      },
+      {
+        "startSec": 19.06,
+        "text": "Then came the Great Migration,",
+        "endSec": 20.78
+      },
+      {
+        "startSec": 20.78,
+        "text": "and the narrow strip of the South Side the city allowed Black families,",
+        "endSec": 25.28
+      },
+      {
+        "startSec": 25.28,
+        "text": "the Black Belt, could not hold it.",
+        "endSec": 27.94
+      },
+      {
+        "startSec": 27.94,
+        "text": "On a single day in 1917,",
+        "endSec": 30.72
+      },
+      {
+        "startSec": 30.72,
+        "text": "the Urban League counted six hundred sixty-four families applying for fifty available houses.",
+        "endSec": 37.27
+      }
+    ],
+    "ch3-b3": [
+      {
+        "startSec": 0.0,
+        "text": "In 1917 the Supreme Court struck down racial zoning laws in Buchanan versus Warley.",
+        "endSec": 7.9
+      },
+      {
+        "startSec": 7.9,
+        "text": "Cities could not draw the color line by ordinance anymore.",
+        "endSec": 11.36
+      },
+      {
+        "startSec": 11.36,
+        "text": "So Chicago pioneered a private workaround,",
+        "endSec": 15.9
+      },
+      {
+        "startSec": 15.9,
+        "text": "block by block associations enforcing the line with pressure and paper.",
+        "endSec": 17.1
+      },
+      {
+        "startSec": 17.1,
+        "text": "The model would travel.",
+        "endSec": 19.99
+      }
+    ],
+    "ch4-b1": [
+      {
+        "startSec": 0.0,
+        "text": "When pressure failed, white Chicago turned to bombs.",
+        "endSec": 5.28
+      },
+      {
+        "startSec": 5.28,
+        "text": "Between the summer of 1917 and the spring of 1921,",
+        "endSec": 11.14
+      },
+      {
+        "startSec": 11.14,
+        "text": "fifty-eight bombs hit the homes of Black families and the offices of those who sold",
+        "endSec": 15.8
+      },
+      {
+        "startSec": 15.8,
+        "text": "or rented to them.",
+        "endSec": 17.78
+      },
+      {
+        "startSec": 17.78,
+        "text": "Two people were killed.",
+        "endSec": 19.3
+      },
+      {
+        "startSec": 19.3,
+        "text": "Two men were arrested.",
+        "endSec": 20.96
+      },
+      {
+        "startSec": 20.96,
+        "text": "No one was ever convicted.",
+        "endSec": 23.3
+      },
+      {
+        "startSec": 23.3,
+        "text": "No target drew more attacks than Jesse Binga,",
+        "endSec": 27.18
+      },
+      {
+        "startSec": 27.18,
+        "text": "a banker who had risen from a produce cart to write mortgages for Black families",
+        "endSec": 31.76
+      },
+      {
+        "startSec": 31.76,
+        "text": "when almost no one else would.",
+        "endSec": 34.66
+      },
+      {
+        "startSec": 34.66,
+        "text": "His home and his bank were hit again and again.",
+        "endSec": 35.86
+      },
+      {
+        "startSec": 35.86,
+        "text": "He stayed.",
+        "endSec": 38.38
+      }
+    ],
+    "ch4-b2": [
+      {
+        "startSec": 0.0,
+        "text": "On a hot July day in 1919,",
+        "endSec": 3.88
+      },
+      {
+        "startSec": 3.88,
+        "text": "a Black seventeen-year-old named Eugene Williams drifted across an invisible line in the water off",
+        "endSec": 10.28
+      },
+      {
+        "startSec": 10.28,
+        "text": "the Twenty-Ninth Street beach.",
+        "endSec": 12.6
+      },
+      {
+        "startSec": 12.6,
+        "text": "White bathers threw stones.",
+        "endSec": 14.98
+      },
+      {
+        "startSec": 14.98,
+        "text": "Eugene Williams drowned.",
+        "endSec": 17.06
+      },
+      {
+        "startSec": 17.06,
+        "text": "The police officer at the beach refused to arrest the man witnesses pointed to.",
+        "endSec": 21.94
+      }
+    ],
+    "ch4-b3": [
+      {
+        "startSec": 0.0,
+        "text": "The city exploded.",
+        "endSec": 2.28
+      },
+      {
+        "startSec": 2.28,
+        "text": "When the violence burned out, thirty-eight Chicagoans were dead, twenty-three of them Black,",
+        "endSec": 7.68
+      },
+      {
+        "startSec": 7.68,
+        "text": "and about a thousand Black families were homeless.",
+        "endSec": 10.88
+      },
+      {
+        "startSec": 10.88,
+        "text": "A state commission spent nearly seven hundred pages documenting exactly how the city was dividing itself,",
+        "endSec": 16.78
+      },
+      {
+        "startSec": 16.78,
+        "text": "and warned against forcing the line.",
+        "endSec": 20.16
+      },
+      {
+        "startSec": 20.16,
+        "text": "Chicago's leaders read the report and kept building the line anyway.",
+        "endSec": 24.53
+      }
+    ],
+    "ch5-b1": [
+      {
+        "startSec": 0.0,
+        "text": "Through the 1920s the bombings faded, because they stopped being necessary.",
+        "endSec": 5.78
+      },
+      {
+        "startSec": 5.78,
+        "text": "Discrimination became paperwork.",
+        "endSec": 8.34
+      },
+      {
+        "startSec": 8.34,
+        "text": "In 1921 the Chicago Real Estate Board voted to expel any member who sold to",
+        "endSec": 13.62
+      },
+      {
+        "startSec": 13.62,
+        "text": "a Black family on a white block.",
+        "endSec": 16.14
+      },
+      {
+        "startSec": 16.14,
+        "text": "In 1924 the national association, headquartered in Chicago,",
+        "endSec": 20.84
+      },
+      {
+        "startSec": 20.84,
+        "text": "wrote the same rule into its code of ethics.",
+        "endSec": 23.6
+      },
+      {
+        "startSec": 23.6,
+        "text": "A realtor who crossed the line lost the license that fed his family.",
+        "endSec": 28.44
+      },
+      {
+        "startSec": 28.44,
+        "text": "No market evidence supported the belief that a Black neighbor lowered a block's value.",
+        "endSec": 34.04
+      },
+      {
+        "startSec": 34.04,
+        "text": "Belief was enough, because everyone priced as if it were true.",
+        "endSec": 37.82
+      }
+    ],
+    "ch5-b2": [
+      {
+        "startSec": 0.0,
+        "text": "The permanent weapon was the racially restrictive covenant,",
+        "endSec": 4.06
+      },
+      {
+        "startSec": 4.06,
+        "text": "a clause written into a property's deed barring sale or rental to anyone who was not white.",
+        "endSec": 11.26
+      },
+      {
+        "startSec": 11.26,
+        "text": "After the Supreme Court let covenants stand as private contracts in 1926,",
+        "endSec": 16.8
+      },
+      {
+        "startSec": 16.8,
+        "text": "the national association's counsel, Nathan MacChesney,",
+        "endSec": 20.46
+      },
+      {
+        "startSec": 20.46,
+        "text": "drafted a model covenant and spread it to realtors across the country.",
+        "endSec": 24.56
+      },
+      {
+        "startSec": 24.56,
+        "text": "Neighbors signed in blocs, so a single clause could seal a whole block.",
+        "endSec": 29.38
+      }
+    ],
+    "ch5-b3": [
+      {
+        "startSec": 0.0,
+        "text": "In Hyde Park, the University of Chicago was not a bystander.",
+        "endSec": 5.3
+      },
+      {
+        "startSec": 5.3,
+        "text": "Between 1933 and 1947 it spent more than eighty-three thousand dollars supporting the neighborhood associations",
+        "endSec": 12.54
+      },
+      {
+        "startSec": 12.54,
+        "text": "that held the covenant wall around its campus.",
+        "endSec": 16.22
+      },
+      {
+        "startSec": 16.22,
+        "text": "A Hyde Park paper praised the covenants as a marvelous, delicately woven chain of armor.",
+        "endSec": 22.46
+      },
+      {
+        "startSec": 22.46,
+        "text": "Within a decade, that armor laced across the city's residential map.",
+        "endSec": 27.3
+      },
+      {
+        "startSec": 27.3,
+        "text": "Terror needs bombers.",
+        "endSec": 28.42
+      },
+      {
+        "startSec": 28.42,
+        "text": "Paper only needs signatures.",
+        "endSec": 31.54
+      }
+    ],
+    "ch6-b1": [
+      {
+        "startSec": 0.0,
+        "text": "The men who built that system then wrote it into federal law.",
+        "endSec": 4.78
+      },
+      {
+        "startSec": 4.78,
+        "text": "Homer Hoyt, a University of Chicago trained economist,",
+        "endSec": 8.88
+      },
+      {
+        "startSec": 8.88,
+        "text": "published a ranking of races and nationalities by their supposed effect on land values.",
+        "endSec": 14.86
+      },
+      {
+        "startSec": 14.86,
+        "text": "Washington hired him.",
+        "endSec": 16.48
+      },
+      {
+        "startSec": 16.48,
+        "text": "When the Depression collapsed the housing market,",
+        "endSec": 19.26
+      },
+      {
+        "startSec": 19.26,
+        "text": "new federal agencies refinanced about a million mortgages and created the Federal Housing Administration to insure home loans,",
+        "endSec": 27.76
+      },
+      {
+        "startSec": 27.76,
+        "text": "the machinery that would build the white American middle class.",
+        "endSec": 32.2
+      },
+      {
+        "startSec": 32.2,
+        "text": "Frederick Babcock wrote the FHA's underwriting standards,",
+        "endSec": 35.38
+      },
+      {
+        "startSec": 35.38,
+        "text": "and they taught appraisers to reject neighborhoods with what the manual called incompatible racial groups.",
+        "endSec": 42.34
+      }
+    ],
+    "ch6-b2": [
+      {
+        "startSec": 0.0,
+        "text": "Federal surveyors then graded every city block.",
+        "endSec": 4.54
+      },
+      {
+        "startSec": 4.54,
+        "text": "Neighborhoods where Black families lived were outlined and marked hazardous, then cut off from loans.",
+        "endSec": 11.0
+      },
+      {
+        "startSec": 11.0,
+        "text": "The country came to call it redlining.",
+        "endSec": 14.08
+      },
+      {
+        "startSec": 14.08,
+        "text": "Every Black neighborhood in Chicago was redlined.",
+        "endSec": 17.74
+      },
+      {
+        "startSec": 17.74,
+        "text": "This is the same map you tapped at the start.",
+        "endSec": 20.7
+      },
+      {
+        "startSec": 20.7,
+        "text": "Now you know who drew it.",
+        "endSec": 22.78
+      }
+    ],
+    "ch7-b1": [
+      {
+        "startSec": 0.0,
+        "text": "The walls held for a generation, then cracked in court.",
+        "endSec": 4.96
+      },
+      {
+        "startSec": 4.96,
+        "text": "In 1937 a Black businessman named Carl Hansberry bought a home near Washington Park,",
+        "endSec": 11.86
+      },
+      {
+        "startSec": 11.86,
+        "text": "inside covenanted territory.",
+        "endSec": 14.54
+      },
+      {
+        "startSec": 14.54,
+        "text": "A mob gathered,",
+        "endSec": 16.04
+      },
+      {
+        "startSec": 16.04,
+        "text": "and a chunk of masonry thrown through a window nearly struck his young daughter, Lorraine.",
+        "endSec": 22.36
+      },
+      {
+        "startSec": 22.36,
+        "text": "Hansberry fought the covenant to the Supreme Court and won in 1940,",
+        "endSec": 27.04
+      },
+      {
+        "startSec": 27.04,
+        "text": "on narrow procedural grounds.",
+        "endSec": 30.26
+      },
+      {
+        "startSec": 30.26,
+        "text": "Lorraine Hansberry grew up to put the memory on stage in A Raisin in the Sun.",
+        "endSec": 35.88
+      }
+    ],
+    "ch7-b2": [
+      {
+        "startSec": 0.0,
+        "text": "Eight years later, in Shelley versus Kraemer,",
+        "endSec": 3.42
+      },
+      {
+        "startSec": 3.42,
+        "text": "the Supreme Court ruled that no court in America could enforce a racial covenant.",
+        "endSec": 8.74
+      },
+      {
+        "startSec": 8.74,
+        "text": "The clauses stayed in the deeds.",
+        "endSec": 11.02
+      },
+      {
+        "startSec": 11.02,
+        "text": "The courts just could not enforce them anymore.",
+        "endSec": 14.69
+      }
+    ],
+    "ch7-b3": [
+      {
+        "startSec": 0.0,
+        "text": "The second Great Migration was pressing the Black Belt past its limits,",
+        "endSec": 4.84
+      },
+      {
+        "startSec": 4.84,
+        "text": "and families finally began moving into the blocks around the university.",
+        "endSec": 9.66
+      },
+      {
+        "startSec": 9.66,
+        "text": "Landlords saw a captive market.",
+        "endSec": 12.38
+      },
+      {
+        "startSec": 12.38,
+        "text": "They chopped the fair era hotels and grand flats into tiny kitchenette units,",
+        "endSec": 17.48
+      },
+      {
+        "startSec": 17.48,
+        "text": "took the profits out, and let the buildings run down.",
+        "endSec": 20.96
+      },
+      {
+        "startSec": 20.96,
+        "text": "The buildings from the fair had become the battleground,",
+        "endSec": 23.82
+      },
+      {
+        "startSec": 23.82,
+        "text": "and the neighborhood's most powerful institution began to panic.",
+        "endSec": 28.18
+      }
+    ],
+    "ch8-b1": [
+      {
+        "startSec": 0.0,
+        "text": "The University of Chicago had dropped Big Ten football in 1939 to purify the academic mission,",
+        "endSec": 7.88
+      },
+      {
+        "startSec": 7.88,
+        "text": "and its troubles deepened after the war.",
+        "endSec": 10.98
+      },
+      {
+        "startSec": 10.98,
+        "text": "By 1951, when Lawrence Kimpton became chancellor,",
+        "endSec": 15.22
+      },
+      {
+        "startSec": 15.22,
+        "text": "administrators feared the university could not survive inside a neighborhood they now described as blighted.",
+        "endSec": 22.03
+      }
+    ],
+    "ch8-b2": [
+      {
+        "startSec": 0.0,
+        "text": "Kimpton's answer was to rebuild Hyde Park around a preferred resident.",
+        "endSec": 5.08
+      },
+      {
+        "startSec": 5.08,
+        "text": "In 1952 the university created the South East Chicago Commission,",
+        "endSec": 10.26
+      },
+      {
+        "startSec": 10.26,
+        "text": "run day to day by a lawyer named Julian Levi.",
+        "endSec": 14.44
+      },
+      {
+        "startSec": 14.44,
+        "text": "Federal renewal law supplied the tool.",
+        "endSec": 17.06
+      },
+      {
+        "startSec": 17.06,
+        "text": "Declare land blighted, condemn it, clear it.",
+        "endSec": 20.32
+      },
+      {
+        "startSec": 20.32,
+        "text": "Hyde Park and Kenwood became one of the first full urban renewal plans in the country,",
+        "endSec": 26.4
+      },
+      {
+        "startSec": 26.4,
+        "text": "eight hundred fifty-six acres, and its blueprint traveled to university districts nationwide.",
+        "endSec": 31.13
+      }
+    ],
+    "ch8-b3": [
+      {
+        "startSec": 0.0,
+        "text": "The plan marked six hundred thirty-eight buildings to come down,",
+        "endSec": 4.68
+      },
+      {
+        "startSec": 4.68,
+        "text": "many of them the crowded older apartments where the newest Black arrivals had found rooms.",
+        "endSec": 10.64
+      },
+      {
+        "startSec": 10.64,
+        "text": "The first building fell on May tenth, 1955, before the plan was even approved.",
+        "endSec": 17.26
+      },
+      {
+        "startSec": 17.26,
+        "text": "The City Council made it official in 1958.",
+        "endSec": 21.22
+      },
+      {
+        "startSec": 21.22,
+        "text": "All told, about four thousand families were pushed out,",
+        "endSec": 24.98
+      },
+      {
+        "startSec": 24.98,
+        "text": "and the university spent twenty-nine million dollars of its own money buying and rebuilding the ground.",
+        "endSec": 32.04
+      }
+    ],
+    "ch8-b4": [
+      {
+        "startSec": 0.0,
+        "text": "The people who came back were not a random slice.",
+        "endSec": 3.98
+      },
+      {
+        "startSec": 3.98,
+        "text": "In the first projects,",
+        "endSec": 6.36
+      },
+      {
+        "startSec": 6.36,
+        "text": "forty-six percent of the white families who lost their homes stayed in Hyde Park.",
+        "endSec": 11.52
+      },
+      {
+        "startSec": 11.52,
+        "text": "Among Black families, it was seventeen.",
+        "endSec": 14.66
+      },
+      {
+        "startSec": 14.66,
+        "text": "Across the renewal, the neighborhood's Black population fell by about forty percent.",
+        "endSec": 20.14
+      },
+      {
+        "startSec": 20.14,
+        "text": "James Baldwin gave the practice its name in 1963.",
+        "endSec": 26.34
+      },
+      {
+        "startSec": 26.34,
+        "text": "Urban renewal, he said, means Negro removal.",
+        "endSec": 29.33
+      }
+    ],
+    "ch9-b1": [
+      {
+        "startSec": 0.0,
+        "text": "The displaced landed in neighborhoods like North Lawndale, where a second trap was waiting.",
+        "endSec": 6.56
+      },
+      {
+        "startSec": 6.56,
+        "text": "Redlining meant no bank would lend.",
+        "endSec": 9.44
+      },
+      {
+        "startSec": 9.44,
+        "text": "Dempsey Travis of the NAACP surveyed Cook County's white-run savings and loans,",
+        "endSec": 16.46
+      },
+      {
+        "startSec": 16.46,
+        "text": "two hundred forty-one of them,",
+        "endSec": 17.28
+      },
+      {
+        "startSec": 17.28,
+        "text": "and found exactly one willing to finance a Black buyer crossing the line.",
+        "endSec": 22.68
+      }
+    ],
+    "ch9-b2": [
+      {
+        "startSec": 0.0,
+        "text": "Into that vacuum stepped the speculators.",
+        "endSec": 3.56
+      },
+      {
+        "startSec": 3.56,
+        "text": "A blockbuster would panic a white owner into selling cheap,",
+        "endSec": 7.54
+      },
+      {
+        "startSec": 7.54,
+        "text": "then flip the house within months to a Black family at nearly double the price,",
+        "endSec": 13.1
+      },
+      {
+        "startSec": 13.1,
+        "text": "sold on an installment contract instead of a mortgage.",
+        "endSec": 17.02
+      },
+      {
+        "startSec": 17.02,
+        "text": "The buyer paid the taxes, the insurance, and every repair,",
+        "endSec": 20.92
+      },
+      {
+        "startSec": 20.92,
+        "text": "and owned nothing until the final dollar cleared.",
+        "endSec": 24.8
+      },
+      {
+        "startSec": 24.8,
+        "text": "Miss one payment, even after years of flawless payments,",
+        "endSec": 28.0
+      },
+      {
+        "startSec": 28.0,
+        "text": "and the seller could evict the family, keep every cent they had paid,",
+        "endSec": 32.82
+      },
+      {
+        "startSec": 32.82,
+        "text": "and sell the same house to the next family in line.",
+        "endSec": 36.02
+      }
+    ],
+    "ch9-b3": [
+      {
+        "startSec": 0.0,
+        "text": "Clyde Ross paid twenty-seven thousand five hundred dollars for a house in North Lawndale that",
+        "endSec": 6.58
+      },
+      {
+        "startSec": 6.58,
+        "text": "a speculator had bought months earlier for twelve thousand.",
+        "endSec": 11.86
+      },
+      {
+        "startSec": 11.86,
+        "text": "Researchers later put the average loss per contract-buying family at about seventy-one thousand dollars in today's money,",
+        "endSec": 19.14
+      },
+      {
+        "startSec": 19.14,
+        "text": "and found that in those years as many as eight or nine of every ten",
+        "endSec": 23.48
+      },
+      {
+        "startSec": 23.48,
+        "text": "homes sold to Black families in Chicago were sold on contract.",
+        "endSec": 29.28
+      }
+    ],
+    "ch9-b4": [
+      {
+        "startSec": 0.0,
+        "text": "Parents worked two and three jobs to keep up while the sellers collected.",
+        "endSec": 5.52
+      },
+      {
+        "startSec": 5.52,
+        "text": "All told,",
+        "endSec": 6.5
+      },
+      {
+        "startSec": 6.5,
+        "text": "the contract trade stripped an estimated three to four billion dollars from Black Chicago.",
+        "endSec": 12.78
+      },
+      {
+        "startSec": 12.78,
+        "text": "Money that should have become wealth handed down simply vanished.",
+        "endSec": 16.82
+      }
+    ],
+    "ch10-b1": [
+      {
+        "startSec": 0.0,
+        "text": "In 1968, in a Lawndale church basement,",
+        "endSec": 4.32
+      },
+      {
+        "startSec": 4.32,
+        "text": "a Jesuit seminarian named Jack Macnamara and a room full of neighbors compared their paperwork",
+        "endSec": 10.08
+      },
+      {
+        "startSec": 10.08,
+        "text": "and discovered they were all caught in the same scheme.",
+        "endSec": 14.72
+      },
+      {
+        "startSec": 14.72,
+        "text": "Ruth Wells was among the first to stand and say out loud exactly what she had paid.",
+        "endSec": 20.85
+      },
+      {
+        "startSec": 20.85,
+        "text": "They called themselves the Contract Buyers League and demanded renegotiation at fair value.",
+        "endSec": 27.36
+      },
+      {
+        "startSec": 27.36,
+        "text": "The sellers refused.",
+        "endSec": 30.44
+      },
+      {
+        "startSec": 30.44,
+        "text": "So more than five hundred families stopped paying and put every check in escrow.",
+        "endSec": 36.14
+      }
+    ],
+    "ch10-b2": [
+      {
+        "startSec": 0.0,
+        "text": "When sheriff's deputies carried furniture out into the freezing winter of 1970,",
+        "endSec": 5.88
+      },
+      {
+        "startSec": 5.88,
+        "text": "neighbors waited on the sidewalk,",
+        "endSec": 7.68
+      },
+      {
+        "startSec": 7.68,
+        "text": "and the moment the deputies pulled away they carried it back inside.",
+        "endSec": 12.08
+      },
+      {
+        "startSec": 12.08,
+        "text": "About seventy families lost their homes to the strike.",
+        "endSec": 15.58
+      },
+      {
+        "startSec": 15.58,
+        "text": "But by the summer of 1971, a hundred fifty-five contracts had been renegotiated,",
+        "endSec": 21.78
+      },
+      {
+        "startSec": 21.78,
+        "text": "and the renegotiations saved the average family fourteen thousand dollars.",
+        "endSec": 26.44
+      },
+      {
+        "startSec": 26.44,
+        "text": "On this exhibit's ledger, it is the only entry that runs backward.",
+        "endSec": 31.03
+      }
+    ],
+    "ch11-b1": [
+      {
+        "startSec": 0.5,
+        "text": "Add it up.",
+        "endSec": 1.72
+      },
+      {
+        "startSec": 1.72,
+        "text": "Covenants, redlining, renewal, and contracts stripped billions of dollars from Black Chicago.",
+        "endSec": 9.16
+      },
+      {
+        "startSec": 9.16,
+        "text": "Today the median white family in America holds about two hundred eighty-five thousand dollars in wealth.",
+        "endSec": 15.88
+      },
+      {
+        "startSec": 15.88,
+        "text": "The median Black family holds about forty-five thousand.",
+        "endSec": 19.7
+      },
+      {
+        "startSec": 19.7,
+        "text": "A gap of more than six to one.",
+        "endSec": 22.16
+      },
+      {
+        "startSec": 22.16,
+        "text": "The ledger you have been watching is not a history lesson.",
+        "endSec": 26.5
+      },
+      {
+        "startSec": 26.5,
+        "text": "It is a balance that never cleared.",
+        "endSec": 29.14
+      }
+    ],
+    "ch11-b2": [
+      {
+        "startSec": 0.0,
+        "text": "And the ground is still moving.",
+        "endSec": 3.16
+      },
+      {
+        "startSec": 3.16,
+        "text": "The Obama Presidential Center opened on June nineteenth, 2026, Juneteenth,",
+        "endSec": 9.94
+      },
+      {
+        "startSec": 9.94,
+        "text": "on the same Jackson Park ground that held the 1893 fair.",
+        "endSec": 15.04
+      },
+      {
+        "startSec": 15.04,
+        "text": "While it rose, home prices on the nearest Woodlawn blocks doubled,",
+        "endSec": 19.64
+      },
+      {
+        "startSec": 19.64,
+        "text": "and by 2024 less than a third of the housing nearby was still affordable.",
+        "endSec": 25.3
+      },
+      {
+        "startSec": 25.3,
+        "text": "An institution arrives, the ground around it gains value,",
+        "endSec": 29.38
+      },
+      {
+        "startSec": 29.38,
+        "text": "and the people already there are left to wonder if there is room for them.",
+        "endSec": 33.84
+      }
+    ],
+    "ch11-b3": [
+      {
+        "startSec": 0.0,
+        "text": "A hundred and seventy years after Paul Cornell bought these blocks,",
+        "endSec": 5.0
+      },
+      {
+        "startSec": 5.0,
+        "text": "the question underneath it all is still open.",
+        "endSec": 8.46
+      },
+      {
+        "startSec": 8.46,
+        "text": "Who is this city built for?",
+        "endSec": 11.54
+      },
+      {
+        "startSec": 11.54,
+        "text": "Laws turned the machines off.",
+        "endSec": 13.7
+      },
+      {
+        "startSec": 13.7,
+        "text": "Only people keep them off.",
+        "endSec": 15.67
+      }
+    ]
+  }
+}

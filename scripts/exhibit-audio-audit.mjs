@@ -5,6 +5,9 @@
 //   2. duration sanity: within [words/220wpm, words/110wpm] bounds
 //   3. cue-durations.json matches durations.json exactly
 //   4. no orphan mp3s (files without a narration block)
+//   5. when public/exhibit-data/narration_cues.json exists, every block
+//      with audio has aligned caption cues, cues run forward without
+//      overlap, and the last cue end sits within 1.5s of the duration
 // Writes the owner's spot-check playlist to
 // /tmp/exhibit-audio/playlist.html (5-8 stratified blocks, always ch4).
 // Exit 1 on any error.
@@ -52,6 +55,34 @@ for (const f of readdirSync(VO)) {
   if (!f.endsWith(".mp3")) continue;
   const id = f.replace(/^vo-ex-/, "").replace(/\.mp3$/, "");
   if (!blocks.find((b) => b.id === id)) errors.push(`orphan audio file ${f}`);
+}
+
+// Whisper-aligned caption cues (written by scripts/exhibit-align-cues.py)
+const cuesPath = path.join(ROOT, "public/exhibit-data/narration_cues.json");
+if (existsSync(cuesPath)) {
+  const cueBlocks = JSON.parse(readFileSync(cuesPath, "utf8")).blocks ?? {};
+  for (const b of blocks) {
+    if (!existsSync(path.join(VO, `vo-ex-${b.id}.mp3`))) continue;
+    const cues = cueBlocks[b.id];
+    if (!Array.isArray(cues) || cues.length === 0) {
+      errors.push(`narration_cues missing block ${b.id}; run exhibit-align-cues.py`);
+      continue;
+    }
+    for (let i = 0; i < cues.length; i++) {
+      const c = cues[i];
+      if (!(typeof c.startSec === "number" && typeof c.endSec === "number" && c.endSec > c.startSec)) {
+        errors.push(`narration_cues ${b.id}[${i}] does not run forward (${c.startSec} to ${c.endSec})`);
+      }
+      if (i > 0 && !(c.startSec >= cues[i - 1].endSec)) {
+        errors.push(`narration_cues ${b.id}[${i}] overlaps previous (ends ${cues[i - 1].endSec}, starts ${c.startSec})`);
+      }
+    }
+    const dur = durations[`ex-${b.id}`];
+    const lastEnd = cues[cues.length - 1].endSec;
+    if (!(dur > 0) || Math.abs(lastEnd - dur) > 1.5) {
+      errors.push(`narration_cues ${b.id} last cue ends ${lastEnd}s but audio runs ${dur}s; realign`);
+    }
+  }
 }
 
 // ---- playlist for the owner's ears ----

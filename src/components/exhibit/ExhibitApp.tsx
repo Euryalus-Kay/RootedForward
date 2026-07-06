@@ -33,6 +33,13 @@ function ExhibitRoot() {
   const motionOff = state.reducedMotion || meta?.sensitivity === "no-motion";
   const inTour = state.mode !== null && state.playState !== "gate";
 
+  // the exhibit is an immersive world; the site navbar/footer yield while
+  // a visitor is inside (globals.css body.exhibit-immersive rules)
+  useEffect(() => {
+    document.body.classList.add("exhibit-immersive");
+    return () => document.body.classList.remove("exhibit-immersive");
+  }, []);
+
   // ?ch=ch5 deep links (QC, review digests, owner links): skip the gate
   // straight into the chapter, guided mode, effects fast-forwarded
   useEffect(() => {

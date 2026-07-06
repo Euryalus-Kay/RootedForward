@@ -41,6 +41,11 @@ function changeSentence(machine: MachineDef, lampState: LampState): string {
 export function MachineBoard() {
   const state = useExhibitState();
   const [openId, setOpenId] = useState<MachineId | null>(null);
+  // labels show by default through the overture and first chapter so the
+  // board introduces itself; after that it collapses to discs (A2 panel
+  // discoverability finding, deferred to A4)
+  const [everTouched, setEverTouched] = useState(false);
+  const introExpanded = !everTouched && state.chapterIndex <= 2;
   const prevRef = useRef<Record<MachineId, LampState> | null>(null);
 
   useEffect(() => {
@@ -65,8 +70,9 @@ export function MachineBoard() {
         "md:w-16 md:flex-col md:gap-1.5 md:transition-[width] md:duration-300 md:ease-out",
         "md:hover:w-52 md:focus-within:w-52",
         "[[data-motion=off]_&]:transition-none",
-        openId !== null && "md:w-52"
+        (openId !== null || introExpanded) && "md:w-52"
       )}
+      onPointerDown={() => setEverTouched(true)}
     >
       {MACHINE_ORDER.map((id) => {
         const machine = BY_ID.get(id);

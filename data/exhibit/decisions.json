@@ -118,6 +118,15 @@
       "title": "A3 self-approved per standing authorization D-A2-04. 99 of 99 regression checks across 22 scenarios, all audits green, deferred P3 batch cleared. New finding carried to A4. the site navbar overlays the exhibit's top HUD strip at page top on desktop (merges with the immersive-chrome item).",
       "decision": "approved",
       "status": "honored"
+    },
+    {
+      "id": "D-A4-01",
+      "milestone": "A4",
+      "date": "2026-07-04",
+      "source": "integrator",
+      "title": "Further citywide map cropping declined with rationale. The cold open's claim is citywide (find a neighborhood anywhere), so the frame must keep the whole city visible; the A2 tightening already made the Black Belt corridor legible, and the bombing map solves its own scale with a reprojection window.",
+      "decision": "declined",
+      "status": "honored"
     }
   ]
 }
