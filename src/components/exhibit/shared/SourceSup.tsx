@@ -1,8 +1,8 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  SourceSup, the superscript citation trigger used by FactValue and  */
-/*  free text. Visually a tiny dagger, but the real hit area is        */
-/*  expanded to roughly 34px with an ::after inset trick. Clicking     */
+/*  free text. Visually a tiny dagger, but the real hit area is a      */
+/*  centered 44px square drawn with an ::after box. Clicking           */
 /*  opens a small fixed-position paper popover (measured from the      */
 /*  trigger rect so it survives overflow containers like the ledger    */
 /*  scroll) with the citation line, the provenance tier chip, and a    */
@@ -116,8 +116,9 @@ export function SourceSup({ factId, source, index, className }: SourceSupProps) 
         onClick={toggle}
         className={cn(
           "relative inline-flex items-center justify-center align-super text-[9px] leading-none text-exh-blue",
-          // visually small, physically tappable (roughly 34px square)
-          "after:absolute after:-inset-3 after:content-['']"
+          // visually small, physically tappable: a centered 44px hit box
+          // independent of the dagger's own rendered size
+          "after:absolute after:left-1/2 after:top-1/2 after:h-11 after:w-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']"
         )}
       >
         <span className="exh-mono" aria-hidden="true">

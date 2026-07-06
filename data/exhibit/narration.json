@@ -11,7 +11,7 @@
       "blocks": [
         {
           "id": "ch0-b1",
-          "text": "Pull up a map of Chicago and find a neighborhood where a Black family could get a bank loan in 1940. Take your time. There were none. This is the story of how that happened, and it begins on one stretch of ground on the South Side.",
+          "text": "Pull up a map of Chicago and find a neighborhood where a Black family could get a bank loan in 1940. Take your time. You will not find one. This is the story of how that happened, and it begins on one stretch of ground on the South Side.",
           "factRefs": ["redlining.holc_survey_chicago"],
           "pausePointAfter": "declined-map"
         }
@@ -142,7 +142,7 @@
         },
         {
           "id": "ch6-b2",
-          "text": "Federal surveyors then graded every city block. Neighborhoods where Black families lived were outlined and marked hazardous, then cut off from loans. The country came to call it redlining. Every Black neighborhood in Chicago was redlined. This is the same map you tapped at the start. Now you know who drew it.",
+          "text": "Federal surveyors then graded every city block. Neighborhoods where Black families lived were outlined and marked hazardous, then cut off from loans. The country came to call it redlining. On the Chicago map, the Black Belt was washed in red. This is the same map you tapped at the start. Now you know who drew it.",
           "factRefs": ["redlining.holc_survey_chicago"],
           "pausePointAfter": "holc-lens"
         }

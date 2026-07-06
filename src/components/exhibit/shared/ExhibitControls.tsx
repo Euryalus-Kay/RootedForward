@@ -1,8 +1,11 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  The small fixed control cluster: mute, captions, transcript, and   */
-/*  in guided mode pause or resume. Sits on the top edge just right    */
-/*  of center so the HUD corners stay free. Hidden at the mode gate.   */
+/*  in guided mode pause or resume. Right-anchored on every viewport:  */
+/*  on narrow screens it docks into the reserved right slot of the     */
+/*  HudFrame strip's first row (matching top offsets), on md+ it sits  */
+/*  in the top-right corner clear of the centered chapter column.      */
+/*  Hidden at the mode gate.                                           */
 /* ------------------------------------------------------------------ */
 import { Captions, CaptionsOff, FileText, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
@@ -23,7 +26,7 @@ export default function ExhibitControls() {
   return (
     <div
       data-testid="exhibit-controls"
-      className="fixed left-1/2 top-3 z-40 flex translate-x-6 items-center divide-x divide-exh-ink/20 border border-exh-ink/30 bg-exh-linen/95 shadow-sm sm:translate-x-12"
+      className="fixed right-1.5 top-[calc(env(safe-area-inset-top,0px)+0.375rem)] z-40 flex items-center divide-x divide-exh-ink/20 border border-exh-ink/30 bg-exh-linen shadow-sm md:right-3 md:top-3"
     >
       {showPause && (
         <button

@@ -4,20 +4,27 @@
 /*  the shared aria-live region every system announces through.        */
 /*                                                                     */
 /*  Composition (all fixed, HUD layer z-40, sheets and popovers z-50): */
-/*    desktop md+   Machine Status Board pinned top-left column,       */
-/*                  Ledger pinned top-right (w-72, internal scroll),   */
-/*                  voices chip above the ledger, Timeline Spine as    */
-/*                  the bottom rail (h-16).                            */
-/*    mobile        Machine board as a 5-lamp row on the left of a     */
-/*                  strip at top-12 (under an assumed 48px exhibit     */
-/*                  header), Ledger collapsed to a tap-total chip on   */
-/*                  the right of the same strip, voices chip in the    */
-/*                  top controls row, spine compact (h-11).            */
+/*    desktop md+   transport cluster docked top-right (see            */
+/*                  ExhibitControls), voices chip under it, Ledger     */
+/*                  under the chip (w-72, internal scroll), Machine    */
+/*                  Status Board a labeled left column below the       */
+/*                  breadcrumb line, Timeline Spine the bottom rail    */
+/*                  (h-16).                                            */
+/*    narrow        one full-width plated strip across the top on the  */
+/*                  deep linen (same surface as the spine): row one    */
+/*                  holds the voices chip and a reserved right slot    */
+/*                  the fixed transport cluster docks over; row two    */
+/*                  holds the 5-lamp machine row and the ledger chip.  */
+/*                  The pause-point countdown chip portals directly    */
+/*                  below the strip. The strip wrapper dissolves on    */
+/*                  md+ (display: contents) so each system keeps one   */
+/*                  React instance and its testid stays unique.        */
 /*                                                                     */
-/*  Nothing here may cover the CaptionBar strip (the 72px band above   */
-/*  the spine); the ledger's max height already reserves that zone,    */
-/*  and every wrapper is sized to its content so stage scroll stays    */
-/*  free.                                                              */
+/*  The strip is STRIP_PX tall (7.25rem) plus the top safe-area        */
+/*  inset; ChapterStage reserves matching scroll margins so guided     */
+/*  scroll choreography never lands prose under it. Nothing here may   */
+/*  cover the CaptionBar band above the spine; the ledger's max        */
+/*  height reserves that zone.                                         */
 /* ------------------------------------------------------------------ */
 import { Ledger, LedgerChip } from "./Ledger";
 import { MachineBoard } from "./MachineBoard";
@@ -62,35 +69,50 @@ export function HudFrame() {
       {/* the one live region every HUD system writes to */}
       <div id="exh-live" aria-live="polite" className="sr-only" />
 
-      {/* machine status board: column on md+, lamp row on mobile */}
-      <div className="fixed left-2 top-12 z-40 md:left-3 md:top-24">
-        <MachineBoard />
+      {/* the plated top strip (narrow viewports); dissolves on md+ so each
+          chip keeps a single instance and takes its fixed corner instead */}
+      <div
+        data-testid="hud-strip"
+        className="exh-paper fixed inset-x-0 top-0 z-40 border-b border-exh-ink/15 pt-[env(safe-area-inset-top)] md:contents"
+        style={{ backgroundColor: "var(--color-exh-linen-deep)" }}
+      >
+        <div className="flex flex-col gap-1.5 p-1.5 md:contents">
+          {/* strip row one: voices chip in its own slot; the fixed transport
+              cluster (ExhibitControls) docks over the reserved right slot */}
+          <div className="flex h-12 items-center justify-between gap-1.5 md:contents">
+            <div className="min-w-0 md:fixed md:right-3 md:top-[4.25rem] md:z-40">
+              <VoiceMedallions />
+            </div>
+            <div aria-hidden="true" className="h-12 w-[12.5rem] shrink-0 md:hidden" />
+          </div>
+          {/* strip row two: machine lamp row left, ledger chip right */}
+          <div className="flex h-12 items-center justify-between gap-1.5 md:contents">
+            <div className="md:fixed md:left-3 md:top-28 md:z-40">
+              <MachineBoard />
+            </div>
+            <div className="shrink-0 md:hidden">
+              <LedgerChip />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* the ledger, top-right on md+ (stays mounted on mobile so its
-          announcements keep firing; only the panel is hidden) */}
-      <div className="fixed right-3 top-24 z-40 hidden md:block">
+      {/* the ledger, top-right under the voices chip on md+ (stays mounted
+          on mobile so its announcements keep firing; only the panel is
+          hidden) */}
+      <div className="fixed right-3 top-32 z-40 hidden md:block">
         <Ledger />
-      </div>
-
-      {/* mobile ledger chip, right end of the top strip */}
-      <div className="fixed right-2 top-12 z-40 md:hidden">
-        <LedgerChip />
-      </div>
-
-      {/* voices chip, near the top controls */}
-      <div className="fixed right-2 top-1.5 z-40 md:right-3 md:top-6">
-        <VoiceMedallions />
       </div>
 
       {/* portal target for the pause-point countdown chip. ContinueButton
           mounts a compact "Continuing in Ns, tap to stay" chip here only
           while its own button sits outside the viewport, so the idle
-          auto-continue is never invisible at tall stations. Centered
-          under the control cluster, clear of the corner HUD systems. */}
+          auto-continue is never invisible at tall stations. Directly below
+          the strip on narrow viewports, centered and clear of the corner
+          HUD systems on md+. */}
       <div
         id="exh-hud-continue-chip"
-        className="fixed left-1/2 top-16 z-40 -translate-x-1/2 md:top-20"
+        className="fixed left-1/2 top-[calc(env(safe-area-inset-top,0px)+7.5rem)] z-40 -translate-x-1/2 md:top-20"
       />
 
       <TimelineSpine />

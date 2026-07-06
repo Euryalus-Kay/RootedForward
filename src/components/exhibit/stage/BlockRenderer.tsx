@@ -54,10 +54,13 @@ function composeCreditLine(credit: CreditRecord): string | null {
   const half = Math.floor(artist.length / 2);
   if (half > 3 && artist.slice(0, half) === artist.slice(half)) artist = artist.slice(0, half);
   artist = artist.replace(/\s+/g, " ").trim();
+  // Commons' "Unknown author" reads as a name; use the house wording
+  if (/^unknown author$/i.test(artist)) artist = "Photographer unknown";
 
   let date = (credit.date ?? "").trim();
   date = date.replace(/date QS:.*$/i, "").trim();
-  const iso = date.match(/^(\d{4})-\d{2}-\d{2}/);
+  // any ISO-like prefix (1923-11-05 or 1923-11) prints the year only
+  const iso = date.match(/^(\d{4})(?:-\d{2}){1,2}\b/);
   if (iso) {
     date = iso[1];
   } else {

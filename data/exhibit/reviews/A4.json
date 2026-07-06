@@ -1,0 +1,508 @@
+{
+  "milestone": "A4",
+  "date": "2026-07-04",
+  "panel": "full-9 (phase A close)",
+  "lenses": [
+    {
+      "lens": "museum curator",
+      "pass": true,
+      "overall": "The complete arc now works as an exhibit rather than a film with stops. The cold open earns its second-person hook (file an application, get the DECLINED stamp), the overture teaches the five-machine grammar, and from ch1 forward every chapter posts a ledger entry so the argument literally accumulates in the rail (1 entry at ch2, 10 by ch11, plus a closing 2026 total of \"$3.2 to $4 billion stripped\"). Pause points land on narrative peaks, not arbitrary beats: the bombing docket after Binga, the invisible line after Eugene Williams, two-buyers after the extraction math, hold-the-line after the escrow strike (verified loaded: \"one held second stands for six months\" is a genuinely museum-grade mechanic), the gap climb after the totals. The ch10 credit beat reads correctly: the 1970 CBL entry is the lone green-edged entry in a red column, matching the narration's \"only entry that runs backward.\" The ch11 close is the strongest stretch: gap-at-scale, then the machine board's four lamps dimmed to residue while the bulldozer stays lit, resolving at tour end into the labeled closing board where \"The Bulldozer is renamed TIF,\" which is an honest, unsentimental final move. Figure placement is consistent (portrait under the relevant paragraph, dated caption plates: Fannie Barrier Williams, Binga, Hansberry) and era plates ground each chapter. Remaining issues are label-level, not structural; none block the milestone. (Note: mid-content HUD/timeline strips in several full-page screenshots are stitching artifacts of fixed chrome; live viewport captures show correct placement.)",
+      "findings": [
+        {
+          "title": "ch4 era plate contradicts the chapter's own bombing docket",
+          "severity": "medium",
+          "where": "src/lib/exhibit/content/index.ts:76 (CHAPTER_META ch4, era: \"1917 to 1919\"); visible in /tmp/exhibit-shots/ch4-witness--desktop.png",
+          "recommendation": "The chapter plate reads \"1917 TO 1919\" while the narration and the on-screen docket header in the same chapter say \"58 bombings, July 1917 to March 1921.\" In a no-motion memorial chapter, a visitor can see the contradiction in one glance, which is a label-credibility problem museums do not tolerate. Change the era to \"1917 to 1921\" (the 1919 riot still sits inside it and spineYear 1919 can stay).",
+          "effort": "small"
+        },
+        {
+          "title": "Final pause point is framed as a mid-tour stop, not the exhibit's close",
+          "severity": "medium",
+          "where": "ch11 answer-wall pause chrome (InteractiveSlot in-production card + continue button), captured in scratchpad/answer-wall-2.png",
+          "recommendation": "After the exhibit's final question (\"Who is this city built for?\"), the visitor sees \"THIS STATION IS BEING BUILT. THE TOUR CONTINUES.\" and a 20-second auto-advancing \"CONTINUE THE TOUR\" countdown. This is not about the deferred answer wall itself; it is the framing copy. (a) \"THE TOUR CONTINUES\" and \"CONTINUE THE TOUR\" are both false at the last station, since the next action ends the tour, and (b) an auto-countdown rushes the one beat built for reflection. At the final pause point, swap the button label to something terminal (e.g. \"CLOSE THE LEDGER\") and drop or greatly lengthen the countdown; change the in-production card's second line at this station to something that does not promise continuation.",
+          "effort": "small"
+        },
+        {
+          "title": "Guided tour never surfaces a single voice; HUD promises 9 and delivers 0 at the close",
+          "severity": "low",
+          "where": "Voices chip (VOICES, 0 OF 9 HEARD) identical across all 19 capture states, gate through ch11",
+          "recommendation": "If a visitor rides the guided tour end to end without detouring, the voices counter still reads 0 of 9 at the closing board, which reads as an unkept promise in the exhibit's own chrome. Consider having the guided path hand the visitor one voice automatically at a natural moment (Fannie Barrier Williams in ch3 or Ruth Wells in ch10 are already narrated figures), or keep the chip quiet/unnumbered until the first voice is found. Verify first whether any guided beat is intended to auto-collect and is failing to fire.",
+          "effort": "medium"
+        },
+        {
+          "title": "ch10 era plate stops at 1970 but the chapter's payoff is dated summer 1971",
+          "severity": "low",
+          "where": "src/lib/exhibit/content/index.ts (CHAPTER_META ch10, era: \"1968 to 1970\"); narration ch10-b2 and the ledger entry both say \"by the summer of 1971\" / \"renegotiated by July 1971\"",
+          "recommendation": "Extend the plate to \"1968 to 1971\" so the chapter's own renegotiation payoff falls inside its stated span, matching the fix pattern for ch4. Also check the ledger entry's year stamp (1970) against its \"by July 1971\" body line and pick one.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "title": "Fixed control cluster collides with the Voices chip and clips off-screen on mobile",
+          "severity": "medium",
+          "where": "src/components/exhibit/shared/ExhibitControls.tsx (fixed left-1/2 translate-x-6 cluster); interacts with hud/VoiceMedallions chip and stage prose",
+          "recommendation": "Measured live at 375px: the cluster spans x212-358 while the Voices chip spans x187-367 at the same top edge, so the two overlap; with narration playing the fourth (pause) button pushes the row to ~x404, clipping the transcript button past the right edge (visible in ch6/ch9 mobile screenshots). On desktop the cluster also sits over chapter titles and prose when a block scrolls to top (ch8 screenshot). Reserve a top chrome band or stack the cluster below the Voices chip on narrow viewports, and right-anchor rather than center-offset it. This is the same open immersive-chrome item deferred at D-A1-02/D-A3-01, confirmed still unresolved at the phase-A close.",
+          "effort": "medium"
+        },
+        {
+          "title": "Tour end is a hard stop with no closing affordance",
+          "severity": "medium",
+          "where": "src/components/exhibit/stage/ChapterStage.tsx / ExhibitApp ended state (after ch11's answer-wall pause point)",
+          "recommendation": "Driven live to playState=ended: the continue button disappears, narration stops, and the page simply ends under The Wall placeholder with no card offering replay, switch to explore, or jump-back chips (verified hasReplay=false, no trailing buttons except source sups). A visitor at a kiosk is stranded; their only affordances are the spine dots and browser back. Add a small end-of-tour plate at ended state: restart the tour, explore the stations self-paced, and a pointer to the ledger/voices they collected. Machine Rooms and visitor input are later phases and are not what this asks for; this is only a closing affordance for the existing tour.",
+          "effort": "small"
+        },
+        {
+          "title": "Explore's Play-this-chapter permanently flips the visitor into guided mode with no way back",
+          "severity": "low",
+          "where": "Explore chapter header controls (ExhibitApp) + ExhibitControls.tsx (no mode switch)",
+          "recommendation": "Verified live: in explore mode, clicking Play this chapter sets mode=guided; the narration then runs on past the chapter into the full guided flow with pause points and the 20s idle auto-continue, and the controls cluster offers pause but no return to self-paced reading (the gate copy promises 'start the narration from any chapter later', which reads as scoped playback). Either stop narration at the chapter boundary and return to explore, or add a small 'back to self-paced' control while narration is playing.",
+          "effort": "medium"
+        },
+        {
+          "title": "DOM-nesting hydration warning fires when the Gap at Scale station mounts",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/GapAtScale/GapAtScale.tsx (mile-marker <p> around line 234 containing SourceSup, per the React component stack)",
+          "recommendation": "Reproduced on every guided pass into ch11: console error 'In HTML, <div> cannot be a descendant of <p>. This will cause a hydration error', component stack pointing into the GapAtScale subtree. It is the only console error in an otherwise clean full-tour run. Swap the offending <p> wrapper(s) for <div> (or move the SourceSup popover/FactValue block out of the <p>) so the closing flagship chapter does not risk a hydration flicker in production.",
+          "effort": "small"
+        },
+        {
+          "title": "HOLC map attribution overlays the tappable map area on mobile",
+          "severity": "low",
+          "where": "DeclinedMap station, mobile layout (ch0-pause-declined--mobile.png)",
+          "recommendation": "On the 380px viewport the five-line Mapping Inequality credit renders across the lower half of the already-small citywide map, obscuring the neighborhoods the prompt asks visitors to tap. This is not the declined map-crop item (D-A4-01, frame untouched); it is only the credit placement. Move the credit below the map frame or collapse it behind a small 'credits' toggle on narrow viewports.",
+          "effort": "small"
+        }
+      ],
+      "lens": "interaction design",
+      "pass": true,
+      "overall": "Drove the full guided tour live under the debug contract (headless puppeteer, audio stub) from the mode gate through playState=ended, hitting all 15 pause-point stations plus the inline layer-slider, and spot-checked explore mode, jumps, and resume. The core interaction grammar holds up very well: every pause point rendered its station and a Continue button; no dead end anywhere (the unbuilt answer-wall honestly auto-completes and continues); the idle auto-continue, the off-screen countdown chip, and its tap-to-stay reset all work as specified; spine nodes correctly ask before jumping (Jump/Stay chip), jumps mid-interactive cleanly clear the pause point and fast-forward ledger effects; the content advisory guards guided play, spine jumps, and explore entry alike, and Skip lands at the next era; the resume chip restores chapter, block, and completed stations after reload; explore mode gives every chapter Previous/Play/Next affordances. Zero console errors across the run except one reproducible DOM-nesting hydration warning at Gap at Scale. The five findings are chrome-collision polish (the already-open immersive-chrome item, confirmed still unresolved on mobile where the controls clip and cover the Voices chip), a missing end-of-tour affordance, a one-way explore-to-guided mode flip, the hydration warning, and a mobile credit-overlay nit. None blocks the milestone."
+    },
+    {
+      "findings": [
+        {
+          "title": "Mobile top HUD is a four-layer collision on every chapter",
+          "severity": "high",
+          "where": "All 19 mobile states; reproduced live at 390x844 (transport cluster x219-413 vs voices pill x202-382 at y6-62; ledger chip x268-382 overlaps lamps row x8-274 at y48-98). Components under src/components/exhibit/hud (HudFrame, VoiceMedallions, MachineBoard) plus ExhibitControls.",
+          "recommendation": "Compose a single mobile HUD strip instead of independently positioned chips. The transport cluster overlaps and half-hides the VOICES pill (its text reads through the translucent buttons), its rightmost button is clipped 23px past the viewport edge, the LEDGER chip overlaps the fifth machine lamp, and the lamps row sits on top of body prose with see-through card backgrounds. Give the top strip one opaque linen plate spanning the viewport, stack voices/ledger/controls on a grid inside it, and reserve layout height so prose starts below it. This is the immersive-chrome work already scoped in A4, so it should land before phase A closes.",
+          "effort": "medium"
+        },
+        {
+          "title": "Caption chip is translucent and floats over prose, producing text-on-text",
+          "severity": "medium",
+          "where": "Mobile ch1, ch2, ch5, ch7, ch9 (e.g. ch2: 'Wells handed out ten thousand copies...' chip with the same sentence showing through behind it); desktop ch6 where the chip clips the last prose line 'incompatible racial groups'.",
+          "recommendation": "Make the caption plate fully opaque (same treatment as the plated callout from land panel pass 6) and dock it to a reserved band above the timeline spine rather than letting it overlap the text column. When it overlays a figure, subtitle style is fine; over prose the ghosting reads as a rendering bug.",
+          "effort": "small"
+        },
+        {
+          "title": "Wealth-gap column labels collide on mobile",
+          "severity": "medium",
+          "where": "ch11 closing, mobile: the two axis labels render as 'THE MEDIAN BLACKTHE MEDIAN WHITE / FAMILY FAMILY' with no separation.",
+          "recommendation": "In the Gap At Scale interactive, give each column label its own centered block under its column (max-width tied to column width, or stack labels under the bars) so the tracked uppercase strings cannot run together at narrow widths. Desktop renders correctly.",
+          "effort": "small"
+        },
+        {
+          "title": "Machine board has two inconsistent visual states and covers the TOURS crumb",
+          "severity": "low",
+          "where": "Desktop ch0, ch1, and explore mode show five large empty placeholder cards (~206px wide) that overlap the 'TOURS' breadcrumb; ch2 onward shows the compact 62px lamp squares.",
+          "recommendation": "Unify the board to one treatment. If the wide cards are the pre-label skeleton, this is the A4 'visible board labels' item coming due: render the compact lamps with their machine labels from ch0 onward (unlit until earned) and keep the rail clear of the breadcrumb line.",
+          "effort": "medium"
+        },
+        {
+          "title": "Next.js dev badge obscures the 1832 timeline label in every capture",
+          "severity": "low",
+          "where": "All screenshots, bottom-left: the dark 'N' dev-tools button sits on the timeline spine start and its 1832 label.",
+          "recommendation": "Not a product defect (absent in production), but it blinds the panel to the spine's left bookend. Set devIndicators to false in next.config or hide the badge in the shot harness so review captures show the full timeline.",
+          "effort": "small"
+        }
+      ],
+      "lens": "visual design",
+      "pass": false,
+      "overall": "The linen world is in strong shape on desktop: palette discipline is genuinely tight (red only on DECLINED stamps, the commission square, the timeline debit band, and ledger debit rules, with the neutral 1893 boom entry correctly unruled; no stray greens), typography rhythm between tracked plat labels, mono figures, and serif prose is consistent, figures are well framed with dated small-cap credit lines, and site chrome is verified gone on the local build (the navbar/Log In in the crops is the production A1 build awaiting the C2 swap). The apparent desktop HUD-over-content collisions in the shots are full-page-capture artifacts; I reproduced the layouts live and they are clean. The blocker is mobile: on a real 390x844 viewport the top HUD is an uncomposed pile (transport cluster clipped off the right edge and overlapping the voices pill, ledger chip on top of the lamps row, translucent chips over prose), and the caption chip ghosts over body text. Since A4's remit is immersive chrome and this affects every mobile state, phase A should not close until the mobile HUD strip is composed as one plate; the remaining findings are small."
+    },
+    {
+      "lens": "fact and provenance",
+      "pass": true,
+      "overall": "Both audits are green: exhibit-audit-facts PASSED (stage=full, 133 facts, 57 warnings, all of them unused-fact notices, no failures) and exhibit-audio-audit PASSED (33 blocks, 16.6 min). Every number visible in the 19 screenshot states traces to a facts.json entry at the right tier, and the ledger correctly wears REPORTED chips plus dagger citations on reported-tier rows (1908 club, 1927 covenant coverage). Live-driving the dev build confirmed the TwoBuyers math renders exactly from models.json with no literals: $7,044 at month 12, $35,220 at month 60, $71,027 at the 121-month cap (121 = round(71000/587)), shares 5/25/50.4 percent on the declared 240-month rendering convention, eviction freezing kept-by-seller at the fired value and relisting at month zero, and the Ross card showing 2.29x vs the 84 percent average. Verbatim-vs-paraphrase discipline is enforced in one place (VoiceCard.tsx): only Baldwin is verbatim-documented and gets quotation marks; the live-opened Clyde Ross card correctly rendered the \"in summary\" chip with no quote marks; the other seven paraphrase cards carry the same structure in voices.json. Eight source spot-checks all verified as real and matching: the AAPB Baldwin-Clark record cpb-aacip-15-0v89g5gf5r (broadcast June 24, 1963, matching the card), Gutenberg #57343 The Negro in Chicago (672 pages, 58 bombings aggregates carry line-level locators in bombings.json), the CEGU \"Constructing a Compatible Community\" article (46.1%/16.6% relocation, $29M, SECC), the Chicago Reporter CBL article (155 renegotiated by July 1971, ~70 evicted, $14,000 average, ~500 strikers, matching the D-0B-01 adjudication), the Fed FEDS Notes SCF 2022 ($285,000 / $44,900), the Duke Plunder of Black Wealth study (84% markup, $71,000, $3.2-4B), the Treaty of Chicago citation (7 Stat. 431), and the four Supreme Court citations (245 U.S. 60, 271 U.S. 323, 311 U.S. 32, 334 U.S. 1), all correct. No fabricated fact, source, or quote found anywhere; no decided/deferred item re-raised. The findings below are discipline tightenings, none a milestone blocker.",
+      "findings": [
+        {
+          "title": "On-screen universal claim exceeds its own corrected fact: 'Every Black neighborhood in Chicago was redlined'",
+          "severity": "medium",
+          "where": "src/components/exhibit/interactives/DeclinedMap/DeclinedMap.tsx lines 23-24 (CAPTION shown in ch0 and ch6) and narration ch6-b2 ('Every Black neighborhood in Chicago was redlined'), both citing redlining.holc_survey_chicago",
+          "recommendation": "factcheck.json fc-redlining-04 is verdict 'corrected' and its correction note says the spec's every-Black-neighborhood claim was explicitly SOFTENED to the corpus wording ('the Black Belt was washed in red, with Black presence graded as hazard'), yet the caption and the ch6 narration reassert the universal the factchecker declined to certify. Either (a) register a new fact at documented tier that actually supports the universal, sourced to a Mapping Inequality area-description analysis of the Chicago map, and point the caption/narration factRefs at it, or (b) soften the two lines to the corrected wording (caption is a text-only fix; the narration line requires a TTS regen, same path as the D-A2-01 ch2 fix). The claim is probably historically defensible, which is exactly why option (a) is worth the hour.",
+          "effort": "small"
+        },
+        {
+          "title": "'Every tap you just made was a real family's application' asserts a literal correspondence no dataset backs",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/DeclinedMap/DeclinedMap.tsx line 24 (CAPTION, second sentence), shown after the ch0/ch6 Declined beat",
+          "recommendation": "The taps are simulated; there is no loan-application dataset behind them, so 'was a real family's application' is rhetorical license in an exhibit that otherwise never lets a simulated gesture claim documentary status (compare TwoBuyers' 'Modeled on the documented averages' framing). Reword to 'stood in for a real family's application' or 'Behind every neighborhood you tapped were real families' applications', keeping the punch without the false literalism.",
+          "effort": "small"
+        },
+        {
+          "title": "Cold-open 'There were none' is a stronger claim than either fact it rests on",
+          "severity": "low",
+          "where": "data/exhibit/narration.json ch0-b1 and the on-screen ch0 intro text ('find a neighborhood where a Black family could get a bank loan in 1940. Take your time. There were none.'), factRef redlining.holc_survey_chicago",
+          "recommendation": "The registered fact (post-correction) is Black-Belt-scoped, and the registry's own redlining.black_loans_under_2pct says under 2 percent, not zero, of federally insured loans went to Black Americans. The neighborhood-level zero is defensible (white areas closed by covenant and refusal, Black areas redlined) but it is the exhibit's opening testable claim and currently outruns its citation. Fix travels with the finding above: register a neighborhood-level fact that supports it, or shade the line ('You will not find one'). Low priority if finding 1's option (a) lands, since the same new fact would cover this line.",
+          "effort": "small"
+        },
+        {
+          "title": "Two different 32s sit adjacent on the ch4 bombing map and invite conflation",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/BombingMap/BombingMap.tsx line 633 ('The docket, 32 records plotted') directly under the caption '32 of the 58 recorded bombings fell inside this square' (bombings.square_32)",
+          "recommendation": "The caption's 32 is the commission's inside-the-square count; the docket's 32 is the geocodable subset of the 40 individually extractable appendix records (32 with geo + 8 without address), and the plotted set demonstrably includes points outside the square (3365 Indiana Ave north of 41st; the Ellis, Maryland, and Berkeley addresses east of Cottage Grove). Each number is separately true and sourced, but the visual adjacency plus numeric equality reads as the same population. Reword the docket header to break the identity, e.g. 'The docket, 32 of the 40 appendix records carry a plottable address', and consider a one-line note that the plotted records are the extractable subset of the 58.",
+          "effort": "small"
+        },
+        {
+          "title": "Two of the nine registered voices are never placed, so 'Voices, N of 9 heard' cannot complete",
+          "severity": "low",
+          "where": "data/exhibit/voices.json entries dempsey-travis (chapter ch9) and martin-luther-king (chapter ch11) have no VoiceCard placement anywhere in src/ (grep confirms); src/components/exhibit/hud/VoiceMedallions.tsx hardcodes TOTAL_VOICES = 9",
+          "recommendation": "Both missing voices are pinned by voices.json to chapters that are already built (ch9 and ch11), not to the later-phase Machine Rooms, so within phase A the collectible maximum is 7 of 9 and the HUD chip advertises a total the visitor cannot reach. Place the Travis medallion in ch9 (his 241-and-1 survey is already the narration's ch9-b1 spine) and the King medallion in ch11, or derive the HUD total from the placed count until they land. When placing MLK, note his card is the only one with factRef: null; add registry facts for the 1966 West Side move and the open-housing marches so the card gets its dagger like every other voice.",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "lens": "sensitivity",
+      "pass": true,
+      "overall": "All binding sensitivity rules verified live and in source. ch4 advisory fires in BOTH guided and explore (including explore jumps and the chapter-done path), names the content plainly with a skip-to-ch5 option, and data-motion=\"off\" holds across ch4 in both modes via the chapter's sensitivity flag. BombingMap and InvisibleLine are witnessed, not played: silent ink marks in record order, no pulses/sound/success states, verbatim excerpts under \"from the 1922 record\" labels, un-geocoded incidents preserved in a drawer, and the reveal handle is removed permanently after the line sets in (persists across re-entry and reload within the session). TwoBuyers eviction fired once, disabled and relabeled \"one event per visit\", survived re-entry and reload; the notice is a quiet stamped paper, never a toy. HoldTheLine has no failure vocabulary anywhere; early release yields \"Hold again if you like\" and holds accumulate to the documented resolution with Ruth Wells. PlannersTable's displacement-dot honesty note (\"counts, not addresses\", \"1 dot, 1 family\" / honest mobile relabel \"1 dot, 4 families\") rendered visibly whenever dots were on stage. Period racist language appears only as labeled record (HolcLens chip \"period document; contains the era's racist language\"; Baldwin's \"Negro removal\" as an attributed verbatim quote; the raw HOLC form fields in grade_your_block.json are not consumed by any shipped component). Naming is dignified throughout: full names with years, paraphrases behind \"in summary\" chips with quote marks reserved for verbatim, enforced in one place (VoiceCard). 33/33 meaningful live assertions passed across ch4/ch8/ch9/ch10 in both modes (three initial failures were a selector race in my own probe, re-verified green). One low-severity wording suggestion below; no milestone blockers.",
+      "findings": [
+        {
+          "title": "HoldTheLine prompt \"as long as you can\" reads as an endurance challenge",
+          "severity": "low",
+          "where": "src/components/exhibit/interactives/registry.ts:103 (\"Hold your payment in escrow as long as you can.\"), shown as the station prompt in /tmp/exhibit-shots/ch10-hold-line--desktop.png",
+          "recommendation": "The component itself has no failure state (verified live: early release yields an invitational message and holds are cumulative), but the one-line prompt frames a real rent strike as a personal stamina test, the only can-you-do-it phrasing left in the five machines. Reword to something choice-based, e.g. \"Hold your payment in escrow. The strike holds as long as you do.\" (the in-component header already uses exactly this register), keeping the prompt consistent with the no-failure design.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "lens": "accessibility",
+      "pass": true,
+      "overall": "Strong accessibility floor for a piece this interactive, verified by driving the local build with keyboard only. All four spot-checked stations are genuinely keyboard-operable with well-written labels: the ch6 survey lens moves on arrow keys (verified dx=20 per two presses) and reads the grade into a polite live region; ch7 kitchenette flats are role=button with the label \"Flat N, holds 1 family. Press Enter to drive a wall through it\" and Enter splits (families 6 to 7, announced); ch10 Hold the Line supports press-and-hold Space (9 payments accrued in 1.6s), a documented H no-hold toggle (verified), and a 128px target; gap-at-scale is a labeled focusable region that starts at the base and climbs on ArrowUp/PageUp/Home-End (verified). The transcript is a real dialog (focus moves to Close, trap works, Escape closes, focus restores to the prior element), the ch4 advisory is an alertdialog with a hard focus trap, and the shared #exh-live polite region announces ledger and machine events (observed \"5 entries posted to the ledger\"). Reduced-motion emulation flips data-motion to off, removes stamp and lamp animations, and the tour still reaches its pause points with the DECLINED stamp rendering, so parity holds. Contrast is comfortable: ink-soft on linen is 7.64:1, the exh-blue focus ring is 4.49:1 on linen (measured live as 2px solid rgb(74,107,138)), and gold is never used as text on linen, only as fills bounded by ink strokes. HOLC grades carry the required triple encoding (tint, distinct pattern per grade, letter label) plus a spoken readout in the lens. The 48px control cluster and the mobile chapter chip (40px visual but ~48px effective via its ::after hit-area extension) meet the target-size bar at 390px. The two findings below are real keyboard-journey costs, not blockers, since the 20-second idle auto-continue and the Enter-operable map keep every path completable.",
+      "findings": [
+        {
+          "title": "ch0 Declined map floods the keyboard tab order with roughly 676 individually tabbable HOLC area paths",
+          "severity": "medium",
+          "where": "src/components/exhibit/map/layers/HolcLayer.tsx (tappable path props, ~lines 117-124), rendered by DeclinedMap in ch0; observed at http://localhost:3000/tours/chicago/hyde-park-exhibit?debug=1",
+          "recommendation": "Every HOLC area path gets role=button and tabIndex=0, so at the ch0 pause a keyboard user must Tab through hundreds of 1-8px paths (Area A10... Area D99) before reaching the Continue button, which sits after the map in DOM order. The interaction itself works (Enter on a path stamps DECLINED, labels announce area and grade) and the 20s auto-continue prevents a hard block, but the journey is punishing and the per-path focus cue is only a stroke-opacity change. Convert the map to a single tab stop with roving focus (arrow keys move between areas, Enter files the application), or as a smaller patch add a visually-hidden skip link immediately before the map ('Skip the map and continue') and demote all but a handful of representative paths to tabIndex=-1. This respects D-A4-01: no crop change needed, only focus-order mechanics.",
+          "effort": "medium"
+        },
+        {
+          "title": "Focus drops to body at every state transition and pause points are never announced when they begin",
+          "severity": "medium",
+          "where": "src/components/exhibit/ModeGate.tsx (gate unmount), src/components/exhibit/stage/ContinueButton.tsx (button unmounts on CONTINUE), src/components/exhibit/stage/ChapterStage.tsx (scrollIntoView only, no focus move)",
+          "recommendation": "Verified live: after choosing Guided at the gate, document.activeElement is body; after activating Continue the button unmounts and focus drops to body again, so a keyboard or screen-reader user restarts sequential navigation from the top of the document each chapter (through the map flood in ch0). Nothing announces that the tour has paused for an interactive; the only utterance is 'Continuing in five seconds' 15 seconds into the idle window. Give each chapter root or heading tabIndex={-1} and focus it on chapter change (ChapterStage already scrolls there), and call exhAnnounce with something like 'Paused. [Interactive name] is open. Continue when you are ready' when playState enters pause_point. Both hooks already exist (exhAnnounce in HudFrame, the scroll effect in ChapterStage), so this is wiring, not architecture.",
+          "effort": "small"
+        },
+        {
+          "title": "Breadcrumb links miss the minimum target size at 390px",
+          "severity": "low",
+          "where": "src/components/exhibit/ExhibitShell.tsx breadcrumb nav ('Tours' 45x14px, 'Chicago' 61x14px, measured at 390x844)",
+          "recommendation": "The two breadcrumb links above the exhibit are 14px tall, under the 24px WCAG 2.5.8 minimum and far from the exhibit's own 48px standard, and they are the first tab stops on the page. Add vertical padding (e.g. inline-flex min-h-6 py-1.5, or py-3 to reach 44px) without changing the visual text size.",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "title": "Figure credit renders raw machine date \"1923-11\" on the Jesse Binga label",
+          "severity": "medium",
+          "where": "src/components/exhibit/stage/BlockRenderer.tsx lines 58-65 (composeCreditLine); visible in /tmp/exhibit-shots/ch4-witness--desktop.png caption \"UNKNOWN AUTHOR, 1923-11, PUBLIC DOMAIN\" (source data: public/media/hyde-park/credits.json jesse-binga date \"1923-11\")",
+          "recommendation": "The date trimmer only handles full YYYY-MM-DD ISO strings or long free-text dates (length > 12), so a bare YYYY-MM like \"1923-11\" falls through both branches and prints verbatim on a museum label. Broaden the match to strip any month/day suffix, e.g. replace the two branches with a single `const m = date.match(/^(\\d{4})(?:-\\d{2}){1,2}\\b/); if (m) date = m[1]; else { ...existing yr fallback... }` so the label reads \"1923\".",
+          "effort": "small"
+        },
+        {
+          "title": "Inconsistent unknown-photographer phrasing across adjacent portrait credits",
+          "severity": "low",
+          "where": "Screenshots ch3 (\"PHOTOGRAPHER UNKNOWN, 1880\") vs ch4/ch7 (\"UNKNOWN AUTHOR, 1940\" / \"UNKNOWN AUTHOR, 1937\"); raw artist fields in public/media/hyde-park/credits.json, cleaned in composeCreditLine",
+          "recommendation": "The sanitizer already dedupes the Commons \"Unknown authorUnknown author\" artifact; add one more normalization there mapping /^unknown author$/i (and similar) to the house form \"Photographer unknown\" so every archival still uses the same label style.",
+          "effort": "small"
+        },
+        {
+          "title": "Mode-gate eyebrow \"SELF PACED\" is missing its hyphen",
+          "severity": "low",
+          "where": "src/components/exhibit/ModeGate.tsx line 143; visible in gate--desktop.png and gate--mobile.png",
+          "recommendation": "Use the standard compound \"Self-paced\" (renders SELF-PACED in the tracked eyebrow), matching how the compound modifier would read anywhere else on the site.",
+          "effort": "small"
+        },
+        {
+          "title": "Ledger entry \"a six month fair\" is missing the compound hyphen",
+          "severity": "low",
+          "where": "data/exhibit/ledger.json entry fair-stock, label \"Housing stock built for a six month fair\"; visible in the ledger rail in ch3 onward and _ledger-crop.png",
+          "recommendation": "Change to \"Housing stock built for a six-month fair\". Compound-modifier hyphenation; the paired detail line \"the fair-era building boom\" already hyphenates correctly, so the label reads inconsistent next to it.",
+          "effort": "small"
+        },
+        {
+          "title": "Gap-at-scale instruction \"SCROLL UP THE WHITE COLUMN\" reads ambiguously",
+          "severity": "low",
+          "where": "ch11 The Gap, At Scale interactive header, visible in ch11-closing--desktop.png (\"SCROLL UP THE WHITE COLUMN, OR FOCUS IT AND USE THE ARROW KEYS\")",
+          "recommendation": "\"Scroll up\" parses as a page-scroll direction rather than the action of raising the column. Consider \"Scroll to raise the white column, or focus it and use the arrow keys\" so the verb states what the visitor's input does.",
+          "effort": "small"
+        }
+      ],
+      "lens": "copy and style",
+      "pass": true,
+      "overall": "Copy is in strong shape for the phase-A close. A full string-walk of every user-visible field in data/exhibit/*.json (narration, voices, cases, ledger, machines, timeline, gear train, models, grade-your-block, facts display strings) found zero em-dashes, zero sentence-internal colons, and nothing that trips the AI-tell scan; museum register is consistent, headings are colon-free, interactive microcopy is terse and does real work (TAP ANY NEIGHBORHOOD. FILE THE APPLICATION. / OPEN EACH FOLDER. STAMP THE OUTCOME. / NOT YET STAMPED), and numbers render in mono where the ledger, counters, and timeline show them. The dated Shelley caption and reframed credit lines from D-A2-02 are honored, and the mobile era chip correctly preserves lowercase \\\"1950s to 1968\\\". The surviving findings are small: the credit-line sanitizer lets a raw YYYY-MM date (\\\"1923-11\\\") through onto the Jesse Binga label (the one medium item, a one-line regex fix), unknown-photographer phrasing varies between adjacent portraits, the gate eyebrow \\\"SELF PACED\\\" wants its hyphen, one ledger label misses a compound hyphen, and the ch11 gap instruction's \\\"scroll up\\\" verb is ambiguous. Nothing rises to a milestone blocker."
+    },
+    {
+      "lens": "performance",
+      "pass": true,
+      "overall": "Production performance is in excellent shape and well within milestone quality. Cold load (cache disabled, desktop) transfers 455 KB total in 31 requests with TTFB 207 ms, FCP 1088 ms, LCP ~1428 ms, load 1447 ms, and network idle at 3.4 s. The payload discipline holds everywhere measured: zero /exhibit-data JSON and zero mp3s load before Begin; after Begin exactly two mp3s load (the playing block, 361 KB, plus the designed preload of the next block, 935 KB), and the 33-file VO library is never bulk-fetched. holc-frames.json (394 KB raw) transfers 107.5 KB compressed and only after Begin; holc-descriptions.json (531 KB raw) transfers 74.9 KB and only when ch6 mounts; bombings.json (11 KB) and departures.json (22.2 KB) likewise load at their chapters. Chunk splitting works as designed: 415.7 KB of JS on landing, then a 2.5-7.9 KB per-interactive chunk at each chapter, warmed by the chapter-boundary prefetch. Main-thread health was measured on production with real motion (no debug flag, via ?ch= deep links): the ch8 departure-dots canvas at its full 4000-dot field during a full year-slider sweep ran at ~68 fps with a 27 ms worst frame and zero long tasks; the ch11 gap scroll (2336 px scroll region) ran at ~75 fps, 43 ms worst frame, zero long tasks; narration/map playback showed zero long tasks; the only long task observed anywhere was a single 72 ms task in the first 12 s after Begin. The one genuine weakness is chapter figure images, which ship as unoptimized originals (jesse-binga.jpg alone is 3.35 MB, roughly 7x the entire app shell); they are lazy-loaded and per-chapter so they never block the exhibit, which keeps this below blocker level, but it is the dominant bytes-on-wire cost of a full walkthrough (~6.5 MB of JPEGs across ch2-ch7 versus ~1.2 MB for everything else except audio).",
+      "findings": [
+        {
+          "title": "Chapter figure JPEGs ship as unoptimized originals; jesse-binga.jpg is 3.35 MB",
+          "severity": "medium",
+          "where": "public/media/hyde-park/img/ served via plain <img> in src/components/exhibit/stage/BlockRenderer.tsx line 104. Measured per-chapter transfer on production: ch4 jesse-binga.jpg 3353 KB (1311x1894 px), ch6 homer-hoyt.jpg 1232 KB (1920x1516), ch3 fannie-barrier-williams.jpg 816 KB (1920x2280), ch7 dd-redlining-11.jpg 409 KB, ch2 midway-1893-crowd.jpg 339 KB",
+          "recommendation": "Recompress the archival stills to their display budget. BlockRenderer renders them at roughly 700-900 px column width, so 1400 px wide at JPEG quality ~72 (or WebP/AVIF) lands each at 150-300 KB, an ~85 percent cut with no visible loss on scanned archival material. jesse-binga.jpg is saved near-lossless and alone costs more than 7x the entire 455 KB app shell; on a 4G connection it is several seconds of loading for one portrait. Either run a one-time batch (sips/ImageMagick/squoosh) over public/media/hyde-park/img and keep the plain <img>, or switch BlockRenderer to next/image with sizes set so Vercel serves AVIF at the rendered width. Keep loading=\"lazy\" as is. This is the single highest-leverage byte reduction left in the exhibit; everything else already loads per chapter and compressed.",
+          "effort": "small"
+        },
+        {
+          "title": "Begin press triggers a 1.44 MB burst dominated by a 935 KB VO file",
+          "severity": "low",
+          "where": "First 12 s after the mode-guided Begin click on production: vo-ex-ch0-b1.mp3 361 KB + vo-ex-ch0_5-b1.mp3 935 KB (preload-next by design in src/components/exhibit/audio/NarrationController.tsx) + holc-frames.json 107.5 KB + hp-frame-layers.json 26.7 KB + narration_cues.json 8.9 KB",
+          "recommendation": "The A/B preload-next design is correct and should stay; the cheap win is audio encoding. The scratch TTS mp3s are ~128 kbps; spoken-voice VO is transparent at 64-80 kbps mono, which would halve the audio bytes of the whole tour (33 files) and shrink the post-Begin burst below 800 KB so the ch0 map data never contends with the overture download on slow connections. Fold the re-encode into the existing TTS pipeline settings now, and keep the same target bitrate when the owner records the real VO (per decisions.json D-SCOPE-03 the voice itself is not in question, only the encoding).",
+          "effort": "small"
+        }
+      ]
+    },
+    {
+      "lens": "mobile",
+      "pass": false,
+      "overall": "Interactives are excellent at thumb scale (lens handle 150px and draggable, kitchenette wall chips 48px with working drag, TwoBuyers slider 282x56, hold button 128x128) and there is zero page-level horizontal overflow in every chapter driven at 390x844. But the top HUD does not actually have a mobile layout: the fixed control cluster is positioned for desktop (left-1/2 + translate-x-6), overflows the 390px viewport to x=413 while narration plays (transcript button half off-screen), and fully covers the voices chip so the voices tray is effectively unreachable on mobile. The board row, ledger chip, and countdown chip also collide with each other and with scrolling prose because the strip has no backdrop or reserved space. This is the immersive-chrome item D-A1-02 deferred to this A4 gate, so it is due now and blocks phase-A close on mobile.",
+      "findings": [
+        {
+          "title": "Top control cluster overflows the mobile viewport and buries the voices chip",
+          "severity": "high",
+          "where": "src/components/exhibit/shared/ExhibitControls.tsx:26 (fixed left-1/2 top-3 translate-x-6) vs voices chip slot in src/components/exhibit/hud/HudFrame.tsx:82; measured at 390x844 in ch5/ch8/ch9 while playing",
+          "recommendation": "Measured: cluster spans x 219-413 on a 390px viewport, so the transcript button (left 364, w 48) is ~50% clipped and the pause/volume/captions/transcript row sits directly on the voices chip (202-382, top 6-54), leaving a ~17px tappable sliver; the voices tray is effectively unreachable on mobile through the whole tour. Give the cluster a real mobile layout: right-anchor it (right-2 top-2) with a max-width that fits 390px, and move the voices chip to its own slot (e.g. left end of the same row or into the top strip) so both are fully visible and tappable. This is the immersive-chrome work D-A1-02 deferred to this gate.",
+          "effort": "medium"
+        },
+        {
+          "title": "Mobile top strip elements collide: countdown chip over board row, ledger chip over lamps, prose scrolls through the gaps",
+          "severity": "medium",
+          "where": "src/components/exhibit/hud/HudFrame.tsx:66,77,93 (board top-12, ledger chip right-2 top-12, continue-chip portal top-16); evidence in ch0/ch4/ch11 mobile shots and measured rects",
+          "recommendation": "Measured: continue chip portal at top-16 (y 64) lands on the board row (y 48-98) and in shots covers lamps, the page title, and the ch4 'THE BOMBING MAP' panel header; ledger chip grows left to x 268 once it shows a year while the board row ends at x 274 (6px overlap); the board row has no backdrop so article text scrolls visibly between and behind the lamp cards (ch3/ch8/ch9 shots), making both illegible. Wrap board row + ledger chip in one full-width linen-backed strip with flex spacing, add matching top padding to the stage content, and portal the countdown chip below that strip (top-28 or under the strip's bottom edge).",
+          "effort": "medium"
+        },
+        {
+          "title": "ch11 Gap at Scale column labels overlap into one string at 390px",
+          "severity": "medium",
+          "where": "src/components/exhibit/interactives/GapAtScale (footer labels); ch11-closing--mobile.png shows 'THE MEDIAN BLACKTHE MEDIAN WHITE'",
+          "recommendation": "The two column captions 'THE MEDIAN BLACK FAMILY' and 'THE MEDIAN WHITE FAMILY' render on top of each other at mobile width. Constrain each label to its column's width with text wrapping (or stack the labels under narrower columns) so the closing flagship reads cleanly on phones.",
+          "effort": "small"
+        },
+        {
+          "title": "Citation source-sup buttons are 5x9px, untappable on touch",
+          "severity": "medium",
+          "where": "source-sup testid buttons, measured in ch11 (also present in ch4 docket header); rendered from the exhibit citation superscripts",
+          "recommendation": "The dagger superscript source buttons measure 5-9px. Give them a 44px minimum hit area without changing the visual size (padding plus negative margin, or an ::after pseudo-element hit box) so visitors can actually open sources on phones.",
+          "effort": "small"
+        },
+        {
+          "title": "No safe-area inset handling on the bottom spine and caption bar",
+          "severity": "low",
+          "where": "src/components/exhibit/hud/TimelineSpine.tsx (fixed bottom rail, h-44 at 390px) and CaptionBar; no env(safe-area-inset-*) or viewport-fit anywhere in src",
+          "recommendation": "The spine sits flush at the viewport bottom (y 800-844) with the era chip (40px tall) as its main tap target. On notched iPhones the home indicator overlaps this zone. Add padding-bottom: env(safe-area-inset-bottom) to the spine wrapper (and keep the caption bar offset above it) so the era chip and spine nodes stay clear of the indicator.",
+          "effort": "small"
+        }
+      ]
+    }
+  ],
+  "chair": {
+    "verdict": "Phase A does not close yet. Seven of nine lenses pass and the exhibit's argument, interaction grammar, sensitivity discipline, provenance chain, and performance are all at milestone quality, but two blockers remain. First, the mobile top HUD has no composed layout (the transport cluster clips off a 390px viewport and buries the Voices chip, chips collide with the lamps row and with prose), which is the D-A1-02 immersive-chrome debt that was explicitly deferred to this gate and is now due. Second, the DeclinedMap caption and the ch0/ch6 narration assert a universal redlining claim that the exhibit's own factcheck registry corrected and declined to certify, a breach of the real-data contract even though the claim is likely defensible. Both fixes are bounded (one composition pass, one caption edit plus either a new registered fact or a single TTS regen). Fix the two P1s and the fast P2 batch, re-capture mobile states, and phase A closes.",
+    "pass": false,
+    "p1Count": 2,
+    "punchList": [
+      {
+        "p": 1,
+        "title": "Compose the mobile HUD as one plated strip",
+        "lens": "mobile + visual design + interaction design",
+        "where": "src/components/exhibit/shared/ExhibitControls.tsx:26, src/components/exhibit/hud/HudFrame.tsx:66-93, VoiceMedallions, MachineBoard; measured at 390x844",
+        "fix": "Replace the independently positioned chips with a single full-width linen-backed top strip on narrow viewports: right-anchor the transport cluster with a max-width that fits 390px (no left-1/2 translate), give the Voices chip its own slot in the strip, move the ledger chip and the countdown-chip portal into or directly below the strip, and reserve layout height so prose starts below it. Also stack or dock the cluster below the chips on desktop when a block scrolls to top. This is the D-A1-02 immersive-chrome work due at this gate."
+      },
+      {
+        "p": 1,
+        "title": "Soften or re-source the universal redlining claims",
+        "lens": "fact and provenance",
+        "where": "src/components/exhibit/interactives/DeclinedMap/DeclinedMap.tsx:23-24 (caption), data/exhibit/narration.json ch6-b2 and ch0-b1",
+        "fix": "factcheck fc-redlining-04 corrected this claim to Black-Belt scope, so either (a) register a new documented-tier fact from a Mapping Inequality Chicago area-description analysis that actually supports 'every Black neighborhood' and point the caption and both narration factRefs at it, or (b) soften the caption and ch6-b2 to the corrected wording (TTS regen via the D-A2-01 path) and shade ch0's 'There were none' to 'You will not find one'. In the same caption edit, reword 'was a real family's application' to 'stood in for a real family's application' so the simulated taps never claim documentary status."
+      },
+      {
+        "p": 2,
+        "title": "End the tour like an ending",
+        "lens": "museum curator + interaction design",
+        "where": "ch11 answer-wall pause chrome (InteractiveSlot in-production card, ContinueButton) and the ended state in ChapterStage/ExhibitApp",
+        "fix": "At the final station: terminal button label (e.g. CLOSE THE LEDGER), drop or greatly lengthen the 20s countdown, and change the in-production card's 'THE TOUR CONTINUES' line. At playState=ended: add a small closing plate offering restart, switch to self-paced explore, and a pointer to the ledger and voices collected, so a kiosk visitor is never stranded."
+      },
+      {
+        "p": 2,
+        "title": "Era plates and ledger year must cover their chapters' payoffs",
+        "lens": "museum curator",
+        "where": "src/lib/exhibit/content/index.ts CHAPTER_META ch4 and ch10; data/exhibit/ledger.json CBL entry",
+        "fix": "ch4 era to '1917 to 1921' (docket runs to March 1921; spineYear 1919 stays); ch10 era to '1968 to 1971' (renegotiation lands July 1971); reconcile the CBL ledger entry's 1970 year stamp with its 'by July 1971' body line."
+      },
+      {
+        "p": 2,
+        "title": "Make Voices 9-of-9 actually completable",
+        "lens": "fact and provenance + museum curator",
+        "where": "data/exhibit/voices.json (dempsey-travis ch9, martin-luther-king ch11 unplaced), src/components/exhibit/hud/VoiceMedallions.tsx TOTAL_VOICES=9",
+        "fix": "Place the Travis medallion in ch9 (his 241-and-1 survey is the ch9-b1 spine) and the King medallion in ch11, adding registry facts for the MLK card (currently factRef null) so it gets its dagger; or derive the HUD total from placed count until they land. Verify no guided beat was meant to auto-collect and is failing to fire."
+      },
+      {
+        "p": 2,
+        "title": "Un-flood the ch0 map keyboard order",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/map/layers/HolcLayer.tsx ~117-124 (all ~676 HOLC paths role=button tabIndex=0)",
+        "fix": "Convert the map to a single tab stop with roving focus (arrows move areas, Enter files the application), or minimally add a visually-hidden 'Skip the map and continue' link before it and demote all but representative paths to tabIndex=-1. Focus-order mechanics only; no crop change (respects D-A4-01)."
+      },
+      {
+        "p": 2,
+        "title": "Manage focus at transitions and announce pause points",
+        "lens": "accessibility",
+        "where": "src/components/exhibit/ModeGate.tsx, stage/ContinueButton.tsx, stage/ChapterStage.tsx",
+        "fix": "Give each chapter root or heading tabIndex={-1} and focus it on chapter change (the scroll effect already exists), and call exhAnnounce ('Paused. [Interactive name] is open. Continue when you are ready') when playState enters pause_point. Wiring, not architecture; both hooks exist."
+      },
+      {
+        "p": 2,
+        "title": "Fix the GapAtScale div-inside-p hydration warning",
+        "lens": "interaction design",
+        "where": "src/components/exhibit/interactives/GapAtScale/GapAtScale.tsx ~line 234 (mile-marker <p> wrapping SourceSup)",
+        "fix": "Swap the offending <p> wrapper for <div> (or move the SourceSup/FactValue block out of the <p>). Only console error in a clean full-tour run; the closing flagship should not risk a hydration flicker in production."
+      },
+      {
+        "p": 2,
+        "title": "GapAtScale column labels collide at 390px",
+        "lens": "mobile + visual design",
+        "where": "GapAtScale footer labels; renders 'THE MEDIAN BLACKTHE MEDIAN WHITE' on mobile",
+        "fix": "Constrain each caption to its column's width with wrapping (or stack labels under the bars) so the tracked uppercase strings cannot run together. Desktop is correct."
+      },
+      {
+        "p": 2,
+        "title": "Plate the caption chip opaque and dock it",
+        "lens": "visual design",
+        "where": "Caption chip over prose on mobile ch1/ch2/ch5/ch7/ch9; clips prose on desktop ch6",
+        "fix": "Make the caption plate fully opaque (same treatment as the pass-6 plated callout) and dock it to a reserved band above the timeline spine instead of overlapping the text column. Subtitle-over-figure stays as is."
+      },
+      {
+        "p": 2,
+        "title": "Give source-sup daggers a 44px hit area",
+        "lens": "mobile",
+        "where": "source-sup buttons (5-9px measured, ch11 and ch4 docket header)",
+        "fix": "Add a 44px minimum hit box without changing visual size (padding plus negative margin, or ::after hit-area, same trick as the era chip)."
+      },
+      {
+        "p": 2,
+        "title": "Credit line prints raw '1923-11' on the Binga label",
+        "lens": "copy and style",
+        "where": "src/components/exhibit/stage/BlockRenderer.tsx:58-65 composeCreditLine; source date in public/media/hyde-park/credits.json",
+        "fix": "Broaden the date trimmer to strip any month/day suffix, e.g. match /^(\\d{4})(?:-\\d{2}){1,2}\\b/ and print the year group, keeping the existing free-text fallback, so the museum label reads '1923'."
+      },
+      {
+        "p": 2,
+        "title": "Recompress chapter figure JPEGs",
+        "lens": "performance",
+        "where": "public/media/hyde-park/img/ via BlockRenderer.tsx:104 (jesse-binga.jpg 3.35 MB, homer-hoyt.jpg 1.23 MB, fannie-barrier-williams.jpg 816 KB)",
+        "fix": "One-time batch (sips/ImageMagick) to ~1400px wide at JPEG q~72 (or WebP), landing each at 150-300 KB, or switch BlockRenderer to next/image with sizes. Keep loading=lazy. Cuts ~85% of the walkthrough's dominant byte cost."
+      },
+      {
+        "p": 2,
+        "title": "Unify the machine board and clear the TOURS crumb",
+        "lens": "visual design",
+        "where": "Desktop ch0/ch1/explore show wide empty placeholder cards overlapping the breadcrumb; ch2+ shows compact lamps",
+        "fix": "Render the compact lamps with their machine labels from ch0 onward (unlit until earned) and keep the rail clear of the breadcrumb line. This is the D-A1-02 visible-board-labels item coming due."
+      },
+      {
+        "p": 2,
+        "title": "Reword the HoldTheLine endurance prompt",
+        "lens": "sensitivity",
+        "where": "src/components/exhibit/interactives/registry.ts:103",
+        "fix": "Replace 'Hold your payment in escrow as long as you can.' with the in-component register: 'Hold your payment in escrow. The strike holds as long as you do.' Removes the last can-you-do-it phrasing from the five machines."
+      },
+      {
+        "p": 2,
+        "title": "Scope explore's Play-this-chapter or add a way back",
+        "lens": "interaction design",
+        "where": "Explore chapter header controls in ExhibitApp + ExhibitControls (no mode switch)",
+        "fix": "Either stop narration at the chapter boundary and return to explore (matching the gate copy's 'start the narration from any chapter' promise), or add a small back-to-self-paced control while narration plays."
+      },
+      {
+        "p": 3,
+        "title": "Move the HOLC credit off the tappable map on mobile",
+        "lens": "interaction design",
+        "where": "DeclinedMap mobile: five-line Mapping Inequality credit over the lower half of the map",
+        "fix": "Move the credit below the map frame or behind a small credits toggle on narrow viewports. Credit placement only; the frame is untouched per D-A4-01."
+      },
+      {
+        "p": 3,
+        "title": "Safe-area insets on the spine and caption bar",
+        "lens": "mobile",
+        "where": "src/components/exhibit/hud/TimelineSpine.tsx (fixed bottom rail) and CaptionBar",
+        "fix": "Add padding-bottom: env(safe-area-inset-bottom) (plus viewport-fit=cover) so the era chip and spine nodes clear the iPhone home indicator."
+      },
+      {
+        "p": 3,
+        "title": "Break the identity between the two 32s on the bombing map",
+        "lens": "fact and provenance",
+        "where": "src/components/exhibit/interactives/BombingMap/BombingMap.tsx:633 next to the square_32 caption",
+        "fix": "Reword the docket header to 'The docket, 32 of the 40 appendix records carry a plottable address' and add a one-line note that plotted records are the extractable subset of the 58, so the commission's inside-the-square count and the geocoded docket count stop reading as the same population."
+      },
+      {
+        "p": 3,
+        "title": "Copy microfix batch",
+        "lens": "copy and style + accessibility",
+        "where": "ModeGate.tsx:143 (SELF PACED), ledger.json fair-stock label, composeCreditLine artist normalization, GapAtScale header verb, ExhibitShell breadcrumb links",
+        "fix": "Hyphenate 'Self-paced' and 'six-month fair'; normalize /^unknown author$/i to the house 'Photographer unknown'; change 'Scroll up the white column' to 'Scroll to raise the white column'; pad the Tours/Chicago breadcrumb links to a 24px-plus target."
+      },
+      {
+        "p": 3,
+        "title": "Re-encode VO to 64-80 kbps mono",
+        "lens": "performance",
+        "where": "TTS pipeline output for public/media/hyde-park VO mp3s (33 files, ~128 kbps)",
+        "fix": "Set the target bitrate in the existing TTS pipeline so the post-Begin burst drops below 800 KB, and keep the same target when the owner records real VO (encoding only; voice choice is D-SCOPE-03 and not in question)."
+      },
+      {
+        "p": 3,
+        "title": "Hide the dev badge in the shot harness",
+        "lens": "visual design",
+        "where": "All review captures, bottom-left: Next.js dev-tools button over the 1832 spine label",
+        "fix": "Set devIndicators: false in next.config (or hide it in the capture harness) so panel captures show the timeline's left bookend. Not a product defect."
+      }
+    ],
+    "recommendations": [
+      {
+        "title": "Land the two P1s plus the small-effort P2 batch, then re-run mobile captures to close phase A",
+        "tag": "recommend-fix-now",
+        "rationale": "The mobile HUD strip is deferred D-A1-02 debt explicitly due at this gate and failed two lenses; the redlining claim breaches the exhibit's own factcheck correction and the site's real-data hard rule. Most other P2s (era plates, prompt reword, credit regex, hydration fix, label wrap, dagger hit areas) are sub-hour fixes that should ride the same pass, followed by a fresh 390x844 capture set to confirm the strip composition."
+      },
+      {
+        "title": "Run the JPEG recompression batch now",
+        "tag": "recommend-fix-now",
+        "rationale": "One batch command removes ~85% of the walkthrough's dominant byte cost (jesse-binga.jpg alone is 7x the app shell) with no visible loss on scanned archival material, and doing it before phase B keeps every later capture and perf number honest."
+      },
+      {
+        "title": "Build the focus-management and announcement wiring as a shared utility before phase B",
+        "tag": "recommend-fix-now",
+        "rationale": "Phase B's Machine Rooms will multiply stations and transitions; if focus-on-chapter-change and pause-point announcements land as a shared hook now, every new station inherits keyboard and screen-reader correctness instead of re-fixing it per room."
+      },
+      {
+        "title": "Add a standing 390x844 mobile state to the gate capture harness (and hide the dev badge)",
+        "tag": "recommend-next-phase",
+        "rationale": "The mobile HUD pile survived three gates because desktop full-page captures masked it and the dev badge blinded the panel to the spine bookend; a permanent mobile viewport in the verify suite makes chrome regressions surface at every future gate automatically."
+      },
+      {
+        "title": "Fold the 64-80 kbps VO target into the TTS pipeline settings",
+        "tag": "recommend-next-phase",
+        "rationale": "Setting the bitrate in the pipeline now halves tour audio bytes immediately and means the owner's eventual real VO recordings inherit the right encoding for free, with no re-litigating at the C2 swap."
+      },
+      {
+        "title": "Auto-collect one voice on the guided path",
+        "tag": "optional",
+        "rationale": "Handing guided visitors Fannie Barrier Williams in ch3 (already a narrated figure) makes the voices mechanic demonstrate itself, so the HUD's N-of-9 promise reads as an invitation rather than an unkept count; worth doing only after the two unplaced voices land so the total is honest first."
+      }
+    ]
+  }
+}

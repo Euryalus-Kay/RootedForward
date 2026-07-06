@@ -29,7 +29,14 @@ function motionOff(): boolean {
   );
 }
 
-export default function ContinueButton() {
+export interface ContinueButtonProps {
+  /** true only at the tour's final station (the ch11 answer wall):
+      terminal label, no idle auto-continue, no countdown chrome, so
+      the one beat built for reflection is never rushed (A4 P2). */
+  terminal?: boolean;
+}
+
+export default function ContinueButton({ terminal = false }: ContinueButtonProps) {
   const dispatch = useExhibitDispatch();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const ringRef = useRef<SVGCircleElement | null>(null);
@@ -41,7 +48,7 @@ export default function ContinueButton() {
   const [buttonInView, setButtonInView] = useState(true);
   const [chipHost, setChipHost] = useState<HTMLElement | null>(null);
 
-  const idle = useIdleContinue(true, IDLE_SECONDS, () => dispatch({ type: "CONTINUE" }));
+  const idle = useIdleContinue(!terminal, IDLE_SECONDS, () => dispatch({ type: "CONTINUE" }));
 
   /* interactives report meaningful actions; each one restarts the window */
   useEffect(() => subscribeInteraction(() => idle.reset()), [idle]);
@@ -105,42 +112,52 @@ export default function ContinueButton() {
         type="button"
         data-testid="continue-button"
         onClick={() => dispatch({ type: "CONTINUE" })}
-        aria-label="Continue the tour. If you wait, the tour continues automatically."
+        aria-label={
+          terminal
+            ? "Close the ledger and end the tour."
+            : "Continue the tour. If you wait, the tour continues automatically."
+        }
         className="group inline-flex min-h-12 items-center gap-3 border border-exh-ink bg-exh-linen px-6 py-3 text-exh-ink transition-colors duration-200 hover:bg-exh-ink hover:text-exh-linen"
       >
         <span className="exh-plat text-sm font-semibold uppercase tracking-[0.2em]">
-          Continue the tour
+          {terminal ? "Close the ledger" : "Continue the tour"}
         </span>
-        <span className="relative inline-flex h-9 w-9 items-center justify-center" aria-hidden="true">
-          <svg viewBox="0 0 36 36" className="absolute inset-0 h-full w-full -rotate-90">
-            <circle
-              cx="18"
-              cy="18"
-              r={RING_RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeOpacity="0.25"
-              strokeWidth="2"
-            />
-            <circle
-              ref={ringRef}
-              cx="18"
-              cy="18"
-              r={RING_RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray={RING_CIRCUMFERENCE}
-              strokeDashoffset="0"
-            />
-          </svg>
-          <span ref={digitRef} className="exh-mono text-xs">
-            {IDLE_SECONDS}
+        {!terminal && (
+          <span
+            className="relative inline-flex h-9 w-9 items-center justify-center"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 36 36" className="absolute inset-0 h-full w-full -rotate-90">
+              <circle
+                cx="18"
+                cy="18"
+                r={RING_RADIUS}
+                fill="none"
+                stroke="currentColor"
+                strokeOpacity="0.25"
+                strokeWidth="2"
+              />
+              <circle
+                ref={ringRef}
+                cx="18"
+                cy="18"
+                r={RING_RADIUS}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray={RING_CIRCUMFERENCE}
+                strokeDashoffset="0"
+              />
+            </svg>
+            <span ref={digitRef} className="exh-mono text-xs">
+              {IDLE_SECONDS}
+            </span>
           </span>
-        </span>
+        )}
       </button>
 
-      {!buttonInView &&
+      {!terminal &&
+        !buttonInView &&
         chipHost &&
         createPortal(
           <button

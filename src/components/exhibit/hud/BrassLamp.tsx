@@ -160,14 +160,7 @@ export function BrassLamp({ machine, lampState, open, onToggle, onClose }: Brass
           className="flex h-12 w-12 items-center justify-center md:w-full md:justify-start md:gap-2.5 md:px-2.5"
         >
           <LampDisc lampState={lampState} />
-          <span
-            className={cn(
-              "exh-plat hidden whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink md:inline-block",
-              "opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100",
-              "[[data-motion=off]_&]:transition-none",
-              open && "opacity-100"
-            )}
-          >
+          <span className="exh-plat hidden whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink md:inline-block">
             {/* nameplate flips when the machine is renamed; initial={false}
                 on AnimatePresence keeps the first mount still, so only a
                 live rename plays the 400ms rotateX flip (out 200, in 200) */}
@@ -192,7 +185,7 @@ export function BrassLamp({ machine, lampState, open, onToggle, onClose }: Brass
           role="dialog"
           aria-label={`${title}, ${machine.plainName}`}
           data-testid={`lamp-popover-${machine.machineId}`}
-          className="fixed inset-x-2 top-24 z-50 p-3 md:absolute md:inset-x-auto md:left-full md:top-0 md:ml-2 md:w-64"
+          className="fixed inset-x-2 top-[calc(env(safe-area-inset-top,0px)+7.75rem)] z-50 p-3 md:absolute md:inset-x-auto md:left-full md:top-0 md:ml-2 md:w-64"
         >
           <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
             {title}

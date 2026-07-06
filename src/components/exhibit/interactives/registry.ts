@@ -100,7 +100,7 @@ export const INTERACTIVE_REGISTRY: Record<InteractiveId, RegistryEntry> = {
   ),
   "hold-the-line": entry(
     "Hold the Line",
-    "Hold your payment in escrow as long as you can.",
+    "Hold your payment in escrow. The strike holds as long as you do.",
     () => import("./HoldTheLine/HoldTheLine")
   ),
   "gap-at-scale": entry(

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 import StopActions from "@/components/tours/StopActions";
 import CommentsSection from "@/components/tours/CommentsSection";
@@ -115,6 +115,15 @@ async function getStopData(
     return { stop: fallback, cityName, allStops: getAllFallbackStops(citySlug) };
   }
 }
+
+// viewport-fit=cover lets the exhibit's fixed chrome (HUD strip, timeline
+// spine, caption plate) read env(safe-area-inset-*) and clear the iPhone
+// notch and home indicator; harmless for the other tours on this route
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export async function generateMetadata({
   params,

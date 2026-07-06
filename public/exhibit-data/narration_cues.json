@@ -1,37 +1,37 @@
 {
   "version": 1,
-  "generated": "2026-07-06T19:23:57+00:00",
+  "generated": "2026-07-06T19:58:01+00:00",
   "blocks": {
     "ch0-b1": [
       {
         "startSec": 0.0,
         "text": "Pull up a map of Chicago and find a neighborhood where a Black family could",
-        "endSec": 5.4
+        "endSec": 4.86
       },
       {
-        "startSec": 5.4,
+        "startSec": 4.86,
         "text": "get a bank loan in 1940.",
-        "endSec": 8.72
+        "endSec": 7.64
       },
       {
-        "startSec": 8.72,
+        "startSec": 7.64,
         "text": "Take your time.",
-        "endSec": 10.06
+        "endSec": 8.98
       },
       {
-        "startSec": 10.06,
-        "text": "There were none.",
-        "endSec": 11.66
+        "startSec": 8.98,
+        "text": "You will not find one.",
+        "endSec": 10.94
       },
       {
-        "startSec": 11.66,
+        "startSec": 10.94,
         "text": "This is the story of how that happened,",
-        "endSec": 13.86
+        "endSec": 12.94
       },
       {
-        "startSec": 13.86,
+        "startSec": 12.94,
         "text": "and it begins on one stretch of ground on the South Side.",
-        "endSec": 18.43
+        "endSec": 16.78
       }
     ],
     "ch0_5-b1": [
@@ -718,32 +718,32 @@
       {
         "startSec": 0.0,
         "text": "Federal surveyors then graded every city block.",
-        "endSec": 4.54
+        "endSec": 4.46
       },
       {
-        "startSec": 4.54,
+        "startSec": 4.46,
         "text": "Neighborhoods where Black families lived were outlined and marked hazardous, then cut off from loans.",
-        "endSec": 11.0
+        "endSec": 10.7
       },
       {
-        "startSec": 11.0,
+        "startSec": 10.7,
         "text": "The country came to call it redlining.",
-        "endSec": 14.08
+        "endSec": 13.46
       },
       {
-        "startSec": 14.08,
-        "text": "Every Black neighborhood in Chicago was redlined.",
-        "endSec": 17.74
+        "startSec": 13.46,
+        "text": "On the Chicago map, the Black Belt was washed in red.",
+        "endSec": 17.38
       },
       {
-        "startSec": 17.74,
+        "startSec": 17.38,
         "text": "This is the same map you tapped at the start.",
-        "endSec": 20.7
+        "endSec": 20.06
       },
       {
-        "startSec": 20.7,
+        "startSec": 20.06,
         "text": "Now you know who drew it.",
-        "endSec": 22.78
+        "endSec": 22.18
       }
     ],
     "ch7-b1": [

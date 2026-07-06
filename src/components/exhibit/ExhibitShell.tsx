@@ -20,14 +20,23 @@ export default function ExhibitShell() {
         <div className="mx-auto max-w-6xl px-6">
           <nav aria-label="Breadcrumb">
             <ol className="exh-plat flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-exh-ink-soft">
+              {/* py-1.5 with the negative margin keeps the visual line
+                  height while lifting the links past the 24px target
+                  minimum (A4 accessibility) */}
               <li>
-                <Link href="/tours" className="transition-colors hover:text-exh-ink">
+                <Link
+                  href="/tours"
+                  className="-my-1.5 inline-flex min-h-6 items-center py-1.5 transition-colors hover:text-exh-ink"
+                >
                   Tours
                 </Link>
               </li>
               <li aria-hidden="true">&gt;</li>
               <li>
-                <Link href="/tours/chicago" className="transition-colors hover:text-exh-ink">
+                <Link
+                  href="/tours/chicago"
+                  className="-my-1.5 inline-flex min-h-6 items-center py-1.5 transition-colors hover:text-exh-ink"
+                >
                   Chicago
                 </Link>
               </li>

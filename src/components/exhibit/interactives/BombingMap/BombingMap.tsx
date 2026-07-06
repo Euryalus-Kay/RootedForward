@@ -629,9 +629,16 @@ export default function BombingMap() {
       <div className="mt-4 grid gap-4 md:grid-cols-2 md:items-start">
         <div>
           {marks.length > 0 && (
-            <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-              {`The docket, ${marks.length} records plotted`}
-            </p>
+            <>
+              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+                {`The docket, ${marks.length} of the ${marks.length + noGeo.length} appendix records carry a plottable address`}
+              </p>
+              {totalCount != null && (
+                <p className="mt-1 text-xs leading-snug text-exh-ink-soft">
+                  {`The pins are the subset of the commission's ${totalCount} recorded bombings that its appendix lists with an address.`}
+                </p>
+              )}
+            </>
           )}
           <ul className="mt-2 max-h-72 divide-y divide-exh-ink/10 overflow-y-auto border border-exh-ink/20 bg-exh-linen-deep/30">
             {marks.map((m, i) => (

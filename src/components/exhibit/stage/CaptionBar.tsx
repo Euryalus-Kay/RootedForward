@@ -155,15 +155,19 @@ export default function CaptionBar() {
 
   if (!visible) return null;
 
+  /* The caption plate docks flush on the timeline spine (44px rail on
+     narrow viewports, 64px on md+, plus the bottom safe-area inset the
+     spine reserves) as one opaque piece of chrome, so it never floats
+     translucently over the prose column mid-screen. */
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 bottom-16 z-30 flex justify-center px-4 md:bottom-[4.5rem]"
+      className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom,0px)+2.75rem)] z-30 flex justify-center px-3 md:bottom-[calc(env(safe-area-inset-bottom,0px)+4rem)]"
       data-testid="caption-bar"
     >
       <div
         ref={textRef}
-        className="max-w-2xl rounded-sm bg-exh-linen/95 px-4 py-2 text-center font-display text-base leading-snug text-exh-ink shadow-[0_1px_6px_rgba(28,26,23,0.18)] md:text-lg"
+        className="exh-paper w-full max-w-2xl rounded-t-sm border border-b-0 border-exh-ink/25 bg-exh-linen px-4 py-2 text-center font-display text-base leading-snug text-exh-ink shadow-[0_-1px_6px_rgba(28,26,23,0.12)] md:text-lg"
       />
     </div>
   );

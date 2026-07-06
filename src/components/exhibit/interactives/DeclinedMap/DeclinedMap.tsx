@@ -21,7 +21,7 @@ const MAX_STAMPS = 12;
 const DWELL_MS = 12000;
 const HEADER = "Tap any neighborhood. File the application.";
 const CAPTION =
-  "Every Black neighborhood in Chicago was redlined. Every tap you just made was a real family's application.";
+  "On the Chicago map, the Black Belt was washed in red, and no grade lit a path to a loan for a Black family. Every tap you just made stood in for a real family's application.";
 
 interface StampMark {
   key: number;
@@ -163,14 +163,25 @@ export default function DeclinedMap() {
       </div>
 
       {mapMissing ? (
-        <button
-          type="button"
+        /* div with the button role, not <button>: MapStage renders its
+           own credits toggle button inside, and a native button cannot
+           contain another (React DOM-nesting error during the brief
+           data-load window) */
+        <div
+          role="button"
+          tabIndex={0}
           onClick={handleFallbackTap}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleFallbackTap();
+            }
+          }}
           aria-label="File the application"
           className="block w-full cursor-pointer text-left"
         >
           {stage}
-        </button>
+        </div>
       ) : (
         stage
       )}

@@ -140,7 +140,9 @@ export function Ledger() {
   return (
     <PaperCard
       data-testid="ledger"
-      className="flex max-h-[calc(100dvh-15rem)] w-72 flex-col"
+      // top-32 mount + this max height keep the book clear of the caption
+      // band above the spine (same clearance as the old top-24 mount)
+      className="flex max-h-[calc(100dvh-17rem)] w-72 flex-col"
       aria-label="The ledger"
     >
       <header className="px-3 pb-1.5 pt-2.5">
@@ -199,13 +201,19 @@ export function LedgerChip() {
         aria-label="Open the ledger"
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
-        className="flex min-h-12 items-center gap-2 rounded-sm border border-exh-ink/15 bg-exh-linen-deep px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)]"
+        className="flex min-h-12 items-center gap-2 rounded-sm border border-exh-ink/15 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)]"
       >
         <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
           Ledger
         </span>
         <span className="exh-mono text-xs text-exh-ink">{posted.length}</span>
-        {latest && <span className="exh-mono text-[10px] text-exh-ink-soft">{latest.year}</span>}
+        {/* the latest year yields below 420px so the strip's second row
+            (five 48px lamps plus this chip) can never collide */}
+        {latest && (
+          <span className="exh-mono hidden text-[10px] text-exh-ink-soft min-[420px]:inline">
+            {latest.year}
+          </span>
+        )}
       </button>
       <LedgerSheet open={open} onOpenChange={setOpen} />
     </>

@@ -12,7 +12,10 @@ import { motion } from "framer-motion";
 import { CHAPTER_DEFS } from "@/lib/exhibit/content";
 import type { StageBlock } from "@/lib/exhibit/types";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
+import { moveFocus } from "@/lib/exhibit/focus";
+import { beginScopedPlay, clearScopedPlay, scopedPlayChapter } from "@/lib/exhibit/scoped-play";
 import BlockRenderer from "./BlockRenderer";
+import EndPlate from "./EndPlate";
 import { unlockAudio } from "../audio/NarrationController";
 
 interface GatedBlock {
@@ -51,18 +54,53 @@ export default function ChapterStage() {
 
   const visible = explore ? gated : gated.filter((g) => g.gate <= state.blockIndex);
 
-  /* scroll choreography: new chapter to the top, new narration block to
-     its card, a fresh pause point to its plinth */
-  const prevRef = useRef<{ chapter: number; block: number; pausePoint: string | null } | null>(null);
+  /* scroll and focus choreography: new chapter to the top, new
+     narration block to its card, a fresh pause point to its plinth.
+     Focus rides along at the transitions the A4 accessibility review
+     flagged (gate exit, chapter changes, mode conversions, CONTINUE),
+     so keyboard visitors never restart from <body>. The advisory
+     alertdialog owns focus while it is open; the chapter root takes
+     it back when the dialog settles. */
+  const prevRef = useRef<{
+    chapter: number;
+    block: number;
+    pausePoint: string | null;
+    playState: string;
+    mode: string | null;
+  } | null>(null);
   useEffect(() => {
     const pausePoint = state.pausePoint?.interactiveId ?? null;
     const prev = prevRef.current;
-    prevRef.current = { chapter: state.chapterIndex, block: state.blockIndex, pausePoint };
+    prevRef.current = {
+      chapter: state.chapterIndex,
+      block: state.blockIndex,
+      pausePoint,
+      playState: state.playState,
+      mode: state.mode,
+    };
     const root = sectionRef.current;
-    if (!root || !prev) return;
+    if (!root) return;
     const behavior: ScrollBehavior = noMotion ? "auto" : "smooth";
+    const advisoryOpen = state.playState === "advisory";
+    if (!prev) {
+      // gate exit: the stage just mounted, the chapter root takes focus
+      if (!advisoryOpen) moveFocus(root);
+      return;
+    }
     if (prev.chapter !== state.chapterIndex) {
       root.scrollIntoView({ behavior, block: "start" });
+      if (!advisoryOpen) moveFocus(root);
+      return;
+    }
+    if (prev.mode !== state.mode) {
+      // explore-to-guided conversion or the way back; settle at the top
+      root.scrollIntoView({ behavior, block: "start" });
+      if (!advisoryOpen) moveFocus(root);
+      return;
+    }
+    if (prev.playState === "advisory" && !advisoryOpen) {
+      // the advisory dialog closed on this same chapter
+      moveFocus(root);
       return;
     }
     if (!explore && pausePoint && prev.pausePoint !== pausePoint) {
@@ -72,11 +110,35 @@ export default function ChapterStage() {
       return;
     }
     if (!explore && state.blockIndex > prev.block) {
-      root
-        .querySelector(`[data-kind="narration"][data-gate="${state.blockIndex}"]`)
-        ?.scrollIntoView({ behavior, block: "start" });
+      const card = root.querySelector<HTMLElement>(
+        `[data-kind="narration"][data-gate="${state.blockIndex}"]`
+      );
+      card?.scrollIntoView({ behavior, block: "start" });
+      // CONTINUE unmounts the button a visitor just pressed; hand
+      // focus to the narration card the tour resumed on
+      if (prev.pausePoint && !pausePoint) moveFocus(card);
     }
-  }, [state.chapterIndex, state.blockIndex, state.pausePoint, explore, noMotion]);
+  }, [state.chapterIndex, state.blockIndex, state.pausePoint, state.playState, state.mode, explore, noMotion]);
+
+  /* Scoped playback return (A4 P2): explore's "Play this chapter"
+     narrates ONE chapter; when the play crosses the chapter boundary
+     the visit returns to self-paced explore through existing actions.
+     The last chapter is the exception, since its boundary is the
+     tour's own ending and the closing plate offers the ways onward. */
+  useEffect(() => {
+    const scoped = scopedPlayChapter();
+    if (scoped === null) return;
+    if (state.mode !== "guided") {
+      clearScopedPlay();
+      return;
+    }
+    if (state.chapterIndex !== scoped) {
+      clearScopedPlay();
+      dispatch({ type: "SET_MODE", mode: "explore" });
+      // explore's steady state; the pending advisory, if any, stays up
+      if (state.playState === "playing") dispatch({ type: "END_TOUR" });
+    }
+  }, [state.chapterIndex, state.mode, state.playState, dispatch]);
 
   if (!def) return null;
   const { meta } = def;
@@ -86,6 +148,7 @@ export default function ChapterStage() {
 
   const playThisChapter = () => {
     unlockAudio();
+    beginScopedPlay(state.chapterIndex);
     dispatch({ type: "SET_MODE", mode: "guided" });
     dispatch({ type: "JUMP_TO_CHAPTER", chapterIndex: state.chapterIndex });
   };
@@ -117,9 +180,12 @@ export default function ChapterStage() {
   return (
     <section
       ref={sectionRef}
+      tabIndex={-1}
       data-testid="chapter-stage"
       data-chapter={meta.id}
-      className="mx-auto w-full max-w-3xl scroll-mt-16 px-5 pb-40 pt-16 sm:px-8 md:pt-24"
+      // narrow-viewport scroll margins clear the fixed HUD strip
+      // (7.25rem plus the top safe-area inset; see HudFrame)
+      className="mx-auto w-full max-w-3xl scroll-mt-[calc(env(safe-area-inset-top,0px)+8.5rem)] px-5 pb-40 pt-16 outline-none sm:px-8 md:scroll-mt-16 md:pt-24"
     >
       <header className="mb-12 md:mb-16">
         <p className="exh-plat text-xs font-semibold uppercase tracking-[0.3em] text-exh-ink-soft">
@@ -136,7 +202,7 @@ export default function ChapterStage() {
             key={`${meta.id}-${i}`}
             data-kind={g.block.kind}
             data-gate={g.gate}
-            className="scroll-mt-24"
+            className="scroll-mt-[calc(env(safe-area-inset-top,0px)+8.75rem)] md:scroll-mt-24"
             initial={noMotion ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: noMotion ? 0 : 0.3, ease: "easeOut" }}
@@ -145,6 +211,8 @@ export default function ChapterStage() {
           </motion.div>
         ))}
       </div>
+
+      {!explore && state.playState === "ended" && <EndPlate />}
 
       {explore && <footer className="mt-16">{chapterNav}</footer>}
     </section>

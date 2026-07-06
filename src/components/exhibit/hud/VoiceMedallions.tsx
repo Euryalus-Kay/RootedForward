@@ -42,15 +42,18 @@ export function VoiceMedallions() {
           data-testid="voices-chip"
           aria-haspopup="dialog"
           aria-label={`Voices, ${found.length} of ${TOTAL_VOICES} heard`}
-          className="flex min-h-12 items-center gap-1.5 rounded-sm border border-exh-ink/15 bg-exh-linen-deep px-2.5 text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)]"
+          className="flex min-h-12 max-w-full items-center gap-1.5 rounded-sm border border-exh-ink/15 bg-exh-linen px-2.5 text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)] md:bg-exh-linen-deep"
         >
           <PortraitIcon />
-          <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em]">
+          <span className="exh-plat whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.18em]">
             Voices,
           </span>
-          <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em]">
+          <span className="exh-plat whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.18em]">
             <span className="exh-mono text-xs tracking-normal">{found.length}</span> of{" "}
-            <span className="exh-mono text-xs tracking-normal">{TOTAL_VOICES}</span> heard
+            <span className="exh-mono text-xs tracking-normal">{TOTAL_VOICES}</span>
+            {/* "heard" yields inside the narrow strip slot; the aria label
+                above always carries the full sentence */}
+            <span className="hidden md:inline"> heard</span>
           </span>
         </button>
       </Dialog.Trigger>
@@ -58,7 +61,7 @@ export function VoiceMedallions() {
       <Dialog.Content
         aria-describedby={undefined}
         data-testid="voices-tray"
-        className="exh-paper fixed inset-x-0 bottom-0 z-50 flex max-h-[70dvh] flex-col rounded-t-md border-t border-exh-ink/20 shadow-[0_-4px_16px_rgba(28,26,23,0.2)] md:inset-x-auto md:right-3 md:top-20 md:bottom-auto md:w-80 md:rounded-sm md:border md:border-exh-ink/20"
+        className="exh-paper fixed inset-x-0 bottom-0 z-50 flex max-h-[70dvh] flex-col rounded-t-md border-t border-exh-ink/20 shadow-[0_-4px_16px_rgba(28,26,23,0.2)] md:inset-x-auto md:right-3 md:top-[7.5rem] md:bottom-auto md:w-80 md:rounded-sm md:border md:border-exh-ink/20"
       >
         <div className="flex items-center justify-between border-b border-exh-ink/15 py-1 pl-4 pr-1">
           <Dialog.Title className="exh-plat text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink">

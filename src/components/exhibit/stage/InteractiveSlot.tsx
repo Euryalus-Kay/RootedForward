@@ -7,9 +7,11 @@
 /*  point so the tour never dead-ends), and mounts the Continue        */
 /*  affordance under the active pause point.                           */
 /* ------------------------------------------------------------------ */
-import { useEffect, useMemo, type ComponentType } from "react";
-import type { InteractiveId } from "@/lib/exhibit/types";
+import { useEffect, useMemo, useRef, type ComponentType } from "react";
+import { CHAPTER_ORDER, type InteractiveId } from "@/lib/exhibit/types";
+import { narrationChapter } from "@/lib/exhibit/content";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
+import { announce, moveFocus } from "@/lib/exhibit/focus";
 import { INTERACTIVE_REGISTRY } from "../interactives/registry";
 import { InteractiveContext, type InteractiveApi } from "../interactives/InteractiveContext";
 import ContinueButton from "./ContinueButton";
@@ -47,6 +49,7 @@ export default function InteractiveSlot({
   const state = useExhibitState();
   const dispatch = useExhibitDispatch();
   const entry = INTERACTIVE_REGISTRY[id];
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   const isPausePoint = state.pausePoint?.interactiveId === id;
   const completed = state.completedInteractives.includes(id);
@@ -54,6 +57,28 @@ export default function InteractiveSlot({
   const reducedMotion = state.reducedMotion || chapterNoMotion;
   const firedOnceList = state.firedOnce;
   const hasComponent = !!entry?.Component;
+
+  /* The tour's very last station (final pause point of the final
+     chapter) is terminal: its Continue is "Close the ledger", the
+     idle auto-continue stays off, and the in-production card stops
+     promising continuation (A4 P2, museum curator). */
+  const finalStation = useMemo(() => {
+    if (state.chapterIndex !== CHAPTER_ORDER.length - 1) return false;
+    const blocks = narrationChapter(CHAPTER_ORDER[state.chapterIndex])?.blocks ?? [];
+    let last: InteractiveId | undefined;
+    for (const b of blocks) if (b.pausePointAfter) last = b.pausePointAfter;
+    return last === id;
+  }, [state.chapterIndex, id]);
+
+  /* A pause point is a transition the page must speak and hold: the
+     station takes keyboard focus and the live region names it (A4
+     accessibility). ChapterStage handles the scroll separately. */
+  const stationTitle = entry?.title;
+  useEffect(() => {
+    if (!isPausePoint || !stationTitle) return;
+    announce(`A station is open. ${stationTitle}.`);
+    moveFocus(rootRef.current);
+  }, [isPausePoint, stationTitle]);
 
   const api = useMemo<InteractiveApi>(
     () => ({
@@ -81,9 +106,10 @@ export default function InteractiveSlot({
 
   return (
     <div
+      ref={rootRef}
       data-testid={`interactive-${id}`}
       data-pausepoint={isPausePoint ? id : undefined}
-      className="scroll-mt-24"
+      className="scroll-mt-24 outline-none"
     >
       <div
         className={`border bg-exh-linen-deep/40 transition-opacity duration-300 ${
@@ -121,12 +147,14 @@ export default function InteractiveSlot({
           <div className="px-4 py-10 text-center sm:px-6">
             <p className="font-display text-lg leading-relaxed text-exh-ink">{entry.blurb}</p>
             <p className="exh-plat mt-4 text-xs uppercase tracking-[0.2em] text-exh-ink-soft">
-              This station is being built. The tour continues.
+              {finalStation
+                ? "This station is being built. The tour ends here."
+                : "This station is being built. The tour continues."}
             </p>
           </div>
         )}
       </div>
-      {isPausePoint && <ContinueButton />}
+      {isPausePoint && <ContinueButton terminal={finalStation} />}
     </div>
   );
 }

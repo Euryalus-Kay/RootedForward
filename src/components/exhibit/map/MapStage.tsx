@@ -11,7 +11,7 @@
 /*  Grade encoding is triple and colorblind-safe by contract:          */
 /*  fill tint + pattern + letter label. exh-red is reserved for D.     */
 /* ------------------------------------------------------------------ */
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import {
   HYDE_PARK_FRAME,
   makeFrameReprojector,
@@ -241,6 +241,9 @@ export default function MapStage({
   const holcState = useHolcFrames();
   const layers = layersState.data;
   const holc = holcState.data;
+  // narrow viewports fold the attribution behind a small toggle so the
+  // credit block never covers the tappable map (md+ keeps the overlay)
+  const [creditsOpen, setCreditsOpen] = useState(false);
 
   const ctx = useMemo(() => ({ frame }), [frame]);
 
@@ -292,9 +295,43 @@ export default function MapStage({
           </p>
         </div>
       )}
-      <p className="exh-plat pointer-events-none absolute right-2 bottom-1.5 max-w-[72%] text-right text-[10px] leading-tight text-exh-ink/50">
+      {/* attribution. md+: the quiet overlay line. Narrow viewports: a
+          small opaque toggle in the frame corner (the credit block would
+          otherwise cover the lower half of the tappable map). Pointer
+          events stop here so a tap on the credits never reaches map
+          handlers underneath. The frame's crop and layout are untouched.
+          While the placeholder shows there is no map to cover, and some
+          callers wrap the empty stage in a fallback button, so the
+          toggle waits for real data (buttons cannot nest). */}
+      <p className="exh-plat pointer-events-none absolute right-2 bottom-1.5 hidden max-w-[72%] text-right text-[10px] leading-tight text-exh-ink/50 md:block">
         {attribution}
       </p>
+      {!placeholder && (
+      <button
+        type="button"
+        data-testid="map-credits-toggle"
+        aria-expanded={creditsOpen}
+        aria-label={creditsOpen ? "Hide the map credits" : "Show the map credits"}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          setCreditsOpen((v) => !v);
+        }}
+        className={
+          creditsOpen
+            ? "exh-paper absolute bottom-1 right-1 z-10 max-w-[88%] rounded-sm border border-exh-ink/25 bg-exh-linen px-2 py-1.5 text-right shadow-[0_1px_3px_rgba(28,26,23,0.12)] md:hidden"
+            : "exh-paper absolute bottom-1 right-1 z-10 rounded-sm border border-exh-ink/25 bg-exh-linen px-1.5 py-1 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:left-1/2 after:top-1/2 after:h-11 after:w-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-[''] md:hidden"
+        }
+      >
+        {creditsOpen ? (
+          <span className="block text-[10px] leading-tight text-exh-ink/70">{attribution}</span>
+        ) : (
+          <span className="exh-plat text-[9px] uppercase leading-tight tracking-[0.18em] text-exh-ink/70">
+            Credits
+          </span>
+        )}
+      </button>
+      )}
     </div>
   );
 }

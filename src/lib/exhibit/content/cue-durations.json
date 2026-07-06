@@ -1,6 +1,6 @@
 {
   "_note": "Written by scripts/exhibit-sync-cues.mjs from the generated VO durations. Keys are narration block ids (ch0-b1), values are seconds. Empty until the TTS pass runs; NarrationController falls back to a words-per-minute estimate when a block is missing.",
-  "ch0-b1": 18.43,
+  "ch0-b1": 16.78,
   "ch0_5-b1": 47.83,
   "ch1-b1": 48.94,
   "ch1-b2": 26.69,
@@ -16,7 +16,7 @@
   "ch5-b2": 29.38,
   "ch5-b3": 31.54,
   "ch6-b1": 42.34,
-  "ch6-b2": 22.78,
+  "ch6-b2": 22.18,
   "ch7-b1": 35.88,
   "ch7-b2": 14.69,
   "ch7-b3": 28.18,

@@ -140,7 +140,7 @@ export default function ModeGate() {
             className="group border border-exh-ink bg-exh-linen p-6 text-left transition-colors duration-300 hover:bg-exh-ink sm:p-8"
           >
             <span className="exh-plat block text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink-soft group-hover:text-exh-linen/80">
-              Self paced
+              Self-paced
             </span>
             <span className="mt-3 block font-display text-2xl text-exh-ink group-hover:text-exh-linen md:text-3xl">
               Explore on your own

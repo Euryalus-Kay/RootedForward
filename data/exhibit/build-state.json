@@ -44,12 +44,15 @@
     {
       "id": "A4",
       "title": "HUD polish + audio pass + full panel",
-      "status": "in-progress"
+      "status": "approved",
+      "gateTag": "exhibit-gate-A4",
+      "approvedAt": "2026-07-04",
+      "reviewRef": "data/exhibit/reviews/A4.json"
     },
     {
       "id": "B1",
       "title": "Rigged Instruments + rooms M1-M3",
-      "status": "pending"
+      "status": "pending-next-session"
     },
     {
       "id": "B2",

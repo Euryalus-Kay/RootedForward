@@ -73,7 +73,7 @@ export const CHAPTER_META: ChapterMeta[] = [
     id: "ch4",
     index: 5,
     title: "Terror and Red Summer",
-    era: "1917 to 1919",
+    era: "1917 to 1921",
     spineYear: 1919,
     sensitivity: "no-motion",
     advisoryBefore: true,
@@ -126,7 +126,7 @@ export const CHAPTER_META: ChapterMeta[] = [
     id: "ch10",
     index: 11,
     title: "The Contract Buyers League",
-    era: "1968 to 1970",
+    era: "1968 to 1971",
     spineYear: 1970,
     effects: {
       ledgerEntryIds: ["cbl-credit"],
@@ -177,7 +177,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     tail: [
       {
         kind: "figure",
-        src: "/media/hyde-park/img/midway-1893-crowd.jpg",
+        src: "/media/hyde-park/exhibit/fig/midway-1893-crowd.jpg",
         alt: "Crowds on the Midway Plaisance beneath the first Ferris Wheel in 1893.",
         creditKey: "midway-1893-crowd",
         caption: "The Midway Plaisance under the Ferris Wheel, 1893.",
@@ -189,7 +189,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch3-b2": [
         {
           kind: "figure",
-          src: "/media/hyde-park/img/fannie-barrier-williams.jpg",
+          src: "/media/hyde-park/exhibit/fig/fannie-barrier-williams.jpg",
           alt: "Studio portrait of Fannie Barrier Williams from around 1880.",
           creditKey: "fannie-barrier-williams",
           caption: "Fannie Barrier Williams, the Hyde Park neighbor who refused to leave.",
@@ -202,7 +202,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch4-b1": [
         {
           kind: "figure",
-          src: "/media/hyde-park/img/jesse-binga.jpg",
+          src: "/media/hyde-park/exhibit/fig/jesse-binga.jpg",
           alt: "Jesse Binga, photographed in 1923.",
           creditKey: "jesse-binga",
           caption: "Jesse Binga, photographed in 1923.",
@@ -215,7 +215,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch5-b2": [
         {
           kind: "figure",
-          src: "/media/hyde-park/img/racial-hierarchy-doc.jpg",
+          src: "/media/hyde-park/exhibit/fig/racial-hierarchy-doc.jpg",
           alt: "A period land merchants' advertisement offering lots with racial restrictions attached.",
           creditKey: "racial-hierarchy-doc",
           caption: "The sales pitch in print. Restrictions were a selling point.",
@@ -228,7 +228,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch6-b1": [
         {
           kind: "figure",
-          src: "/media/hyde-park/img/homer-hoyt.jpg",
+          src: "/media/hyde-park/exhibit/fig/homer-hoyt.jpg",
           alt: "The Home Owners' Loan Corporation Residential Security Map of Chicago, around 1940.",
           creditKey: "homer-hoyt",
           caption: "The Residential Security Map of Chicago, the document behind the lens.",
@@ -241,7 +241,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
       "ch7-b1": [
         {
           kind: "figure",
-          src: "/media/hyde-park/img/dd-redlining-11.jpg",
+          src: "/media/hyde-park/exhibit/fig/dd-redlining-11.jpg",
           alt: "Portrait of Carl Augustus Hansberry.",
           creditKey: "dd-redlining-11",
           caption: "Carl Hansberry, who bought the house and carried the covenant to the Supreme Court.",
@@ -260,12 +260,22 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     tail: [
       {
         kind: "figure",
-        src: "/media/hyde-park/img/color-line-7.jpg",
+        src: "/media/hyde-park/exhibit/fig/color-line-7.jpg",
         alt: "Washday of a family on relief in Chicago, photographed by Russell Lee.",
         creditKey: "color-line-7",
         caption: "Inside the Black Belt's crowded flats.",
       },
     ],
+  },
+  ch9: {
+    after: {
+      "ch9-b1": [{ kind: "quote", voiceId: "dempsey-travis" }],
+    },
+  },
+  ch11: {
+    after: {
+      "ch11-b2": [{ kind: "quote", voiceId: "martin-luther-king" }],
+    },
   },
 };
 

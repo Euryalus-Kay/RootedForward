@@ -165,9 +165,12 @@ export function TimelineSpine() {
     <nav
       aria-label="Tour timeline"
       data-testid="timeline-spine"
-      className="exh-paper fixed inset-x-0 bottom-0 z-40 h-11 border-t border-exh-ink/15 md:h-16"
+      // the nav grows by the bottom safe-area inset (iPhone home
+      // indicator); the inner band keeps the rail geometry
+      className="exh-paper fixed inset-x-0 bottom-0 z-40 border-t border-exh-ink/15 pb-[env(safe-area-inset-bottom)]"
       style={{ backgroundColor: "var(--color-exh-linen-deep)" }}
     >
+      <div className="relative h-11 md:h-16">
       {/* inner rail, clamped 24px from each edge */}
       <div className="absolute inset-y-0 left-6 right-6">
         {/* base rule */}
@@ -350,6 +353,7 @@ export function TimelineSpine() {
           </ul>
         </Dialog.Content>
       </Dialog.Root>
+      </div>
     </nav>
   );
 }

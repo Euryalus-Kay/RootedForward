@@ -127,6 +127,15 @@
       "title": "Further citywide map cropping declined with rationale. The cold open's claim is citywide (find a neighborhood anywhere), so the frame must keep the whole city visible; the A2 tightening already made the Black Belt corridor legible, and the bombing map solves its own scale with a reprojection window.",
       "decision": "declined",
       "status": "honored"
+    },
+    {
+      "id": "D-A4-02",
+      "milestone": "A4",
+      "date": "2026-07-04",
+      "source": "panel",
+      "title": "A4 self-approved and phase A closed per D-A2-04. Full nine-lens panel ran on production; both P1s fixed (mobile HUD composed as one plated strip; universal redlining claims softened to the registry's corrected Black Belt scope with TTS regenerated) plus the full P2 batch (tour end plate, terminal final station, scoped explore playback, roving map tabindex, focus and announcement utility, HoldTheLine reword, credit formatter, figure recompression 6MB to 2MB, caption plating, dagger hit areas). Remaining P3s recorded. VO re-encode to 64 to 80 kbps folded into the phase B pipeline settings.",
+      "decision": "approved",
+      "status": "honored"
     }
   ]
 }

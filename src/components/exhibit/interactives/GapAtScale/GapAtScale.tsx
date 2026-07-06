@@ -198,7 +198,7 @@ export default function GapAtScale() {
   return (
     <div ref={rootRef} data-testid="gap-at-scale" data-progress="0" className="w-full">
       <p className="exh-plat text-[11px] uppercase tracking-[0.22em] text-exh-ink-soft">
-        Scroll up the white column, or focus it and use the arrow keys
+        Scroll to raise the white column, or focus it and use the arrow keys
       </p>
 
       <div
@@ -231,13 +231,15 @@ export default function GapAtScale() {
                   className="absolute inset-x-0 border-t border-exh-ink/20"
                   style={{ bottom: m.bottom }}
                 />
-                <p
+                {/* div, not p: SourceSup's popover is a <div> and React
+                    flags div-inside-p as a hydration risk (A4 P2) */}
+                <div
                   className={`absolute right-2 ${MARKER_LABEL_CLASS}`}
                   style={{ left: WHITE_X, bottom: m.bottom + 4 }}
                 >
                   {m.label}
                   <SourceSup factId={m.factId} />
-                </p>
+                </div>
               </div>
             ))}
 
@@ -269,16 +271,20 @@ export default function GapAtScale() {
               <FactValue id={WHITE_FACT} size="sm" />
             </PaperCard>
 
-            {/* the ground line both columns stand on */}
+            {/* the ground line both columns stand on. Each caption is
+                capped to its own column's share of the width (the two
+                centers sit 34% apart, so 30% boxes can never touch) and
+                wraps, so the tracked uppercase strings cannot run
+                together on narrow viewports. */}
             <div className="absolute inset-x-0 bottom-0 border-t border-exh-ink/40" style={{ height: BASE_PX }}>
               <p
-                className="exh-plat absolute top-2 w-max max-w-[40%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft"
+                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: BLACK_X }}
               >
                 the median Black family
               </p>
               <p
-                className="exh-plat absolute top-2 w-max max-w-[40%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft"
+                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: WHITE_X }}
               >
                 the median white family
