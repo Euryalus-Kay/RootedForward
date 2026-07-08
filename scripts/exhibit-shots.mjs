@@ -13,7 +13,7 @@ import { BASE, launch, trackConsoleErrors, waitReady } from "./exhibit-lib.mjs";
 const OUT = "/tmp/exhibit-shots";
 mkdirSync(OUT, { recursive: true });
 
-const EX = "/tours/chicago/hyde-park-exhibit";
+const EX = "/tours/chicago/hyde-park";
 const DEBUG = `${EX}?debug=1`;
 
 /** Each state: route + optional setup(page) to drive the UI there. */

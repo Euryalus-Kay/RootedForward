@@ -24,9 +24,16 @@ export async function launch() {
   });
 }
 
-/** settle a freshly navigated exhibit page */
+/** settle a freshly navigated exhibit page. A debug page is not "ready"
+ * until the testability contract has hydrated; a fixed sleep loses races
+ * to first-load hydration under suite load (found at the go-live gate). */
 export async function waitReady(page, { scroll = false } = {}) {
   await new Promise((r) => setTimeout(r, 1200));
+  if (/[?&]debug=1/.test(page.url())) {
+    await page
+      .waitForFunction(() => !!window.__exhibit, { timeout: 20000 })
+      .catch(() => {}); // scenarios assert the contract themselves and report properly
+  }
   if (scroll) {
     await page.evaluate(async () => {
       const step = window.innerHeight * 0.7;

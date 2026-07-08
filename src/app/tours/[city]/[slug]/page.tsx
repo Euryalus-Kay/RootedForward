@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata, Viewport } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 import StopActions from "@/components/tours/StopActions";
 import CommentsSection from "@/components/tours/CommentsSection";
 import RelatedStops from "@/components/tours/RelatedStops";
 import ImmersiveTourExperience from "@/components/immersive/ImmersiveTourExperience";
-import HydeParkFilm from "@/components/immersive/HydeParkFilm";
 import ExhibitShell, { EXHIBIT_DEK, EXHIBIT_TITLE } from "@/components/exhibit/ExhibitShell";
 import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import { getImmersiveTour } from "@/lib/immersive/data";
@@ -14,6 +13,7 @@ import type { TourStop } from "@/lib/types/database";
 
 interface PageProps {
   params: Promise<{ city: string; slug: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 function getCityName(citySlug: string): string {
@@ -130,12 +130,11 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { city, slug } = await params;
 
-  // The Ground Keeps Moving exhibit (preview slug until the go-live swap)
-  if (city === "chicago" && slug === "hyde-park-exhibit") {
+  // The Ground Keeps Moving, the Hyde Park exhibit (live since July 2026)
+  if (city === "chicago" && (slug === "hyde-park" || slug === "hyde-park-exhibit")) {
     return {
       title: `${EXHIBIT_TITLE} | Hyde Park | Rooted Forward`,
       description: EXHIBIT_DEK.slice(0, 160),
-      robots: { index: false }, // unlinked preview build; indexing turns on at the swap
     };
   }
 
@@ -160,15 +159,27 @@ export async function generateMetadata({
   };
 }
 
-export default async function StopDetailPage({ params }: PageProps) {
+export default async function StopDetailPage({ params, searchParams }: PageProps) {
   const { city: citySlug, slug } = await params;
 
-  // The Ground Keeps Moving, the interactive Hyde Park exhibit. It lives on
-  // an unlinked preview slug while it is built phase by phase; the go-live
-  // swap moves it onto chicago/hyde-park. Intentionally outside
-  // PageTransition (QC screenshots must capture real frames).
-  if (citySlug === "chicago" && slug === "hyde-park-exhibit") {
+  // The Ground Keeps Moving, the interactive Hyde Park exhibit, live on the
+  // public slug since July 2026. It replaced the film page (the player and
+  // its mp4s live in git history before the exhibit-live tag). The old
+  // preview slug redirects so shared links keep working. Intentionally
+  // outside PageTransition (QC screenshots must capture real frames).
+  if (citySlug === "chicago" && slug === "hyde-park") {
     return <ExhibitShell />;
+  }
+  if (citySlug === "chicago" && slug === "hyde-park-exhibit") {
+    // preserve the query string so shared deep links (?ch=, ?debug=) survive
+    const sp = (await searchParams) ?? {};
+    const qs = new URLSearchParams();
+    for (const [k, v] of Object.entries(sp)) {
+      if (typeof v === "string") qs.set(k, v);
+      else if (Array.isArray(v)) for (const item of v) qs.append(k, item);
+    }
+    const suffix = qs.size > 0 ? `?${qs.toString()}` : "";
+    redirect(`/tours/chicago/hyde-park${suffix}`);
   }
 
   // Immersive tours (2D/3D hybrid routes) share this URL space. They are
@@ -176,55 +187,6 @@ export default async function StopDetailPage({ params }: PageProps) {
   const immersive = await getImmersiveTour(citySlug, slug);
   if (immersive) {
     const cityName = getCityName(citySlug);
-
-    // The Hyde Park tour is presented as one full film with a clickable
-    // timeline beneath it, not the scrollytelling reader.
-    if (citySlug === "chicago" && slug === "hyde-park") {
-      // read the chapter timestamps emitted by the renderer so the timeline
-      // renders server-side, no loading flash
-      let manifest = null;
-      try {
-        const { readFile } = await import("node:fs/promises");
-        const path = await import("node:path");
-        const raw = await readFile(
-          path.join(process.cwd(), "public/media/hyde-park/video/chapters.json"),
-          "utf8"
-        );
-        manifest = JSON.parse(raw);
-      } catch {
-        manifest = null;
-      }
-      return (
-        <PageTransition>
-          <section className="bg-cream pt-20 md:pt-24">
-            <div className="mx-auto max-w-6xl px-6">
-              <nav aria-label="Breadcrumb">
-                <ol className="flex flex-wrap items-center gap-2 font-body text-sm text-warm-gray">
-                  <li>
-                    <Link href="/tours" className="transition-colors hover:text-forest">
-                      Tours
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">&gt;</li>
-                  <li>
-                    <Link href={`/tours/${citySlug}`} className="transition-colors hover:text-forest">
-                      {cityName}
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">&gt;</li>
-                  <li className="font-medium text-forest">{immersive.title}</li>
-                </ol>
-              </nav>
-            </div>
-          </section>
-          <HydeParkFilm
-            title={immersive.title}
-            dek={immersive.dek}
-            manifest={manifest}
-          />
-        </PageTransition>
-      );
-    }
 
     const lookAround = immersive.stops.filter((s) => s.media).length;
     return (

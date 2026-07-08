@@ -49,6 +49,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/research`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${BASE_URL}/policy`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+    // The Ground Keeps Moving, the interactive Hyde Park exhibit
+    { url: `${BASE_URL}/tours/chicago/hyde-park`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
     // /education (now redirects to /tours) and /curriculum are hidden for now.
   ];
 
