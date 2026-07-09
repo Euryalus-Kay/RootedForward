@@ -127,15 +127,18 @@ export default function AboutPage() {
       <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            About
+            Our mission
           </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.08] text-ink md:text-6xl">
-            Rooted Forward is run by students.
+          <h1 className="mt-4 max-w-[24ch] font-display text-4xl leading-[1.1] text-ink md:text-5xl">
+            We educate people about racial inequality in Chicago, and we
+            work to address it.
           </h1>
-          <p className="mt-6 max-w-[56ch] font-body text-lg leading-relaxed text-ink/75">
-            We dig up the paperwork that decided who could live where in
-            Chicago, and we turn it into things people actually use. A
-            walking tour. An online exhibit. A podcast. Policy work.
+          <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
+            That inequality was built by policy. Redlining, restrictive
+            covenants, and urban renewal decided who could live where, and
+            you can still see their impact in the city&rsquo;s neighborhoods
+            today. We take it on two ways, through education and through
+            policy advocacy. The work is led by students.
           </p>
           <SurveyRule className="mt-10 text-rust" />
         </div>

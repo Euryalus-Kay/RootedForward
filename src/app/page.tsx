@@ -44,10 +44,9 @@ export default function Home() {
             Rooted Forward
           </h1>
           <p className="mt-7 max-w-xl font-body text-lg leading-relaxed text-ink/80">
-            We give walking tours of Hyde Park and publish the old paperwork
-            that decided who could live where in Chicago. The map behind
-            this page is one piece of it, the government&rsquo;s 1940
-            lending map of the city.
+            Racial inequality shaped Chicago, and its impact is still
+            visible in the city&rsquo;s neighborhoods. We educate people
+            about that history and work to address it through policy.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
