@@ -89,7 +89,7 @@ export default async function PodcastsPage() {
                     <span className="font-mono text-[12px] uppercase tracking-widest text-rust">
                       Episode {ep.episode_number}
                     </span>
-                    <span className="font-body text-[12px] text-warm-gray">
+                    <span className="font-body text-[12px] text-ink/60">
                       {formatPublishDate(ep.publish_date)}
                     </span>
                   </div>
@@ -100,7 +100,7 @@ export default async function PodcastsPage() {
                     {ep.description}
                   </p>
                   {ep.guests && ep.guests.length > 0 && (
-                    <p className="font-body text-[13px] text-warm-gray">
+                    <p className="font-body text-[13px] text-ink/60">
                       With {ep.guests.join(", ")}
                     </p>
                   )}
@@ -133,7 +133,7 @@ export default async function PodcastsPage() {
               className="rounded-lg"
               title="Rooted Forward Podcast on Spotify"
             />
-            <p className="mt-6 font-body text-sm text-warm-gray">
+            <p className="mt-6 font-body text-sm text-ink/60">
               Listen on{" "}
               <a
                 href={`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`}
@@ -154,7 +154,7 @@ export default async function PodcastsPage() {
         <section className="bg-cream pb-20 pt-8 md:pb-28">
           <div className="mx-auto max-w-3xl px-6">
             <hr className="mb-10 border-border" />
-            <p className="font-body text-sm text-warm-gray">
+            <p className="font-body text-sm text-ink/60">
               Subscribe on{" "}
               <a
                 href={`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`}

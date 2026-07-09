@@ -87,11 +87,11 @@ function formatDeadline(deadline: string | null): string {
 }
 
 function getOutcomeColor(outcome: string | null): string {
-  if (!outcome) return "bg-warm-gray/10 text-warm-gray";
+  if (!outcome) return "bg-warm-gray/10 text-ink/60";
   const lower = outcome.toLowerCase();
   if (lower.startsWith("won")) return "bg-forest/10 text-forest";
   if (lower.startsWith("partial")) return "bg-rust/10 text-rust";
-  return "bg-warm-gray/10 text-warm-gray";
+  return "bg-warm-gray/10 text-ink/60";
 }
 
 function getOutcomeTag(outcome: string | null): string {
@@ -249,7 +249,7 @@ export default async function PolicyPage() {
       {!featured && (
         <section id="campaigns" className="scroll-mt-20 bg-cream py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-6">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
               Campaigns
             </p>
             <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
@@ -282,7 +282,7 @@ export default async function PolicyPage() {
                   <span className="inline-block rounded-full bg-rust/15 px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-rust">
                     Active campaign
                   </span>
-                  <span className="font-body text-sm text-warm-gray">
+                  <span className="font-body text-sm text-ink/60">
                     Opened{" "}
                     {new Date(featured.created_at).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -291,7 +291,7 @@ export default async function PolicyPage() {
                     })}
                   </span>
                   {featured.deadline && (
-                    <span className="font-body text-sm text-warm-gray">
+                    <span className="font-body text-sm text-ink/60">
                       &middot; Public comment closes {formatDeadline(featured.deadline)}
                     </span>
                   )}
@@ -300,7 +300,7 @@ export default async function PolicyPage() {
                   {featured.title}
                 </h2>
                 {featured.target_body && (
-                  <p className="mt-2 font-body text-sm font-semibold uppercase tracking-wider text-warm-gray">
+                  <p className="mt-2 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
                     To the {featured.target_body}
                   </p>
                 )}
@@ -324,14 +324,14 @@ export default async function PolicyPage() {
 
               <div className="md:col-span-4">
                 <div className="border-l-2 border-rust/40 pl-6">
-                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                     Who decides
                   </p>
                   <ul className="mt-3 flex flex-col gap-3">
                     {(featured.decision_makers ?? []).map((dm) => (
                       <li key={dm.name}>
                         <p className="font-body text-sm font-medium text-ink">{dm.name}</p>
-                        <p className="font-body text-xs text-warm-gray">{dm.role}</p>
+                        <p className="font-body text-xs text-ink/60">{dm.role}</p>
                       </li>
                     ))}
                   </ul>
@@ -359,7 +359,7 @@ export default async function PolicyPage() {
                   className="group block w-80 flex-shrink-0"
                 >
                   <div className="rounded-sm border border-border p-6 transition-shadow hover:shadow-md">
-                    <span className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                    <span className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                       {campaign.category}
                     </span>
                     <h3 className="mt-2 font-display text-lg text-forest">
@@ -369,7 +369,7 @@ export default async function PolicyPage() {
                       {campaign.summary.split(". ")[0]}.
                     </p>
                     {campaign.signature_count > 0 && (
-                      <p className="mt-3 font-body text-xs text-warm-gray">
+                      <p className="mt-3 font-body text-xs text-ink/60">
                         {campaign.signature_count.toLocaleString()} signatures
                       </p>
                     )}
@@ -386,7 +386,7 @@ export default async function PolicyPage() {
           ============================================================ */}
       <section id="learn" className="scroll-mt-20 border-t border-border bg-forest py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/75">
             Guides and tools
           </p>
           <h2 className="mt-3 font-display text-4xl text-cream md:text-6xl">
@@ -407,14 +407,14 @@ export default async function PolicyPage() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-full border border-rust/50 text-rust">
                       <ResourceIcon icon={resource.icon} />
                     </div>
-                    <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-cream/50">
+                    <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-cream/70">
                       {TYPE_LABELS[resource.type]}
                     </span>
                   </div>
                   <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-rust">
                     {resource.title}
                   </h3>
-                  <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-cream/65">
+                  <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-cream/75">
                     {resource.description}
                   </p>
                   <span className="mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-transform group-hover:translate-x-1">
@@ -437,7 +437,7 @@ export default async function PolicyPage() {
 
           {/* Quick reference links */}
           <div className="mt-16 border-t border-cream/15 pt-10">
-            <h3 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/45">
+            <h3 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/70">
               Chicago Quick Reference
             </h3>
             <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
@@ -447,7 +447,7 @@ export default async function PolicyPage() {
                   href={ref.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-body text-sm text-cream/60 underline decoration-cream/25 underline-offset-2 transition-colors hover:text-rust hover:decoration-rust"
+                  className="font-body text-sm text-cream/75 underline decoration-cream/30 underline-offset-2 transition-colors hover:text-rust-light hover:decoration-rust-light"
                 >
                   {ref.name}
                 </a>
@@ -465,7 +465,7 @@ export default async function PolicyPage() {
           <div className="rounded-sm border border-border bg-cream-dark p-8 md:p-12">
             <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-5">
               <div className="md:col-span-3">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                   Community Proposals
                 </p>
                 <h2 className="mt-3 font-display text-2xl text-forest md:text-3xl">
@@ -484,7 +484,7 @@ export default async function PolicyPage() {
                 >
                   Submit a Proposal &rarr;
                 </Link>
-                <p className="mt-3 font-body text-xs text-warm-gray">
+                <p className="mt-3 font-body text-xs text-ink/60">
                   No account required. We respond within 30 days.
                 </p>
               </div>
@@ -528,7 +528,7 @@ export default async function PolicyPage() {
                       <div className="rounded-sm border border-border p-5 transition-all group-hover:border-warm-gray group-hover:shadow-md md:p-6">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <p className="font-body text-xs text-warm-gray">
+                            <p className="font-body text-xs text-ink/60">
                               {year} &middot; {campaign.category}
                             </p>
                             <h3 className="mt-1 font-display text-lg text-forest transition-colors group-hover:text-rust">
@@ -543,7 +543,7 @@ export default async function PolicyPage() {
                               </p>
                             )}
                             {campaign.signature_count > 0 && (
-                              <p className="mt-3 font-body text-xs text-warm-gray">
+                              <p className="mt-3 font-body text-xs text-ink/60">
                                 {campaign.signature_count.toLocaleString()} signatures
                               </p>
                             )}
@@ -573,7 +573,7 @@ export default async function PolicyPage() {
       <section className="bg-cream pb-20 pt-8">
         <div className="mx-auto max-w-4xl px-6">
           <hr className="mb-10 border-border" />
-          <p className="font-body text-sm leading-relaxed text-warm-gray">
+          <p className="font-body text-sm leading-relaxed text-ink/60">
             Working on Chicago policy? We share our work with journalists,
             researchers, and legislative offices on request.{" "}
             <a

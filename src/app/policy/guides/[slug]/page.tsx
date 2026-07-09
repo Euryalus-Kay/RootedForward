@@ -163,7 +163,7 @@ export default async function GuideDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Main content */}
             <article className="lg:col-span-8">
-              <nav className="font-body text-xs text-warm-gray">
+              <nav className="font-body text-xs text-ink/60">
                 <Link href="/policy" className="hover:text-forest">
                   Policy
                 </Link>
@@ -175,7 +175,7 @@ export default async function GuideDetailPage({ params }: PageProps) {
                 {guide.title}
               </h1>
 
-              <div className="mt-3 flex items-center gap-4 font-body text-sm text-warm-gray">
+              <div className="mt-3 flex items-center gap-4 font-body text-sm text-ink/60">
                 <span>{guide.read_time_minutes} min read</span>
                 <span>&middot;</span>
                 <span>Updated {lastUpdated}</span>
@@ -183,7 +183,7 @@ export default async function GuideDetailPage({ params }: PageProps) {
 
               {guide.why_use && (
                 <div className="mt-6 border-l-2 border-rust/50 bg-cream-dark/50 px-5 py-4">
-                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                     When to use this
                   </p>
                   <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/75">
@@ -232,7 +232,7 @@ export default async function GuideDetailPage({ params }: PageProps) {
             {headings.length > 0 && (
               <aside className="hidden lg:col-span-4 lg:block">
                 <div className="sticky top-24">
-                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                     On this page
                   </p>
                   <nav className="mt-4 flex flex-col gap-2">

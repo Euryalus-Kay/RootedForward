@@ -151,7 +151,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
   const comments = await getApprovedComments(campaign.id);
   const isActive = campaign.status === "active";
   const statusLabel = campaign.status === "active" ? "Active Campaign" : campaign.status === "past" ? "Past Campaign" : "Draft";
-  const statusColor = campaign.status === "active" ? "bg-rust/15 text-rust" : "bg-warm-gray/15 text-warm-gray";
+  const statusColor = campaign.status === "active" ? "bg-rust/15 text-rust" : "bg-warm-gray/15 text-ink/60";
 
   return (
     <PageTransition>
@@ -159,7 +159,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
       <section className="bg-cream pb-8 pt-28 md:pt-36">
         <div className="mx-auto max-w-6xl px-6">
           {/* Breadcrumb */}
-          <nav className="font-body text-xs text-warm-gray">
+          <nav className="font-body text-xs text-ink/60">
             <Link href="/policy" className="hover:text-forest">
               Policy
             </Link>
@@ -177,7 +177,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
             >
               {statusLabel}
             </span>
-            <span className="font-body text-sm text-warm-gray">
+            <span className="font-body text-sm text-ink/60">
               {campaign.status === "drafting" ? "In development since" : "Opened"}{" "}
               {new Date(campaign.created_at).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -186,7 +186,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
               })}
             </span>
             {campaign.deadline && isActive && (
-              <span className="font-body text-sm text-warm-gray">
+              <span className="font-body text-sm text-ink/60">
                 &middot; Deadline {formatDeadline(campaign.deadline)}
               </span>
             )}
@@ -196,7 +196,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
             {campaign.title}
           </h1>
           {campaign.target_body && (
-            <p className="mt-3 font-body text-sm text-warm-gray">
+            <p className="mt-3 font-body text-sm text-ink/60">
               Target: {campaign.target_body}
             </p>
           )}
@@ -236,7 +236,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                           aria-hidden="true"
                           className="absolute -left-[29px] top-1.5 h-2 w-2 rounded-full bg-rust"
                         />
-                        <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                        <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                           {m.date}
                         </p>
                         <p className="mt-1 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
@@ -263,7 +263,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                         <p className="font-body text-sm font-medium text-ink">
                           {dm.name}
                         </p>
-                        <p className="font-body text-xs text-warm-gray">
+                        <p className="font-body text-xs text-ink/60">
                           {dm.role}
                         </p>
                       </div>
@@ -289,7 +289,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                         >
                           {link.title}
                         </a>
-                        <p className="font-body text-xs text-warm-gray">
+                        <p className="font-body text-xs text-ink/60">
                           {link.source}
                         </p>
                       </div>
@@ -355,7 +355,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                         <p className="font-display text-2xl text-forest">
                           {campaign.signature_count.toLocaleString()}
                         </p>
-                        <p className="font-body text-xs text-warm-gray">
+                        <p className="font-body text-xs text-ink/60">
                           signatures
                         </p>
                       </div>
@@ -363,7 +363,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                         <p className="font-display text-2xl text-forest">
                           {comments.length}
                         </p>
-                        <p className="font-body text-xs text-warm-gray">
+                        <p className="font-body text-xs text-ink/60">
                           public comments
                         </p>
                       </div>
@@ -373,7 +373,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
                 {/* Share */}
                 <div className="rounded-sm border border-border bg-cream-dark p-6">
-                  <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                  <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                     Share
                   </h3>
                   <div className="mt-3 flex gap-3">
@@ -395,7 +395,7 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                 {/* Past campaign outcome */}
                 {campaign.status === "past" && campaign.outcome && (
                   <div className="rounded-sm border border-border bg-cream-dark p-6">
-                    <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                    <h3 className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                       Outcome
                     </h3>
                     <p className="mt-2 font-body text-sm leading-relaxed text-ink/75">

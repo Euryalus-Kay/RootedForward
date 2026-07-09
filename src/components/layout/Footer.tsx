@@ -32,14 +32,14 @@ export default function Footer() {
             A student-run Chicago nonprofit. Walking tours, an online
             exhibit, a podcast, and housing policy work.
           </p>
-          <p className="mt-6 text-xs text-cream/50">
+          <p className="mt-6 text-xs text-cream/70">
             &copy; {new Date().getFullYear()} Rooted Forward. All rights reserved.
           </p>
         </div>
 
         {/* Middle column - Quick links */}
         <div>
-          <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-cream/60">
+          <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-cream/75">
             Quick Links
           </h3>
           <ul className="mt-4 flex flex-col gap-2.5">
@@ -58,7 +58,7 @@ export default function Footer() {
 
         {/* Right column - Contact */}
         <div>
-          <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-cream/60">
+          <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-cream/75">
             Contact
           </h3>
           <p className="mt-4 text-sm leading-relaxed text-cream/75">

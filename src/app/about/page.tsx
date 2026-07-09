@@ -31,7 +31,7 @@ function InitialsAvatar({ name }: { name: string }) {
   const initials = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
   return (
     <div className="flex h-full w-full items-center justify-center bg-cream-dark">
-      <span className="font-display text-3xl text-warm-gray-light">{initials}</span>
+      <span className="font-display text-3xl text-ink/60-light">{initials}</span>
     </div>
   );
 }
@@ -49,12 +49,12 @@ function BoardRow({ member }: { member: BoardMember }) {
       </div>
       <div className="min-w-0">
         <h4 className="font-display text-xl text-forest">{member.full_name}</h4>
-        <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+        <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
           {member.role}
           {member.city && ` · ${member.city}`}
         </p>
         {member.affiliation && (
-          <p className="mt-0.5 font-body text-xs italic text-warm-gray">{member.affiliation}</p>
+          <p className="mt-0.5 font-body text-xs italic text-ink/60">{member.affiliation}</p>
         )}
         <p className="mt-3 max-w-[60ch] font-body text-sm leading-relaxed text-ink/65">
           {member.bio}
@@ -146,7 +146,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-7">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                 The story
               </p>
               <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
@@ -189,7 +189,7 @@ export default function AboutPage() {
       {/* What we do */}
       <section className="border-t border-border py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             What we do
           </p>
           <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
@@ -231,7 +231,7 @@ export default function AboutPage() {
       {/* People */}
       <section id="people" className="scroll-mt-20 border-t border-border py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             People
           </p>
           <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
@@ -245,7 +245,7 @@ export default function AboutPage() {
             </div>
             <div>
               <h3 className="font-display text-2xl text-forest">Zain Zaidi</h3>
-              <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+              <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
                 Founder · Chicago
               </p>
               <p className="mt-4 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
@@ -294,7 +294,7 @@ export default function AboutPage() {
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
             <div>
               <h3 className="font-display text-xl text-cream">Join the team</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
+              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
                 Open to students across Chicago.
               </p>
               <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
@@ -303,7 +303,7 @@ export default function AboutPage() {
             </div>
             <div>
               <h3 className="font-display text-xl text-cream">Start a chapter</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
+              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
                 Outside Chicago? Bring the model to your city.
               </p>
               <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
@@ -312,7 +312,7 @@ export default function AboutPage() {
             </div>
             <div>
               <h3 className="font-display text-xl text-cream">Partner with us</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
+              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
                 For schools, nonprofits, and community groups.
               </p>
               <Link href="/contact" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">

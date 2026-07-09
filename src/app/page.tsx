@@ -81,7 +81,7 @@ export default function Home() {
           <SurveyRule className="text-rust" />
           <div className="mt-10 grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
             <div className="md:col-span-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                 The walking tour
               </p>
               <h2 className="mt-3 font-display text-3xl leading-tight text-ink md:text-4xl">
@@ -94,7 +94,7 @@ export default function Home() {
                 urban renewal bulldozers. Every stop comes with the
                 documents to back it up.
               </p>
-              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-warm-gray">
+              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
                 2 hours &middot; Small groups &middot; Led by students
               </p>
               <Link
@@ -106,14 +106,14 @@ export default function Home() {
             </div>
             <div className="md:col-span-6">
               <img
-                src="/media/site/south-side-street-1941.jpg"
-                alt="Children playing on a South Side Chicago street beneath wooden back porches, photographed by Russell Lee in 1941"
+                src="/media/site/cobb-hall-postcard.jpg"
+                alt="Hand-colored postcard of Cobb Hall at the University of Chicago"
                 loading="lazy"
                 className="w-full rounded-sm border border-border object-cover"
               />
               <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
-                The South Side, April 1941. Photographed by Russell Lee for
-                the Farm Security Administration. Public domain.
+                Cobb Hall at the University of Chicago. Tichnor Brothers
+                postcard, circa 1930-1945. Public domain.
               </p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function Home() {
                 through them from 1832 to today, one long page, at your own
                 pace.
               </p>
-              <p className="mt-4 font-body text-sm text-cream/55">
+              <p className="mt-4 font-body text-sm text-cream/75">
                 Free. No account. We call it {EXHIBIT_TITLE}.
               </p>
               <Link
@@ -178,7 +178,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
             <div className="border-t-2 border-border pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                 The podcast
               </p>
               <h2 className="mt-3 font-display text-2xl text-ink">
@@ -198,7 +198,7 @@ export default function Home() {
             </div>
 
             <div className="border-t-2 border-border pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                 Policy
               </p>
               <h2 className="mt-3 font-display text-2xl text-ink">
@@ -222,43 +222,27 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-          CLOSER — ink band, the direct ask
+          CLOSER — ink band, short and plain. No archival photo here;
+          pairing one with a recruitment button read as too much
+          (owner, July 2026).
           ============================================================ */}
-      <section className="bg-ink py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
-            <div className="md:col-span-5">
-              <img
-                src="/media/site/great-migration-1920.jpg"
-                alt="A family of eight standing with their suitcases after arriving in Chicago during the Great Migration, 1920"
-                loading="lazy"
-                className="w-full rounded-sm border border-cream/20 object-cover"
-              />
-              <p className="mt-2 font-body text-[11px] leading-snug text-cream/65">
-                A family arrives in Chicago during the Great Migration.
-                Published in The Chicago Defender, September 4, 1920. Public
-                domain.
-              </p>
-            </div>
-            <div className="md:col-span-7">
-              <SurveyRule className="text-rust-light" />
-              <h2 className="mt-6 font-display text-4xl leading-[1.05] text-cream md:text-5xl">
-                We could use your help.
-              </h2>
-              <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-cream/70">
-                Rooted Forward is small and run by students. If you can dig
-                through an archive, lead a tour, edit audio, or knock on
-                doors for a campaign, there is work here for you. No
-                experience needed.
-              </p>
-              <Link
-                href="/get-involved"
-                className="mt-9 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Get involved
-              </Link>
-            </div>
-          </div>
+      <section className="bg-ink py-16 md:py-24">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <SurveyRule className="mx-auto text-rust-light" />
+          <h2 className="mt-6 font-display text-3xl text-cream md:text-4xl">
+            We could use your help.
+          </h2>
+          <p className="mx-auto mt-5 max-w-[48ch] font-body text-lg leading-relaxed text-cream/75">
+            Rooted Forward is small and run by students. If you can dig
+            through an archive, lead a tour, or edit audio, there is work
+            here for you. No experience needed.
+          </p>
+          <Link
+            href="/get-involved"
+            className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Get involved
+          </Link>
         </div>
       </section>
     </PageTransition>

@@ -57,7 +57,7 @@ export default function ToursPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-14">
             <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
                 Online exhibit
               </p>
               <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
@@ -69,10 +69,10 @@ export default function ToursPage() {
                 appraisal forms, the federal map from 1940. It runs from
                 1832 to today, and you scroll through it at your own pace.
               </p>
-              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-warm-gray">
+              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
                 One page &middot; Free &middot; No account
               </p>
-              <p className="mt-3 font-body text-sm text-warm-gray">
+              <p className="mt-3 font-body text-sm text-ink/60">
                 We call it {EXHIBIT_TITLE}.
               </p>
               <Link
@@ -102,7 +102,7 @@ export default function ToursPage() {
       {/* In-person walking tour */}
       <section className="border-t border-border bg-cream-dark py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             In person
           </p>
           <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
@@ -117,7 +117,7 @@ export default function ToursPage() {
           <div className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
             {TOUR_FACTS.map((fact) => (
               <div key={fact.label} className="bg-cream px-5 py-4">
-                <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-warm-gray">
+                <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/60">
                   {fact.label}
                 </p>
                 <p className="mt-1 font-body text-sm font-semibold text-forest">
