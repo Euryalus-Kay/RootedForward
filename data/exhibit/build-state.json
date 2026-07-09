@@ -82,22 +82,29 @@
     {
       "id": "R1",
       "title": "Reader-paced structure, meta-game removal",
-      "status": "in-progress"
+      "status": "complete",
+      "completed": "2026-07-08"
     },
     {
       "id": "R2",
       "title": "Wall text rewrite, context layer, About panel",
-      "status": "in-progress"
+      "status": "complete",
+      "completed": "2026-07-08"
     },
     {
       "id": "R3",
       "title": "Evidence stations, Surveyor's Files, rooms to reading rooms",
-      "status": "pending"
+      "status": "complete",
+      "completed": "2026-07-08",
+      "notes": "Surveyor's Files reading room (576 sheets, permalinks), loans toggle, chronological ledger table. Suite 115/115, deployed, prod-verified."
     },
     {
       "id": "R4",
       "title": "Naive-visitor + humanizer panel, ship",
-      "status": "pending"
+      "status": "complete",
+      "notes": "8-lens panel: 77 raw findings, 31 consolidated (5 p1), all fixed. Mobile overflow + tap targets, finale question, FHA re-sourcing (Hanchett), categorical HOLC claim softened, bibliography deduped to 67 works / 111 live facts, Article 34 quoted in full, map dated 1939-40/1940, narration pipeline fully removed.",
+      "completed": "2026-07-09"
     }
-  ]
+  ],
+  "updated": "2026-07-09"
 }

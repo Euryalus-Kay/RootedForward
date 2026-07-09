@@ -545,6 +545,36 @@ const RAW_USEFUL_FIELDS = [
 const EXCEL_DATE_MANGLE =
   /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+(18|19)\d\d$/;
 
+// Further transcription damage found in review (July 2026):
+//   - one row (security_grade "C-57") has every population column shifted
+//     one field over, so percentages sit in text fields and vice versa;
+//   - one A-area's location column duplicates the sheet date ("Nov'39"),
+//     which then rendered as the area's display name;
+//   - one date column holds a raw Excel serial number ("14702").
+// Those values are omitted, listed under corruptedFields so the reading
+// room's disclaimer fires, and never used as a display name.
+const DATE_SHAPED =
+  /^(Jan|Feb|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s*'?\s*(\d{2}|(18|19)\d\d)$/i;
+const EXCEL_SERIAL = /^\d{4,6}$/;
+const PERCENT_SHAPED = /^\d+(?:[./-]\d+)?\s*%$/;
+const TRANSCRIBER_NOTE = /^\*.*\*$/;
+// an area number ("C-57") sitting in the security_grade column marks a
+// whole row whose population columns are offset
+const GRADE_HOLDS_AREA_NUMBER = /^[A-D]\s*-?\s*\d+$/i;
+const SHIFTED_ROW_FIELDS = [
+  "security_grade", "area_number", "location", "occupation_or_type",
+  "foreign_born_percent", "foreign_born_nationality", "negro_percent",
+  "infiltration_of",
+];
+
+function usableName(candidate) {
+  const v = (candidate || "").trim();
+  if (!v) return null;
+  if (DATE_SHAPED.test(v) || PERCENT_SHAPED.test(v) || EXCEL_SERIAL.test(v)) return null;
+  if (TRANSCRIBER_NOTE.test(v)) return null;
+  return v;
+}
+
 function buildDescriptions(chicagoAd, featureById) {
   const areas = [];
   let corruptedValues = 0;
@@ -553,12 +583,18 @@ function buildDescriptions(chicagoAd, featureById) {
     if (!feature) continue;
     const picked = pickExcerpt(entry);
     if (!picked) continue;
+    const shiftedRow = GRADE_HOLDS_AREA_NUMBER.test((entry.security_grade || "").trim());
     const rawFields = {};
     const corrupted = [];
     for (const k of RAW_USEFUL_FIELDS) {
       const v = typeof entry[k] === "string" ? entry[k].trim() : entry[k];
       if (v === undefined || v === null || v === "") continue;
-      if (k !== "date" && typeof v === "string" && EXCEL_DATE_MANGLE.test(v)) {
+      const mangled =
+        (k !== "date" && typeof v === "string" && EXCEL_DATE_MANGLE.test(v)) ||
+        (k === "date" && typeof v === "string" && EXCEL_SERIAL.test(v)) ||
+        (k === "location" && typeof v === "string" && DATE_SHAPED.test(v)) ||
+        (shiftedRow && SHIFTED_ROW_FIELDS.includes(k));
+      if (mangled) {
         corrupted.push(k);
         corruptedValues++;
         continue;
@@ -568,7 +604,7 @@ function buildDescriptions(chicagoAd, featureById) {
     const area = {
       areaId: entry.area_id,
       grade: feature.grade,
-      name: feature.name ?? ((entry.location || "").trim() || null),
+      name: shiftedRow ? null : (feature.name ?? usableName(entry.location)),
       excerpt: picked.excerpt,
       excerptField: picked.excerptField,
       excerptLabel: picked.excerptLabel,
@@ -579,14 +615,18 @@ function buildDescriptions(chicagoAd, featureById) {
   }
   areas.sort((a, b) => String(a.grade).localeCompare(String(b.grade)) ||
     String(a.name ?? "").localeCompare(String(b.name ?? "")) || a.areaId - b.areaId);
-  console.log(`descriptions: omitted ${corruptedValues} Excel-date-mangled field values (keys listed per area under corruptedFields)`);
+  console.log(`descriptions: omitted ${corruptedValues} mangled field values (keys listed per area under corruptedFields)`);
   return {
     attribution: ATTRIBUTION,
     note:
-      "Some fields in the source transcription were mangled into Excel dates " +
-      "(e.g. a percentage stored as 'December 30, 1899'). Those values are " +
-      "omitted from security_grade_fields and their keys listed under " +
-      "corruptedFields. The raw verbatim source is data/exhibit-src/ad-data-chicago.json.",
+      "Chicago was surveyed September 1939 to April 1940 and the map issued " +
+      "in 1940. Some fields in the source transcription were mangled in " +
+      "transit through Excel (a percentage stored as 'December 30, 1899', a " +
+      "date stored as a serial number, one row's columns shifted). Those " +
+      "values are omitted from security_grade_fields and their keys listed " +
+      "under corruptedFields; mis-parsed location values are never used as " +
+      "display names. The raw verbatim source is " +
+      "data/exhibit-src/ad-data-chicago.json.",
     areas,
   };
 }

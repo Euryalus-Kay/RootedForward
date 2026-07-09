@@ -15,8 +15,8 @@ export default function AdvisoryPlate({ skipToId }: { skipToId: string }) {
         Content advisory
       </p>
       <p className="mt-3 font-body text-base leading-relaxed text-exh-ink">
-        This chapter documents racial terrorism, including bombings and the killing of a
-        teenager. No graphic imagery is shown.
+        This chapter documents racial terrorism, including bombings, the killing of a teenager,
+        and the death of a child. No graphic imagery is shown.
       </p>
       <a
         href={`#${skipToId}`}

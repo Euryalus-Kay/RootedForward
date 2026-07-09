@@ -81,14 +81,14 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
           {eyebrow}
         </p>
         {visited ? (
-          <span className="exh-plat inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+          <span className="exh-plat inline-flex items-center gap-1.5 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-exh-gold" />
             Visited
           </span>
         ) : null}
       </div>
       <p className="mt-3 font-display text-2xl text-exh-ink md:text-3xl">{title}</p>
-      <p className="exh-plat mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+      <p className="exh-plat mt-1 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
         {plate.plainName}
       </p>
       <p className="mt-4 max-w-prose text-sm leading-relaxed text-exh-ink">{plate.invitation}</p>

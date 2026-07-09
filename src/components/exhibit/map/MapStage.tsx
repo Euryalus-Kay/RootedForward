@@ -290,7 +290,7 @@ export default function MapStage({
       </svg>
       {placeholder && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/50">
+          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/70">
             Map data is being prepared
           </p>
         </div>
@@ -303,7 +303,7 @@ export default function MapStage({
           While the placeholder shows there is no map to cover, and some
           callers wrap the empty stage in a fallback button, so the
           toggle waits for real data (buttons cannot nest). */}
-      <p className="exh-plat pointer-events-none absolute right-2 bottom-1.5 hidden max-w-[72%] text-right text-[10px] leading-tight text-exh-ink/50 md:block">
+      <p className="exh-plat pointer-events-none absolute right-2 bottom-1.5 hidden max-w-[72%] text-right text-[10px] leading-tight text-exh-ink/70 md:block">
         {attribution}
       </p>
       {!placeholder && (
@@ -323,10 +323,11 @@ export default function MapStage({
             : "exh-paper absolute bottom-1 right-1 z-10 rounded-sm border border-exh-ink/25 bg-exh-linen px-1.5 py-1 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:left-1/2 after:top-1/2 after:h-11 after:w-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-[''] md:hidden"
         }
       >
+        {/* this toggle renders below md only, so the floor is a flat 11px */}
         {creditsOpen ? (
-          <span className="block text-[10px] leading-tight text-exh-ink/70">{attribution}</span>
+          <span className="block text-[11px] leading-tight text-exh-ink/70">{attribution}</span>
         ) : (
-          <span className="exh-plat text-[9px] uppercase leading-tight tracking-[0.18em] text-exh-ink/70">
+          <span className="exh-plat text-[11px] uppercase leading-tight tracking-[0.18em] text-exh-ink/70">
             Credits
           </span>
         )}

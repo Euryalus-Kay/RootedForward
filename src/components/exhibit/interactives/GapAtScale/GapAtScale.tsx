@@ -47,7 +47,7 @@ const MECHANISM_MARKERS = [
 ] as const;
 
 const MARKER_LABEL_CLASS =
-  "exh-plat pl-7 text-left text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:pl-11";
+  "exh-plat pl-7 text-left text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:pl-11";
 
 export default function GapAtScale() {
   const api = useInteractive();
@@ -184,10 +184,10 @@ export default function GapAtScale() {
         data-progress="0"
       >
         <div className="border border-exh-ink/25 bg-exh-linen-deep/40 px-6 py-12 text-center">
-          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/60">
+          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/70">
             The figures are being prepared
           </p>
-          <p className="exh-plat mt-3 text-[10px] uppercase tracking-[0.2em] text-exh-ink/45">
+          <p className="exh-plat mt-3 text-[11px] md:text-[10px] uppercase tracking-[0.2em] text-exh-ink/70">
             Tap to continue
           </p>
         </div>
@@ -278,13 +278,13 @@ export default function GapAtScale() {
                 together on narrow viewports. */}
             <div className="absolute inset-x-0 bottom-0 border-t border-exh-ink/40" style={{ height: BASE_PX }}>
               <p
-                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
+                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: BLACK_X }}
               >
                 the median Black family
               </p>
               <p
-                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
+                className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: WHITE_X }}
               >
                 the median white family
@@ -294,9 +294,9 @@ export default function GapAtScale() {
         )}
       </div>
 
-      <p className="exh-plat mt-2 text-[10px] leading-snug text-exh-ink/55">
+      <p className="exh-plat mt-2 text-[11px] md:text-[10px] leading-snug text-exh-ink/70">
         Both columns are drawn to the same scale from the 2022 Survey of Consumer Finances
-        medians. The mechanism rules along the climb are markers for scale, not amounts.
+        medians. The horizontal lines along the climb mark scale, not amounts.
       </p>
     </div>
   );

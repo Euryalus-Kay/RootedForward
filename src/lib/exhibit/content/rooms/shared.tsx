@@ -52,13 +52,13 @@ export function FactCard({ id, label, dated = false, children }: FactCardProps) 
   const asOf = dated && hasFact(id) ? getFact(id).asOf : undefined;
   return (
     <PaperCard data-testid={`room-fact-${id}`} className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         {label}
       </p>
       <div className="mt-2">
         <FactValue id={id} size="lg" />
       </div>
-      {asOf ? <p className="exh-mono mt-1.5 text-[10px] text-exh-ink-soft">{asOf}</p> : null}
+      {asOf ? <p className="exh-mono mt-1.5 text-[11px] md:text-[10px] text-exh-ink-soft">{asOf}</p> : null}
       {children ? (
         <p className="mt-2.5 text-sm leading-relaxed text-exh-ink-soft">{children}</p>
       ) : null}
@@ -79,7 +79,7 @@ export interface PairCardProps {
 export function PairCard({ label, aId, bId, footer }: PairCardProps) {
   return (
     <PaperCard data-testid={`room-pair-${aId}`} className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         {label}
       </p>
       <div className="mt-3 space-y-3">
@@ -127,11 +127,11 @@ export interface RecordCardProps {
 export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, factId, warning = true }: RecordCardProps) {
   return (
     <PaperCard tone="deep" data-testid="room-record-card" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
         {eyebrow}
         {factId ? <FactValue id={factId} className="sr-only" /> : null}
       </p>
-      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
         {warning ? (
           <>period document; contains the era&rsquo;s racist language</>
         ) : (
@@ -142,7 +142,7 @@ export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, fact
         <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 border-y border-exh-ink/15 py-2.5">
           {fields.map((f) => (
             <div key={f.label} className="contents">
-              <dt className="exh-plat text-[9px] font-semibold uppercase leading-5 tracking-[0.16em] text-exh-ink-soft">
+              <dt className="exh-plat text-[11px] md:text-[9px] font-semibold uppercase leading-5 tracking-[0.16em] text-exh-ink-soft">
                 {f.label}
               </dt>
               <dd className="exh-mono text-xs leading-5 text-exh-ink">{f.value}</dd>
@@ -150,11 +150,11 @@ export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, fact
           ))}
         </dl>
       ) : null}
-      {fieldLabel ? <p className="exh-mono mt-3 text-[10px] text-exh-ink-soft">{fieldLabel}</p> : null}
+      {fieldLabel ? <p className="exh-mono mt-3 text-[11px] md:text-[10px] text-exh-ink-soft">{fieldLabel}</p> : null}
       <blockquote className="exh-serif mt-1.5 font-display text-base italic leading-relaxed text-exh-ink">
         &ldquo;{quote}&rdquo;
       </blockquote>
-      {quoteNote ? <p className="exh-mono mt-1.5 text-[10px] text-exh-ink-soft">{quoteNote}</p> : null}
+      {quoteNote ? <p className="exh-mono mt-1.5 text-[11px] md:text-[10px] text-exh-ink-soft">{quoteNote}</p> : null}
     </PaperCard>
   );
 }
@@ -164,7 +164,7 @@ export function RecordCard({ eyebrow, fieldLabel, quote, quoteNote, fields, fact
 export function AttributionCard({ label, text }: { label: string; text: string }) {
   return (
     <PaperCard className="p-4">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         {label}
       </p>
       <p className="mt-2 text-xs leading-relaxed text-exh-ink-soft">{text}</p>

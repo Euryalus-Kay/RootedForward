@@ -213,6 +213,8 @@ export default function BombingMap() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
 
+  /* the mark or docket row that opened the card, for focus return */
+  const openerRef = useRef<HTMLElement | SVGElement | null>(null);
   const startedRef = useRef(false);
   const drawDoneRef = useRef(false);
   const cardOpenedRef = useRef(false);
@@ -320,10 +322,9 @@ export default function BombingMap() {
       finishDraw();
       return;
     }
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const instant = prefersReduced || api.firedOnce(FIRED_KEY);
+    /* api.reducedMotion folds the visitor's setting together with the
+       chapter's no-motion sensitivity flag (ch4), via StationBlock */
+    const instant = api.reducedMotion || api.firedOnce(FIRED_KEY);
     let i = instant ? n - 1 : 0;
     intervalRef.current = setInterval(() => {
       i += 1;
@@ -344,8 +345,9 @@ export default function BombingMap() {
   }, []);
 
   const openIncident = useCallback(
-    (id: string) => {
+    (id: string, opener?: HTMLElement | SVGElement | null) => {
       api.onInteraction();
+      openerRef.current = opener ?? null;
       setSelectedId(id);
       cardOpenedRef.current = true;
       if (drawDoneRef.current) complete();
@@ -356,7 +358,23 @@ export default function BombingMap() {
   const closeCard = useCallback(() => {
     api.onInteraction();
     setSelectedId(null);
+    const opener = openerRef.current;
+    openerRef.current = null;
+    if (opener && typeof (opener as HTMLElement).focus === "function") {
+      (opener as HTMLElement).focus();
+    }
   }, [api]);
+
+  /* Escape closes the record card and hands focus back to the mark or
+     docket row that opened it */
+  useEffect(() => {
+    if (!selectedId) return;
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") closeCard();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [selectedId, closeCard]);
 
   /* ---- caption values come from the fact registry, never literals ---- */
   const squareCount = hasFact("bombings.square_32") ? getFact("bombings.square_32").value : null;
@@ -377,10 +395,10 @@ export default function BombingMap() {
         data-count="0"
       >
         <div className="border border-exh-ink/25 bg-exh-linen-deep/40 px-6 py-12 text-center">
-          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/60">
+          <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/70">
             The evidence is being prepared
           </p>
-          <p className="exh-plat mt-3 text-[10px] uppercase tracking-[0.2em] text-exh-ink/45">
+          <p className="exh-plat mt-3 text-[11px] uppercase tracking-[0.2em] text-exh-ink/70 md:text-[11px] md:text-[10px]">
             Tap to continue
           </p>
         </div>
@@ -402,7 +420,7 @@ export default function BombingMap() {
           <FactValue id="bombings.deaths_2" size="sm" />
           {typeof arrests === "number" && doc?.source && (
             <span className="inline-flex items-baseline gap-x-1.5">
-              <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+              <span className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
                 arrests
               </span>
               <span className="exh-mono text-xs font-medium text-exh-ink">{arrests}</span>
@@ -555,11 +573,11 @@ export default function BombingMap() {
                 tabIndex={0}
                 aria-label={rowLabel(m.incident)}
                 data-incident={m.incident.id}
-                onClick={() => openIncident(m.incident.id)}
+                onClick={(e) => openIncident(m.incident.id, e.currentTarget)}
                 onKeyDown={(e: KeyboardEvent<SVGGElement>) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    openIncident(m.incident.id);
+                    openIncident(m.incident.id, e.currentTarget);
                   }
                 }}
                 onFocus={() => setFocusedId(m.incident.id)}
@@ -626,11 +644,11 @@ export default function BombingMap() {
         </p>
       )}
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2 md:items-start">
-        <div>
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2 md:items-start">
+        <div className="min-w-0">
           {marks.length > 0 && (
             <>
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
                 {`The docket, ${marks.length} of the ${marks.length + noGeo.length} appendix records carry a plottable address`}
               </p>
               {totalCount != null && (
@@ -648,14 +666,14 @@ export default function BombingMap() {
                     as separate entries, never as an accidental duplicate. */}
                 <button
                   type="button"
-                  onClick={() => openIncident(m.incident.id)}
+                  onClick={(e) => openIncident(m.incident.id, e.currentTarget)}
                   aria-pressed={selectedId === m.incident.id}
                   aria-label={rowLabel(m.incident)}
                   className={`flex min-h-12 w-full items-baseline gap-2.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
                     selectedId === m.incident.id ? "bg-exh-linen-deep" : ""
                   }`}
                 >
-                  <span className="exh-mono shrink-0 text-[11px] text-exh-ink/45">
+                  <span className="exh-mono shrink-0 text-[11px] text-exh-ink/70">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -686,7 +704,7 @@ export default function BombingMap() {
                   <li key={inc.id}>
                     <button
                       type="button"
-                      onClick={() => openIncident(inc.id)}
+                      onClick={(e) => openIncident(inc.id, e.currentTarget)}
                       aria-pressed={selectedId === inc.id}
                       aria-label={rowLabel(inc)}
                       className={`flex min-h-12 w-full flex-col justify-center gap-0.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
@@ -709,7 +727,7 @@ export default function BombingMap() {
 
         {selected ? (
           <PaperCard
-            className="p-4"
+            className="min-w-0 p-4"
             role="region"
             aria-label={`Evidence record, ${dateLong(selected)}`}
             data-testid="bombing-card"
@@ -730,17 +748,17 @@ export default function BombingMap() {
               <p className="exh-mono mt-0.5 text-xs text-exh-ink/70">{selected.address}</p>
             )}
             <div className="mt-3 border-l-2 border-exh-ink/25 pl-3">
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
                 from the 1922 record
               </p>
               <p className="mt-1.5 font-display text-sm italic leading-relaxed text-exh-ink">
                 {selected.excerpt}
               </p>
             </div>
-            <p className="exh-plat mt-3 text-[10px] leading-snug text-exh-ink/55">
+            <p className="exh-plat mt-3 text-[11px] leading-snug text-exh-ink/70 md:text-[11px] md:text-[10px]">
               {selected.locator}
             </p>
-            <p className="exh-plat mt-1 text-[10px] leading-snug text-exh-ink/55">
+            <p className="exh-plat mt-1 text-[11px] leading-snug text-exh-ink/70 md:text-[11px] md:text-[10px]">
               {selected.geo?.precisionMeters
                 ? `Plotted to the ${selected.precision === "block" ? "block" : "address"}, within about ${selected.geo.precisionMeters} meters`
                 : "No street address appears in the record"}
@@ -752,8 +770,8 @@ export default function BombingMap() {
             )}
           </PaperCard>
         ) : (
-          <div className="flex min-h-24 items-center justify-center border border-dashed border-exh-ink/30 px-4 py-6">
-            <p className="exh-plat text-center text-[11px] uppercase tracking-[0.2em] text-exh-ink/50">
+          <div className="flex min-h-24 min-w-0 items-center justify-center border border-dashed border-exh-ink/30 px-4 py-6">
+            <p className="exh-plat text-center text-[11px] uppercase tracking-[0.2em] text-exh-ink/70">
               Select a mark or a docket entry to read the record
             </p>
           </div>

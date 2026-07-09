@@ -27,7 +27,7 @@ export default function CasesPanel() {
     <div data-testid="cases-panel">
       <div className="flex items-center gap-3">
         <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />
-        <h3 className="exh-plat shrink-0 text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink">
+        <h3 className="exh-plat min-w-0 text-center text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink">
           The Case Files
         </h3>
         <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />
@@ -45,11 +45,11 @@ export default function CasesPanel() {
                 {c.citation} &middot; {c.decided}
               </p>
             </div>
-            <p className="exh-plat mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+            <p className="exh-plat mt-3 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
               The holding
             </p>
             <p className="mt-1 text-sm leading-relaxed text-exh-ink">{c.holding}</p>
-            <p className="exh-plat mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+            <p className="exh-plat mt-3 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
               The consequence
             </p>
             <p className="mt-1 text-sm leading-relaxed text-exh-ink">{c.consequence}</p>

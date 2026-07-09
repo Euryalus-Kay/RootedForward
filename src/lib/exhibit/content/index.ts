@@ -273,7 +273,7 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
           src: "/media/hyde-park/img/dd-color-line-10.jpg",
           alt: "Interior of the Supreme Court Building during a session.",
           creditKey: "dd-color-line-10",
-          caption: "The Supreme Court chamber, photographed in 1937, where the armor finally failed in 1948.",
+          caption: "The Supreme Court chamber, photographed in 1937, where covenant enforcement ended in 1948.",
         },
         { kind: "cases" },
       ],
@@ -299,12 +299,14 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
     tail: [{ kind: "door", roomId: "contract", label: "The Contract" }],
   },
   ch10: {
+    afterSection: {
+      2: [{ kind: "quote", voiceId: "martin-luther-king" }],
+    },
     tail: [{ kind: "door", roomId: "counter", label: "The Counter-Machine" }],
   },
   ch11: {
     afterSection: {
       1: [{ kind: "ledger-table" }, { kind: "station", station: "gap-at-scale" }],
-      2: [{ kind: "quote", voiceId: "martin-luther-king" }],
     },
     tail: [{ kind: "station", station: "answer-wall" }],
   },

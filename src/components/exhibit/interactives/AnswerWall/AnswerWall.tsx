@@ -43,7 +43,7 @@ const INPUT_CLASS =
   "h-12 w-full rounded-[2px] border border-exh-ink/40 bg-exh-linen px-3 text-base text-exh-ink placeholder:text-exh-ink-soft focus:border-exh-ink focus:outline-none disabled:opacity-50";
 
 const LABEL_CLASS =
-  "exh-plat mb-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft";
+  "exh-plat mb-1 block text-[11px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft md:text-[10px]";
 
 /** one approved answer, a linen chip on the wall */
 function AnswerChip({
@@ -66,7 +66,7 @@ function AnswerChip({
     <PaperCard className={`max-w-64 px-3 py-2.5 ${drift ? "aw-drift" : ""}`} style={style}>
       <p className="font-display text-base leading-snug text-exh-ink">{answer.body}</p>
       {answer.displayName && (
-        <p className="exh-plat mt-1.5 text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
+        <p className="exh-plat mt-1.5 text-[11px] uppercase tracking-[0.18em] text-exh-ink-soft md:text-[9px]">
           {answer.displayName}
         </p>
       )}
@@ -208,7 +208,7 @@ export default function AnswerWall() {
           The exhibit ends on a question
         </p>
         <p className="font-display mt-2 text-2xl leading-snug text-exh-ink md:text-3xl">
-          Who is this city built for?
+          Who is this ground for, and who decides?
         </p>
       </div>
 
@@ -296,7 +296,7 @@ export default function AnswerWall() {
           <PaperCard tone="deep" data-testid="aw-own" className="max-w-72 px-4 py-3 text-center">
             <p className="font-display text-base leading-snug text-exh-ink">{own.body}</p>
             {own.displayName && (
-              <p className="exh-plat mt-1.5 text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
+              <p className="exh-plat mt-1.5 text-[11px] uppercase tracking-[0.18em] text-exh-ink-soft md:text-[9px]">
                 {own.displayName}
               </p>
             )}
@@ -315,7 +315,7 @@ export default function AnswerWall() {
 
       {submitState === "held" && (
         <p
-          className="exh-plat mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink-soft"
+          className="exh-plat mt-3 text-center text-[11px] uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]"
           aria-live="polite"
         >
           A person reads every answer before it joins the wall
@@ -335,7 +335,7 @@ export default function AnswerWall() {
 
       {/* ---------------- the wall ---------------- */}
       <div className="mt-7 border-t border-exh-ink/20 pt-5">
-        <p className="exh-plat text-center text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+        <p className="exh-plat text-center text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
           From earlier visitors
         </p>
         <div
@@ -348,14 +348,14 @@ export default function AnswerWall() {
             ))}
         </div>
         {wallLoaded && answers.length === 0 && (
-          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink-soft">
+          <p className="exh-plat mt-2 text-center text-[11px] uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
             {wallPending || submitState === "migrationPending"
-              ? "The wall opens soon."
-              : "The first answers are being gathered."}
+              ? "The wall opens once the first answers clear review."
+              : "The first answers are being read now. Yours can be among the first shown."}
           </p>
         )}
         {!wallLoaded && (
-          <p className="exh-plat mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-exh-ink-soft">
+          <p className="exh-plat mt-2 text-center text-[11px] uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
             Reading the wall
           </p>
         )}

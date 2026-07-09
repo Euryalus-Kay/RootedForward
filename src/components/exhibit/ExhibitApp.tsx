@@ -5,7 +5,12 @@
 /*  the timeline rail, and the document rooms. Composition only.       */
 /* ------------------------------------------------------------------ */
 import { useEffect, useRef } from "react";
-import { ExhibitProvider, scrollToAnchor, useExhibitDispatch } from "@/lib/exhibit/ExhibitProvider";
+import {
+  ExhibitProvider,
+  scrollToAnchor,
+  useExhibitDispatch,
+  useExhibitState,
+} from "@/lib/exhibit/ExhibitProvider";
 import { EXHIBIT_FLOW } from "@/lib/exhibit/content";
 import { CHAPTER_ORDER } from "@/lib/exhibit/types";
 import ExhibitHeader from "./ExhibitHeader";
@@ -16,6 +21,7 @@ import RoomOverlay, { openRoomFromHash } from "./rooms/RoomOverlay";
 
 function ExhibitRoot() {
   const dispatch = useExhibitDispatch();
+  const { reducedMotion } = useExhibitState();
   const flowRef = useRef<HTMLDivElement | null>(null);
 
   // the exhibit is an immersive room; the site navbar/footer yield while
@@ -75,7 +81,13 @@ function ExhibitRoot() {
   }, [dispatch]);
 
   return (
-    <div className="exhibit-root relative min-h-screen" data-testid="exhibit-root">
+    <div
+      className="exhibit-root relative min-h-screen"
+      data-testid="exhibit-root"
+      /* the reduced-motion contract: state mirrors the media query, the
+         root flag switches off every entrance animation exhibit-wide */
+      data-motion={reducedMotion ? "off" : undefined}
+    >
       {/* the one polite live region (room announcements, wall submissions) */}
       <div id="exh-live" aria-live="polite" className="sr-only" />
 

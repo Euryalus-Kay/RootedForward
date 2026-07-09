@@ -235,7 +235,7 @@ export default function LayerSlider() {
               aria-label={det.label}
               aria-current={detent === i ? "true" : undefined}
               className={`exh-plat min-h-12 min-w-12 px-1 text-[10px] tracking-[0.15em] uppercase ${
-                detent === i ? "font-semibold text-exh-ink" : "text-exh-ink/50"
+                detent === i ? "font-semibold text-exh-ink" : "text-exh-ink/70"
               } ${i === 0 ? "text-left" : i === DETENTS.length - 1 ? "text-right" : "text-center"}`}
             >
               {det.tick}

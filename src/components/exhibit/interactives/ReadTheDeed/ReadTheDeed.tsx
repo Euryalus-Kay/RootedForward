@@ -196,7 +196,7 @@ export default function ReadTheDeed() {
                   onClick={() => toggleClause(clause.id)}
                   className="flex min-h-12 w-full items-baseline gap-3 px-3 py-2.5 text-left"
                 >
-                  <span className="exh-mono shrink-0 text-xs text-exh-ink/60">{i + 1}.</span>
+                  <span className="exh-mono shrink-0 text-xs text-exh-ink/70">{i + 1}.</span>
                   <span className="min-w-0 flex-1">
                     <span className="exh-plat block text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
                       {clause.kicker}
@@ -207,7 +207,7 @@ export default function ReadTheDeed() {
                   </span>
                   <span
                     aria-hidden="true"
-                    className={`exh-mono shrink-0 self-center text-sm ${seen ? "text-exh-ink" : "text-exh-ink/50"}`}
+                    className={`exh-mono shrink-0 self-center text-sm ${seen ? "text-exh-ink" : "text-exh-ink/70"}`}
                   >
                     {isOpen ? "−" : "+"}
                   </span>
@@ -263,7 +263,7 @@ export default function ReadTheDeed() {
                 Your neighbors signed this about you.
               </span>
             </span>
-            <span aria-hidden="true" className="exh-mono shrink-0 self-center text-sm text-exh-ink/50">
+            <span aria-hidden="true" className="exh-mono shrink-0 self-center text-sm text-exh-ink/70">
               {chainOpen ? "−" : "+"}
             </span>
           </button>
@@ -316,7 +316,7 @@ export default function ReadTheDeed() {
             disabled={spread}
             className={`exh-plat min-h-12 rounded-sm border px-4 text-xs font-semibold uppercase tracking-[0.2em] transition-colors ${
               spread
-                ? "border-exh-ink/25 text-exh-ink/50"
+                ? "border-exh-ink/25 text-exh-ink/70"
                 : "cursor-pointer border-exh-ink bg-exh-linen text-exh-ink hover:bg-exh-linen-deep"
             }`}
           >

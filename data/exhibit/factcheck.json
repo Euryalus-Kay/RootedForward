@@ -38,36 +38,12 @@
           "source": "hp-research.json land script; hp-factcheck.json formation chapter; Hyde Park Historical Society"
         },
         {
-          "id": "fc-land-05",
-          "factId": "land.last_dance_1835",
-          "claim": "About 800 men danced through Chicago at the last annuity payment in August 1835.",
-          "verdict": "verified",
-          "note": "Single eyewitness account by John Caton, so the fact ships at tier attributed.",
-          "source": "John Caton account via land deep dive stats (lastDancers)"
-        },
-        {
-          "id": "fc-land-06",
-          "factId": "land.trail_of_death_1838",
-          "claim": "In 1838 some 859 Potawatomi were force-marched 660 miles in 61 days; more than 40 died.",
-          "verdict": "verified",
-          "note": "Matches Trail of Death records carried in the deep dive.",
-          "source": "Potawatomi Trail of Death records; land deep dive s5 and stats"
-        },
-        {
           "id": "fc-land-07",
           "factId": "land.pokagon_today",
           "claim": "The Pokagon Band counts more than 6,000 citizens today.",
           "verdict": "verified",
           "note": "As of 2023 per the deep dive stat.",
           "source": "Pokagon Band of Potawatomi; land deep dive stats (pokagonToday)"
-        },
-        {
-          "id": "fc-land-08",
-          "factId": "land.shabbona_2024",
-          "claim": "In 2024 the Prairie Band became the first federally recognized tribe to hold trust land in Illinois again.",
-          "verdict": "verified",
-          "note": "Shabbona land placed in trust.",
-          "source": "Prairie Band Potawatomi Nation, 2024; land deep dive stats (shabbonaTrust)"
         }
       ]
     },
@@ -84,22 +60,6 @@
           "source": "hp-factcheck.json formation chapter; Wikipedia, Paul Cornell (lawyer)"
         },
         {
-          "id": "fc-formation-02",
-          "factId": "formation.hp_house_1857",
-          "claim": "The Hyde Park House hotel opened in 1857.",
-          "verdict": "verified",
-          "note": "The destroying fire year is contested (1877 or 1879) and stays soft per the repo verify.",
-          "source": "hp-factcheck.json formation chapter; hp-research.json formation verify"
-        },
-        {
-          "id": "fc-formation-03",
-          "factId": "formation.lincoln_1865",
-          "claim": "Mary Todd Lincoln stayed at the Hyde Park House in summer 1865 with Robert and Tad.",
-          "verdict": "verified",
-          "note": "About two and a half months, a few months after the assassination.",
-          "source": "hp-factcheck.json formation chapter; Wikipedia, Hyde Park House"
-        },
-        {
           "id": "fc-formation-04",
           "factId": "formation.annexation_1889",
           "claim": "Hyde Park Township, roughly 85,000 people, voted on June 29, 1889 to join Chicago.",
@@ -110,101 +70,18 @@
         {
           "id": "fc-formation-05",
           "factId": "formation.price_sorting",
-          "claim": "Cornell priced the sorting in, keeping the lakefront expensive and pushing industry and cheaper housing outward and southward.",
+          "claim": "Cornell priced the sorting in, selling wealthy Chicagoans the lakefront while the township designated other areas for manufacturing and lower-cost housing.",
           "verdict": "corrected",
-          "correction": "The spec's north lakefront $7,000 versus $2,000 south lot prices are not in the corpus and were excluded; the qualitative sorting claim ships instead.",
-          "note": "Qualitative claim carried by the fact-checked formation deep dive s6.",
-          "source": "Rooted Forward formation deep dive s6"
-        },
-        {
-          "id": "fc-formation-06",
-          "factId": "formation.pop_1880_1889",
-          "claim": "Township population rose from 15,716 in 1880 to about 85,000 in 1889.",
-          "verdict": "verified",
-          "note": "15,716 checked against the 1880 census; 85,000 is an approximation for the annexation year.",
-          "source": "hp-factcheck.json formation chapter; Encyclopedia of Chicago"
-        },
-        {
-          "id": "fc-formation-07",
-          "factId": "formation.annexation_scale_1889",
-          "claim": "The 1889 annexation added about 125 square miles and 225,000 people to Chicago.",
-          "verdict": "verified",
-          "note": "Citywide 1889 annexation scale, of which Hyde Park Township was part.",
-          "source": "Encyclopedia of Chicago, Annexation; WBEZ via deep dive stats"
+          "correction": "The spec's north lakefront $7,000 versus $2,000 south lot prices are not in any source and were excluded; the qualitative sorting claim ships instead, re-sourced July 8, 2026 to the Hyde Park Historical Society's Cornell history.",
+          "note": "The society records that Cornell sold wealthy Chicagoans the idea of Hyde Park as a resort and that the township held areas designated for manufacturing and lower-cost housing.",
+          "source": "Hyde Park Historical Society, Paul Cornell"
         }
       ]
     },
     {
       "domainId": "university",
       "finalVerdict": "verified",
-      "claims": [
-        {
-          "id": "fc-university-01",
-          "factId": "university.rockefeller_pledge_600k",
-          "claim": "Rockefeller pledged $600,000 in May 1889, conditioned on matching gifts.",
-          "verdict": "verified",
-          "note": "The repo verify declines to assert the exact day of the May 1889 offer.",
-          "source": "Goodspeed (1925); hp-research.json university verify"
-        },
-        {
-          "id": "fc-university-02",
-          "factId": "university.match_400k",
-          "claim": "The American Baptist Education Society raised the $400,000 match through 1889 and 1890.",
-          "verdict": "verified",
-          "note": "Gates and Goodspeed ran the solicitations.",
-          "source": "Goodspeed (1925); hp-research.json university chapter"
-        },
-        {
-          "id": "fc-university-03",
-          "factId": "university.field_10_acres",
-          "claim": "Marshall Field donated the original ten-acre tract holding the main quadrangles.",
-          "verdict": "verified",
-          "note": "Repo verify carries this at medium confidence; Field later sold the university more land.",
-          "source": "hp-research.json university verify; deep dive stats (first-land)"
-        },
-        {
-          "id": "fc-university-04",
-          "factId": "university.incorporated_1890",
-          "claim": "The university was incorporated September 10, 1890.",
-          "verdict": "corrected",
-          "correction": "An earlier September 18, 1890 incorporation claim conflated incorporation with the date trustees elected Harper; the repo verify fixed it to September 10.",
-          "note": "Founding is dated by the university to July 1, 1891, when Harper took office.",
-          "source": "hp-research.json university verify; University of Chicago Office of the President history"
-        },
-        {
-          "id": "fc-university-05",
-          "factId": "university.classes_1892",
-          "claim": "First classes met October 1, 1892 with 594 students and about 120 faculty, including eight former college presidents.",
-          "verdict": "verified",
-          "note": "Figures trace to Goodspeed and are widely repeated; coeducational from the start.",
-          "source": "hp-research.json university verify; Goodspeed (1925)"
-        },
-        {
-          "id": "fc-university-06",
-          "factId": "university.first_university_bankrupt_1886",
-          "claim": "The first University of Chicago, on Douglas's donated land, closed in foreclosure in 1886.",
-          "verdict": "verified",
-          "note": "Film verify kept the 1856 charter framing; the deep dive stat uses 1857. The 1886 closing is consistent across both.",
-          "source": "hp-research.json university verify; Old University of Chicago records"
-        },
-        {
-          "id": "fc-university-07",
-          "factId": "university.rockefeller_total_35m",
-          "claim": "Rockefeller gave about $35 million by 1910, including a $10 million farewell gift.",
-          "verdict": "verified",
-          "note": "He kept his name off campus during his giving.",
-          "source": "hp-research.json university verify; UChicago Library exhibit"
-        },
-        {
-          "id": "fc-university-08",
-          "factId": "university.harper_first_president",
-          "claim": "Harper was elected September 18, 1890, took office July 1, 1891, and earned his Yale doctorate in his teens.",
-          "verdict": "corrected",
-          "correction": "The earlier claim of a Yale PhD at nineteen was softened to in his teens, around age eighteen, per the repo verify.",
-          "note": "Elected at 34, in office at 35.",
-          "source": "hp-research.json university verify; Harper College Archives"
-        }
-      ]
+      "claims": []
     },
     {
       "domainId": "fair",
@@ -243,53 +120,12 @@
           "source": "Rooted Forward worlds-fair deep dive s6 and stats (icOrdinance)"
         },
         {
-          "id": "fc-fair-05",
-          "factId": "fair.chicago_day_751026",
-          "claim": "Chicago Day, October 9, 1893, drew 751,026 admissions.",
-          "verdict": "corrected",
-          "correction": "The researcher's 716,881 was wrong; the repo verify corrected to about 751,026, with 761,942 in sources that add staff and exhibitors.",
-          "note": "A record outdoor event crowd for its time.",
-          "source": "hp-research.json worlds-fair verify; Wikipedia"
-        },
-        {
-          "id": "fc-fair-06",
-          "factId": "fair.ferris_wheel_264ft",
-          "claim": "The first Ferris Wheel stood 264 feet with 36 cars and more than 2,000 riders at once.",
-          "verdict": "verified",
-          "note": "Fifty cents a turn, same as fair admission.",
-          "source": "Wikipedia, Ferris Wheel (1893); worlds-fair deep dive stats (ferris)"
-        },
-        {
-          "id": "fc-fair-07",
-          "factId": "fair.construction_deaths_32",
-          "claim": "The fair's medical bureau counted 32 construction deaths.",
-          "verdict": "verified",
-          "note": "Bureau's own tally, carried in the deep dive.",
-          "source": "worldsfairchicago1893.com via worlds-fair deep dive stats (deaths)"
-        },
-        {
-          "id": "fc-fair-08",
-          "factId": "fair.msi_1933",
-          "claim": "The Palace of Fine Arts survived on its fireproof brick substructure and reopened as the Museum of Science and Industry in 1933.",
-          "verdict": "verified",
-          "note": "Housed the Field Columbian Museum until 1920; Rosenwald funded the rebirth.",
-          "source": "hp-research.json worlds-fair verify; Wikipedia, MSI"
-        },
-        {
           "id": "fc-fair-09",
           "factId": "fair.reason_why_10000",
-          "claim": "10,000 copies of The Reason Why were distributed at the fair's Haitian building.",
+          "claim": "10,000 copies of The Reason Why were distributed at the fair's Haitian building, answering the organizers' refusal to give Black Americans any part in planning the fair.",
           "verdict": "verified",
-          "note": "Ida B. Wells's protest pamphlet, with Douglass presiding at the Haiti building.",
-          "source": "Tennessee Historical Society account via worlds-fair deep dive stats (pamphlet)"
-        },
-        {
-          "id": "fc-fair-10",
-          "factId": "fair.colored_american_day",
-          "claim": "Colored American Day was August 25, 1893; Douglass spoke and Dunbar read.",
-          "verdict": "verified",
-          "note": "Carried in the deep dive stats.",
-          "source": "Living History of Illinois via worlds-fair deep dive stats (coloredDay)"
+          "note": "Ida B. Wells's protest pamphlet, written with Douglass, Penn, and Barnett, with Douglass presiding at the Haiti building. The corpus carries the planning refusal and the pamphlet's chapters on convict leasing, disenfranchisement, and lynching. A widely quoted White City, no helping hand line could not be found in the pamphlet's digitized text and is not quoted.",
+          "source": "The Reason Why (1893), UPenn digital edition; Tennessee Historical Society account (distribution count)"
         },
         {
           "id": "fc-fair-11",
@@ -316,9 +152,9 @@
         {
           "id": "fc-colorline-01",
           "factId": "colorline.club_founded",
-          "claim": "The Hyde Park Improvement Protective Club formed in autumn 1908 with about 350 members under attorney Francis Harper.",
+          "claim": "The Hyde Park Improvement Protective Club formed in autumn 1908 with about 350 members under attorney Francis Harper, pledging buyouts, renter bonuses, dismissal of Black servants, and a boycott of agents who sold across the line.",
           "verdict": "verified",
-          "note": "The spec allowed 1908 or 1909; the repo verified 1908 in both the film script and the deep dive, sourced to Spear.",
+          "note": "The spec allowed 1908 or 1909; the repo verified 1908 in both the film script and the deep dive, sourced to Spear. The methods, including the servants pledge, are carried in the fact-checked film corpus sourced to Spear; Fannie Barrier Williams was among the residents the club pressed to leave, and she refused.",
           "source": "Allan Spear, Black Chicago; hp-research.json color-line film script; color-line deep dive s1"
         },
         {
@@ -479,6 +315,14 @@
           "verdict": "verified",
           "note": "Verbatim in the CCRR aggregate passage alongside the zero convictions.",
           "source": "The Negro in Chicago, 1922"
+        },
+        {
+          "id": "fc-bombings-13",
+          "factId": "bombings.pins_located",
+          "claim": "The exhibit digitized 40 incidents from the 1922 report's bombing casework and placed 32 of them on the map, 24 at a street address and 8 at a block.",
+          "verdict": "verified",
+          "note": "Counts checked programmatically against the exhibit's digitized record on July 8, 2026; 8 incidents carry no mappable location and are listed without pins.",
+          "source": "The Negro in Chicago (1922), Bombings section; the exhibit's digitized incident record"
         }
       ]
     },
@@ -486,14 +330,6 @@
       "domainId": "covenants",
       "finalVerdict": "verified",
       "claims": [
-        {
-          "id": "fc-covenants-01",
-          "factId": "covenants.corrigan_1926",
-          "claim": "After Corrigan v. Buckley (1926) racial covenants proliferated, sweeping the neighborhoods around the Black Belt from the late 1920s.",
-          "verdict": "verified",
-          "note": "Decision date May 24, 1926 from the court record; the covenant wave timing is in the fact-checked corpus and Covenants Project research.",
-          "source": "Corrigan v. Buckley, 271 U.S. 323; Chicago Covenants Project; color-line deep dive s6"
-        },
         {
           "id": "fc-covenants-02",
           "factId": "covenants.uchicago_defense_83597",
@@ -563,7 +399,7 @@
           "factId": "code.nareb_article34_1924",
           "claim": "NAREB's 1924 Code of Ethics, Article 34, barred Realtors from introducing members of any race or nationality detrimental to property values.",
           "verdict": "verified",
-          "note": "Article text confirmed against archived code reproductions.",
+          "note": "Article text confirmed against archived code reproductions. The wall text and the ethics exam now carry the article in full, including the phrases a character of property or occupancy and or any individuals, which an earlier wall-text quotation had silently elided.",
           "source": "NAREB Code of Ethics (1924); Oregon History Project records; Seattle Journal for Social Justice"
         },
         {
@@ -601,27 +437,27 @@
           "factId": "redlining.hoyt_fha",
           "claim": "Hoyt served as the FHA's chief land economist from 1934 to 1940.",
           "verdict": "corrected",
-          "correction": "The spec used principal housing economist. Both titles circulate for the same post; the repo's fact-checked film and deep dive use chief land economist, so the corpus wording ships with the variant noted.",
+          "correction": "The spec used principal housing economist. Both titles circulate for the same post; the corpus wording, chief land economist, ships with the variant noted. Re-sourced July 8, 2026 from Wikipedia to Hoyt's own 1939 FHA monograph plus biographical accounts, and re-tiered reported because the title and span rest on those secondary accounts.",
           "note": "Either title, the author of the racial land-value hierarchy wrote federal lending economics.",
-          "source": "hp-research.json redlining script; redlining deep dive stats (fhaCreated); Hoyt biographies"
+          "source": "Hoyt, The Structure and Growth of Residential Neighborhoods in American Cities (FHA, 1939); APA Economic Development Division profile (2009); Washington Post obituary (Nov 30, 1984)"
         },
         {
           "id": "fc-redlining-03",
           "factId": "redlining.babcock_manual",
-          "claim": "The FHA Underwriting Manual, built under Frederick Babcock, told appraisers to check for incompatible racial groups and rewarded restrictive deed clauses.",
+          "claim": "The FHA Underwriting Manual, built under Frederick Babcock, told appraisers to check for incompatible racial and social groups and rewarded restrictive deed clauses.",
           "verdict": "corrected",
-          "correction": "The spec's inharmonious racial groups wording was adjusted to the corpus-verified incompatible racial groups phrasing of the 1938 edition.",
-          "note": "The manual also praised barriers giving protection from adverse influences.",
-          "source": "FHA Underwriting Manual (1938) via redlining deep dive s3"
+          "correction": "Two passes. The spec's inharmonious racial groups was first adjusted to incompatible racial groups; on July 8, 2026 the quotation was verified against published excerpts of the 1938 edition and corrected to the full verbatim phrase, incompatible racial and social groups.",
+          "note": "The manual also praised barriers giving protection from adverse influences. The verified sentence reads, Areas surrounding a location are investigated to determine whether incompatible racial and social groups are present.",
+          "source": "FHA Underwriting Manual (1938), excerpts via Arlington County reproduction and Bill of Rights Institute transcription"
         },
         {
           "id": "fc-redlining-04",
           "factId": "redlining.holc_survey_chicago",
-          "claim": "On the Chicago HOLC residential security map the Black Belt was washed in red, with Black presence graded as hazard.",
+          "claim": "On the Chicago HOLC residential security map, surveyed 1939 to 1940 and issued in 1940, the Black Belt was washed in red, with Black presence graded as hazard.",
           "verdict": "corrected",
-          "correction": "The spec's claim that every Black neighborhood drew a D or C in a 1939-40 survey was softened to the corpus wording. The repo paper dates its Chicago map to 1938 and the deep dive dates the national survey 1935 to 1940.",
+          "correction": "Two corrections. The spec's claim that every Black neighborhood drew a D or C was softened to the corpus wording, the Black Belt came back shaded red. The dating was standardized July 8, 2026 to the sheet-supported record, surveyed 1939 to 1940 with the map issued in 1940; the digitized Chicago sheets carry surveyor dates from September 1939 to April 1940. A 1938 label survives in the public dataset filename and the site's research paper and refers to the same map.",
           "note": "Area description sheets recorded race next to sewer access as the same kind of fact.",
-          "source": "Mapping Inequality; redlining deep dive s4; repo HOLC paper"
+          "source": "Mapping Inequality (Chicago 1940); HOLC Area Description Data, American Panorama (sheet dates)"
         },
         {
           "id": "fc-redlining-05",
@@ -644,8 +480,8 @@
           "factId": "redlining.black_loans_under_2pct",
           "claim": "Under 2 percent of federally insured home loans went to Black Americans between 1945 and 1959.",
           "verdict": "verified",
-          "note": "Figure carried in the fact-checked deep dive; tier reported since it rides on secondary scholarship.",
-          "source": "redlining deep dive s3 and stats (blackLoans)"
+          "note": "Verified July 8, 2026 against Hanchett's published essay, whose sentence reads, Between 1945 and 1959, less than 2 percent of all federally insured home loans went to African Americans. Tier reported since the essay states the figure without its own tabulation.",
+          "source": "Thomas W. Hanchett, The Other 'Subsidized Housing', in From Tenements to the Taylor Homes (Penn State University Press, 2000)"
         },
         {
           "id": "fc-redlining-08",
@@ -660,8 +496,8 @@
           "factId": "redlining.holc_refi_1m",
           "claim": "New Deal agencies refinanced about one million home mortgages through the HOLC.",
           "verdict": "verified",
-          "note": "HOLC program totals 1933-1936, just over one million loans.",
-          "source": "HOLC program records"
+          "note": "Verified July 8, 2026 against Harriss, who writes that the HOLC made over one million refinancing loans for a total of $3.1 billion; his Table 4 counts 1,017,821 loans, with new lending ended June 12, 1936.",
+          "source": "C. Lowell Harriss, History and Policies of the Home Owners' Loan Corporation (NBER, 1951), Original Lending Activities"
         },
         {
           "id": "fc-redlining-10",
@@ -802,16 +638,8 @@
           "factId": "renewal.black_pop_drop_40pct",
           "claim": "The neighborhood's Black population fell about 40 percent across the renewal.",
           "verdict": "verified",
-          "note": "Verified in the film factcheck at medium confidence.",
-          "source": "hp-factcheck.json urban-renewal chapter; Wikipedia, Hyde Park, Chicago"
-        },
-        {
-          "id": "fc-renewal-12",
-          "factId": "renewal.displaced_15000",
-          "claim": "More than 15,000 residents were displaced.",
-          "verdict": "verified",
-          "note": "The figure the university's own sources use, verified for the film's cold open; Chicago Magazine cites 30,000 for the broader area, so 15,000 is not a ceiling.",
-          "source": "hp-research.json intro verify; UChicago Library exhibit"
+          "note": "Re-sourced July 8, 2026. Wikipedia carries the figure without a footnote; the University of Chicago Library's collection guide states that after this plan the average income of Hyde Park increased sharply by 70 percent, but the population of African Americans decreased by 40 percent.",
+          "source": "University of Chicago Library, Hanna Holborn Gray Special Collections Research Center, Guide to the Hyde Park, Kenwood, and Woodlawn Neighborhoods Collection"
         },
         {
           "id": "fc-renewal-13",
@@ -828,14 +656,6 @@
           "verdict": "verified",
           "note": "Carried in the repo verify notes and deep dive stats.",
           "source": "hp-research.json urban-renewal verify notes; urban-renewal deep dive stats (line61)"
-        },
-        {
-          "id": "fc-renewal-15",
-          "factId": "renewal.private_investment_250m",
-          "claim": "About $250 million in private investment was drawn in alongside the university's money.",
-          "verdict": "verified",
-          "note": "CEGU analysis figure carried in the deep dive stats.",
-          "source": "CEGU (2023) via urban-renewal deep dive stats (private)"
         },
         {
           "id": "fc-renewal-16",
@@ -1023,14 +843,6 @@
           "source": "hp-factcheck.json present chapter; Obama Foundation"
         },
         {
-          "id": "fc-present-02",
-          "factId": "present.obama_cost",
-          "claim": "The campus cost about $850 million.",
-          "verdict": "verified",
-          "note": "Verified in the film factcheck; call it a presidential center, not a NARA library.",
-          "source": "hp-factcheck.json present chapter; CNN (June 2026)"
-        },
-        {
           "id": "fc-present-03",
           "factId": "present.woodlawn_prices",
           "claim": "East Woodlawn's median single-family price doubled from 2019 to about $440,000 by 2025.",
@@ -1072,23 +884,6 @@
           "source": "FEDS Notes (2023); hp-research.json present script"
         },
         {
-          "id": "fc-present-08",
-          "factId": "present.black_wealth_growth_61pct",
-          "claim": "Black median wealth grew 61 percent from 2019 to 2022 against 31 percent for white families, and the dollar gap still widened.",
-          "verdict": "verified",
-          "note": "Median growth figures per the FEDS note, carried in the fact-checked deep dive.",
-          "source": "FEDS Notes (2023); present deep dive s5"
-        },
-        {
-          "id": "fc-present-09",
-          "factId": "present.site_2016",
-          "claim": "The Jackson Park site was selected in 2016, announced July 29, 2016.",
-          "verdict": "corrected",
-          "correction": "The film's around 2015 was ruled wrong by the repo factcheck; 2015 was the Chicago and university partnership decision, 2016 the site.",
-          "note": "The repo factcheck fix is authoritative.",
-          "source": "hp-factcheck.json present chapter; Obama Foundation press release (July 29, 2016)"
-        },
-        {
           "id": "fc-present-10",
           "factId": "present.woodlawn_ordinance_2020",
           "claim": "The Woodlawn Housing Preservation Ordinance passed in September 2020, reserving 52 city lots with a loan fund, repair grants, and a tenant right of first refusal.",
@@ -1105,14 +900,6 @@
           "source": "Illinois Answers Project (May 7, 2026); present deep dive s4"
         },
         {
-          "id": "fc-present-12",
-          "factId": "present.pilot_median_72k_330k",
-          "claim": "The Jackson Park pilot-area median sale price rose from $72,500 in 2016 to $330,000 in 2025.",
-          "verdict": "verified",
-          "note": "Carried in the deep dive stats.",
-          "source": "Illinois Answers Project (May 2026); present deep dive stats (pilotprice)"
-        },
-        {
           "id": "fc-present-13",
           "factId": "present.holc_income_gradient",
           "claim": "2023 median household income runs $207,434 on former A land down to $65,240 on former D.",
@@ -1127,14 +914,6 @@
           "verdict": "verified",
           "note": "Repo research paper figures.",
           "source": "repo paper; ACS 2023 B25003"
-        },
-        {
-          "id": "fc-present-15",
-          "factId": "present.holc_vacancy_gradient",
-          "claim": "Vacancy runs 5.1 percent on former A land and 11.3 on former D, with B and C tied at 8.6.",
-          "verdict": "verified",
-          "note": "Tie reported as found.",
-          "source": "repo paper; ACS 2023 B25002"
         },
         {
           "id": "fc-present-16",
@@ -1207,12 +986,20 @@
           "source": "NYT obituary (Oct 1996); hp-research.json urban-renewal facts"
         },
         {
+          "id": "fc-people-08",
+          "factId": "people.king_lawndale_1966",
+          "claim": "Martin Luther King Jr. took a North Lawndale flat on South Hamlin Avenue in January 1966 and led open housing marches into all-white Chicago neighborhoods that summer.",
+          "verdict": "verified",
+          "note": "Verified July 8, 2026 against Chicago Magazine's 2016 account and contemporaneous retrospectives; the move dates to January 26, 1966, the marches to July and August 1966, and a thrown stone struck King in Marquette Park on August 5, 1966.",
+          "source": "Chicago Magazine, Martin Luther King Jr.'s 1966 Chicago Campaign (August 2016); DNAinfo Chicago (January 25, 2016)"
+        },
+        {
           "id": "fc-people-07",
           "factId": "people.ruth_wells",
           "claim": "Ruth Wells was an early Contract Buyers League leader who publicly testified to what she had paid.",
           "verdict": "verified",
-          "note": "Documented in Satter, Family Properties, and CBL press coverage; exact page cite open.",
-          "source": "Satter, Family Properties, 2009"
+          "note": "Documented in Satter, Family Properties, and CBL press coverage. Exact page numbers are not pinned; the registry's locator is the honest chapter range, part II, the Contract Buyers League chapters.",
+          "source": "Satter, Family Properties, 2009, part II; The Chicago Reporter (2019)"
         }
       ]
     }

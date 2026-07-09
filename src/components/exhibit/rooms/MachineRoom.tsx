@@ -16,8 +16,20 @@ import { COUNTER_ROOM_ID, machineOf, type RoomId } from "@/lib/exhibit/machines"
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { COUNTER_ROOM, ROOM_STATIONS, type RoomStation } from "@/lib/exhibit/content/rooms";
 import { InteractiveContext, type InteractiveApi } from "../interactives/InteractiveContext";
-import { LampDisc, MonoNumbers, machineTitle, stateSentence } from "../hud/BrassLamp";
+import { LampDisc, MonoNumbers, machineTitle } from "../hud/BrassLamp";
 import PaperCard from "../shared/PaperCard";
+
+/* One plain line under the lamp disc. The ledger above already quotes
+ * the record verbatim; this line only explains what the lamp means. */
+function lampReading(lamp: LampState): string {
+  if (lamp === "renamed") {
+    return "This lamp stays lit. The record shows no stop for this machine, only a new name. The plate at the end of the room reads it.";
+  }
+  if (lamp === "off_residue") {
+    return "The lamp is out, with residue. The dates above say when the machine stopped, and the residue line says what it left behind.";
+  }
+  return "This lamp is still lit. Nothing in the record above switches this machine off.";
+}
 
 export interface MachineRoomProps {
   roomId: RoomId;
@@ -187,12 +199,10 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
         >
           <LampDisc lampState={lamp} />
           <div className="min-w-0">
-            <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-              The lamp, where the record leaves it
+            <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
+              The lamp
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-exh-ink">
-              {stateSentence(machine, lamp)}
-            </p>
+            <p className="mt-1 text-xs leading-relaxed text-exh-ink">{lampReading(lamp)}</p>
           </div>
         </PaperCard>
       </header>

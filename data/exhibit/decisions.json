@@ -190,6 +190,20 @@
       "title": "Owner verdict on v1, feels AI and gimmicky, like a kids game, confusing without context, remove the TTS voice, needs museum-grade education. Council diagnosis, the AI feeling is epistemological, simulations standing where real documents exist. Rebuild plan, one reader-paced experience (no audio, no modes, no auto-advance), delete the meta-game layer (medallion collectibles, machine board HUD, DECLINED tap game, press-and-hold, count-ups, gear train, answer key game, machine cards), rewrite all text as historian wall text per humanizer rules, keep only evidence-forward stations (real HOLC map with real surveyor sheets, bombing record, Two Buyers arithmetic, wealth gap scale, annotated real documents), add the Surveyor's Files reading room (576 real descriptions, permalinks), an opening context panel in plain words, and an About this exhibit authorship panel with the registry as bibliography. No visual-system redesign. Fact registry, HOLC data, and harness untouched as infrastructure.",
       "decision": "approved",
       "status": "open"
+    },
+    {
+      "id": "D-R3-01",
+      "date": "2026-07-08",
+      "milestone": "R3",
+      "decision": "Ship the Surveyor's Files as a reading room off ch6 with per-sheet permalinks keyed by areaId (area_number is missing on 130 sheets and duplicated, so it is display-only). Convert the loans overlay from press-and-hold to a plain toggle so the darkened map can be studied, per the rebuild's no-gimmick rule. Sort the full record table by year because a YEAR column that runs backwards reads as an error.",
+      "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, fact audit, verify 115/115, build)"
+    },
+    {
+      "id": "D-R4-01",
+      "date": "2026-07-09",
+      "milestone": "R4",
+      "decision": "Panel verdict accepted and all 31 punch-list items fixed. Notable calls: narration.json deleted with its pipeline scripts (voice removed at owner demand; git history preserves), 28 unused game-era facts archived to facts-archive.json, redlining.hoyt_fha downgraded documented to reported, holc_survey_chicago re-dated 1938 to 1940 on sheet evidence, King medallion moved ch11 to ch10 anchored by a new registered fact, and the research paper holc-redlining-present-day-outcomes-chicago.ts still dates the map 1938 (flagged, out of exhibit scope).",
+      "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, audit 111 facts, verify 133/133, build)"
     }
   ]
 }

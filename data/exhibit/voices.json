@@ -73,10 +73,10 @@
       "personId": "dempsey-travis",
       "name": "Dempsey Travis",
       "years": "1920 to 2009",
-      "role": "Realtor and NAACP leader who surveyed the lenders",
+      "role": "South Side realtor and mortgage banker who lent where the institutions refused",
       "chapter": "ch9",
       "paraphrase": {
-        "text": "His survey of Cook County's white-run savings and loans found two hundred forty-one institutions and exactly one willing to lend to a Black buyer crossing the line.",
+        "text": "Of Cook County's two hundred forty-one white-run savings and loans, Beryl Satter's history records, exactly one would lend to a Black buyer crossing the line. Travis answered the vacuum from inside it, building his own mortgage firm to write the loans the institutions would not.",
         "source": "Satter, Family Properties, 2009, pp. 44 to 45; Travis, An Autobiography of Black Chicago, 1981"
       },
       "quoteStatus": "paraphrase",
@@ -113,13 +113,13 @@
       "name": "Martin Luther King Jr.",
       "years": "1929 to 1968",
       "role": "Brought the movement to Chicago's housing in 1966",
-      "chapter": "ch11",
+      "chapter": "ch10",
       "paraphrase": {
-        "text": "He moved into a West Side flat in 1966 to make Chicago's housing the movement's northern front. The marches he led into all-white neighborhoods that summer pushed open housing onto the national agenda that produced the Fair Housing Act.",
-        "source": "Chicago Freedom Movement records, 1966; Fair Housing Act, 1968"
+        "text": "He took a North Lawndale flat in January 1966 to make Chicago's housing the movement's northern front. The marches he led into all-white neighborhoods that summer put open housing on the national agenda, and the Fair Housing Act followed in 1968.",
+        "source": "Chicago Magazine, August 2016; Fair Housing Act, 1968"
       },
       "quoteStatus": "paraphrase",
-      "factRef": null
+      "factRef": "people.king_lawndale_1966"
     }
   ]
 }

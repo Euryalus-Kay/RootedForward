@@ -6,13 +6,13 @@
 /*  1968 red span renders statically with a small printed label. The   */
 /*  active chapter derives from scroll position (ExhibitApp's          */
 /*  IntersectionObserver writes it into state). Narrow viewports get   */
-/*  a compact rail plus an era chip that opens the chapter sheet;      */
-/*  both list About and sources at the end.                            */
+/*  a compact rail (tapping it, or the era chip, opens the chapter     */
+/*  sheet); both list About and sources at the end.                    */
 /* ------------------------------------------------------------------ */
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import timelineJson from "../../../../data/exhibit/timeline.json";
-import { CHAPTER_ORDER } from "@/lib/exhibit/types";
+import { CHAPTER_ORDER, type ChapterId } from "@/lib/exhibit/types";
 import { CHAPTER_META, displayEraOf, displayTitleOf, EXHIBIT_FLOW } from "@/lib/exhibit/content";
 import { scrollToAnchor, useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { cn } from "@/lib/utils";
@@ -28,20 +28,38 @@ const pctOf = (year: number) =>
 
 /* Rail nodes: one per chapter in reading order, skipping the overture
    (its 1832 anchor would sit on top of ch1's). */
-const RAIL_CHAPTERS = EXHIBIT_FLOW.filter((id) => id !== "ch0_5");
+const RAIL_CHAPTERS: ChapterId[] = EXHIBIT_FLOW.filter((id) => id !== "ch0_5");
 
-/* Year labels thin themselves out so clustered nodes never collide. */
+const spineYearOf = (id: ChapterId) => CHAPTER_META[CHAPTER_ORDER.indexOf(id)].spineYear;
+
+/* Node dots keep a minimum horizontal separation; the mid-century
+   cluster (1948 to 1958) otherwise stacks its dots and hit areas.
+   Positions nudge rightward the same way the year labels thin out. */
+const MIN_NODE_GAP_PCT = 2.4;
+const NODE_PCT: Record<string, number> = (() => {
+  const entries = RAIL_CHAPTERS.map((id) => ({ id, pct: pctOf(spineYearOf(id)) })).sort(
+    (a, b) => a.pct - b.pct
+  );
+  let last = -Infinity;
+  for (const e of entries) {
+    if (e.pct - last < MIN_NODE_GAP_PCT) e.pct = last + MIN_NODE_GAP_PCT;
+    last = e.pct;
+  }
+  return Object.fromEntries(entries.map((e) => [e.id, Math.min(e.pct, 100)]));
+})();
+
+/* Year labels thin themselves out so clustered labels never collide. */
 const LABELED_YEARS = (() => {
   const out = new Set<number>();
-  const years = RAIL_CHAPTERS.map(
-    (id) => CHAPTER_META[CHAPTER_ORDER.indexOf(id)].spineYear
-  ).sort((a, b) => a - b);
+  const years = RAIL_CHAPTERS.map((id) => ({
+    year: spineYearOf(id),
+    pct: NODE_PCT[id],
+  })).sort((a, b) => a.pct - b.pct);
   let last = -Infinity;
   for (const y of years) {
-    const p = pctOf(y);
-    if (p - last >= 4.2) {
-      out.add(y);
-      last = p;
+    if (y.pct - last >= 4.2) {
+      out.add(y.year);
+      last = y.pct;
     }
   }
   return out;
@@ -54,6 +72,23 @@ export function TimelineSpine() {
 
   const activeId = CHAPTER_ORDER[state.chapterIndex];
   const behavior: ScrollBehavior = state.reducedMotion ? "auto" : "smooth";
+
+  /* the overture (ch0_5) has no node of its own; the nearest node by
+     spine year stays marked so the rail never goes blank */
+  const railActiveId = useMemo(() => {
+    if (RAIL_CHAPTERS.includes(activeId)) return activeId;
+    const year = spineYearOf(activeId);
+    let best = RAIL_CHAPTERS[0];
+    let bestDist = Infinity;
+    for (const id of RAIL_CHAPTERS) {
+      const d = Math.abs(spineYearOf(id) - year);
+      if (d < bestDist) {
+        bestDist = d;
+        best = id;
+      }
+    }
+    return best;
+  }, [activeId]);
 
   const go = (chapterId: string) => {
     const idx = CHAPTER_ORDER.indexOf(chapterId as (typeof CHAPTER_ORDER)[number]);
@@ -96,38 +131,44 @@ export function TimelineSpine() {
             1921 to 1968, the machinery at full power
           </span>
 
-          {/* nodes: scroll-to-chapter anchors */}
+          {/* nodes: the dots always render; below md the individual
+              24px hit areas are sub-target-size, so the buttons are
+              desktop-only and the whole rail opens the chapter sheet */}
           {RAIL_CHAPTERS.map((id) => {
             const meta = CHAPTER_META[CHAPTER_ORDER.indexOf(id)];
-            const current = id === activeId;
+            const current = id === railActiveId;
             const title = displayTitleOf(id);
+            const leftPct = NODE_PCT[id];
             return (
               <span key={id}>
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-[21px] inline-flex h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center md:top-[25px]"
+                  style={{ left: `${leftPct}%` }}
+                >
+                  <span
+                    className={cn(
+                      "h-2 w-2 rounded-full border md:h-2.5 md:w-2.5",
+                      current
+                        ? "border-exh-ink bg-exh-gold"
+                        : "border-exh-ink/60 bg-exh-linen"
+                    )}
+                  />
+                </span>
                 <button
                   type="button"
                   data-testid={`spine-node-${meta.spineYear}`}
                   aria-label={`Go to ${title}, ${meta.spineYear}`}
                   aria-current={current ? "true" : undefined}
                   onClick={() => go(id)}
-                  className="absolute top-0 h-full w-6 -translate-x-1/2"
-                  style={{ left: `${pctOf(meta.spineYear)}%` }}
-                >
-                  <span className="absolute left-1/2 top-[21px] inline-flex h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center md:top-[25px]">
-                    <span
-                      className={cn(
-                        "h-2 w-2 rounded-full border md:h-2.5 md:w-2.5",
-                        current
-                          ? "border-exh-ink bg-exh-gold"
-                          : "border-exh-ink/60 bg-exh-linen"
-                      )}
-                    />
-                  </span>
-                </button>
+                  className="absolute top-0 hidden h-full w-6 -translate-x-1/2 md:block"
+                  style={{ left: `${leftPct}%` }}
+                />
                 {LABELED_YEARS.has(meta.spineYear) && (
                   <span
                     aria-hidden="true"
                     className="exh-mono absolute top-9 hidden -translate-x-1/2 text-[10px] text-exh-ink-soft md:block"
-                    style={{ left: `${pctOf(meta.spineYear)}%` }}
+                    style={{ left: `${leftPct}%` }}
                   >
                     {meta.spineYear}
                   </span>
@@ -135,6 +176,16 @@ export function TimelineSpine() {
               </span>
             );
           })}
+
+          {/* below md the rail itself is one full-size target that
+              opens the chapter sheet */}
+          <button
+            type="button"
+            data-testid="spine-rail-open"
+            aria-label="Open the chapter list"
+            onClick={() => setSheetOpen(true)}
+            className="absolute inset-0 md:hidden"
+          />
         </div>
 
         {/* About anchor, desktop */}
@@ -156,7 +207,7 @@ export function TimelineSpine() {
               aria-label="Choose a chapter"
               className="absolute right-1.5 top-1/2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 rounded-sm border border-exh-ink/20 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:-inset-1 after:content-[''] md:hidden"
             >
-              <span className="exh-mono text-[10px] text-exh-ink">{displayEraOf(activeId)}</span>
+              <span className="exh-mono text-[11px] text-exh-ink">{displayEraOf(activeId)}</span>
               <span aria-hidden="true" className="text-[8px] text-exh-ink-soft">
                 &#9650;
               </span>
@@ -200,7 +251,7 @@ export function TimelineSpine() {
                     <span className="exh-plat truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
                       {displayTitleOf(id)}
                     </span>
-                    <span className="exh-mono shrink-0 text-[10px] text-exh-ink-soft">
+                    <span className="exh-mono shrink-0 text-[11px] text-exh-ink-soft">
                       {displayEraOf(id)}
                     </span>
                   </button>

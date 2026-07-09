@@ -5,18 +5,29 @@
 //   A. facts.json integrity: every fact has id/value/display/tier and a
 //      source with a title plus at least one of url/locator
 //   B. every factRef anywhere in data/exhibit/*.json resolves to a fact
-//   C. claims gate: every factRef in the reader's text (walltext.json,
-//      plus the retired narration.json while it remains in the data dir)
+//      (factRef, factRefs, and machines.json evidenceFactRefs;
+//      facts-archive.json is retired storage and is skipped)
+//   C. claims gate: every factRef in the reader's text (walltext.json)
 //      has a factcheck verdict of verified or corrected
+//      (narration.json was deleted with the reader rebuild; its facts
+//      and claims live on in walltext or in facts-archive.json)
 //   D. ledger entries carry factRefs, never independent values; a display
 //      override must equal the fact's display
 //   E. tier gating: facts with tier "attributed" may only be referenced by
 //      components declared attribution-framed in data/exhibit/components.json;
-//      never by walltext or narration
+//      never by walltext
 //   (the old F, mp3/cue audio integrity, was removed with the reader
 //   rebuild; the exhibit no longer plays audio)
 //   G. style lint (delegates to exhibit-lint-copy.mjs)
 //   H. writes usedBy back into facts.json (unless --no-write)
+//   I. bibliography hygiene: the same work must be listed one way only.
+//      Sources sharing a normalized title must agree on author and year,
+//      and a title that extends another title by the same author is a
+//      variant listing (e.g. "Family Properties" vs "Family Properties,
+//      Race, Real Estate, ...") and fails.
+//   J. no internal filenames (.json/.ts/.tsx/.mjs paths, repo dirs) in
+//      visitor-visible citation fields (source title/author/locator/url
+//      and secondarySources); notes are exempt.
 // Warnings (do not fail): dead facts (empty usedBy), facts missing factcheckId.
 // Flags: --stage pre-tts (only A,B,C,G) · --no-write · --quiet
 // Exit 1 on any error.
@@ -66,8 +77,9 @@ function collectRefs(node, where) {
   if (typeof node === "object") {
     for (const [k, v] of Object.entries(node)) {
       if (k === "factRef" && typeof v === "string") checkRef(v, where);
-      else if (k === "factRefs" && Array.isArray(v)) v.forEach((r) => checkRef(r, where));
-      else collectRefs(v, `${where}.${k}`);
+      else if ((k === "factRefs" || k === "evidenceFactRefs") && Array.isArray(v)) {
+        v.forEach((r) => checkRef(r, where));
+      } else collectRefs(v, `${where}.${k}`);
     }
   }
 }
@@ -78,7 +90,9 @@ function checkRef(id, where) {
     usedBy.get(id).add(where.split(".")[0]);
   }
 }
-for (const f of readdirSync(DATA).filter((f) => f.endsWith(".json") && f !== "facts.json")) {
+for (const f of readdirSync(DATA).filter(
+  (f) => f.endsWith(".json") && f !== "facts.json" && f !== "facts-archive.json"
+)) {
   try {
     collectRefs(JSON.parse(readFileSync(path.join(DATA, f), "utf8")), f);
   } catch (e) {
@@ -122,15 +136,13 @@ if (existsSync(path.join(DATA, "walltext.json"))) {
     }
   }
 }
-// narration.json is retired but preserved; while it sits in the data dir
-// its claims stay gated so nothing unverified lingers in the repo
+// narration.json (the old audio-tour script) was deleted; if it ever
+// reappears in the data dir its claims must be gated again
 if (existsSync(path.join(DATA, "narration.json"))) {
-  const narration = load("narration.json");
-  for (const ch of narration.chapters || []) {
-    for (const b of ch.blocks || []) {
-      for (const ref of b.factRefs || []) gateClaim(`narration ${b.id}`, ref);
-    }
-  }
+  errors.push(
+    "narration.json has reappeared in data/exhibit; it was retired and deleted. " +
+      "Either remove it or restore its claims gate in this script."
+  );
 }
 
 // ---- D. ledger integrity ----
@@ -155,13 +167,92 @@ if (stage === "full") {
     const f = facts.get(id);
     if (f?.tier === "attributed") {
       for (const site of sites) {
-        if (site === "narration.json" || site === "walltext.json") {
+        if (site === "walltext.json") {
           errors.push(`attributed fact ${id} used in ${site} (never allowed)`);
         } else if (!framed.has(site)) {
           errors.push(`attributed fact ${id} used by ${site} which is not attribution-framed`);
         }
       }
     }
+  }
+}
+
+// ---- I. bibliography hygiene: one canonical listing per work ----
+// Collects every citation object (primary source plus object-typed
+// secondarySources). Within a normalized-title group, author and year
+// must agree when the author strings overlap; across groups, a longer
+// title that extends a shorter one by an overlapping author is a
+// variant listing of the same work.
+if (stage === "full") {
+  const norm = (s) => String(s ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const overlaps = (a, b) => a && b && (a.includes(b) || b.includes(a));
+  const entries = [];
+  for (const f of factsDoc.facts || []) {
+    const cites = [f.source, ...(f.secondarySources || []).filter((s) => s && typeof s === "object")];
+    for (const s of cites) {
+      if (!s?.title) continue;
+      entries.push({ factId: f.id, title: s.title, author: s.author ?? "", year: s.year ?? "" });
+    }
+  }
+  const byTitle = new Map();
+  for (const e of entries) {
+    const k = norm(e.title);
+    if (!byTitle.has(k)) byTitle.set(k, []);
+    byTitle.get(k).push(e);
+  }
+  const flagged = new Set();
+  for (const [k, group] of byTitle) {
+    for (let i = 0; i < group.length; i++) {
+      for (let j = i + 1; j < group.length; j++) {
+        const a = group[i], b = group[j];
+        if (norm(a.author) === norm(b.author) && String(a.year) === String(b.year)) continue;
+        if (overlaps(norm(a.author), norm(b.author))) {
+          const key = `${k}|${norm(a.author)}|${norm(b.author)}|${a.year}|${b.year}`;
+          if (!flagged.has(key)) {
+            flagged.add(key);
+            errors.push(
+              `bibliography: "${a.title}" listed two ways ` +
+                `(${a.author || "no author"}, ${a.year || "n.d."} in ${a.factId} vs ` +
+                `${b.author || "no author"}, ${b.year || "n.d."} in ${b.factId}); pick one canonical listing`
+            );
+          }
+        }
+      }
+    }
+  }
+  const titles = [...byTitle.keys()].sort();
+  for (let i = 0; i < titles.length; i++) {
+    for (let j = i + 1; j < titles.length; j++) {
+      if (!titles[j].startsWith(titles[i])) break;
+      if (titles[i].length < 14) continue; // short names legitimately prefix longer ones
+      const a = byTitle.get(titles[i])[0];
+      const b = byTitle.get(titles[j])[0];
+      if (overlaps(norm(a.author), norm(b.author))) {
+        errors.push(
+          `bibliography: "${a.title}" (${a.factId}) and "${b.title}" (${b.factId}) ` +
+            `look like variant listings of the same work; use one canonical title`
+        );
+      }
+    }
+  }
+}
+
+// ---- J. no internal filenames in visitor-visible citation fields ----
+{
+  const INTERNAL = /\.(json|tsx?|mjs|py)\b|(^|[\s(])(data|src|scripts|public)\//;
+  const checkField = (factId, field, value) => {
+    if (typeof value === "string" && INTERNAL.test(value)) {
+      errors.push(`fact ${factId}: internal file reference leaks in ${field}: ${JSON.stringify(value.slice(0, 80))}`);
+    }
+  };
+  for (const f of factsDoc.facts || []) {
+    for (const key of ["title", "author", "locator"]) checkField(f.id, `source.${key}`, f.source?.[key]);
+    (f.secondarySources || []).forEach((s, i) => {
+      if (typeof s === "string") checkField(f.id, `secondarySources[${i}]`, s);
+      else if (s && typeof s === "object") {
+        for (const key of ["title", "author", "locator"]) checkField(f.id, `secondarySources[${i}].${key}`, s[key]);
+      }
+    });
   }
 }
 

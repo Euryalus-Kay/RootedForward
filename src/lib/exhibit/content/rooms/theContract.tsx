@@ -21,7 +21,7 @@ const CONTRACT = machineOf("contract");
 function TwoBuyersCrossReference() {
   return (
     <PaperCard tone="deep" data-testid="room-two-buyers-crossref" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         Worked at the bench
       </p>
       <p className="mt-2 font-display text-xl text-exh-ink">Two Buyers, One House</p>
@@ -37,11 +37,11 @@ function ResidueCard() {
   if (!CONTRACT) return null;
   return (
     <PaperCard tone="deep" data-testid="room-residue-card" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         The residue
       </p>
       <p className="mt-2 font-display text-xl leading-relaxed text-exh-ink">{CONTRACT.residue}</p>
-      <p className="exh-plat mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat mt-4 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         The record behind this lamp
       </p>
       <div className="mt-2 flex flex-col gap-1.5">
@@ -121,7 +121,7 @@ export const THE_CONTRACT_STATIONS: RoomStation[] = [
   {
     id: "still-running",
     eyebrow: STATION_EYEBROWS["still-running"],
-    lead: "The lamp reads off with residue. The residue has a date.",
+    lead: "The escrow strike stopped this machine around 1970. The record below shows the trade returning after the 2008 crash.",
     body: <ResidueCard />,
   },
 ];

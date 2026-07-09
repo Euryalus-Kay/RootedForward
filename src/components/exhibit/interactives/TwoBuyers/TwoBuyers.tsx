@@ -42,14 +42,14 @@ const RIGHT_LINE = "The deed stays with the seller until the last payment.";
 const RIGHT_COUNTER_LABEL = "Paid beyond a fair price";
 const RIGHT_BAR_LABEL = "Share owned, zero until the last payment";
 const TICK_LABEL = "the study's average family, seventy-one thousand dollars";
-const LIFE_HINT = "Miss one payment, even after years of flawless ones.";
+const LIFE_HINT = "Even after years of flawless payments.";
 const SOLD_LINE = "Sells or refinances. Walks away with the share built.";
 const NOTICE_BODY =
   "One missed payment ends the contract. Everything paid stays with the seller. The family leaves.";
 const KEPT_LABEL = "Kept by the seller";
 const KEPT_FALLBACK = "every payment made";
 const EXIT_LINE =
-  "Average loss per contract-buying family, about seventy-one thousand dollars in the study's dollars. Multiply by a neighborhood.";
+  "Average loss per contract-buying family, about seventy-one thousand dollars in the study's dollars, across roughly 60,100 homes bought on contract.";
 
 /* 48px thumb on a hairline track, same recipe as the era slider; the
    notice slide-in is CSS so [data-motion="off"] disables it with no JS */
@@ -197,7 +197,7 @@ export default function TwoBuyers() {
           <p
             data-testid="twobuyers-relist"
             data-relisted={fired ? "true" : "false"}
-            className="exh-plat mt-1 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft"
+            className="exh-plat mt-1 text-center text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft"
           >
             {fired ? RELIST_CAPTION : IDLE_CAPTION}
           </p>
@@ -213,13 +213,13 @@ export default function TwoBuyers() {
             <h4 className="exh-plat text-[11px] font-bold uppercase tracking-[0.18em] text-exh-ink">
               {LEFT_TITLE}
             </h4>
-            <p className="exh-plat mt-0.5 text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
+            <p className="exh-plat mt-0.5 text-[11px] md:text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
               {LEFT_SUB}
             </p>
             <p className="mt-2 min-h-10 text-sm leading-snug text-exh-ink">{LEFT_LINE}</p>
 
             <div className="mt-3">
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+              <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                 {LEFT_BAR_LABEL}
               </p>
               <div
@@ -237,7 +237,7 @@ export default function TwoBuyers() {
                 <p className="text-sm leading-snug text-exh-ink">{SOLD_LINE}</p>
                 {soldSharePct != null && (
                   <p className="mt-1.5">
-                    <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+                    <span className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                       share at sale{" "}
                     </span>
                     <span className="exh-mono text-sm text-exh-ink">
@@ -257,7 +257,7 @@ export default function TwoBuyers() {
             <h4 className="exh-plat text-[11px] font-bold uppercase tracking-[0.18em] text-exh-ink">
               {RIGHT_TITLE}
             </h4>
-            <p className="exh-plat mt-0.5 text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
+            <p className="exh-plat mt-0.5 text-[11px] md:text-[9px] uppercase tracking-[0.18em] text-exh-ink-soft">
               {RIGHT_SUB}
             </p>
             <p className="mt-2 min-h-10 text-sm leading-snug text-exh-ink">{RIGHT_LINE}</p>
@@ -270,7 +270,7 @@ export default function TwoBuyers() {
                 role="status"
                 className="exh-tb-notice mt-3 border-exh-ink/40 p-3"
               >
-                <p className="exh-plat text-[10px] font-bold uppercase tracking-[0.22em] text-exh-ink">
+                <p className="exh-plat text-[11px] md:text-[10px] font-bold uppercase tracking-[0.22em] text-exh-ink">
                   Notice
                 </p>
                 <p className="mt-1 text-xs leading-snug text-exh-ink">{NOTICE_BODY}</p>
@@ -281,7 +281,7 @@ export default function TwoBuyers() {
             )}
 
             <div className="mt-3">
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+              <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                 {RIGHT_COUNTER_LABEL}
               </p>
               <p
@@ -295,7 +295,7 @@ export default function TwoBuyers() {
 
             {fired && (
               <div className="mt-2 border-t border-exh-ink/20 pt-2">
-                <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+                <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                   {KEPT_LABEL}
                 </p>
                 {keptUsd != null ? (
@@ -311,7 +311,7 @@ export default function TwoBuyers() {
             )}
 
             <div className="mt-3">
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+              <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                 {RIGHT_BAR_LABEL}
               </p>
               <div
@@ -328,7 +328,7 @@ export default function TwoBuyers() {
           <div className="flex items-baseline justify-between gap-3">
             <label
               htmlFor={sliderId}
-              className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft"
+              className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft"
             >
               Years of payments
             </label>
@@ -357,7 +357,7 @@ export default function TwoBuyers() {
             />
           </div>
           <p
-            className={`exh-plat text-right text-[10px] uppercase leading-snug tracking-[0.15em] ${
+            className={`exh-plat text-right text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.15em] ${
               atCap ? "font-semibold text-exh-ink" : "text-exh-ink-soft"
             }`}
           >
@@ -374,10 +374,10 @@ export default function TwoBuyers() {
             disabled={fired}
             className="exh-plat min-h-12 rounded-sm border-2 border-exh-ink bg-exh-ink px-6 text-xs font-bold uppercase tracking-[0.22em] text-exh-linen transition-colors hover:bg-exh-ink/85 disabled:cursor-not-allowed disabled:border-exh-ink/30 disabled:bg-transparent disabled:text-exh-ink-soft"
           >
-            {fired ? "one event per visit" : "Life happens"}
+            {fired ? "one missed payment shown" : "Miss one payment"}
           </button>
           {!fired && (
-            <p className="exh-plat mt-1.5 text-center text-[10px] uppercase tracking-[0.15em] text-exh-ink-soft">
+            <p className="exh-plat mt-1.5 text-center text-[11px] md:text-[10px] uppercase tracking-[0.15em] text-exh-ink-soft">
               {LIFE_HINT}
             </p>
           )}
@@ -390,8 +390,9 @@ export default function TwoBuyers() {
             className={`mt-4 border-t border-exh-ink/15 pt-3 ${api.reducedMotion ? "" : "exh-ledger-in"}`}
           >
             <p className="exh-serif text-base leading-snug text-exh-ink sm:text-lg">{EXIT_LINE}</p>
-            <div className="mt-1.5">
+            <div className="mt-1.5 flex flex-wrap items-baseline gap-x-5 gap-y-1">
               <FactValue id="contracts.avg_overpayment_71000" size="sm" />
+              <FactValue id="contracts.homes_60100" size="sm" />
             </div>
           </div>
         )}
@@ -399,7 +400,7 @@ export default function TwoBuyers() {
 
       {/* ---------------- the Ross card, beside the desk ---------------- */}
       <PaperCard tone="deep" className="mt-4 w-full max-w-md p-4 sm:ml-auto sm:-rotate-[0.4deg]">
-        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+        <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
           The worked example
         </p>
         <h4 className="exh-serif mt-1 text-lg leading-snug text-exh-ink">

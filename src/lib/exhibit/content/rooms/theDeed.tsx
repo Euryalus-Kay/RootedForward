@@ -5,8 +5,8 @@
 /*  CLAUSE, a static primary-text panel, deliberately paper only (the  */
 /*  honest deferral): Shelley's holding, the residue line from         */
 /*  machines.json, and the registered Illinois removal-process fact,   */
-/*  with a provenance chip noting that the removal walkthrough ships   */
-/*  after counsel review. No interactive legal tool is mounted here.   */
+/*  with a chip noting that a step-by-step removal guide arrives only  */
+/*  after legal review. No interactive legal tool is mounted here.     */
 /* ------------------------------------------------------------------ */
 import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
@@ -28,7 +28,7 @@ const DEED = machineOf("deed");
 function StrikeTheClause() {
   return (
     <PaperCard tone="deep" data-testid="room-strike-clause" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         The holding
       </p>
       <p className="mt-2 font-display text-xl leading-relaxed text-exh-ink">
@@ -39,7 +39,7 @@ function StrikeTheClause() {
         <FactValue id="cases.shelley_1948" />
       </div>
 
-      <p className="exh-plat mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat mt-5 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         What the ruling left on paper
       </p>
       {DEED ? (
@@ -48,7 +48,7 @@ function StrikeTheClause() {
         </p>
       ) : null}
 
-      <p className="exh-plat mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat mt-5 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         Striking it today
       </p>
       <div className="mt-2">
@@ -57,8 +57,8 @@ function StrikeTheClause() {
       <p className="mt-2 text-sm leading-relaxed text-exh-ink-soft">
         This panel is paper only. The exhibit does not walk you through a legal filing.
       </p>
-      <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
-        the removal walkthrough ships after counsel review
+      <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+        A step-by-step removal guide will be added once it has been reviewed by a lawyer.
       </span>
     </PaperCard>
   );
@@ -138,16 +138,16 @@ export const THE_DEED_STATIONS: RoomStation[] = [
   {
     id: "still-running",
     eyebrow: STATION_EYEBROWS["still-running"],
-    lead: "The lamp reads off with residue. The residue is in the county record.",
+    lead: "Enforcement ended in 1948. The dead clauses still sit in Cook County deed books, and the residue card below carries the record.",
     body: (
       <div className="space-y-4">
         {DEED ? (
           <PaperCard tone="deep" data-testid="room-residue-card" className="p-4 sm:p-5">
-            <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+            <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
               The residue
             </p>
             <p className="mt-2 font-display text-xl leading-relaxed text-exh-ink">{DEED.residue}</p>
-            <p className="exh-plat mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+            <p className="exh-plat mt-4 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
               The record behind this lamp
             </p>
             <div className="mt-2 flex flex-col gap-1.5">

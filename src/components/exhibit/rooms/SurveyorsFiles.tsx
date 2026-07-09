@@ -16,6 +16,7 @@ import {
   type DescArea,
 } from "@/lib/exhibit/holc-descriptions";
 import { FILES_HASH, sheetIdFromHash } from "@/lib/exhibit/files-room";
+import { moveFocus } from "@/lib/exhibit/focus";
 import PaperCard from "../shared/PaperCard";
 
 /* ------- the printed form's entries, in the form's own order ------- */
@@ -66,7 +67,9 @@ export default function SurveyorsFiles() {
   );
   const [copied, setCopied] = useState(false);
   const sheetRef = useRef<HTMLDivElement | null>(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
   const arrivedViaLink = useRef<boolean>(selectedId !== null);
+  const focusSheetOnOpen = useRef(false);
 
   const sorted = useMemo(() => {
     if (!areas) return [];
@@ -106,6 +109,20 @@ export default function SurveyorsFiles() {
     [sorted, selectedId]
   );
 
+  /* two drawer rows can print identically (the record holds two
+     "D Woodlawn" sheets); duplicates carry a second field, location
+     or date, so a reader can tell them apart before opening */
+  const duplicateRowKeys = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const a of sorted) {
+      const k = `${sheetDesignation(a) ?? a.grade}|${
+        sheetName(a) ?? a.security_grade_fields?.location?.trim() ?? "Unnamed area"
+      }`;
+      counts.set(k, (counts.get(k) ?? 0) + 1);
+    }
+    return new Set([...counts.entries()].filter(([, c]) => c > 1).map(([k]) => k));
+  }, [sorted]);
+
   /* permalink sync: selecting a sheet rewrites the room hash in place
      (replaceState, so Back still exits the room in one step) */
   useEffect(() => {
@@ -125,9 +142,27 @@ export default function SurveyorsFiles() {
     }
   }, [selected]);
 
+  /* choosing a sheet from the drawer moves focus (and the reader) to
+     the opened sheet card, so keyboard and screen-reader visitors are
+     not left stranded in the list */
+  useEffect(() => {
+    if (focusSheetOnOpen.current && selected && sheetRef.current) {
+      focusSheetOnOpen.current = false;
+      sheetRef.current.scrollIntoView({ behavior: "auto", block: "start" });
+      moveFocus(sheetRef.current);
+    }
+  }, [selected]);
+
   const openSheet = (a: DescArea) => {
     setCopied(false);
+    focusSheetOnOpen.current = true;
     setSelectedId(String(a.areaId));
+  };
+
+  const closeSheet = () => {
+    setSelectedId(null);
+    // hand the reader back to the drawer they chose from
+    moveFocus(drawerRef.current);
   };
 
   const copyPermalink = async () => {
@@ -162,7 +197,7 @@ export default function SurveyorsFiles() {
         origin of an area&rsquo;s residents before it asked about the condition of the houses.
         The entries below are shown as they were typed.
       </p>
-      <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+      <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[9px]">
         period documents; they contain the era&rsquo;s racist language
       </span>
 
@@ -179,20 +214,20 @@ export default function SurveyorsFiles() {
                 {GRADE_WORD[selected.grade] ?? "Ungraded"}
               </span>
               <span className="exh-mono ml-auto text-xs text-exh-ink/70">
-                {designation ?? `sheet ${String(selected.areaId)}`}
+                {designation ?? `digitized record ${String(selected.areaId)}`}
               </span>
             </div>
             {name && <p className="exh-serif mt-1.5 text-lg leading-snug text-exh-ink">{name}</p>}
 
             {fieldRows.length > 0 && (
               <div className="mt-4 border-t border-exh-ink/15 pt-3">
-                <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+                <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
                   From the printed form, as filed
                 </p>
                 <dl className="mt-2 grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
                   {fieldRows.map((r) => (
                     <div key={r.key} className="flex flex-col border-b border-exh-ink/10 pb-1.5">
-                      <dt className="exh-plat text-[10px] uppercase tracking-[0.14em] text-exh-ink-soft">
+                      <dt className="exh-plat text-[11px] uppercase tracking-[0.14em] text-exh-ink-soft md:text-[10px]">
                         {r.label}
                       </dt>
                       <dd className="exh-mono text-sm text-exh-ink">{fields?.[r.key]}</dd>
@@ -205,7 +240,7 @@ export default function SurveyorsFiles() {
             {excerptUsable(selected) && (
               <div className="mt-4 border-t border-exh-ink/15 pt-3">
                 {selected.excerptLabel && (
-                  <p className="exh-mono text-[10px] text-exh-ink/60">{selected.excerptLabel}</p>
+                  <p className="exh-mono text-[11px] text-exh-ink/70 md:text-[10px]">{selected.excerptLabel}</p>
                 )}
                 <blockquote className="exh-serif mt-1 text-sm leading-relaxed text-exh-ink italic">
                   &ldquo;{selected.excerpt.trim()}&rdquo;
@@ -227,12 +262,13 @@ export default function SurveyorsFiles() {
                 onClick={copyPermalink}
                 className="exh-plat min-h-12 cursor-pointer border border-exh-ink/40 bg-exh-linen px-4 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink transition-colors hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen"
               >
-                {copied ? "Link copied" : "Copy a link to this sheet"}
+                {/* the live region reads the label swap out loud */}
+                <span aria-live="polite">{copied ? "Link copied" : "Copy a link to this sheet"}</span>
               </button>
               <button
                 type="button"
                 data-testid="files-clear"
-                onClick={() => setSelectedId(null)}
+                onClick={closeSheet}
                 className="exh-plat min-h-12 cursor-pointer px-2 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink-soft underline-offset-4 hover:underline"
               >
                 Close this sheet
@@ -254,7 +290,7 @@ export default function SurveyorsFiles() {
 
       {/* ---------------- the drawer ---------------- */}
       {areas && (
-        <div className="mt-8">
+        <div ref={drawerRef} className="mt-8 scroll-mt-20">
           <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by grade">
             {(["all", "A", "B", "C", "D"] as const).map((g) => (
               <button
@@ -266,7 +302,7 @@ export default function SurveyorsFiles() {
                   setGradeFilter(g);
                   setVisibleCount(PAGE_SIZE);
                 }}
-                className={`exh-plat min-h-10 cursor-pointer border px-3 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+                className={`exh-plat min-h-11 cursor-pointer border px-3 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                   gradeFilter === g
                     ? "border-exh-ink bg-exh-ink text-exh-linen"
                     : "border-exh-ink/40 bg-exh-linen text-exh-ink hover:border-exh-ink"
@@ -278,7 +314,7 @@ export default function SurveyorsFiles() {
           </div>
 
           <label className="mt-3 block">
-            <span className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+            <span className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
               Search by neighborhood or area number
             </span>
             <input
@@ -298,7 +334,14 @@ export default function SurveyorsFiles() {
             {shown.map((a) => {
               const d = sheetDesignation(a);
               const n = sheetName(a);
+              const loc = a.security_grade_fields?.location?.trim();
+              const primary = n ?? loc ?? "Unnamed area";
               const open = selectedId === String(a.areaId);
+              let detail: string | null = null;
+              if (duplicateRowKeys.has(`${d ?? a.grade}|${primary}`)) {
+                const date = a.security_grade_fields?.date?.trim();
+                detail = n && loc && loc !== n ? loc : date ?? null;
+              }
               return (
                 <li key={String(a.areaId)}>
                   <button
@@ -317,7 +360,8 @@ export default function SurveyorsFiles() {
                       {d ?? a.grade}
                     </span>
                     <span className="exh-serif min-w-0 flex-1 truncate text-sm text-exh-ink">
-                      {n ?? a.security_grade_fields?.location?.trim() ?? "Unnamed area"}
+                      {primary}
+                      {detail ? <span className="text-exh-ink/70">, {detail}</span> : null}
                     </span>
                   </button>
                 </li>

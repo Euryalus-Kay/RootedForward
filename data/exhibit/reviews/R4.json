@@ -1,0 +1,322 @@
+{
+ "milestone": "R4",
+ "date": "2026-07-09",
+ "panel": "8 lenses (naive-visitor, humanizer, curator, interaction, a11y, mobile, fact, historian) + chair, run against production",
+ "rawFindings": 77,
+ "consolidated": 31,
+ "verdict": "The rebuild holds up as a museum piece in its bones. Every lens independently found the fundamentals sound: the fact-registry audit passes with 220 resolving daggers, the court holdings are stated with legal precision, chapter 4 is handled with restraint, the a11y and interaction skeletons verified clean under live driving, and the prose passes every hard AI-tell screen. But it cannot ship as-is, for five reasons the panel treats as blockers. The phone experience is physically broken (a 456px layout at 375px viewports, caught independently by two lenses) and the exhibit's central gesture, tapping a graded area, selects an effectively random neighborhood on touch. The finale misquotes its own promised closing question one screen after promising it (two lenses). The single most load-bearing statistic resolves, at the moment of maximum visitor scrutiny, to the site citing its own draft JSON file by internal filename (two lenses, and the grep shows at least five source records carry the same internal locator). And the opening panel reasserts a categorical HOLC claim the project's own factcheck had already softened, falsifiable from the exhibit's own reading room. Below the blockers, the defects concentrate in exactly two seams: facts.json source-record hygiene (duplicate bibliography entries, Wikipedia behind headline stats, a leaked editorial TODO) and wall text that outruns the registry (miscounts, a spliced quotation, unregistered attributions, causal superlatives). All of it is finish work on a structure worth finishing; nothing in the punch list touches the concept.",
+ "punchlist": [
+  {
+   "severity": "p1",
+   "title": "Page lays out 456px wide on phones, clipping content through all 13 chapters",
+   "fix": "In src/components/exhibit/interactives/BombingMap/BombingMap.tsx change the docket grid to grid-cols-[minmax(0,1fr)] md:grid-cols-2 (or add min-w-0 overflow-hidden to both grid children); in src/components/exhibit/StationBlock.tsx line 96 drop shrink-0 from the station h3 so titles wrap, and do the same for the parallel header in stations/CasesPanel.tsx lines 29-33. Then assert document.documentElement.scrollWidth === innerWidth at 375px and 390px across every chapter in the verify harness.",
+   "lenses": [
+    "interaction",
+    "mobile"
+   ]
+  },
+  {
+   "severity": "p1",
+   "title": "HOLC map areas are 1-11px touch targets; tap selection is effectively random on phones",
+   "fix": "On touch viewports add a two-step tap-to-magnify to MapStage (first tap zooms a quadrant, second tap selects), or route a tap to a short disambiguation list of the areas under the finger with previous/next steppers so a near miss is recoverable. Reword the station lead in HolcMapStation.tsx from 'Click or tab to any graded area' to 'Select any graded area', and on small screens point to the Surveyor's Files search as the primary path to a sheet.",
+   "lenses": [
+    "interaction",
+    "mobile"
+   ]
+  },
+  {
+   "severity": "p1",
+   "title": "The finale asks a different question than the wall text promises one screen earlier",
+   "fix": "Change the AnswerWall heading in src/components/exhibit/interactives/AnswerWall/AnswerWall.tsx line 211 from 'Who is this city built for?' to the promised 'Who is this ground for, and who decides?' (update the matching string in data/exhibit/narration.json line 262). While in the station, soften the WHY plate for the empty state ('once answers appear, reading a few first is a fair way in') since the wall currently shows 'THE WALL OPENS SOON.' with zero answers.",
+   "lenses": [
+    "naive-visitor",
+    "curator"
+   ]
+  },
+  {
+   "severity": "p1",
+   "title": "The load-bearing FHA statistic cites the site's own draft corpus and leaks an internal filename to visitors",
+   "fix": "Re-source redlining.black_loans_under_2pct in data/exhibit/facts.json to named scholarship (Rothstein's The Color of Law or the 1961 U.S. Commission on Civil Rights housing report) with a page locator, recording the source's exact date range and base. Sweep every locator containing 'redlining.sections.json' (at least five source records at facts.json lines 1317, 1463, 1489, 1513, 1537) and replace them with the deep dive's underlying citations. Re-run scripts/exhibit-audit-facts.mjs and redeploy.",
+   "lenses": [
+    "fact",
+    "historian"
+   ]
+  },
+  {
+   "severity": "p1",
+   "title": "Opening panel reasserts the categorical HOLC claim the project's own factcheck softened",
+   "fix": "In data/exhibit/walltext.json ch0-s1, either revert to the registry's softened wording ('the Black Belt came back shaded red') or register a scoped, sheet-derived fact (counts of surviving Chicago-area sheets recording Black residents, by grade) and cite it, acknowledging that 576 of 703 areas have digitized sheets and that the negro_percent field is corrupted or absent on many. The current sentence is contestable from the exhibit's own Surveyor's Files (Evanston sheet 1134, grade B).",
+   "lenses": [
+    "historian"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Bibliography lists duplicates, sorts empty authors first, and pads the 91 count with dead and self-referential sources",
+   "fix": "Normalize facts.json to one canonical title/author/year per work (Satter, The Negro in Chicago, Cook Center, CEGU, Illinois Answers, Columbian Exposition). In AboutPanel.tsx treat empty-string authors as missing when sorting and dedupe on a normalized title key. Prune the 37 unused game-era facts (or move them outside data/exhibit), including the redundant covenants.corrigan_1926. Replace 'Rooted Forward deep dive' and 'summarized in standard references' wrapper attributions with the actual underlying works. Add a duplicate-title check to the audit script so the colophon count stays honest by construction.",
+   "lenses": [
+    "curator",
+    "fact",
+    "naive-visitor"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "The central map is dated three different ways (1938 vs 1939-40 vs 1940)",
+   "fix": "Standardize on the sheet-supported dating (surveyed 1939-40, map issued 1940) across walltext.json, the Map and Bulldozer room captions ('the 1938 map', 'the 1938 grades'), and correct the value and notes on redlining.holc_survey_chicago in facts.json (currently 1938). Reconcile or annotate the research paper and the holc-chicago-1938-* dataset filenames, or document a two-survey history if one exists. One date must hold everywhere a visitor can press a citation.",
+   "lenses": [
+    "historian",
+    "curator",
+    "naive-visitor"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Wall text miscounts things a visitor can count: rooms, pins, chapters, graded areas",
+   "fix": "Four line edits in data/exhibit/walltext.json: (1) howToRead 'Six document rooms' becomes 'Seven document rooms' or drops the number; (2) the ch4 WHAT plate 'forty incidents located' becomes 'the forty incidents the report's appendix records, 32 of them placed on the map by address'; (3) ch11-s1 'the ten chapters behind this page' becomes 'the chapters behind this page'; (4) 'All 703 graded areas are here' becomes '703 surveyed areas, 683 of them graded A through D', with one added sentence noting description sheets survive digitized for 576 areas.",
+   "lenses": [
+    "naive-visitor",
+    "curator",
+    "historian"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "The REPORTED / documented / attributed provenance tiers are never explained",
+   "fix": "Add three defining sentences to the About panel's Method block ('Figures marked documented rest on primary records or published scholarship. Reported figures rest on journalism or secondary accounts. Attributed figures rest on a single source and are marked as such.') and a one-line gloss inside the SourceSup citation popover so 'REPORTED' cannot be read as 'reported to the police' in the bombing chapter.",
+   "lenses": [
+    "naive-visitor",
+    "curator"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Headline statistics resolve to Wikipedia, and two 'documented' facts cite only Wikipedia",
+   "fix": "Re-source renewal.black_pop_drop_40pct (the 40 percent population-drop figure) to Hirsch's Making the Second Ghetto or the underlying census tables. Re-source or downgrade to 'reported' the two documented-tier facts whose only URL is Wikipedia (redlining.holc_refi_1m, redlining.hoyt_fha). Split or pick the combined 'Encyclopaedia Britannica and Wikipedia' author on fair.attendance_27m. Adopt the rule that documented means primary records or peer scholarship.",
+   "lenses": [
+    "curator"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Article 34 is quoted with words silently removed from inside the quotation",
+   "fix": "In walltext.json ch5-s1 mark the elision or quote in full: 'members of any race or nationality... whose presence will clearly be detrimental to property values' (the exhibit's own ethics_exam.json carries the verbatim text including 'or any individuals'). Fix the same trimmed wording in the code.nareb_article34_1924 notes. Also verify the ch6-s2 'incompatible racial groups' phrase against a 1938 Underwriting Manual facsimile, whose paragraph 937 is generally given as 'incompatible racial and social groups'.",
+   "lenses": [
+    "historian"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Unregistered attributions and scene details in wall text outrun the fact registry",
+   "fix": "Verify-and-register or cut to registered wording, item by item: the Dempsey Travis / NAACP survey attribution in ch9-s1 (check Satter pp. 44-45); the ch3 servants pledge and the 'Fannie Barrier Williams asked by her own neighbors' scene (check Spear); the winter-1970 eviction staging in ch10-s2 (check the Chicago Reporter piece or Satter); the ch2 workforce exclusion and Wells paraphrase (register from a named fair history or keep to the registered planning exclusion); ch1-s2 'several times the price' (use the registered formation.price_sorting wording, since the specific ratio was excluded by the factcheck); and ch4's 'every number on this page' (soften to 'the casualty and arrest numbers', since the Binga bombing count is Hayner's, not the CCRR's).",
+   "lenses": [
+    "historian"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Causal superlatives and absolutes the sources cannot carry",
+   "fix": "Four rewrites in walltext.json: ch9 contextIntro's 'did more than any single event to produce the wealth gap' becomes a scoped claim about what the contract arithmetic shows dollar by dollar; ch9-s1's 'The federal map explains the unanimity' attributes the refusal to the realtors' code, the appraisal culture, and the federal grades together (matching the site's own research paper on the causation dispute); ch8-s3's 'Demolition ran ahead of consent' becomes 'ran ahead of the comprehensive plan' (Hyde Park A and B had their own earlier approvals); ch1-s1's 'took no part in the Black Hawk War' becomes 'stayed out of the Black Hawk War'.",
+   "lenses": [
+    "historian"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "The reduced-motion CSS contract is dead and ch4's no-motion flag is bypassed",
+   "fix": "Set data-motion={reducedMotion ? 'off' : undefined} on the exhibit root in ExhibitApp.tsx (state already mirrors the media query) and loosen the globals.css selectors to descendant form ([data-motion='off'] .exh-ledger-in) so both the root flag and the ch4 section flag work; this fixes VoiceCard, TwoBuyers, and FollowTheDollar under prefers-reduced-motion. In BombingMap.tsx replace the direct matchMedia read with api.reducedMotion so the chapter no-motion flag governs the stepped reveal (keep the one-at-a-time reveal as the curatorial default for other visitors).",
+   "lenses": [
+    "a11y"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "The machines table and the closing record table start 40 percent off-screen on phones with no scroll cue",
+   "fix": "Below the md breakpoint render MachinesPanel (min-w-[38rem]) and RecordBlock's LedgerTable (min-w-[36rem]) as stacked cards (year, entry, values as full-width lines), or reduce the min widths and add a right-edge fade plus a small 'swipe to see values' hint. Prioritize the record table; 'The record, in full' losing its values column by default undercuts the exhibit's core promise.",
+   "lenses": [
+    "mobile"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "First-visit timeline jumps land a full screen short with the wrong node lit",
+   "fix": "After a rail jump in TimelineSpine's go() / ExhibitProvider's scrollToAnchor, re-anchor once scrolling settles (scrollend listener or a short position poll that re-calls scrollToAnchor(id, 'auto') if the anchor is off by more than ~200px), or reserve intrinsic heights for lazy-loaded stations and figures so chapter offsets stop shifting mid-flight.",
+   "lenses": [
+    "interaction"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Timeline dots overlap in the mid-century cluster and the rail goes blank during ch0_5",
+   "fix": "Enforce a minimum horizontal separation when laying out spine nodes (nudge clustered nodes apart as the year labels already do), and below md either make the dots presentational with the whole rail opening the chapter sheet or collapse the 1948-1958 cluster into one target. Keep the nearest node aria-current (or draw a small unlabeled tick) while ch0_5 is active so the rail never shows the visitor nowhere.",
+   "lenses": [
+    "interaction",
+    "a11y",
+    "mobile"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "The Surveyor's Files opens sheets silently for screen-reader users",
+   "fix": "In SurveyorsFiles.tsx openSheet, either moveFocus() the sheet card (sheetRef already exists for the deep-link path) or announce through the shared #exh-live region ('Sheet D-74, Woodlawn, open above the drawer'). Announce 'Link copied' the same way when the permalink button label swaps.",
+   "lenses": [
+    "a11y"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Mis-parsed transcription sheets render as faithfully filed, and drawer rows cannot be told apart",
+   "fix": "Audit the 576 areas in data/exhibit/holc_descriptions.json for date-shaped or percent-shaped values in name and race fields (A-35's 'Nov'39' name, C-57's shifted columns) and set corruptedFields so the room's existing disclaimer fires; fall back list names to 'Unnamed area' when the location field is not a place. For twin rows like the two 'D Woodlawn' entries, append a second distinguishing field (location line or date), and relabel the internal-id fallback from 'sheet 1506' to 'digitized record 1506'.",
+   "lenses": [
+    "naive-visitor",
+    "curator",
+    "interaction"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Game and dev-register strings survive on public walls",
+   "fix": "Three replacements: the TwoBuyers control 'Life happens' becomes 'Miss one payment' with the spent state 'one missed payment shown' (not 'one event per visit'); theDeed.tsx's 'THE REMOVAL WALKTHROUGH SHIPS AFTER COUNSEL REVIEW' becomes 'A step-by-step removal guide will be added once it has been reviewed by a lawyer'; counterMachine.tsx's 'The Answer Key' eyebrow becomes 'What Stopped Each One'.",
+   "lenses": [
+    "curator"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "An editorial TODO renders inside a live citation popover",
+   "fix": "Pin the actual Satter page numbers on people.ruth_wells in facts.json, or trim the locator to 'part II, the Contract Buyers League chapters' until they are pinned. The current locator prints '(page cites to be pinned from the physical copy)' to visitors in the ch10-s1 popover.",
+   "lenses": [
+    "fact"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "One flattening pass over the machine-conceit chrome, and the Lamp panel duplicates its own ledger",
+   "fix": "Rewrite the contract and bulldozer definitions in machines.json as plain description in the walltext voice (each renders three times); flatten the counter-machine board caption and nameplate; end TwoBuyers' exit line on the 60,100-homes figure instead of 'Multiply by a neighborhood'; keep at most one 'that was the point' (ch0's) and one armor verdict in cases.json; vary the four near-identical 'lamp reads off' room leads. In MachineRoom.tsx, drop the 'THE LAMP, WHERE THE RECORD LEAVES IT' panel or give it distinct copy, since it currently repeats the offBy and residue sentences verbatim from the ledger an inch above and the lamp metaphor is never explained.",
+   "lenses": [
+    "humanizer",
+    "naive-visitor"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Closing a room returns keyboard focus to an off-screen door instead of the control that opened it",
+   "fix": "Capture document.activeElement (or pass an opener ref) when OPEN_ROOM dispatches and return focus there in RoomOverlay.tsx onCloseAutoFocus, falling back to the door-enter-<roomId> lookup only when no opener was recorded. This fixes the ch0 'Read the full sheet in the Surveyor's Files' path that currently teleports focus to the ch6 door several chapters away.",
+   "lenses": [
+    "interaction",
+    "a11y"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Load-bearing vocabulary is never glossed: TIF, HOLC, plat, frontage, instrument/machine, 'mechanism rules'",
+   "fix": "Gloss TIF at point of use in the Map room stat card and the Bulldozer renamed note ('tax increment financing, the city's redevelopment funding tool'); add 'HOLC on its own forms' after the first full name in ch0; gloss plat ('the surveyor's map that divides land into salable lots') and frontage ('the feet of a lot's edge that face the street') once each; add one bridging sentence to ch0_5 tying the five instruments to the machine rooms; reword the GapAtScale caption to 'The horizontal lines along the climb mark scale, not amounts.'",
+   "lenses": [
+    "naive-visitor",
+    "curator"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Voice medallions have no affordance and the King medallion has no anchor in the text",
+   "fix": "Add a small caption under the name in VoiceCard.tsx ('Select to read their words'), and either add one ch11 wall-text sentence introducing King's 1966 Chicago open-housing campaign or move the medallion to a chapter that mentions him; no chapter currently earns the MK circle at the finale.",
+   "lenses": [
+    "naive-visitor"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "A raw HTML entity prints in a figure credit: 'KIMBAL &AMP; RICHARDS'",
+   "fix": "Store the literal ampersand in public/media/hyde-park/credits.json (racial-hierarchy-doc, line 435), check the firm's spelling (usually 'Kimball') while touching the record, and scan credits.json for other lingering entities. Optionally decode common entities in composeCreditLine in FigureBlock.tsx as a backstop.",
+   "lenses": [
+    "curator",
+    "humanizer"
+   ]
+  },
+  {
+   "severity": "p2",
+   "title": "Micro-type fails WCAG contrast at ink alphas 45-60 and drops to 9-10px on phones",
+   "fix": "Raise the text-alpha floor to text-exh-ink/70 (5.78:1 on linen) for all real content and controls (docket record numbers, evidence-card locators, map attribution, era-tick buttons, deed clause numbering, excerpt source labels), reserving /45-/60 for aria-hidden decoration. Below md, bump text-[9px] and text-[10px] classes to 11px minimum, and grow the files-room grade filter buttons from min-h-10 to min-h-11.",
+   "lenses": [
+    "a11y",
+    "mobile"
+   ]
+  },
+  {
+   "severity": "p3",
+   "title": "The content advisory omits the child's death the chapter documents",
+   "fix": "Match the ch4 chapter's own first paragraph in AdvisoryPlate.tsx and the hero advisory: 'including bombings, the killing of a teenager, and the death of a child.'",
+   "lenses": [
+    "curator"
+   ]
+  },
+  {
+   "severity": "p3",
+   "title": "Keyboard polish on transient surfaces: bombing card, stale voice cards, sheet close, citation popover",
+   "fix": "Close the ch4 bombing record card on Escape and return focus to the mark or docket row that opened it; scope RoomOverlay's Escape guard to voice cards inside the overlay (e.currentTarget.querySelector) so a card left open elsewhere on the page stops eating the room's first Escape; move focus to the drawer list after 'Close this sheet' in the Surveyor's Files; in SourceSup either move focus into the popover on open or drop the role=dialog/aria-haspopup claim for the plain disclosure pattern, and keep the popover open on keyboard-initiated scroll.",
+   "lenses": [
+    "interaction",
+    "a11y"
+   ]
+  },
+  {
+   "severity": "p3",
+   "title": "Instrument table grammar, row order, and unlabeled dagger runs",
+   "fix": "Render '1952, never switched off' for the null offYear in the ch0_5 table; order the table rows to match the prose introduction; and number the daggers or collapse multi-ref paragraph citations into one popover listing all sources, so paragraph-end runs of up to nine identical daggers stop reading as rendering glitches.",
+   "lenses": [
+    "naive-visitor"
+   ]
+  },
+  {
+   "severity": "p3",
+   "title": "The registered present-day HOLC gradients go unused where they would close the arc",
+   "fix": "Add one sentence to ch11 (or the Map machine room) citing present.holc_income_gradient ($207,434 on former A land vs $65,240 on former D) and present.holc_ownership_gradient (90 vs 44 percent). Both are documented-tier, verified, and already sourced to the site's published research paper, so no new verification work is needed and the exhibit's thesis gets its strongest present-day evidence.",
+   "lenses": [
+    "fact"
+   ]
+  }
+ ],
+ "lensOveralls": [
+  {
+   "lens": "naive-visitor",
+   "overall": "To a stranger who knows nothing about redlining or Chicago, this exhibit is genuinely legible and often excellent. The what/when/why plates, the plain first-use definitions of covenant, contract sale, kitchenette, and Black Belt, the content advisory with a skip control, the honest empty states ('No surveyor sheet survives'), and the period-language chips all do exactly what the design intent asks; the failures are at the edges, where unexplained vocabulary (REPORTED, HOLC, TIF, 'the lamp', 'mechanism rules'), a seven-doors-versus-six promise, a 40-versus-32 pin overstatement, and a finale that poses a different question than the one it just promised chip away at an otherwise trustworthy voice.",
+   "count": 12
+  },
+  {
+   "lens": "humanizer",
+   "overall": "The exhibit passes the hard AI-tell screens cleanly across every user-visible surface swept (walltext.json, all room content modules, station chrome, machines/cases/ledger/voices data, facts.json displays, and the rendered production page): zero em-dashes, zero sentence-internal colons, no AI vocabulary, no negative parallelism, no trailing -ing analyses, and no generic uplift endings, and the 13 chapters of wall text genuinely read as edited historian prose. The residue that remains is a softer, second-order tell, a habit of manufactured two-beat punchlines and imperative fragments concentrated in the machine-conceit chrome (machine definitions, room leads, case verdicts), which is survivable but worth one flattening pass because the pattern repeats often enough for a suspicious reader to notice.",
+   "count": 7
+  },
+  {
+   "lens": "curator",
+   "overall": "The rebuild genuinely reads as a museum exhibit now, and the hardest things are done right: ch4 is handled with restraint and dignity, the Mapping Inequality CC BY-NC attribution rides every map surface including the files room, period-language warning chips are applied consistently, verbatim quotes are policed apart from paraphrase, and the machine rooms hold real documents (Article 34 verbatim, the HOLC form and sheet D74, the case files) with honest plates where the record is incomplete. What remains is credibility finish rather than concept: a colophon whose 91-source bibliography contains visible duplicates and Wikipedia entries behind headline statistics, a finale that misquotes its own closing question, a few checkable miscounts (six rooms vs seven doors, forty located vs 32 pins, ten chapters vs twelve), and three or four surviving game-register strings ('Life happens', 'one event per visit', 'The Answer Key', 'ships after counsel review') that a curator would strike on first walkthrough.",
+   "count": 15
+  },
+  {
+   "lens": "interaction",
+   "overall": "The interaction skeleton is genuinely strong. Doors, room close paths, Escape, browser Back and Forward, sheet permalinks, the copy-link button, grade chips, search, show-more, deep links including bogus ids, and the desktop timeline all behaved correctly under live driving with zero console errors. The two things that would embarrass the exhibit are both mobile-shaped, a horizontal overflow that clips the chapter sheet and docket on every phone, and touch targets on the HOLC map so small that the exhibit's central gesture selects the wrong neighborhood, plus one desktop trap where a first-visit rail jump lands a screen short of the chapter it claims to have reached.",
+   "count": 10
+  },
+  {
+   "lens": "a11y",
+   "overall": "Accessibility fundamentals are genuinely strong and mostly verified live on production: one h1 with a clean no-skip heading tree, labeled landmarks, a properly trapped and focus-returning room dialog (Escape and Back both land on the originating door), a roving-tabindex HOLC map that turns 674 areas into one tab stop with arrow keys and a visible focus ring, all 32 bombing marks keyboard-operable with descriptive names, consistent aria-pressed/aria-expanded on toggles, accurate figure alt text (checked against the actual images), sliders with aria-valuetext, and a soft-ink token that passes contrast at 7.6:1. The two things worth fixing before ship are the dead reduced-motion CSS hook (the state mirrors the preference but no element ever carries .exhibit-root plus data-motion=off, so VoiceCard, TwoBuyers, and FollowTheDollar still animate for reduced-motion visitors and partially inside the no-motion ch4) and the silent sheet-open interaction in the Surveyor's Files, plus a cluster of sub-4.5:1 micro-type at ink alphas 45 to 60 percent.",
+   "count": 7
+  },
+  {
+   "lens": "mobile",
+   "overall": "The reading experience itself is strong on a phone, the wall text, plates, docket lists, files room, answer wall, and sheet permalinks all hold up at 390px, but the page currently ships with a real 66-96px horizontal overflow at mobile widths, traced to the ch4 bombing docket grid and the station header title, which clips the docket dates, the station title, the room text, and the era chip depending on browser. Fix that one layout bug plus the two amputated reference tables and the too-small HOLC map taps, and this is a genuinely good mobile exhibit.",
+   "count": 5
+  },
+  {
+   "lens": "fact",
+   "overall": "The provenance machinery is genuinely sound: the audit gate passes clean, all 220 rendered daggers resolve to the registry, tier badges and the Mapping Inequality attribution render everywhere required, the record table matches facts.json verbatim, the 91-source bibliography count is accurate and its links work (the two 403s are bot walls, not dead links), and the #room-files permalink lands on the right sheet. The failures are concentrated in individual source records, and one is a p1: a wall-text claim whose visitor-facing citation is the site citing its own draft JSON file, plus a leaked editorial TODO and six visible bibliography duplicates under a colophon that promises de-duplication.",
+   "count": 5
+  },
+  {
+   "lens": "historian",
+   "overall": "The exhibit's spine is genuinely strong from this lens, and the chair should protect the legally precise court holdings (Buchanan, Corrigan, Hansberry, Shelley, each stated with exactly what it did and did not do), the disciplined use of corrected registry figures (44,000 not 40,000 for 1910, the 155-contracts floor with 'renegotiations continued past that count', the 46 and 17 percent scoped honestly to Hyde Park A and B), and the sourcing honesty on the armor paraphrase, the Kimpton quotation, and Baldwin's nationally framed answer. The defects cluster where wall text outruns the exhibit's own evidence chain, namely an opening HOLC claim the project's factcheck had already softened, a site-internal 1938 versus 1939-40 dating contradiction, a spliced Article 34 quotation the exhibit's own machine room contradicts verbatim, and a handful of unregistered attributions and causal superlatives (Travis, the servants pledge, the map explaining lender unanimity) that a specialist would catch first.",
+   "count": 16
+  }
+ ],
+ "disposition": "All 31 items fixed across three ownership-partitioned agents (data, stations, shell/rooms) plus coordinator integration. Suite 133/133, audit 111 facts clean, build clean."
+}

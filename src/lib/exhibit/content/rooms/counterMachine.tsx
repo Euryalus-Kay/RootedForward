@@ -5,10 +5,10 @@
 /*  and no thesis wall, because it is not a machine; it is the record  */
 /*  of what beat them. The matching game and the gear train were       */
 /*  retired with the reader rebuild; the room now reads as documents:  */
-/*  THE ANSWER KEY (each machine beside the counter-move that stopped  */
-/*  it, every pairing sourced) and the honest COLLECTION IN PROGRESS   */
-/*  plate for the rebuilding stories whose records are not gathered    */
-/*  yet.                                                               */
+/*  WHAT STOPPED EACH ONE (each machine beside the counter-move that   */
+/*  stopped it, every pairing sourced) and the honest COLLECTION IN    */
+/*  PROGRESS plate for the rebuilding stories whose records are not    */
+/*  gathered yet.                                                      */
 /* ------------------------------------------------------------------ */
 import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
@@ -95,13 +95,13 @@ function AnswerKeyPanel() {
                 {machine.offYear !== null ? machine.offYear : "never"}
               </p>
             </div>
-            <p className="exh-plat mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+            <p className="exh-plat mt-3 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
               {move.contested ? "Still contested" : "What stopped it"}
             </p>
             {move.contested ? (
               <span
                 data-testid="answer-still-contested"
-                className="exh-plat mt-1 inline-block rounded-[2px] border-2 border-exh-ink px-1.5 py-0.5 text-[9px] font-bold uppercase leading-snug tracking-[0.12em] text-exh-ink"
+                className="exh-plat mt-1 inline-block rounded-[2px] border-2 border-exh-ink px-1.5 py-0.5 text-[11px] md:text-[9px] font-bold uppercase leading-snug tracking-[0.12em] text-exh-ink"
               >
                 no off year in the record
               </span>
@@ -137,7 +137,7 @@ function CollectionInProgress() {
 export const COUNTER_STATIONS: RoomStation[] = [
   {
     id: "answer-key",
-    eyebrow: "The Answer Key",
+    eyebrow: "What Stopped Each One",
     lead: "Five machines, five counter-moves, each pairing carried by its record.",
     body: <AnswerKeyPanel />,
   },

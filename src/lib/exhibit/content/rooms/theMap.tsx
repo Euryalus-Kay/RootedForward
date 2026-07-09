@@ -55,17 +55,17 @@ function TheForm1939() {
   }
   return (
     <PaperCard tone="deep" data-testid="room-form-1939" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
         {GYB.source.title}
         <SourceSup source={{ title: GYB.source.title, url: GYB.source.url }} />
       </p>
-      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
         period document; contains the era&rsquo;s racist language
       </span>
       <div className="mt-3 space-y-4">
         {[...sections.entries()].map(([section, fields]) => (
           <div key={section}>
-            <p className="exh-mono text-[10px] text-exh-ink-soft">{section}</p>
+            <p className="exh-mono text-[11px] md:text-[10px] text-exh-ink-soft">{section}</p>
             <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 border-l border-exh-ink/15 pl-3">
               {fields.map((f) => (
                 <div key={f.fieldId} className="contents">
@@ -167,7 +167,7 @@ export const THE_MAP_STATIONS: RoomStation[] = [
   {
     id: "still-running",
     eyebrow: STATION_EYEBROWS["still-running"],
-    lead: "The lamp on this machine reads off. The ground reads otherwise.",
+    lead: "The Fair Housing Act switched this machine off in 1968. The grade lines it drew still show in the figures below.",
     body: (
       <div className="space-y-4">
         <FactCard id="redlining.black_loans_under_2pct" label="While it ran" dated>

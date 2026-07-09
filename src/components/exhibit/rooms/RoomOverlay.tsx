@@ -94,6 +94,10 @@ export default function RoomOverlay() {
   const openRoomRef = useRef<string | null>(openRoom);
   const lastRoomRef = useRef<string | null>(null);
   const prevRoomRef = useRef<string | null>(null);
+  /* whoever had focus when the room opened; closing hands it back
+     (a station button can open a room far from that room's door) */
+  const openerRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     openRoomRef.current = openRoom;
@@ -146,23 +150,44 @@ export default function RoomOverlay() {
     >
       <Dialog.Overlay className="fixed inset-0 z-[55] bg-exh-ink/60" />
       <Dialog.Content
+        ref={contentRef}
         data-testid="room-overlay"
         data-room={openRoom ?? undefined}
+        onOpenAutoFocus={() => {
+          /* runs before Radix moves focus into the sheet, so the
+             active element is still whatever control opened the room */
+          const opener = document.activeElement;
+          openerRef.current =
+            opener instanceof HTMLElement && opener !== document.body ? opener : null;
+        }}
         onEscapeKeyDown={(e) => {
-          /* an open citation popover or voice card claims this Escape;
-             the room stays. Both close themselves on the same event. */
-          if (document.querySelector('[data-testid="source-popover"], [data-testid^="voice-card-"]')) {
+          /* an open citation popover or voice card INSIDE this room
+             claims the Escape; the room stays. Both close themselves
+             on the same event. A stale voice card left open out on
+             the page must not eat the room's Escape. */
+          if (
+            contentRef.current?.querySelector(
+              '[data-testid="source-popover"], [data-testid^="voice-card-"]'
+            )
+          ) {
             e.preventDefault();
           }
         }}
         onCloseAutoFocus={(e) => {
-          /* hand focus back to the doorway the visitor came through
+          /* hand focus back to the control that opened the room, then
+             fall back to the room's door, then the exhibit root
              (there is no Radix Trigger; doors dispatch OPEN_ROOM) */
           e.preventDefault();
+          const opener = openerRef.current;
+          openerRef.current = null;
           const door = lastRoomRef.current
             ? document.querySelector<HTMLElement>(`[data-testid="door-enter-${lastRoomRef.current}"]`)
             : null;
-          moveFocus(door ?? document.querySelector<HTMLElement>('[data-testid="exhibit-root"]'));
+          moveFocus(
+            (opener && opener.isConnected ? opener : null) ??
+              door ??
+              document.querySelector<HTMLElement>('[data-testid="exhibit-root"]')
+          );
         }}
         className="exh-paper fixed inset-0 z-[56] overflow-y-auto overscroll-contain border-exh-ink/30 bg-exh-linen shadow-[0_8px_40px_rgba(28,26,23,0.5)] focus:outline-none md:inset-x-6 md:inset-y-5 md:rounded-sm md:border"
       >
@@ -176,7 +201,7 @@ export default function RoomOverlay() {
                 </h2>
               </Dialog.Title>
               {platePlain ? (
-                <p className="exh-plat mt-0.5 truncate text-[10px] uppercase tracking-[0.18em] text-exh-ink-soft">
+                <p className="exh-plat mt-0.5 truncate text-[11px] uppercase tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
                   {platePlain}
                 </p>
               ) : null}

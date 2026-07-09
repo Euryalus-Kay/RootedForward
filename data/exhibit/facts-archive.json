@@ -1,0 +1,785 @@
+{
+  "version": 1,
+  "note": "Retired facts from the game-era build. Nothing on the exhibit page or in src/ references these ids; they were moved out of facts.json in the July 2026 review so the About colophon's source count reflects only works actually behind the page. Each entry keeps the factcheck claim it passed under (embedded as `factcheck`). To revive one, move it back into facts.json and restore its claim to factcheck.json.",
+  "archived": "2026-07-08",
+  "facts": [
+    {
+      "id": "land.last_dance_1835",
+      "value": 800,
+      "display": "about 800 men danced through Chicago in August 1835",
+      "unit": "dancers",
+      "asOf": "August 1835",
+      "tier": "attributed",
+      "source": {
+        "title": "Eyewitness account of the 1835 Potawatomi farewell dance",
+        "author": "John Dean Caton",
+        "year": 1835,
+        "url": "",
+        "locator": "recollection published later by Caton, then a young Chicago lawyer"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-land-05",
+      "usedBy": [],
+      "notes": "At the last annuity payment about 800 men danced through the streets of Chicago. Caton wrote that the dancers understood it as the last dance on their native soil. Single eyewitness account, so tier attributed.",
+      "factcheck": {
+        "id": "fc-land-05",
+        "factId": "land.last_dance_1835",
+        "claim": "About 800 men danced through Chicago at the last annuity payment in August 1835.",
+        "verdict": "verified",
+        "note": "Single eyewitness account by John Caton, so the fact ships at tier attributed.",
+        "source": "John Caton account via land deep dive stats (lastDancers)"
+      }
+    },
+    {
+      "id": "land.trail_of_death_1838",
+      "value": 859,
+      "display": "859 Potawatomi forced from Indiana to Kansas in 1838",
+      "unit": "people",
+      "asOf": "September to November 1838",
+      "tier": "documented",
+      "source": {
+        "title": "Potawatomi Trail of Death records",
+        "author": "",
+        "year": 1838,
+        "url": "",
+        "locator": "Twin Lakes, Indiana to the Osage River, Kansas"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-land-06",
+      "usedBy": [],
+      "notes": "The route ran roughly 660 miles over 61 days. More than forty died on the way, most of them children, of typhoid and exhaustion.",
+      "factcheck": {
+        "id": "fc-land-06",
+        "factId": "land.trail_of_death_1838",
+        "claim": "In 1838 some 859 Potawatomi were force-marched 660 miles in 61 days; more than 40 died.",
+        "verdict": "verified",
+        "note": "Matches Trail of Death records carried in the deep dive.",
+        "source": "Potawatomi Trail of Death records; land deep dive s5 and stats"
+      }
+    },
+    {
+      "id": "land.shabbona_2024",
+      "value": 2024,
+      "display": "Shabbona land returned to trust in 2024",
+      "unit": "year",
+      "asOf": "2024",
+      "tier": "documented",
+      "source": {
+        "title": "Prairie Band Potawatomi Nation announcement",
+        "author": "Prairie Band Potawatomi Nation",
+        "year": 2024,
+        "url": "",
+        "locator": "Shabbona, Illinois trust acquisition"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-land-08",
+      "usedBy": [],
+      "notes": "The Prairie Band won back a piece of ancestral ground at Shabbona, placed in federal trust, and became the first federally recognized tribe to hold land in Illinois again.",
+      "factcheck": {
+        "id": "fc-land-08",
+        "factId": "land.shabbona_2024",
+        "claim": "In 2024 the Prairie Band became the first federally recognized tribe to hold trust land in Illinois again.",
+        "verdict": "verified",
+        "note": "Shabbona land placed in trust.",
+        "source": "Prairie Band Potawatomi Nation, 2024; land deep dive stats (shabbonaTrust)"
+      }
+    },
+    {
+      "id": "formation.hp_house_1857",
+      "value": 1857,
+      "display": "the Hyde Park House hotel opened in 1857",
+      "unit": "year",
+      "asOf": "1857",
+      "tier": "documented",
+      "source": {
+        "title": "Hyde Park House",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/Hyde_Park_House",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-formation-02",
+      "usedBy": [],
+      "notes": "A four-story wood-frame resort hotel at 53rd Street and the lake, the center of early Hyde Park social life. The destroying fire's year is contested (1877 or 1879), so the repo verify softened it to near the end of the 1870s.",
+      "factcheck": {
+        "id": "fc-formation-02",
+        "factId": "formation.hp_house_1857",
+        "claim": "The Hyde Park House hotel opened in 1857.",
+        "verdict": "verified",
+        "note": "The destroying fire year is contested (1877 or 1879) and stays soft per the repo verify.",
+        "source": "hp-factcheck.json formation chapter; hp-research.json formation verify"
+      }
+    },
+    {
+      "id": "formation.lincoln_1865",
+      "value": 1865,
+      "display": "Mary Todd Lincoln stayed at the Hyde Park House in 1865",
+      "unit": "year",
+      "asOf": "summer 1865",
+      "tier": "documented",
+      "source": {
+        "title": "Hyde Park House",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/Hyde_Park_House",
+        "locator": "Lincoln family stay"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-formation-03",
+      "usedBy": [],
+      "notes": "She stayed about two and a half months in the summer of 1865 with her sons Robert and Tad, only months after the assassination.",
+      "factcheck": {
+        "id": "fc-formation-03",
+        "factId": "formation.lincoln_1865",
+        "claim": "Mary Todd Lincoln stayed at the Hyde Park House in summer 1865 with Robert and Tad.",
+        "verdict": "verified",
+        "note": "About two and a half months, a few months after the assassination.",
+        "source": "hp-factcheck.json formation chapter; Wikipedia, Hyde Park House"
+      }
+    },
+    {
+      "id": "formation.pop_1880_1889",
+      "value": "15,716 to about 85,000",
+      "display": "township population grew fivefold in nine years",
+      "unit": "people",
+      "asOf": "1880 to 1889",
+      "tier": "documented",
+      "source": {
+        "title": "Hyde Park Township",
+        "author": "Encyclopedia of Chicago",
+        "year": 2005,
+        "url": "http://www.encyclopedia.chicagohistory.org/pages/621.html",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-formation-06",
+      "usedBy": [],
+      "notes": "From 15,716 people in 1880 to roughly 85,000 by 1889. The 1889 figure is an approximation for the annexation year, not an exact census count.",
+      "factcheck": {
+        "id": "fc-formation-06",
+        "factId": "formation.pop_1880_1889",
+        "claim": "Township population rose from 15,716 in 1880 to about 85,000 in 1889.",
+        "verdict": "verified",
+        "note": "15,716 checked against the 1880 census; 85,000 is an approximation for the annexation year.",
+        "source": "hp-factcheck.json formation chapter; Encyclopedia of Chicago"
+      }
+    },
+    {
+      "id": "formation.annexation_scale_1889",
+      "value": 125,
+      "display": "125 square miles joined Chicago in the 1889 annexation",
+      "unit": "square miles",
+      "asOf": "June 29, 1889",
+      "tier": "reported",
+      "source": {
+        "title": "Annexation",
+        "author": "Encyclopedia of Chicago",
+        "year": 2005,
+        "url": "http://www.encyclopedia.chicagohistory.org/pages/53.html",
+        "locator": ""
+      },
+      "secondarySources": [
+        "WBEZ annexation coverage"
+      ],
+      "factcheckId": "fc-formation-07",
+      "usedBy": [],
+      "notes": "The 1889 vote added about 125 square miles and roughly 225,000 people to Chicago across several townships, Hyde Park Township among them.",
+      "factcheck": {
+        "id": "fc-formation-07",
+        "factId": "formation.annexation_scale_1889",
+        "claim": "The 1889 annexation added about 125 square miles and 225,000 people to Chicago.",
+        "verdict": "verified",
+        "note": "Citywide 1889 annexation scale, of which Hyde Park Township was part.",
+        "source": "Encyclopedia of Chicago, Annexation; WBEZ via deep dive stats"
+      }
+    },
+    {
+      "id": "university.rockefeller_pledge_600k",
+      "value": 600000,
+      "display": "$600,000 pledged by Rockefeller in May 1889",
+      "unit": "USD",
+      "asOf": "May 1889",
+      "tier": "documented",
+      "source": {
+        "title": "The Story of the University of Chicago",
+        "author": "Thomas W. Goodspeed",
+        "year": 1925,
+        "url": "https://brocku.ca/MeadProject/Goodspeed/1925/Goodspeed_1925_02.html",
+        "locator": "ch. 2, Mr. Rockefeller Opens the Way"
+      },
+      "secondarySources": [
+        "University of Chicago Library, Building for a Long Future exhibit"
+      ],
+      "factcheckId": "fc-university-01",
+      "usedBy": [],
+      "notes": "Rockefeller pledged $600,000 toward the endowment of a new Baptist university in Chicago, conditioned on matching gifts. The repo verify keeps the timing at May 1889 without asserting the exact day.",
+      "factcheck": {
+        "id": "fc-university-01",
+        "factId": "university.rockefeller_pledge_600k",
+        "claim": "Rockefeller pledged $600,000 in May 1889, conditioned on matching gifts.",
+        "verdict": "verified",
+        "note": "The repo verify declines to assert the exact day of the May 1889 offer.",
+        "source": "Goodspeed (1925); hp-research.json university verify"
+      }
+    },
+    {
+      "id": "university.match_400k",
+      "value": 400000,
+      "display": "$400,000 raised to meet Rockefeller's condition",
+      "unit": "USD",
+      "asOf": "1889 to 1890",
+      "tier": "documented",
+      "source": {
+        "title": "The Story of the University of Chicago",
+        "author": "Thomas W. Goodspeed",
+        "year": 1925,
+        "url": "https://brocku.ca/MeadProject/Goodspeed/1925/Goodspeed_1925_02.html",
+        "locator": ""
+      },
+      "secondarySources": [
+        "History of the University of Chicago, Wikipedia"
+      ],
+      "factcheckId": "fc-university-02",
+      "usedBy": [],
+      "notes": "Frederick T. Gates and Thomas Goodspeed of the American Baptist Education Society ran hundreds of solicitations through 1889 and 1890 to raise the required $400,000 match.",
+      "factcheck": {
+        "id": "fc-university-02",
+        "factId": "university.match_400k",
+        "claim": "The American Baptist Education Society raised the $400,000 match through 1889 and 1890.",
+        "verdict": "verified",
+        "note": "Gates and Goodspeed ran the solicitations.",
+        "source": "Goodspeed (1925); hp-research.json university chapter"
+      }
+    },
+    {
+      "id": "university.field_10_acres",
+      "value": 10,
+      "display": "Marshall Field donated the first 10 acres",
+      "unit": "acres",
+      "asOf": "1890",
+      "tier": "documented",
+      "source": {
+        "title": "History of the University of Chicago",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/History_of_the_University_of_Chicago",
+        "locator": "Marshall Field land gift"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-university-03",
+      "usedBy": [],
+      "notes": "Field donated the original tract that holds the main quadrangles and later sold the university additional land. The repo verify flags the ten-acre figure as medium confidence.",
+      "factcheck": {
+        "id": "fc-university-03",
+        "factId": "university.field_10_acres",
+        "claim": "Marshall Field donated the original ten-acre tract holding the main quadrangles.",
+        "verdict": "verified",
+        "note": "Repo verify carries this at medium confidence; Field later sold the university more land.",
+        "source": "hp-research.json university verify; deep dive stats (first-land)"
+      }
+    },
+    {
+      "id": "university.incorporated_1890",
+      "value": 1890,
+      "display": "incorporated September 10, 1890",
+      "unit": "year",
+      "asOf": "September 10, 1890",
+      "tier": "documented",
+      "source": {
+        "title": "History of the Office of the President",
+        "author": "University of Chicago",
+        "year": 2024,
+        "url": "https://president.uchicago.edu/about-the-office/history",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-university-04",
+      "usedBy": [],
+      "notes": "The new University of Chicago was incorporated September 10, 1890 and dates its founding to July 1, 1891, when Harper took office. The repo factcheck corrected an earlier September 18 incorporation claim, which conflated incorporation with Harper's election.",
+      "factcheck": {
+        "id": "fc-university-04",
+        "factId": "university.incorporated_1890",
+        "claim": "The university was incorporated September 10, 1890.",
+        "verdict": "corrected",
+        "correction": "An earlier September 18, 1890 incorporation claim conflated incorporation with the date trustees elected Harper; the repo verify fixed it to September 10.",
+        "note": "Founding is dated by the university to July 1, 1891, when Harper took office.",
+        "source": "hp-research.json university verify; University of Chicago Office of the President history"
+      }
+    },
+    {
+      "id": "university.classes_1892",
+      "value": 1892,
+      "display": "first classes met October 1, 1892",
+      "unit": "year",
+      "asOf": "October 1, 1892",
+      "tier": "documented",
+      "source": {
+        "title": "The Story of the University of Chicago",
+        "author": "Thomas W. Goodspeed",
+        "year": 1925,
+        "url": "",
+        "locator": "opening enrollment figures"
+      },
+      "secondarySources": [
+        "Encyclopedia of Chicago, University of Chicago entry"
+      ],
+      "factcheckId": "fc-university-05",
+      "usedBy": [],
+      "notes": "Opening day enrolled 594 men and women with a faculty of about 120, including eight former college presidents. Coeducational from the start, unusual for the era.",
+      "factcheck": {
+        "id": "fc-university-05",
+        "factId": "university.classes_1892",
+        "claim": "First classes met October 1, 1892 with 594 students and about 120 faculty, including eight former college presidents.",
+        "verdict": "verified",
+        "note": "Figures trace to Goodspeed and are widely repeated; coeducational from the start.",
+        "source": "hp-research.json university verify; Goodspeed (1925)"
+      }
+    },
+    {
+      "id": "university.first_university_bankrupt_1886",
+      "value": 1886,
+      "display": "the first University of Chicago failed in 1886",
+      "unit": "year",
+      "asOf": "1886",
+      "tier": "documented",
+      "source": {
+        "title": "Old University of Chicago",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/Old_University_of_Chicago",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-university-06",
+      "usedBy": [],
+      "notes": "A Baptist college on ten acres Senator Stephen A. Douglas donated at Cottage Grove and 35th. It struggled with debt for decades and closed in foreclosure in 1886. The new university was a separate legal entity. The deep dive uses an 1857 charter year; the film factcheck kept the 1856 charter framing.",
+      "factcheck": {
+        "id": "fc-university-06",
+        "factId": "university.first_university_bankrupt_1886",
+        "claim": "The first University of Chicago, on Douglas's donated land, closed in foreclosure in 1886.",
+        "verdict": "verified",
+        "note": "Film verify kept the 1856 charter framing; the deep dive stat uses 1857. The 1886 closing is consistent across both.",
+        "source": "hp-research.json university verify; Old University of Chicago records"
+      }
+    },
+    {
+      "id": "university.rockefeller_total_35m",
+      "value": 35000000,
+      "display": "about $35 million from Rockefeller by 1910",
+      "unit": "USD",
+      "asOf": "1892 to 1910",
+      "tier": "documented",
+      "source": {
+        "title": "John D. Rockefeller, Building for a Long Future",
+        "author": "University of Chicago Library",
+        "year": 2015,
+        "url": "https://www.lib.uchicago.edu/collex/exhibits/building-long-future/john-d-rockefeller/",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Philanthropy Roundtable Almanac, University of Chicago"
+      ],
+      "factcheckId": "fc-university-07",
+      "usedBy": [],
+      "notes": "Rockefeller's contributions reached about $35 million by 1910, closing with a $10 million farewell gift. He insisted his name not appear on campus during his years of giving.",
+      "factcheck": {
+        "id": "fc-university-07",
+        "factId": "university.rockefeller_total_35m",
+        "claim": "Rockefeller gave about $35 million by 1910, including a $10 million farewell gift.",
+        "verdict": "verified",
+        "note": "He kept his name off campus during his giving.",
+        "source": "hp-research.json university verify; UChicago Library exhibit"
+      }
+    },
+    {
+      "id": "university.harper_first_president",
+      "value": 35,
+      "display": "William Rainey Harper, first president at 35",
+      "unit": "years old",
+      "asOf": "elected September 18, 1890",
+      "tier": "documented",
+      "source": {
+        "title": "William Rainey Harper",
+        "author": "Wikipedia and Harper College Archives",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/William_Rainey_Harper",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-university-08",
+      "usedBy": [],
+      "notes": "Trustees elected Harper on September 18, 1890 and he took office July 1, 1891. He earned his Yale doctorate in his teens, around age eighteen. The repo factcheck corrected an earlier claim of a PhD at nineteen.",
+      "factcheck": {
+        "id": "fc-university-08",
+        "factId": "university.harper_first_president",
+        "claim": "Harper was elected September 18, 1890, took office July 1, 1891, and earned his Yale doctorate in his teens.",
+        "verdict": "corrected",
+        "correction": "The earlier claim of a Yale PhD at nineteen was softened to in his teens, around age eighteen, per the repo verify.",
+        "note": "Elected at 34, in office at 35.",
+        "source": "hp-research.json university verify; Harper College Archives"
+      }
+    },
+    {
+      "id": "fair.chicago_day_751026",
+      "value": 751026,
+      "display": "751,026 admissions on Chicago Day",
+      "unit": "admissions",
+      "asOf": "October 9, 1893",
+      "tier": "documented",
+      "source": {
+        "title": "World's Columbian Exposition",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/World's_Columbian_Exposition",
+        "locator": "Chicago Day attendance"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-05",
+      "usedBy": [],
+      "notes": "A record crowd for an outdoor event at the time, on the anniversary of the start of the Great Chicago Fire. The repo factcheck corrected an earlier 716,881 figure to about 751,000.",
+      "factcheck": {
+        "id": "fc-fair-05",
+        "factId": "fair.chicago_day_751026",
+        "claim": "Chicago Day, October 9, 1893, drew 751,026 admissions.",
+        "verdict": "corrected",
+        "correction": "The researcher's 716,881 was wrong; the repo verify corrected to about 751,026, with 761,942 in sources that add staff and exhibitors.",
+        "note": "A record outdoor event crowd for its time.",
+        "source": "hp-research.json worlds-fair verify; Wikipedia"
+      }
+    },
+    {
+      "id": "fair.ferris_wheel_264ft",
+      "value": 264,
+      "display": "the first Ferris Wheel stood 264 feet tall",
+      "unit": "feet",
+      "asOf": "1893",
+      "tier": "documented",
+      "source": {
+        "title": "Ferris Wheel (1893)",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/Ferris_Wheel",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-06",
+      "usedBy": [],
+      "notes": "George Washington Gale Ferris Jr.'s wheel on the Midway Plaisance carried 36 cars and more than 2,000 riders at once. A turn cost fifty cents, the same as admission to the fair.",
+      "factcheck": {
+        "id": "fc-fair-06",
+        "factId": "fair.ferris_wheel_264ft",
+        "claim": "The first Ferris Wheel stood 264 feet with 36 cars and more than 2,000 riders at once.",
+        "verdict": "verified",
+        "note": "Fifty cents a turn, same as fair admission.",
+        "source": "Wikipedia, Ferris Wheel (1893); worlds-fair deep dive stats (ferris)"
+      }
+    },
+    {
+      "id": "fair.construction_deaths_32",
+      "value": 32,
+      "display": "32 construction deaths counted by the fair's medical bureau",
+      "unit": "deaths",
+      "asOf": "1891 to 1893",
+      "tier": "reported",
+      "source": {
+        "title": "Workers Escaping Death (fair medical bureau count)",
+        "author": "worldsfairchicago1893.com",
+        "year": 2019,
+        "url": "https://worldsfairchicago1893.com",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-07",
+      "usedBy": [],
+      "notes": "The count is the fair's own medical bureau tally of deaths during construction, which began in January 1891.",
+      "factcheck": {
+        "id": "fc-fair-07",
+        "factId": "fair.construction_deaths_32",
+        "claim": "The fair's medical bureau counted 32 construction deaths.",
+        "verdict": "verified",
+        "note": "Bureau's own tally, carried in the deep dive.",
+        "source": "worldsfairchicago1893.com via worlds-fair deep dive stats (deaths)"
+      }
+    },
+    {
+      "id": "fair.msi_1933",
+      "value": 1933,
+      "display": "the Palace of Fine Arts reopened as the Museum of Science and Industry in 1933",
+      "unit": "year",
+      "asOf": "1933",
+      "tier": "documented",
+      "source": {
+        "title": "Museum of Science and Industry (Chicago)",
+        "author": "Wikipedia",
+        "year": 2026,
+        "url": "https://en.wikipedia.org/wiki/Museum_of_Science_and_Industry_(Chicago)",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-08",
+      "usedBy": [],
+      "notes": "The building survived because its brick substructure was built fireproof to protect the art inside. It housed the Field Columbian Museum until 1920, was recast in limestone, and reopened in 1933.",
+      "factcheck": {
+        "id": "fc-fair-08",
+        "factId": "fair.msi_1933",
+        "claim": "The Palace of Fine Arts survived on its fireproof brick substructure and reopened as the Museum of Science and Industry in 1933.",
+        "verdict": "verified",
+        "note": "Housed the Field Columbian Museum until 1920; Rosenwald funded the rebirth.",
+        "source": "hp-research.json worlds-fair verify; Wikipedia, MSI"
+      }
+    },
+    {
+      "id": "fair.colored_american_day",
+      "value": "1893-08-25",
+      "display": "Colored American Day, August 25, 1893",
+      "unit": "date",
+      "asOf": "August 25, 1893",
+      "tier": "reported",
+      "source": {
+        "title": "World's Columbian Exposition, Colored American Day",
+        "author": "standard fair histories (Rydell, All the World's a Fair; fair records)",
+        "year": 1893,
+        "url": "https://en.wikipedia.org/wiki/World%27s_Columbian_Exposition",
+        "locator": "August 25, 1893 program, Frederick Douglass address"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-10",
+      "usedBy": [],
+      "notes": "Frederick Douglass spoke and Paul Laurence Dunbar read his verse on the fair's single designated day for Black Americans.",
+      "factcheck": {
+        "id": "fc-fair-10",
+        "factId": "fair.colored_american_day",
+        "claim": "Colored American Day was August 25, 1893; Douglass spoke and Dunbar read.",
+        "verdict": "verified",
+        "note": "Carried in the deep dive stats.",
+        "source": "Living History of Illinois via worlds-fair deep dive stats (coloredDay)"
+      }
+    },
+    {
+      "id": "covenants.corrigan_1926",
+      "value": 1926,
+      "display": "after Corrigan v. Buckley, covenants spread",
+      "unit": "year",
+      "asOf": "1926 to 1940s",
+      "tier": "documented",
+      "source": {
+        "title": "Corrigan v. Buckley, 271 U.S. 323",
+        "author": "U.S. Supreme Court",
+        "year": 1926,
+        "url": "https://supreme.justia.com/cases/federal/us/271/323/",
+        "locator": "decided May 24, 1926"
+      },
+      "secondarySources": [
+        "Chicago Covenants Project history (MacChesney model covenant drafted the year after Corrigan)"
+      ],
+      "factcheckId": "fc-covenants-01",
+      "usedBy": [],
+      "notes": "The Court dismissed the constitutional challenge to a private covenant, and the real estate industry read the dismissal as a green light. Chicago's covenant wave, including Kenwood, Hyde Park, Woodlawn, Oakland, and Englewood, dates from the late 1920s.",
+      "factcheck": {
+        "id": "fc-covenants-01",
+        "factId": "covenants.corrigan_1926",
+        "claim": "After Corrigan v. Buckley (1926) racial covenants proliferated, sweeping the neighborhoods around the Black Belt from the late 1920s.",
+        "verdict": "verified",
+        "note": "Decision date May 24, 1926 from the court record; the covenant wave timing is in the fact-checked corpus and Covenants Project research.",
+        "source": "Corrigan v. Buckley, 271 U.S. 323; Chicago Covenants Project; color-line deep dive s6"
+      }
+    },
+    {
+      "id": "renewal.displaced_15000",
+      "value": 15000,
+      "display": "more than fifteen thousand people displaced",
+      "unit": "people",
+      "asOf": "1950s to 1960s",
+      "tier": "reported",
+      "source": {
+        "title": "Renewal and Revival, University of Chicago Centennial Catalogues",
+        "author": "University of Chicago Library",
+        "year": 1992,
+        "url": "https://www.lib.uchicago.edu/collex/exhibits/university-chicago-centennial-catalogues/university-and-city-centennial-view-university-chicago/university-neighborhood/renewal-and-revival/",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Wikipedia, University Apartments (Chicago), 15,000 plus cleared under Hyde Park A and B alone"
+      ],
+      "factcheckId": "fc-renewal-12",
+      "usedBy": [],
+      "notes": "More than 15,000 residents displaced is the figure the university's own sources use and the film verified. Chicago Magazine cites 30,000 for the broader redevelopment area, so 15,000 should not be presented as a ceiling.",
+      "factcheck": {
+        "id": "fc-renewal-12",
+        "factId": "renewal.displaced_15000",
+        "claim": "More than 15,000 residents were displaced.",
+        "verdict": "verified",
+        "note": "The figure the university's own sources use, verified for the film's cold open; Chicago Magazine cites 30,000 for the broader area, so 15,000 is not a ceiling.",
+        "source": "hp-research.json intro verify; UChicago Library exhibit"
+      }
+    },
+    {
+      "id": "renewal.private_investment_250m",
+      "value": 250000000,
+      "display": "about $250 million in private investment followed",
+      "unit": "USD",
+      "asOf": "renewal period",
+      "tier": "reported",
+      "source": {
+        "title": "Constructing a Compatible Community",
+        "author": "Caroline Hugh, CEGU, University of Chicago",
+        "year": 2023,
+        "url": "https://cegu.uchicago.edu/2023/11/30/university-led-renewal/",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-renewal-15",
+      "usedBy": [],
+      "notes": "Private investment drawn in alongside the university's $29 million commitment, per the CEGU analysis.",
+      "factcheck": {
+        "id": "fc-renewal-15",
+        "factId": "renewal.private_investment_250m",
+        "claim": "About $250 million in private investment was drawn in alongside the university's money.",
+        "verdict": "verified",
+        "note": "CEGU analysis figure carried in the deep dive stats.",
+        "source": "CEGU (2023) via urban-renewal deep dive stats (private)"
+      }
+    },
+    {
+      "id": "present.obama_cost",
+      "value": 850000000,
+      "display": "about $850 million",
+      "unit": "USD",
+      "asOf": "as reported at opening, 2026",
+      "tier": "reported",
+      "source": {
+        "title": "Obama Presidential Center, a first look inside the $850 million campus",
+        "author": "CNN",
+        "year": 2026,
+        "url": "https://www.cnn.com/2026/06/04/style/obama-presidential-center-first-look-inside",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Newsweek and Dezeen coverage, June 2026"
+      ],
+      "factcheckId": "fc-present-02",
+      "usedBy": [],
+      "notes": "About $850 million in private money, the costliest presidential center built. The repo factcheck prefers presidential center over presidential library since the OPC is privately operated, not a NARA library.",
+      "factcheck": {
+        "id": "fc-present-02",
+        "factId": "present.obama_cost",
+        "claim": "The campus cost about $850 million.",
+        "verdict": "verified",
+        "note": "Verified in the film factcheck; call it a presidential center, not a NARA library.",
+        "source": "hp-factcheck.json present chapter; CNN (June 2026)"
+      }
+    },
+    {
+      "id": "present.black_wealth_growth_61pct",
+      "value": 61,
+      "display": "Black median wealth rose 61 percent, and the dollar gap still widened",
+      "unit": "percent",
+      "asOf": "2019 to 2022",
+      "tier": "documented",
+      "source": {
+        "title": "Greater Wealth, Greater Uncertainty, Changes in Racial Inequality in the Survey of Consumer Finances",
+        "author": "Board of Governors of the Federal Reserve System, FEDS Notes",
+        "year": 2023,
+        "url": "https://www.federalreserve.gov/econres/notes/feds-notes/greater-wealth-greater-uncertainty-changes-in-racial-inequality-in-the-survey-of-consumer-finances-20231018.html",
+        "locator": "median wealth growth by race, 2019 to 2022"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-present-08",
+      "usedBy": [],
+      "notes": "Black median family wealth grew 61 percent from 2019 to 2022 against 31 percent for white families, yet the dollar gap widened because the growth started from a far smaller base.",
+      "factcheck": {
+        "id": "fc-present-08",
+        "factId": "present.black_wealth_growth_61pct",
+        "claim": "Black median wealth grew 61 percent from 2019 to 2022 against 31 percent for white families, and the dollar gap still widened.",
+        "verdict": "verified",
+        "note": "Median growth figures per the FEDS note, carried in the fact-checked deep dive.",
+        "source": "FEDS Notes (2023); present deep dive s5"
+      }
+    },
+    {
+      "id": "present.site_2016",
+      "value": 2016,
+      "display": "the Jackson Park site was picked in 2016",
+      "unit": "year",
+      "asOf": "announced July 29, 2016",
+      "tier": "documented",
+      "source": {
+        "title": "Obama Foundation site selection announcement",
+        "author": "Obama Foundation",
+        "year": 2016,
+        "url": "",
+        "locator": "press release, July 29, 2016"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-present-09",
+      "usedBy": [],
+      "notes": "The repo factcheck ruled the around 2015 claim wrong. May 2015 was the choice of Chicago and the university partnership; the Jackson Park site itself was announced July 29, 2016.",
+      "factcheck": {
+        "id": "fc-present-09",
+        "factId": "present.site_2016",
+        "claim": "The Jackson Park site was selected in 2016, announced July 29, 2016.",
+        "verdict": "corrected",
+        "correction": "The film's around 2015 was ruled wrong by the repo factcheck; 2015 was the Chicago and university partnership decision, 2016 the site.",
+        "note": "The repo factcheck fix is authoritative.",
+        "source": "hp-factcheck.json present chapter; Obama Foundation press release (July 29, 2016)"
+      }
+    },
+    {
+      "id": "present.pilot_median_72k_330k",
+      "value": "72,500 to 330,000",
+      "display": "the pilot area median went from $72,500 to $330,000",
+      "unit": "USD",
+      "asOf": "2016 to 2025",
+      "tier": "reported",
+      "source": {
+        "title": "Chicago's efforts to keep housing affordable in Woodlawn fall short",
+        "author": "Illinois Answers Project",
+        "year": 2026,
+        "url": "https://illinoisanswers.org/2026/05/07/affordability-woodlawn-obama-center-housing-costs/",
+        "locator": "Jackson Park housing pilot area median sale price"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-present-12",
+      "usedBy": [],
+      "notes": "The median sale price in the city's Jackson Park housing pilot area rose from $72,500 in 2016, the year the site was chosen, to $330,000 by 2025, more than four times higher.",
+      "factcheck": {
+        "id": "fc-present-12",
+        "factId": "present.pilot_median_72k_330k",
+        "claim": "The Jackson Park pilot-area median sale price rose from $72,500 in 2016 to $330,000 in 2025.",
+        "verdict": "verified",
+        "note": "Carried in the deep dive stats.",
+        "source": "Illinois Answers Project (May 2026); present deep dive stats (pilotprice)"
+      }
+    },
+    {
+      "id": "present.holc_vacancy_gradient",
+      "value": "5.1 versus 11.3",
+      "display": "vacancy today, 5.1 percent on former A land, 11.3 on former D",
+      "unit": "percent",
+      "asOf": "ACS 2023 five-year estimates",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC Redlining Grades and Present-Day Neighborhood Outcomes in Chicago",
+        "author": "Rooted Forward research (Zain Zaidi)",
+        "year": 2026,
+        "url": "https://rooted-forward.org/research/holc-redlining-present-day-outcomes-chicago",
+        "locator": "vacancy by grade, B and C tied at 8.6"
+      },
+      "secondarySources": [
+        "U.S. Census Bureau, ACS 2023 five-year table B25002"
+      ],
+      "factcheckId": "fc-present-15",
+      "usedBy": [],
+      "notes": "Roughly one unit in nine sits vacant on former D land against about one in twenty on former A. B and C tie at 8.6 percent, reported as found.",
+      "factcheck": {
+        "id": "fc-present-15",
+        "factId": "present.holc_vacancy_gradient",
+        "claim": "Vacancy runs 5.1 percent on former A land and 11.3 on former D, with B and C tied at 8.6.",
+        "verdict": "verified",
+        "note": "Tie reported as found.",
+        "source": "repo paper; ACS 2023 B25002"
+      }
+    }
+  ]
+}

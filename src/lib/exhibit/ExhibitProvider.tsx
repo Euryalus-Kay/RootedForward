@@ -32,9 +32,82 @@ declare global {
   }
 }
 
+/* Lazy content above a jump target can shift layout mid-scroll, so a
+   first-visit rail jump lands short with the wrong node lit. After the
+   scroll settles (scrollend where the browser has it, a position poll
+   elsewhere) the target is measured again and re-anchored once if it
+   drifted, capped so a stubborn layout never loops. Any newer jump or
+   reader input cancels a pending settle check. */
+const SETTLE_TOLERANCE_PX = 200;
+const MAX_REANCHORS = 2;
+const SETTLE_TIMEOUT_MS = 1500;
+
+let settleToken = 0;
+
+function reAnchorWhenSettled(anchorId: string, retriesLeft: number) {
+  if (typeof window === "undefined") return;
+  const token = ++settleToken;
+  let pollId: number | undefined;
+
+  const cleanup = () => {
+    document.removeEventListener("scrollend", finish);
+    window.removeEventListener("wheel", cancel);
+    window.removeEventListener("touchstart", cancel);
+    if (pollId !== undefined) window.clearInterval(pollId);
+  };
+
+  const cancel = () => {
+    if (token === settleToken) settleToken += 1;
+    cleanup();
+  };
+
+  const finish = () => {
+    cleanup();
+    if (token !== settleToken) return;
+    const el = document.getElementById(anchorId);
+    if (!el) return;
+    const marginTop = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    if (Math.abs(el.getBoundingClientRect().top - marginTop) > SETTLE_TOLERANCE_PX && retriesLeft > 0) {
+      el.scrollIntoView({ behavior: "auto", block: "start" });
+      reAnchorWhenSettled(anchorId, retriesLeft - 1);
+    }
+  };
+
+  // the reader taking over mid-settle wins; never yank them back
+  window.addEventListener("wheel", cancel, { passive: true });
+  window.addEventListener("touchstart", cancel, { passive: true });
+
+  // kept out of the if-condition so TS does not narrow window to never
+  const supportsScrollEnd = "onscrollend" in window;
+  if (supportsScrollEnd) {
+    document.addEventListener("scrollend", finish);
+    // a jump that needs no scrolling never fires scrollend; time out
+    let waited = 0;
+    pollId = window.setInterval(() => {
+      waited += 250;
+      if (waited >= SETTLE_TIMEOUT_MS) finish();
+    }, 250);
+  } else {
+    let lastY = window.scrollY;
+    let stable = 0;
+    let waited = 0;
+    pollId = window.setInterval(() => {
+      waited += 120;
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 2) stable += 1;
+      else stable = 0;
+      lastY = y;
+      if (stable >= 2 || waited >= SETTLE_TIMEOUT_MS) finish();
+    }, 120);
+  }
+}
+
 /** Scroll a chapter (or the about section) into view by its anchor id. */
 export function scrollToAnchor(anchorId: string, behavior: ScrollBehavior = "smooth") {
-  document.getElementById(anchorId)?.scrollIntoView({ behavior, block: "start" });
+  const el = document.getElementById(anchorId);
+  if (!el) return;
+  el.scrollIntoView({ behavior, block: "start" });
+  reAnchorWhenSettled(anchorId, MAX_REANCHORS);
 }
 
 export function ExhibitProvider({ children }: { children: ReactNode }) {

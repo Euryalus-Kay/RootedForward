@@ -30,10 +30,10 @@ const ETHICS = ethicsJson as unknown as {
 function Article34() {
   return (
     <PaperCard tone="deep" data-testid="room-article34" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
         Article 34, Code of Ethics, National Association of Real Estate Boards, adopted 1924
       </p>
-      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
         period document, quoted verbatim
       </span>
       <blockquote className="exh-serif mt-3 font-display text-lg italic leading-relaxed text-exh-ink">
@@ -44,7 +44,7 @@ function Article34() {
       </div>
       <div className="mt-4 space-y-3 border-t border-exh-ink/15 pt-3">
         <div>
-          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+          <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
             What the words did
           </p>
           <p className="mt-1 text-sm leading-relaxed text-exh-ink">
@@ -54,7 +54,7 @@ function Article34() {
           </p>
         </div>
         <div>
-          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+          <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
             What breaking them cost
           </p>
           <p className="mt-1 text-sm leading-relaxed text-exh-ink">
@@ -75,7 +75,7 @@ function Article34() {
 function TheCounter() {
   return (
     <PaperCard tone="deep" data-testid="room-code-counter" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         The counter
       </p>
       <p className="exh-mono mt-3 text-2xl text-exh-ink md:text-3xl">2020 - 1924 = 96</p>
@@ -154,7 +154,7 @@ export const THE_CODE_STATIONS: RoomStation[] = [
   {
     id: "still-running",
     eyebrow: STATION_EYEBROWS["still-running"],
-    lead: "The lamp reads off with residue. Read the counter before you go.",
+    lead: "The racial language left the code in 1950. The apology arrived in 2020, and the counter below holds the arithmetic.",
     body: (
       <div className="space-y-4">
         <FactCard id="code.apology_2020" label="The apology" dated>

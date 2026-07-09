@@ -103,9 +103,14 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
         )}
       </button>
 
-      <span className="exh-plat max-w-40 text-center text-[10px] font-semibold uppercase leading-tight tracking-[0.18em] text-exh-ink-soft">
+      <span className="exh-plat max-w-40 text-center text-[11px] md:text-[10px] font-semibold uppercase leading-tight tracking-[0.18em] text-exh-ink-soft">
         {voice.name}
       </span>
+      {!open && (
+        <span className="exh-plat -mt-1 max-w-40 text-center text-[11px] md:text-[9px] uppercase leading-tight tracking-[0.14em] text-exh-ink/70">
+          Select to read their words
+        </span>
+      )}
 
       {open && (
         <PaperCard
@@ -124,7 +129,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
           {words && (
             <div className="mt-3 border-l-2 border-exh-ink/30 pl-3">
               {!verbatim && (
-                <span className="exh-plat mb-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
+                <span className="exh-plat mb-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
                   in summary
                 </span>
               )}
@@ -132,7 +137,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
                 {verbatim ? <>&ldquo;{words.text}&rdquo;</> : words.text}
                 {factRef && <SourceSup factId={factRef} />}
               </p>
-              <p className="exh-plat mt-2 text-[10px] uppercase leading-snug tracking-[0.08em] text-exh-ink-soft">
+              <p className="exh-plat mt-2 text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.08em] text-exh-ink-soft">
                 {words.source}
               </p>
             </div>
@@ -144,7 +149,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
               setOpen(false);
               btnRef.current?.focus();
             }}
-            className="exh-plat mt-3 min-h-12 cursor-pointer border border-exh-ink/35 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink hover:border-exh-ink"
+            className="exh-plat mt-3 min-h-12 cursor-pointer border border-exh-ink/35 px-4 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink hover:border-exh-ink"
           >
             Close
           </button>

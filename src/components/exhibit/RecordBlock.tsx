@@ -35,7 +35,7 @@ export function RecordLines({ chapterId }: { chapterId: ChapterId }) {
       data-testid={`record-${chapterId}`}
       className="border-t border-exh-ink/20 pt-4"
     >
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.3em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.3em] text-exh-ink-soft md:text-[10px]">
         The record
       </p>
       <ul className="mt-2 space-y-2.5">
@@ -59,15 +59,40 @@ export function RecordLines({ chapterId }: { chapterId: ChapterId }) {
 }
 
 export function LedgerTable() {
+  const entries = [...LEDGER].sort((a, b) => a.year - b.year);
   return (
     <div data-testid="ledger-table">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.3em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.3em] text-exh-ink-soft md:text-[10px]">
         The record, in full
       </p>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-exh-ink-soft">
         Every entry the chapters above posted, in one place. Each figure carries its citation.
       </p>
-      <div className="mt-4 overflow-x-auto border border-exh-ink/25">
+
+      {/* below md, the record reads as stacked entries, no side scroll */}
+      <ul className="mt-4 space-y-3 md:hidden">
+        {entries.map((e) => (
+          <li
+            key={e.entryId}
+            data-testid={`ledger-card-${e.entryId}`}
+            className="border border-exh-ink/25 bg-exh-linen-deep/30 p-3"
+          >
+            <p className="text-sm leading-snug text-exh-ink">
+              <span className="exh-mono text-exh-ink-soft">{e.year}</span>
+              <span aria-hidden="true"> &middot; </span>
+              {e.label}
+            </p>
+            <div className="mt-1.5 flex flex-col gap-1">
+              {refsOf(e).map((ref) => (
+                <FactValue key={ref} id={ref} size="sm" />
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* md and up, the full table */}
+      <div className="mt-4 hidden overflow-x-auto border border-exh-ink/25 md:block">
         <table className="w-full min-w-[36rem] border-collapse text-left">
           <thead>
             <tr className="border-b border-exh-ink/25 bg-exh-linen-deep/50">
@@ -83,7 +108,7 @@ export function LedgerTable() {
             </tr>
           </thead>
           <tbody>
-            {[...LEDGER].sort((a, b) => a.year - b.year).map((e) => (
+            {entries.map((e) => (
               <tr
                 key={e.entryId}
                 data-testid={`ledger-row-${e.entryId}`}

@@ -27,18 +27,41 @@ function loadCredits(): Promise<Record<string, CreditRecord>> {
   return creditsPromise;
 }
 
+/* Scraped Commons strings sometimes arrive with HTML entities baked in
+ * (&amp;, &quot;, numeric refs). Decode the common ones as a backstop so
+ * the label never prints markup; the data-side cleanup is separate. */
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  rsquo: "’",
+  lsquo: "‘",
+  rdquo: "”",
+  ldquo: "“",
+};
+
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&#(\d+);/g, (_, n: string) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n: string) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&([a-z]+);/gi, (m, name: string) => NAMED_ENTITIES[name.toLowerCase()] ?? m);
+}
+
 /* The credits registry is scraped from Wikimedia Commons and carries its
  * artifacts (doubled author strings, ISO timestamps, Wikidata QS suffixes).
  * Museum labels get a cleaned line; the raw record stays in credits.json. */
 function composeCreditLine(credit: CreditRecord): string | null {
-  let artist = (credit.artist ?? "").trim();
+  let artist = decodeEntities((credit.artist ?? "").trim());
   const half = Math.floor(artist.length / 2);
   if (half > 3 && artist.slice(0, half) === artist.slice(half)) artist = artist.slice(0, half);
   artist = artist.replace(/\s+/g, " ").trim();
   // Commons' "Unknown author" reads as a name; use the house wording
   if (/^unknown author$/i.test(artist)) artist = "Photographer unknown";
 
-  let date = (credit.date ?? "").trim();
+  let date = decodeEntities((credit.date ?? "").trim());
   date = date.replace(/date QS:.*$/i, "").trim();
   // any ISO-like prefix (1923-11-05 or 1923-11) prints the year only
   const iso = date.match(/^(\d{4})(?:-\d{2}){1,2}\b/);
@@ -49,7 +72,7 @@ function composeCreditLine(credit: CreditRecord): string | null {
     if (yr && date.length > 12) date = yr[1];
   }
 
-  const license = (credit.license ?? "").trim();
+  const license = decodeEntities((credit.license ?? "").trim());
   const line = [artist, date, license].filter(Boolean).join(", ");
   return line || null;
 }

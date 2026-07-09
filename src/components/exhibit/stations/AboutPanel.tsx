@@ -58,7 +58,7 @@ export default function AboutPanel() {
 
       <div className="max-w-[65ch] space-y-6">
         <div>
-          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+          <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
             Who made it
           </p>
           <p className="mt-2 font-display text-lg leading-[1.75] text-exh-ink">
@@ -67,7 +67,7 @@ export default function AboutPanel() {
           </p>
         </div>
         <div>
-          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+          <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
             Method
           </p>
           <p className="mt-2 font-display text-lg leading-[1.75] text-exh-ink">
@@ -75,11 +75,16 @@ export default function AboutPanel() {
             carries its citation where it appears. The documents shown are the real ones or are
             absent, never reconstructed.
           </p>
+          <p className="mt-3 font-display text-lg leading-[1.75] text-exh-ink">
+            Figures marked documented rest on primary records or published scholarship. Reported
+            figures rest on journalism or secondary accounts. Attributed figures rest on a single
+            source and are marked as such.
+          </p>
         </div>
       </div>
 
       <div className="mt-12">
-        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+        <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
           Sources
         </p>
         <p className="mt-2 max-w-[65ch] text-sm leading-relaxed text-exh-ink-soft">

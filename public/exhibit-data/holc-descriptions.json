@@ -1,7 +1,29 @@
 {
   "attribution": "Polygons and area descriptions from Mapping Inequality (Robert K. Nelson, LaDale Winling, et al., University of Richmond Digital Scholarship Lab), CC BY-NC 4.0. Underlying HOLC records are public domain.",
-  "note": "Some fields in the source transcription were mangled into Excel dates (e.g. a percentage stored as 'December 30, 1899'). Those values are omitted from security_grade_fields and their keys listed under corruptedFields. The raw verbatim source is data/exhibit-src/ad-data-chicago.json.",
+  "note": "Chicago was surveyed September 1939 to April 1940 and the map issued in 1940. Some fields in the source transcription were mangled in transit through Excel (a percentage stored as 'December 30, 1899', a date stored as a serial number, one row's columns shifted). Those values are omitted from security_grade_fields and their keys listed under corruptedFields; mis-parsed location values are never used as display names. The raw verbatim source is data/exhibit-src/ad-data-chicago.json.",
   "areas": [
+    {
+      "areaId": 1595,
+      "grade": "A",
+      "name": null,
+      "excerpt": "This acts as a permanent buffer against any encroachment of an undesirable nature. At one time, the area was restricted to homes costing a minimum of $40,000. The agreement, however, was more or less a gentleman's one. The area also is known as North Beverley.",
+      "excerptField": "clarifying_remarks",
+      "excerptLabel": "8. Description and Characteristics of Area",
+      "security_grade_fields": {
+        "security_grade": "1st",
+        "area_number": "A-35",
+        "date": "Nov'39",
+        "occupation_or_type": "Business and Professional",
+        "foreign_born_percent": "0",
+        "negro_percent": "0",
+        "infiltration_of": "None",
+        "population.static": "Yes",
+        "mortagage_funds": "Ample 5% Insurance & Bank"
+      },
+      "corruptedFields": [
+        "location"
+      ]
+    },
     {
       "areaId": 1594,
       "grade": "A",
@@ -482,26 +504,6 @@
       }
     },
     {
-      "areaId": 1595,
-      "grade": "A",
-      "name": "Nov'39",
-      "excerpt": "This acts as a permanent buffer against any encroachment of an undesirable nature. At one time, the area was restricted to homes costing a minimum of $40,000. The agreement, however, was more or less a gentleman's one. The area also is known as North Beverley.",
-      "excerptField": "clarifying_remarks",
-      "excerptLabel": "8. Description and Characteristics of Area",
-      "security_grade_fields": {
-        "security_grade": "1st",
-        "area_number": "A-35",
-        "location": "Nov'39",
-        "date": "Nov'39",
-        "occupation_or_type": "Business and Professional",
-        "foreign_born_percent": "0",
-        "negro_percent": "0",
-        "infiltration_of": "None",
-        "population.static": "Yes",
-        "mortagage_funds": "Ample 5% Insurance & Bank"
-      }
-    },
-    {
       "areaId": 1253,
       "grade": "A",
       "name": "River Forest Manor in Elmwood Park, Ill.",
@@ -896,7 +898,6 @@
         "security_grade": "B",
         "area_number": "100",
         "location": "Berwyn, Ill.",
-        "date": "14702",
         "occupation_or_type": "White collar class- small business men- craftsmen",
         "foreign_born_percent": "0.7",
         "foreign_born_nationality": "2nd generation Bohemian and mixed",
@@ -904,7 +905,10 @@
         "infiltration_of": "None",
         "population.increasing": "Yes rapidly",
         "mortagage_funds": "Ample"
-      }
+      },
+      "corruptedFields": [
+        "date"
+      ]
     },
     {
       "areaId": 1534,
@@ -3330,24 +3334,30 @@
       }
     },
     {
-      "areaId": 1515,
+      "areaId": 1183,
       "grade": "C",
       "name": null,
-      "excerpt": "Same as C-237 directly West",
+      "excerpt": "Albany Park",
       "excerptField": "clarifying_remarks",
       "excerptLabel": "8. Description and Characteristics of Area",
       "security_grade_fields": {
-        "security_grade": "C-",
-        "population.increasing": "Top part of page not filled out"
+        "population.decreasing": "Yes",
+        "population.static": "Middle class"
       },
       "corruptedFields": [
-        "area_number"
+        "security_grade",
+        "location",
+        "occupation_or_type",
+        "foreign_born_percent",
+        "foreign_born_nationality",
+        "negro_percent",
+        "infiltration_of"
       ]
     },
     {
       "areaId": 1426,
       "grade": "C",
-      "name": "*Part covered by description; cannot read*",
+      "name": null,
       "excerpt": "This section is known as Portia Manor. This territory is flat and treeless, although parkways have been planted recently with elm saplings. Plotted lots are about 30 percent built up, but all vacant lots are burdened with special assessments amounting to $1,200 for each 50 feet of frontage.",
       "excerptField": "clarifying_remarks",
       "excerptLabel": "8. Description and Characteristics of Area",
@@ -3366,23 +3376,19 @@
       }
     },
     {
-      "areaId": 1183,
+      "areaId": 1515,
       "grade": "C",
-      "name": "3rd",
-      "excerpt": "Albany Park",
+      "name": null,
+      "excerpt": "Same as C-237 directly West",
       "excerptField": "clarifying_remarks",
       "excerptLabel": "8. Description and Characteristics of Area",
       "security_grade_fields": {
-        "security_grade": "C-57",
-        "location": "3rd",
-        "occupation_or_type": "30%",
-        "foreign_born_percent": "German-Irish-Bohemian",
-        "foreign_born_nationality": "0%",
-        "negro_percent": "Lower class Jewish",
-        "infiltration_of": "50%",
-        "population.decreasing": "Yes",
-        "population.static": "Middle class"
-      }
+        "security_grade": "C-",
+        "population.increasing": "Top part of page not filled out"
+      },
+      "corruptedFields": [
+        "area_number"
+      ]
     },
     {
       "areaId": 5653,

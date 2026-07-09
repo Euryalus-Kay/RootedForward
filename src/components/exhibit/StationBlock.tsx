@@ -18,7 +18,7 @@ const noop = () => undefined;
 function IntroLine({ label, text }: { label: string; text: string }) {
   return (
     <div className="grid gap-0.5 sm:grid-cols-[5.5rem_1fr] sm:gap-3">
-      <dt className="exh-plat text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink-soft">
+      <dt className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink-soft">
         {label}
       </dt>
       <dd className="text-sm leading-relaxed text-exh-ink">{text}</dd>
@@ -36,7 +36,7 @@ export function StationIntro({ id, intro }: { id: string; intro: StationIntroDef
       <IntroLine label="What" text={intro.what} />
       <IntroLine label="When" text={intro.when} />
       <div className="grid gap-0.5 sm:grid-cols-[5.5rem_1fr] sm:gap-3">
-        <dt className="exh-plat text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink-soft">
+        <dt className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink-soft">
           Why
         </dt>
         <dd className="text-sm leading-relaxed text-exh-ink">
@@ -93,7 +93,7 @@ export default function StationBlock({
       <div className="border border-exh-ink/30 bg-exh-linen-deep/40">
         <div className="flex items-center gap-3 border-b border-exh-ink/20 px-4 py-3 sm:px-6">
           <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />
-          <h3 className="exh-plat shrink-0 text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink">
+          <h3 className="exh-plat min-w-0 text-center text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink">
             {entry.title}
           </h3>
           <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />

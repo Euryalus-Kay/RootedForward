@@ -1,16 +1,17 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  The HOLC map station, used in ch0 and again in ch6 (framing        */
-/*  prop). The real citywide 1940 map; click or tab to any graded      */
-/*  area and its real surveyor sheet opens (verbatim excerpt from      */
+/*  prop). The real citywide 1940 map; select any graded area and      */
+/*  its real surveyor sheet opens (verbatim excerpt from               */
 /*  holc-descriptions.json behind the period-language chip), with a    */
 /*  way through to the full sheet in the Surveyor's Files reading      */
 /*  room. The loans overlay is a plain labeled toggle so a reader      */
 /*  can hold the darkened map and study it. No stamp game, no tap      */
 /*  counter, no completion.                                            */
 /* ------------------------------------------------------------------ */
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { motionMs } from "@/lib/exhibit/debug";
+import { ringsBBox } from "@/lib/exhibit/map/projection";
 import { useHolcFrames, type HolcArea } from "@/lib/exhibit/map/useExhibitMapData";
 import {
   excerptUsable as excerptOk,
@@ -105,16 +106,37 @@ const FRAMING_COPY: Record<
   { lead: string; overlayCaption: string }
 > = {
   ch0: {
-    lead: "Click or tab to any graded area. The sheet the surveyors filed for it opens below.",
+    lead: "Select any graded area. The sheet the surveyors filed for it opens below.",
     overlayCaption:
-      "Nothing lights. Every Black neighborhood was graded hazardous or declining.",
+      "Nothing lights. The Black Belt came back graded hazardous, and no ordinary loan reached a red area.",
   },
   ch6: {
-    lead: "The same map, read again now that you know who drew it. Open any area's sheet.",
+    lead: "The same map, read again now that you know who drew it. Select any area to open its sheet.",
     overlayCaption:
-      "Nothing lights. Every Black neighborhood was graded hazardous or declining.",
+      "Nothing lights. The Black Belt came back graded hazardous, and no ordinary loan reached a red area.",
   },
 };
+
+/* ---------------- tap disambiguation ----------------
+   On the citywide frame many graded areas render only a few pixels
+   wide, so a fingertip covers several at once. When a tap lands on or
+   near more than one area, the choices are listed beneath the map so
+   the selection is the visitor's, not the hit-test's. */
+
+/** tap radius in css pixels; wide when the pointer or the stage is coarse */
+const TAP_RADIUS_COARSE_PX = 24;
+const TAP_RADIUS_FINE_PX = 8;
+/** a stage this narrow makes precise taps unrealistic whatever the pointer */
+const NARROW_STAGE_PX = 640;
+const MAX_NEARBY = 6;
+
+interface AreaBox {
+  area: HolcArea;
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}
 
 export interface HolcMapStationProps {
   framing?: HolcMapFraming;
@@ -129,8 +151,11 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
   const copy = FRAMING_COPY[framing];
 
   const [selected, setSelected] = useState<HolcArea | null>(null);
+  const [nearby, setNearby] = useState<HolcArea[] | null>(null);
   const [overlayOn, setOverlayOn] = useState(false);
   const [toggledOnce, setToggledOnce] = useState(false);
+
+  const stageRef = useRef<HTMLDivElement | null>(null);
 
   const mapReady = (holc?.areas?.length ?? 0) > 0;
 
@@ -146,6 +171,80 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
   const onAreaTap = (area: HolcArea) => {
     api.onInteraction();
     setSelected(area);
+  };
+
+  /* graded-area bounding boxes in citywide frame units, for the tap test */
+  const gradedBoxes = useMemo<AreaBox[]>(() => {
+    const out: AreaBox[] = [];
+    for (const area of holc?.areas ?? []) {
+      if (!GRADE_WORD[area.grade]) continue;
+      const rings = area.rings?.citywide;
+      if (!rings?.length) continue;
+      const bb = ringsBBox(rings);
+      if (!Number.isFinite(bb.minX) || !Number.isFinite(bb.maxX)) continue;
+      out.push({ area, minX: bb.minX, minY: bb.minY, maxX: bb.maxX, maxY: bb.maxY });
+    }
+    return out;
+  }, [holc]);
+
+  /* every stage click passes through here after HolcLayer's own hit test */
+  const onStageClick = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!gradedBoxes.length) return;
+    const svg = stageRef.current?.querySelector("svg");
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    if (
+      !rect.width ||
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      return;
+    }
+    const target = e.target as Element | null;
+    const directHit = Boolean(target?.closest?.('path[role="button"]'));
+    const coarse =
+      (typeof window !== "undefined" &&
+        window.matchMedia?.("(pointer: coarse)").matches) ||
+      rect.width < NARROW_STAGE_PX;
+    const scale = VIEW_W / rect.width;
+    const radius = (coarse ? TAP_RADIUS_COARSE_PX : TAP_RADIUS_FINE_PX) * scale;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    const near = gradedBoxes
+      .map((b) => {
+        const dx = Math.max(b.minX - x, 0, x - b.maxX);
+        const dy = Math.max(b.minY - y, 0, y - b.maxY);
+        return { b, d: Math.hypot(dx, dy) };
+      })
+      .filter((c) => c.d <= radius)
+      .sort((p, q) => p.d - q.d)
+      .slice(0, MAX_NEARBY)
+      .map((c) => c.b.area);
+    if (near.length >= 2) {
+      /* several areas fit under the tap; list them so the choice is real */
+      api.onInteraction();
+      setNearby(near);
+    } else {
+      setNearby(null);
+      /* a near miss on a lone area still opens it */
+      if (!directHit && near.length === 1) onAreaTap(near[0]);
+    }
+  };
+
+  const pickNearby = (area: HolcArea) => {
+    setNearby(null);
+    onAreaTap(area);
+  };
+
+  /* short display line for a listed area, designation plus name */
+  const nearbyLabel = (area: HolcArea): string => {
+    const d = descById.get(String(area.id));
+    const name = (d ? sheetName(d) : null) ?? (area.name ? String(area.name) : null);
+    const raw = String(area.label ?? area.id).trim();
+    const designation = /^[A-D]-?\d+$/i.test(raw) ? raw : `digitized record ${raw}`;
+    return name ? `${designation} · ${name}` : designation;
   };
 
   /* ---------------- the loans overlay toggle ---------------- */
@@ -165,6 +264,12 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
     dispatch({ type: "OPEN_ROOM", roomId: FILES_ROOM_ID });
   };
 
+  /* the small-screen path to a specific sheet, no map precision needed */
+  const openFilesRoom = () => {
+    api.onInteraction();
+    dispatch({ type: "OPEN_ROOM", roomId: FILES_ROOM_ID });
+  };
+
   const grade = selected && GRADE_WORD[selected.grade] ? selected.grade : null;
   const areaName =
     (selDesc ? sheetName(selDesc) : null) ?? (selected?.name ? String(selected.name) : null);
@@ -180,24 +285,76 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
         {copy.lead}
       </p>
 
-      <MapStage frame="citywide" showPlaceholder={!mapReady}>
-        {mapReady && (
-          <HolcLayer frame="citywide" interactive dimUngraded onAreaTap={onAreaTap} />
-        )}
-        {/* the darkness: what remains when only lendable areas stay lit */}
-        <rect
-          x={0}
-          y={0}
-          width={VIEW_W}
-          height={VIEW_H}
-          pointerEvents="none"
-          style={{
-            fill: "var(--color-exh-ink)",
-            opacity: overlayOn ? 0.93 : 0,
-            transition: api.reducedMotion ? "none" : `opacity ${motionMs(320)}ms ease`,
-          }}
-        />
-      </MapStage>
+      <div ref={stageRef} onClick={onStageClick}>
+        <MapStage frame="citywide" showPlaceholder={!mapReady}>
+          {mapReady && (
+            <HolcLayer frame="citywide" interactive dimUngraded onAreaTap={onAreaTap} />
+          )}
+          {/* the darkness: what remains when only lendable areas stay lit */}
+          <rect
+            x={0}
+            y={0}
+            width={VIEW_W}
+            height={VIEW_H}
+            pointerEvents="none"
+            style={{
+              fill: "var(--color-exh-ink)",
+              opacity: overlayOn ? 0.93 : 0,
+              transition: api.reducedMotion ? "none" : `opacity ${motionMs(320)}ms ease`,
+            }}
+          />
+        </MapStage>
+      </div>
+
+      {/* ---------------- areas under an ambiguous tap ---------------- */}
+      {nearby && nearby.length >= 2 && (
+        <div
+          data-testid="holc-map-nearby"
+          className="mt-2 border border-exh-ink/25 bg-exh-linen-deep/30"
+        >
+          <p className="exh-plat border-b border-exh-ink/15 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
+            Areas near your selection
+          </p>
+          <ul className="divide-y divide-exh-ink/10">
+            {nearby.map((area) => (
+              <li key={String(area.id)}>
+                <button
+                  type="button"
+                  data-testid={`holc-map-nearby-${String(area.label ?? area.id)}`}
+                  aria-pressed={selected?.id === area.id}
+                  onClick={() => pickNearby(area)}
+                  className={`flex min-h-12 w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
+                    selected?.id === area.id ? "bg-exh-linen-deep" : ""
+                  }`}
+                >
+                  {GRADE_WORD[area.grade] && <GradeSwatch grade={area.grade} />}
+                  <span className="exh-plat min-w-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-exh-ink">
+                    {GRADE_WORD[area.grade] ?? "Ungraded"}
+                  </span>
+                  <span className="exh-mono min-w-0 flex-1 truncate text-xs text-exh-ink/70">
+                    {nearbyLabel(area)}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* on a phone the graded areas render only a few pixels wide; the
+          reading room lists every sheet and needs no map precision */}
+      <p className="mt-2 text-xs leading-snug text-exh-ink-soft md:hidden">
+        {"The graded areas are small at this size. For a specific sheet, the "}
+        <button
+          type="button"
+          data-testid="holc-map-files-hint"
+          onClick={openFilesRoom}
+          className="cursor-pointer text-exh-ink underline decoration-exh-ink/40 underline-offset-2 hover:decoration-exh-ink"
+        >
+          Surveyor&rsquo;s Files reading room
+        </button>
+        {" is the surer path."}
+      </p>
 
       {/* ---------------- the surveyor sheet ---------------- */}
       <PaperCard
@@ -208,7 +365,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
         {!selected && (
           <p className="text-sm leading-snug text-exh-ink-soft">
             {mapReady
-              ? "No area is open. Click or tab to a graded area to read its file."
+              ? "No area is open. Select a graded area to read its file."
               : "Map data is being prepared. The sheets open once it loads."}
           </p>
         )}
@@ -224,7 +381,11 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
                 {grade ? GRADE_WORD[grade] : "Ungraded"}
               </span>
               <span className="exh-mono ml-auto text-xs text-exh-ink/70">
-                {String(selected.label ?? selected.id)}
+                {/* a bare number here is our digitization key, not a HOLC
+                    designation; say so instead of printing a naked id */}
+                {/^[A-D]-?\d+$/i.test(String(selected.label ?? selected.id).trim())
+                  ? String(selected.label ?? selected.id).trim()
+                  : `digitized record ${String(selected.label ?? selected.id).trim()}`}
               </span>
             </div>
             {areaName && (
@@ -234,14 +395,14 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
             <div className="mt-3 border-t border-exh-ink/15 pt-3">
               {excerptUsable && selDesc ? (
                 <div>
-                  <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+                  <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
                     from the 1939 to 1940 survey record
                   </p>
-                  <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+                  <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[11px] md:text-[9px]">
                     period document; contains the era&rsquo;s racist language
                   </span>
                   {selDesc.excerptLabel && (
-                    <p className="exh-mono mt-2 text-[10px] text-exh-ink/60">{selDesc.excerptLabel}</p>
+                    <p className="exh-mono mt-2 text-[11px] text-exh-ink/70 md:text-[11px] md:text-[10px]">{selDesc.excerptLabel}</p>
                   )}
                   <blockquote className="exh-serif mt-1 text-sm leading-snug text-exh-ink italic">
                     &ldquo;{selDesc.excerpt.trim()}&rdquo;
@@ -288,7 +449,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
             Show me where a Black family could get a federally backed loan
           </span>
           <span
-            className={`exh-plat shrink-0 text-[10px] uppercase tracking-[0.15em] ${
+            className={`exh-plat shrink-0 text-[11px] uppercase tracking-[0.15em] md:text-[11px] md:text-[10px] ${
               overlayOn ? "text-exh-linen/80" : "text-exh-ink-soft"
             }`}
           >

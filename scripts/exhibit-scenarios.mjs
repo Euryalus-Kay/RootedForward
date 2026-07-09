@@ -411,6 +411,74 @@ export const scenarios = [
     },
   },
   {
+    id: "mobile-overflow",
+    milestone: "R4",
+    tags: ["core"],
+    route: DEBUG,
+    async run(page, t) {
+      // phone viewport; every chapter must lay out inside it
+      await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+      await page.reload({ waitUntil: "networkidle2" });
+      await waitReady(page, { scroll: true }); // the scroll mounts every lazy station
+      const chapters = await page.$$eval("[data-chapter-section]", (els) =>
+        els.map((el) => el.getAttribute("data-chapter-section"))
+      );
+      t.assert("all flow chapters render at 375px", chapters.length === FLOW.length, chapters.join(","));
+      for (const ch of chapters) {
+        await exhibitGoto(page, ch);
+        await new Promise((r) => setTimeout(r, 300));
+        const m = await page.evaluate(() => ({
+          scrollWidth: document.documentElement.scrollWidth,
+          innerWidth: window.innerWidth,
+        }));
+        t.assert(
+          `${ch} no horizontal overflow at 375px`,
+          m.scrollWidth === m.innerWidth,
+          `scrollWidth=${m.scrollWidth} innerWidth=${m.innerWidth}`
+        );
+      }
+    },
+  },
+  {
+    id: "r4-chrome",
+    milestone: "R4",
+    tags: ["core", "a11y"],
+    route: DEBUG,
+    async run(page, t) {
+      await waitReady(page);
+      // reduced motion: root flag + suppressed entrance animation
+      const cdp = await page.createCDPSession();
+      await cdp.send("Emulation.setEmulatedMedia", {
+        features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+      });
+      await page.reload({ waitUntil: "networkidle2" });
+      await waitReady(page);
+      const flag = await page.$eval('[data-testid="exhibit-root"]', (el) => el.getAttribute("data-motion"));
+      t.assert("reduced-motion root flag", flag === "off", `data-motion=${flag}`);
+      await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "" }] });
+      await page.reload({ waitUntil: "networkidle2" });
+      await waitReady(page);
+      const flag2 = await page.$eval('[data-testid="exhibit-root"]', (el) => el.getAttribute("data-motion"));
+      t.assert("flag absent without the preference", flag2 === null, `data-motion=${flag2}`);
+      // grouped daggers: no wall paragraph renders 4+ consecutive individual daggers
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await new Promise((r) => setTimeout(r, 800));
+      const runs = await page.$$eval("[data-section-id]", (els) =>
+        els.filter((p) => p.querySelectorAll('[data-testid="source-sup"]').length >= 4).length
+      );
+      t.assert("no 4+ dagger runs on wall paragraphs", runs === 0, `paragraphs=${runs}`);
+      // escape scoping: a voice card open on the page must not eat the room's escape
+      await page.evaluate(() => window.__exhibit.goto("ch6"));
+      await new Promise((r) => setTimeout(r, 600));
+      await dispatchClick(page, '[data-testid="door-enter-files"]');
+      await new Promise((r) => setTimeout(r, 900));
+      await page.keyboard.press("Escape");
+      await new Promise((r) => setTimeout(r, 500));
+      const s1 = await exhibitState(page);
+      t.assert("escape closes the room first press", s1?.openRoom === null, `openRoom=${s1?.openRoom}`);
+    },
+  },
+  {
     id: "answer-wall",
     milestone: "R1",
     tags: ["core"],

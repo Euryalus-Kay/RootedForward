@@ -48,7 +48,7 @@ function TheDossiers() {
   return (
     <div data-testid="room-dossier-panel" className="space-y-4">
       <PaperCard tone="deep" className="p-4 sm:p-5">
-        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+        <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
           The plan&rsquo;s checklist
         </p>
         <p className="mt-2 text-sm leading-relaxed text-exh-ink">
@@ -63,14 +63,14 @@ function TheDossiers() {
       {DOSSIERS.parcels.map((p) => (
         <PaperCard key={p.parcelId} data-testid={`room-dossier-${p.parcelId}`} className="p-4 sm:p-5">
           <p className="font-display text-lg text-exh-ink">{p.title}</p>
-          <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+          <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] md:text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
             {p.typeNote}
           </span>
           <p className="mt-2.5 text-sm leading-relaxed text-exh-ink">{p.described}</p>
           <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-1 border-t border-exh-ink/15 pt-2.5">
             {Object.entries(p.checklist).map(([key, hit]) => (
               <div key={key} className="flex items-baseline gap-1.5">
-                <dt className="exh-plat text-[9px] font-semibold uppercase tracking-[0.16em] text-exh-ink-soft">
+                <dt className="exh-plat text-[11px] md:text-[9px] font-semibold uppercase tracking-[0.16em] text-exh-ink-soft">
                   {CHECK_LABELS[key] ?? key}
                 </dt>
                 <dd className="exh-mono text-xs text-exh-ink">{hit ? "checked" : "clear"}</dd>
@@ -80,7 +80,7 @@ function TheDossiers() {
         </PaperCard>
       ))}
       <PaperCard tone="deep" className="p-4 sm:p-5">
-        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+        <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
           What the checklist was for
         </p>
         <p className="mt-2 text-sm leading-relaxed text-exh-ink">{DOSSIERS.verdict.lesson}</p>
@@ -98,7 +98,7 @@ function RenamedPlate() {
   if (!BULLDOZER?.renamedTo || !BULLDOZER.renamedNote) return null;
   return (
     <PaperCard tone="deep" data-testid="room-renamed-plate" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+      <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
         Renamed
       </p>
       <p className="mt-2 font-display text-2xl text-exh-ink">{BULLDOZER.renamedTo}</p>
@@ -174,7 +174,7 @@ export const THE_BULLDOZER_STATIONS: RoomStation[] = [
       <div className="space-y-4">
         <RenamedPlate />
         <FactCard id="present.holc_subsidy_siting" label="Where TIF lands today" dated>
-          Count the sites against the 1938 grades. The steering power moved to a new name and kept
+          Count the sites against the 1939 to 1940 grades. The steering power moved to a new name and kept
           its geography.
         </FactCard>
         <CardGrid>

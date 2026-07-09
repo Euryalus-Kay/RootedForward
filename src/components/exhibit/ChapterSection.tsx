@@ -19,7 +19,7 @@ import CasesPanel from "./stations/CasesPanel";
 import MachinesPanel from "./stations/MachinesPanel";
 import DoorCard from "./rooms/DoorCard";
 import VoiceCard from "./shared/VoiceCard";
-import SourceSup from "./shared/SourceSup";
+import { SourceSupGroup } from "./shared/SourceSup";
 
 /* wall text measure: ~65ch at 1.125rem/1.75 */
 const SECTION_CLASS =
@@ -31,9 +31,7 @@ function WallParagraph({ section, intro = false }: { section: WallSection; intro
   return (
     <p data-section-id={section.id} className={intro ? INTRO_CLASS : SECTION_CLASS}>
       {section.text}
-      {section.factRefs.map((ref) => (
-        <SourceSup key={ref} factId={ref} />
-      ))}
+      <SourceSupGroup factIds={section.factRefs} />
     </p>
   );
 }
