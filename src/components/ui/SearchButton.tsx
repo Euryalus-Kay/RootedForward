@@ -23,6 +23,7 @@ export default function SearchButton() {
   /* ---- Detect platform for shortcut badge ---- */
   const [isMac, setIsMac] = useState(false);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMac(
       typeof navigator !== "undefined" &&
         /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)

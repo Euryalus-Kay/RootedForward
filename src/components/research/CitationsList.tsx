@@ -104,7 +104,6 @@ export default function CitationsList({ citations }: CitationsListProps) {
   const secondary = citations.filter((c) => c.type === "secondary");
 
   const hasBoth = primary.length > 0 && secondary.length > 0;
-  let runningNumber = 0;
 
   return (
     <section
@@ -132,12 +131,9 @@ export default function CitationsList({ citations }: CitationsListProps) {
           <ol
             className={`flex flex-col gap-3 ${hasBoth ? "mt-4" : "mt-2"}`}
           >
-            {primary.map((c) => {
-              runningNumber += 1;
-              return (
-                <Entry key={c.id} citation={c} number={runningNumber} />
-              );
-            })}
+            {primary.map((c, i) => (
+              <Entry key={c.id} citation={c} number={i + 1} />
+            ))}
           </ol>
         </div>
       )}
@@ -150,12 +146,9 @@ export default function CitationsList({ citations }: CitationsListProps) {
             </h3>
           )}
           <ol className={`flex flex-col gap-3 ${hasBoth ? "mt-4" : "mt-2"}`}>
-            {secondary.map((c) => {
-              runningNumber += 1;
-              return (
-                <Entry key={c.id} citation={c} number={runningNumber} />
-              );
-            })}
+            {secondary.map((c, i) => (
+              <Entry key={c.id} citation={c} number={primary.length + i + 1} />
+            ))}
           </ol>
         </div>
       )}

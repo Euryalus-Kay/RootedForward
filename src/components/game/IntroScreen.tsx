@@ -32,6 +32,7 @@ export function IntroScreen({
   const [objectives, setObjectives] = useState<string[]>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSaveSummary(readSaveSummary());
     // If the player clicked "Play this seed" from the leaderboard, the
     // seed is stashed in sessionStorage. Prefill and jump to setup.

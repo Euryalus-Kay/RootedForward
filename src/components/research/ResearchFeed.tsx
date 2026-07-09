@@ -67,6 +67,7 @@ export default function ResearchFeed({ entries }: ResearchFeedProps) {
     const parsed = parseFiltersFromParams(
       new URLSearchParams(searchParams.toString())
     );
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilters(parsed);
     const raw = searchParams.get("page");
     const n = raw ? parseInt(raw, 10) : 1;

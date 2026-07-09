@@ -29,7 +29,7 @@ async function getCampaigns(): Promise<Campaign[]> {
       .in("status", ["active", "past"])
       .order("created_at", { ascending: false });
     if (!error && data && data.length > 0) {
-      return data.map((c: any) => ({
+      return data.map((c) => ({
         ...c,
         signature_count: c.signature_count ?? 0,
         decision_makers: c.decision_makers ?? null,

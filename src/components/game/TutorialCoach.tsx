@@ -49,6 +49,7 @@ export function TutorialCoach({
     if (!current) return;
     const el = document.querySelector(`[data-tut="${current.key}"]`) as HTMLElement | null;
     if (!el) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRect(null);
       return;
     }

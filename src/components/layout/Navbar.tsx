@@ -43,6 +43,20 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  async function fetchRole(userId: string) {
+    try {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", userId)
+        .single();
+      setUserRole(data?.role ?? null);
+    } catch {
+      setUserRole(null);
+    }
+  }
+
   /* ---- Auth listener ---- */
   useEffect(() => {
     const supabase = createClient();
@@ -67,20 +81,6 @@ export default function Navbar() {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  async function fetchRole(userId: string) {
-    try {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("users")
-        .select("role")
-        .eq("id", userId)
-        .single();
-      setUserRole((data as any)?.role ?? null);
-    } catch {
-      setUserRole(null);
-    }
-  }
 
   /* ---- Scroll detection ---- */
   useEffect(() => {

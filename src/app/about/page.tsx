@@ -68,6 +68,7 @@ function FounderPhoto() {
   useEffect(() => {
     const el = imgRef.current;
     if (el && el.complete && el.naturalWidth === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFailed(true);
     }
   }, []);
@@ -96,8 +97,8 @@ export default function AboutPage() {
         const { createClient } = await import("@/lib/supabase/client");
         const supabase = createClient();
         const [s, a] = await Promise.all([
-          (supabase as any).from("board_members").select("*").eq("board_type", "student").eq("is_active", true).order("display_order"),
-          (supabase as any).from("board_members").select("*").eq("board_type", "advisory").eq("is_active", true).order("display_order"),
+          supabase.from("board_members").select("*").eq("board_type", "student").eq("is_active", true).order("display_order"),
+          supabase.from("board_members").select("*").eq("board_type", "advisory").eq("is_active", true).order("display_order"),
         ]);
         if (s.data) setStudentBoard((s.data as BoardMember[]).filter(isRealMember));
         if (a.data) setAdvisoryBoard((a.data as BoardMember[]).filter(isRealMember));

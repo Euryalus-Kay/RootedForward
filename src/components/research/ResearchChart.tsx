@@ -362,7 +362,15 @@ function PieChart({
   const cy = height / 2 + 4;
   const radius = Math.min(width, height) * 0.34;
 
-  let acc = 0;
+  // Cumulative value at the start of each slice, precomputed so the
+  // render callbacks below stay free of mutation.
+  const sliceStarts: number[] = [];
+  let running = 0;
+  for (const s of slices) {
+    sliceStarts.push(running);
+    running += s.value;
+  }
+
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
@@ -372,9 +380,9 @@ function PieChart({
       preserveAspectRatio="xMidYMid meet"
     >
       {slices.map((s, i) => {
-        const startAngle = (acc / total) * Math.PI * 2 - Math.PI / 2;
-        acc += s.value;
-        const endAngle = (acc / total) * Math.PI * 2 - Math.PI / 2;
+        const startAngle = (sliceStarts[i] / total) * Math.PI * 2 - Math.PI / 2;
+        const endAngle =
+          ((sliceStarts[i] + s.value) / total) * Math.PI * 2 - Math.PI / 2;
         const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
         const x1 = cx + radius * Math.cos(startAngle);
         const y1 = cy + radius * Math.sin(startAngle);

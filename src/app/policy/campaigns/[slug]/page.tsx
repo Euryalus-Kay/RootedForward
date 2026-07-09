@@ -27,7 +27,7 @@ async function getCampaign(slug: string): Promise<Campaign | null> {
       .eq("slug", slug)
       .single();
     if (!error && data) {
-      const c = data as any;
+      const c = data;
       return {
         ...c,
         signature_count: c.signature_count ?? 0,

@@ -226,7 +226,7 @@ export default function AccountPage() {
       </h1>
 
       {/* Admin link */}
-      {profile && (profile as any).role === "admin" && (
+      {profile && profile.role === "admin" && (
         <Link
           href="/admin"
           className="mt-4 inline-flex items-center rounded-sm bg-forest px-5 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
