@@ -40,13 +40,14 @@ export default function Home() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             A student-run Chicago nonprofit
           </p>
-          <h1 className="mt-5 max-w-[17ch] font-display text-4xl leading-[1.08] text-ink sm:text-5xl md:text-6xl">
-            This map decided who could get a home loan in Chicago.
+          <h1 className="mt-5 font-display text-6xl leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
+            Rooted Forward
           </h1>
           <p className="mt-7 max-w-xl font-body text-lg leading-relaxed text-ink/80">
-            The federal government drew it in 1940. Green meant lend, red
-            meant don&rsquo;t. We give walking tours of the neighborhoods it
-            shaped, and we work on the housing policy Chicago needs now.
+            We give walking tours of Hyde Park and publish the old paperwork
+            that decided who could live where in Chicago. The map behind
+            this page is one piece of it, the government&rsquo;s 1940
+            lending map of the city.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
