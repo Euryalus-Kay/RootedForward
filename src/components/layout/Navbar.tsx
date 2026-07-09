@@ -13,30 +13,24 @@ const NAV_LINKS = [
     label: "About",
     href: "/about",
     children: [
-      { label: "The Organization", href: "/about?tab=organization" },
-      { label: "People", href: "/about?tab=people" },
+      { label: "The Organization", href: "/about" },
+      { label: "People", href: "/about#people" },
     ],
   },
   {
     // Education has no landing page for now; the top-level link goes
     // straight to the walking tours. Curriculum is hidden (see
     // src/app/curriculum/page.tsx) so it is left out of the dropdown.
+    // Research is hidden too (see src/app/research/page.tsx), so there
+    // is no Research item for now.
     label: "Education",
     href: "/tours",
     children: [
-      { label: "Walking Tours", href: "/tours" },
+      { label: "Tours", href: "/tours" },
       { label: "Podcast", href: "/podcasts" },
     ],
   },
   { label: "Policy", href: "/policy" },
-  {
-    label: "Research",
-    href: "/research",
-    children: [
-      { label: "All Papers", href: "/research" },
-      { label: "Data & Replication", href: "/research/data" },
-    ],
-  },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -304,7 +298,7 @@ export default function Navbar() {
               {!user && (
                 <li className="mt-2">
                   <Link
-                    href="/login"
+                    href="/auth/login"
                     onClick={() => setMobileOpen(false)}
                     className="block rounded-full bg-rust px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-rust-dark"
                   >

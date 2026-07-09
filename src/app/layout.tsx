@@ -6,9 +6,9 @@ import GlobalSearchShortcut from "@/components/ui/GlobalSearchShortcut";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Rooted Forward | Documenting Racial Inequity in American Cities",
+  title: "Rooted Forward | Chicago Neighborhood History and Policy",
   description:
-    "Rooted Forward is a youth-led nonprofit documenting racial inequity in American cities through walking tours, podcasts, and community storytelling. Explore histories of redlining, displacement, and resistance across Chicago, New York, Dallas, and San Francisco.",
+    "Rooted Forward is a youth-led nonprofit in Chicago tracing how housing policy shaped the city's neighborhoods. Walk Hyde Park with us, read the exhibit, listen to the podcast, or join a campaign.",
 };
 
 export default function RootLayout({

@@ -77,13 +77,12 @@ export default async function PodcastsPage() {
       <section className="bg-cream pb-8 pt-12 md:pt-16">
         <div className="mx-auto max-w-3xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Podcast
+            Listen
           </p>
           <p className="mt-6 max-w-[60ch] font-body text-lg leading-relaxed text-ink/75">
-            Each episode goes deeper into the places our walking tours visit.
-            We talk to historians, lifelong residents, urban planners, and
-            organizers about the policies and decisions that shaped
-            Chicago&rsquo;s neighborhoods along racial lines.
+            We talk about Chicago&rsquo;s neighborhoods and the policies that
+            drew their boundaries. Listen right here or wherever you get
+            your podcasts.
           </p>
           <hr className="mt-10 border-border" />
         </div>

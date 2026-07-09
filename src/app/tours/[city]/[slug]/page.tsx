@@ -205,14 +205,9 @@ export default async function StopDetailPage({ params, searchParams }: PageProps
                   </Link>
                 </li>
                 <li aria-hidden="true">&gt;</li>
-                <li>
-                  <Link
-                    href={`/tours/${citySlug}`}
-                    className="transition-colors hover:text-forest"
-                  >
-                    {cityName}
-                  </Link>
-                </li>
+                {/* /tours/[city] redirects to /tours, so the city crumb
+                    is plain text rather than a bounce link */}
+                <li>{cityName}</li>
                 <li aria-hidden="true">&gt;</li>
                 <li className="font-medium text-forest">{immersive.title}</li>
               </ol>
@@ -277,14 +272,9 @@ export default async function StopDetailPage({ params, searchParams }: PageProps
                 </Link>
               </li>
               <li aria-hidden="true">&gt;</li>
-              <li>
-                <Link
-                  href={`/tours/${citySlug}`}
-                  className="transition-colors hover:text-forest"
-                >
-                  {cityName}
-                </Link>
-              </li>
+              {/* /tours/[city] redirects to /tours, so the city crumb
+                  is plain text rather than a bounce link */}
+              <li>{cityName}</li>
               <li aria-hidden="true">&gt;</li>
               <li className="font-medium text-forest">{stop.title}</li>
             </ol>
@@ -391,10 +381,10 @@ export default async function StopDetailPage({ params, searchParams }: PageProps
           {/* Back link */}
           <div className="mt-14 border-t border-border pt-10">
             <Link
-              href={`/tours/${citySlug}`}
+              href="/tours"
               className="inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light"
             >
-              &larr; Back to {cityName} Tour
+              &larr; Back to Tours
             </Link>
           </div>
         </div>

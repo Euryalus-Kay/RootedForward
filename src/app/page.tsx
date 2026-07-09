@@ -1,20 +1,26 @@
 /* ------------------------------------------------------------------ */
 /*  Home page                                                          */
 /*                                                                     */
-/*  Centers on the organization's three pillars (Education, Policy,    */
-/*  Research) as full-bleed dark bands with alternating sides and a    */
-/*  distinct line icon each. Backgrounds alternate ink / forest the    */
-/*  whole way down (the Get involved closer lands on ink right before  */
-/*  the forest footer) so no two adjacent sections share a color. A    */
-/*  faint diagonal hatch keeps the dark fields from reading as flat    */
-/*  slabs.                                                             */
+/*  Hero, mission band, two program bands (Education, Policy), a       */
+/*  featured band for The Ground Keeps Moving (the Hyde Park           */
+/*  exhibit), and the Get involved closer. Backgrounds alternate       */
+/*  ink / forest the whole way down so no two adjacent sections        */
+/*  share a color, and a faint diagonal hatch keeps the dark fields    */
+/*  from reading as flat slabs. The Research band was removed when     */
+/*  the research section was hidden (owner request, July 2026); its    */
+/*  slot is now the exhibit feature.                                   */
 /* ------------------------------------------------------------------ */
 
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
+import {
+  EXHIBIT_TITLE,
+  EXHIBIT_KICKER,
+  EXHIBIT_DEK,
+} from "@/components/exhibit/ExhibitShell";
 
 /* Heroicons-style outline paths, matching the icon language already   */
-/* used on the policy page. Each pillar gets its own glyph.            */
+/* used on the policy page. Each program gets its own glyph.           */
 const ICON_PATHS: Record<string, string> = {
   // open book — learning
   book:
@@ -22,9 +28,6 @@ const ICON_PATHS: Record<string, string> = {
   // megaphone — advocacy
   megaphone:
     "M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46",
-  // magnifying glass — investigation
-  search:
-    "m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z",
 };
 
 function PillarIcon({
@@ -77,8 +80,8 @@ function HatchOverlay({ id }: { id: string }) {
   );
 }
 
-/* Three pillars, in the order Education, Policy, Research. Backgrounds  */
-/* alternate forest / ink, and the layout alternates sides per band.    */
+/* Two programs. Education sits on forest, Policy on ink, and the      */
+/* layout alternates sides per band.                                    */
 const PILLARS = [
   {
     icon: "book",
@@ -86,8 +89,8 @@ const PILLARS = [
     href: "/tours",
     bg: "bg-forest",
     desc:
-      "The story of how American cities got segregated does not fit in one form, so we tell it in two. Walking tours you take on foot and a podcast with the people who lived it.",
-    items: ["Walking tours", "Podcast"],
+      "The history of how Chicago's neighborhoods were drawn is easier to grasp at street level. We lead a walking tour through Hyde Park and the blocks around it, publish an online exhibit built from the original documents, and make a podcast about the city's neighborhoods and the people in them.",
+    items: ["Hyde Park walking tour", "Online exhibit", "Podcast"],
     cta: "See how we teach it",
   },
   {
@@ -96,19 +99,9 @@ const PILLARS = [
     href: "/policy",
     bg: "bg-ink",
     desc:
-      "Once you can see how the patterns formed, the question is what to do about the parts still running. We organize that response in Chicago. Sign onto active campaigns, add your name to public comment drives, read the briefs, or send us a proposal of your own.",
-    items: ["Active campaigns", "Public comment drives", "Policy briefs", "Community proposals"],
+      "Once you can see how the patterns formed, the question is what to do about the parts still running. We organize that response in Chicago. Sign onto active campaigns, add your name to public comment drives, use the how-to guides, or send us a proposal of your own.",
+    items: ["Active campaigns", "Public comment drives", "How-to guides", "Community proposals"],
     cta: "See active campaigns",
-  },
-  {
-    icon: "search",
-    title: "Research",
-    href: "/research",
-    bg: "bg-forest",
-    desc:
-      "All of it stands on the research. Our team works through the archives, namely HOLC redlining maps, city planning records, and oral history collections, and sits with residents to get what the records leave out. We pair that with housing, school, and zoning data, then publish the papers and release the data so anyone can check the work.",
-    items: ["Policy briefs", "Primary source archives", "Oral histories", "Data analysis"],
-    cta: "Read the research",
   },
 ];
 
@@ -146,7 +139,7 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-          MISSION / THESIS — ink band, bridges into the pillars
+          MISSION / THESIS — ink band, bridges into the programs
           ============================================================ */}
       <section className="relative overflow-hidden bg-ink py-20 md:py-28">
         <HatchOverlay id="mission" />
@@ -157,22 +150,22 @@ export default function Home() {
           <p className="mt-6 font-display text-2xl leading-relaxed text-cream md:text-[2rem] md:leading-[1.4]">
             Rooted Forward is a youth-led nonprofit in Chicago. We trace what
             redlining, urban renewal, and highway construction did to the
-            neighborhoods people live in now, and we organize the response. The
-            work runs on three pillars.
+            neighborhoods people live in now, and we organize the response.
+            We teach the history, and we work to change what it left behind.
           </p>
         </div>
       </section>
 
       {/* ============================================================
-          THREE PILLARS — full-bleed dark bands, alternating sides
+          TWO PROGRAMS — full-bleed dark bands, alternating sides
           ============================================================ */}
       {PILLARS.map((p, i) => {
-        const markerLeft = i % 2 === 0; // Education left, Policy right, Research left
+        const markerLeft = i % 2 === 0; // Education left, Policy right
         return (
           <section key={p.title} className={`group relative overflow-hidden ${p.bg} py-20 md:py-28`}>
             <HatchOverlay id={p.title} />
             <div className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-y-8 px-6 md:grid-cols-12 md:gap-x-16">
-              {/* Marker — large feature icon for this pillar */}
+              {/* Marker — large feature icon for this program */}
               <div
                 className={`flex flex-col items-start md:col-span-4 ${
                   markerLeft ? "md:order-1" : "md:order-2 md:items-end"
@@ -220,6 +213,57 @@ export default function Home() {
           </section>
         );
       })}
+
+      {/* ============================================================
+          FEATURED EXHIBIT — The Ground Keeps Moving (forest band)
+          ============================================================ */}
+      <section className="relative overflow-hidden bg-forest py-20 md:py-28">
+        <HatchOverlay id="exhibit" />
+        <div className="relative z-10 mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
+            {/* Image */}
+            <div className="md:col-span-6">
+              <Link href="/tours/chicago/hyde-park" className="group block">
+                <div className="overflow-hidden rounded-sm border border-cream/15">
+                  <img
+                    src="/media/hyde-park/exhibit/fig/midway-1893-crowd.jpg"
+                    alt="The Ferris Wheel above the crowd on the Midway Plaisance at the 1893 World's Columbian Exposition"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  />
+                </div>
+              </Link>
+              <p className="mt-2 font-body text-[11px] text-cream/45">
+                The Ferris Wheel on the Midway Plaisance, 1893. Public domain.
+              </p>
+            </div>
+
+            {/* Text */}
+            <div className="md:col-span-6">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
+                Featured exhibit
+              </p>
+              <h2 className="mt-4 font-display text-4xl leading-[1.05] text-cream md:text-5xl">
+                {EXHIBIT_TITLE}
+              </h2>
+              <p className="mt-2 font-body text-sm font-semibold uppercase tracking-widest text-cream/60">
+                {EXHIBIT_KICKER}
+              </p>
+              <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                {EXHIBIT_DEK}
+              </p>
+              <Link
+                href="/tours/chicago/hyde-park"
+                className="group/cta mt-8 inline-flex items-center gap-2 font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream"
+              >
+                <span>Enter the exhibit</span>
+                <span aria-hidden="true" className="transition-transform group-hover/cta:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================
           GET INVOLVED — ink closer, sits against the forest footer

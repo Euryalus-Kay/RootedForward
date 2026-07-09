@@ -78,18 +78,18 @@ export default function AdminResearchHome() {
             Research
           </h1>
           <p className="mt-1 max-w-xl font-body text-sm text-warm-gray">
-            Manage every research entry and every industry director that
-            appears on the /research page.
+            Manage every research entry and every industry director. The
+            public /research page is hidden for now (serves a 404); entries
+            managed here go live again when the section is restored.
           </p>
         </div>
-        <Link
-          href="/research"
-          target="_blank"
-          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-3 py-1.5 font-body text-sm font-medium text-ink transition-colors hover:bg-cream-dark"
+        <span
+          title="The public research page is hidden for now and serves a 404"
+          className="inline-flex cursor-default items-center gap-1.5 rounded-md border border-border bg-white px-3 py-1.5 font-body text-sm font-medium text-warm-gray"
         >
           <ExternalLink className="h-4 w-4" />
-          View public page
-        </Link>
+          Public page hidden
+        </span>
       </div>
 
       {/* Stat strip */}

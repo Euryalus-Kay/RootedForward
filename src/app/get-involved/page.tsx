@@ -77,9 +77,7 @@ function ChapterForm() {
           {form.interest === "start" ? "Request Received" : "Application Received"}
         </h3>
         <p className="mt-3 font-body text-sm text-ink/65">
-          {form.interest === "start"
-            ? "We will reach out within two weeks with next steps, templates, and a research kit."
-            : "A chapter coordinator will reach out within a week."}
+          We read every submission and will reach out by email.
         </p>
       </div>
     );
@@ -176,9 +174,6 @@ function ChapterForm() {
           >
             <option value="">Select a chapter</option>
             <option value="Chicago">Chicago</option>
-            <option value="New York">New York</option>
-            <option value="Dallas">Dallas</option>
-            <option value="San Francisco">San Francisco</option>
           </select>
         </div>
       )}
@@ -288,8 +283,8 @@ export default function GetInvolvedPage() {
               </h2>
               <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
                 Chapters research their city&rsquo;s history, build tours,
-                film documentaries, and develop curriculum. Join an existing
-                chapter or start one in your city.
+                and organize around local policy. Join the Chicago chapter or
+                start one in your own city.
               </p>
             </div>
             <div className="md:col-span-8">

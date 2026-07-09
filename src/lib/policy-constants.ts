@@ -76,6 +76,10 @@ export interface LearningResource {
 /*  Campaigns                                                          */
 /* ------------------------------------------------------------------ */
 
+/* Real data only. Signature counts start at zero and grow from real
+   signatures; outcome text describes only things that actually
+   happened; evidence links point at checkable sources. Past campaigns
+   will be added here as real campaigns conclude. */
 export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
   {
     id: "c1",
@@ -85,77 +89,30 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
     category: "Housing",
     city: "chicago",
     summary:
-      "The Obama Presidential Center is bringing $3.4 billion in investment to Woodlawn and South Shore. Community organizations have been fighting for a community benefits agreement since 2018, but the ordinance passed by City Council in 2022 left out binding affordable housing protections for renters within a half-mile of the site. We are calling on the Department of Housing to adopt a binding covenant that caps rent increases for existing tenants in the Woodlawn impact zone for fifteen years.",
+      "The Obama Presidential Center opened in Jackson Park in June 2026 and is bringing new investment to Woodlawn and South Shore. Community organizations have pushed for binding protections for existing renters near the site for years, and the housing measures the city has adopted so far stop short of rent stabilization. We are calling on the Department of Housing to adopt a binding covenant that caps rent increases for existing tenants in the Woodlawn impact zone for fifteen years.",
     full_brief_markdown: null,
-    deadline: "2026-06-15T23:59:59Z",
+    deadline: null,
     outcome: null,
     hero_image_url: null,
     target_body: "Chicago Department of Housing",
     problem_markdown:
-      "## The Problem\n\nThe Obama Presidential Center broke ground in 2021 and is expected to open in 2026. The University of Chicago's own projections estimate the center will draw 750,000 visitors annually and generate billions in economic activity. That money flows into a neighborhood where the median household income is $24,000 and 60% of residents are renters.\n\nWoodlawn lost nearly 70% of its population between 1960 and 2010, largely due to urban renewal, redlining, and the disinvestment those policies caused. The residents who stayed, or who moved in during the decades when nobody else would invest, are now facing displacement by the very revitalization their neighborhood was promised.\n\nProperty values in Woodlawn have already increased 60% since the center was announced. Rents are following. The 2022 ordinance created a housing trust fund and right of first refusal for tenants, but it did not include the rent stabilization provisions that community groups requested during the public comment period.",
+      "## The Problem\n\nThe Obama Presidential Center broke ground in Jackson Park in 2021 and opened in June 2026. It is drawing visitors and new investment into the neighborhoods around it. That pressure lands in Woodlawn, a neighborhood that census counts show lost most of its population between 1960 and 2010 as urban renewal, redlining, and disinvestment hollowed out its blocks.\n\nThe residents who stayed, or who moved in during the decades when nobody else would invest, now face displacement by the very revitalization their neighborhood was promised. Property values and rents in the area have been rising since the center was announced.\n\nIn 2020, City Council passed the Woodlawn housing preservation ordinance, which created new affordability tools for the neighborhood. It did not include the rent stabilization provisions that community groups had been demanding.",
     proposal_markdown:
       "## What We're Proposing\n\nA binding affordable housing covenant attached to all residential properties within a half-mile of the Obama Presidential Center site. The covenant would:\n\n1. Cap annual rent increases at 3% or CPI (whichever is lower) for existing tenants for 15 years\n2. Require landlords receiving any city subsidy in the impact zone to maintain 30% of units at or below 60% AMI\n3. Establish an independent monitoring body with community representation\n4. Create an anti-displacement fund financed by a 1% transfer tax on property sales over $500,000 in the impact zone\n\nThis is not a blanket rent control proposal. It is a targeted protection for a specific geography facing a specific displacement pressure, modeled on protections other cities have adopted near major public investments.",
     comment_template:
-      "I am a Chicago resident writing to urge the Department of Housing to adopt a binding affordable housing covenant for the Woodlawn impact zone surrounding the Obama Presidential Center. The 2022 ordinance left out rent stabilization protections that community organizations requested during public comment. As development pressure increases, existing renters, many of whom stayed through decades of disinvestment, need binding protections against displacement. I support Rooted Forward's proposal for a 15-year covenant capping rent increases and requiring affordable unit set-asides in subsidized properties.",
+      "I am a Chicago resident writing to urge the Department of Housing to adopt a binding affordable housing covenant for the Woodlawn impact zone surrounding the Obama Presidential Center. The 2020 Woodlawn housing preservation ordinance left out the rent stabilization protections community organizations had been demanding. As development pressure increases, existing renters, many of whom stayed through decades of disinvestment, need binding protections against displacement. I support Rooted Forward's proposal for a 15-year covenant capping rent increases and requiring affordable unit set-asides in subsidized properties.",
     decision_makers: [
       { name: "Lissette Castañeda", role: "Commissioner, Chicago Department of Housing" },
       { name: "Jeanette Taylor", role: "Alderperson, 20th Ward" },
       { name: "Desmon Yancy", role: "Alderperson, 5th Ward" },
     ],
     evidence_links: [
-      { title: "Obama Presidential Center Community Benefits Ordinance (2022)", url: "https://chicago.legistar.com", source: "Chicago City Clerk" },
-      { title: "Woodlawn Property Value Analysis 2018–2025", url: "#", source: "Institute for Housing Studies at DePaul" },
-      { title: "Community Benefits Agreements: Lessons from U.S. Cities", url: "#", source: "Partnership for Working Families" },
+      { title: "Chicago City Clerk legislative records", url: "https://chicago.legistar.com", source: "Chicago City Clerk" },
+      { title: "Chicago housing market data and research", url: "https://www.housingstudies.org", source: "Institute for Housing Studies at DePaul" },
     ],
     related_tour_slugs: ["hyde-park-urban-renewal"],
-    signature_count: 847,
+    signature_count: 0,
     created_at: "2025-12-01",
-  },
-  {
-    id: "c2",
-    slug: "cpd-traffic-stop-data-transparency",
-    title: "CPD Traffic Stop Data Transparency Act",
-    status: "past",
-    category: "Policing",
-    city: "chicago",
-    summary:
-      "Pushed Chicago Police Department to publish geocoded traffic stop data broken down by race, ward, and outcome. The data confirmed what residents already knew: stops were concentrated in Black neighborhoods with no proportional difference in contraband recovery rates.",
-    full_brief_markdown: null,
-    deadline: null,
-    outcome: "Partial. CPD began publishing quarterly stop data in 2025 but excluded officer badge numbers and GPS coordinates.",
-    hero_image_url: null,
-    target_body: "Chicago Police Department / City Council Public Safety Committee",
-    problem_markdown: null,
-    proposal_markdown: null,
-    comment_template: null,
-    decision_makers: null,
-    evidence_links: null,
-    related_tour_slugs: [],
-    signature_count: 1203,
-    created_at: "2025-03-01",
-  },
-  {
-    id: "c3",
-    slug: "pilsen-industrial-corridor-rezoning",
-    title: "Pilsen Industrial Corridor Rezoning Review",
-    status: "past",
-    category: "Zoning",
-    city: "chicago",
-    summary:
-      "Organized public comment opposing the rezoning of parcels along the Pilsen Industrial Corridor from M2 manufacturing to B3 commercial, which would have allowed luxury residential development without affordable unit requirements.",
-    full_brief_markdown: null,
-    deadline: null,
-    outcome: "Won. Zoning Committee tabled the application after 340 public comments opposed the change. Parcels remain M2.",
-    hero_image_url: null,
-    target_body: "Chicago Zoning Board of Appeals",
-    problem_markdown: null,
-    proposal_markdown: null,
-    comment_template: null,
-    decision_makers: null,
-    evidence_links: null,
-    related_tour_slugs: ["pilsen-anti-displacement-murals"],
-    signature_count: 340,
-    created_at: "2025-06-01",
   },
 ];
 
@@ -219,7 +176,7 @@ Zoning changes in Chicago go through the Zoning Board of Appeals or the Committe
 
 The City of Chicago publishes zoning applications on the [Department of Planning and Development](https://www.chicago.gov/city/en/depts/dcd.html) website. Applications for zoning map amendments are also posted in the Council Journal. Your alderperson's office should notify you of major applications in your ward, but this does not always happen.
 
-The most reliable method: check the Zoning Board of Appeals calendar monthly and look for applications in your community area.
+The most reliable method is to check the Zoning Board of Appeals calendar monthly and look for applications in your community area.
 
 ## What to include in your comment
 
@@ -230,7 +187,7 @@ State the application number and address. Say whether you support or oppose the 
 - **Does the applicant meet the standards for the requested zoning class?** Each class has height, density, and setback requirements.
 - **Is there a public benefit?** Affordable housing units, community space, local hiring commitments.
 
-You do not need to be a zoning expert. Describe the impact in concrete terms: how it will affect your block, your commute, your rent.
+You do not need to be a zoning expert. Describe the impact in concrete terms. Say how it will affect your block, your commute, your rent.
 
 ## Where to submit
 
@@ -312,7 +269,7 @@ Writing too broadly. A proposal about "housing in Chicago" will not get traction
 
 Skipping the evidence section. Your argument is only as strong as your sources. Use data from city agencies, academic research, investigative journalism, or comparable policies in other cities.
 
-Not naming the decision-maker. Every proposal needs a target: a specific person or body with the authority to act on your recommendation.
+Not naming the decision-maker. Every proposal needs a target, a specific person or body with the authority to act on your recommendation.
 
 ## What to do with it
 
@@ -341,7 +298,7 @@ Your alderperson is the most likely sponsor because you are their constituent. F
 
 Bring a written policy proposal (see our [guide on writing one](/policy/guides/write-policy-proposal)). Bring evidence. Bring the names of other constituents who support it. If you have signatures or public comments, bring those too. The alderperson needs to see that this is not just your personal issue. It is a constituency issue.
 
-Be specific about what you are asking: "We would like you to introduce an ordinance that does X." Not "We would like you to look into the problem of Y."
+Be specific about what you are asking. "We would like you to introduce an ordinance that does X" lands better than "We would like you to look into the problem of Y."
 
 ## If your alderperson says no
 
@@ -366,7 +323,7 @@ Twenty-six votes passes an ordinance. You need to get there. That is the math.`,
       "Use this when you want to demonstrate broad support for a position by collecting organizational and individual endorsements on a single letter to a decision-maker.",
     content_markdown: `## What a sign-on letter does
 
-A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It says: this is not one person's opinion. This is a coalition position. The recipient sees fifty organizations and three hundred individuals who all agree on a specific ask. That is harder to dismiss than a single comment.
+A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It tells the recipient that this is not one person's opinion. This is a coalition position. The recipient sees fifty organizations and three hundred individuals who all agree on a specific ask. That is harder to dismiss than a single comment.
 
 ## Write the letter first
 
@@ -434,7 +391,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr3",
     title: "Find Your Alderperson",
     description:
-      "Look up your ward, your alderperson, their office address, and their voting record. Know who represents you before you try to get their attention.",
+      "Look up your ward, your alderperson, and their office contact information. Know who represents you before you try to get their attention.",
     type: "reference",
     icon: "search",
     href: "https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html",
@@ -548,29 +505,7 @@ export const CHICAGO_REFERENCES: ReferenceLink[] = [
 /*  Placeholder approved comments (for campaign detail page)           */
 /* ------------------------------------------------------------------ */
 
-export const PLACEHOLDER_COMMENTS: ApprovedComment[] = [
-  {
-    id: "pc1",
-    user_name: "Maria G.",
-    neighborhood: "Woodlawn",
-    comment_body:
-      "I have lived in Woodlawn for twenty-two years. I moved here because it was one of the few neighborhoods where I could afford rent on a teaching salary. The rent on my apartment has gone up $400 in the last three years. I support this covenant because the people who stayed through the hard years should not be the ones pushed out when things finally improve.",
-    created_at: "2026-03-10",
-  },
-  {
-    id: "pc2",
-    user_name: "Terrence W.",
-    neighborhood: "South Shore",
-    comment_body:
-      "The Obama Center is going to be a good thing for the South Side. But good things can come with bad consequences if we do not plan for them. Fifteen years of rent protection is reasonable. It gives the neighborhood time to stabilize without losing the people who make it a neighborhood in the first place.",
-    created_at: "2026-03-08",
-  },
-  {
-    id: "pc3",
-    user_name: "Diane L.",
-    neighborhood: "Hyde Park",
-    comment_body:
-      "I watched what happened during the last round of urban renewal in Hyde Park. The University of Chicago cleared entire blocks of Black families in the name of neighborhood improvement. We have a chance to do this differently. The covenant is the minimum.",
-    created_at: "2026-03-05",
-  },
-];
+/* Real comments only. This array stays empty; approved comments come
+   from the database as real residents submit them. Never seed this
+   with invented names or testimonials. */
+export const PLACEHOLDER_COMMENTS: ApprovedComment[] = [];

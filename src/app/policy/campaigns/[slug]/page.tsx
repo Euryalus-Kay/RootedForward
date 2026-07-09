@@ -5,6 +5,7 @@ import PageTransition from "@/components/layout/PageTransition";
 import SignatureForm from "@/components/policy/SignatureForm";
 import CommentForm from "@/components/policy/CommentForm";
 import CommentsFeed from "@/components/policy/CommentsFeed";
+import CopyLinkButton from "@/components/policy/CopyLinkButton";
 import {
   PLACEHOLDER_CAMPAIGNS,
   PLACEHOLDER_COMMENTS,
@@ -305,27 +306,30 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                   </>
                 )}
 
-                {/* Counts */}
-                <div className="rounded-sm border border-border bg-cream-dark p-6">
-                  <div className="flex flex-col gap-3">
-                    <div>
-                      <p className="font-display text-2xl text-forest">
-                        {campaign.signature_count.toLocaleString()}
-                      </p>
-                      <p className="font-body text-xs text-warm-gray">
-                        signatures
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-display text-2xl text-forest">
-                        {comments.length}
-                      </p>
-                      <p className="font-body text-xs text-warm-gray">
-                        public comments
-                      </p>
+                {/* Counts. Only real numbers; hidden until the first
+                    signature or comment lands. */}
+                {(campaign.signature_count > 0 || comments.length > 0) && (
+                  <div className="rounded-sm border border-border bg-cream-dark p-6">
+                    <div className="flex flex-col gap-3">
+                      <div>
+                        <p className="font-display text-2xl text-forest">
+                          {campaign.signature_count.toLocaleString()}
+                        </p>
+                        <p className="font-body text-xs text-warm-gray">
+                          signatures
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-display text-2xl text-forest">
+                          {comments.length}
+                        </p>
+                        <p className="font-body text-xs text-warm-gray">
+                          public comments
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Share */}
                 <div className="rounded-sm border border-border bg-cream-dark p-6">
@@ -342,12 +346,9 @@ export default async function CampaignDetailPage({ params }: PageProps) {
                       X / Twitter
                     </a>
                     <span className="text-border">|</span>
-                    <button
-                      onClick={undefined}
-                      className="font-body text-sm text-forest underline underline-offset-2 hover:text-rust"
-                    >
-                      Copy link
-                    </button>
+                    <CopyLinkButton
+                      url={`https://rooted-forward.org/policy/campaigns/${campaign.slug}`}
+                    />
                   </div>
                 </div>
 

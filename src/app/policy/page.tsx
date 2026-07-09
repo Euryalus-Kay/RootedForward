@@ -177,15 +177,12 @@ export default async function PolicyPage() {
           </p>
           <p className="mt-6 max-w-[65ch] font-body text-lg leading-relaxed text-ink/75">
             Rooted Forward exists to teach people how historical urban
-            inequality shaped the Chicago they live in today. The tours, films,
-            and classroom work are the first half of that mission. This page is
-            the second half. Once you understand how redlining, urban renewal,
-            and disinvestment produced the neighborhoods we walk through, the
-            next question is what to do about the patterns that are still
-            running. We organize that response here: active campaigns you can
-            sign onto, public comment drives that put community voices into the
-            official record, and a channel for residents to propose their own
-            policy ideas.
+            inequality shaped the Chicago they live in today. The tours, the
+            exhibit, and the podcast are the first half of that mission. This
+            page is the second half, where understanding turns into action.
+            We organize campaigns you can sign onto, public comment drives
+            that put community voices into the official record, and a channel
+            for residents to propose their own policy ideas.
           </p>
           <hr className="mt-12 border-border" />
         </div>
@@ -241,9 +238,9 @@ export default async function PolicyPage() {
                 </Link>
 
                 <p className="mt-5 font-body text-sm leading-relaxed text-ink/55">
-                  {featured.signature_count.toLocaleString()} Chicagoans have
-                  signed. You can add your signature or submit a public comment
-                  on the campaign page.
+                  {featured.signature_count > 0
+                    ? `${featured.signature_count.toLocaleString()} Chicagoans have signed. You can add your signature or submit a public comment on the campaign page.`
+                    : "You can add your signature or submit a public comment on the campaign page."}
                 </p>
               </div>
             </div>
@@ -277,9 +274,11 @@ export default async function PolicyPage() {
                     <p className="mt-2 font-body text-sm leading-relaxed text-ink/65 line-clamp-2">
                       {campaign.summary.split(". ")[0]}.
                     </p>
-                    <p className="mt-3 font-body text-xs text-warm-gray">
-                      {campaign.signature_count.toLocaleString()} signatures
-                    </p>
+                    {campaign.signature_count > 0 && (
+                      <p className="mt-3 font-body text-xs text-warm-gray">
+                        {campaign.signature_count.toLocaleString()} signatures
+                      </p>
+                    )}
                   </div>
                 </Link>
               ))}
@@ -446,14 +445,16 @@ export default async function PolicyPage() {
                             {campaign.outcome && (
                               <p className="mt-2 font-body text-sm leading-relaxed text-ink/60">
                                 {campaign.outcome.replace(
-                                  /^(Won|Partial|Closed)\s*—?\s*/i,
+                                  /^(Won|Partial|Closed)\b[\s.—-]*/i,
                                   ""
                                 )}
                               </p>
                             )}
-                            <p className="mt-3 font-body text-xs text-warm-gray">
-                              {campaign.signature_count.toLocaleString()} signatures
-                            </p>
+                            {campaign.signature_count > 0 && (
+                              <p className="mt-3 font-body text-xs text-warm-gray">
+                                {campaign.signature_count.toLocaleString()} signatures
+                              </p>
+                            )}
                           </div>
                           <span
                             className={`mt-1 flex-shrink-0 rounded-full px-2.5 py-0.5 font-body text-xs font-semibold uppercase tracking-wider ${getOutcomeColor(campaign.outcome)}`}
@@ -481,7 +482,7 @@ export default async function PolicyPage() {
         <div className="mx-auto max-w-4xl px-6">
           <hr className="mb-10 border-border" />
           <p className="font-body text-sm leading-relaxed text-warm-gray">
-            Working on Chicago policy? We share our research with journalists,
+            Working on Chicago policy? We share our work with journalists,
             researchers, and legislative offices on request.{" "}
             <a
               href="mailto:contact@rooted-forward.org"

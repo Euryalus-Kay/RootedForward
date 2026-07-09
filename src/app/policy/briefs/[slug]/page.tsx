@@ -3,16 +3,12 @@ import { redirect } from "next/navigation";
 /* ------------------------------------------------------------------ */
 /*  /policy/briefs/[slug]                                              */
 /*                                                                     */
-/*  Legacy path. Policy briefs now live in the research_entries       */
-/*  table with format = 'brief'. Redirect to the canonical archive   */
-/*  URL so existing links continue to work.                            */
+/*  Legacy path. Briefs used to live here, then moved into the        */
+/*  research archive. With /research hidden (owner request, July      */
+/*  2026), old brief links land on the policy page instead of a 404.  */
+/*  When research is restored, point this back at /research/<slug>.   */
 /* ------------------------------------------------------------------ */
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export default async function BriefRedirect({ params }: PageProps) {
-  const { slug } = await params;
-  redirect(`/research/${slug}`);
+export default async function BriefRedirect() {
+  redirect("/policy");
 }
