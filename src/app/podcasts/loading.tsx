@@ -1,32 +1,26 @@
 import { SkeletonLine, SkeletonText } from "@/components/ui/Skeleton";
 
-/* Skeleton for /podcasts. Mirrors the live layout (forest banner,
-   narrow intro column, one embed-sized block) so nothing jumps when
-   the real page streams in. */
+/* Skeleton for /podcasts. Mirrors the live layout (typographic
+   opener, one embed-sized block) so nothing jumps when the real page
+   streams in. */
 
 export default function PodcastsLoading() {
   return (
     <>
-      {/* Banner */}
-      <section className="relative bg-forest/80 pt-16 pb-12 md:pb-16">
-        <div className="flex items-center justify-center pt-12 md:pt-16">
-          <div className="h-12 w-52 animate-pulse rounded-sm bg-cream/20" />
-        </div>
-      </section>
-
-      {/* Intro */}
-      <section className="bg-cream pb-8 pt-12 md:pt-16">
+      {/* Opener */}
+      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-3xl px-6">
           <SkeletonLine width="4rem" height="0.75rem" />
-          <div className="mt-6 max-w-[60ch]">
-            <SkeletonText lines={3} />
+          <div className="mt-4 h-11 w-4/5 animate-pulse rounded bg-cream-dark" />
+          <div className="mt-6 max-w-[55ch]">
+            <SkeletonText lines={2} />
           </div>
-          <hr className="mt-10 border-border" />
+          <div className="mt-10 h-3 w-24 animate-pulse rounded bg-cream-dark" />
         </div>
       </section>
 
       {/* Player area */}
-      <section className="bg-cream pb-20 pt-8 md:pb-28">
+      <section className="bg-cream pb-20 pt-12 md:pb-28 md:pt-16">
         <div className="mx-auto max-w-3xl px-6">
           <div className="h-[352px] w-full animate-pulse rounded-lg bg-cream-dark" />
           <div className="mt-6">

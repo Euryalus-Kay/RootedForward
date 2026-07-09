@@ -29,8 +29,8 @@ export default function Footer() {
             <span className="font-display text-2xl font-semibold tracking-tight">Rooted Forward</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream/75">
-            A youth-led Chicago nonprofit tracing how housing policy shaped
-            the city&rsquo;s neighborhoods, and organizing the response.
+            A student-run Chicago nonprofit. Walking tours, an online
+            exhibit, a podcast, and housing policy work.
           </p>
           <p className="mt-6 text-xs text-cream/50">
             &copy; {new Date().getFullYear()} Rooted Forward. All rights reserved.

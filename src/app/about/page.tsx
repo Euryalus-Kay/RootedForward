@@ -2,17 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import SurveyRule from "@/components/ui/SurveyRule";
 import type { BoardMember } from "@/lib/about-constants";
 
 /* ------------------------------------------------------------------ */
 /*  /about                                                             */
 /*                                                                     */
-/*  One scrolling page. Mission, story, founder, the two programs,    */
-/*  then the People section (#people) with the Student Board and      */
-/*  Advisory Board. Boards read from the board_members table and      */
-/*  render only real rows; while a board is empty the section shows   */
-/*  an honest placeholder line instead of fake name cards. Members    */
-/*  are managed at /admin/about/board.                                 */
+/*  Short and readable. A plain opener, the story with one archival   */
+/*  portrait, two program blocks, then People. Right now People is    */
+/*  the founder plus one honest line about the boards being formed;   */
+/*  when real board_members rows exist they render automatically      */
+/*  (managed at /admin/about/board), so nothing here needs a rewrite  */
+/*  when advisors join. No fake names, ever.                          */
 /* ------------------------------------------------------------------ */
 
 /* Development seed rows ("Member Name", "Advisor Name", test entries)
@@ -35,24 +36,30 @@ function InitialsAvatar({ name }: { name: string }) {
   );
 }
 
-function BoardCard({ member }: { member: BoardMember }) {
+/* People rows run as a single column, photo left, text right. */
+function BoardRow({ member }: { member: BoardMember }) {
   return (
-    <div>
-      <div className="aspect-square w-full overflow-hidden rounded-sm bg-cream-dark">
+    <div className="flex gap-6 py-8 sm:gap-8">
+      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-sm bg-cream-dark sm:h-28 sm:w-28">
         {member.photo_url ? (
           <img src={member.photo_url} alt={member.full_name} className="h-full w-full object-cover" />
         ) : (
           <InitialsAvatar name={member.full_name} />
         )}
       </div>
-      <h3 className="mt-4 font-display text-lg text-forest">{member.full_name}</h3>
-      <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
-        {member.role}{member.city && ` · ${member.city}`}
-      </p>
-      {member.affiliation && (
-        <p className="mt-0.5 font-body text-xs italic text-warm-gray">{member.affiliation}</p>
-      )}
-      <p className="mt-3 font-body text-sm leading-relaxed text-ink/65">{member.bio}</p>
+      <div className="min-w-0">
+        <h4 className="font-display text-xl text-forest">{member.full_name}</h4>
+        <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+          {member.role}
+          {member.city && ` · ${member.city}`}
+        </p>
+        {member.affiliation && (
+          <p className="mt-0.5 font-body text-xs italic text-warm-gray">{member.affiliation}</p>
+        )}
+        <p className="mt-3 max-w-[60ch] font-body text-sm leading-relaxed text-ink/65">
+          {member.bio}
+        </p>
+      </div>
     </div>
   );
 }
@@ -108,7 +115,7 @@ export default function AboutPage() {
         if (s.data) setStudentBoard((s.data as BoardMember[]).filter(isRealMember));
         if (a.data) setAdvisoryBoard((a.data as BoardMember[]).filter(isRealMember));
       } catch {
-        /* boards stay empty; the sections show their placeholder lines */
+        /* boards stay hidden until real rows exist */
       }
     }
     fetchBoards();
@@ -116,110 +123,105 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-cream">
-      {/* Banner */}
-      <section className="relative pt-16 pb-12 md:pb-16">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-forest/70" />
-        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-          <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+      {/* Opener */}
+      <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             About
-          </h1>
-        </div>
-      </section>
-
-      {/* Mission */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="font-display text-3xl text-forest md:text-4xl">
-            Our Mission
-          </h2>
-          <p className="mt-6 max-w-[60ch] font-body text-lg leading-relaxed text-ink/75 md:text-xl">
-            Rooted Forward is a youth-led nonprofit in Chicago. We trace what
-            redlining, urban renewal, and highway construction did to the
-            neighborhoods people live in today, and we organize the response
-            through education and policy work. The work is led by students.
           </p>
+          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.08] text-ink md:text-6xl">
+            Rooted Forward is run by students.
+          </h1>
+          <p className="mt-6 max-w-[56ch] font-body text-lg leading-relaxed text-ink/75">
+            We dig up the paperwork that decided who could live where in
+            Chicago, and we turn it into things people actually use. A
+            walking tour. An online exhibit. A podcast. Policy work.
+          </p>
+          <SurveyRule className="mt-10 text-rust" />
         </div>
       </section>
 
-      {/* Our Story */}
-      <section className="border-t border-border py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="font-display text-3xl text-forest md:text-4xl">
-            Our Story
-          </h2>
-          <div className="mt-8 max-w-[60ch] space-y-5">
-            <p className="font-body text-base leading-relaxed text-ink/75">
-              Rooted Forward grew out of Hyde Park. Our walking tour runs
-              there, and our exhibit is set there. Over the last century,
-              deed restrictions, appraisal maps, and urban renewal plans
-              decided who could live in the neighborhood, and those decisions
-              are still visible in the streets today. The same is true across
-              Chicago.
-            </p>
-            <p className="font-body text-base leading-relaxed text-ink/75">
-              We think the clearest way to understand that history is to
-              stand where it happened and read the documents that made it.
-              So that is what we build. A walking tour through Hyde Park, an
-              online exhibit assembled from the original paperwork, a podcast
-              about the city&rsquo;s neighborhoods, and policy campaigns that
-              push for protections the city has not yet adopted.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* What We Do */}
-      <section className="border-t border-border py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="font-display text-3xl text-forest md:text-4xl">
-            What We Do
-          </h2>
-
-          {/* Education */}
-          <div className="mt-14 flex gap-6 md:gap-10">
-            <span className="flex-shrink-0 font-display text-6xl leading-none text-border md:text-8xl">
-              01
-            </span>
-            <div className="flex-1">
-              <h3 className="font-display text-2xl text-forest">Education</h3>
-              <p className="mt-4 max-w-[55ch] font-body text-base leading-relaxed text-ink/75">
-                We lead a walking tour through Hyde Park that connects
-                specific blocks to the policies that shaped them. We also
-                publish The Ground Keeps Moving, an online exhibit built from
-                deeds, appraisal forms, and federal maps, and we make a
-                podcast about Chicago&rsquo;s neighborhoods.
+      {/* The story */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
+            <div className="md:col-span-7">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+                The story
               </p>
-              <p className="mt-3 font-body text-xs text-warm-gray">
-                Walking tour · Online exhibit · Podcast
+              <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+                It started in Hyde Park
+              </h2>
+              <div className="mt-7 max-w-[58ch] space-y-5">
+                <p className="font-body text-base leading-relaxed text-ink/75">
+                  Hyde Park looks like a quiet college neighborhood. Then you
+                  read the deeds. For a century, restrictive covenants,
+                  appraisal maps, and urban renewal plans decided who could
+                  live on which block, and you can still see those decisions
+                  in the streets today.
+                </p>
+                <p className="font-body text-base leading-relaxed text-ink/75">
+                  We believe the best place to learn that history is standing
+                  where it happened, holding a copy of the document that did
+                  it. That is the whole idea. Everything we make starts with
+                  the original paperwork.
+                </p>
+              </div>
+            </div>
+            <div className="md:col-span-5">
+              <img
+                src="/media/site/fannie-barrier-williams-1880.jpg"
+                alt="Studio portrait of Fannie Barrier Williams from around 1880"
+                loading="lazy"
+                className="w-full max-w-sm rounded-sm border border-border object-cover"
+              />
+              <p className="mt-2 max-w-sm font-body text-[11px] leading-snug text-ink/60">
+                Fannie Barrier Williams, circa 1880. When the Hyde Park
+                Improvement Protective Club set out in 1908 to buy out the
+                neighborhood&rsquo;s Black households, she refused to leave.
+                Her story is told in our exhibit. Public domain.
               </p>
-              <Link href="/tours" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light">
-                View our tours &rarr;
-              </Link>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Policy */}
-          <div className="mt-14 flex gap-6 md:gap-10">
-            <span className="flex-shrink-0 font-display text-6xl leading-none text-border md:text-8xl">
-              02
-            </span>
-            <div className="flex-1">
-              <h3 className="font-display text-2xl text-forest">Policy</h3>
-              <p className="mt-4 max-w-[55ch] font-body text-base leading-relaxed text-ink/75">
-                Once people understand how the patterns formed, the question
-                becomes what to do about the parts that are still active. We
-                organize that response through public comment drives, sign-on
-                campaigns, and policy proposals, all focused on Chicago.
+      {/* What we do */}
+      <section className="border-t border-border py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+            What we do
+          </p>
+          <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
+            <div className="border-t-2 border-border pt-6">
+              <h3 className="font-display text-2xl text-ink">Teach the history</h3>
+              <p className="mt-3 max-w-[50ch] font-body text-base leading-relaxed text-ink/70">
+                A two-hour walking tour of Hyde Park, an online exhibit built
+                from the original documents, and a podcast about
+                Chicago&rsquo;s neighborhoods.
               </p>
-              <p className="mt-3 font-body text-xs text-warm-gray">
-                Active campaigns · Public comment drives · How-to guides · Community proposals
+              <Link
+                href="/tours"
+                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+              >
+                Tours &amp; exhibit{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+              </Link>
+            </div>
+
+            <div className="border-t-2 border-border pt-6">
+              <h3 className="font-display text-2xl text-ink">Work on what&rsquo;s next</h3>
+              <p className="mt-3 max-w-[50ch] font-body text-base leading-relaxed text-ink/70">
+                Guides that teach Chicagoans how to testify and comment at
+                City Hall, a channel for community policy ideas, and
+                campaigns when there is one worth running.
               </p>
-              <Link href="/policy" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-light">
-                See active campaigns &rarr;
+              <Link
+                href="/policy"
+                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+              >
+                Policy tools{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
               </Link>
             </div>
           </div>
@@ -228,18 +230,16 @@ export default function AboutPage() {
 
       {/* People */}
       <section id="people" className="scroll-mt-20 border-t border-border py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="font-display text-3xl text-forest md:text-4xl">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
             People
-          </h2>
-          <p className="mt-3 max-w-[60ch] font-body text-base text-ink/60">
-            {studentBoard.length === 0 && advisoryBoard.length === 0
-              ? "Rooted Forward is run by students. We are building out two boards, a Student Board that will lead each program and an Advisory Board of educators, researchers, and policy professionals who will support the work without governing it. The decisions stay with the students."
-              : "Rooted Forward is run by students. A Student Board leads each program, and an Advisory Board of educators, researchers, and policy professionals supports the work without governing it. The decisions stay with the students."}
           </p>
+          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+            Who runs it
+          </h2>
 
           {/* Founder */}
-          <div className="mt-12 grid grid-cols-1 gap-8 rounded-sm border border-border bg-cream-dark/40 p-8 sm:grid-cols-[180px_1fr] md:p-10">
+          <div className="mt-10 grid max-w-4xl grid-cols-1 gap-8 rounded-sm border border-border bg-cream-dark/40 p-8 sm:grid-cols-[180px_1fr] md:p-10">
             <div className="aspect-square w-full max-w-[180px] overflow-hidden rounded-sm bg-cream-dark">
               <FounderPhoto />
             </div>
@@ -249,81 +249,71 @@ export default function AboutPage() {
                 Founder · Chicago
               </p>
               <p className="mt-4 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
-                Zain founded Rooted Forward and leads its work across the
-                education and policy programs, from the Hyde Park walking
-                tour to the campaigns on the policy page.
+                Zain founded Rooted Forward and runs it day to day, from the
+                Hyde Park walking tour to the policy work. If you email the
+                organization, he is probably the one answering.
               </p>
             </div>
           </div>
 
-          {/* Student Board */}
-          <div className="mt-16">
-            <h3 className="font-display text-2xl text-forest">Student Board</h3>
-            <p className="mt-2 font-body text-sm text-ink/60">
-              Sets direction and leads each part of the work.
-            </p>
-            {studentBoard.length > 0 ? (
-              <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                {studentBoard.map((m) => <BoardCard key={m.id} member={m} />)}
+          {/* Boards render only when real members exist; until then,
+              one honest line instead of empty placeholder boxes. */}
+          {studentBoard.length > 0 && (
+            <div className="mt-14 max-w-4xl">
+              <h3 className="font-display text-2xl text-forest">Student Board</h3>
+              <div className="mt-4 divide-y divide-border border-y border-border">
+                {studentBoard.map((m) => <BoardRow key={m.id} member={m} />)}
               </div>
-            ) : (
-              <p className="mt-6 max-w-[60ch] rounded-sm border border-border bg-cream-dark/40 p-6 font-body text-sm leading-relaxed text-ink/60">
-                Student board members will be listed here. If you want to be
-                one of them, the{" "}
-                <Link href="/get-involved" className="text-rust underline underline-offset-2">
-                  get involved page
-                </Link>{" "}
-                is the place to start.
-              </p>
-            )}
-          </div>
-
-          {/* Advisory Board */}
-          <div className="mt-16">
-            <h3 className="font-display text-2xl text-forest">Advisory Board</h3>
-            <p className="mt-2 font-body text-sm text-ink/60">
-              Adults who advise the work without running it.
-            </p>
-            {advisoryBoard.length > 0 ? (
-              <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                {advisoryBoard.map((m) => <BoardCard key={m.id} member={m} />)}
+            </div>
+          )}
+          {advisoryBoard.length > 0 && (
+            <div className="mt-14 max-w-4xl">
+              <h3 className="font-display text-2xl text-forest">Advisory Board</h3>
+              <div className="mt-4 divide-y divide-border border-y border-border">
+                {advisoryBoard.map((m) => <BoardRow key={m.id} member={m} />)}
               </div>
-            ) : (
-              <p className="mt-6 max-w-[60ch] rounded-sm border border-border bg-cream-dark/40 p-6 font-body text-sm leading-relaxed text-ink/60">
-                Advisory board members will be listed here as they join.
-              </p>
-            )}
-          </div>
+            </div>
+          )}
+          {studentBoard.length === 0 && advisoryBoard.length === 0 && (
+            <p className="mt-8 max-w-[58ch] font-body text-base leading-relaxed text-ink/60">
+              A student board and an advisory board are forming now. If you
+              want in early,{" "}
+              <Link href="/get-involved" className="text-rust underline underline-offset-2">
+                this is the moment
+              </Link>
+              .
+            </p>
+          )}
         </div>
       </section>
 
       {/* Get Involved */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+          <SurveyRule className="text-rust-light" />
+          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
             <div>
-              <h3 className="font-display text-xl text-cream">Join the Team</h3>
+              <h3 className="font-display text-xl text-cream">Join the team</h3>
               <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
-                We are based in Chicago and open to students across the city.
+                Open to students across Chicago.
               </p>
               <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
                 Get involved &rarr;
               </Link>
             </div>
             <div>
-              <h3 className="font-display text-xl text-cream">Start a Chapter</h3>
+              <h3 className="font-display text-xl text-cream">Start a chapter</h3>
               <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
-                Outside Chicago? We help students bring the model to their
-                own city.
+                Outside Chicago? Bring the model to your city.
               </p>
               <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
                 Tell us where &rarr;
               </Link>
             </div>
             <div>
-              <h3 className="font-display text-xl text-cream">Partner With Us</h3>
+              <h3 className="font-display text-xl text-cream">Partner with us</h3>
               <p className="mt-2 font-body text-sm leading-relaxed text-cream/60">
-                For schools, nonprofits, and community organizations.
+                For schools, nonprofits, and community groups.
               </p>
               <Link href="/contact" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
                 Get in touch &rarr;

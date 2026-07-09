@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* Fonts are self-hosted through next/font in src/app/layout.tsx, which
+   sets the --font-fraunces / --font-dm-sans / --font-archivo-narrow /
+   --font-plex-mono variables referenced below. */
 @import "tailwindcss";
 
 /* projection-room: lets the film wrapper go edge-to-edge cinema in native fullscreen */
@@ -24,8 +26,8 @@
   --color-warm-gray-light: #B5AFA4;
   --color-border: #DDD6C8;
 
-  --font-display: 'Fraunces', serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-display: var(--font-fraunces), 'Fraunces', serif;
+  --font-body: var(--font-dm-sans), 'DM Sans', sans-serif;
 
   /* The Ground Keeps Moving exhibit palette. Document-derived colors:
      plat-book linen, carbon ink, HOLC survey blue, appraisal gold.
@@ -40,8 +42,8 @@
   --color-exh-red: #B0322B;
   --color-exh-green: #3E6B4F;
 
-  --font-plat: 'Archivo Narrow', 'Arial Narrow', sans-serif;
-  --font-ledger: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-plat: var(--font-archivo-narrow), 'Archivo Narrow', 'Arial Narrow', sans-serif;
+  --font-ledger: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 :root {

@@ -20,6 +20,9 @@ export interface Campaign {
   comment_template: string | null;
   decision_makers: { name: string; role: string; contact?: string }[] | null;
   evidence_links: { title: string; url: string; source: string }[] | null;
+  /* Dated events, oldest first, shown as the "How we got here"
+     timeline on the campaign page. Real, checkable events only. */
+  milestones?: { date: string; text: string }[] | null;
   related_tour_slugs: string[];
   signature_count: number;
   created_at: string;
@@ -85,7 +88,11 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
     id: "c1",
     slug: "woodlawn-affordable-housing-covenant",
     title: "Woodlawn Affordable Housing Covenant",
-    status: "active",
+    /* Not yet launched (owner, July 2026). The site shows an honest
+       "none at this point" state until a campaign actually runs; flip
+       this to "active" when it does. The production campaigns table
+       row needs the same status change. */
+    status: "drafting",
     category: "Housing",
     city: "chicago",
     summary:
@@ -109,6 +116,26 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
     evidence_links: [
       { title: "Chicago City Clerk legislative records", url: "https://chicago.legistar.com", source: "Chicago City Clerk" },
       { title: "Chicago housing market data and research", url: "https://www.housingstudies.org", source: "Institute for Housing Studies at DePaul" },
+    ],
+    /* Each entry restates a dated fact already asserted (and sourced)
+       in the problem narrative above. */
+    milestones: [
+      {
+        date: "2020",
+        text: "City Council passes the Woodlawn housing preservation ordinance. It creates new affordability tools but leaves out the rent stabilization provisions community groups had been demanding.",
+      },
+      {
+        date: "2021",
+        text: "The Obama Presidential Center breaks ground in Jackson Park. Property values and rents in the surrounding blocks have been rising since the site was announced.",
+      },
+      {
+        date: "December 2025",
+        text: "Rooted Forward begins drafting this campaign and its covenant proposal.",
+      },
+      {
+        date: "June 2026",
+        text: "The center opens to the public, and the visitor traffic and investment it draws begin arriving in Woodlawn.",
+      },
     ],
     related_tour_slugs: ["hyde-park-urban-renewal"],
     signature_count: 0,
@@ -371,7 +398,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr1",
     title: "Draft a Public Comment",
     description:
-      "Step-by-step walkthrough that helps you write a public comment for Chicago City Council, a zoning hearing, or a state committee. Explains what makes comments effective and what gets ignored.",
+      "Write a comment City Council will actually read, step by step.",
     type: "interactive",
     icon: "pen",
     href: "/policy/guides/submit-public-comment-city-council",
@@ -381,7 +408,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr2",
     title: "Write a Policy Proposal",
     description:
-      "Structure a problem statement, proposed solution, and evidence section that a legislative office will actually read. Includes the format Chicago alderpersons expect.",
+      "Turn your idea into a document an alderperson can act on.",
     type: "tool",
     icon: "lightbulb",
     href: "/policy/guides/write-policy-proposal",
@@ -391,7 +418,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr3",
     title: "Find Your Alderperson",
     description:
-      "Look up your ward, your alderperson, and their office contact information. Know who represents you before you try to get their attention.",
+      "Look up your ward and who represents it.",
     type: "reference",
     icon: "search",
     href: "https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html",
@@ -401,7 +428,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr4",
     title: "How Zoning Works in Chicago",
     description:
-      "What zoning classes mean, how rezoning applications work, and how to weigh in before a developer changes what can be built on your block.",
+      "What zoning means and how to weigh in before your block changes.",
     type: "guide",
     icon: "compass",
     href: "/policy/guides/submit-comment-zoning-change",
@@ -411,7 +438,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr5",
     title: "File an Illinois Witness Slip",
     description:
-      "Register your position on any state bill in committee. Takes two minutes, counts in the official record, and legislators track the numbers.",
+      "Register where you stand on any state bill. Takes two minutes.",
     type: "interactive",
     icon: "megaphone",
     href: "/policy/guides/written-testimony-illinois-general-assembly",
@@ -421,7 +448,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr6",
     title: "Organize a Sign-On Campaign",
     description:
-      "How to draft a coalition letter, collect organizational and individual signatures, and deliver it to a decision-maker who has to respond.",
+      "Get neighbors and organizations onto one letter that lands.",
     type: "guide",
     icon: "users",
     href: "/policy/guides/organize-sign-on-letter",
@@ -431,7 +458,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr7",
     title: "Track Chicago Legislation",
     description:
-      "Real-time tracker for every ordinance, resolution, and committee action in City Council. See what your alderperson voted on this month.",
+      "See what City Council is actually voting on this month.",
     type: "reference",
     icon: "scale",
     href: "https://chicago.legistar.com",
@@ -441,7 +468,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr8",
     title: "Get an Ordinance Introduced",
     description:
-      "What it takes to get an alderperson to put their name on your proposal and move it through committee, the way it actually works in City Hall.",
+      "What it takes to get an alderperson to sponsor your idea.",
     type: "guide",
     icon: "book",
     href: "/policy/guides/get-alderperson-to-sponsor-ordinance",

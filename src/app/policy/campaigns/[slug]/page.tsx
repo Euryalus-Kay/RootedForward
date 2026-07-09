@@ -33,6 +33,13 @@ async function getCampaign(slug: string): Promise<Campaign | null> {
         signature_count: c.signature_count ?? 0,
         decision_makers: c.decision_makers ?? null,
         evidence_links: c.evidence_links ?? null,
+        // the campaigns table has no milestones column; fall back to
+        // the constants entry for the same slug so the timeline still
+        // renders when the row comes from the database
+        milestones:
+          c.milestones ??
+          PLACEHOLDER_CAMPAIGNS.find((p) => p.slug === slug)?.milestones ??
+          null,
         related_tour_slugs: c.related_tour_slugs ?? [],
       } as Campaign;
     }
@@ -170,9 +177,17 @@ export default async function CampaignDetailPage({ params }: PageProps) {
             >
               {statusLabel}
             </span>
+            <span className="font-body text-sm text-warm-gray">
+              {campaign.status === "drafting" ? "In development since" : "Opened"}{" "}
+              {new Date(campaign.created_at).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                timeZone: "UTC",
+              })}
+            </span>
             {campaign.deadline && isActive && (
               <span className="font-body text-sm text-warm-gray">
-                Deadline: {formatDeadline(campaign.deadline)}
+                &middot; Deadline {formatDeadline(campaign.deadline)}
               </span>
             )}
           </div>
@@ -206,6 +221,31 @@ export default async function CampaignDetailPage({ params }: PageProps) {
               {/* What We're Proposing */}
               {campaign.proposal_markdown && (
                 <RenderMarkdown content={campaign.proposal_markdown} />
+              )}
+
+              {/* How We Got Here — dated milestones, oldest first */}
+              {campaign.milestones && campaign.milestones.length > 0 && (
+                <div className="mt-10">
+                  <h2 className="mb-6 font-display text-2xl text-forest">
+                    How We Got Here
+                  </h2>
+                  <ol className="relative flex flex-col gap-7 border-l border-border pl-6">
+                    {campaign.milestones.map((m, i) => (
+                      <li key={i} className="relative">
+                        <span
+                          aria-hidden="true"
+                          className="absolute -left-[29px] top-1.5 h-2 w-2 rounded-full bg-rust"
+                        />
+                        <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                          {m.date}
+                        </p>
+                        <p className="mt-1 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
+                          {m.text}
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               )}
 
               {/* Who Decides */}

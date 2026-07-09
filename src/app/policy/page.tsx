@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import SurveyRule from "@/components/ui/SurveyRule";
 import {
   PLACEHOLDER_CAMPAIGNS,
   PLACEHOLDER_LEARNING_RESOURCES,
@@ -8,10 +9,39 @@ import {
 } from "@/lib/policy-constants";
 import type { Campaign, LearningResource } from "@/lib/policy-constants";
 
+/* The four kinds of policy content on this site. One short line each;
+   a visitor should know which door is theirs in five seconds. */
+const MECHANISMS = [
+  {
+    label: "Campaigns",
+    definition: "Organized pushes for one specific change.",
+    href: "#campaigns",
+    cta: "See the latest",
+  },
+  {
+    label: "Guides",
+    definition: "How to testify, comment, and be heard at City Hall.",
+    href: "#learn",
+    cta: "Read the guides",
+  },
+  {
+    label: "Proposals",
+    definition: "Got an idea? Send it in. We read every one.",
+    href: "/policy/submit-proposal",
+    cta: "Submit an idea",
+  },
+  {
+    label: "Legislation",
+    definition: "What City Council is voting on right now.",
+    href: "https://chicago.legistar.com",
+    cta: "Open the tracker",
+  },
+];
+
 export const metadata: Metadata = {
   title: "Policy | Rooted Forward",
   description:
-    "Active campaigns, policy tools, and resources for Chicago policy engagement. Sign on, submit public comment, or propose your own policy idea.",
+    "Learn how to comment, testify, and move an ordinance in Chicago. Plain-language guides, community policy proposals, and campaign tools from Rooted Forward.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -150,83 +180,131 @@ export default async function PolicyPage() {
   return (
     <PageTransition>
       {/* ============================================================
-          SECTION 1: BANNER
-          Hero image with a forest tint overlay, matching the
-          research, education, and get-involved banner treatment.
+          SECTION 1: OPENER
+          Typographic, with the mechanism-enumerating sentence. The
+          four definition blocks below mirror the sentence exactly.
           ============================================================ */}
-      <section className="relative pt-16 pb-12 md:pb-16">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-forest/70" />
-        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-          <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
-            Policy
-          </h1>
-        </div>
-      </section>
-
-      {/* ============================================================
-          SECTION 1b: INTRO PROSE
-          ============================================================ */}
-      <section className="bg-cream pb-10 pt-12 md:pt-16">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+      <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Policy / Chicago
           </p>
-          <p className="mt-6 max-w-[65ch] font-body text-lg leading-relaxed text-ink/75">
-            Rooted Forward exists to teach people how historical urban
-            inequality shaped the Chicago they live in today. The tours, the
-            exhibit, and the podcast are the first half of that mission. This
-            page is the second half, where understanding turns into action.
-            We organize campaigns you can sign onto, public comment drives
-            that put community voices into the official record, and a channel
-            for residents to propose their own policy ideas.
+          <h1 className="mt-4 max-w-[20ch] font-display text-4xl leading-[1.05] text-ink md:text-6xl">
+            How to change a housing rule in Chicago
+          </h1>
+          <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
+            City Hall runs on comment periods, witness slips, and committee
+            votes. This page teaches you each one and gives you the tools to
+            use them. Everything here is free and written for first-timers.
           </p>
-          <hr className="mt-12 border-border" />
+          <SurveyRule className="mt-10 text-rust" />
+
+          <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+            {MECHANISMS.map((m) =>
+              m.href.startsWith("http") ? (
+                <a
+                  key={m.label}
+                  href={m.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-cream p-6 transition-colors hover:bg-cream-dark/60"
+                >
+                  <h2 className="font-display text-xl text-forest">{m.label}</h2>
+                  <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
+                    {m.definition}
+                  </p>
+                  <span className="mt-4 inline-block font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                    {m.cta}{" "}
+                    <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                  </span>
+                </a>
+              ) : (
+                <Link
+                  key={m.label}
+                  href={m.href}
+                  className="group bg-cream p-6 transition-colors hover:bg-cream-dark/60"
+                >
+                  <h2 className="font-display text-xl text-forest">{m.label}</h2>
+                  <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
+                    {m.definition}
+                  </p>
+                  <span className="mt-4 inline-block font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                    {m.cta}{" "}
+                    <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                  </span>
+                </Link>
+              )
+            )}
+          </div>
         </div>
       </section>
 
       {/* ============================================================
           SECTION 2: FEATURED ACTIVE CAMPAIGN
           ============================================================ */}
-      {featured && (
-        <section className="bg-cream py-16 md:py-20">
+      {/* No campaign running yet. Say so plainly and point at the two
+          things a visitor can do today. When a campaign goes active
+          (status flip in policy-constants.ts or the campaigns table),
+          the featured block below takes this section's place. */}
+      {!featured && (
+        <section id="campaigns" className="scroll-mt-20 bg-cream py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-5 md:gap-14">
-              <div className="md:col-span-2">
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-cream-dark">
-                  <div className="absolute inset-0 bg-gradient-to-b from-cream-dark to-border" />
-                  <svg className="absolute inset-0 h-full w-full opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <pattern id="campaign-diag" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                        <line x1="0" y1="0" x2="0" y2="16" stroke="#1A1A1A" strokeWidth="1" />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#campaign-diag)" />
-                  </svg>
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/40 to-transparent px-5 py-4">
-                    <p className="font-body text-xs uppercase tracking-wider text-cream/80">
-                      {featured.category}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
+              Campaigns
+            </p>
+            <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+              None running at this point
+            </h2>
+            <p className="mt-5 max-w-[58ch] font-body text-base leading-relaxed text-ink/75">
+              We are building our first one. When it launches it will live
+              right here, with the specific ask, the people who can say yes
+              to it, and a way to sign on. Until then the guides below are
+              the best place to start, and if you have an idea worth
+              fighting for, send it in.
+            </p>
+            <Link
+              href="/policy/submit-proposal"
+              className="group mt-6 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+            >
+              Propose the first campaign{" "}
+              <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
+          </div>
+        </section>
+      )}
 
-              <div className="md:col-span-3">
-                <span className="inline-block rounded-full bg-rust/15 px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-rust">
-                  Active Campaign
-                </span>
+      {featured && (
+        <section id="campaigns" className="scroll-mt-20 bg-cream py-16 md:py-24">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
+              <div className="md:col-span-8">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="inline-block rounded-full bg-rust/15 px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-rust">
+                    Active campaign
+                  </span>
+                  <span className="font-body text-sm text-warm-gray">
+                    Opened{" "}
+                    {new Date(featured.created_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      timeZone: "UTC",
+                    })}
+                  </span>
+                  {featured.deadline && (
+                    <span className="font-body text-sm text-warm-gray">
+                      &middot; Public comment closes {formatDeadline(featured.deadline)}
+                    </span>
+                  )}
+                </div>
                 <h2 className="mt-4 font-display text-3xl leading-snug text-forest md:text-4xl">
                   {featured.title}
                 </h2>
-                {featured.deadline && (
-                  <p className="mt-3 font-body text-sm text-warm-gray">
-                    Public comment closes {formatDeadline(featured.deadline)}
+                {featured.target_body && (
+                  <p className="mt-2 font-body text-sm font-semibold uppercase tracking-wider text-warm-gray">
+                    To the {featured.target_body}
                   </p>
                 )}
-                <p className="mt-6 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
+                <p className="mt-6 max-w-[62ch] font-body text-base leading-relaxed text-ink/75">
                   {featured.summary}
                 </p>
 
@@ -234,7 +312,7 @@ export default async function PolicyPage() {
                   href={`/policy/campaigns/${featured.slug}`}
                   className="mt-8 inline-flex items-center rounded-sm bg-rust px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
                 >
-                  Read More &amp; Take Action &rarr;
+                  Sign on &amp; take action &rarr;
                 </Link>
 
                 <p className="mt-5 font-body text-sm leading-relaxed text-ink/55">
@@ -242,6 +320,22 @@ export default async function PolicyPage() {
                     ? `${featured.signature_count.toLocaleString()} Chicagoans have signed. You can add your signature or submit a public comment on the campaign page.`
                     : "You can add your signature or submit a public comment on the campaign page."}
                 </p>
+              </div>
+
+              <div className="md:col-span-4">
+                <div className="border-l-2 border-rust/40 pl-6">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                    Who decides
+                  </p>
+                  <ul className="mt-3 flex flex-col gap-3">
+                    {(featured.decision_makers ?? []).map((dm) => (
+                      <li key={dm.name}>
+                        <p className="font-body text-sm font-medium text-ink">{dm.name}</p>
+                        <p className="font-body text-xs text-warm-gray">{dm.role}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -290,18 +384,17 @@ export default async function PolicyPage() {
       {/* ============================================================
           SECTION 4: POLICY LEARNING ZONE
           ============================================================ */}
-      <section className="border-t border-border bg-forest py-20 md:py-28">
+      <section id="learn" className="scroll-mt-20 border-t border-border bg-forest py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
-            Policy Learning Zone
+            Guides and tools
           </p>
           <h2 className="mt-3 font-display text-4xl text-cream md:text-6xl">
-            Learn, Draft, Act
+            Start anywhere
           </h2>
           <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-cream/70">
-            Tools and guides for engaging with Chicago policy. Draft a public
-            comment, write a proposal, find your alderperson, or learn how
-            zoning, legislation, and public testimony actually work.
+            Every guide here is written for someone doing it for the first
+            time. Most take under ten minutes to read.
           </p>
 
           <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -379,10 +472,9 @@ export default async function PolicyPage() {
                   Have a policy idea for your neighborhood?
                 </h2>
                 <p className="mt-4 max-w-xl font-body text-base leading-relaxed text-ink/70">
-                  Rooted Forward reviews community-submitted proposals monthly.
-                  If your idea is strong, we develop it into a full campaign
-                  with research backing, public comment infrastructure, and a
-                  delivery plan. You stay involved if you want to be.
+                  We read every proposal that comes in. If yours is strong,
+                  we help you research it and build it into a campaign. You
+                  stay involved as much as you want.
                 </p>
               </div>
               <div className="md:col-span-2 md:text-right">

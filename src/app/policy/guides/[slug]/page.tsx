@@ -181,6 +181,17 @@ export default async function GuideDetailPage({ params }: PageProps) {
                 <span>Updated {lastUpdated}</span>
               </div>
 
+              {guide.why_use && (
+                <div className="mt-6 border-l-2 border-rust/50 bg-cream-dark/50 px-5 py-4">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                    When to use this
+                  </p>
+                  <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/75">
+                    {guide.why_use}
+                  </p>
+                </div>
+              )}
+
               <hr className="my-8 border-border" />
 
               <div className="max-w-[65ch]">

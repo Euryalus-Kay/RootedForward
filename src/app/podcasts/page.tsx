@@ -11,6 +11,7 @@
 
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import SurveyRule from "@/components/ui/SurveyRule";
 import type { Podcast } from "@/lib/types/database";
 
 export const metadata: Metadata = {
@@ -59,38 +60,27 @@ export default async function PodcastsPage() {
 
   return (
     <PageTransition>
-      {/* Banner */}
-      <section className="relative pt-16 pb-12 md:pb-16">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-forest/70" />
-        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-          <h1 className="font-display text-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)] md:text-5xl lg:text-6xl">
-            Podcast
-          </h1>
-        </div>
-      </section>
-
-      {/* Intro */}
-      <section className="bg-cream pb-8 pt-12 md:pt-16">
+      {/* Opener */}
+      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Listen
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            Podcast
           </p>
-          <p className="mt-6 max-w-[60ch] font-body text-lg leading-relaxed text-ink/75">
-            We talk about Chicago&rsquo;s neighborhoods and the policies that
-            drew their boundaries. Listen right here or wherever you get
-            your podcasts.
+          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] text-ink md:text-5xl">
+            The podcast
+          </h1>
+          <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75">
+            Conversations about Chicago&rsquo;s neighborhoods and the
+            policies that shaped them. Listen right here or wherever you
+            get your podcasts.
           </p>
-          <hr className="mt-10 border-border" />
+          <SurveyRule className="mt-10 text-rust" />
         </div>
       </section>
 
       {/* Episodes from the database */}
       {hasEpisodes ? (
-        <section className="bg-cream pb-12 pt-4">
+        <section className="bg-cream pb-12 pt-12 md:pt-16">
           <div className="mx-auto max-w-3xl px-6">
             <ul className="space-y-12">
               {episodes.map((ep) => (
@@ -132,7 +122,7 @@ export default async function PodcastsPage() {
         </section>
       ) : (
         /* Fallback to Spotify show embed when DB has no rows */
-        <section className="bg-cream pb-20 pt-8 md:pb-28">
+        <section className="bg-cream pb-20 pt-12 md:pb-28 md:pt-16">
           <div className="mx-auto max-w-3xl px-6">
             <iframe
               src={`https://open.spotify.com/embed/show/${SPOTIFY_SHOW_ID}?utm_source=generator&theme=0`}

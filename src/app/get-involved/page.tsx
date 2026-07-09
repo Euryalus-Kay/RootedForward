@@ -256,17 +256,20 @@ function ChapterForm() {
 export default function GetInvolvedPage() {
   return (
     <div className="min-h-screen bg-cream">
-      {/* Banner */}
-      <section className="relative pt-16 pb-12 md:pb-16">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-redlining.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-forest/70" />
-        <div className="relative z-10 flex items-center justify-center pt-12 md:pt-16">
-          <h1 className="font-display text-4xl text-white md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-            Get Involved
+      {/* Opener */}
+      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
+        <div className="mx-auto max-w-4xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            Get involved
+          </p>
+          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] text-ink md:text-5xl">
+            Work with us
           </h1>
+          <p className="mt-5 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75">
+            We are students and we need more hands. Researchers, tour
+            guides, audio editors, organizers. Pick the form that fits and
+            we will reply by email.
+          </p>
         </div>
       </section>
 
@@ -308,17 +311,17 @@ export default function GetInvolvedPage() {
                 For Chicago Residents
               </p>
               <h2 className="mt-2 font-display text-2xl text-forest">
-                Support a Campaign
+                Use the Policy Tools
               </h2>
               <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
-                Sign a campaign, submit a public comment, or propose a policy
-                idea. Takes ten minutes.
+                Propose a policy idea, or learn how to comment and testify
+                at City Hall. Takes ten minutes.
               </p>
               <Link
                 href="/policy"
                 className="mt-6 inline-flex w-full items-center justify-center rounded-sm bg-rust px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
               >
-                View Active Campaigns
+                See the Policy Tools
               </Link>
             </div>
 
