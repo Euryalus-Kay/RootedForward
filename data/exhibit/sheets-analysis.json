@@ -1,0 +1,68 @@
+{
+  "generatedBy": "scripts/exhibit-sheets-analysis.mjs",
+  "source": "HOLC area description sheets for metropolitan Chicago, surveyed 1939 to 1940, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab), 576 digitized sheets",
+  "sheetsByGrade": {
+    "A": 36,
+    "B": 130,
+    "C": 276,
+    "D": 134
+  },
+  "raceEntryParseableByGrade": {
+    "A": 35,
+    "B": 127,
+    "C": 263,
+    "D": 122
+  },
+  "sheetsRecordingBlackResidentsByGrade": {
+    "A": 0,
+    "B": 1,
+    "C": 53,
+    "D": 89
+  },
+  "infiltrationNamingNegroOrColoredByGrade": {
+    "A": 0,
+    "B": 0,
+    "C": 1,
+    "D": 25
+  },
+  "blightedInRemarksByGrade": {
+    "A": 0,
+    "B": 0,
+    "C": 1,
+    "D": 37
+  },
+  "mortgageFundsByGrade": {
+    "A": {
+      "ample": 23,
+      "limited": 0,
+      "other": 13
+    },
+    "B": {
+      "ample": 85,
+      "limited": 5,
+      "other": 37
+    },
+    "C": {
+      "ample": 76,
+      "limited": 106,
+      "other": 85
+    },
+    "D": {
+      "ample": 10,
+      "limited": 97,
+      "other": 25
+    }
+  },
+  "quotedSheets": {
+    "1097": {
+      "label": "A11",
+      "grade": "A",
+      "quote": "The neighborhood is restricted against Jewish, except on Maple Hill Road."
+    },
+    "1635": {
+      "label": "D106",
+      "grade": "D",
+      "quote": "So far, the area is not restricted as to sale to colored people."
+    }
+  }
+}

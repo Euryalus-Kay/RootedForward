@@ -204,6 +204,13 @@
       "milestone": "R4",
       "decision": "Panel verdict accepted and all 31 punch-list items fixed. Notable calls: narration.json deleted with its pipeline scripts (voice removed at owner demand; git history preserves), 28 unused game-era facts archived to facts-archive.json, redlining.hoyt_fha downgraded documented to reported, holc_survey_chicago re-dated 1938 to 1940 on sheet evidence, King medallion moved ch11 to ch10 anchored by a new registered fact, and the research paper holc-redlining-present-day-outcomes-chicago.ts still dates the map 1938 (flagged, out of exhibit scope).",
       "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, audit 111 facts, verify 133/133, build)"
+    },
+    {
+      "id": "D-R5-01",
+      "date": "2026-07-09",
+      "milestone": "R5",
+      "decision": "Depth pass done inline after the research workflow hit the account spend limit. Scope kept tight per the chair-plan priorities the workflow would have produced: correctness (HOLC/FHA causation framing now explicit, with the exhibit's own mortgage-funds gradient carrying the argument), paraphrase-to-verbatim upgrades (Wells, Douglass, Property Owners' Journal, FHA manual paragraphs with numbers), and one computed panel (Patterns in the Record) whose every number is reproducible by scripts/exhibit-sheets-analysis.mjs. Remaining research domains (renewal deep sources, CBL litigation, present-day IHS numbers) deferred until the spend limit resets or is raised.",
+      "by": "autonomous under D-A2-04; gates green (tsc, copy lint, audit 126 facts, verify 136/136, build)"
     }
   ]
 }

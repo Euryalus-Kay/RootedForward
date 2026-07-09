@@ -117,13 +117,15 @@
       "sections": [
         {
           "id": "ch2-s1",
-          "text": "The fair ran for six months in 1893 and counted some twenty-seven million admissions, this in a country of sixty-three million people. Frederick Law Olmsted turned the marsh into lagoons and wooded islands. Daniel Burnham drove the construction of the plaster exhibition palaces that visitors called the White City. The fair's organizers refused Black Americans any part in planning it. Ida B. Wells and Frederick Douglass answered from the fair's Haiti building, where Douglass presided, distributing ten thousand copies of a pamphlet titled The Reason Why the Colored American Is Not in the World's Columbian Exposition. Its chapters put before the fair's visitors the record the fair left out, convict leasing, disenfranchisement, and lynching, with names and numbers.",
+          "text": "The fair ran for six months in 1893 and counted some twenty-seven million admissions, this in a country of sixty-three million people. Daniel Burnham drove the construction of the plaster palaces visitors called the White City, on Olmsted's lagoons. The fair's organizers refused Black Americans any part in planning it. Ida B. Wells and Frederick Douglass answered from the fair's Haiti building, where Douglass presided, distributing ten thousand copies of a pamphlet titled The Reason Why the Colored American Is Not in the World's Columbian Exposition. Wells wrote in its preface that 'the exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute' the fair could have shown the world. Douglass, cataloguing everything America could not truthfully claim before its visitors, closed plainly. 'All this, and more, we would gladly say... But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.'",
           "factRefs": [
             "fair.opened_1893",
             "fair.six_months",
             "fair.attendance_27m",
+            "fair.us_pop_1890",
             "fair.reason_why_10000",
-            "fair.us_pop_1890"
+            "fair.wells_preface_1893",
+            "fair.douglass_intro_1893"
           ]
         },
         {
@@ -265,6 +267,16 @@
           ]
         },
         {
+          "id": "ch4-s3b",
+          "text": "The bombers were never named. The campaign's voice survives anyway, because the commission reprinted it. The Kenwood and Hyde Park Property Owners' Association, whose speakers claimed a thousand members and disavowed violence, published a journal. Its issue of December 13, 1919 declared that 'any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.' Its issue of February 1, 1920 opened, 'Our neighborhood must continue white.' Within weeks of the December issue, the commission records, three homes it had marked out were bombed in eleven days, the broker Coleman on December 26, Jesse Binga the next night, the seller Austin on January 6. Delegations appealed to the police, the mayor, and the state's attorney. The report's own conclusion is that the bombings continued steadily and almost no one was ever charged.",
+          "factRefs": [
+            "bombings.poj_enemy_owner",
+            "bombings.poj_continue_white",
+            "bombings.cluster_dec_1919",
+            "bombings.arrests_2"
+          ]
+        },
+        {
           "id": "ch4-s4",
           "text": "The state convened a commission of inquiry, and its report, The Negro in Chicago, appeared in 1922, 672 pages of casework on the bombings, the riot, and the housing confinement underneath both. The bombing map in this chapter is digitized from its pages. The commission warned explicitly against the forcing of the residential line it had documented. Its recommendations bound no one, and the decade that followed answered them with the instruments of the next chapter, adopted in board rooms that kept minutes.",
           "factRefs": [
@@ -353,9 +365,11 @@
         },
         {
           "id": "ch6-s2",
-          "text": "The agency's appraisal rules were built under Frederick Babcock. The FHA Underwriting Manual, in its 1938 edition, directed appraisers to investigate whether 'incompatible racial and social groups' were present near a property and commended barriers, natural or artificial, that kept a neighborhood protected from what it called adverse influences. It recommended restrictive deed clauses outright. The manual was the instruction book a lender followed to obtain federal insurance, so its standards traveled with every insured loan in the country. The outcome can be stated in one figure. Between 1945 and 1959, under those standards, less than 2 percent of federally insured home loans went to Black Americans.",
+          "text": "The agency's appraisal rules were built under Frederick Babcock. Paragraph 937 of the 1938 Underwriting Manual instructed appraisers that areas around a property 'are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.' Stability, it went on, required that properties 'continue to be occupied by the same social and racial classes.' The manual did not stop at prediction. Its list of recommended deed restrictions for new subdivisions included, at paragraph 980, the 'prohibition of the occupancy of properties except by the race for which they are intended.' These were the conditions of federal mortgage insurance, so they traveled with every insured loan in the country. Between 1945 and 1959, under those standards, less than 2 percent of federally insured home loans went to Black Americans.",
           "factRefs": [
             "redlining.babcock_manual",
+            "redlining.fha_manual_937",
+            "redlining.fha_manual_980g",
             "redlining.black_loans_under_2pct"
           ]
         },
@@ -365,6 +379,16 @@
           "factRefs": [
             "redlining.holc_239_cities",
             "redlining.holc_survey_chicago"
+          ]
+        },
+        {
+          "id": "ch6-s4",
+          "text": "Historians still argue over how much the colored map itself changed lending, and this exhibit does not overclaim it. Amy Hillier found that the corporation that drew the maps went on lending in the areas it graded red. Later work traced how the doctrine behind the grades was built in land economics seminars and appraisal courses and carried into federal practice, with Hoyt among its authors. The exhibit's own archive settles what matters most. On the sheets behind this map, not one A grade area with a race entry records a Black resident, while 89 of the 122 graded D do. Lenders' own reports on those sheets show mortgage money ample where the grade was high and withheld where it was low. Whichever way the causation ran, the record shows belief and credit already moving together. The sheets are in the Surveyor's Files, behind the door below.",
+          "factRefs": [
+            "redlining.hillier_2003",
+            "redlining.winling_michney_2021",
+            "sheets.race_by_grade",
+            "sheets.mortgage_gradient"
           ]
         }
       ],

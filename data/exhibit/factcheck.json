@@ -142,6 +142,22 @@
           "verdict": "verified",
           "note": "Census total 62,979,766.",
           "source": "US Census Bureau, 1890"
+        },
+        {
+          "id": "fc-fair-13",
+          "factId": "fair.wells_preface_1893",
+          "claim": "Wells's preface verbatim on the exhibit of progress 25 years of freedom against 250 of slavery.",
+          "verdict": "verified",
+          "note": "Verbatim from the preface Wells signed.",
+          "source": "The Reason Why the Colored American Is Not in the World's Columbian Exposition"
+        },
+        {
+          "id": "fc-fair-14",
+          "factId": "fair.douglass_intro_1893",
+          "claim": "Douglass's introduction verbatim, All this and more we would gladly say, but nothing of it can be said without flagrant disregard of the truth.",
+          "verdict": "verified",
+          "note": "Verbatim. The sentences close Douglass's long catalogue of what America could not truthfully claim before the world at the fair, ending that for colored Americans the fair was a whited sepulcher.",
+          "source": "The Reason Why the Colored American Is Not in the World's Columbian Exposition"
         }
       ]
     },
@@ -323,6 +339,30 @@
           "verdict": "verified",
           "note": "Counts checked programmatically against the exhibit's digitized record on July 8, 2026; 8 incidents carry no mappable location and are listed without pins.",
           "source": "The Negro in Chicago (1922), Bombings section; the exhibit's digitized incident record"
+        },
+        {
+          "id": "fc-bombings-14",
+          "factId": "bombings.poj_continue_white",
+          "claim": "The Property Owners' Journal of February 1, 1920 declared, verbatim, Our neighborhood must continue white.",
+          "verdict": "verified",
+          "note": "Verbatim. The journal of the Kenwood and Hyde Park Property Owners' Association, quoted by the commission, which also reprints the meeting speech calling Hyde Park a neighborhood of white culture.",
+          "source": "The Negro in Chicago, A Study of Race Relations and a Race Riot"
+        },
+        {
+          "id": "fc-bombings-15",
+          "factId": "bombings.poj_enemy_owner",
+          "claim": "The journal's December 13, 1919 issue branded sellers to undesirables enemies of the white owner, to be discovered and punished.",
+          "verdict": "verified",
+          "note": "Verbatim from the extracts the commission reprints.",
+          "source": "The Negro in Chicago, A Study of Race Relations and a Race Riot"
+        },
+        {
+          "id": "fc-bombings-16",
+          "factId": "bombings.cluster_dec_1919",
+          "claim": "Bombings of Coleman (Dec 26), Binga (Dec 27), and Austin (Jan 6) followed within weeks of the journal's condemnations, per the commission.",
+          "verdict": "verified",
+          "note": "The report records that J. H. Coleman, a white real estate man who sold a house to a Negro, was bombed December 26; Jesse Binga December 27; W. B. Austin, named in the journal's December 13 issue, January 6. It adds that the bombings continued steadily and the Negro population grew to trust less and",
+          "source": "The Negro in Chicago, A Study of Race Relations and a Race Riot"
         }
       ]
     },
@@ -506,6 +546,38 @@
           "verdict": "verified",
           "note": "Public Law 90-284, Title VIII, signed April 11, 1968.",
           "source": "United States Code, DOJ"
+        },
+        {
+          "id": "fc-redlining-19",
+          "factId": "redlining.fha_manual_937",
+          "claim": "FHA Underwriting Manual 1938 paragraph 937 verbatim on incompatible racial and social groups and invasion.",
+          "verdict": "verified",
+          "note": "Verbatim, paragraph 937, Quality of Neighboring Development. The paragraph continues, If a neighborhood is to retain stability, it is necessary that properties shall continue to be occupied by the same social and racial classes.",
+          "source": "Underwriting Manual, Underwriting and Valuation Procedure Under Title II of the National Housing Act"
+        },
+        {
+          "id": "fc-redlining-20",
+          "factId": "redlining.fha_manual_980g",
+          "claim": "FHA Underwriting Manual 1938 paragraph 980(3)(g) verbatim recommends prohibiting occupancy except by the race for which properties are intended.",
+          "verdict": "verified",
+          "note": "Verbatim, item g of the manual's list of recommended restrictive covenants for new subdivisions, paragraph 980 (3). The federal underwriting standard recommended the racial covenant by name.",
+          "source": "Underwriting Manual, Underwriting and Valuation Procedure Under Title II of the National Housing Act"
+        },
+        {
+          "id": "fc-redlining-21",
+          "factId": "redlining.hillier_2003",
+          "claim": "Hillier 2003, Journal of Urban History, HOLC lent in red areas; grades explained little of Philadelphia lending except higher interest in red areas.",
+          "verdict": "verified",
+          "note": "Hillier found HOLC made loans in red graded Philadelphia areas and that the map grades did not explain most lending differences, apart from higher interest rates in red areas. The maps recorded the doctrine; the FHA's underwriting standards carried it at national scale.",
+          "source": "Redlining and the Home Owners' Loan Corporation"
+        },
+        {
+          "id": "fc-redlining-22",
+          "factId": "redlining.winling_michney_2021",
+          "claim": "Winling and Michney 2021, Journal of American History, the appraisal network built and spread the doctrine the maps recorded.",
+          "verdict": "verified",
+          "note": "Winling and Michney trace how the race-and-value doctrine moved from academic land economics (Hoyt among its authors) through the appraisal profession into HOLC's forms and FHA's manual. The surveyors' sheets distilled what local lenders and realtors already practiced.",
+          "source": "The Roots of Redlining, Academic, Governmental, and Professional Networks in the Making of the New Deal Lending Regime"
         }
       ]
     },
@@ -1000,6 +1072,60 @@
           "verdict": "verified",
           "note": "Documented in Satter, Family Properties, and CBL press coverage. Exact page numbers are not pinned; the registry's locator is the honest chapter range, part II, the Contract Buyers League chapters.",
           "source": "Satter, Family Properties, 2009, part II; The Chicago Reporter (2019)"
+        }
+      ]
+    },
+    {
+      "domainId": "sheets",
+      "finalVerdict": "verified",
+      "claims": [
+        {
+          "id": "fc-sheets-01",
+          "factId": "sheets.race_by_grade",
+          "claim": "Race by grade across the 576 digitized Chicago-area HOLC sheets: A 0/35 record Black residents, B 1/127, C 53/263, D 89/122 (parseable entries).",
+          "verdict": "verified",
+          "note": "Of sheets whose Negro percent field parses as a number, A grade 0 of 35 record any Black residents, B grade 1 of 127 (a single family), C grade 53 of 263, D grade 89 of 122. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json.",
+          "source": "HOLC area description sheets, metropolitan Chicago"
+        },
+        {
+          "id": "fc-sheets-02",
+          "factId": "sheets.infiltration_negro",
+          "claim": "26 sheets name Negro or colored under Infiltration; 25 are D grade, 1 C, none A or B.",
+          "verdict": "verified",
+          "note": "The infiltration_of field names Negro or colored on 25 D sheets and 1 C sheet, and on no A or B sheet. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json.",
+          "source": "HOLC area description sheets, metropolitan Chicago"
+        },
+        {
+          "id": "fc-sheets-03",
+          "factId": "sheets.mortgage_gradient",
+          "claim": "Mortgage funds field by grade: A 23 ample vs 0 limited; D 10 ample vs 97 limited or none.",
+          "verdict": "verified",
+          "note": "The availability-of-mortgage-funds field, categorized ample/good vs limited/none: A 23 vs 0, B 85 vs 5, C 76 vs 106, D 10 vs 97. The sheets record credit already being withheld from the areas graded lowest. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhi",
+          "source": "HOLC area description sheets, metropolitan Chicago"
+        },
+        {
+          "id": "fc-sheets-04",
+          "factId": "sheets.blighted_by_grade",
+          "claim": "The word blighted appears in remarks on 37 D sheets, 1 C sheet, and no A or B sheet.",
+          "verdict": "verified",
+          "note": "Clarifying-remarks text contains blight/blighted on 37 D sheets, 1 C sheet, 0 A and 0 B sheets. The same word later authorized clearance under the Illinois Blighted Areas Redevelopment Act of 1947 and the federal Housing Act of 1949. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates",
+          "source": "HOLC area description sheets, metropolitan Chicago"
+        },
+        {
+          "id": "fc-sheets-05",
+          "factId": "sheets.a11_restricted_quote",
+          "claim": "Sheet A11 (areaId 1097) remarks verbatim praise a religious restriction.",
+          "verdict": "verified",
+          "note": "Verbatim, sheet A11 (areaId 1097). historical punctuation preserved. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json.",
+          "source": "HOLC area description sheets, metropolitan Chicago"
+        },
+        {
+          "id": "fc-sheets-06",
+          "factId": "sheets.d106_not_restricted_quote",
+          "claim": "Sheet D106 (areaId 1635) remarks verbatim record the absence of a racial restriction as a shortfall.",
+          "verdict": "verified",
+          "note": "Verbatim, sheet D106 (areaId 1635). The phrase so far treats restriction as the expected default. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json.",
+          "source": "HOLC area description sheets, metropolitan Chicago"
         }
       ]
     }

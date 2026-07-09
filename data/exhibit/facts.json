@@ -285,7 +285,6 @@
       ],
       "factcheckId": "fc-fair-09",
       "usedBy": [
-        "voices",
         "walltext"
       ],
       "notes": "Wells's pamphlet, written with Douglass, Penn, and Barnett, answered Black exclusion from the fair; its chapters document convict leasing, disenfranchisement, and lynching. The fair's organizers had refused Black Americans any part in planning the exposition. The ten thousand copy count follows the Tennessee Historical Society account."
@@ -2490,6 +2489,328 @@
         "walltext"
       ],
       "notes": "King and Coretta Scott King moved into a flat at 1550 South Hamlin Avenue on January 26, 1966 to lead the Chicago Freedom Movement's housing campaign. The open housing marches of July and August 1966 into Gage Park and Marquette Park met organized violence; a thrown stone struck King on August 5, 1966, and a nonbinding summit agreement followed on August 26."
+    },
+    {
+      "id": "sheets.race_by_grade",
+      "value": "0 of 35 vs 89 of 122",
+      "display": "not one A grade sheet with a race entry records a Black resident; 89 of the 122 D grade sheets with an entry do",
+      "unit": "sheets",
+      "asOf": "surveyed 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-sheets-01",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Of sheets whose Negro percent field parses as a number, A grade 0 of 35 record any Black residents, B grade 1 of 127 (a single family), C grade 53 of 263, D grade 89 of 122. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "sheets.infiltration_negro",
+      "value": 26,
+      "display": "26 sheets name Negro or colored under the form's Infiltration question, 25 of them graded D",
+      "unit": "sheets",
+      "asOf": "surveyed 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-sheets-02",
+      "usedBy": [],
+      "notes": "The infiltration_of field names Negro or colored on 25 D sheets and 1 C sheet, and on no A or B sheet. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "sheets.mortgage_gradient",
+      "value": "A 23 ample 0 limited; D 10 ample 97 limited",
+      "display": "on A grade sheets lenders report mortgage money ample or good 23 times and limited never; on D grade sheets, limited or unavailable 97 times against 10 ample",
+      "unit": "sheets",
+      "asOf": "surveyed 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-sheets-03",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "The availability-of-mortgage-funds field, categorized ample/good vs limited/none: A 23 vs 0, B 85 vs 5, C 76 vs 106, D 10 vs 97. The sheets record credit already being withheld from the areas graded lowest. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "sheets.blighted_by_grade",
+      "value": 37,
+      "display": "the word blighted appears in the remarks of 37 D grade sheets and of no A or B sheet",
+      "unit": "sheets",
+      "asOf": "surveyed 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-sheets-04",
+      "usedBy": [],
+      "notes": "Clarifying-remarks text contains blight/blighted on 37 D sheets, 1 C sheet, 0 A and 0 B sheets. The same word later authorized clearance under the Illinois Blighted Areas Redevelopment Act of 1947 and the federal Housing Act of 1949. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "sheets.a11_restricted_quote",
+      "value": "The neighborhood is restricted against Jewish, except on Maple Hill Road.",
+      "display": "an A grade sheet praising religious restriction as a feature of the best rating",
+      "unit": "quote",
+      "asOf": "sheet A11, 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [
+        "verbatim from the clarifying remarks of sheet A11 in the exhibit's Surveyor's Files"
+      ],
+      "factcheckId": "fc-sheets-05",
+      "usedBy": [],
+      "notes": "Verbatim, sheet A11 (areaId 1097). historical punctuation preserved. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "sheets.d106_not_restricted_quote",
+      "value": "So far, the area is not restricted as to sale to colored people.",
+      "display": "a D grade sheet recording the absence of a racial restriction as a defect",
+      "unit": "quote",
+      "asOf": "sheet D106, 1939 to 1940",
+      "tier": "documented",
+      "source": {
+        "title": "HOLC area description sheets, metropolitan Chicago",
+        "author": "Home Owners' Loan Corporation surveyors, transcribed by Mapping Inequality (University of Richmond Digital Scholarship Lab)",
+        "year": 1940,
+        "url": "https://dsl.richmond.edu/panorama/redlining/",
+        "locator": "computed across all 576 digitized sheets; the counting method is stated with the finding"
+      },
+      "secondarySources": [
+        "verbatim from the clarifying remarks of sheet D106 in the exhibit's Surveyor's Files"
+      ],
+      "factcheckId": "fc-sheets-06",
+      "usedBy": [],
+      "notes": "Verbatim, sheet D106 (areaId 1635). The phrase so far treats restriction as the expected default. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
+    },
+    {
+      "id": "bombings.poj_continue_white",
+      "value": "Our neighborhood must continue white.",
+      "display": "the Property Owners' Journal, February 1, 1920",
+      "unit": "quote",
+      "asOf": "February 1, 1920",
+      "tier": "documented",
+      "source": {
+        "title": "The Negro in Chicago, A Study of Race Relations and a Race Riot",
+        "author": "Chicago Commission on Race Relations",
+        "year": 1922,
+        "url": "https://www.gutenberg.org/ebooks/57343",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Property Owners' Journal, issue of February 1, 1920, as reprinted in the commission's report, ch. IV"
+      ],
+      "factcheckId": "fc-bombings-14",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Verbatim. The journal of the Kenwood and Hyde Park Property Owners' Association, quoted by the commission, which also reprints the meeting speech calling Hyde Park a neighborhood of white culture."
+    },
+    {
+      "id": "bombings.poj_enemy_owner",
+      "value": "Any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.",
+      "display": "the Property Owners' Journal, December 13, 1919",
+      "unit": "quote",
+      "asOf": "December 13, 1919",
+      "tier": "documented",
+      "source": {
+        "title": "The Negro in Chicago, A Study of Race Relations and a Race Riot",
+        "author": "Chicago Commission on Race Relations",
+        "year": 1922,
+        "url": "https://www.gutenberg.org/ebooks/57343",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Property Owners' Journal, issue of December 13, 1919, as reprinted in the commission's report, ch. IV"
+      ],
+      "factcheckId": "fc-bombings-15",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Verbatim from the extracts the commission reprints."
+    },
+    {
+      "id": "bombings.cluster_dec_1919",
+      "value": "Coleman Dec 26, Binga Dec 27, Austin Jan 6",
+      "display": "three bombings in eleven days, each tied to a sale the association's paper had condemned",
+      "unit": "sequence",
+      "asOf": "December 1919 to January 1920",
+      "tier": "documented",
+      "source": {
+        "title": "The Negro in Chicago, A Study of Race Relations and a Race Riot",
+        "author": "Chicago Commission on Race Relations",
+        "year": 1922,
+        "url": "https://www.gutenberg.org/ebooks/57343",
+        "locator": ""
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-bombings-16",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "The report records that J. H. Coleman, a white real estate man who sold a house to a Negro, was bombed December 26; Jesse Binga December 27; W. B. Austin, named in the journal's December 13 issue, January 6. It adds that the bombings continued steadily and the Negro population grew to trust less and less in the public agencies of protection."
+    },
+    {
+      "id": "fair.wells_preface_1893",
+      "value": "The exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute to the greatness and progressiveness of American institutions which could have been shown the world.",
+      "display": "Ida B. Wells, preface to the 1893 pamphlet",
+      "unit": "quote",
+      "asOf": "1893",
+      "tier": "documented",
+      "source": {
+        "title": "The Reason Why the Colored American Is Not in the World's Columbian Exposition",
+        "author": "Ida B. Wells, Frederick Douglass, Irvine Garland Penn, and Ferdinand L. Barnett",
+        "year": 1893,
+        "url": "https://digital.library.upenn.edu/women/wells/exposition/exposition.html",
+        "locator": "preface, by Ida B. Wells, verified against the University of Pennsylvania digital transcription"
+      },
+      "secondarySources": [
+        "also digitized by the Library of Congress and Internet Archive"
+      ],
+      "factcheckId": "fc-fair-13",
+      "usedBy": [
+        "voices",
+        "walltext"
+      ],
+      "notes": "Verbatim from the preface Wells signed."
+    },
+    {
+      "id": "fair.douglass_intro_1893",
+      "value": "All this, and more, we would gladly say of American laws, manners, customs and Christianity. But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.",
+      "display": "Frederick Douglass, introduction to the 1893 pamphlet",
+      "unit": "quote",
+      "asOf": "1893",
+      "tier": "documented",
+      "source": {
+        "title": "The Reason Why the Colored American Is Not in the World's Columbian Exposition",
+        "author": "Ida B. Wells, Frederick Douglass, Irvine Garland Penn, and Ferdinand L. Barnett",
+        "year": 1893,
+        "url": "https://digital.library.upenn.edu/women/wells/exposition/exposition.html",
+        "locator": "chapter I introduction, by Frederick Douglass, verified against the University of Pennsylvania digital transcription"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-fair-14",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Verbatim. The sentences close Douglass's long catalogue of what America could not truthfully claim before the world at the fair, ending that for colored Americans the fair was a whited sepulcher."
+    },
+    {
+      "id": "redlining.fha_manual_937",
+      "value": "Areas surrounding a location are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.",
+      "display": "FHA Underwriting Manual, 1938, paragraph 937",
+      "unit": "quote",
+      "asOf": "February 1938 revision",
+      "tier": "documented",
+      "source": {
+        "title": "Underwriting Manual, Underwriting and Valuation Procedure Under Title II of the National Housing Act",
+        "author": "Federal Housing Administration",
+        "year": 1938,
+        "url": "https://www.huduser.gov/portal/sites/default/files/pdf/Federal-Housing-Administration-Underwriting-Manual.pdf",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Arlington County (Virginia) government excerpt reproduction of the 1938 manual"
+      ],
+      "factcheckId": "fc-redlining-19",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Verbatim, paragraph 937, Quality of Neighboring Development. The paragraph continues, If a neighborhood is to retain stability, it is necessary that properties shall continue to be occupied by the same social and racial classes."
+    },
+    {
+      "id": "redlining.fha_manual_980g",
+      "value": "Prohibition of the occupancy of properties except by the race for which they are intended",
+      "display": "FHA Underwriting Manual, 1938, paragraph 980 (3) (g), among its recommended deed restrictions",
+      "unit": "quote",
+      "asOf": "February 1938 revision",
+      "tier": "documented",
+      "source": {
+        "title": "Underwriting Manual, Underwriting and Valuation Procedure Under Title II of the National Housing Act",
+        "author": "Federal Housing Administration",
+        "year": 1938,
+        "url": "https://www.huduser.gov/portal/sites/default/files/pdf/Federal-Housing-Administration-Underwriting-Manual.pdf",
+        "locator": ""
+      },
+      "secondarySources": [
+        "Arlington County (Virginia) government excerpt reproduction of the 1938 manual"
+      ],
+      "factcheckId": "fc-redlining-20",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Verbatim, item g of the manual's list of recommended restrictive covenants for new subdivisions, paragraph 980 (3). The federal underwriting standard recommended the racial covenant by name."
+    },
+    {
+      "id": "redlining.hillier_2003",
+      "value": 2003,
+      "display": "Hillier's Philadelphia study found HOLC itself lent in the areas its maps graded red",
+      "unit": "study",
+      "asOf": "2003",
+      "tier": "documented",
+      "source": {
+        "title": "Redlining and the Home Owners' Loan Corporation",
+        "author": "Amy E. Hillier",
+        "year": 2003,
+        "url": "https://journals.sagepub.com/doi/10.1177/0096144203029004002",
+        "locator": "Journal of Urban History 29, no. 4, pages 394 to 420"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-redlining-21",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Hillier found HOLC made loans in red graded Philadelphia areas and that the map grades did not explain most lending differences, apart from higher interest rates in red areas. The maps recorded the doctrine; the FHA's underwriting standards carried it at national scale."
+    },
+    {
+      "id": "redlining.winling_michney_2021",
+      "value": 2021,
+      "display": "the appraisal doctrine behind the maps was built and spread by an academic and industry network",
+      "unit": "study",
+      "asOf": "2021",
+      "tier": "documented",
+      "source": {
+        "title": "The Roots of Redlining, Academic, Governmental, and Professional Networks in the Making of the New Deal Lending Regime",
+        "author": "LaDale C. Winling and Todd M. Michney",
+        "year": 2021,
+        "url": "https://academic.oup.com/jah/article-abstract/108/1/42/6295167",
+        "locator": "Journal of American History 108, no. 1, June 2021, pages 42 to 69"
+      },
+      "secondarySources": [],
+      "factcheckId": "fc-redlining-22",
+      "usedBy": [
+        "walltext"
+      ],
+      "notes": "Winling and Michney trace how the race-and-value doctrine moved from academic land economics (Hoyt among its authors) through the appraisal profession into HOLC's forms and FHA's manual. The surveyors' sheets distilled what local lenders and realtors already practiced."
     }
   ]
 }

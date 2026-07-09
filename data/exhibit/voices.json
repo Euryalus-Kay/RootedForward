@@ -8,12 +8,12 @@
       "years": "1862 to 1931",
       "role": "Journalist and anti-lynching crusader, co-author of the pamphlet handed out at the 1893 fair",
       "chapter": "ch2",
-      "paraphrase": {
-        "text": "From the fair's Haiti building, where Frederick Douglass presided, she and Douglass handed visitors The Reason Why the Colored American Is Not in the World's Columbian Exposition, the pamphlet that answered the fair's exclusion point by point.",
-        "source": "The Reason Why the Colored American Is Not in the World's Columbian Exposition, 1893, public domain"
-      },
-      "quoteStatus": "paraphrase",
-      "factRef": "fair.reason_why_10000"
+      "quoteStatus": "verbatim-documented",
+      "factRef": "fair.wells_preface_1893",
+      "quote": {
+        "text": "The exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute to the greatness and progressiveness of American institutions which could have been shown the world.",
+        "source": "Preface, The Reason Why the Colored American Is Not in the World's Columbian Exposition, 1893"
+      }
     },
     {
       "personId": "fannie-barrier-williams",

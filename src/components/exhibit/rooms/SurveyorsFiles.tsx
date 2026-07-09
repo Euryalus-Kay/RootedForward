@@ -18,6 +18,8 @@ import {
 import { FILES_HASH, sheetIdFromHash } from "@/lib/exhibit/files-room";
 import { moveFocus } from "@/lib/exhibit/focus";
 import PaperCard from "../shared/PaperCard";
+import FactValue from "../shared/FactValue";
+import sheetsAnalysis from "../../../../data/exhibit/sheets-analysis.json";
 
 /* ------- the printed form's entries, in the form's own order ------- */
 
@@ -200,6 +202,80 @@ export default function SurveyorsFiles() {
       <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[9px]">
         period documents; they contain the era&rsquo;s racist language
       </span>
+
+      {/* ---------------- patterns in the record ---------------- */}
+      <PaperCard data-testid="files-patterns" className="mt-6 p-4 sm:p-6">
+        <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
+          Patterns in the record
+        </p>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-exh-ink">
+          Read one sheet and you see a neighborhood. Counted together, the sheets show the
+          system. Every count below is computed from the archive on this page and can be
+          re-run against it.
+        </p>
+        <ul className="mt-4 space-y-3">
+          <li className="border-t border-exh-ink/15 pt-3">
+            <p className="text-sm leading-relaxed text-exh-ink">
+              The form asked for race before it asked about the houses, and the answers sort
+              cleanly by grade.
+            </p>
+            <div className="mt-1"><FactValue id="sheets.race_by_grade" size="sm" /></div>
+          </li>
+          <li className="border-t border-exh-ink/15 pt-3">
+            <p className="text-sm leading-relaxed text-exh-ink">
+              The form&rsquo;s Infiltration question, asking what was moving in, was answered
+              with a race almost only on the lowest grade.
+            </p>
+            <div className="mt-1"><FactValue id="sheets.infiltration_negro" size="sm" /></div>
+          </li>
+          <li className="border-t border-exh-ink/15 pt-3">
+            <p className="text-sm leading-relaxed text-exh-ink">
+              The surveyors also recorded what lenders were already doing. Credit followed
+              the grade before the map was printed.
+            </p>
+            <div className="mt-1"><FactValue id="sheets.mortgage_gradient" size="sm" /></div>
+          </li>
+          <li className="border-t border-exh-ink/15 pt-3">
+            <p className="text-sm leading-relaxed text-exh-ink">
+              The vocabulary that would later justify clearance appears here first, and only
+              at the bottom of the scale.
+            </p>
+            <div className="mt-1"><FactValue id="sheets.blighted_by_grade" size="sm" /></div>
+          </li>
+        </ul>
+        {areas && (
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {(["1097", "1635"] as const).map((qid) => {
+              const q = (sheetsAnalysis.quotedSheets as Record<string, { label?: string; grade?: string; quote?: string | null }>)[qid];
+              if (!q?.quote) return null;
+              const target = sorted.find((a) => String(a.areaId) === qid);
+              return (
+                <div key={qid} className="border border-exh-ink/25 bg-exh-linen-deep/40 p-3">
+                  <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
+                    Sheet {q.label ?? qid}
+                  </p>
+                  <blockquote className="exh-serif mt-1 text-sm leading-snug text-exh-ink italic">
+                    &ldquo;{q.quote}&rdquo;
+                  </blockquote>
+                  <div className="mt-1">
+                    <FactValue id={qid === "1097" ? "sheets.a11_restricted_quote" : "sheets.d106_not_restricted_quote"} size="sm" />
+                  </div>
+                  {target && (
+                    <button
+                      type="button"
+                      data-testid={`files-pattern-open-${qid}`}
+                      onClick={() => openSheet(target)}
+                      className="exh-plat mt-2 min-h-10 cursor-pointer border border-exh-ink/40 bg-exh-linen px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-exh-ink transition-colors hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen"
+                    >
+                      Read the whole sheet
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </PaperCard>
 
       {/* ---------------- the open sheet ---------------- */}
       <div ref={sheetRef} className="mt-6 scroll-mt-20">

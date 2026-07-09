@@ -104,6 +104,13 @@
       "status": "complete",
       "notes": "8-lens panel: 77 raw findings, 31 consolidated (5 p1), all fixed. Mobile overflow + tap targets, finale question, FHA re-sourcing (Hanchett), categorical HOLC claim softened, bibliography deduped to 67 works / 111 live facts, Article 34 quoted in full, map dated 1939-40/1940, narration pipeline fully removed.",
       "completed": "2026-07-09"
+    },
+    {
+      "id": "R5",
+      "title": "Expert-depth pass, primary sources and corpus analysis",
+      "status": "complete",
+      "completed": "2026-07-09",
+      "notes": "Verbatim primary sources added from digitized texts verified this session (Wells preface and Douglass introduction 1893 via UPenn transcription; Property Owners' Journal Dec 13 1919 and Feb 1 1920 via CCRR Gutenberg 57343; FHA Underwriting Manual 1938 paras 937 and 980(3)(g) via HUD USER scan). ch6 gained a historiography section carrying Hillier 2003 and Winling-Michney 2021 without overclaiming map causation. New reproducible corpus analysis (scripts/exhibit-sheets-analysis.mjs) computes race, infiltration, mortgage-funds, and blight patterns across all 576 sheets; Patterns in the Record panel added to the Surveyor's Files with the A11 and D106 verbatim sheets one click away. 16 new facts, registry at 126. Suite 136/136."
     }
   ],
   "updated": "2026-07-09"

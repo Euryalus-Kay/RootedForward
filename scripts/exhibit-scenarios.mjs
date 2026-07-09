@@ -364,6 +364,14 @@ export const scenarios = [
       // attribution is mandatory (CC BY-NC)
       const attr = await page.evaluate(() => document.body.textContent || "");
       t.assert("Mapping Inequality attribution", /Mapping Inequality/.test(attr));
+      // the patterns panel computes from the corpus and opens its quoted sheets
+      t.assert("patterns panel present", await page.$('[data-testid="files-patterns"]'));
+      const missingPat = await page.$$eval('[data-testid="files-patterns"] [data-fact-missing]', (els) => els.length);
+      t.assert("patterns facts all resolve", missingPat === 0, `missing=${missingPat}`);
+      await dispatchClick(page, '[data-testid="files-pattern-open-1097"]');
+      await new Promise((r) => setTimeout(r, 400));
+      const patHash = await page.evaluate(() => window.location.hash);
+      t.assert("quoted sheet opens from the panel", patHash === "#room-files:1097", patHash);
       // deep link: a fresh arrival at the permalink lands on the sheet
       const deepHash = hash;
       await page.goto(`${page.url().split("#")[0]}${""}`.replace(/\?.*$/, "") + `?debug=1${deepHash}`, { waitUntil: "networkidle2" });
