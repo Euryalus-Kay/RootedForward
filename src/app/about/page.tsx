@@ -144,47 +144,24 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* The story */}
+      {/* About us */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
-            <div className="md:col-span-7">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                The story
-              </p>
-              <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
-                It started in Hyde Park
-              </h2>
-              <div className="mt-7 max-w-[58ch] space-y-5">
-                <p className="font-body text-base leading-relaxed text-ink/75">
-                  Hyde Park looks like a quiet college neighborhood. Then you
-                  read the deeds. For a century, restrictive covenants,
-                  appraisal maps, and urban renewal plans decided who could
-                  live on which block, and you can still see those decisions
-                  in the streets today.
-                </p>
-                <p className="font-body text-base leading-relaxed text-ink/75">
-                  We believe the best place to learn that history is standing
-                  where it happened, holding a copy of the document that did
-                  it. That is the whole idea. Everything we make starts with
-                  the original paperwork.
-                </p>
-              </div>
-            </div>
-            <div className="md:col-span-5">
-              <img
-                src="/media/site/fannie-barrier-williams-1880.jpg"
-                alt="Studio portrait of Fannie Barrier Williams from around 1880"
-                loading="lazy"
-                className="w-full max-w-sm rounded-sm border border-border object-cover"
-              />
-              <p className="mt-2 max-w-sm font-body text-[11px] leading-snug text-ink/60">
-                Fannie Barrier Williams, circa 1880. When the Hyde Park
-                Improvement Protective Club set out in 1908 to buy out the
-                neighborhood&rsquo;s Black households, she refused to leave.
-                Her story is told in our exhibit. Public domain.
-              </p>
-            </div>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+            About us
+          </p>
+          <div className="mt-6 max-w-[58ch] space-y-5">
+            <p className="font-body text-lg leading-relaxed text-ink/75">
+              Rooted Forward is a student-run nonprofit in Chicago, founded
+              by Zain Zaidi. It started in Hyde Park, where the old deeds,
+              appraisal maps, and urban renewal plans still explain who
+              lives on which block.
+            </p>
+            <p className="font-body text-lg leading-relaxed text-ink/75">
+              Today that means a walking tour of the neighborhood, an online
+              exhibit built from the original documents, a podcast, and
+              policy work anyone can join.
+            </p>
           </div>
         </div>
       </section>
