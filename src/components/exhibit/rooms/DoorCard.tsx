@@ -9,7 +9,8 @@
 /*  code, next milestone) keep the honest in-production wording.       */
 /* ------------------------------------------------------------------ */
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
-import { COUNTER_ROOM_ID, machineOf, type RoomId } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM_ID, FILES_ROOM_ID, machineOf, type RoomId } from "@/lib/exhibit/machines";
+import { FILES_ROOM_PLATE } from "@/lib/exhibit/files-room";
 import { COUNTER_ROOM, ROOM_STATIONS } from "@/lib/exhibit/content/rooms";
 import PaperCard from "../shared/PaperCard";
 import { machineTitle } from "../hud/BrassLamp";
@@ -25,16 +26,21 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
   const dispatch = useExhibitDispatch();
 
   const machine = machineOf(roomId);
-  const built = !!ROOM_STATIONS[roomId as RoomId];
+  const isFiles = roomId === FILES_ROOM_ID;
+  const built = isFiles || !!ROOM_STATIONS[roomId as RoomId];
   const visited = state.visitedRooms.includes(roomId);
 
-  /* the counter room has no machines.json entry; its nameplate ships
-     from the room's content module */
+  /* the counter room and the Surveyor's Files have no machines.json
+     entry; their nameplates ship from their own modules */
   const plate = machine
     ? { title: machineTitle(machine), plainName: machine.plainName, invitation: machine.definition }
     : roomId === COUNTER_ROOM_ID
       ? { title: COUNTER_ROOM.title, plainName: COUNTER_ROOM.plainName, invitation: COUNTER_ROOM.definition }
-      : null;
+      : isFiles
+        ? { title: FILES_ROOM_PLATE.title, plainName: FILES_ROOM_PLATE.plainName, invitation: FILES_ROOM_PLATE.definition }
+        : null;
+
+  const eyebrow = isFiles ? "Reading room" : "Machine room";
 
   /* an unknown or not-yet-built room keeps the honest closed door */
   if (!plate || !built) {
@@ -72,7 +78,7 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
     >
       <div className="flex items-baseline justify-between gap-3">
         <p className="exh-plat text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-          Machine room
+          {eyebrow}
         </p>
         {visited ? (
           <span className="exh-plat inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
@@ -89,7 +95,7 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
       <button
         type="button"
         data-testid={`door-enter-${roomId}`}
-        aria-label={`Enter the machine room, ${title}, ${plate.plainName}`}
+        aria-label={`Enter the ${eyebrow.toLowerCase()}, ${title}, ${plate.plainName}`}
         onClick={() => dispatch({ type: "OPEN_ROOM", roomId })}
         className="exh-plat mt-6 inline-flex min-h-12 cursor-pointer items-center border border-exh-ink bg-exh-ink px-6 text-xs font-semibold uppercase tracking-[0.2em] text-exh-linen transition-colors duration-200 hover:bg-exh-linen hover:text-exh-ink"
       >

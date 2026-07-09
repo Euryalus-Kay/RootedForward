@@ -3,99 +3,31 @@
 /*  The HOLC map station, used in ch0 and again in ch6 (framing        */
 /*  prop). The real citywide 1940 map; click or tab to any graded      */
 /*  area and its real surveyor sheet opens (verbatim excerpt from      */
-/*  holc-descriptions.json behind the period-language chip). The       */
-/*  hold-to-look loans overlay from the old Lens survives as a         */
-/*  labeled control. No stamp game, no tap counter, no completion.     */
+/*  holc-descriptions.json behind the period-language chip), with a    */
+/*  way through to the full sheet in the Surveyor's Files reading      */
+/*  room. The loans overlay is a plain labeled toggle so a reader      */
+/*  can hold the darkened map and study it. No stamp game, no tap      */
+/*  counter, no completion.                                            */
 /* ------------------------------------------------------------------ */
-import {
-  useEffect,
-  useMemo,
-  useState,
-  type KeyboardEvent as ReactKeyboardEvent,
-  type ReactNode,
-} from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { motionMs } from "@/lib/exhibit/debug";
 import { useHolcFrames, type HolcArea } from "@/lib/exhibit/map/useExhibitMapData";
+import {
+  excerptUsable as excerptOk,
+  sheetName,
+  useHolcDescriptions,
+  type DescArea,
+} from "@/lib/exhibit/holc-descriptions";
+import { sheetHash } from "@/lib/exhibit/files-room";
+import { FILES_ROOM_ID } from "@/lib/exhibit/machines";
+import { useExhibitDispatch } from "@/lib/exhibit/ExhibitProvider";
 import MapStage, { VIEW_H, VIEW_W } from "@/components/exhibit/map/MapStage";
 import HolcLayer from "@/components/exhibit/map/layers/HolcLayer";
 import { useInteractive } from "../interactives/InteractiveContext";
 import PaperCard from "../shared/PaperCard";
 import FactValue from "../shared/FactValue";
 
-/* ------- runtime-fetched surveyor descriptions, module cached ------- */
-
-const DESCRIPTIONS_URL = "/exhibit-data/holc-descriptions.json";
-
-interface DescArea {
-  areaId: number | string;
-  grade: string;
-  name?: string | null;
-  excerpt: string;
-  excerptField?: string;
-  excerptLabel?: string;
-}
-
-interface DescDoc {
-  attribution?: string;
-  areas: DescArea[];
-}
-
-interface DescCache {
-  promise: Promise<void>;
-  data: DescDoc | null;
-  error: string | null;
-  done: boolean;
-}
-
-let descCache: DescCache | null = null;
-
-function loadDescriptions(): DescCache {
-  if (descCache) return descCache;
-  const entry: DescCache = { promise: Promise.resolve(), data: null, error: null, done: false };
-  entry.promise = fetch(DESCRIPTIONS_URL)
-    .then((res) => {
-      if (!res.ok) throw new Error(`HTTP ${res.status} for ${DESCRIPTIONS_URL}`);
-      return res.json();
-    })
-    .then((json) => {
-      entry.data = json as DescDoc;
-    })
-    .catch((err: unknown) => {
-      entry.error = err instanceof Error ? err.message : String(err);
-    })
-    .finally(() => {
-      entry.done = true;
-    });
-  descCache = entry;
-  return entry;
-}
-
-function useHolcDescriptions(): { data: DescDoc | null; done: boolean } {
-  const [state, setState] = useState<{ data: DescDoc | null; done: boolean }>(() => {
-    if (typeof window !== "undefined" && descCache?.done) {
-      return { data: descCache.data, done: true };
-    }
-    return { data: null, done: false };
-  });
-  useEffect(() => {
-    let alive = true;
-    const entry = loadDescriptions();
-    const publish = () => {
-      if (alive) setState({ data: entry.data, done: true });
-    };
-    if (entry.done) publish();
-    else entry.promise.then(publish);
-    return () => {
-      alive = false;
-    };
-  }, []);
-  return state;
-}
-
 /* ---------------- grade rendering ---------------- */
-
-/** excerpts this short are digitization junk ("N/A"), not surveyor prose */
-const MIN_EXCERPT_CHARS = 12;
 
 const GRADE_WORD: Record<string, string> = {
   A: "Grade A",
@@ -170,16 +102,16 @@ export type HolcMapFraming = "ch0" | "ch6";
 
 const FRAMING_COPY: Record<
   HolcMapFraming,
-  { lead: string; holdCaption: string }
+  { lead: string; overlayCaption: string }
 > = {
   ch0: {
     lead: "Click or tab to any graded area. The sheet the surveyors filed for it opens below.",
-    holdCaption:
+    overlayCaption:
       "Nothing lights. Every Black neighborhood was graded hazardous or declining.",
   },
   ch6: {
     lead: "The same map, read again now that you know who drew it. Open any area's sheet.",
-    holdCaption:
+    overlayCaption:
       "Nothing lights. Every Black neighborhood was graded hazardous or declining.",
   },
 };
@@ -190,13 +122,14 @@ export interface HolcMapStationProps {
 
 export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps) {
   const api = useInteractive();
+  const dispatch = useExhibitDispatch();
   const holcState = useHolcFrames();
   const holc = holcState.data;
   const desc = useHolcDescriptions();
   const copy = FRAMING_COPY[framing];
 
   const [selected, setSelected] = useState<HolcArea | null>(null);
-  const [holdOn, setHoldOn] = useState(false);
+  const [overlayOn, setOverlayOn] = useState(false);
   const [toggledOnce, setToggledOnce] = useState(false);
 
   const mapReady = (holc?.areas?.length ?? 0) > 0;
@@ -208,42 +141,33 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
   }, [desc.data]);
 
   const selDesc = selected ? descById.get(String(selected.id)) : undefined;
-  const excerptUsable = Boolean(
-    selDesc && selDesc.excerpt.trim().length >= MIN_EXCERPT_CHARS && selDesc.excerpt.trim() !== "N/A"
-  );
+  const excerptUsable = excerptOk(selDesc);
 
   const onAreaTap = (area: HolcArea) => {
     api.onInteraction();
     setSelected(area);
   };
 
-  /* ---------------- the hold-to-look control ---------------- */
+  /* ---------------- the loans overlay toggle ---------------- */
 
-  const holdStart = () => {
+  const toggleOverlay = () => {
     api.onInteraction();
-    setHoldOn(true);
+    setOverlayOn((v) => !v);
     setToggledOnce(true);
   };
-  const holdEnd = () => setHoldOn(false);
-  const onHoldKeyDown = (e: ReactKeyboardEvent<HTMLButtonElement>) => {
-    if ((e.key === " " || e.key === "Enter") && !e.repeat) {
-      e.preventDefault();
-      holdStart();
-    }
-  };
-  const onHoldKeyUp = (e: ReactKeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === " " || e.key === "Enter") {
-      e.preventDefault();
-      holdEnd();
-    }
+
+  /* the full sheet lives in the Surveyor's Files; set the sheet
+     permalink first so the room opens on this area */
+  const openInFiles = () => {
+    if (!selDesc) return;
+    api.onInteraction();
+    window.history.pushState(null, "", sheetHash(selDesc.areaId));
+    dispatch({ type: "OPEN_ROOM", roomId: FILES_ROOM_ID });
   };
 
   const grade = selected && GRADE_WORD[selected.grade] ? selected.grade : null;
   const areaName =
-    (selDesc?.name && selDesc.name.trim() !== "N/A" && selDesc.name.trim().length > 2
-      ? selDesc.name.trim()
-      : null) ??
-    (selected?.name ? String(selected.name) : null);
+    (selDesc ? sheetName(selDesc) : null) ?? (selected?.name ? String(selected.name) : null);
 
   return (
     <div
@@ -269,7 +193,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
           pointerEvents="none"
           style={{
             fill: "var(--color-exh-ink)",
-            opacity: holdOn ? 0.93 : 0,
+            opacity: overlayOn ? 0.93 : 0,
             transition: api.reducedMotion ? "none" : `opacity ${motionMs(320)}ms ease`,
           }}
         />
@@ -330,42 +254,45 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
                     : "Reading the survey record."}
                 </p>
               )}
+              {selDesc && (
+                <button
+                  type="button"
+                  data-testid="holc-map-open-files"
+                  onClick={openInFiles}
+                  className="exh-plat mt-3 min-h-10 cursor-pointer border border-exh-ink/40 bg-exh-linen px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-exh-ink transition-colors hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen"
+                >
+                  Read the full sheet in the Surveyor&rsquo;s Files
+                </button>
+              )}
             </div>
           </div>
         )}
       </PaperCard>
 
-      {/* ---------------- the hold-to-look control ---------------- */}
+      {/* ---------------- the loans overlay toggle ---------------- */}
       <div className="mt-4">
         <button
           type="button"
           data-testid="holc-map-hold"
-          aria-pressed={holdOn}
-          onPointerDown={holdStart}
-          onPointerUp={holdEnd}
-          onPointerLeave={holdEnd}
-          onPointerCancel={holdEnd}
-          onKeyDown={onHoldKeyDown}
-          onKeyUp={onHoldKeyUp}
-          onContextMenu={(e) => e.preventDefault()}
-          className={`flex min-h-12 w-full items-center justify-between gap-3 rounded-sm border px-4 py-2 text-left transition-colors ${
-            holdOn ? "border-exh-ink bg-exh-ink/90" : "border-exh-ink/40 bg-exh-linen-deep/50"
+          aria-pressed={overlayOn}
+          onClick={toggleOverlay}
+          className={`flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-sm border px-4 py-2 text-left transition-colors ${
+            overlayOn ? "border-exh-ink bg-exh-ink/90" : "border-exh-ink/40 bg-exh-linen-deep/50"
           }`}
-          style={{ touchAction: "none" }}
         >
           <span
             className={`exh-plat text-xs font-semibold uppercase tracking-[0.18em] ${
-              holdOn ? "text-exh-linen" : "text-exh-ink"
+              overlayOn ? "text-exh-linen" : "text-exh-ink"
             }`}
           >
             Show me where a Black family could get a federally backed loan
           </span>
           <span
             className={`exh-plat shrink-0 text-[10px] uppercase tracking-[0.15em] ${
-              holdOn ? "text-exh-linen/80" : "text-exh-ink-soft"
+              overlayOn ? "text-exh-linen/80" : "text-exh-ink-soft"
             }`}
           >
-            {holdOn ? "looking" : "press and hold"}
+            {overlayOn ? "showing. select again to restore the map" : "select to look"}
           </span>
         </button>
 
@@ -374,10 +301,10 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
             data-testid="holc-map-hold-caption"
             className={`mt-2 rounded-sm border border-exh-ink/25 bg-exh-linen-deep/60 p-4 ${
               api.reducedMotion ? "" : "exh-ledger-in"
-            } ${holdOn ? "" : "opacity-90"}`}
+            } ${overlayOn ? "" : "opacity-90"}`}
           >
             <p className="exh-serif text-base leading-snug text-exh-ink sm:text-lg">
-              {copy.holdCaption}
+              {copy.overlayCaption}
             </p>
             <div className="mt-2 flex flex-col gap-1">
               <FactValue id="redlining.holc_survey_chicago" size="sm" />

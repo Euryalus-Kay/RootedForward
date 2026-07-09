@@ -121,14 +121,18 @@ export const scenarios = [
       );
       t.assert("real excerpt text renders", excerptLen > 40, `len=${excerptLen}`);
       t.assert("no DECLINED stamps", !(await page.$('#ch0 [data-testid="stamp"]')));
-      // the hold-to-look control reveals the loans caption
-      await page.evaluate(() => {
-        const el = document.querySelector('#ch0 [data-testid="holc-map-hold"]');
-        el?.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, pointerId: 5, isPrimary: true }));
-        el?.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 5, isPrimary: true }));
-      });
+      // the sheet readout offers the way into the Surveyor's Files
+      t.assert("open-in-files control", await page.$('#ch0 [data-testid="holc-map-open-files"]'));
+      // the loans overlay is a plain toggle: on shows the caption, off restores the map
+      await dispatchClick(page, '#ch0 [data-testid="holc-map-hold"]');
       await new Promise((r) => setTimeout(r, 300));
+      const pressed = await page.$eval('#ch0 [data-testid="holc-map-hold"]', (el) => el.getAttribute("aria-pressed"));
+      t.assert("overlay toggles on", pressed === "true", `aria-pressed=${pressed}`);
       t.assert("loans overlay caption", await page.$('#ch0 [data-testid="holc-map-hold-caption"]'));
+      await dispatchClick(page, '#ch0 [data-testid="holc-map-hold"]');
+      await new Promise((r) => setTimeout(r, 300));
+      const released = await page.$eval('#ch0 [data-testid="holc-map-hold"]', (el) => el.getAttribute("aria-pressed"));
+      t.assert("overlay toggles back off", released === "false", `aria-pressed=${released}`);
       // the same station serves ch6 with its own framing
       const ch6framing = await page
         .$eval('#ch6 [data-testid="holc-map-station"]', (el) => el.getAttribute("data-framing"))
@@ -317,6 +321,93 @@ export const scenarios = [
       const links = await page.$$eval('[data-testid="bib-entry"] a[href^="http"]', (els) => els.length);
       t.assert("sources link out", links > 20, `links=${links}`);
       t.assert("timeline offers the about anchor", await page.$('[data-testid="spine-about"]'));
+    },
+  },
+  {
+    id: "surveyors-files",
+    milestone: "R3",
+    tags: ["core", "rooms"],
+    route: `${DEBUG}&ch=ch6`,
+    async run(page, t) {
+      await waitReady(page);
+      // the reading-room door sits at the ch6 tail
+      t.assert("files door present", await page.$('[data-testid="door-files"]'));
+      const eyebrow = await page.$eval('[data-testid="door-files"] p', (el) => el.textContent || "");
+      t.assert("door reads as a reading room", /reading room/i.test(eyebrow), eyebrow);
+      await dispatchClick(page, '[data-testid="door-enter-files"]');
+      await new Promise((r) => setTimeout(r, 900));
+      const room = await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room"));
+      t.assert("files room opens", room === "files", `room=${room}`);
+      // the archive loads with its grade drawer
+      await page.waitForSelector('[data-testid="files-list"] li', { timeout: 20000 });
+      const rows = await page.$$eval('[data-testid="files-list"] li', (els) => els.length);
+      t.assert("sheet drawer renders rows", rows > 20, `rows=${rows}`);
+      const allLabel = await page.$eval('[data-testid="files-grade-all"]', (el) => el.textContent || "");
+      t.assert("the full digitized count shows on the filter", /576/.test(allLabel), allLabel);
+      // filter to grade D
+      await dispatchClick(page, '[data-testid="files-grade-D"]');
+      await new Promise((r) => setTimeout(r, 300));
+      const dRows = await page.$$eval('[data-testid="files-list"] li button span:first-child', (els) =>
+        els.map((e) => (e.textContent || "").trim())
+      );
+      t.assert("grade filter narrows to D sheets", dRows.length > 0 && dRows.every((x) => x.startsWith("D")), dRows.slice(0, 3).join(","));
+      // open a sheet: form fields, permalink hash, copy control
+      await dispatchClick(page, '[data-testid="files-list"] li button');
+      await new Promise((r) => setTimeout(r, 400));
+      t.assert("sheet opens", await page.$('[data-testid="files-sheet"]'));
+      const dts = await page.$$eval('[data-testid="files-sheet"] dt', (els) => els.map((e) => e.textContent || ""));
+      t.assert("form entries render", dts.length >= 4, `fields=${dts.length}`);
+      t.assert("the race question is on the form", dts.some((x) => /negro|infiltration/i.test(x)), dts.join("|"));
+      const hash = await page.evaluate(() => window.location.hash);
+      t.assert("sheet permalink in the hash", /^#room-files:.+/.test(hash), hash);
+      t.assert("copy-link control", await page.$('[data-testid="files-permalink"]'));
+      // attribution is mandatory (CC BY-NC)
+      const attr = await page.evaluate(() => document.body.textContent || "");
+      t.assert("Mapping Inequality attribution", /Mapping Inequality/.test(attr));
+      // deep link: a fresh arrival at the permalink lands on the sheet
+      const deepHash = hash;
+      await page.goto(`${page.url().split("#")[0]}${""}`.replace(/\?.*$/, "") + `?debug=1${deepHash}`, { waitUntil: "networkidle2" });
+      await waitReady(page);
+      await page.waitForSelector('[data-testid="files-sheet"]', { timeout: 20000 });
+      const room2 = await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room"));
+      t.assert("deep link opens the room on its sheet", room2 === "files", `room=${room2}`);
+      const hash2 = await page.evaluate(() => window.location.hash);
+      t.assert("deep-linked hash preserved", hash2 === deepHash, `${hash2} vs ${deepHash}`);
+    },
+  },
+  {
+    id: "files-cross-link",
+    milestone: "R3",
+    tags: ["rooms"],
+    route: `${DEBUG}&ch=ch6`,
+    async run(page, t) {
+      await waitReady(page);
+      // open an area sheet on the ch6 map, then follow it into the archive
+      await page.waitForSelector('#ch6 [data-station="holc-map"] [role="button"]', { timeout: 30000 });
+      await page.evaluate(async () => {
+        const areas = document.querySelectorAll('#ch6 [data-station="holc-map"] [role="button"]');
+        for (const a of Array.from(areas).slice(0, 12)) {
+          a.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          await new Promise((r) => setTimeout(r, 250));
+          if (document.querySelector('#ch6 [data-testid="holc-map-open-files"]')) return;
+        }
+      });
+      const link = await page.$('#ch6 [data-testid="holc-map-open-files"]');
+      t.assert("map readout offers the full sheet", !!link);
+      if (!link) return;
+      await dispatchClick(page, '#ch6 [data-testid="holc-map-open-files"]');
+      await new Promise((r) => setTimeout(r, 900));
+      const room = await page.$eval('[data-testid="room-overlay"]', (el) => el.getAttribute("data-room")).catch(() => null);
+      t.assert("archive opens from the map", room === "files", `room=${room}`);
+      await page.waitForSelector('[data-testid="files-sheet"]', { timeout: 20000 });
+      t.assert("it opens on the chosen sheet", await page.$('[data-testid="files-sheet"]'));
+      const hash = await page.evaluate(() => window.location.hash);
+      t.assert("sheet hash carried through", /^#room-files:.+/.test(hash), hash);
+      // Back exits the room in one step
+      await page.goBack();
+      await new Promise((r) => setTimeout(r, 600));
+      const s = await exhibitState(page);
+      t.assert("back closes the archive", s?.openRoom === null, `openRoom=${s?.openRoom}`);
     },
   },
   {

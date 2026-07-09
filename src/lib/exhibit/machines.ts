@@ -31,8 +31,15 @@ export function allMachines(): MachineDef[] {
 
 export const COUNTER_ROOM_ID = "counter" as const;
 
-export type RoomId = MachineId | typeof COUNTER_ROOM_ID;
+/* ---- the seventh room ---------------------------------------------- */
+/* The Surveyor's Files (ch6 door) is a reading room, not a machine     */
+/* room: the digitized HOLC area description sheets for Chicago,        */
+/* browsable and permalinkable. It shares the room plumbing.            */
+
+export const FILES_ROOM_ID = "files" as const;
+
+export type RoomId = MachineId | typeof COUNTER_ROOM_ID | typeof FILES_ROOM_ID;
 
 export function isRoomId(id: string): id is RoomId {
-  return isMachineId(id) || id === COUNTER_ROOM_ID;
+  return isMachineId(id) || id === COUNTER_ROOM_ID || id === FILES_ROOM_ID;
 }

@@ -251,7 +251,10 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
       ],
       3: [{ kind: "station", station: "holc-map", props: { framing: "ch6" } }],
     },
-    tail: [{ kind: "door", roomId: "map", label: "The Map" }],
+    tail: [
+      { kind: "door", roomId: "files", label: "The Surveyor's Files" },
+      { kind: "door", roomId: "map", label: "The Map" },
+    ],
   },
   ch7: {
     afterSection: {

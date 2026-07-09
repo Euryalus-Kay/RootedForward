@@ -17,19 +17,22 @@ import { useEffect, useRef, type Dispatch } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import dynamic from "next/dynamic";
 import type { ExhibitAction } from "@/lib/exhibit/types";
-import { COUNTER_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM_ID, FILES_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
 import { COUNTER_ROOM } from "@/lib/exhibit/content/rooms";
+import { FILES_ROOM_PLATE } from "@/lib/exhibit/files-room";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { moveFocus } from "@/lib/exhibit/focus";
 import { machineTitle } from "../hud/BrassLamp";
 
 const HASH_PREFIX = "#room-";
 
-/** Parse a location hash into a known room id (five machines plus the
- *  counter room), else null. */
+/** Parse a location hash into a known room id (five machines, the
+ *  counter room, the Surveyor's Files), else null. A suffix after a
+ *  colon (#room-files:1594, a sheet permalink) belongs to the room
+ *  and is ignored here.  */
 export function roomIdFromHash(hash: string | null | undefined): RoomId | null {
   if (!hash || !hash.startsWith(HASH_PREFIX)) return null;
-  const id = hash.slice(HASH_PREFIX.length);
+  const id = hash.slice(HASH_PREFIX.length).split(":")[0];
   return isRoomId(id) ? id : null;
 }
 
@@ -59,17 +62,34 @@ const MachineRoom = dynamic(() => import("./MachineRoom"), {
   ),
 });
 
+const SurveyorsFiles = dynamic(() => import("./SurveyorsFiles"), {
+  ssr: false,
+  loading: () => (
+    <p className="exh-plat px-8 py-16 text-center text-xs uppercase tracking-[0.25em] text-exh-ink-soft">
+      Opening the archive
+    </p>
+  ),
+});
+
 export default function RoomOverlay() {
   const state = useExhibitState();
   const dispatch = useExhibitDispatch();
 
   const openRoom = state.openRoom;
   const isCounter = openRoom === COUNTER_ROOM_ID;
-  const machine = openRoom && !isCounter ? machineOf(openRoom) : undefined;
+  const isFiles = openRoom === FILES_ROOM_ID;
+  const machine = openRoom && !isCounter && !isFiles ? machineOf(openRoom) : undefined;
 
-  const plateTitle = machine ? machineTitle(machine) : isCounter ? COUNTER_ROOM.title : undefined;
-  const platePlain = machine ? machine.plainName : isCounter ? COUNTER_ROOM.plainName : undefined;
-  const plateDescription = machine ? machine.definition : isCounter ? COUNTER_ROOM.definition : undefined;
+  const plate = machine
+    ? { title: machineTitle(machine), plain: machine.plainName, description: machine.definition }
+    : isCounter
+      ? { title: COUNTER_ROOM.title, plain: COUNTER_ROOM.plainName, description: COUNTER_ROOM.definition }
+      : isFiles
+        ? { title: FILES_ROOM_PLATE.title, plain: FILES_ROOM_PLATE.plainName, description: FILES_ROOM_PLATE.definition }
+        : undefined;
+  const plateTitle = plate?.title;
+  const platePlain = plate?.plain;
+  const plateDescription = plate?.description;
 
   const openRoomRef = useRef<string | null>(openRoom);
   const lastRoomRef = useRef<string | null>(null);
@@ -88,7 +108,10 @@ export default function RoomOverlay() {
     if (openRoom) lastRoomRef.current = openRoom;
     if (openRoom && openRoom !== prev) {
       const target = HASH_PREFIX + openRoom;
-      if (window.location.hash !== target) {
+      /* compare by room id, not the exact string: a sheet permalink
+         (#room-files:1594) already names this room and its suffix
+         belongs to the room, so it must survive the open */
+      if (roomIdFromHash(window.location.hash) !== openRoom) {
         window.history.pushState(null, "", target);
       }
     } else if (!openRoom && prev) {
@@ -174,7 +197,9 @@ export default function RoomOverlay() {
           <Dialog.Description className="sr-only">{plateDescription}</Dialog.Description>
         ) : null}
 
-        {openRoom && isRoomId(openRoom) ? (
+        {isFiles ? (
+          <SurveyorsFiles />
+        ) : openRoom && isRoomId(openRoom) ? (
           <MachineRoom roomId={openRoom} />
         ) : (
           <p className="exh-plat px-8 py-16 text-center text-xs uppercase tracking-[0.25em] text-exh-ink-soft">
