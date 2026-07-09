@@ -6,22 +6,13 @@
     "title": "The Ground Keeps Moving",
     "plainWords": [
       {
-        "id": "open-1",
-        "text": "Between the 1890s and the 1960s, ordinary paperwork decided who could live in Hyde Park. Property deeds, appraisal forms, a realtors' rule book, and a federal map did the work that mobs had done earlier, and did it more thoroughly. This exhibit shows the actual documents and follows the money they moved.",
-        "factRefs": []
-      },
-      {
-        "id": "open-2",
-        "text": "Hyde Park is the neighborhood around the University of Chicago, seven miles south of the Loop on the lakefront. What happened here happened in some form in every large American city. A good deal of the method was written in Chicago, and some of it was written in this neighborhood.",
-        "factRefs": []
-      },
-      {
-        "id": "open-3",
-        "text": "Everything on these pages is sourced. Numbers carry a small mark you can press for the citation. The documents are the real ones. Where a record could not be verified, the exhibit says so rather than showing a reconstruction.",
+        "id": "open-p1",
+        "text": "Hyde Park is the neighborhood around the University of Chicago, seven miles south of the Loop. What happened here happened in some form in every large American city, and a good deal of the method was written here. Every number on these pages carries its source, and every document is the real one.",
         "factRefs": []
       }
     ],
-    "howToRead": "Read at your own pace. The chapters run in order down the page, and the timeline at the bottom jumps between them. Seven document rooms hold the deeper files. Chapter four documents deadly violence, including the killing of a teenager and the death of a child; it carries a note where it begins and can be passed over."
+    "howToRead": "Read at your own pace; the timeline below jumps between chapters. Doors along the way open rooms of original documents. Chapter 4 documents deadly violence and can be skipped.",
+    "bigIdea": "For a century, ordinary paperwork decided who could own a home here, and the money it moved never came back."
   },
   "chapters": [
     {
@@ -30,7 +21,7 @@
       "era": "1940",
       "contextIntro": {
         "id": "ch0-ctx",
-        "text": "Start with the document that organizes everything else in this exhibit. In 1939 and 1940, surveyors working for a federal agency called the Home Owners' Loan Corporation graded Chicago block by block for mortgage risk. They wrote a description sheet for each area and colored a master map by grade. Green meant best. Blue meant still desirable. Yellow meant declining. Red meant hazardous, and lenders treated the red areas accordingly.",
+        "text": "Start with the document that organizes this exhibit. In 1939 and 1940, surveyors for a federal agency graded Chicago block by block for mortgage risk, wrote a description sheet for each area, and colored a master map. **Green meant best, blue still desirable, yellow declining, red hazardous.**",
         "factRefs": [
           "redlining.holc_survey_chicago"
         ]
@@ -38,7 +29,7 @@
       "sections": [
         {
           "id": "ch0-s1",
-          "text": "The map below is the real one, redrawn from the government's own files. All 703 areas the surveyors drew are here. The grading looks technical, and that was the point. But read the sheets behind it. The surveyors recorded the race and national origin of an area's residents on a printed form, in a numbered field, before they recorded the condition of its houses. On this map the Black Belt came back shaded red, graded hazardous, and along that red corridor on the South Side a federally backed mortgage was, in practice, not available.",
+          "text": "The map below is the real one, redrawn from the government's files, all 703 areas the surveyors drew. **The printed form recorded the race of an area's residents before the condition of its houses.** The Black Belt came back shaded red, graded hazardous, and along that corridor a federally backed mortgage was, in practice, not available.",
           "factRefs": [
             "redlining.holc_survey_chicago",
             "redlining.black_loans_under_2pct"
@@ -46,20 +37,22 @@
         },
         {
           "id": "ch0-s2",
-          "text": "This exhibit is about how that map came to exist. The grading did not begin in Washington. It began decades earlier, in neighborhoods like this one, as private agreements among neighbors, realtors, and institutions. The chapters that follow run in order, from the ground the neighborhood was built on to the ledger it left behind.",
+          "text": "The grading did not begin in Washington. It began decades earlier, in neighborhoods like this one, as private agreements among neighbors, realtors, and institutions. **The chapters that follow trace how a neighborhood habit became federal policy**, from the first taking of the ground to the ledger it left behind.",
           "factRefs": []
         }
       ],
       "stationIntros": {
         "holc-map": {
-          "what": "The 1940 federal residential security map of Chicago, all 703 areas as the government filed them, 683 graded A through D and 20 marked non-residential, with the surveyors' original description sheets.",
-          "when": "Surveyed 1939 to 1940 and issued in 1940. Polygons and transcriptions from the Mapping Inequality project; the surveyors' sheets survive digitized for 576 of the areas.",
-          "why": "Select any graded area, by pointer or keyboard, and read what the surveyors actually wrote. The language on these sheets, not the colors, is the evidence.",
+          "what": "The 1940 federal map of Chicago, all 703 areas as the government filed them, with the surveyors' original description sheets.",
+          "when": "Surveyed 1939 to 1940, issued 1940. Polygons and transcriptions from the Mapping Inequality project; sheets survive for 576 areas.",
+          "why": "The language on the sheets, not the colors, is the evidence.",
+          "tryIt": "Click any graded area. Its sheet opens below. Then try the loan question under the map.",
           "factRefs": [
             "redlining.holc_survey_chicago"
           ]
         }
-      }
+      },
+      "dek": "In 1940, federal surveyors graded every Chicago block for mortgage risk. The colors decided where money could go."
     },
     {
       "id": "ch1",
@@ -67,13 +60,13 @@
       "era": "1832 to 1889",
       "contextIntro": {
         "id": "ch1-ctx",
-        "text": "The ground itself came into the market through a treaty signed under pressure. Everything that follows in this exhibit, every deed, plat, and grade, rests on that first transfer.",
+        "text": "The ground came into the market through a treaty signed under pressure. **Every deed, plat, and grade in this exhibit rests on that first transfer.**",
         "factRefs": []
       },
       "sections": [
         {
           "id": "ch1-s1",
-          "text": "This lakefront was Potawatomi land, part of the territory of the Council of Three Fires. The Three Fires nations stayed out of the Black Hawk War of 1832, but the United States used the war's aftermath to press them into the Treaty of Chicago the following year. The 1833 treaty transferred roughly five million acres. Within a few years the signers were moved west of the Mississippi. The Pokagon Band, which negotiated to remain in the region, is still there, more than six thousand citizens today.",
+          "text": "This lakefront was Potawatomi land, part of the Council of Three Fires. The Three Fires stayed out of the Black Hawk War of 1832, but the United States used its aftermath to press them into the Treaty of Chicago. **The 1833 treaty transferred roughly five million acres, and within a few years the signers were marched west.** The Pokagon Band, which negotiated to remain, is still in the region, more than six thousand citizens today.",
           "factRefs": [
             "land.blackhawk_1832",
             "land.treaty_1833",
@@ -83,7 +76,7 @@
         },
         {
           "id": "ch1-s2",
-          "text": "Twenty years after the treaty, a young lawyer named Paul Cornell bought roughly three hundred acres of lakefront prairie from Electa Watson, a tavern keeper's widow. He understood that land seven miles from the city was worth little without a way to reach it, so he deeded sixty acres to the Illinois Central Railroad in exchange for a station at 53rd Street and regular service downtown. The suburb he platted sold itself on distance, from the city's noise and, increasingly, from the city's poor. He sold wealthy Chicagoans the large lots near the water, and the township set aside other districts for factories and cheaper housing, so the sorting was priced in from the start. By 1889, when the township voted to join Chicago for the sake of city water and sewers, Hyde Park had spent its first generation learning to sort people by where they could afford to stand.",
+          "text": "Twenty years on, a lawyer named Paul Cornell bought three hundred lakefront acres from Electa Watson, a tavern keeper's widow. He deeded sixty of them to the Illinois Central for a station at 53rd Street. **The suburb he platted sold distance, and its lots were priced to sort buyers from the start,** large parcels by the water, factory districts and cheaper housing elsewhere. In 1889 the township joined Chicago for the water and sewers.",
           "factRefs": [
             "land.cornell_purchase_1853",
             "formation.ic_deal_60_acres",
@@ -94,14 +87,16 @@
       ],
       "stationIntros": {
         "layer-slider": {
-          "what": "Four maps of the same ground. The pre-1832 shoreline and marsh, Cornell's 1853 plat, the built neighborhood of 1893, and the streets of today.",
-          "when": "Boundaries drawn from surviving plats and the modern street grid.",
-          "why": "The same acres pass through four regimes of ownership in sixty years. Slide between them and watch the claims change.",
+          "what": "Four maps of the same ground. The pre-1832 shore, Cornell's 1853 plat, the built blocks of 1893, and today's streets.",
+          "when": "Drawn from surviving plats and the modern street grid.",
+          "why": "Sixty years, four regimes of ownership.",
+          "tryIt": "Drag the slider through the four eras.",
           "factRefs": [
             "land.cornell_purchase_1853"
           ]
         }
-      }
+      },
+      "dek": "One treaty moved five million acres, this shore included. Twenty years later a developer priced the new suburb by who could afford distance."
     },
     {
       "id": "ch2",
@@ -109,7 +104,7 @@
       "era": "1893",
       "contextIntro": {
         "id": "ch2-ctx",
-        "text": "In 1890 Congress awarded Chicago the World's Columbian Exposition, and the city chose Jackson Park, the marshy lakefront at Hyde Park's southern edge, as the site. The decision remade the neighborhood physically. It also put the era's racial thinking on public display, a year after the fair's own gates had made the policy plain.",
+        "text": "In 1890 Congress awarded Chicago the World's Columbian Exposition, and the city chose Jackson Park, the marsh at Hyde Park's southern edge. **The fair remade the neighborhood physically and put the era's racial thinking on display.**",
         "factRefs": [
           "fair.opened_1893"
         ]
@@ -117,7 +112,7 @@
       "sections": [
         {
           "id": "ch2-s1",
-          "text": "The fair ran for six months in 1893 and counted some twenty-seven million admissions, this in a country of sixty-three million people. Daniel Burnham drove the construction of the plaster palaces visitors called the White City, on Olmsted's lagoons. The fair's organizers refused Black Americans any part in planning it. Ida B. Wells and Frederick Douglass answered from the fair's Haiti building, where Douglass presided, distributing ten thousand copies of a pamphlet titled The Reason Why the Colored American Is Not in the World's Columbian Exposition. Wells wrote in its preface that 'the exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute' the fair could have shown the world. Douglass, cataloguing everything America could not truthfully claim before its visitors, closed plainly. 'All this, and more, we would gladly say... But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.'",
+          "text": "The fair ran six months in 1893 and counted twenty-seven million admissions, in a country of sixty-three million. **Its organizers refused Black Americans any part in planning it.** From the fair's Haiti building, Ida B. Wells and Frederick Douglass distributed ten thousand copies of a pamphlet answering the exclusion. Wells wrote that 'the exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute' the fair could show. Douglass closed his catalogue of America's claims plainly. 'But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.'",
           "factRefs": [
             "fair.opened_1893",
             "fair.six_months",
@@ -130,14 +125,15 @@
         },
         {
           "id": "ch2-s2",
-          "text": "To house the crowds, Hyde Park built at a pace it never repeated. Residential hotels went up east of the Illinois Central tracks. Speculative cottages and flats filled the blocks to the west. The railroad raised its tracks onto an earthen embankment to move fair traffic, a wall that still divides the neighborhood's east from its west. When the fair closed, the neighborhood kept the building stock, big frame hotels and generous apartment blocks, all of it built quickly for a six-month event. Fifty years later, in a housing market closed to Black Chicagoans by then-legal means, those same buildings would be carved into one-room kitchenette units, and the university would point to the crowding as grounds for clearing them.",
+          "text": "To house the crowds, Hyde Park built at a pace it never repeated, hotels east of the Illinois Central tracks, cottages and flats west. **The railroad raised its tracks onto an earthen embankment, a wall that still splits the neighborhood.** The quickly built stock stayed when the fair closed. Fifty years later, in a market closed to Black Chicagoans, those buildings would be carved into kitchenette rooms, and the university would cite the crowding as grounds for clearance.",
           "factRefs": [
             "fair.building_boom",
             "fair.ic_embankment"
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "Six months of the World's Fair built the housing, the rail wall, and the value the century would fight over."
     },
     {
       "id": "ch0_5",
@@ -145,13 +141,13 @@
       "era": "1921 to 1970",
       "contextIntro": {
         "id": "ch0_5-ctx",
-        "text": "The story from here forward turns on five instruments. Each was legal for most of its working life, and each left the paper trail this exhibit draws on. This page names all five once, plainly, so that a reader can recognize each one when it appears in the chapters ahead.",
+        "text": "The story from here turns on five instruments. Each was legal for most of its working life, and each left the paper trail this exhibit draws on. Meet all five once, plainly.",
         "factRefs": []
       },
       "sections": [
         {
           "id": "ch0_5-s1",
-          "text": "Two were written by the real estate profession itself. The realtors' rule came first. In 1921 the Chicago Real Estate Board voted to expel any member who sold to a Black family on an all-white block, and in 1924 the national association wrote the same principle into its code of ethics, where it remained until 1950. The restrictive covenant followed. A covenant was a clause in a property's deed barring sale or rental to anyone who was not white, and it bound every future owner of the land. After the Supreme Court declined to disturb a covenant in 1926, the national association's counsel drafted a model form that spread block by block, and the clauses kept their force until the Court made them unenforceable in 1948.",
+          "text": "Two came from the profession. **The realtors' rule** came first. In 1921 the Chicago Real Estate Board voted to expel any member who sold to a Black family on a white block; in 1924 the national code of ethics adopted the principle and kept it until 1950. **The covenant** followed, a deed clause barring sale or rental to anyone not white, binding every future owner of the land, enforceable in court until 1948.",
           "factRefs": [
             "code.cireb_expulsion_1921",
             "code.nareb_article34_1924",
@@ -163,7 +159,7 @@
         },
         {
           "id": "ch0_5-s2",
-          "text": "The other three ran on public money. The map is the federal credit grading of the 1930s. Beginning in 1934, federal mortgage insurance was written to underwriting standards that scored race as risk, and surveyors graded 239 cities block by block; a red grade cut a neighborhood off from ordinary loans until the Fair Housing Act of 1968 outlawed the practice. The bulldozer is urban renewal. The federal Housing Act of 1949 paid cities to condemn and clear land declared blighted, and in Hyde Park that power was steered from 1952 by a commission the university created. The contract is the installment sale, the trade that filled the space the map left. With banks refusing to lend, speculators sold houses to Black families at nearly double the price on terms that built no ownership, until the Contract Buyers League forced renegotiations in the early 1970s. Every chapter that follows is one of these five at work on particular streets.",
+          "text": "Three ran on public money. **The map** is the federal credit grading of the 1930s, underwriting that scored race as risk across 239 surveyed cities, lawful until the Fair Housing Act of 1968. **The bulldozer** is urban renewal, the Housing Act of 1949 paying cities to condemn land declared blighted, steered here from 1952 by a commission the university created. **The contract** is the installment sale that filled the space the map left, houses at nearly double the price on terms that built no ownership, until the Contract Buyers League forced renegotiations.",
           "factRefs": [
             "redlining.fha_1934",
             "redlining.babcock_manual",
@@ -177,7 +173,8 @@
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "Two instruments written by realtors, three run on public money. The chapters ahead use these names."
     },
     {
       "id": "ch3",
@@ -185,7 +182,7 @@
       "era": "1908 to 1917",
       "contextIntro": {
         "id": "ch3-ctx",
-        "text": "At the start of the twentieth century Chicago's Black community was small, and no rule yet fixed where its members could live. The 1910 census counted about 44,000 Black Chicagoans, roughly 2 percent of the city, and they lived in many parts of it, Hyde Park included, where a settled community lived near Lake Avenue. This chapter is about the organized effort to end that, and about the pressures that made the effort spread.",
+        "text": "At the century's start no rule fixed where Black Chicagoans could live. The 1910 census counted about 44,000, two percent of the city, living in many neighborhoods, Hyde Park included. **This chapter is about the organized effort to end that.**",
         "factRefs": [
           "colorline.black_pop_1910_40k",
           "colorline.line_held_40_years"
@@ -194,7 +191,7 @@
       "sections": [
         {
           "id": "ch3-s1",
-          "text": "In the autumn of 1908, white homeowners here organized the Hyde Park Improvement Protective Club. An attorney named Francis Harper led it, and its roughly 350 members came from the wealthiest households on the South Side. The stated aim was to remove every Black resident and worker from the neighborhood. The methods were financial. A committee bought out Black homeowners on white blocks. Renters were offered cash bonuses to surrender their leases and move. Members pledged to dismiss their Black servants, and any real estate firm that sold or rented across the line was to be boycotted. Fannie Barrier Williams, a writer and organizer who had lived in Hyde Park for years and was the first Black woman admitted to the Chicago Woman's Club, was among the residents the club pressed to leave. She refused. The club itself dissolved within a few years; the small Black community near Lake Avenue shrank, and the line it drew outlived it.",
+          "text": "In the autumn of 1908, white homeowners organized the Hyde Park Improvement Protective Club, roughly 350 members led by an attorney named Francis Harper. **Its stated aim was to remove every Black resident and worker from the neighborhood.** A committee bought out Black homeowners. Renters were offered cash to surrender their leases. Members pledged to dismiss Black servants and boycott any firm that sold across the line. Fannie Barrier Williams, a writer long settled here, was among those pressed to leave. She refused.",
           "factRefs": [
             "colorline.club_founded",
             "people.fannie_barrier_williams",
@@ -203,7 +200,7 @@
         },
         {
           "id": "ch3-s2",
-          "text": "What turned a neighborhood campaign into a citywide system was arithmetic. The Great Migration was under way. Black families were leaving the South, many riding the Illinois Central line into Chicago, and the Chicago Defender, whose circulation passed 125,000 by 1918, printed the train schedules and job listings that helped them come. The city's Black population, about 44,000 in 1910, would approach 278,000 by 1940. The housing open to the newcomers barely grew, because nearly all of it lay in one narrow strip of the South Side that Chicagoans called the Black Belt. The confinement was measured at the time. In the summer of 1917 the Chicago Urban League canvassed real estate dealers and counted, in a single day, 664 Black applicants for fifty available houses.",
+          "text": "Arithmetic made the campaign citywide. The Great Migration was under way, the Defender printing the train schedules south, and **Chicago's Black population grew from about 44,000 in 1910 toward 278,000 by 1940 while the housing open to the newcomers barely grew.** In the summer of 1917 the Urban League counted, in a single day, 664 Black applicants for fifty available houses.",
           "factRefs": [
             "colorline.defender_125k",
             "colorline.black_pop_1910_40k",
@@ -213,14 +210,15 @@
         },
         {
           "id": "ch3-s3",
-          "text": "Other cities had tried to fix their lines by ordinance, zoning blocks by race outright. In November 1917 the Supreme Court struck that method down in Buchanan v. Warley, holding that racial zoning laws violated the Fourteenth Amendment. The ruling closed the public route and did not touch the private one. What Chicago's homeowners had improvised with committees and boycotts would be rebuilt over the next decade as private paperwork beyond the reach of Buchanan, and the line drawn here in 1908 held, by one instrument after another, for forty years.",
+          "text": "Other cities zoned blocks by race outright. In November 1917 the Supreme Court struck that down in Buchanan v. Warley. **The ruling closed the public route and left the private one open.** What homeowners had improvised with committees would be rebuilt as paperwork over the next decade, and the 1908 line held for forty years.",
           "factRefs": [
             "cases.buchanan_1917",
             "colorline.line_held_40_years"
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "A homeowners' club organizes to remove every Black neighbor. The Great Migration turns its method into a citywide system."
     },
     {
       "id": "ch4",
@@ -229,7 +227,7 @@
       "sensitivity": "no-motion",
       "contextIntro": {
         "id": "ch4-ctx",
-        "text": "Between 1917 and 1921 the color line on the South Side was enforced with dynamite. This chapter documents deadly violence, including the killing of a teenager and the death of a child. It keeps to the record compiled at the time by the Chicago Commission on Race Relations, whose 1922 report supplies the map below and the bombing, casualty, and arrest counts on this page; one figure, the tally of attacks on Jesse Binga's home and offices, follows his biographer.",
+        "text": "Between 1917 and 1921 the color line was enforced with dynamite. **This chapter documents deadly violence, including the killing of a teenager and the death of a child.** It keeps to the record compiled by the Chicago Commission on Race Relations in 1922; one figure, the count of attacks on Jesse Binga, follows his biographer.",
         "factRefs": [
           "bombings.total_58",
           "bombings.ccrr_report"
@@ -238,12 +236,11 @@
       "sections": [
         {
           "id": "ch4-s1",
-          "text": "The commission counted 58 bombings between July 1, 1917 and March 1, 1921, aimed at the homes of Black families who had moved across the line and at the offices of real estate men, white and Black, who had sold or rented to them. That is one bombing roughly every twenty days for almost four years. The geography was purposeful. Thirty-two of the fifty-eight exploded inside a single square bounded by 41st and 60th Streets, State Street and Cottage Grove Avenue, the square that borders Hyde Park and Kenwood. Property damage passed $100,000 in the dollars of the day. Two people were killed, both of them Black; one was a six-year-old child, killed at 3365 Indiana Avenue. In four years the police made two arrests and secured no convictions. The commission's own conclusion was that in all fifty-eight cases the police had accomplished nothing definite.",
+          "text": "The commission counted 58 bombings between July 1917 and March 1921, aimed at Black families across the line and at the agents who sold to them, one roughly every twenty days. **Thirty-two exploded inside a single square, 41st to 60th Streets, State to Cottage Grove, the square bordering Hyde Park and Kenwood.** Two people were killed, both Black; one was a six-year-old child. Two arrests. No convictions.",
           "factRefs": [
             "bombings.total_58",
             "bombings.pace_20_days",
             "bombings.square_32",
-            "bombings.damage_100k",
             "bombings.deaths_2",
             "bombings.arrests_2",
             "bombings.convictions_0"
@@ -251,7 +248,7 @@
         },
         {
           "id": "ch4-s2",
-          "text": "No target was hit more often than Jesse Binga, a banker whose real estate office wrote mortgages for Black families when almost no other institution would. In 1917 Binga bought a house at 5922 South Park Avenue, on a white block, and between 1917 and 1921 his home and his offices were bombed at least five times. His answer, recorded by his biographer, was that he would not run, and he did not move. The bombs were aimed at exactly what Binga represented, a Black Chicagoan with the money and the standing to buy wherever he chose.",
+          "text": "No target was hit more often than Jesse Binga, a banker whose office wrote mortgages for Black families when almost no one else would. **His home and offices were bombed at least five times. He did not move.** The bombs were aimed at what Binga represented, a Black Chicagoan with the money and standing to buy wherever he chose.",
           "factRefs": [
             "bombings.binga_target",
             "people.binga_defiance"
@@ -259,7 +256,7 @@
         },
         {
           "id": "ch4-s3",
-          "text": "On July 27, 1919, a seventeen-year-old named Eugene Williams was swimming off the 29th Street beach when he drifted past the unmarked line that divided the water by race. Stones were thrown from the shore; Williams was struck, went under, and drowned. The police officer at the beach refused to arrest the white man witnesses identified. A week of rioting followed. When it ended, 38 Chicagoans were dead, 23 of them Black, and 537 were injured. About 1,000 people, most of them Black families whose homes were burned by arson, were left homeless.",
+          "text": "On July 27, 1919, seventeen-year-old Eugene Williams, swimming off the 29th Street beach, drifted past the unmarked line that divided the water by race. Stones came from the shore. He went under and drowned, and the officer present refused to arrest the man witnesses named. **A week of rioting left 38 dead, 23 of them Black, and about 1,000 people, most of them Black families burned out by arson, homeless.**",
           "factRefs": [
             "bombings.williams_drowned_1919",
             "bombings.riot_1919_dead",
@@ -268,7 +265,7 @@
         },
         {
           "id": "ch4-s3b",
-          "text": "The bombers were never named. The campaign's voice survives anyway, because the commission reprinted it. The Kenwood and Hyde Park Property Owners' Association, whose speakers claimed a thousand members and disavowed violence, published a journal. Its issue of December 13, 1919 declared that 'any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.' Its issue of February 1, 1920 opened, 'Our neighborhood must continue white.' Within weeks of the December issue, the commission records, three homes it had marked out were bombed in eleven days, the broker Coleman on December 26, Jesse Binga the next night, the seller Austin on January 6. Delegations appealed to the police, the mayor, and the state's attorney. The report's own conclusion is that the bombings continued steadily and almost no one was ever charged.",
+          "text": "The bombers were never named, but the campaign's voice survives because the commission reprinted it. The Kenwood and Hyde Park Property Owners' Association published a journal. Its issue of December 13, 1919 declared that 'any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.' **Its issue of February 1, 1920 opened, 'Our neighborhood must continue white.'** Within weeks, the commission records, three homes the journal had marked out were bombed in eleven days. Delegations appealed to the police, the mayor, the state's attorney. The bombings continued; almost no one was charged.",
           "factRefs": [
             "bombings.poj_enemy_owner",
             "bombings.poj_continue_white",
@@ -278,7 +275,7 @@
         },
         {
           "id": "ch4-s4",
-          "text": "The state convened a commission of inquiry, and its report, The Negro in Chicago, appeared in 1922, 672 pages of casework on the bombings, the riot, and the housing confinement underneath both. The bombing map in this chapter is digitized from its pages. The commission warned explicitly against the forcing of the residential line it had documented. Its recommendations bound no one, and the decade that followed answered them with the instruments of the next chapter, adopted in board rooms that kept minutes.",
+          "text": "The state's commission published The Negro in Chicago in 1922, 672 pages of casework; the bombing map in this chapter is digitized from it. **The commission warned explicitly against forcing the residential line. Its recommendations bound no one.**",
           "factRefs": [
             "bombings.ccrr_report"
           ]
@@ -286,9 +283,10 @@
       ],
       "stationIntros": {
         "bombing-map": {
-          "what": "The commission's bombing record placed on a street map. Forty incidents are digitized from the addresses and descriptions in the 1922 report, and 32 of them could be placed, 24 at a street address and 8 at a block; each pin carries the report's own words.",
-          "when": "The incidents span July 1917 to March 1921 and were digitized for this exhibit from The Negro in Chicago; entries the report gives only by block or cluster are placed at that precision and labeled as such.",
-          "why": "The cluster to look for sits inside the square the report names, 41st to 60th Streets between State Street and Cottage Grove Avenue, along the borders of Hyde Park and Kenwood, where 32 of the 58 bombings fell.",
+          "what": "The commission's bombing record on a street map, forty incidents digitized from the 1922 report, 32 placed by address.",
+          "when": "July 1917 to March 1921, from The Negro in Chicago.",
+          "why": "The cluster sits inside the square the report names, along the borders of Hyde Park and Kenwood.",
+          "tryIt": "Click any mark. The report's own entry for it opens.",
           "factRefs": [
             "bombings.total_58",
             "bombings.square_32",
@@ -296,7 +294,8 @@
             "bombings.ccrr_report"
           ]
         }
-      }
+      },
+      "dek": "Fifty-eight bombings enforce the line for four years. Two people die. Nobody is convicted."
     },
     {
       "id": "ch5",
@@ -304,7 +303,7 @@
       "era": "1921 to 1947",
       "contextIntro": {
         "id": "ch5-ctx",
-        "text": "The bombings faded through the early 1920s as quieter methods took hold. Two organizations run through this chapter. The Chicago Real Estate Board governed the city's brokers, and the National Association of Real Estate Boards, headquartered in Chicago, wrote the code of ethics that bound the profession nationally. Both kept records, and the records survive.",
+        "text": "The bombings faded as quieter methods took hold. **Two organizations run through this chapter, the Chicago Real Estate Board and the national association whose code of ethics bound the profession.** Both kept records, and the records survive.",
         "factRefs": [
           "code.cireb_expulsion_1921",
           "code.nareb_article34_1924"
@@ -313,7 +312,7 @@
       "sections": [
         {
           "id": "ch5-s1",
-          "text": "In May 1921 the Chicago board voted unanimously that any member who sold property to a Black buyer on a block where only white owners lived faced immediate expulsion. Expulsion was a working penalty, since a broker outside the board lost its listings and the standing the trade ran on. In 1924 the national association wrote the principle into Article 34 of its code of ethics, whose full text read, 'A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.' The belief that a Black neighbor lowered a block's value rested on no market study, and it needed none once brokers and lenders priced as though it were true. The clause stayed in the code until 1950.",
+          "text": "In May 1921 the Chicago board voted unanimously to expel any member who sold to a Black buyer on an all-white block. Expulsion ended careers. **In 1924 the national association wrote the principle into Article 34 of its code of ethics,** whose full text read, 'A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.' The clause stayed in the code until 1950.",
           "factRefs": [
             "code.cireb_expulsion_1921",
             "code.nareb_article34_1924",
@@ -322,7 +321,7 @@
         },
         {
           "id": "ch5-s2",
-          "text": "The durable instrument was the racially restrictive covenant. Physically it was a paragraph in a deed, or a separate agreement recorded against the land, binding every owner of the parcel, present and future, never to sell to, lease to, or permit occupancy by anyone who was not white, with a customary exception for live-in servants. One signed parcel accomplished little, so covenants were run as campaigns. Realtors and neighborhood associations carried printed forms door to door, and the forms took effect only once owners of a set share of a block's street frontage had signed, so one recorded document could close a whole street. In 1926 the Supreme Court dismissed a challenge to a covenant in Corrigan v. Buckley, and the industry read the dismissal as permission. In 1927 Nathan William MacChesney, the national association's general counsel, drafted a model covenant that real estate boards distributed nationally. By the 1940s hundreds of Cook County subdivisions carried one.",
+          "text": "The durable instrument was the restrictive covenant, a paragraph in a deed binding every future owner of the land never to sell, lease, or rent to anyone who was not white. **Covenants were run as campaigns, printed forms carried door to door, taking effect once owners of a set share of a block's frontage had signed.** After the Supreme Court declined a challenge in Corrigan v. Buckley in 1926, the association's counsel drafted a model form, and by the 1940s hundreds of Cook County subdivisions carried one.",
           "factRefs": [
             "cases.corrigan_1926",
             "covenants.macchesney_template",
@@ -331,16 +330,15 @@
         },
         {
           "id": "ch5-s3",
-          "text": "Beginning in the late 1920s the covenants ringed the Black Belt through Kenwood, Oakland, Hyde Park, Woodlawn, and Englewood. In Hyde Park the wall had an institutional patron. Between 1933 and 1947 the University of Chicago paid $83,597.46 in subsidies to the neighborhood associations defending the covenants around its campus, most of a larger budget it carried under the heading of community interests; the historian Arnold Hirsch documented the figure in Making the Second Ghetto. The neighborhood press of the period praised the covenants as a kind of armor for the blocks that held them. The Chicago Defender, reporting on the same arrangement, called it the University of Chicago Agreement to get rid of Negroes.",
+          "text": "From the late 1920s the covenants ringed the Black Belt through Kenwood, Hyde Park, Woodlawn, and Englewood. In Hyde Park the wall had a patron. **Between 1933 and 1947 the University of Chicago paid $83,597.46 in subsidies to the neighborhood associations defending the covenants around its campus,** a figure the historian Arnold Hirsch documented. The Chicago Defender called the arrangement the University of Chicago Agreement to get rid of Negroes.",
           "factRefs": [
-            "cases.corrigan_1926",
             "covenants.uchicago_defense_83597",
-            "covenants.chain_armor_quote",
             "covenants.defender_uc_agreement"
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "A realtors' rule and a deed clause do the work the dynamite had done, quietly and in writing."
     },
     {
       "id": "ch6",
@@ -348,7 +346,7 @@
       "era": "1933 to 1940",
       "contextIntro": {
         "id": "ch6-ctx",
-        "text": "When the Depression broke the housing market, Washington entered home lending for the first time. The Home Owners' Loan Corporation refinanced about a million failing mortgages, and the Federal Housing Administration, created in 1934, began insuring new ones. Insurance required rules about which loans were safe, and the rules had authors. Several of them had learned their trade in Chicago.",
+        "text": "When the Depression broke the housing market, Washington entered home lending. The Home Owners' Loan Corporation refinanced about a million failing mortgages; the new Federal Housing Administration insured new ones. **Insurance required rules about which loans were safe, and the rules had authors.**",
         "factRefs": [
           "redlining.holc_refi_1m",
           "redlining.fha_1934"
@@ -357,7 +355,7 @@
       "sections": [
         {
           "id": "ch6-s1",
-          "text": "In 1933 the University of Chicago Press published One Hundred Years of Land Values in Chicago, the economist Homer Hoyt's dissertation grown into more than five hundred pages of block-by-block price history. One table in it ranked races and nationalities by their supposed effect on land values, with English and German households at the top and, at the very bottom, Negroes and then Mexicans, in Hoyt's ordering. The table dressed a prejudice as a measurement, calm enough for a banker or an appraiser to cite. In 1934 the new Federal Housing Administration hired Hoyt as its chief land economist, a post he held until 1940. The man who had ranked races by their effect on prices was now helping decide which mortgages the federal government would stand behind.",
+          "text": "In 1933 the University of Chicago Press published Homer Hoyt's One Hundred Years of Land Values in Chicago. **One table ranked races and nationalities by their supposed effect on land values, English and German households at the top, Negroes and then Mexicans at the bottom.** It dressed prejudice as measurement, calm enough for a banker to cite. In 1934 the new Federal Housing Administration hired Hoyt as its chief land economist.",
           "factRefs": [
             "redlining.hoyt_hierarchy",
             "redlining.hoyt_fha"
@@ -365,7 +363,7 @@
         },
         {
           "id": "ch6-s2",
-          "text": "The agency's appraisal rules were built under Frederick Babcock. Paragraph 937 of the 1938 Underwriting Manual instructed appraisers that areas around a property 'are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.' Stability, it went on, required that properties 'continue to be occupied by the same social and racial classes.' The manual did not stop at prediction. Its list of recommended deed restrictions for new subdivisions included, at paragraph 980, the 'prohibition of the occupancy of properties except by the race for which they are intended.' These were the conditions of federal mortgage insurance, so they traveled with every insured loan in the country. Between 1945 and 1959, under those standards, less than 2 percent of federally insured home loans went to Black Americans.",
+          "text": "The agency's appraisal rules were built under Frederick Babcock. Paragraph 937 of the 1938 Underwriting Manual told appraisers that areas around a property 'are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.' **Its recommended deed restrictions included, at paragraph 980, the 'prohibition of the occupancy of properties except by the race for which they are intended.'** These were the conditions of federal mortgage insurance. Between 1945 and 1959, under them, less than 2 percent of insured home loans went to Black Americans.",
           "factRefs": [
             "redlining.babcock_manual",
             "redlining.fha_manual_937",
@@ -375,7 +373,7 @@
         },
         {
           "id": "ch6-s3",
-          "text": "The colors came from a second agency. Between 1935 and 1940 the Home Owners' Loan Corporation surveyed 239 American cities block by block, grading each area A through D, green to red. Its surveyors worked from a printed description form, and the form asked for the race and national origin of an area's residents before it asked about the condition of the houses. On the Chicago map the Black Belt came back red, graded hazardous, and the word redlining comes from that ink. The map in the station below is the one this exhibit opened with. It reads differently with its authors in view.",
+          "text": "The colors came from a second agency. Between 1935 and 1940 the Home Owners' Loan Corporation graded 239 cities block by block, A through D, green to red. **The printed form asked for the race and national origin of an area's residents before it asked about the houses.** On Chicago's map the Black Belt came back red, and the word redlining comes from that ink.",
           "factRefs": [
             "redlining.holc_239_cities",
             "redlining.holc_survey_chicago"
@@ -383,7 +381,7 @@
         },
         {
           "id": "ch6-s4",
-          "text": "Historians still argue over how much the colored map itself changed lending, and this exhibit does not overclaim it. Amy Hillier found that the corporation that drew the maps went on lending in the areas it graded red. Later work traced how the doctrine behind the grades was built in land economics seminars and appraisal courses and carried into federal practice, with Hoyt among its authors. The exhibit's own archive settles what matters most. On the sheets behind this map, not one A grade area with a race entry records a Black resident, while 89 of the 122 graded D do. Lenders' own reports on those sheets show mortgage money ample where the grade was high and withheld where it was low. Whichever way the causation ran, the record shows belief and credit already moving together. The sheets are in the Surveyor's Files, behind the door below.",
+          "text": "Historians still argue how much the colored map itself changed lending, and this exhibit does not overclaim it. Amy Hillier found the corporation lending in the areas it graded red; later work traced the doctrine through appraisal courses into federal practice. **On the sheets behind this map, not one A grade area with a race entry records a Black resident, 89 of the 122 graded D do, and lenders' own entries show money ample where grades were high and withheld where they were low.** The sheets are in the Surveyor's Files, behind the door below.",
           "factRefs": [
             "redlining.hillier_2003",
             "redlining.winling_michney_2021",
@@ -394,14 +392,16 @@
       ],
       "stationIntros": {
         "holc-map": {
-          "what": "The 1940 Chicago residential security map from the exhibit's opening, all 703 areas with the surveyors' original description sheets.",
-          "when": "Surveyed 1939 to 1940 and issued in 1940; polygons and transcriptions from the Mapping Inequality project.",
-          "why": "On a second reading, the description sheets are the thing to study. The vocabulary this chapter traced through Hoyt's table and the FHA manual appears on them as routine clerical language.",
+          "what": "The same 1940 map the exhibit opened with, now with its authors in view.",
+          "when": "Surveyed 1939 to 1940, issued 1940.",
+          "why": "The vocabulary this chapter traced through Hoyt's table and the FHA manual appears on the sheets in the surveyors' own hand.",
+          "tryIt": "Open any sheet and look for the words this chapter taught you.",
           "factRefs": [
             "redlining.holc_survey_chicago"
           ]
         }
-      }
+      },
+      "dek": "Chicago's race and value doctrine becomes federal lending policy, written by men who learned it here."
     },
     {
       "id": "ch7",
@@ -409,7 +409,7 @@
       "era": "1937 to 1948",
       "contextIntro": {
         "id": "ch7-ctx",
-        "text": "By the late 1930s the covenants ringed the Black Belt and the federal grades sealed the ring with credit policy. The two court challenges that mattered most began the same way, with a family buying a house it was forbidden to occupy, and they reached the Supreme Court eight years apart.",
+        "text": "By the late 1930s the covenants ringed the Black Belt and the federal grades sealed the ring with credit. **The two court cases that mattered began the same way, with a family buying a house it was forbidden to occupy.**",
         "factRefs": [
           "covenants.coverage_claim"
         ]
@@ -417,7 +417,7 @@
       "sections": [
         {
           "id": "ch7-s1",
-          "text": "In the spring of 1937 Carl Hansberry, a Black real estate broker, bought a three-flat at 6140 South Rhodes Avenue, just south of Washington Park, inside territory covered by a recorded covenant. The family moved in on June 15. That night bricks came through the front window; one of the children inside was seven-year-old Lorraine. A white neighbor, Anna Lee, joined by the local property owners' association, sued to enforce the covenant and remove the family. Hansberry's lawyers attacked the paper itself. The Washington Park covenant took effect only if the owners of 95 percent of the street frontage signed, and his lawyers showed that only about 54 percent ever had. In 1940 the Supreme Court ruled for Hansberry on narrow procedural grounds. The family kept the house, and covenants in general kept their force. Lorraine Hansberry later carried the memory into A Raisin in the Sun.",
+          "text": "In the spring of 1937 Carl Hansberry, a Black broker, bought a three-flat at 6140 South Rhodes Avenue, inside covenanted territory. Bricks came through the window the night the family moved in; one of the children inside was seven-year-old Lorraine. Neighbors sued to remove them. **Hansberry's lawyers showed the covenant had never gathered the signatures it claimed, about 54 percent of the street frontage against a required 95.** In 1940 the Supreme Court ruled for the family on narrow grounds. They kept the house. Covenants kept their force.",
           "factRefs": [
             "cases.hansberry_1940",
             "covenants.hansberry_frontage_54pct",
@@ -426,7 +426,7 @@
         },
         {
           "id": "ch7-s2",
-          "text": "The broader ruling came on May 3, 1948, in Shelley v. Kraemer, argued up from St. Louis. The Supreme Court held, six to nothing with three justices recused, that no court could enforce a racially restrictive covenant, because judicial enforcement is action by the state and the Fourteenth Amendment forbids the state to discriminate. It is worth reading the ruling for exactly what it did. The clauses were not struck from any deed, and nothing stopped owners from writing new ones; they simply could not be enforced by a judge. The dead language sat on in Cook County records for decades, and Illinois created a formal process for removing it only in 2022. On the ground, the change was immediate. After 1948, Black families began moving into Hyde Park and Kenwood.",
+          "text": "The broad ruling came on May 3, 1948, in Shelley v. Kraemer. **No court could enforce a racial covenant, because judicial enforcement is action by the state, and the Fourteenth Amendment forbids the state to discriminate.** The clauses were struck from no deed; they simply lost the courts. The dead language sat in Cook County records for decades, and Illinois built a removal process only in 2022. On the ground the change was immediate. Black families began moving into Hyde Park and Kenwood.",
           "factRefs": [
             "cases.shelley_1948",
             "redlining.illinois_removal_2022"
@@ -434,20 +434,20 @@
         },
         {
           "id": "ch7-s3",
-          "text": "They arrived into housing built for a six-month fair fifty-five years earlier. The residential hotels and large flats of 1893 had become the cheapest big buildings on the mid South Side, and landlords converted them the way Black Belt landlords already had. A kitchenette was a single apartment cut into one-room units, sometimes a hundred square feet, with one stove and one bathroom shared down the hall. Conversion multiplied a building's rent roll without a dollar of improvement, and a market with nowhere else to go paid it. A Chicago Housing Authority study in the late 1930s found about 45 percent of kitchenette tenants paying more than 30 percent of their income in rent, and in Black Metropolis, published in 1945, St. Clair Drake and Horace Cayton described blocks holding several times the people they were built for. The university, watching the conversions move toward campus, began reaching for a newer word, blight, and the powers attached to it.",
+          "text": "They arrived into housing built for a six-month fair. The hotels and big flats of 1893, by then the cheapest large buildings on the mid South Side, were cut into kitchenettes, one-room units with one stove and a shared bathroom down the hall. **Conversion multiplied a building's rent roll without a dollar of improvement, and a market with nowhere else to go paid it.** Drake and Cayton described blocks holding several times the people they were built for. The university, watching the conversions move toward campus, reached for a newer word, blight.",
           "factRefs": [
             "fair.building_boom",
             "fair.six_months",
-            "colorline.kitchenettes",
-            "colorline.kitchenette_rent_45pct"
+            "colorline.kitchenettes"
           ]
         }
       ],
       "stationIntros": {
         "case-documents": {
-          "what": "The four Supreme Court decisions of this story, Buchanan v. Warley, Corrigan v. Buckley, Hansberry v. Lee, and Shelley v. Kraemer, presented as documents with holdings summarized from the published opinions.",
-          "when": "Decided between 1917 and 1948; citations follow the United States Reports.",
-          "why": "Read them in order. Each decision closed one route of exclusion and left another standing, which is why each new instrument in this exhibit follows from a courtroom.",
+          "what": "The four Supreme Court decisions of this story, as annotated documents.",
+          "when": "Buchanan 1917, Corrigan 1926, Hansberry 1940, Shelley 1948.",
+          "why": "Each ruling closed one route of exclusion and left another standing.",
+          "tryIt": "Read the four rulings in order, top to bottom.",
           "factRefs": [
             "cases.buchanan_1917",
             "cases.corrigan_1926",
@@ -455,7 +455,8 @@
             "cases.shelley_1948"
           ]
         }
-      }
+      },
+      "dek": "A family holds its house on a technicality, and in 1948 the courts stop enforcing the covenants altogether."
     },
     {
       "id": "ch8",
@@ -463,7 +464,7 @@
       "era": "1949 to 1963",
       "contextIntro": {
         "id": "ch8-ctx",
-        "text": "Two things were true of the University of Chicago at midcentury. It was the most powerful institution on the mid South Side, and its leadership believed the neighborhood around it was failing in ways that threatened the university's survival. This chapter follows what that institution did with a new set of public powers, and what its plan did to about four thousand families.",
+        "text": "The University of Chicago at midcentury was the most powerful institution on the mid South Side, and its leadership believed the neighborhood was failing around it. **This chapter follows what that institution did with a new set of public powers.**",
         "factRefs": [
           "renewal.families_displaced"
         ]
@@ -471,9 +472,8 @@
       "sections": [
         {
           "id": "ch8-s1",
-          "text": "The university had been contracting toward its academic core for years; it had dropped Big Ten football in December 1939, and after the war its administrators feared faculty and students would not stay in a neighborhood they had begun to describe as blighted. Lawrence Kimpton became chancellor in 1951. The next year, after a widely publicized crime in March 1952, the university convened a mass meeting and organized the South East Chicago Commission, with Kimpton in the chair and a corporate lawyer named Julian Levi as executive director. The commission pressed for police patrols and building-code enforcement, and it set about planning the redevelopment of Hyde Park and Kenwood outright. Levi ran it from 1952 to 1980.",
+          "text": "After the war, administrators feared faculty and students would not stay in a neighborhood they had begun to call blighted. Lawrence Kimpton became chancellor in 1951; after a widely publicized crime the next spring, the university organized the South East Chicago Commission, Kimpton in the chair and a corporate lawyer named Julian Levi running it day to day. **The commission set about planning the redevelopment of Hyde Park and Kenwood outright.** Levi ran it until 1980.",
           "factRefs": [
-            "renewal.football_1939",
             "renewal.secc_1952",
             "renewal.kimpton_levi",
             "people.julian_levi"
@@ -481,7 +481,7 @@
         },
         {
           "id": "ch8-s2",
-          "text": "The powers came from statute, and they are worth spelling out. Title I of the federal Housing Act of 1949 put national money behind clearance; a city could declare an area blighted, condemn the land, level it, and resell it to private redevelopers below cost, with federal grants absorbing most of the loss. Julian Levi then worked to extend the kit for universities. Section 112 of the Housing Act of 1959, a provision the university sponsored and Levi lobbied for, let an institution's own spending near its campus count as the city's matching share of a federal renewal grant. Hyde Park and Kenwood became one of the first large neighborhoods in the country planned for renewal at its own institution's request, 856 acres marked for conservation and clearance, and the approach traveled from here to university districts nationwide.",
+          "text": "The powers came from statute. **Title I of the 1949 Housing Act let a city declare an area blighted, condemn it, level it, and resell it below cost, with federal money absorbing the loss.** Levi then extended the kit. Section 112 of the 1959 act, a provision the university sponsored, let an institution's own spending count as the city's matching share of a renewal grant. Hyde Park and Kenwood became one of the first large neighborhoods in the country planned for renewal at its own institution's request, 856 acres in all.",
           "factRefs": [
             "renewal.housing_act_1949",
             "renewal.section_112_1959",
@@ -490,7 +490,7 @@
         },
         {
           "id": "ch8-s3",
-          "text": "The plan marked 638 buildings for demolition, many of them the crowded, subdivided older buildings where the newest Black arrivals had found rooms. Demolition ran ahead of the plan's approval; the first building in the Hyde Park A project came down on May 10, 1955, three and a half years before the City Council approved the comprehensive plan on November 7, 1958. Over the program's full course about 4,000 families were displaced. By Kimpton's own accounting the university put $29 million of its own money into buying, controlling, and rebuilding the ground.",
+          "text": "The plan marked 638 buildings for demolition, many of them the subdivided older buildings where the newest Black arrivals had found rooms. **The first came down on May 10, 1955, three and a half years before the City Council approved the plan.** About 4,000 families were displaced over the program's course. By Kimpton's own accounting, the university put $29 million of its own money into the ground.",
           "factRefs": [
             "renewal.buildings_638",
             "renewal.first_demolition_1955",
@@ -501,7 +501,7 @@
         },
         {
           "id": "ch8-s4",
-          "text": "Who returned is the measurable part. In the first projects, Hyde Park A and B, 46 percent of the displaced white families found new homes within Hyde Park and Kenwood; among displaced Black families the figure was 17 percent. Across the renewal years the neighborhood's Black population fell by about 40 percent while average incomes climbed, because the housing that had absorbed low-income Black residents was precisely the housing the plan removed. Kimpton, quoted in Chicago Magazine's later accounting of the era, described the work as 'cutting down the number of Negroes' in the neighborhood. James Baldwin, asked on television in 1963 about urban renewal in the northern cities, gave the answer that has followed the program since. 'It means Negro removal, that is what it means.'",
+          "text": "Who returned is the measurable part. **In the first projects, 46 percent of displaced white families found new homes in Hyde Park and Kenwood; among Black families, 17 percent.** The neighborhood's Black population fell by about 40 percent while incomes climbed. Kimpton described the work as 'cutting down the number of Negroes' in the neighborhood. James Baldwin, asked on television in 1963 about urban renewal in the northern cities, answered for the era. 'It means Negro removal, that is what it means.'",
           "factRefs": [
             "renewal.white_return_46pct",
             "renewal.black_return_17pct",
@@ -511,7 +511,8 @@
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "Urban renewal clears 638 buildings and displaces about 4,000 families. Who returned depended on race."
     },
     {
       "id": "ch9",
@@ -519,7 +520,7 @@
       "era": "1948 to 1968",
       "contextIntro": {
         "id": "ch9-ctx",
-        "text": "Families displaced from the South Side in these years often landed on the West Side, in neighborhoods like North Lawndale, where houses were for sale and mortgages were not. This chapter explains the machinery that met them there. Of the five instruments in this exhibit, this one's cost has been measured most completely, and the measured figure runs to billions of dollars.",
+        "text": "Families pushed off the South Side often landed in North Lawndale, where houses were for sale and mortgages were not. A trade stood ready for them. **Its cost has been measured more completely than any other instrument in this exhibit, and it runs to billions of dollars.**",
         "factRefs": [
           "contracts.extraction_3_4b"
         ]
@@ -527,7 +528,7 @@
       "sections": [
         {
           "id": "ch9-s1",
-          "text": "The refusal of credit was nearly total. Beryl Satter's history of the trade, Family Properties, records that of Cook County's 241 white-run savings and loan associations, exactly one would write a mortgage for a Black buyer crossing the line. The unanimity had more than one author. The realtors' code had made such a sale a professional offense, appraisal practice scored Black occupancy as a risk to value, and on a red block an ordinary loan carried no federal insurance; the institutions declined accordingly. A family that wanted to buy needed credit from somewhere outside the banking system, and a trade stood ready to supply it on its own terms.",
+          "text": "The refusal of credit was nearly total. **Of Cook County's 241 white-run savings and loans, exactly one would lend to a Black buyer.** The realtors' code punished such sales, appraisers scored Black neighbors as a risk to value, and a red grade voided federal insurance. Buying a home meant going outside the banks entirely.",
           "factRefs": [
             "contracts.lenders_241_1",
             "code.cireb_expulsion_1921",
@@ -537,14 +538,14 @@
         },
         {
           "id": "ch9-s2",
-          "text": "The trade began with manufactured panic. A speculator worked a white block at the edge of the Black Belt, warning owners that Black families were coming and prices were about to fall, and bought their houses cheap. He resold within months to a Black family at an average markup of 84 percent, and he sold on an installment contract rather than with a mortgage and deed. The difference decided everything that followed. A mortgage buyer takes title on the first day and builds equity with every payment. A contract buyer took nothing. The seller kept the deed until the final installment cleared, while the buyer carried the taxes, the insurance, and every repair. No payment built ownership, and a single missed month, in the tenth year as easily as the first, let the seller evict the family, keep every dollar already paid, and sell the same house to the next family in line.",
+          "text": "The speculator bought cheap from white owners he had warned of falling prices, then resold within months to a Black family, **at an average markup of 84 percent, on an installment contract instead of a deed**. A mortgage buyer takes title the first day and builds equity with every payment. A contract buyer owned nothing until the last installment cleared. Miss one month, in the tenth year as easily as the first, and the seller kept the house and every dollar paid.",
           "factRefs": [
             "contracts.markup_84pct"
           ]
         },
         {
           "id": "ch9-s3",
-          "text": "Clyde Ross, a veteran from Clarksdale, Mississippi, bought a North Lawndale house on contract in 1961 for $27,500; the speculator who sold it to him had paid $12,000 for it months earlier. Researchers at Duke University's Samuel DuBois Cook Center on Social Equity later measured the trade across the whole city. The average contract buyer paid $587 more each month, in 2019 dollars, than a conventional mortgage would have cost, and the average family's loss came to about $71,000. In the 1950s and 1960s, 75 to 95 percent of the homes sold to Black families in Chicago were sold on contract, roughly 60,100 houses in all, and the total taken from Black Chicago came to between $3.2 and $4 billion in 2019 dollars. The station below works the arithmetic through, payment by payment.",
+          "text": "Clyde Ross paid $27,500 for a North Lawndale house in 1961. The seller had paid $12,000 for it months earlier. Researchers at Duke's Cook Center later measured the whole trade, in 2019 dollars. **The average buyer paid $587 more each month and lost about $71,000, and 75 to 95 percent of the homes sold to Black families here were sold this way,** roughly 60,100 houses. The station below works the arithmetic payment by payment.",
           "factRefs": [
             "people.clyde_ross",
             "contracts.ross_contract_27500",
@@ -559,16 +560,18 @@
       ],
       "stationIntros": {
         "two-buyers": {
-          "what": "One house bought two ways, side by side, a conventional mortgage against an installment contract, with a single slider advancing the years of payments and every figure drawn from the Cook Center study's published averages.",
-          "when": "The terms model Chicago's contract-sale decades, the 1950s and 1960s; dollar figures are the study's 2019-dollar equivalents.",
-          "why": "Follow the ownership column on each side. The payments are equally faithful in both cases, and only the instrument differs; it decides which family holds anything at the end.",
+          "what": "One house, paid for two ways. Every figure is a documented Chicago average from the Cook Center study.",
+          "when": "Modeled on the contract-sale decades, the 1950s and 1960s, in the study's 2019 dollars.",
+          "why": "Equity, the wealth a home builds, is the whole difference between the two columns. Watch which side accumulates any.",
+          "tryIt": "Drag the years forward. Then miss one payment.",
           "factRefs": [
             "contracts.extra_monthly_587",
             "contracts.avg_overpayment_71000",
             "contracts.markup_84pct"
           ]
         }
-      }
+      },
+      "dek": "Shut out of mortgages, Black families bought the same houses at nearly double the price, on terms where one missed payment took everything."
     },
     {
       "id": "ch10",
@@ -576,7 +579,7 @@
       "era": "1968 to 1971",
       "contextIntro": {
         "id": "ch10-ctx",
-        "text": "By the late 1960s North Lawndale was a neighborhood of contract buyers, many of them a decade into payments on houses they did not legally own. Martin Luther King Jr. had brought the movement to these same blocks in January 1966, taking a flat on South Hamlin Avenue and leading open housing marches into the city's all-white neighborhoods that summer. The trade itself was broken from inside the neighborhood, and the breaking started with neighbors comparing paperwork in a church basement.",
+        "text": "By the late 1960s North Lawndale was a neighborhood of contract buyers, many of them a decade into payments on houses they did not legally own. Martin Luther King Jr. had taken a flat on South Hamlin in January 1966 and led open housing marches that summer. **The trade was broken from inside the neighborhood.**",
         "factRefs": [
           "people.king_lawndale_1966",
           "cbl.founded_1968"
@@ -585,7 +588,7 @@
       "sections": [
         {
           "id": "ch10-s1",
-          "text": "In January 1968, in the basement of Presentation Catholic Church, a Jesuit seminarian named Jack Macnamara and a room of Lawndale homeowners laid their contracts side by side and found the same sellers and the same terms recurring across them. Ruth Wells was among the first to stand and say exactly what she had paid. The group named itself the Contract Buyers League and asked the sellers to renegotiate the contracts at fair value. The sellers refused. About 500 families then stopped paying and put each month's payment into escrow instead. Under an installment contract that meant staking the house itself, since a missed payment forfeited everything already paid, a risk every striking family understood when it signed on.",
+          "text": "In January 1968, in the basement of Presentation Catholic Church, a Jesuit seminarian named Jack Macnamara and a room of Lawndale homeowners laid their contracts side by side and found the same sellers and the same terms recurring. Ruth Wells was among the first to stand and say exactly what she had paid. **The Contract Buyers League asked the sellers to renegotiate at fair value. The sellers refused. About 500 families stopped paying and put each month's payment into escrow,** staking the houses themselves.",
           "factRefs": [
             "cbl.founded_1968",
             "people.ruth_wells",
@@ -594,7 +597,7 @@
         },
         {
           "id": "ch10-s2",
-          "text": "The sellers answered with eviction suits. Families were put out in the January cold, and crowds of League members and neighbors moved the evicted families back in; for months the deputies backed off when they found hundreds of residents in the way. About 70 families permanently lost their homes over the course of the strike. What the strike won can also be counted. By July 1971, 155 contracts had been renegotiated, at an average saving of $14,000 per family in the dollars of the day, roughly half a typical contract price, and renegotiations continued past that count. The ledger this exhibit keeps records money leaving Black Chicago on nearly every line. This chapter is the one credit entry, and the buyers wrote it themselves.",
+          "text": "The sellers answered with eviction suits. Families were put out in the January cold, and crowds of neighbors moved them back in; about 70 families permanently lost their homes. **By July 1971, 155 contracts had been renegotiated at an average saving of $14,000 per family, roughly half a typical contract price.** The ledger this exhibit keeps records money leaving Black Chicago on nearly every line. This chapter is the one credit entry, and the buyers wrote it themselves.",
           "factRefs": [
             "cbl.evicted_70",
             "cbl.strike_500",
@@ -603,7 +606,8 @@
           ]
         }
       ],
-      "stationIntros": {}
+      "stationIntros": {},
+      "dek": "Lawndale neighbors compare their contracts in a church basement, stop paying, and win the century's one credit entry."
     },
     {
       "id": "ch11",
@@ -611,13 +615,13 @@
       "era": "Today",
       "contextIntro": {
         "id": "ch11-ctx",
-        "text": "The exhibit closes with two kinds of evidence. The first is the national arithmetic of family wealth. The second is this ground itself, where an institution has again arrived and prices have again moved.",
+        "text": "**The exhibit closes with two kinds of evidence,** the national arithmetic of family wealth, and this ground itself, where an institution has again arrived and prices have again moved.",
         "factRefs": []
       },
       "sections": [
         {
           "id": "ch11-s1",
-          "text": "The contract trade alone is estimated to have taken between $3.2 and $4 billion from Black Chicago, and it was one instrument among five. The plainest national measure of what the century left behind comes from the Federal Reserve's Survey of Consumer Finances. Median family wealth is the holding of the family exactly in the middle, half of families above it and half below. In the 2022 survey the median white family in America held $285,010; the median Black family held $44,890, a gap of more than six to one. Housing is where most American families have built whatever they pass to their children, and the chapters behind this page describe, one instrument at a time, how that channel was closed. The closing is still legible on this county's ground. On land the surveyors of the exhibit's first map graded A, median household income today is $207,434 and homeownership runs 90 percent; on land they graded D, the figures are $65,240 and 44 percent.",
+          "text": "The contract trade alone took an estimated $3.2 to $4 billion from Black Chicago, one instrument of five. The Federal Reserve's 2022 survey gives the national arithmetic. **The median white family held $285,010. The median Black family held $44,890, a gap of more than six to one.** Housing is where American families build what they pass to their children, and the chapters behind this page describe how that channel was closed. The closing is still on this county's ground. On land graded A in 1940, median income today is $207,434 and homeownership runs 90 percent; on land graded D, $65,240 and 44 percent.",
           "factRefs": [
             "contracts.extraction_3_4b",
             "present.scf_white_285000",
@@ -629,7 +633,7 @@
         },
         {
           "id": "ch11-s2",
-          "text": "On June 19, 2026, Juneteenth, the Obama Presidential Center opened in Jackson Park, on the ground that held the 1893 fair. While it rose, the median price of a single-family home on the East Woodlawn blocks nearest the site doubled from its 2019 level, to about $440,000, and by 2024 less than a third of the housing nearby still counted as affordable. No covenant or red line is at work in those numbers. They required only what this neighborhood has had since Paul Cornell bought his three hundred acres in 1853, an institution whose arrival makes the ground around it valuable, and a market left to decide who stays to see it. The visitor book below asks the question this exhibit has carried since its first page. Who is this ground for, and who decides?",
+          "text": "On June 19, 2026, Juneteenth, the Obama Presidential Center opened in Jackson Park, on the ground that held the 1893 fair. While it rose, **the median price of a single-family home on the East Woodlawn blocks nearest the site doubled from its 2019 level, to about $440,000,** and by 2024 less than a third of the housing nearby still counted as affordable. No covenant or red line is at work in those numbers. Only an institution whose arrival makes the ground around it valuable, and a market left to decide who stays. Who is this ground for, and who decides?",
           "factRefs": [
             "present.obama_center_opened",
             "present.woodlawn_prices",
@@ -640,9 +644,10 @@
       ],
       "stationIntros": {
         "gap-at-scale": {
-          "what": "The two 2022 medians drawn as columns at true proportion; the Black median column fits on the screen, and the white median column runs about six times taller.",
-          "when": "Figures are the Federal Reserve's 2022 Survey of Consumer Finances medians, published in October 2023.",
-          "why": "The scroll is the point. Nothing is compressed to fit the page, so reaching the top of the taller column takes the full height of the gap.",
+          "what": "The two 2022 medians drawn as columns at true proportion.",
+          "when": "Survey of Consumer Finances, 2022.",
+          "why": "Nothing is compressed to fit the page.",
+          "tryIt": "Scroll inside the frame. The climb to the white median is the point.",
           "factRefs": [
             "present.scf_white_285000",
             "present.scf_black_44900",
@@ -650,12 +655,14 @@
           ]
         },
         "answer-wall": {
-          "what": "A visitor book. The exhibit's closing question, with short answers left by earlier visitors.",
-          "when": "Answers are collected on this page and reviewed before they appear; collection began when the exhibit opened in 2026.",
-          "why": "Reading a few answers first is a fair way in. Responses are limited to 140 characters, and signing a first name is optional.",
+          "what": "A visitor book on the exhibit's closing question.",
+          "when": "Open now. Answers appear after review.",
+          "why": "The question has been carried since the first page; the answers belong to visitors.",
+          "tryIt": "Leave your answer, 140 characters. A first name is optional.",
           "factRefs": []
         }
-      }
+      },
+      "dek": "What the century took, counted in the federal wealth survey, and the same ground moving again today."
     }
   ]
 }

@@ -197,10 +197,10 @@ export default function RoomOverlay() {
             <div className="min-w-0">
               <Dialog.Title asChild>
                 <h2 className="exh-plat truncate text-sm font-semibold uppercase tracking-[0.25em] text-exh-ink">
-                  {plateTitle ?? "Machine room"}
+                  {platePlain ?? "Document room"}
                 </h2>
               </Dialog.Title>
-              {platePlain ? (
+              {plateTitle ? (
                 <p className="exh-plat mt-0.5 truncate text-[11px] uppercase tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
                   {platePlain}
                 </p>

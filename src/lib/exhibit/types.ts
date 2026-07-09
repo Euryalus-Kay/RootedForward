@@ -46,6 +46,8 @@ export type InteractiveId = StationId;
 
 export interface WallSection {
   id: string; // "ch2-s1"
+  /** may carry **bold** runs; the renderer turns them into the
+   *  quick-read layer (reading only bold lines tells the story) */
   text: string;
   factRefs: string[];
 }
@@ -54,12 +56,17 @@ export interface StationIntroDef {
   what: string;
   when: string;
   why: string;
+  /** one imperative line telling the visitor exactly what to do */
+  tryIt?: string;
   factRefs?: string[];
 }
 
 export interface WallChapterData {
   id: ChapterId;
   title: string;
+  /** one-line subtitle carrying the chapter's message, so the title
+   *  itself stays short and plain */
+  dek?: string;
   era: string;
   contextIntro: WallSection;
   sections: WallSection[];
@@ -69,6 +76,8 @@ export interface WallChapterData {
 export interface WallOpeningData {
   kicker: string;
   title: string;
+  /** the exhibit's one-sentence thesis, set large under the title */
+  bigIdea?: string;
   plainWords: WallSection[];
   howToRead: string;
 }

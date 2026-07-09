@@ -46,6 +46,19 @@ export function StationIntro({ id, intro }: { id: string; intro: StationIntroDef
           ))}
         </dd>
       </div>
+      {intro.tryIt && (
+        <div className="grid gap-0.5 sm:grid-cols-[5.5rem_1fr] sm:gap-3">
+          <dt className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink">
+            Try
+          </dt>
+          <dd
+            data-testid="station-try"
+            className="text-sm font-semibold leading-relaxed text-exh-ink"
+          >
+            {intro.tryIt}
+          </dd>
+        </div>
+      )}
     </dl>
   );
 }

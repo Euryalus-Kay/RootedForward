@@ -154,6 +154,8 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
   const [nearby, setNearby] = useState<HolcArea[] | null>(null);
   const [overlayOn, setOverlayOn] = useState(false);
   const [toggledOnce, setToggledOnce] = useState(false);
+  const [locateState, setLocateState] = useState<"idle" | "working" | "hit" | "miss" | "denied">("idle");
+  const [locateGrade, setLocateGrade] = useState<string | null>(null);
 
   const stageRef = useRef<HTMLDivElement | null>(null);
 
@@ -268,6 +270,72 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
   const openFilesRoom = () => {
     api.onInteraction();
     dispatch({ type: "OPEN_ROOM", roomId: FILES_ROOM_ID });
+  };
+
+  /* Find the ground under the visitor. Everything runs client side:
+     the browser's own permission dialog gates the position, the 1940
+     boundaries are the geojson the map already ships, and nothing is
+     sent anywhere. */
+  const locate = () => {
+    api.onInteraction();
+    if (!("geolocation" in navigator)) {
+      setLocateState("denied");
+      return;
+    }
+    setLocateState("working");
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch("/exhibit-data/holc-chicago.geojson");
+          const gj = (await res.json()) as {
+            features: Array<{
+              properties: { area_id: number | string; grade?: string };
+              geometry: { type: string; coordinates: number[][][] | number[][][][] };
+            }>;
+          };
+          const x = pos.coords.longitude;
+          const y = pos.coords.latitude;
+          const inRing = (ring: number[][]) => {
+            let inside = false;
+            for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+              const [xi, yi] = ring[i];
+              const [xj, yj] = ring[j];
+              if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+            }
+            return inside;
+          };
+          const inFeature = (f: (typeof gj.features)[number]) => {
+            const g = f.geometry;
+            if (g.type === "Polygon") {
+              const rings = g.coordinates as number[][][];
+              return inRing(rings[0]) && rings.slice(1).every((r) => !inRing(r));
+            }
+            if (g.type === "MultiPolygon") {
+              return (g.coordinates as number[][][][]).some(
+                (rings) => inRing(rings[0]) && rings.slice(1).every((r) => !inRing(r))
+              );
+            }
+            return false;
+          };
+          const hit = gj.features.find(inFeature);
+          if (hit) {
+            const area = holc?.areas?.find((a) => String(a.id) === String(hit.properties.area_id));
+            setLocateGrade(String(hit.properties.grade ?? "").trim() || null);
+            setLocateState("hit");
+            if (area) {
+              setSelected(area);
+              setNearby(null);
+            }
+          } else {
+            setLocateState("miss");
+          }
+        } catch {
+          setLocateState("miss");
+        }
+      },
+      () => setLocateState("denied"),
+      { timeout: 8000, maximumAge: 300000 }
+    );
   };
 
   const grade = selected && GRADE_WORD[selected.grade] ? selected.grade : null;
@@ -442,18 +510,18 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
           }`}
         >
           <span
-            className={`exh-plat text-xs font-semibold uppercase tracking-[0.18em] ${
+            className={`text-sm font-semibold ${
               overlayOn ? "text-exh-linen" : "text-exh-ink"
             }`}
           >
-            Show me where a Black family could get a federally backed loan
+            Where could a Black family get a federally backed loan?
           </span>
           <span
             className={`exh-plat shrink-0 text-[11px] uppercase tracking-[0.15em] md:text-[11px] md:text-[10px] ${
               overlayOn ? "text-exh-linen/80" : "text-exh-ink-soft"
             }`}
           >
-            {overlayOn ? "showing. select again to restore the map" : "select to look"}
+            {overlayOn ? "showing. Select again to restore the map" : "select to see"}
           </span>
         </button>
 
@@ -473,6 +541,31 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
             </div>
           </div>
         )}
+
+      {/* ---------------- the ground under you ---------------- */}
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          data-testid="holc-map-locate"
+          onClick={locate}
+          disabled={locateState === "working"}
+          className="min-h-12 cursor-pointer rounded-sm border border-exh-ink/40 bg-exh-linen-deep/50 px-4 text-sm font-semibold text-exh-ink transition-colors hover:border-exh-ink disabled:cursor-wait disabled:text-exh-ink-soft"
+        >
+          {locateState === "working" ? "Reading the 1940 boundaries" : "Find the ground under you"}
+        </button>
+        <p data-testid="holc-map-locate-result" className="min-w-0 flex-1 text-sm leading-snug text-exh-ink-soft">
+          {locateState === "idle" &&
+            "Uses your device location once, on your permission. Nothing leaves this page."}
+          {locateState === "hit" &&
+            (locateGrade
+              ? `You are standing on ground the surveyors graded ${locateGrade} in 1940. Its sheet is open above.`
+              : "You are standing inside the surveyed area. Its sheet is open above.")}
+          {locateState === "miss" &&
+            "You are outside the ground the 1939 to 1940 Chicago survey covered."}
+          {locateState === "denied" &&
+            "Location was not shared. Click any area on the map instead."}
+        </p>
+      </div>
       </div>
     </div>
   );

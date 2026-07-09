@@ -36,7 +36,7 @@ export function RecordLines({ chapterId }: { chapterId: ChapterId }) {
       className="border-t border-exh-ink/20 pt-4"
     >
       <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.3em] text-exh-ink-soft md:text-[10px]">
-        The record
+        Added to the record
       </p>
       <ul className="mt-2 space-y-2.5">
         {entries.map((e) => (

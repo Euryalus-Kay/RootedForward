@@ -9,7 +9,7 @@
 /*  chapter (ch0_5) always carries the five-instruments panel.         */
 /* ------------------------------------------------------------------ */
 import type { ChapterId, FlowBlock, WallSection } from "@/lib/exhibit/types";
-import { CHAPTER_LAYOUTS, displayEraOf, displayTitleOf, metaOf } from "@/lib/exhibit/content";
+import { CHAPTER_LAYOUTS, EXHIBIT_FLOW, displayEraOf, displayTitleOf, metaOf } from "@/lib/exhibit/content";
 import { stationIntroOf, wallChapter } from "@/lib/exhibit/walltext";
 import AdvisoryPlate from "./AdvisoryPlate";
 import FigureBlock from "./FigureBlock";
@@ -21,16 +21,38 @@ import DoorCard from "./rooms/DoorCard";
 import VoiceCard from "./shared/VoiceCard";
 import { SourceSupGroup } from "./shared/SourceSup";
 
+/* chapter numbering follows the rendered order, for orientation */
+const CHAPTER_TOTAL = EXHIBIT_FLOW.length;
+const CHAPTER_NUMBER = Object.fromEntries(
+  EXHIBIT_FLOW.map((c, i) => [c, i + 1])
+) as Record<ChapterId, number>;
+
 /* wall text measure: ~65ch at 1.125rem/1.75 */
 const SECTION_CLASS =
   "max-w-[65ch] font-display text-lg leading-[1.75] text-exh-ink";
 const INTRO_CLASS =
   "max-w-[65ch] font-display text-xl leading-[1.65] text-exh-ink md:text-2xl md:leading-[1.6]";
 
+/** Split wall text on **bold** runs. The bold runs are the quick-read
+ *  layer; reading only them tells the chapter's story. */
+function renderWallText(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold text-exh-ink">
+        {part}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
 function WallParagraph({ section, intro = false }: { section: WallSection; intro?: boolean }) {
   return (
     <p data-section-id={section.id} className={intro ? INTRO_CLASS : SECTION_CLASS}>
-      {section.text}
+      {renderWallText(section.text)}
       <SourceSupGroup factIds={section.factRefs} />
     </p>
   );
@@ -118,9 +140,21 @@ export default function ChapterSection({ id }: { id: ChapterId }) {
     >
       <header className="mb-8 md:mb-10">
         <p className="exh-plat text-xs font-semibold uppercase tracking-[0.3em] text-exh-ink-soft">
+          <span data-testid={`chapter-count-${id}`}>
+            Chapter {CHAPTER_NUMBER[id]} of {CHAPTER_TOTAL}
+          </span>
+          <span aria-hidden="true" className="px-2 text-exh-ink/40">·</span>
           {era}
         </p>
         <h2 className="mt-3 font-display text-3xl text-exh-ink md:text-4xl">{title}</h2>
+        {wall?.dek && (
+          <p
+            data-testid={`chapter-dek-${id}`}
+            className="mt-3 max-w-[58ch] font-display text-lg leading-snug text-exh-ink-soft md:text-xl"
+          >
+            {wall.dek}
+          </p>
+        )}
         <div className="mt-6 h-px w-16 bg-exh-ink/30" aria-hidden="true" />
       </header>
 

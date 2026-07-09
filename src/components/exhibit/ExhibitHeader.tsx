@@ -16,6 +16,14 @@ export default function ExhibitHeader() {
       <h1 className="mt-4 font-display text-5xl leading-[1.02] text-exh-ink sm:text-6xl md:text-7xl">
         {WALL_OPENING.title}
       </h1>
+      {WALL_OPENING.bigIdea && (
+        <p
+          data-testid="big-idea"
+          className="mt-6 max-w-[30ch] font-display text-2xl leading-snug text-exh-ink sm:text-3xl"
+        >
+          {WALL_OPENING.bigIdea}
+        </p>
+      )}
       <div className="mt-8 h-px w-16 bg-exh-ink/30" aria-hidden="true" />
 
       <div data-testid="opening-plainwords" className="mt-8 space-y-6">

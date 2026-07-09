@@ -30,8 +30,9 @@ export const scenarios = [
       t.assert("exhibit root renders", await page.$('[data-testid="exhibit-root"]'));
       const title = await page.$eval('[data-testid="exhibit-header"] h1', (el) => el.textContent);
       t.assert("title on the opening wall", title === "The Ground Keeps Moving", title);
+      t.assert("big idea line on the opening wall", await page.$('[data-testid="big-idea"]'));
       const words = await page.$$eval('[data-testid="opening-plainwords"] p', (els) => els.length);
-      t.assert("three plain-words paragraphs", words === 3, `paragraphs=${words}`);
+      t.assert("one tight plain-words paragraph", words === 1, `paragraphs=${words}`);
       t.assert("how-to-read line", await page.$('[data-testid="how-to-read"]'));
       const begin = await page.$eval('[data-testid="begin-link"]', (el) => el.getAttribute("href"));
       t.assert("begin anchor points at ch0", begin === "#ch0", begin);
@@ -123,6 +124,10 @@ export const scenarios = [
       t.assert("no DECLINED stamps", !(await page.$('#ch0 [data-testid="stamp"]')));
       // the sheet readout offers the way into the Surveyor's Files
       t.assert("open-in-files control", await page.$('#ch0 [data-testid="holc-map-open-files"]'));
+      // the ground-under-you lookup is offered with its privacy note
+      t.assert("locate control", await page.$('#ch0 [data-testid="holc-map-locate"]'));
+      const locNote = await page.$eval('#ch0 [data-testid="holc-map-locate-result"]', (e) => e.textContent || "");
+      t.assert("locate privacy note", /Nothing leaves this page/.test(locNote), locNote.slice(0, 60));
       // the loans overlay is a plain toggle: on shows the caption, off restores the map
       await dispatchClick(page, '#ch0 [data-testid="holc-map-hold"]');
       await new Promise((r) => setTimeout(r, 300));

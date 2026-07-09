@@ -44,11 +44,18 @@ export interface SourceSupProps {
 
 /** Provenance tier chip. compact shows the bare tier word for inline use;
  *  the full form carries the single-source policy label for attributed. */
+const TIER_TITLE: Record<FactTier, string> = {
+  documented: "Documented. Rests on primary records or published scholarship.",
+  reported: "Reported. Rests on journalism or secondary accounts.",
+  attributed: "Attributed. Rests on a single source.",
+};
+
 export function TierBadge({ tier, compact = false }: { tier: FactTier; compact?: boolean }) {
   const label = tier === "attributed" && !compact ? "attributed, single source" : tier;
   return (
     <span
       data-tier={tier}
+      title={TIER_TITLE[tier]}
       className={cn(
         "exh-plat inline-block align-middle text-[11px] uppercase leading-none tracking-[0.18em] md:text-[9px]",
         tier === "documented" && "text-exh-ink-soft/80",

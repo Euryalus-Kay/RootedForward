@@ -24,7 +24,7 @@ const BLACK_FACT = "present.scf_black_44900";
 const GAP_FACT = "present.gap_6to1";
 
 /* layout, px unless noted */
-const BLACK_BAR_VIEW_FRACTION = 0.52; /* H as a share of the visible region */
+const BLACK_BAR_VIEW_FRACTION = 1.5; /* H as a share of the visible region; the white column then runs to roughly ten regions, so the climb takes real scrolling */
 const CAP_PX = 172; /* zone above the white column's top */
 const BASE_PX = 88; /* baseline zone under both columns */
 const COMPLETE_AT = 0.9; /* completion at 90 percent of the climb */

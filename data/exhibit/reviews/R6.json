@@ -1,0 +1,9 @@
+{
+ "milestone": "R6",
+ "date": "2026-07-09",
+ "council": "5 advisors + 3 anonymized peer reviews + chairman; verdict adopted (title-anchored craft pass, cut not bold, keep the building)",
+ "tests": {
+  "freshReaderCh9": "clarity B+ (2 defects found and fixed), tone A, retention A, ~3 minutes on a phone",
+  "skepticalAdult": "verdict: serious museum piece, not an AI demo; ranked Surveyor's Files first; 4 findings all fixed same day"
+ }
+}

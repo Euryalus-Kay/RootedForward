@@ -40,7 +40,7 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
         ? { title: FILES_ROOM_PLATE.title, plainName: FILES_ROOM_PLATE.plainName, invitation: FILES_ROOM_PLATE.definition }
         : null;
 
-  const eyebrow = isFiles ? "Reading room" : "Machine room";
+  const eyebrow = isFiles ? "Reading room" : "Document room";
 
   /* an unknown or not-yet-built room keeps the honest closed door */
   if (!plate || !built) {
@@ -51,9 +51,9 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
         className="border border-dashed border-exh-ink/35 bg-exh-linen-deep/30 px-5 py-6"
       >
         <p className="exh-plat text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-          Machine room
+          Document room
         </p>
-        <p className="mt-2 font-display text-lg text-exh-ink">{plate ? plate.title : label}</p>
+        <p className="mt-2 font-display text-lg text-exh-ink">{plate ? plate.plainName : label}</p>
         <button
           type="button"
           disabled
@@ -87,9 +87,9 @@ export default function DoorCard({ roomId, label }: DoorCardProps) {
           </span>
         ) : null}
       </div>
-      <p className="mt-3 font-display text-2xl text-exh-ink md:text-3xl">{title}</p>
+      <p className="mt-3 font-display text-2xl text-exh-ink md:text-3xl">{plate.plainName}</p>
       <p className="exh-plat mt-1 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-        {plate.plainName}
+        {title}
       </p>
       <p className="mt-4 max-w-prose text-sm leading-relaxed text-exh-ink">{plate.invitation}</p>
       <button
