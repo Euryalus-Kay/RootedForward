@@ -1,0 +1,253 @@
+{
+  "chapters": [
+    {
+      "chapterId": "formation",
+      "candidates": [
+        {
+          "subject": "The Hyde Park House, Paul Cornell's four-story lakefront resort hotel at 53rd Street and Lake Michigan, the social center of early Hyde Park (built 1857, where Mary Todd Lincoln stayed in 1865).",
+          "commonsSearch": "Hyde Park House Chicago 53rd Street hotel",
+          "beat": "Cornell builds the Hyde Park House and markets the township as a lakeside resort suburb; bridges directly to the Mary Todd Lincoln beat, since she lodged here in 1865.",
+          "era": "1857 to 1879 (period photograph, pre-1879 fire)",
+          "confidence": "high",
+          "exactFile": "File:Hyde Park House.JPG"
+        },
+        {
+          "subject": "The Illinois Central Railroad's Great Central Station train shed in Chicago, an 1856 engraving from Frank Leslie's Illustrated Newspaper showing the IC's first permanent Chicago depot.",
+          "commonsSearch": "Great Central Station trainshed Illinois Central 1856",
+          "beat": "The Illinois Central commuter line is what makes Cornell's suburb possible; this shows the railroad's grand new Chicago terminal the year before Hyde Park's first depot.",
+          "era": "1856 (period wood engraving)",
+          "confidence": "high",
+          "exactFile": "File:Great Central Station trainshed.png"
+        },
+        {
+          "subject": "Lincoln's funeral car on the old Illinois Central Railroad tracks on the trestle over Lake Michigan, Chicago, photographed by F. E. Stebbins in 1865.",
+          "commonsSearch": "Lincoln funeral car Illinois Central railroad Lake Michigan Chicago 1865",
+          "beat": "Shows the actual Illinois Central lakefront trestle in 1865 and links to the Mary Todd Lincoln / Lincoln-mourning thread; the same IC line carried Hyde Park's commuters.",
+          "era": "1865 (period photograph)",
+          "confidence": "medium",
+          "exactFile": ""
+        },
+        {
+          "subject": "Map of Cook County, Illinois (W. L. Flower, engraved by Edward Mendel, 1861), which includes a plat inset of Hyde Park, the year Hyde Park Township was incorporated.",
+          "commonsSearch": "Map of Cook County Illinois 1861 Mendel Flower",
+          "beat": "Hyde Park Township is incorporated in 1861; an authentic period plat shows the township's place in early Cook County. Library of Congress item 2013593074 is the public-domain source if not already on Commons.",
+          "era": "1861 (period engraved and colored map)",
+          "confidence": "medium",
+          "exactFile": ""
+        },
+        {
+          "subject": "South front of the Great Central railway station, just completed at Chicago, Illinois, a contemporary 1856 illustration of the Illinois Central's lakefront depot exterior.",
+          "commonsSearch": "South front Great Central railway station Chicago 1856 Illinois Central",
+          "beat": "Alternate, exterior view of the Illinois Central's Chicago lakefront depot at the moment the commuter railroad that built Hyde Park was taking shape. Library of Congress item 2002735878 is the public-domain source.",
+          "era": "1856 (period wood engraving)",
+          "confidence": "low",
+          "exactFile": ""
+        }
+      ]
+    },
+    {
+      "chapterId": "university",
+      "candidates": [
+        {
+          "subject": "Marshall Field (1834-1906) portrait bust photograph, the merchant who donated the original ten-acre Hyde Park tract for the campus. Library of Congress, public domain, 4,316 x 5,904 px (a .jpg version at the same resolution also exists). Avoid File:Marshall Field LCCN2014705006.tif, which is the founder's grandson enlisting in 1917, not the merchant himself.",
+          "commonsSearch": "Marshall Field portrait bust LCCN2014681000",
+          "beat": "Over the line that Marshall Field, the department store man, gave the first ten acres in Hyde Park.",
+          "era": "c.1890s-1905",
+          "exactFile": "File:Marshall Field, portrait bust LCCN2014681000.tif",
+          "confidence": "high"
+        },
+        {
+          "subject": "Marshall Field period illustration/portrait dated 1893, a very large public-domain scan on Wikimedia Commons at 5,894 x 7,381 px. A clean alternate for the Marshall Field land-gift beat matching the campus founding era.",
+          "commonsSearch": "Marshall Field illustration 1893",
+          "beat": "Alternate or secondary image for the Marshall Field land-gift beat (he gave the first ten acres in Hyde Park).",
+          "era": "1893",
+          "exactFile": "File:Marshall Field illustration 1893.jpg",
+          "confidence": "high"
+        },
+        {
+          "subject": "George R. Lawrence kite/balloon bird's-eye aerial panorama of the early University of Chicago campus and the Midway Plaisance, circa 1904-1907. Shows the Gothic quadrangles, surrounding Hyde Park, and the open Midway in one sweeping view; covers the requested Midway-with-campus image. Original LOC panoramic negative LOT 5785 no. 36, loc.gov/item/2007663921; LOC panoramic scans are very large. Confirm Commons availability; if absent, source from loc.gov.",
+          "commonsSearch": "University of Chicago bird's eye view Lawrence panorama",
+          "beat": "Opening establishing shot of the chapter, over Rockefeller's money building a campus from nothing and Cobb laying out the gray Gothic quads.",
+          "era": "c.1904-1907",
+          "exactFile": "",
+          "confidence": "medium"
+        },
+        {
+          "subject": "Cobb Lecture Hall, University of Chicago, the first building completed for the 1892 opening, photographed by Hans Behm for the Detroit Publishing Company. LOC reproduction LC-DIG-det-4a19708 (loc.gov/item/2016811004), no known restrictions; Detroit Publishing scans are typically 4000px+. A true period exterior rather than the postcard-style Tichnor image already in the chapter. Verify exact Commons File: title before use.",
+          "commonsSearch": "Cobb Lecture Hall University of Chicago Detroit Publishing",
+          "beat": "Over the line naming Cobb Hall and the October 1892 opening (the first building completed).",
+          "era": "c.1900-1910",
+          "exactFile": "",
+          "confidence": "medium"
+        },
+        {
+          "subject": "Hull Court (Hull Biological Laboratories quadrangle) at the University of Chicago, an early Gothic quad enclosure, photographed by Hans Behm for the Detroit Publishing Company. LOC reproduction LC-DIG-det-4a19709 (loc.gov/item/2016811005), no known restrictions. Gives a second, less-common period quad view. Commons also has File:Hull Gate at the University of Chicago.jpg and File:Hull Gate, University of Chicago (9440409204).jpg as related options.",
+          "commonsSearch": "Hull Court University of Chicago Detroit Publishing",
+          "beat": "Over Cobb laying out the interlocking cloistered quadrangles on the Oxford and Cambridge model.",
+          "era": "c.1900-1910",
+          "exactFile": "",
+          "confidence": "medium"
+        },
+        {
+          "subject": "Detroit Publishing Company view east of Cobb Lecture Hall showing early quadrangle buildings and cloistered walks, a campus scene rather than a single building. LOC item loc.gov/item/2016811008, Hans Behm, no known restrictions. Closest verified stand-in for an early campus crowd or class view; a true founding-class group photo likely lives in the University of Chicago Photographic Archive (photoarchive.lib.uchicago.edu), whose images are not confirmed PD/CC and must be cleared separately. Verify Commons availability and exact File: title.",
+          "commonsSearch": "East of Cobb Lecture Hall University of Chicago Detroit Publishing",
+          "beat": "Over the cloistered-walks line evoking the Oxford and Cambridge model, or as early-campus B-roll circa 1900.",
+          "era": "c.1900-1910",
+          "exactFile": "",
+          "confidence": "low"
+        }
+      ]
+    },
+    {
+      "chapterId": "worlds-fair",
+      "candidates": [
+        {
+          "subject": "The original 1893 Ferris Wheel at the Columbian Exposition, full tower view, C.D. Arnold / Higinbotham official photograph",
+          "commonsSearch": "The Ferris Wheel Official Views Of The World's Columbian Exposition 91",
+          "exactFile": "File:The Ferris Wheel — Official Views Of The World's Columbian Exposition — 91.jpg",
+          "beat": "Reveal of the world's first Ferris Wheel as the engineering answer to the Eiffel Tower, the centerpiece of the Midway",
+          "era": "1893",
+          "confidence": "high"
+        },
+        {
+          "subject": "Midway Plaisance crowds, looking west down the avenue of foreign villages with the Ferris Wheel in view, official C.D. Arnold view",
+          "commonsSearch": "The Midway Looking West Official Views Of The World's Columbian Exposition 97",
+          "exactFile": "File:The Midway, Looking West — Official Views Of The World's Columbian Exposition — 97.jpg",
+          "beat": "The carnival crush of the mile-long Midway, fairgoers streaming past the exotic concessions",
+          "era": "1893",
+          "confidence": "high"
+        },
+        {
+          "subject": "Wooded Island and the lagoon beside the Horticultural Building, Olmsted's secluded sylvan centerpiece, official C.D. Arnold view",
+          "commonsSearch": "Wooded Island Near Horticultural Building Official Views World's Columbian Exposition 57",
+          "exactFile": "File:Wooded Island Near Horticultural Building — Official Views Of The World's Columbian Exposition — 57.jpg",
+          "beat": "The quiet green heart of the fair, the Olmsted lagoon contrasting the white monumental architecture",
+          "era": "1893",
+          "confidence": "high"
+        },
+        {
+          "subject": "The Midway viewed east from atop the Ferris Wheel, dense crowds and village rooftops along the Plaisance, official C.D. Arnold elevated view",
+          "commonsSearch": "The Midway From Ferris Wheel Looking East Official Views World's Columbian Exposition 98",
+          "exactFile": "File:The Midway, From Ferris Wheel, Looking East — Official Views Of The World's Columbian Exposition — 98.jpg",
+          "beat": "The rider's-eye sweep over the Midway crowds, scale of the carnival and the throng",
+          "era": "1893",
+          "confidence": "high"
+        },
+        {
+          "subject": "The White City illuminated at night, electrical illumination of the MacMonnies fountain, Grand Basin, and Administration Building (period chromolithograph / illustration drawn by Charles Graham, not a photograph)",
+          "commonsSearch": "Columbian Exposition grand court at night electrical illumination MacMonnies fountain Graham",
+          "exactFile": "",
+          "beat": "Nightfall over the Court of Honor, the electric spectacle that earned the fair its 'White City' name",
+          "era": "1893",
+          "confidence": "medium"
+        },
+        {
+          "subject": "Court of Honor and MacMonnies Fountain with the Administration Building dome, official daytime view (high-res daylight alternative if a true night photo is wanted but unavailable)",
+          "commonsSearch": "Administration Building MacMonnies Fountain Official Views World's Columbian Exposition Arnold",
+          "exactFile": "",
+          "beat": "Establishing the Court of Honor before the night-illumination beat, the fountain that was lit after dark",
+          "era": "1893",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "chapterId": "color-line",
+      "candidates": [
+        {
+          "subject": "Russell Lee FSA photograph of a Black family's washday inside a Chicago kitchenette flat, South Side, April 1941. Documentary interior of overcrowded relief-family kitchenette housing.",
+          "commonsSearch": "Washday family relief Chicago Illinois LCCN2017788876",
+          "exactFile": "File:Washday of family on relief. Chicago, Illinois LCCN2017788876.tif",
+          "beat": "The kitchenette-housing / overcrowded Black Belt beat showing the lived reality behind the redlining map",
+          "era": "1941 (April), Chicago South Side",
+          "confidence": "high"
+        },
+        {
+          "subject": "Russell Lee FSA photograph 'Ironing. Family on relief. Chicago, Illinois' (April 1941). Interior of a Black relief family in a South Side kitchenette flat.",
+          "commonsSearch": "Ironing family relief Chicago Illinois LCCN2017788817",
+          "exactFile": "File:Ironing. Family on relief. Chicago, Illinois LCCN2017788817.tif",
+          "beat": "Kitchenette / Black Belt domestic-life beat (alternate to the washday frame, same family series)",
+          "era": "1941 (April), Chicago South Side",
+          "confidence": "high"
+        },
+        {
+          "subject": "Russell Lee FSA street view captioned 'Chicago's South Side black belt' (April 1941). Exterior of the densely populated Black Belt district.",
+          "commonsSearch": "Chicagoblackbelt Russell Lee 1941",
+          "exactFile": "File:Chicagoblackbelt.jpg",
+          "beat": "Establishing exterior of the Black Belt the color line confined Black Chicagoans to",
+          "era": "1941 (April), Chicago South Side",
+          "confidence": "high"
+        },
+        {
+          "subject": "The Scott Arthur family, photographed shortly after arriving in Chicago from the rural South during the Great Migration (c. 1920-1921). Multi-generational portrait used in the Chicago Commission on Race Relations report.",
+          "commonsSearch": "Scott Arthur Family 1920",
+          "exactFile": "File:Scott Arthur Family 1920.jpg",
+          "beat": "Great Migration arrivals beat, families coming north into the color-lined city",
+          "era": "c. 1920-1921, Chicago",
+          "confidence": "high"
+        },
+        {
+          "subject": "John Vachon FSA photograph of the half-mile concrete 'Detroit Wall' built August 1941 to separate the Black section from a new whites-only suburban housing development. Physical embodiment of the restrictive-covenant / racial-boundary practice (note: Detroit, not Chicago).",
+          "commonsSearch": "Detroit Wall concrete half mile 1941 Vachon",
+          "exactFile": "File:Detroit Wall.jpg",
+          "beat": "Restrictive-covenant / hard racial boundary beat, if a covenant document or sign cannot be sourced; use only with an on-screen caption noting it is Detroit",
+          "era": "1941 (August), Detroit, Michigan",
+          "confidence": "medium"
+        },
+        {
+          "subject": "Russell Lee FSA photograph captioned 'Great Migration' showing Black Chicagoans, South Side, April 1941. Useful for the migration-to-Chicago beat.",
+          "commonsSearch": "Great Migration Russell Lee Chicago 1941 fsa 8a29902",
+          "exactFile": "File:Great Migration.jpg",
+          "beat": "Great Migration / arrival-and-settlement beat as an alternate to the Scott Arthur family portrait",
+          "era": "1941 (April), Chicago South Side",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "chapterId": "urban-renewal",
+      "candidates": [
+        {
+          "subject": "Cleared land along 55th Street / Lake Park in Hyde Park during urban renewal, with demolished blocks reduced to open ground, late 1950s to early 1960s, likely from a federal HUD / Housing and Home Finance Agency redevelopment photo set",
+          "commonsSearch": "Hyde Park Chicago urban renewal HUD cleared land 1950s",
+          "exactFile": "",
+          "beat": "The land-clearance and 638-buildings-demolished beat: 'It marked six hundred thirty-eight buildings to come down... demolition had started three years earlier.'",
+          "era": "1958-1962",
+          "confidence": "low"
+        },
+        {
+          "subject": "I.M. Pei / Webb & Knapp University Apartments under construction on the 55th Street island, two ten-story towers rising on cleared ground, 1959-1961",
+          "commonsSearch": "University Apartments Chicago Pei construction 1960",
+          "exactFile": "",
+          "beat": "The rebuilding beat where the university and Webb & Knapp put up the new towers that replaced cleared blocks; pairs as a before/under-construction contrast with the existing finished University Apartments image.",
+          "era": "1959-1961",
+          "confidence": "low"
+        },
+        {
+          "subject": "Period street view of 55th Street, Hyde Park, before demolition, showing the dense commercial strip of taverns, shops, and jazz lounges (e.g., Beehive Lounge near Blackstone) that urban renewal cleared",
+          "commonsSearch": "55th Street Hyde Park Chicago 1950s street",
+          "exactFile": "",
+          "beat": "Sets up the contrast for 'the people who came back weren't a random slice' by showing the living streetscape that was erased before the cleared corridor.",
+          "era": "1950-1958",
+          "confidence": "low"
+        },
+        {
+          "subject": "Federal urban renewal / Housing and Home Finance Agency documentary photograph of Chicago slum-clearance demolition in progress (wrecking of brick apartment buildings), used as a representative period-correct demolition image; US government work, public domain",
+          "commonsSearch": "Chicago slum clearance demolition urban renewal 1950s federal housing",
+          "exactFile": "",
+          "beat": "The 'first one fell on May tenth, 1955' demolition beat, conveying the physical act of buildings coming down.",
+          "era": "1955-1960",
+          "confidence": "low"
+        },
+        {
+          "subject": "Aerial or oblique view of Hyde Park-Kenwood mid-renewal showing newly cleared superblocks beside surviving rowhouses, contrasting with the existing 1928 aerial",
+          "commonsSearch": "Hyde Park Kenwood aerial 1960 urban renewal",
+          "exactFile": "",
+          "beat": "Bridges the 1928 aerial and the modern street view by showing the same ground mid-transformation; supports the 856-acre / 40 percent Black population decline beat.",
+          "era": "1958-1965",
+          "confidence": "low"
+        }
+      ]
+    }
+  ]
+}

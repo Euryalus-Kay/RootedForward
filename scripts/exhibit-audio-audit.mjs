@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 // ------------------------------------------------------------------
+// RETIRED (July 2026). The exhibit was rebuilt as one reader-paced
+// document with no audio, so this audit is no longer part of any
+// gate. The script and the vo/ mp3s stay in the repo in case the
+// narration is ever rewired; run it manually if that day comes.
+// ------------------------------------------------------------------
 // Exhibit audio audit. Mechanical checks over the generated VO:
 //   1. every narration block has vo-ex-<blockId>.mp3 with duration > 0
 //   2. duration sanity: within [words/220wpm, words/110wpm] bounds

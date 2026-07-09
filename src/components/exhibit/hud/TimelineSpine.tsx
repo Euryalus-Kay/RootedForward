@@ -1,358 +1,226 @@
 "use client";
 /* ------------------------------------------------------------------ */
-/*  TimelineSpine, the bottom rail from 1832 to 2026.                  */
-/*                                                                     */
-/*  Continuous progress writes a scaleX transform straight to a ref    */
-/*  from the playhead bus, so per-frame time never re-renders React.   */
-/*  The red 1921 to 1968 span reveals once the tour first reaches the  */
-/*  chapter whose spine year enters that era (the prologue chapters    */
-/*  ch0 and ch0_5 are flash-forwards and do not count), latched        */
-/*  once per session under the firedOnce key "spine-red-span".         */
-/*  Node dots: passed chapters filled ink, the current chapter a       */
-/*  pulsing gold ring, future hollow. Clicking a node asks before      */
-/*  jumping. Mobile gets a compact rail plus an era chip that opens    */
-/*  a chapter sheet.                                                   */
+/*  TimelineSpine, the one persistent orientation element. A bottom    */
+/*  rail from 1832 to 2026: one node per chapter, positioned by its    */
+/*  spine year, each a plain scroll-to-chapter anchor. The 1921 to     */
+/*  1968 red span renders statically with a small printed label. The   */
+/*  active chapter derives from scroll position (ExhibitApp's          */
+/*  IntersectionObserver writes it into state). Narrow viewports get   */
+/*  a compact rail plus an era chip that opens the chapter sheet;      */
+/*  both list About and sources at the end.                            */
 /* ------------------------------------------------------------------ */
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import timelineJson from "../../../../data/exhibit/timeline.json";
-import { CHAPTER_ORDER, type TimelineNodeDef } from "@/lib/exhibit/types";
-import { BLOCK_COUNTS, CHAPTER_META } from "@/lib/exhibit/content";
-import { useExhibitDispatch, useExhibitState, usePlayheadBus } from "@/lib/exhibit/ExhibitProvider";
-import type { PlayheadSnapshot } from "@/lib/exhibit/playhead";
-import { motionMs } from "@/lib/exhibit/debug";
+import { CHAPTER_ORDER } from "@/lib/exhibit/types";
+import { CHAPTER_META, displayEraOf, displayTitleOf, EXHIBIT_FLOW } from "@/lib/exhibit/content";
+import { scrollToAnchor, useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { cn } from "@/lib/utils";
-import { PaperCard } from "../shared/PaperCard";
 
 const TIMELINE = timelineJson as unknown as {
   spanStart: number;
   spanEnd: number;
   redSpan: { start: number; end: number; note: string };
-  nodes: TimelineNodeDef[];
 };
-
-const CHAPTER_COUNT = CHAPTER_ORDER.length;
 
 const pctOf = (year: number) =>
   ((year - TIMELINE.spanStart) / (TIMELINE.spanEnd - TIMELINE.spanStart)) * 100;
 
-/* The chapter index that reveals the red span. Prologue chapters sit
-   before ch1 in the order and are flash-forwards (ch0 opens in 1940),
-   so the scan starts at the first chronological chapter. */
-const RED_REVEAL_INDEX = (() => {
-  const firstChrono = CHAPTER_ORDER.indexOf("ch1");
-  const meta = CHAPTER_META.find((m) => m.index >= firstChrono && m.spineYear >= TIMELINE.redSpan.start);
-  return meta ? meta.index : CHAPTER_COUNT - 1;
-})();
+/* Rail nodes: one per chapter in reading order, skipping the overture
+   (its 1832 anchor would sit on top of ch1's). */
+const RAIL_CHAPTERS = EXHIBIT_FLOW.filter((id) => id !== "ch0_5");
 
-/* Year labels thin themselves out so clustered nodes (1832/1833,
-   1921/1924/1926, 1952/1955/1958) never collide. */
+/* Year labels thin themselves out so clustered nodes never collide. */
 const LABELED_YEARS = (() => {
   const out = new Set<number>();
+  const years = RAIL_CHAPTERS.map(
+    (id) => CHAPTER_META[CHAPTER_ORDER.indexOf(id)].spineYear
+  ).sort((a, b) => a - b);
   let last = -Infinity;
-  for (const n of [...TIMELINE.nodes].sort((a, b) => a.year - b.year)) {
-    const p = pctOf(n.year);
+  for (const y of years) {
+    const p = pctOf(y);
     if (p - last >= 4.2) {
-      out.add(n.year);
+      out.add(y);
       last = p;
     }
   }
   return out;
 })();
 
-interface JumpConfirm {
-  year: number;
-  title: string;
-  chapterIndex: number;
-  leftPct: number;
-  /** the chapter the chip was opened in; the chip only lives there */
-  openedAtChapter: number;
-}
-
 export function TimelineSpine() {
   const state = useExhibitState();
   const dispatch = useExhibitDispatch();
-  const bus = usePlayheadBus();
-  const fillRef = useRef<HTMLDivElement>(null);
-  const chipRef = useRef<HTMLDivElement>(null);
-  const [confirm, setConfirm] = useState<JumpConfirm | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const chapterId = CHAPTER_ORDER[state.chapterIndex];
-  const meta = CHAPTER_META[state.chapterIndex];
-  const instant = state.reducedMotion || state.silentEffects;
+  const activeId = CHAPTER_ORDER[state.chapterIndex];
+  const behavior: ScrollBehavior = state.reducedMotion ? "auto" : "smooth";
 
-  /* ---- continuous progress, no per-frame React state ----
-     writeFill closes over the chapter and block position, so the
-     subscription renews only at block boundaries. subscribe() replays
-     the last snapshot immediately, and every frame after that writes
-     the transform straight to the ref. */
-  const chapterIndex = state.chapterIndex;
-  const blockIndex = state.blockIndex;
-  const writeFill = useCallback(
-    (snap: PlayheadSnapshot | null) => {
-      const blocks = BLOCK_COUNTS[chapterId] ?? 0;
-      let inBlock = 0;
-      if (snap && snap.blockId && snap.blockId.startsWith(`${chapterId}-`) && snap.blockDurationMs > 0) {
-        inBlock = Math.min(1, snap.msIntoBlock / snap.blockDurationMs);
-      }
-      const inChapter = blocks > 0 ? Math.min(1, (blockIndex + inBlock) / blocks) : 0;
-      const p = Math.min(1, (chapterIndex + inChapter) / CHAPTER_COUNT);
-      if (fillRef.current) fillRef.current.style.transform = `scaleX(${p})`;
-    },
-    [chapterId, chapterIndex, blockIndex]
-  );
-
-  useEffect(() => bus.subscribe(writeFill), [bus, writeFill]);
-
-  /* ---- red span latch (once per session) ---- */
-  const redFired = state.firedOnce.includes("spine-red-span");
-  const redRevealed = redFired || state.chapterIndex >= RED_REVEAL_INDEX;
-  useEffect(() => {
-    if (redRevealed && !redFired) dispatch({ type: "MARK_FIRED", key: "spine-red-span" });
-  }, [redRevealed, redFired, dispatch]);
-
-  /* ---- jump confirmation chip ----
-     the chip closes on chapter change by derivation, not by effect:
-     it only renders in the chapter it was opened in */
-  const activeConfirm = confirm && confirm.openedAtChapter === state.chapterIndex ? confirm : null;
-
-  useEffect(() => {
-    if (!activeConfirm) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setConfirm(null);
-    };
-    const onDown = (e: PointerEvent) => {
-      if (chipRef.current && e.target instanceof Node && !chipRef.current.contains(e.target)) {
-        setConfirm(null);
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-    };
-  }, [activeConfirm]);
-
-  const askJump = (node: TimelineNodeDef) => {
-    const idx = CHAPTER_ORDER.indexOf(node.chapterId);
-    if (idx < 0) return;
-    setConfirm({
-      year: node.year,
-      title: CHAPTER_META[idx]?.title ?? "",
-      chapterIndex: idx,
-      leftPct: pctOf(node.year),
-      openedAtChapter: state.chapterIndex,
-    });
-  };
-
-  const doJump = () => {
-    if (!activeConfirm) return;
-    dispatch({ type: "JUMP_TO_CHAPTER", chapterIndex: activeConfirm.chapterIndex });
-    setConfirm(null);
-  };
-
-  const statusOf = (node: TimelineNodeDef): "passed" | "current" | "future" => {
-    const idx = CHAPTER_ORDER.indexOf(node.chapterId);
-    if (idx < state.chapterIndex) return "passed";
-    if (idx === state.chapterIndex) return "current";
-    return "future";
+  const go = (chapterId: string) => {
+    const idx = CHAPTER_ORDER.indexOf(chapterId as (typeof CHAPTER_ORDER)[number]);
+    if (idx >= 0) dispatch({ type: "SET_CHAPTER", chapterIndex: idx });
+    scrollToAnchor(chapterId, behavior);
   };
 
   return (
     <nav
-      aria-label="Tour timeline"
+      aria-label="Exhibit timeline"
       data-testid="timeline-spine"
-      // the nav grows by the bottom safe-area inset (iPhone home
-      // indicator); the inner band keeps the rail geometry
       className="exh-paper fixed inset-x-0 bottom-0 z-40 border-t border-exh-ink/15 pb-[env(safe-area-inset-bottom)]"
       style={{ backgroundColor: "var(--color-exh-linen-deep)" }}
     >
       <div className="relative h-11 md:h-16">
-      {/* inner rail, clamped 24px from each edge */}
-      <div className="absolute inset-y-0 left-6 right-6">
-        {/* base rule */}
-        <div className="absolute left-0 right-0 top-[21px] h-0.5 bg-exh-ink/20 md:top-6" />
+        {/* inner rail, clamped from each edge; room on the right for the
+            About link (desktop) and the era chip (mobile) */}
+        <div className="absolute inset-y-0 left-6 right-24 md:right-48">
+          {/* base rule */}
+          <div className="absolute left-0 right-0 top-[21px] h-0.5 bg-exh-ink/20 md:top-6" />
 
-        {/* the 1921 to 1968 span, the years the machinery ran at full power */}
-        <motion.div
-          data-testid="spine-red-span"
-          aria-hidden="true"
-          initial={false}
-          animate={{ scaleX: redRevealed ? 1 : 0 }}
-          transition={{ duration: instant || redFired ? 0 : motionMs(400) / 1000, ease: "easeOut" }}
-          style={{
-            originX: 0,
-            left: `${pctOf(TIMELINE.redSpan.start)}%`,
-            width: `${pctOf(TIMELINE.redSpan.end) - pctOf(TIMELINE.redSpan.start)}%`,
-          }}
-          className="absolute top-[19px] h-1.5 rounded-full bg-exh-red/80 md:top-[21px] md:h-2"
-        />
-
-        {/* progress fill, written straight to the ref by the playhead bus */}
-        <div
-          ref={fillRef}
-          aria-hidden="true"
-          className="absolute left-0 right-0 top-[20.5px] h-[3px] origin-left bg-exh-ink will-change-transform md:top-6 md:h-0.5"
-          style={{ transform: "scaleX(0)" }}
-        />
-
-        {/* nodes */}
-        {TIMELINE.nodes.map((node) => {
-          const status = statusOf(node);
-          const idx = CHAPTER_ORDER.indexOf(node.chapterId);
-          const chTitle = CHAPTER_META[idx]?.title ?? "";
-          return (
-            <span key={node.id}>
-              {/* mobile, decorative dot */}
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute top-[19.5px] h-[5px] w-[5px] -translate-x-1/2 rounded-full border md:hidden",
-                  status === "passed" && "border-exh-ink bg-exh-ink",
-                  status === "current" && "border-exh-ink bg-exh-gold",
-                  status === "future" && "border-exh-ink/50 bg-exh-linen"
-                )}
-                style={{ left: `${pctOf(node.year)}%` }}
-              />
-              {/* desktop, tappable node */}
-              <button
-                type="button"
-                data-testid={`spine-node-${node.year}`}
-                aria-label={`Jump to ${node.year}, ${chTitle}`}
-                aria-current={status === "current" ? "step" : undefined}
-                onClick={() => askJump(node)}
-                className="absolute top-0 hidden h-full w-6 -translate-x-1/2 md:block"
-                style={{ left: `${pctOf(node.year)}%` }}
-              >
-                {/* dot centered on the rail line at 25px */}
-                <span className="absolute left-1/2 top-[25px] inline-flex h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-                  {status === "current" && (
-                    <span
-                      aria-hidden="true"
-                      className="exh-lamp-armed absolute -inset-1.5 rounded-full border-2 border-exh-gold"
-                    />
-                  )}
-                  <span
-                    className={cn(
-                      "h-2.5 w-2.5 rounded-full border",
-                      status === "passed" && "border-exh-ink bg-exh-ink",
-                      status === "current" && "border-exh-ink bg-exh-gold",
-                      status === "future" && "border-exh-ink/60 bg-exh-linen"
-                    )}
-                  />
-                </span>
-              </button>
-              {/* desktop year label, thinned to avoid collisions */}
-              {LABELED_YEARS.has(node.year) && (
-                <span
-                  aria-hidden="true"
-                  className="exh-mono absolute top-9 hidden -translate-x-1/2 text-[10px] text-exh-ink-soft md:block"
-                  style={{ left: `${pctOf(node.year)}%` }}
-                >
-                  {node.year}
-                </span>
-              )}
-            </span>
-          );
-        })}
-
-        {/* jump confirmation chip, anchored above the asked node */}
-        {activeConfirm && (
+          {/* the 1921 to 1968 span, static, with its printed label */}
           <div
-            ref={chipRef}
-            className="absolute bottom-full z-50 mb-2 -translate-x-1/2"
-            style={{ left: `clamp(150px, ${activeConfirm.leftPct}%, calc(100% - 150px))` }}
+            data-testid="spine-red-span"
+            aria-hidden="true"
+            style={{
+              left: `${pctOf(TIMELINE.redSpan.start)}%`,
+              width: `${pctOf(TIMELINE.redSpan.end) - pctOf(TIMELINE.redSpan.start)}%`,
+            }}
+            className="absolute top-[19px] h-1.5 rounded-full bg-exh-red/80 md:top-[21px] md:h-2"
+          />
+          <span
+            aria-hidden="true"
+            data-testid="spine-red-label"
+            style={{
+              left: `${(pctOf(TIMELINE.redSpan.start) + pctOf(TIMELINE.redSpan.end)) / 2}%`,
+            }}
+            className="exh-plat absolute top-0.5 hidden -translate-x-1/2 whitespace-nowrap text-[9px] uppercase tracking-[0.16em] text-exh-red/90 md:block"
           >
-            <PaperCard tone="deep" className="w-max max-w-72 px-3 py-2">
-              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
-                Jump to <span className="exh-mono">{activeConfirm.year}</span>, {activeConfirm.title}?
-              </p>
-              <div className="mt-1.5 flex gap-2">
-                <button
-                  type="button"
-                  onClick={doJump}
-                  className="exh-plat min-h-12 flex-1 rounded-sm bg-exh-ink px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-linen"
-                >
-                  Jump
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setConfirm(null)}
-                  className="exh-plat min-h-12 flex-1 rounded-sm border border-exh-ink/40 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink"
-                >
-                  Stay
-                </button>
-              </div>
-            </PaperCard>
-          </div>
-        )}
-      </div>
+            1921 to 1968, the machinery at full power
+          </span>
 
-      {/* mobile era chip opens the chapter sheet */}
-      <Dialog.Root open={sheetOpen} onOpenChange={setSheetOpen}>
-        <Dialog.Trigger asChild>
-          <button
-            type="button"
-            data-testid="spine-era-chip"
-            aria-label="Choose a chapter"
-            className="absolute right-1.5 top-1/2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 rounded-sm border border-exh-ink/20 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:-inset-1 after:content-[''] md:hidden"
-          >
-            <span className="exh-mono text-[10px] text-exh-ink">{meta?.era}</span>
-            <span aria-hidden="true" className="text-[8px] text-exh-ink-soft">
-              ▲
-            </span>
-          </button>
-        </Dialog.Trigger>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-exh-ink/40" />
-        <Dialog.Content
-          aria-describedby={undefined}
-          data-testid="spine-chapter-sheet"
-          className="exh-paper fixed inset-x-0 bottom-0 z-50 flex max-h-[70dvh] flex-col rounded-t-md border-t border-exh-ink/20 shadow-[0_-4px_16px_rgba(28,26,23,0.2)]"
-        >
-          <div className="flex items-center justify-between border-b border-exh-ink/15 py-1 pl-4 pr-1">
-            <Dialog.Title className="exh-plat text-xs font-semibold uppercase tracking-[0.18em] text-exh-ink">
-              Chapters
-            </Dialog.Title>
-            <Dialog.Close asChild>
-              <button
-                type="button"
-                aria-label="Close"
-                className="flex h-12 w-12 items-center justify-center text-lg text-exh-ink"
-              >
-                ✕
-              </button>
-            </Dialog.Close>
-          </div>
-          <ul className="overflow-y-auto p-2">
-            {CHAPTER_META.map((ch) => (
-              <li key={ch.id}>
+          {/* nodes: scroll-to-chapter anchors */}
+          {RAIL_CHAPTERS.map((id) => {
+            const meta = CHAPTER_META[CHAPTER_ORDER.indexOf(id)];
+            const current = id === activeId;
+            const title = displayTitleOf(id);
+            return (
+              <span key={id}>
                 <button
                   type="button"
-                  aria-current={ch.index === state.chapterIndex ? "step" : undefined}
+                  data-testid={`spine-node-${meta.spineYear}`}
+                  aria-label={`Go to ${title}, ${meta.spineYear}`}
+                  aria-current={current ? "true" : undefined}
+                  onClick={() => go(id)}
+                  className="absolute top-0 h-full w-6 -translate-x-1/2"
+                  style={{ left: `${pctOf(meta.spineYear)}%` }}
+                >
+                  <span className="absolute left-1/2 top-[21px] inline-flex h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center md:top-[25px]">
+                    <span
+                      className={cn(
+                        "h-2 w-2 rounded-full border md:h-2.5 md:w-2.5",
+                        current
+                          ? "border-exh-ink bg-exh-gold"
+                          : "border-exh-ink/60 bg-exh-linen"
+                      )}
+                    />
+                  </span>
+                </button>
+                {LABELED_YEARS.has(meta.spineYear) && (
+                  <span
+                    aria-hidden="true"
+                    className="exh-mono absolute top-9 hidden -translate-x-1/2 text-[10px] text-exh-ink-soft md:block"
+                    style={{ left: `${pctOf(meta.spineYear)}%` }}
+                  >
+                    {meta.spineYear}
+                  </span>
+                )}
+              </span>
+            );
+          })}
+        </div>
+
+        {/* About anchor, desktop */}
+        <button
+          type="button"
+          data-testid="spine-about"
+          onClick={() => scrollToAnchor("about", behavior)}
+          className="exh-plat absolute right-3 top-1/2 hidden min-h-10 -translate-y-1/2 items-center text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft transition-colors hover:text-exh-ink md:flex"
+        >
+          About &amp; sources
+        </button>
+
+        {/* mobile era chip opens the chapter sheet */}
+        <Dialog.Root open={sheetOpen} onOpenChange={setSheetOpen}>
+          <Dialog.Trigger asChild>
+            <button
+              type="button"
+              data-testid="spine-era-chip"
+              aria-label="Choose a chapter"
+              className="absolute right-1.5 top-1/2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 rounded-sm border border-exh-ink/20 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:-inset-1 after:content-[''] md:hidden"
+            >
+              <span className="exh-mono text-[10px] text-exh-ink">{displayEraOf(activeId)}</span>
+              <span aria-hidden="true" className="text-[8px] text-exh-ink-soft">
+                &#9650;
+              </span>
+            </button>
+          </Dialog.Trigger>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-exh-ink/40" />
+          <Dialog.Content
+            aria-describedby={undefined}
+            data-testid="spine-chapter-sheet"
+            className="exh-paper fixed inset-x-0 bottom-0 z-50 flex max-h-[70dvh] flex-col rounded-t-md border-t border-exh-ink/20 shadow-[0_-4px_16px_rgba(28,26,23,0.2)]"
+          >
+            <div className="flex items-center justify-between border-b border-exh-ink/15 py-1 pl-4 pr-1">
+              <Dialog.Title className="exh-plat text-xs font-semibold uppercase tracking-[0.18em] text-exh-ink">
+                Chapters
+              </Dialog.Title>
+              <Dialog.Close asChild>
+                <button
+                  type="button"
+                  aria-label="Close"
+                  className="flex h-12 w-12 items-center justify-center text-lg text-exh-ink"
+                >
+                  &#10005;
+                </button>
+              </Dialog.Close>
+            </div>
+            <ul className="overflow-y-auto p-2">
+              {EXHIBIT_FLOW.map((id) => (
+                <li key={id}>
+                  <button
+                    type="button"
+                    aria-current={id === activeId ? "true" : undefined}
+                    onClick={() => {
+                      go(id);
+                      setSheetOpen(false);
+                    }}
+                    className={cn(
+                      "flex h-12 w-full items-center justify-between gap-3 border-l-2 px-3 text-left",
+                      id === activeId ? "border-exh-gold bg-exh-linen-deep" : "border-transparent"
+                    )}
+                  >
+                    <span className="exh-plat truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
+                      {displayTitleOf(id)}
+                    </span>
+                    <span className="exh-mono shrink-0 text-[10px] text-exh-ink-soft">
+                      {displayEraOf(id)}
+                    </span>
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  type="button"
                   onClick={() => {
-                    dispatch({ type: "JUMP_TO_CHAPTER", chapterIndex: ch.index });
+                    scrollToAnchor("about", behavior);
                     setSheetOpen(false);
                   }}
-                  className={cn(
-                    "flex h-12 w-full items-center justify-between gap-3 border-l-2 px-3 text-left",
-                    ch.index === state.chapterIndex
-                      ? "border-exh-gold bg-exh-linen-deep"
-                      : "border-transparent"
-                  )}
+                  className="exh-plat flex h-12 w-full items-center border-l-2 border-transparent px-3 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft"
                 >
-                  <span className="exh-plat truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
-                    {ch.title}
-                  </span>
-                  <span className="exh-mono shrink-0 text-[10px] text-exh-ink-soft">{ch.era}</span>
+                  About &amp; sources
                 </button>
               </li>
-            ))}
-          </ul>
-        </Dialog.Content>
-      </Dialog.Root>
+            </ul>
+          </Dialog.Content>
+        </Dialog.Root>
       </div>
     </nav>
   );

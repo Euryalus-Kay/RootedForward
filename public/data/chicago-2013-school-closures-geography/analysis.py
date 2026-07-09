@@ -13,16 +13,16 @@ made here; they belong to the UChicago Consortium and peer-reviewed work.
 Two real datasets, both shipped in this folder:
 
   cps-closed-schools-2013-geocoded.csv
-      53 schools on the 2013 CPS closure list. Names and street addresses
-      transcribed verbatim from the CBS Chicago primary-source list
-      (corroborated name-for-name by NBC Chicago, and by the DNAinfo
+      53 schools on the 2013 CPS closure PROPOSAL list. Names and street
+      addresses transcribed verbatim from the CBS Chicago primary-source
+      list (corroborated name-for-name by NBC Chicago, and by the DNAinfo
       consolidation list). Geocoded to lat/lng with the U.S. Census Bureau
       public geocoder (Public_AR_Current); two addresses the Census file
       could not match (Garfield Park Prep at the Faraday building, and
       Trumbull at 5200 N Ashland which Census mis-snapped to 5200 S) were
-      fixed with OpenStreetMap Nominatim. Community area assigned by
-      point-in-polygon against the City of Chicago official 77-area
-      boundary file. See geocode_and_enrich.py for the full provenance.
+      fixed with OpenStreetMap Nominatim and annotated in matched_address.
+      Community area assigned by point-in-polygon against the City of
+      Chicago official 77-area boundary file. See geocode_and_enrich.py.
 
   cps-active-schools-sy2016-17-enriched.csv
       661 active CPS schools, SY2016-17 snapshot from the City of Chicago
@@ -30,13 +30,15 @@ Two real datasets, both shipped in this folder:
       area assigned by the same point-in-polygon method. This is the
       post-closure "surviving system" used as descriptive context.
 
-A note on counts. The board's action originally slated 53 elementary
-schools; 4 were spared hours before the May 22, 2013 vote, and the action
-is most often summarized as "50 schools" (49 elementary plus the Mason
-high-school program). This analysis uses the full 53-building primary-source
-list, which is the roster published with addresses; the distinction is
-stated in the paper and in data_caveats. Nothing here depends on whether
-the headline number is 49, 50, or 53.
+THE ROSTER IS NOT THE CLOSURE LIST. The 53-school list is the slate that
+went into the May 22, 2013 board vote. At that vote the board spared four
+elementary schools (widely reported at the time, e.g. WGN and CBS coverage
+of the 6-0 vote): Manierre (Near North Side), Ericson (East Garfield
+Park), Garvey (Washington Heights), and Mahalia Jackson (Auburn Gresham).
+All four appear ACTIVE in the SY2016-17 file at the same addresses, which
+this script verifies directly. Every closure statistic below is therefore
+computed on the 49 schools that actually closed; proposal-roster (53)
+figures are printed separately where useful.
 
 Run:
     python analysis.py
@@ -53,6 +55,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CLOSED = os.path.join(HERE, "cps-closed-schools-2013-geocoded.csv")
 ACTIVE = os.path.join(HERE, "cps-active-schools-sy2016-17-enriched.csv")
 
+# The four schools spared at the May 22, 2013 vote (names as they appear
+# in the roster file). Provenance: contemporaneous WGN / CBS Chicago
+# reporting on the board vote; existence verified below against the
+# SY2016-17 active file by street address.
+SPARED = {
+    "Manierre Elementary School",
+    "Ericson Elementary Scholastic Academy",
+    "Garvey M Elementary School",
+    "Mahalia Jackson Elementary School",
+}
+
 
 def rule(title):
     print("\n" + "=" * 78)
@@ -66,10 +79,8 @@ def rule(title):
 WEST_SIDE = {
     "AUSTIN", "EAST GARFIELD PARK", "WEST GARFIELD PARK", "NORTH LAWNDALE",
     "SOUTH LAWNDALE", "HUMBOLDT PARK", "WEST TOWN", "NEAR WEST SIDE",
-    "LOWER WEST SIDE", "EAST SIDE",  # EAST SIDE is far SE, handled below
+    "LOWER WEST SIDE",
 }
-# correct EAST SIDE (far southeast) out of West Side
-WEST_SIDE.discard("EAST SIDE")
 
 SOUTH_SIDE = {
     "DOUGLAS", "OAKLAND", "FULLER PARK", "GRAND BOULEVARD", "KENWOOD",
@@ -102,18 +113,50 @@ def haversine_miles(lat1, lon1, lat2, lon2):
 
 
 def main():
-    closed = pd.read_csv(CLOSED)
+    roster = pd.read_csv(CLOSED)
     active = pd.read_csv(ACTIVE)
 
-    rule("0. DATA LOADED AND MISSINGNESS")
-    print("Closed-school list (2013 CPS closure roster): %d schools" % len(closed))
-    print("  with geocoded lat/lng : %d" % closed["latitude"].notna().sum())
-    print("  with community area   : %d" % closed["community_area"].notna().sum())
-    print("Active-school snapshot (SY2016-17)          : %d schools" % len(active))
+    rule("0. DATA LOADED, MISSINGNESS, AND THE SPARED FOUR")
+    print("2013 closure PROPOSAL roster (primary-source list): %d schools" % len(roster))
+    print("  with geocoded lat/lng : %d" % roster["latitude"].notna().sum())
+    print("  with community area   : %d" % roster["community_area"].notna().sum())
+    print("Active-school snapshot (SY2016-17)                : %d schools" % len(active))
     print("  with community area   : %d" % active["community_area"].notna().sum())
     for col in ["student_count_total", "student_count_low_income", "student_count_black"]:
         miss = active[col].isna().sum()
         print("  active missing %-26s: %d" % (col, miss))
+
+    # geocoding provenance, from the matched_address annotations
+    hand_fixed = roster["matched_address"].str.contains("Nominatim", na=False)
+    print("\nGeocoding provenance (matched_address field):")
+    print("  matched by U.S. Census Bureau geocoder : %d" % (~hand_fixed).sum())
+    print("  hand-fixed via OpenStreetMap Nominatim : %d" % hand_fixed.sum())
+    for _, r in roster[hand_fixed].iterrows():
+        print("    %-46s %s" % (r["school_name"], r["matched_address"]))
+
+    # the four schools spared at the vote: verify each is ACTIVE in SY2016-17
+    print("\nSpared at the May 22, 2013 vote (verified active in SY2016-17 file):")
+    act_addr = set(active["address"].str.upper().str.strip())
+    for name in sorted(SPARED):
+        r = roster[roster["school_name"] == name].iloc[0]
+        in_active = r["street_address"].upper().strip() in act_addr
+        print("  %-46s %-20s active in SY2016-17 file: %s"
+              % (name, r["community_area"].title(), in_active))
+        assert in_active, "spared school not found in active file: " + name
+    closed = roster[~roster["school_name"].isin(SPARED)].copy()
+    print("\nSchools that actually closed: %d of the %d-school roster"
+          % (len(closed), len(roster)))
+
+    # the closed schools themselves are gone from the active file;
+    # many of their BUILDINGS were reused by other schools
+    act_names = set(active["long_name"].str.upper())
+    name_overlap = [n for n in closed["school_name"] if n.upper() in act_names]
+    reused = closed["street_address"].str.upper().str.strip().isin(act_addr)
+    print("Closed schools appearing by name in the SY2016-17 file : %d" % len(name_overlap))
+    print("Closed building addresses housing a different school in")
+    print("SY2016-17 (building reuse)                             : %d of %d"
+          % (reused.sum(), len(closed)))
+
     # closed schools that are duplicates by address (co-located programs)
     dup = closed[closed.duplicated("street_address", keep=False)].sort_values("street_address")
     print("\nCo-located closed schools sharing one building address (real, not error):")
@@ -121,26 +164,31 @@ def main():
         print("  %-46s %s" % (r["school_name"], r["street_address"]))
 
     # ---------------------------------------------------------------
-    rule("1. CLOSURES BY COMMUNITY AREA (concentration)")
+    rule("1. CLOSURES BY COMMUNITY AREA (concentration), ACTUAL CLOSURES ONLY")
     by_ca = closed["community_area"].value_counts()
-    print("Closed schools span %d of Chicago's 77 community areas.\n" % closed["community_area"].nunique())
-    print("Community area                  closures   share of 53")
+    print("The %d closures span %d of Chicago's 77 community areas."
+          % (len(closed), closed["community_area"].nunique()))
+    print("(The 53-school proposal roster spans %d areas; Near North Side and"
+          % roster["community_area"].nunique())
+    print(" Washington Heights appear on the roster only via spared schools.)\n")
+    print("Community area                  closures   share of %d" % len(closed))
     print("-" * 56)
-    cum = 0
     for ca, n in by_ca.items():
-        cum += n
         print("%-30s %6d   %9.1f%%" % (ca.title(), n, 100 * n / len(closed)))
     print("-" * 56)
-    top5 = by_ca.head(5)
-    print("Top 5 community areas hold %d of %d closures (%.1f%%)."
-          % (top5.sum(), len(closed), 100 * top5.sum() / len(closed)))
-    top10 = by_ca.head(10)
-    print("Top 10 community areas hold %d of %d closures (%.1f%%)."
-          % (top10.sum(), len(closed), 100 * top10.sum() / len(closed)))
+    # report concentration at clean count breaks, not arbitrary tie-breaks
+    top4 = by_ca[by_ca >= 4]
+    top7 = by_ca[by_ca >= 3]
+    top12 = by_ca[by_ca >= 2]
+    print("Areas with 4+ closures: %d areas, %d closures (%.1f%% of %d)"
+          % (len(top4), top4.sum(), 100 * top4.sum() / len(closed), len(closed)))
+    print("Areas with 3+ closures: %d areas, %d closures (%.1f%%)"
+          % (len(top7), top7.sum(), 100 * top7.sum() / len(closed)))
+    print("Areas with 2+ closures: %d areas, %d closures (%.1f%%)"
+          % (len(top12), top12.sum(), 100 * top12.sum() / len(closed)))
 
     # ---------------------------------------------------------------
-    rule("2. CLOSURES BY SIDE OF THE CITY")
-    closed = closed.copy()
+    rule("2. CLOSURES BY SIDE OF THE CITY, ACTUAL CLOSURES ONLY")
     closed["side"] = closed["community_area"].map(side_of)
     side_counts = closed["side"].value_counts()
     print("Side            closed schools    share")
@@ -157,14 +205,24 @@ def main():
     print("North/Central closed schools (the rare non-South/West closures):")
     for _, r in closed[closed["side"] == "North/Central"].iterrows():
         print("  %-40s %s" % (r["school_name"], r["community_area"].title()))
+    # proposal-roster comparison
+    roster2 = roster.copy()
+    roster2["side"] = roster2["community_area"].map(side_of)
+    rsc = roster2["side"].value_counts()
+    rsw = rsc.get("South Side", 0) + rsc.get("West Side", 0)
+    print("\nFor reference, the 53-school proposal roster: South %d, West %d,"
+          % (rsc.get("South Side", 0), rsc.get("West Side", 0)))
+    print("North/Central %d; South+West %d of %d (%.1f%%)."
+          % (rsc.get("North/Central", 0), rsw, len(roster2), 100 * rsw / len(roster2)))
 
     # ---------------------------------------------------------------
-    rule("3. WHAT WAS CLOSED: SCHOOL LEVEL")
+    rule("3. WHAT WAS CLOSED: SCHOOL LEVEL, ACTUAL CLOSURES ONLY")
     lvl = closed["primary_category"].value_counts()
     label = {"ES": "Elementary (ES)", "MS": "Middle (MS)", "HS": "High (HS)"}
     print("Level                closures    share")
     print("-" * 42)
-    for k, n in lvl.items():
+    for k in ["ES", "MS", "HS"]:
+        n = lvl.get(k, 0)
         print("%-18s %9d   %7.1f%%" % (label.get(k, k), n, 100 * n / len(closed)))
     print("-" * 42)
     print("Elementary share of all closures: %.1f%%" % (100 * lvl.get("ES", 0) / len(closed)))
@@ -190,15 +248,20 @@ def main():
     sys_black = 100 * valid["student_count_black"].sum() / valid["student_count_total"].sum()
     print("System-wide enrollment-weighted low-income share: %.1f%%" % sys_low)
     print("System-wide enrollment-weighted Black share      : %.1f%%" % sys_black)
+    zip_counts = active["zip"].value_counts()
+    print("ZIP code with the most surviving schools: %s with %d (next: %s with %d)"
+          % (zip_counts.index[0], zip_counts.iloc[0], zip_counts.index[1], zip_counts.iloc[1]))
+    n_ms = (active["primary_category"] == "MS").sum()
+    print("Standalone middle schools (MS) active in SY2016-17: %d" % n_ms)
 
     # the community areas that lost the most schools: surviving demographics there
     rule("5. SURVIVING SCHOOLS IN THE HARDEST-HIT COMMUNITY AREAS")
     top_cas = by_ca.head(10).index.tolist()
-    print("For the 10 community areas with the most 2013 closures, the profile")
-    print("of the schools that REMAINED open in SY2016-17:\n")
+    print("For the 10 community areas with the most actual 2013 closures (ties")
+    print("at 2 closures broken by the value_counts ordering), the profile of")
+    print("the schools that REMAINED open in SY2016-17:\n")
     print("%-24s closed  surv.  surv.%%blk  surv.%%low-inc" % "Community area")
     print("-" * 70)
-    rows_for_chart = []
     for ca in top_cas:
         sub = valid[valid["community_area"] == ca]
         n_surv = len(sub)
@@ -209,7 +272,6 @@ def main():
             pb = pl = float("nan")
         print("%-24s %6d %6d %9.1f %13.1f"
               % (ca.title(), int(by_ca[ca]), n_surv, pb, pl))
-        rows_for_chart.append((ca.title(), int(by_ca[ca]), n_surv, pb, pl))
 
     # ---------------------------------------------------------------
     rule("6. WHERE THE SYSTEM CONTRACTED MOST (closed-to-surviving ratio)")
@@ -223,38 +285,46 @@ def main():
     ratio_df = pd.DataFrame(ratio_rows, columns=["ca", "closed", "surviving", "ratio"])
     ratio_df = ratio_df.sort_values("ratio", ascending=False)
     print("Closed-to-surviving ratio (higher = system contracted harder here).")
-    print("Restricted to community areas with at least 1 surviving school.\n")
+    print("Actual closures only; areas with at least 1 surviving school.\n")
     print("%-24s closed  surviving  closed-per-surviving" % "Community area")
     print("-" * 66)
     finite = ratio_df[ratio_df["ratio"] != float("inf")]
     for _, r in finite.head(12).iterrows():
         print("%-24s %6d %10d %18.2f"
               % (r["ca"].title(), int(r["closed"]), int(r["surviving"]), r["ratio"]))
+    wt = ratio_df[ratio_df["ca"] == "WEST TOWN"]
+    if len(wt):
+        r = wt.iloc[0]
+        print("West Town for comparison: %d closed, %d surviving, ratio %.2f"
+              % (int(r["closed"]), int(r["surviving"]), r["ratio"]))
 
     # ---------------------------------------------------------------
     rule("7. NEAREST SURVIVING SAME-LEVEL SCHOOL (geometric travel proxy)")
-    print("For each closed school, straight-line distance to the nearest")
-    print("SURVIVING school of the same level (ES->ES, MS->MS) in SY2016-17.")
-    print("Purely geometric. Not a claim about actual routes or outcomes.\n")
+    print("For each ACTUALLY CLOSED school, straight-line distance to the")
+    print("nearest surviving school of the same level (ES->ES, MS->MS) in")
+    print("SY2016-17. Purely geometric. Not actual routes or outcomes.")
+    print("Spared schools are excluded from the closed side; left in, they")
+    print("match themselves in the active file at ~0.00 mi (shown below).\n")
     av = active.copy()
     av["lat"] = pd.to_numeric(av["school_latitude"], errors="coerce")
     av["lng"] = pd.to_numeric(av["school_longitude"], errors="coerce")
-    # surviving ES pool also serves closed MS (middle grades fold into K-8 ES),
-    # but we match strictly same primary_category first; report counts.
-    dists = []
-    for _, cs in closed.iterrows():
-        cs_level = cs["primary_category"]
-        pool = av[(av["primary_category"] == cs_level) & av["lat"].notna()]
+
+    def nearest(row):
+        pool = av[(av["primary_category"] == row["primary_category"]) & av["lat"].notna()]
         if len(pool) == 0:
             pool = av[av["lat"].notna()]
-        best = min(
-            haversine_miles(cs["latitude"], cs["longitude"], r.lat, r.lng)
+        return min(
+            haversine_miles(row["latitude"], row["longitude"], r.lat, r.lng)
             for r in pool.itertuples()
         )
-        dists.append(best)
-    closed["nearest_same_level_mi"] = dists
-    s = pd.Series(dists)
-    print("Closed schools measured: %d" % len(s))
+
+    for name in sorted(SPARED):
+        r = roster[roster["school_name"] == name].iloc[0]
+        print("  (spared) %-42s %.3f mi  <- itself, still open" % (name, nearest(r)))
+
+    closed["nearest_same_level_mi"] = closed.apply(nearest, axis=1)
+    s = closed["nearest_same_level_mi"]
+    print("\nClosed schools measured: %d" % len(s))
     print("Mean distance to nearest surviving same-level school : %.2f mi" % s.mean())
     print("Median                                               : %.2f mi" % s.median())
     print("Min / Max                                            : %.2f / %.2f mi"
@@ -268,22 +338,33 @@ def main():
     for _, r in far.iterrows():
         print("  %-40s %5.2f mi  (%s)"
               % (r["school_name"], r["nearest_same_level_mi"], r["community_area"].title()))
+    print("\nNearest 3 (distances near zero mean another school was operating")
+    print("in or beside the closed building by SY2016-17):")
+    near = closed.sort_values("nearest_same_level_mi").head(3)
+    for _, r in near.iterrows():
+        pool = av[(av["primary_category"] == r["primary_category"]) & av["lat"].notna()]
+        dists = [(haversine_miles(r["latitude"], r["longitude"], x.lat, x.lng), x.long_name)
+                 for x in pool.itertuples()]
+        d, nm = min(dists)
+        print("  %-40s %5.3f mi -> %s" % (r["school_name"], d, nm))
 
     # ---------------------------------------------------------------
     rule("8. HEADLINE NUMBERS FOR THE PAPER")
-    print("Closed schools on the 2013 roster (primary source) : %d" % len(closed))
-    print("Community areas touched by a closure               : %d of 77"
+    print("Schools on the 2013 proposal roster (primary source): %d" % len(roster))
+    print("Spared at the May 22 vote (active in SY2016-17)     : %d" % len(SPARED))
+    print("Schools that actually closed                        : %d" % len(closed))
+    print("Community areas touched by an actual closure        : %d of 77"
           % closed["community_area"].nunique())
-    print("Share of closures on the South or West Side        : %.1f%%"
-          % (100 * sw / len(closed)))
-    print("Share of closures that were elementary             : %.1f%%"
-          % (100 * lvl.get("ES", 0) / len(closed)))
-    print("Top community area (West Town) closures            : %d" % by_ca.iloc[0])
+    print("Share of closures on the South or West Side         : %.1f%% (%d of %d)"
+          % (100 * sw / len(closed), sw, len(closed)))
+    print("Share of closures that were elementary              : %.1f%% (%d of %d)"
+          % (100 * lvl.get("ES", 0) / len(closed), lvl.get("ES", 0), len(closed)))
+    print("Top community area (West Town) closures             : %d" % by_ca.iloc[0])
     print("Surviving SY2016-17 schools that are majority-Black : %d of %d (%.1f%%)"
           % (maj_black, len(valid), 100 * maj_black / len(valid)))
-    print("Surviving-system Black enrollment share            : %.1f%%" % sys_black)
+    print("Surviving-system Black enrollment share             : %.1f%%" % sys_black)
     print("Surviving-system low-income enrollment share        : %.1f%%" % sys_low)
-    print("Median closed-school distance to nearest same-level  : %.2f mi" % s.median())
+    print("Median closed-school distance to nearest same-level : %.2f mi" % s.median())
 
 
 if __name__ == "__main__":

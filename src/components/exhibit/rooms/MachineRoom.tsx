@@ -11,6 +11,7 @@
 /*  quiet.                                                             */
 /* ------------------------------------------------------------------ */
 import { useMemo, type ReactNode } from "react";
+import type { LampState } from "@/lib/exhibit/types";
 import { COUNTER_ROOM_ID, machineOf, type RoomId } from "@/lib/exhibit/machines";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { COUNTER_ROOM, ROOM_STATIONS, type RoomStation } from "@/lib/exhibit/content/rooms";
@@ -22,11 +23,10 @@ export interface MachineRoomProps {
   roomId: RoomId;
 }
 
-/* Rooms mount Rigged Instrument stations, which read the same
- * InteractiveContext contract the tour's plinths provide. A room
- * station is always live and never a pause point; completion and
- * interaction pings are tour machinery and no-op here, while
- * firedOnce/markFired keep once-per-session moments honest. */
+/* Room stations read the same InteractiveContext contract the flow's
+ * station blocks provide. A room station is always live; completion
+ * and interaction pings are no-ops, while firedOnce/markFired keep
+ * once-per-session moments honest. */
 function RoomInstrumentScope({ children }: { children: ReactNode }) {
   const state = useExhibitState();
   const dispatch = useExhibitDispatch();
@@ -92,7 +92,6 @@ function CounterWall() {
 }
 
 export default function MachineRoom({ roomId }: MachineRoomProps) {
-  const state = useExhibitState();
   const isCounter = roomId === COUNTER_ROOM_ID;
   const machine = isCounter ? undefined : machineOf(roomId);
   const stations = ROOM_STATIONS[roomId];
@@ -113,7 +112,13 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
   }
 
   if (!machine) return null;
-  const lamp = state.machines[roomId];
+  /* the lamp reads the machine's documented end state; there is no
+     playback clock to track any more */
+  const lamp: LampState = machine.renamedTo
+    ? "renamed"
+    : machine.offYear !== null
+      ? "off_residue"
+      : "on";
   const title = machineTitle(machine);
 
   return (
@@ -183,7 +188,7 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
           <LampDisc lampState={lamp} />
           <div className="min-w-0">
             <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-              The lamp, right now
+              The lamp, where the record leaves it
             </p>
             <p className="mt-1 text-xs leading-relaxed text-exh-ink">
               {stateSentence(machine, lamp)}

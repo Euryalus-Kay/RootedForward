@@ -3,20 +3,18 @@
 /*  THE COUNTER-MACHINE, the sixth room, entered through the door at   */
 /*  the tail of chapter ten. It has no machines.json entry, no lamp,   */
 /*  and no thesis wall, because it is not a machine; it is the record  */
-/*  of what beat them. Four stations: THE ANSWER KEY (the matching     */
-/*  board; its pairing data lives here so the cards station reads the  */
-/*  same map), THE GEAR TRAIN (locked until all five machine rooms     */
-/*  are visited), THE CARDS (the collectible set, derived from         */
-/*  visitedRooms), and the honest COLLECTION IN PROGRESS plate for     */
-/*  the rebuilding stories whose records are not gathered yet.         */
+/*  of what beat them. The matching game and the gear train were       */
+/*  retired with the reader rebuild; the room now reads as documents:  */
+/*  THE ANSWER KEY (each machine beside the counter-move that stopped  */
+/*  it, every pairing sourced) and the honest COLLECTION IN PROGRESS   */
+/*  plate for the rebuilding stories whose records are not gathered    */
+/*  yet.                                                               */
 /* ------------------------------------------------------------------ */
-import AnswerKey, { type CounterMoveDef } from "@/components/exhibit/rooms/AnswerKey";
-import GearTrain from "@/components/exhibit/rooms/GearTrain";
+import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
 import { machineTitle } from "@/components/exhibit/hud/BrassLamp";
-import { allMachines, COUNTER_ROOM_ID } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM_ID, machineOf } from "@/lib/exhibit/machines";
 import type { MachineId } from "@/lib/exhibit/types";
-import { useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import type { RoomStation } from "./shared";
 
 /* ---- the room's nameplate; machines.json has no entry for this door */
@@ -29,9 +27,18 @@ export const COUNTER_ROOM = {
     "Five machines ran against the neighborhood. None of them switched off on its own. This room holds what did the switching.",
 } as const;
 
-/* ---- THE ANSWER KEY data map --------------------------------------- */
-/* One entry per machine. The bulldozer's pairing is accepted but       */
-/* returns STILL CONTESTED, because that machine has no off year.       */
+/* ---- THE ANSWER KEY, as a document ---------------------------------- */
+/* One entry per machine. The bulldozer's row reads STILL CONTESTED,     */
+/* because that machine has no off year.                                 */
+
+export interface CounterMoveDef {
+  machineId: MachineId;
+  counterName: string;
+  counterLine: string;
+  factIds: string[];
+  contested?: boolean;
+}
+
 export const ANSWER_KEY: CounterMoveDef[] = [
   {
     machineId: "deed",
@@ -66,75 +73,51 @@ export const ANSWER_KEY: CounterMoveDef[] = [
   },
 ];
 
-/* fixed scramble for the right column; no row faces its own machine */
-const COUNTER_ORDER: MachineId[] = ["map", "contract", "deed", "bulldozer", "code"];
-
 const BOARD_CAPTION =
   "Every machine that stopped was stopped by organized neighbors holding a legal lever. The one without a full stop is the one that still needs hands.";
 
-const counterMoveOf = (id: MachineId) => ANSWER_KEY.find((p) => p.machineId === id);
-
-/* ---- THE CARDS, the collectible set --------------------------------- */
-/* Collection is derived state: visiting a machine room collects that   */
-/* machine's card. No new state, no new action.                         */
-function MachineCardsStation() {
-  const state = useExhibitState();
+function AnswerKeyPanel() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {allMachines().map((m) => {
-        const collected = state.visitedRooms.includes(m.machineId);
-        const move = counterMoveOf(m.machineId);
-        if (!collected) {
-          return (
-            <div
-              key={m.machineId}
-              data-testid={`machine-card-${m.machineId}`}
-              data-collected="false"
-              className="rounded-sm border border-dashed border-exh-ink/35 bg-exh-linen-deep/30 p-4 sm:p-5"
-            >
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-                Machine card
-              </p>
-              <p className="mt-2 font-display text-xl text-exh-ink-soft">{machineTitle(m)}</p>
-              <p className="mt-2 text-xs leading-relaxed text-exh-ink-soft">
-                Visit the machine room to collect this card.
-              </p>
-            </div>
-          );
-        }
+    <div data-testid="room-answer-key" className="space-y-4">
+      {ANSWER_KEY.map((move) => {
+        const machine = machineOf(move.machineId);
+        if (!machine) return null;
         return (
           <PaperCard
-            key={m.machineId}
-            tone="deep"
-            data-testid={`machine-card-${m.machineId}`}
-            data-collected="true"
+            key={move.machineId}
+            data-testid={`answer-row-${move.machineId}`}
             className="p-4 sm:p-5"
           >
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-                Machine card
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <p className="font-display text-lg text-exh-ink">{machineTitle(machine)}</p>
+              <p className="exh-mono text-xs text-exh-ink-soft">
+                On {machine.onYear} &middot; Off{" "}
+                {machine.offYear !== null ? machine.offYear : "never"}
               </p>
-              <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-exh-gold" />
             </div>
-            <p className="mt-2 font-display text-xl text-exh-ink">{machineTitle(m)}</p>
-            <p className="exh-plat mt-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
-              {m.plainName}
+            <p className="exh-plat mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+              {move.contested ? "Still contested" : "What stopped it"}
             </p>
-            <p className="exh-mono mt-3 text-xs text-exh-ink">
-              On {m.onYear} <span className="text-exh-ink-soft">&middot;</span> Off{" "}
-              {m.offYear !== null ? m.offYear : "never"}
-            </p>
-            {move ? (
-              <>
-                <p className="exh-plat mt-3 text-[9px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft">
-                  {move.contested ? "Still contested" : "The counter-move"}
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-exh-ink">{move.counterName}</p>
-              </>
+            {move.contested ? (
+              <span
+                data-testid="answer-still-contested"
+                className="exh-plat mt-1 inline-block rounded-[2px] border-2 border-exh-ink px-1.5 py-0.5 text-[9px] font-bold uppercase leading-snug tracking-[0.12em] text-exh-ink"
+              >
+                no off year in the record
+              </span>
             ) : null}
+            <p className="mt-1.5 text-sm leading-relaxed text-exh-ink">
+              <span className="font-semibold">{move.counterName}.</span> {move.counterLine}
+            </p>
+            <div className="mt-2 flex flex-col gap-1.5 border-t border-exh-ink/15 pt-2.5">
+              {move.factIds.map((id) => (
+                <FactValue key={id} id={id} size="sm" />
+              ))}
+            </div>
           </PaperCard>
         );
       })}
+      <p className="max-w-prose text-sm leading-relaxed text-exh-ink-soft">{BOARD_CAPTION}</p>
     </div>
   );
 }
@@ -155,20 +138,8 @@ export const COUNTER_STATIONS: RoomStation[] = [
   {
     id: "answer-key",
     eyebrow: "The Answer Key",
-    lead: "Five machines, five counter-moves. Match each machine to what beat it, and let the record correct you.",
-    body: <AnswerKey pairs={ANSWER_KEY} counterOrder={COUNTER_ORDER} caption={BOARD_CAPTION} />,
-  },
-  {
-    id: "gear-train",
-    eyebrow: "The Gear Train",
-    lead: "Five gears, one train. Turn any of them and read the mesh points.",
-    body: <GearTrain />,
-  },
-  {
-    id: "cards",
-    eyebrow: "The Cards",
-    lead: "One card per machine room. The set is your receipt for the tour.",
-    body: <MachineCardsStation />,
+    lead: "Five machines, five counter-moves, each pairing carried by its record.",
+    body: <AnswerKeyPanel />,
   },
   {
     id: "collection",

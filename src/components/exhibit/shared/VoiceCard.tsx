@@ -1,18 +1,14 @@
 "use client";
 /* ------------------------------------------------------------------ */
-/*  VoiceCard, the collectible voice medallion. A circular button      */
-/*  (credited portrait when one exists, otherwise a monogram on deep   */
-/*  linen, never a stand-in image) that opens an inline paper card     */
-/*  with the person's name, years, role, and their words. The honesty  */
-/*  rule is enforced here and only here: quotation marks appear on     */
-/*  screen only when quoteStatus begins with "verbatim"; paraphrases   */
-/*  render without quote marks behind an "in summary" chip. First      */
-/*  open dispatches COLLECT_VOICE; the settle-in flourish rides the    */
-/*  exh-ledger-in animation, which [data-motion="off"] disables, so    */
-/*  reduced motion needs no JS branch for it.                          */
+/*  VoiceCard, the voice medallion. A circular button (credited        */
+/*  portrait when one exists, otherwise a monogram on deep linen,      */
+/*  never a stand-in image) that opens an inline paper card with the   */
+/*  person's name, years, role, and their words. The honesty rule is   */
+/*  enforced here and only here: quotation marks appear on screen      */
+/*  only when quoteStatus begins with "verbatim"; paraphrases render   */
+/*  without quote marks behind an "in summary" chip.                   */
 /* ------------------------------------------------------------------ */
 import { useEffect, useId, useRef, useState } from "react";
-import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { isVerbatim, voiceOf } from "@/lib/exhibit/voices";
 import { cn } from "@/lib/utils";
 import PaperCard from "./PaperCard";
@@ -42,13 +38,9 @@ const MEDALLION_SIZE: Record<NonNullable<VoiceCardProps["size"]>, string> = {
 
 export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
   const voice = voiceOf(personId);
-  const state = useExhibitState();
-  const dispatch = useExhibitDispatch();
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const cardId = useId();
-
-  const collected = voice ? state.voicesFound.includes(voice.personId) : false;
 
   // Escape closes the card and returns focus to the medallion
   useEffect(() => {
@@ -76,12 +68,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
   const words = verbatim ? voice.quote : voice.paraphrase;
   const factRef = voice.factRef ?? undefined;
 
-  const toggle = () => {
-    if (!open && !collected) {
-      dispatch({ type: "COLLECT_VOICE", personId: voice.personId });
-    }
-    setOpen((o) => !o);
-  };
+  const toggle = () => setOpen((o) => !o);
 
   return (
     <div className="inline-flex max-w-full flex-col items-center gap-2">
@@ -91,7 +78,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
         data-testid={`voice-medallion-${voice.personId}`}
         aria-expanded={open}
         aria-controls={cardId}
-        aria-label={`Voice, ${voice.name}${collected ? ", collected" : ""}`}
+        aria-label={`Voice, ${voice.name}`}
         onClick={toggle}
         className={cn(
           "relative shrink-0 cursor-pointer rounded-full border-2 bg-exh-linen-deep",
@@ -113,12 +100,6 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
           <span aria-hidden="true" className="exh-plat font-semibold tracking-[0.08em] text-exh-ink">
             {initialsOf(voice.name)}
           </span>
-        )}
-        {collected && (
-          <span
-            aria-hidden="true"
-            className="exh-ledger-in absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border border-exh-linen bg-exh-gold"
-          />
         )}
       </button>
 

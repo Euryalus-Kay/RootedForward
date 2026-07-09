@@ -1,0 +1,153 @@
+{
+  "chapters": [
+    {
+      "chapterId": "intro",
+      "voiceover": "Stand on a Hyde Park sidewalk and the ground feels settled. Stone houses, a major university, a park along the lake. It looks permanent. It is not. This neighborhood sits seven miles south of the Loop, and it has been built and torn down and built again. Each time, the people doing the building were institutions, and the people living here had little say. A railroad. A world's fair. A university. A federal program. Each one redrew the map. In the 1950s, urban renewal here moved more than fifteen thousand people off their blocks. The reshaping never stopped.",
+      "lines": [
+        "Stand on a Hyde Park sidewalk and the ground feels settled.",
+        "Stone houses, a major university, a park along the lake.",
+        "It looks permanent.",
+        "It is not.",
+        "This neighborhood sits seven miles south of the Loop,",
+        "and it has been built and torn down and built again.",
+        "Each time, the people doing the building were institutions,",
+        "and the people living here had little say.",
+        "A railroad. A world's fair. A university. A federal program.",
+        "Each one redrew the map.",
+        "In the 1950s, urban renewal here moved more than fifteen thousand people off their blocks.",
+        "The reshaping never stopped."
+      ],
+      "hostScript": "I'm standing in Hyde Park, on the South Side, about seven miles south of downtown Chicago. Look around and it feels like it's always been here. It hasn't. This is some of the most reshaped ground in the city, and the people doing the reshaping were almost never the people who lived on it. They were institutions with money and a plan. So that's the question I want us to carry through this whole tour. Who keeps deciding what this neighborhood becomes, and what happens to the people already here when they decide."
+    },
+    {
+      "chapterId": "formation",
+      "voiceover": "In 1853, on advice from Senator Stephen Douglas, a young lawyer named Paul Cornell bought three hundred acres of lakefront between 51st and 55th Streets. He called it Hyde Park, after the London park. The land was worthless until people could reach it. So Cornell handed the Illinois Central Railroad sixty acres, and in return he got a station at 53rd Street and six trains a day each way to downtown. Prairie became suburb. In 1857 he opened the Hyde Park House, a four-story wood hotel on the water, where Mary Todd Lincoln stayed with her sons in the summer of 1865. Within ten years a thousand people lived here. By 1889 the surrounding township held roughly eighty-five thousand, and that June they voted to join Chicago.",
+      "lines": [
+        "In 1853, on advice from Senator Stephen Douglas,",
+        "a young lawyer named Paul Cornell bought three hundred acres of lakefront",
+        "between 51st and 55th Streets.",
+        "He called it Hyde Park, after the London park.",
+        "The land was worthless until people could reach it.",
+        "So Cornell handed the Illinois Central Railroad sixty acres,",
+        "and in return he got a station at 53rd Street",
+        "and six trains a day each way to downtown.",
+        "Prairie became suburb.",
+        "In 1857 he opened the Hyde Park House,",
+        "a four-story wood hotel on the water,",
+        "where Mary Todd Lincoln stayed with her sons in the summer of 1865.",
+        "Within ten years a thousand people lived here.",
+        "By 1889 the surrounding township held roughly eighty-five thousand,",
+        "and that June they voted to join Chicago."
+      ],
+      "hostScript": ""
+    },
+    {
+      "chapterId": "worlds-fair",
+      "voiceover": "In the summer of 1893, Jackson Park became a city made of plaster. The World's Columbian Exposition opened to the public on May 1 and closed October 30, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted, who had co-designed Central Park, turned a marshy lakefront into lagoons and left a wooded island at the center. The heart of it was the Court of Honor, neoclassical halls coated in white staff and lit at night by electricity. People called it the White City. On the Midway, George Ferris built the first Ferris Wheel. Roughly twenty-seven million people came over six months. Almost none of it was meant to last. Fire and demolition cleared the rest, and only the old Palace of Fine Arts survived, reopening in 1933 as the Museum of Science and Industry.",
+      "lines": [
+        "In the summer of 1893, Jackson Park became a city made of plaster.",
+        "The World's Columbian Exposition opened to the public on May 1 and closed October 30,",
+        "built to mark four hundred years since Columbus reached the Americas.",
+        "Daniel Burnham ran the construction.",
+        "Frederick Law Olmsted, who had co-designed Central Park,",
+        "turned a marshy lakefront into lagoons and left a wooded island at the center.",
+        "The heart of it was the Court of Honor,",
+        "neoclassical halls coated in white staff and lit at night by electricity.",
+        "People called it the White City.",
+        "On the Midway, George Ferris built the first Ferris Wheel.",
+        "Roughly twenty-seven million people came over six months.",
+        "Almost none of it was meant to last.",
+        "Fire and demolition cleared the rest,",
+        "and only the old Palace of Fine Arts survived,",
+        "reopening in 1933 as the Museum of Science and Industry."
+      ],
+      "hostScript": ""
+    },
+    {
+      "chapterId": "university",
+      "voiceover": "In May 1889, John D. Rockefeller pledged six hundred thousand dollars toward a new Baptist university in Chicago, on one condition. Other donors had to match it with four hundred thousand more. Two men, Frederick Gates and Thomas Goodspeed, knocked on doors until they had it. The University of Chicago was incorporated on September 10, 1890. Marshall Field, the city's leading dry-goods merchant, gave the first ten acres in Hyde Park. To run it, Rockefeller picked William Rainey Harper, a man who had earned a Yale doctorate in his teens, and Harper built a research university from nothing. The first classes met on October 1, 1892, five hundred ninety-four men and women under a faculty of about a hundred twenty. Henry Ives Cobb laid out the gray Gothic quadrangles. By 1910 Rockefeller's gifts had reached about thirty-five million dollars.",
+      "lines": [
+        "In May 1889, John D. Rockefeller pledged six hundred thousand dollars",
+        "toward a new Baptist university in Chicago, on one condition.",
+        "Other donors had to match it with four hundred thousand more.",
+        "Two men, Frederick Gates and Thomas Goodspeed,",
+        "knocked on doors until they had it.",
+        "The University of Chicago was incorporated on September 10, 1890.",
+        "Marshall Field, the city's leading dry-goods merchant,",
+        "gave the first ten acres in Hyde Park.",
+        "To run it, Rockefeller picked William Rainey Harper,",
+        "a man who had earned a Yale doctorate in his teens,",
+        "and Harper built a research university from nothing.",
+        "The first classes met on October 1, 1892,",
+        "five hundred ninety-four men and women under a faculty of about a hundred twenty.",
+        "Henry Ives Cobb laid out the gray Gothic quadrangles.",
+        "By 1910 Rockefeller's gifts had reached about thirty-five million dollars."
+      ],
+      "hostScript": ""
+    },
+    {
+      "chapterId": "color-line",
+      "voiceover": "A single line in a property deed could decide who lived on a block. By 1940, about two hundred seventy-eight thousand Black Chicagoans lived in the city, up from roughly forty thousand in 1910, drawn north by work in meatpacking, steel, and manufacturing. Most were held inside a narrow corridor on the South Side. The thing that held them there was the racially restrictive covenant, a clause written into the deed that barred sale or rent to anyone not of the Caucasian race. Hyde Park, Kenwood, and Woodlawn used these covenants heavily, and the University of Chicago lent quiet legal and financial support. Owners' associations filed suit to push Black families out. Carl Hansberry fought one to the Supreme Court in 1940 and won on narrow grounds. The covenants did not truly fall until 1948, in Shelley v. Kraemer.",
+      "lines": [
+        "A single line in a property deed could decide who lived on a block.",
+        "By 1940, about two hundred seventy-eight thousand Black Chicagoans lived in the city,",
+        "up from roughly forty thousand in 1910,",
+        "drawn north by work in meatpacking, steel, and manufacturing.",
+        "Most were held inside a narrow corridor on the South Side.",
+        "The thing that held them there was the racially restrictive covenant,",
+        "a clause written into the deed that barred sale or rent to anyone not of the Caucasian race.",
+        "Hyde Park, Kenwood, and Woodlawn used these covenants heavily,",
+        "and the University of Chicago lent quiet legal and financial support.",
+        "Owners' associations filed suit to push Black families out.",
+        "Carl Hansberry fought one to the Supreme Court in 1940 and won on narrow grounds.",
+        "The covenants did not truly fall until 1948, in Shelley v. Kraemer."
+      ],
+      "hostScript": ""
+    },
+    {
+      "chapterId": "urban-renewal",
+      "voiceover": "In 1952 the University of Chicago organized the South East Chicago Commission, and it set out to remake the streets around its campus. The Hyde Park-Kenwood Urban Renewal Plan covered eight hundred fifty-six acres and called for tearing down six hundred thirty-eight buildings. The first one came down on May 10, 1955, before the full plan even passed. The City Council approved it on November 7, 1958. About four thousand families were displaced. The university spent twenty-nine million dollars of its own money to buy, control, and rebuild the neighborhood. Who got to come back was not random. In the Hyde Park A and B projects, forty-six percent of displaced white families found a new home inside Hyde Park-Kenwood. For Black families, the figure was seventeen percent. The land cleared in South West Hyde Park was nearly eighty percent Black. Hyde Park's Black population fell by about forty percent. Then the university turned south, toward Woodlawn.",
+      "lines": [
+        "In 1952 the University of Chicago organized the South East Chicago Commission,",
+        "and it set out to remake the streets around its campus.",
+        "The Hyde Park-Kenwood Urban Renewal Plan covered eight hundred fifty-six acres",
+        "and called for tearing down six hundred thirty-eight buildings.",
+        "The first one came down on May 10, 1955, before the full plan even passed.",
+        "The City Council approved it on November 7, 1958.",
+        "About four thousand families were displaced.",
+        "The university spent twenty-nine million dollars of its own money",
+        "to buy, control, and rebuild the neighborhood.",
+        "Who got to come back was not random.",
+        "In the Hyde Park A and B projects, forty-six percent of displaced white families",
+        "found a new home inside Hyde Park-Kenwood.",
+        "For Black families, the figure was seventeen percent.",
+        "The land cleared in South West Hyde Park was nearly eighty percent Black.",
+        "Hyde Park's Black population fell by about forty percent.",
+        "Then the university turned south, toward Woodlawn."
+      ],
+      "hostScript": ""
+    },
+    {
+      "chapterId": "present",
+      "voiceover": "On June 19, 2026, Juneteenth, the Obama Presidential Center opened its doors. Its museum tower stands about two hundred twenty-five feet over Jackson Park, the lakefront landscape Olmsted and Vaux drew up in 1871, the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars, the most expensive presidential center in American history. Getting here took years. The site was chosen around 2015. Construction began in 2021, after a federal review of the historic park and a string of lawsuits that all failed. While the Center went up, Woodlawn changed around it. On the blocks nearest the Center, single-family home prices doubled after 2019. By 2024, less than a third of the pilot area's housing was still affordable.",
+      "lines": [
+        "On June 19, 2026, Juneteenth,",
+        "the Obama Presidential Center opened its doors.",
+        "Its museum tower stands about two hundred twenty-five feet over Jackson Park,",
+        "the lakefront landscape Olmsted and Vaux drew up in 1871,",
+        "the same ground that held the 1893 World's Fair.",
+        "The campus cost about eight hundred fifty million dollars,",
+        "the most expensive presidential center in American history.",
+        "Getting here took years.",
+        "The site was chosen around 2015.",
+        "Construction began in 2021,",
+        "after a federal review of the historic park",
+        "and a string of lawsuits that all failed.",
+        "While the Center went up, Woodlawn changed around it.",
+        "On the blocks nearest the Center, single-family home prices doubled after 2019.",
+        "By 2024, less than a third of the pilot area's housing was still affordable."
+      ],
+      "hostScript": "I'm standing in Jackson Park, and the building behind me is finally open. People waited more than a decade for this, and it really is a gift to the South Side. It's also a marker. The neighborhood that organized around it, Woodlawn, has been getting more expensive the entire time it went up. So here's what I keep coming back to. Who gets to stay near the thing they fought to bring home."
+    }
+  ]
+}

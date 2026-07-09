@@ -172,6 +172,24 @@
       "title": "Closing panel P1 and all eight P2s fixed before the swap ask. Answer Key contrast, bare room deep links, the wall's honest not-yet-collected stamp with focus management, the strike figure softened to about 500, the armor phrasing displayed as characterization pending its archival clipping, the room-close pause cue, the AA contrast token sweep, and the audio fleet re-encoded to 80 kbps mono (18.9MB to 9.8MB). P3s recorded for post-swap polish, including the HOLC map-year convention pass, room-content audit coverage, gear caption timing, spine tab stops, and the wall latency re-measure after migration 008.",
       "decision": "approved",
       "status": "honored"
+    },
+    {
+      "id": "D-C2-02",
+      "milestone": "C2",
+      "date": "2026-07-08",
+      "source": "owner",
+      "title": "GO-LIVE EXECUTED. The Ground Keeps Moving replaced the film page on chicago/hyde-park (owner chose the full swap). Film player deleted, media pruned to the poster, preview slug redirects with queries preserved, sitemap and indexing on, tag exhibit-live. Root-caused at the gate. the harness still pointed at the preview slug after a failed command chain, and the streamed redirect drops query strings, both fixed. Remaining owner action, apply migration 008 in the Supabase SQL editor to open the wall.",
+      "decision": "approved",
+      "status": "honored"
+    },
+    {
+      "id": "D-R0-01",
+      "milestone": "R (rebuild)",
+      "date": "2026-07-08",
+      "source": "owner + council",
+      "title": "Owner verdict on v1, feels AI and gimmicky, like a kids game, confusing without context, remove the TTS voice, needs museum-grade education. Council diagnosis, the AI feeling is epistemological, simulations standing where real documents exist. Rebuild plan, one reader-paced experience (no audio, no modes, no auto-advance), delete the meta-game layer (medallion collectibles, machine board HUD, DECLINED tap game, press-and-hold, count-ups, gear train, answer key game, machine cards), rewrite all text as historian wall text per humanizer rules, keep only evidence-forward stations (real HOLC map with real surveyor sheets, bombing record, Two Buyers arithmetic, wealth gap scale, annotated real documents), add the Surveyor's Files reading room (576 real descriptions, permalinks), an opening context panel in plain words, and an About this exhibit authorship panel with the registry as bibliography. No visual-system redesign. Fact registry, HOLC data, and harness untouched as infrastructure.",
+      "decision": "approved",
+      "status": "open"
     }
   ]
 }

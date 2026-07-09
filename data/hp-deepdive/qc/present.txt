@@ -1,0 +1,51 @@
+FILM: deepdive-present.mp4 (12:22, 1920x1080). Timecodes are mm:ss from the burned-in frame TC. Source of truth: data/hp-deepdive/present.sections.json (shots/annot/stats) and the per-shot graphic functions in the renderer.
+
+=================== P1 — MUST FIX BEFORE ANYONE SEES IT ===================
+
+P1-A  ~5:09-5:18  CONTRADICTION: 1920 racial covenant labeled as the 2020 Woodlawn ordinance.
+On screen: the "Only Members of the Caucasian Race" deed-covenant scan (credit "KIMBALL JAMES RICHARDS, LAND MERCHANT, 1920"), upper wall label "A Racial Covenant / Deed language barring Black buyers, around 1920", with a SECOND lower wall label burned over the same image "WOODLAWN ORDINANCE / Passed September 2020 after a five-year campaign" and the VO caption "In September 2020 ... the City Council passed the Woodlawn Housing Preservation Ordinance."
+Why wrong: a Jim-Crow-era whites-only covenant is being captioned as a 2020 pro-affordability ordinance — the image flatly contradicts the caption, and two contradictory wall labels are stacked on one frame. (The SAME asset is correctly reused at 6:39-6:57 under the "redlining and racial covenants shut them out" line, so the asset is fine; only the s3 placement is wrong.)
+Fix: in present.sections.json s3 shots, the shot ["img","racial-hierarchy-doc","the City Council passed the Woodlawn Housing Preservation Ordinance"] must NOT use the covenant doc. Swap to a Woodlawn/ordinance-appropriate still — reuse "dd-urban-renewal-2" (63rd Street, Woodlawn) or "dd-urban-renewal-3" (Woodlawn corner), or drop to the obama-aerial2 / greystone clip — and remove the "WOODLAWN ORDINANCE" annot from this image. Keep racial-hierarchy-doc only for the s4 redlining/covenants line.
+
+P1-B  ~5:09-5:10  ROUGH/ILLEGIBLE TRANSITION tied to P1-A.
+On screen: a long cross-dissolve double-exposes the covenant document and the greystone-block photo on top of each other; covenant text and a modern street with parked cars are superimposed, illegible.
+Why wrong: muddy mid-transition frame; reads as a render glitch and amplifies the wrong pairing.
+Fix: once P1-A is re-anchored, shorten this dissolve to a clean cut/short fade so no two photo layers overlap at full opacity.
+
+P1-C  ~9:30-9:36  WRONG DIVIDER NUMBERS: wealth-gap bar chart contradicts narration, stat card, and its own caption.
+On screen: "THE GAP IT LEFT / Median family wealth in America today", bars "$283K (white)" vs "$22K (Black)", caption "That's a gap of more than six to one."
+Why wrong: the script, VO and the immediately-preceding stat card (9:09-9:24) all say $285,000 vs $45,000. The chart shows $283K vs $22K — the Black figure ($22K) is roughly half the real $45K, the white figure is $283K not $285K, and $283/$22 = ~13:1, which contradicts the "six to one" printed under the same chart and on the stat card.
+Fix: in the "wealth-gap" graphic function, set white=$285K, Black=$45K (or "$285,000 / $45,000" to match the stat card) so the ratio reads ~6:1. Verify the bar heights are redrawn to the new ratio, not just the labels.
+
+P1-D  ~9:48-9:57  WRONG-SUBJECT GRAPHIC + CONTRADICTION: the "return-rate" shot renders an urban-renewal displacement chart.
+On screen: "WHO GOT TO STAY / Families who lost their homes and stayed in Hyde Park", animating to "46% white / 17% Black", footnote "In the first University of Chicago renewal projects." Captions under it: "Black wealth grew faster, up 61% from 2019, against 31% for white families" then "A gap that wide doesn't come from one bad decade."
+Why wrong: this is a chart from the urban-renewal chapter, not the wealth-growth-rate chart the s5 shot ["chart","return-rate",...] calls for. Its title and subject (who stayed after renewal) contradict the wealth-growth narration entirely.
+Fix: point the s5 "return-rate" shot at the correct graphic — a two-bar "Wealth growth since 2019 / +61% Black vs +31% white" chart with title like "GROWING, STILL BEHIND" — or, if that graphic does not exist, replace the shot with an archival still (e.g. reuse "color-line-7" washday photo) under these lines and cut the chart. Do NOT ship the "WHO GOT TO STAY / 46% / 17%" chart here.
+
+=================== P2 — GRAPHICS + IMAGE POLISH (Oscar bar) ===================
+
+P2-A  ~2:33-2:42  Confusing image-to-caption link. The Olmsted bust portrait (annot "Frederick Law Olmsted, co-designer of the 1871 plan", dd-present-2) plays under "a group called Protect Our Parks went to court to stop the whole thing." A 19th-c. portrait does not read as a 2010s lawsuit. Fix: re-anchor s2 shot ["img","dd-present-2",...] to a Jackson Park / lagoon image (worlds-fair-8 or dd-present-3) or the Supreme Court still already in this section.
+
+P2-B  ~7:06-7:18  Low-contrast title text on the "hierarchy" graphic. Eyebrow "RANKED BY THEIR EFFECT ON LAND VALUES" and subtitle "The hierarchy Chicago's real-estate industry invented, then taught the nation" are washed out over the bright greystone photo and barely legible; the title also only loosely matches the "a contract sale looked like a mortgage" VO. Fix: add a scrim/darken behind the title block in the "hierarchy" graphic, or relabel the graphic to speak to contract sales; raise text contrast.
+
+P2-C  ~9:09-9:24  Stat-card animation reads as a typo in motion. The wealthgap card counts up through "$284,986 vs $45,000" before settling on "$285,000 vs $45,000." A mid-count frame showing $284,986 looks like a broken number. Fix: in the stat reveal, either snap directly to the rounded $285,000 or cap the count-up so no odd intermediate (284,986) is held long enough to read.
+
+P2-D  ~0:33-0:42  dd-present-2 (Olmsted bust) is a tightly-cropped low-res engraving sitting in a large black frame; against the cinematic aerials it looks like a thumbnail. Fix: recrop/upscale or vignette less aggressively so it fills more of the frame; or replace with the 1871-landscape stand-in noted in present.assets.json.
+
+P2-E  ~4:12-4:30 (and 6:24-6:33)  dd-present-4 greystone block (per assets.json only 600x416) shows visible softness/upscaling when held large. Fix: keep its on-screen scale smaller / add more border, or source a higher-res South Side block.
+
+P2-F  ~9:30-9:36  Even after P1-C, the "wealth-gap" bar chart is sparse — two bars on a near-empty dark field, lots of dead space up top. Fix: tighten vertical composition or add the "Federal Reserve, 2022" source line (matching the stat card) to balance the frame and reinforce sourcing.
+
+P2-G  Wall-label collision risk: the stacked dual wall labels seen in P1-A (upper "A Racial Covenant" + lower "WOODLAWN ORDINANCE") indicate the renderer can print two annot blocks on one image. Audit s3/s4 so only one wall label shows per image; the lower ordinance label should never co-occur with the covenant annot.
+
+=================== P3 — PACING ===================
+
+P3-A  ~8:57-9:27  woodlawn-hist tenement still (wooden back-porches) is held ~20-25s as the bed under the "$3-4 billion" card and the "$285,000 vs $45,000" stat card with almost no motion. Drags. Fix: add a slow push-in, or cut away to color-line-7 (washday) partway through, or shorten.
+
+P3-B  ~10:48-11:54  s6 closing run of obama aerial / campus clips (campus-quads, obama-aerial2, lakefront-reveal) is a long montage of similar high-altitude drone shots; several look near-identical and the section feels like it coasts to the outro. Fix: trim one of the redundant aerials or intercut a ground-level Woodlawn still to break the sameness.
+
+P3-C  ~0:06-1:39 (s1)  Long unbroken stretch of obama-aerial/aerial2 drone footage between the title and the "225 feet" card; the four aerial clips read as one continuous shot. Fix: tighten one aerial or bring the cornell-stone tower shot earlier.
+
+P3-D  ~5:39-6:09 (s4 "Members of the Caucasian Race" doc, used correctly here) is held across multiple stat beats (~30s) on a static document scan with only a slow drift. Slightly long. Fix: shorten the hold or add a subtle ken-burns move across the covenant text.
+
+NOTE on clean items verified: all date/number title cards render correctly with NO comma-in-year errors — "June 19 2026", "Sept 28 2021", "1853", "225 feet", "$850 million", "$440,000", "$72,500 to $330,000", "52 reserved, 1 built", "$2 million", "75 to 95 percent", "500+ on strike", "$3 to 4 billion" all read clean. The $285,000 vs $45,000 stat card is correct; the error is only in the two downstream chart graphics (P1-C, P1-D). No black/corrupt frames found. No watermarked stills found.

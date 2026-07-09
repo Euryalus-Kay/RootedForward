@@ -1,13 +1,17 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  Machine room M1, THE MAP (redlining). Entered through the door at  */
-/*  the tail of chapter six. Station copy lives here; every figure     */
-/*  rides a registered fact id, the D74 excerpt is verbatim from the   */
-/*  digitized survey record carried in data/exhibit/                   */
+/*  the tail of chapter six. The instrument station is a document      */
+/*  panel: the real 1939 Area Description form's printed fields,       */
+/*  transcribed from the form schema, beside one real area sheet.      */
+/*  Every figure rides a registered fact id, the D74 excerpt is        */
+/*  verbatim from the digitized survey record carried in data/exhibit/ */
 /*  holc_descriptions.json (areaId 1488), and the Mapping Inequality   */
 /*  attribution ships with the record as its license requires.         */
 /* ------------------------------------------------------------------ */
-import { GradeYourBlock } from "@/components/exhibit/rigged";
+import gybJson from "../../../../../data/exhibit/grade_your_block.json";
+import PaperCard from "@/components/exhibit/shared/PaperCard";
+import SourceSup from "@/components/exhibit/shared/SourceSup";
 import VoiceCard from "@/components/exhibit/shared/VoiceCard";
 import {
   AttributionCard,
@@ -28,23 +32,69 @@ const D74_EXCERPT =
 const MAPPING_INEQUALITY_ATTRIBUTION =
   "Polygons and area descriptions from Mapping Inequality (Robert K. Nelson, LaDale Winling, et al., University of Richmond Digital Scholarship Lab), CC BY-NC 4.0. Underlying HOLC records are public domain.";
 
+interface GybField {
+  fieldId: string;
+  formItem: string;
+  section: string;
+  historicalLabel: string;
+  type: string;
+}
+
+const GYB = gybJson as unknown as {
+  source: { title: string; url?: string };
+  fields: GybField[];
+};
+
+/* The real form, as a document. The printed field list from the HOLC
+ * Area Description form schema; note where race sits in the order. */
+function TheForm1939() {
+  const sections = new Map<string, GybField[]>();
+  for (const f of GYB.fields) {
+    if (!sections.has(f.section)) sections.set(f.section, []);
+    sections.get(f.section)!.push(f);
+  }
+  return (
+    <PaperCard tone="deep" data-testid="room-form-1939" className="p-4 sm:p-5">
+      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+        {GYB.source.title}
+        <SourceSup source={{ title: GYB.source.title, url: GYB.source.url }} />
+      </p>
+      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+        period document; contains the era&rsquo;s racist language
+      </span>
+      <div className="mt-3 space-y-4">
+        {[...sections.entries()].map(([section, fields]) => (
+          <div key={section}>
+            <p className="exh-mono text-[10px] text-exh-ink-soft">{section}</p>
+            <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 border-l border-exh-ink/15 pl-3">
+              {fields.map((f) => (
+                <div key={f.fieldId} className="contents">
+                  <dt className="exh-mono text-xs leading-5 text-exh-ink-soft">{f.formItem}</dt>
+                  <dd className="exh-serif text-sm italic leading-5 text-exh-ink">
+                    {f.historicalLabel}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+      <p className="mt-4 border-t border-exh-ink/15 pt-3 text-xs leading-relaxed text-exh-ink-soft">
+        The race and nationality of an area&rsquo;s residents are printed fields in section one,
+        before the form asks a single question about the buildings. The grade followed the form.
+      </p>
+    </PaperCard>
+  );
+}
+
 export const THE_MAP_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "The surveyors worked from a form. This is the form, rigged the way the manual rigged it. Grade a block yourself.",
-    body: <GradeYourBlock />,
-  },
-  {
-    id: "paper",
-    eyebrow: STATION_EYEBROWS.paper,
-    lead: "Three documents. The manual that scored race as risk, one surveyor's sheet, and the archive that holds the rest.",
+    lead: "The surveyors worked from a printed form. This is the form, and one sheet filed on it.",
     body: (
       <div className="space-y-4">
-        <FactCard id="redlining.babcock_manual" label="The manual">
-          It told appraisers to study whether what it called incompatible racial groups were
-          present, and it praised the barriers that kept them out.
-        </FactCard>
+        <TheForm1939 />
         <RecordCard
           eyebrow="From the survey record. Sheet D74, South Chicago"
           fields={[
@@ -60,6 +110,19 @@ export const THE_MAP_STATIONS: RoomStation[] = [
           quoteNote="transcription excerpt; the digitized sheet continues"
           factId="redlining.holc_survey_chicago"
         />
+      </div>
+    ),
+  },
+  {
+    id: "paper",
+    eyebrow: STATION_EYEBROWS.paper,
+    lead: "The manual that scored race as risk, and the archive that holds the rest of the sheets.",
+    body: (
+      <div className="space-y-4">
+        <FactCard id="redlining.babcock_manual" label="The manual">
+          It told appraisers to study whether what it called incompatible racial groups were
+          present, and it praised the barriers that kept them out.
+        </FactCard>
         <AttributionCard label="The archive" text={MAPPING_INEQUALITY_ATTRIBUTION} />
       </div>
     ),

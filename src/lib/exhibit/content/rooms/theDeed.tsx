@@ -1,15 +1,12 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  Machine room M4, THE DEED (restrictive covenants). Entered through */
-/*  a door at the tail of chapter five. The machine's bench, Read the  */
-/*  Deed, stays at its ch5 pause point; rooms never remount pause-     */
-/*  point interactives, so the instrument here is a cross-reference    */
-/*  card plus STRIKE THE CLAUSE, a static primary-text panel. The      */
-/*  panel is deliberately paper only (the honest deferral): Shelley's  */
-/*  holding, the residue line from machines.json, and the registered   */
-/*  Illinois removal-process fact, with a provenance chip noting that  */
-/*  the removal walkthrough ships after counsel review. No interactive */
-/*  legal tool is mounted here.                                        */
+/*  a door at the tail of chapter five. The instrument is STRIKE THE   */
+/*  CLAUSE, a static primary-text panel, deliberately paper only (the  */
+/*  honest deferral): Shelley's holding, the residue line from         */
+/*  machines.json, and the registered Illinois removal-process fact,   */
+/*  with a provenance chip noting that the removal walkthrough ships   */
+/*  after counsel review. No interactive legal tool is mounted here.   */
 /* ------------------------------------------------------------------ */
 import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
@@ -19,28 +16,11 @@ import { machineOf } from "@/lib/exhibit/machines";
 import {
   CardGrid,
   FactCard,
-  RecordCard,
   STATION_EYEBROWS,
   type RoomStation,
 } from "./shared";
 
 const DEED = machineOf("deed");
-
-function ReadTheDeedCrossReference() {
-  return (
-    <PaperCard tone="deep" data-testid="room-read-deed-crossref" className="p-4 sm:p-5">
-      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-        Worked at the bench
-      </p>
-      <p className="mt-2 font-display text-xl text-exh-ink">Read the Deed</p>
-      <p className="mt-2 text-sm leading-relaxed text-exh-ink-soft">
-        You open the covenant clause by clause and watch the template tile across the map. The
-        bench sits at its pause point in chapter five, Racism Goes Professional, just outside this
-        door. It stays in the tour so your work there is never disturbed.
-      </p>
-    </PaperCard>
-  );
-}
 
 /* STRIKE THE CLAUSE. Static by design; the room states what the law
  * did, what stayed on paper, and what Illinois built, and defers the
@@ -88,22 +68,8 @@ export const THE_DEED_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "The bench for this machine is in the tour itself. The panel here is the part that is still paperwork today.",
-    body: (
-      <div className="space-y-10">
-        <ReadTheDeedCrossReference />
-        <div>
-          <div className="mb-4 flex items-center gap-3">
-            <span aria-hidden="true" className="h-px min-w-4 flex-1 bg-exh-ink/20" />
-            <h4 className="exh-plat shrink-0 text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-              Strike the clause
-            </h4>
-            <span aria-hidden="true" className="h-px min-w-4 flex-1 bg-exh-ink/20" />
-          </div>
-          <StrikeTheClause />
-        </div>
-      </div>
-    ),
+    lead: "The clause was struck in court in 1948. The panel here is the part that is still paperwork today.",
+    body: <StrikeTheClause />,
   },
   {
     id: "paper",

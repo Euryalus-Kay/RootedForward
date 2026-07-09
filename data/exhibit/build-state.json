@@ -3,7 +3,7 @@
   "exhibit": "the-ground-keeps-moving",
   "previewSlug": "/tours/chicago/hyde-park-exhibit",
   "liveSlug": "/tours/chicago/hyde-park",
-  "swapped": false,
+  "swapped": true,
   "milestones": [
     {
       "id": "0a",
@@ -74,9 +74,30 @@
     {
       "id": "C2",
       "title": "Action layer + hardening + go-live swap",
-      "status": "panel-passed-awaiting-swap",
-      "gateTag": "exhibit-gate-C2",
-      "reviewRef": "data/exhibit/reviews/C2.json"
+      "status": "live",
+      "gateTag": "exhibit-live",
+      "reviewRef": "data/exhibit/reviews/C2.json",
+      "approvedAt": "2026-07-08"
+    },
+    {
+      "id": "R1",
+      "title": "Reader-paced structure, meta-game removal",
+      "status": "in-progress"
+    },
+    {
+      "id": "R2",
+      "title": "Wall text rewrite, context layer, About panel",
+      "status": "in-progress"
+    },
+    {
+      "id": "R3",
+      "title": "Evidence stations, Surveyor's Files, rooms to reading rooms",
+      "status": "pending"
+    },
+    {
+      "id": "R4",
+      "title": "Naive-visitor + humanizer panel, ship",
+      "status": "pending"
     }
   ]
 }

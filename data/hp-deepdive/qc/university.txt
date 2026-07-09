@@ -1,0 +1,46 @@
+FILM: deepdive-university.mp4 (12:03). Frames every 3s + full-res zooms read. Stat cards animate by counting up, so mid-count frames show transient values; defects below are judged at the SETTLED/held frame unless noted.
+
+=== P1 — MUST FIX BEFORE ANYONE SEES IT ===
+
+P1-A) ~10:18–10:33 (s6, shot "university-2" / "Robert Maynard Hutchins, who led the university from 1929")
+On screen: the Harper portrait, wall label "William Rainey Harper / FIRST PRESIDENT, YALE PHD AT NINETEEN, PHOTOGRAPHED 1903", credit "LIBRARY OF CONGRESS". Caption/VO: "The president through these years was Robert Maynard Hutchins, who led the university from 1929."
+Why wrong: the image AND its wall label flatly contradict the narration. Viewers are told this is Hutchins while looking at a portrait explicitly captioned "William Rainey Harper." Same asset is correctly used for Harper at 3:42–4:12, so the reuse is unmistakable.
+Fix: there is no Hutchins still in public/media/hyde-park/img. Either (a) source a public-domain Robert Maynard Hutchins portrait, add an annot entry, and re-point s6 shot 7 to it; or (b) re-anchor this shot to a non-portrait image so no face is mislabelled — e.g. swap to "dd-color-line-12" (Shelley v. Kraemer / Supreme Court) or "racial-hierarchy-doc", and move the Hutchins VO line onto a neutral campus/legal image. Do NOT keep Harper's labelled face under Hutchins narration.
+
+P1-B) ~4:05–4:12 (s3 callout/stat "harper-term", "HARPER IN OFFICE")
+On screen (held, settled): big numerals read "1,891-1906" with a thousands-separator comma in the leading year. Subtitle "Died of cancer at 49, still in office", source "Britannica, William Rainey Harper".
+Why wrong: a comma in a year is the classic broken-graphic tell. The stat value is the only RANGE-valued year card ("1891-1906"), and the number formatter is applying a thousands separator to the 1891. Single-year cards (1886 @ 1:42/2:33, 1890 @ 3:09, 1893 @ 8:21, 1948 @ 10:57) all render clean, so the bug is specifically in the range-rendering / counter path.
+Fix: in the graphic function that renders stat values, stop applying locale/thousands grouping to year strings. For ranges, format each year token without grouping (or treat the whole "1891-1906" string as a label, not a number). Verify the "incorporated 1890" counter (it briefly shows "1413" mid-count ~3:06) and "Standard Oil ~90%" counter (~2:30 shows "~80%" mid-count) settle clean too — they do, but the same counter also produces the comma'd intermediate "1,319-1906" on the Harper card during count-up, which compounds B.
+
+=== P2 — GRAPHICS + IMAGE POLISH (OSCAR BAR) ===
+
+P2-A) ~2:51–2:57 (s2 stat "match", "REQUIRED MATCH")
+The $400,000 counter is sampled mid-count at 2:57 showing "$399,981". It settles to "$400,000" by 3:00 (verified), so not a P1, but the count-up overshoots to a distractingly precise non-round number one frame before landing. Fix: ease the counter to land cleanly, or shorten the count duration so it doesn't park on "$399,981".
+
+P2-B) ~9:02–9:12 (s5 img "homer-hoyt", "The Black Belt and Woodlawn")
+HOLC residential security map fills frame; wall-label title "The Black Belt and Woodlawn" and subtitle "CHICAGO SECURITY MAP OF THE GRADED SOUTH SIDE AROUND 1940" sit directly over the map's own printed header "NO.1 MAP SECTION" and dark map content. The subtitle is nearly illegible against the busy map. Fix: recrop/reposition the asset so the upper-left is emptier under the label, or add a subtle scrim behind the wall label, or push the Ken Burns start so the label sits over the lighter lake area.
+
+P2-C) ~8:55–9:02 (s5 img "great-migration", "The Great Migration")
+Wall-label subtitle "CHICAGO DEFENDER IMAGE OF THE NORTHWARD MOVEMENT, 1920" is low-contrast against the busy sepia group photo and hard to read. Fix: add scrim behind the label or darken the asset's upper-left.
+
+P2-D) ~9:30–9:42 and ~10:06–10:12 (s6 img "racial-hierarchy-doc", "A Restrictive Covenant")
+The "Only Members of the Caucasian Race" covenant clipping (asset 534x350 px) is the lowest-res still in the film. Because it is letterboxed as a portrait it stays readable, but it is visibly softer than neighbors and the Ken Burns push exaggerates the upscale. Fix: source a higher-res scan of the same Chicago Defender covenant clipping, or hold it static (no zoom) to avoid amplifying the softness. Minor.
+
+P2-E) ~1:15–1:21 (s1 img "dd-university-2", Kansas-Nebraska Act map under "The trustees built anyway, past what they could afford")
+The Kansas-Nebraska Act 1854 map over-holds from the prior beat into the "trustees built anyway" caption. The storyboard intends "dd-formation-9" (Chicago ruins, "Built Past What They Could Afford") here. Result: caption-to-image confusion (a national slavery map while VO talks about the school's debt). Fix: trim the dd-university-2 hold and give dd-formation-9 the "trustees built anyway / there was a fire" lines it is anchored to.
+
+P2-F) ~2:30–2:39 (s2 img "dd-university-1" reused as Standard Oil stand-in)
+The "Panic of 1857 / Run on the Seamen's Savings Bank, Harper's Weekly" engraving (wall label still reads Panic of 1857) is on screen while VO says "his Standard Oil controlled around ninety percent of the oil refining," with a "ROCKEFELLER PLEDGE $600,000" callout overlaid. The 1857 bank-run image is being reused as a generic money/oil visual; the wall label (Panic of 1857) does not match the Standard Oil narration. Fix: re-anchor this line to a Standard Oil / oil-refinery or Rockefeller-wealth image, or drop the Panic label during the Standard Oil VO.
+
+=== P3 — PACING ===
+
+P3-A) ~5:24–5:48 (s4 img "university-2", Harper portrait)
+Harper's portrait holds roughly 24s across the Clark-raid VO with only a slow push. Reads static for a research-university "raid" beat that wants energy. Fix: cut to the Clark/Worcester map line or a campus image partway, or shorten the portrait hold to ~10–12s.
+
+P3-B) ~4:21–4:54 (s3 imgs "dd-color-line-14" / "dd-present-7", green quad archway)
+The leafy quad-archway framing holds/repeats ~30s across "coeducational… four quarters… Press." Near-identical successive frames; the section drags. Fix: intercut a second campus angle or the Cobb Hall still earlier, or trim 8–10s.
+
+P3-C) ~7:33–7:45 (s5 img "dd-university-8", gargoyle/grotesque statue)
+The single carved-stone detail holds ~12s under "crenellations and gargoyles and grotesques." Acceptable but on the long side for one static detail. Fix: add a second gargoyle/grotesque detail crop to cover the list, or trim slightly.
+
+NOTES (not defects): opening title card (0:00–0:09) and closing "Rooted Forward" card are clean and well-composed; chapter divider "What Protected Really Meant / CHAPTER 06 / 1948" with the dotted timeline ribbon (~9:24) is good; all single-year stat cards and the $83,000+ / $600,000 / $400,000 / 120 / 594 / $2,500 / 18 / ~$35M cards render clean and centered; archival credits (E. Anthony, Jack Delano, Library of Congress, Wikimedia Commons, HOLC) are present and correct, none are watermarks; the 10:12 newsboy/covenant "double exposure" is just a normal cross-dissolve caught mid-frame, clean by 10:16; the "COPYRIGHT" text on the Harper print is part of the archival photo, not a stray watermark. No black/corrupt frames found.

@@ -1,0 +1,707 @@
+{
+  "chapters": [
+    {
+      "chapterId": "intro",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "A railroad reached the prairie first, then a world's fair, then a university.",
+          "problem": "The chronological order is wrong. The University of Chicago came before the World's Columbian Exposition, not after it. The university was incorporated in 1890, dates its founding to 1891, and held its first classes on October 1, 1892, all before the fair opened on May 1, 1893. The narration reverses the two, putting the world's fair before the university.",
+          "fix": "A railroad reached the prairie first, then a university, then a world's fair."
+        }
+      ],
+      "claims": [
+        {
+          "claim": "Hyde Park sits seven miles south of the Loop.",
+          "verdict": "verified",
+          "note": "Multiple sources confirm Hyde Park is 7 miles (11 km) south of the Loop. (One older Hyde Park Historical Society account phrases it as '6 miles south of downtown,' but the canonical figure is 7 miles.)",
+          "source": "Wikipedia, Hyde Park, Chicago (en.wikipedia.org/wiki/Hyde_Park,_Chicago): 'located on and near the shore of Lake Michigan 7 miles (11 km) south of the Loop.'"
+        },
+        {
+          "claim": "Hyde Park is right on the lake (Lake Michigan).",
+          "verdict": "verified",
+          "note": "Hyde Park is located on and near the shore of Lake Michigan.",
+          "source": "Wikipedia, Hyde Park, Chicago."
+        },
+        {
+          "claim": "Hyde Park is on the South Side (host script).",
+          "verdict": "verified",
+          "note": "Hyde Park is on the South Side of Chicago.",
+          "source": "Wikipedia, Hyde Park, Chicago: 'On the South Side of Chicago.'"
+        },
+        {
+          "claim": "The host is standing about seven miles south of downtown (host script).",
+          "verdict": "verified",
+          "note": "Same 7-miles-south figure, here measured to downtown rather than the Loop; the two are effectively the same point. Accurate.",
+          "source": "Wikipedia, Hyde Park, Chicago."
+        },
+        {
+          "claim": "A railroad reached the prairie first (before the fair and the university).",
+          "verdict": "verified",
+          "note": "The Illinois Central Railroad line predates the neighborhood's development; Paul Cornell deeded land to the IC for a 53rd Street station in the 1850s, and the railroad was the first of the three institutions to arrive. Correct that the railroad came first.",
+          "source": "Hyde Park Historical Society (hydeparkhistory.org/paul-cornell); Wikipedia, Hyde Park, Chicago (Cornell 'negotiated land in exchange for a railroad station at 53rd Street'; railroad constructed in the early 1850s)."
+        },
+        {
+          "claim": "After the railroad came a world's fair, then a university (in that order).",
+          "verdict": "wrong",
+          "note": "The ordering is reversed. The University of Chicago came BEFORE the world's fair, not after it. The University of Chicago was founded in 1890/1891 (first classes Oct 1892), while the World's Columbian Exposition was held in 1893. The correct sequence is railroad, then university, then world's fair.",
+          "correction": "...then a university, then a world's fair. (University of Chicago founded 1890/1891; World's Columbian Exposition 1893.)",
+          "source": "Wikipedia, University of Chicago / History of the University of Chicago (founded 1890, dates founding to July 1, 1891, first classes Oct 1, 1892); Wikipedia, Hyde Park, Chicago ('In 1893, Hyde Park hosted the World's Columbian Exposition'; 'In 1891... the University of Chicago was established')."
+        },
+        {
+          "claim": "In the 1950s a federal urban renewal program pushed more than fifteen thousand people off their blocks.",
+          "verdict": "verified",
+          "note": "The Hyde Park-Kenwood urban renewal project (planned mid-1950s, federally funded slum-clearance funds secured under the Eisenhower administration) displaced about 4,000 families, widely rendered as 'over 15,000 residents.' The 1950s timing, the federal character, and the >15,000 figure are all supported. Note a sharper figure exists: about 4,000 families / 638 buildings demolished across 856 acres; broader 1960-1970 population loss was nearly 30,000, but that wider number is not what the narration claims.",
+          "source": "Chicago Magazine, 'Chicago's Urban Renewal Displaced an Astonishing Number...' (Jan 2018) — 'Hyde Park-Kenwood, which displaced about 4,000 families'; 'federally funded urban renewal projects'; 'Hyde Park A & B... secured federal slum-clearance funds... during President Eisenhower's administration.' Also Docomomo, Hyde Park A & B Urban Renewal Project ('over 15,000 neighborhood residents were displaced')."
+        }
+      ]
+    },
+    {
+      "chapterId": "formation",
+      "finalVerdict": "clean",
+      "fixes": [],
+      "claims": [
+        {
+          "claim": "In 1853 Paul Cornell bought the land that became Hyde Park.",
+          "verdict": "verified",
+          "note": "Multiple sources confirm Cornell's 1853 purchase on the advice of Stephen A. Douglas.",
+          "source": "Wikipedia (Paul Cornell, lawyer); Hyde Park Historical Society; Encyclopedia of Chicago"
+        },
+        {
+          "claim": "Paul Cornell was a young lawyer.",
+          "verdict": "verified",
+          "note": "Cornell was a lawyer, born 1822, so age 31 in 1853. 'Young lawyer' is fair.",
+          "source": "Wikipedia (Paul Cornell, lawyer); Hyde Park Historical Society"
+        },
+        {
+          "claim": "He bought three hundred acres of lakefront.",
+          "verdict": "imprecise",
+          "note": "The 300-acre figure is correct, but reputable sources describe the parcel as land between 51st and 55th Streets bought as a speculative investment; it was not strictly 'lakefront' (the IC right-of-way and lake frontage were a part of the deal). Sources like the Historical Society do call it 'lakefront land,' so this is borderline, but the sharper description is '300 acres between 51st and 55th Streets.'",
+          "correction": "300 acres between 51st and 55th Streets (often described as lakefront)",
+          "source": "Wikipedia (Paul Cornell, lawyer); Encyclopedia of Chicago"
+        },
+        {
+          "claim": "He named it Hyde Park, after the one in London.",
+          "verdict": "verified",
+          "note": "Confirmed; Cornell chose the name to evoke the elite London (and New York) Hyde Park.",
+          "source": "Hyde Park Historical Society; Wikipedia (Hyde Park, Chicago)"
+        },
+        {
+          "claim": "Cornell handed the Illinois Central Railroad sixty acres.",
+          "verdict": "verified",
+          "note": "Confirmed: he deeded 60 of his 300 acres to the Illinois Central.",
+          "source": "Wikipedia (Paul Cornell, lawyer); Encyclopedia of Chicago; Hyde Park Herald"
+        },
+        {
+          "claim": "The railroad gave him a station at 53rd Street.",
+          "verdict": "verified",
+          "note": "Confirmed; the IC agreed to a 53rd Street station (opened 1856). Some sources note the stop is near 51st/53rd, but the 53rd Street designation is standard and correct.",
+          "source": "Wikipedia (Paul Cornell, lawyer); Wikipedia (51st-53rd Street/Hyde Park station)"
+        },
+        {
+          "claim": "and six trains a day downtown.",
+          "verdict": "verified",
+          "note": "The deal committed the IC to 6 daily connections each direction. Note: actual inaugural service on July 21, 1856 ran four round trips, reduced to three by September; but the narration describes the commitment, which sources state as six daily trains each way.",
+          "source": "Wikipedia (Paul Cornell, lawyer): 'a commitment of 6 daily connections to Chicago's Central Depot in each direction'"
+        },
+        {
+          "claim": "In 1857 he put up a four-story wood hotel by the water, the Hyde Park House.",
+          "verdict": "verified",
+          "note": "Confirmed: the Hyde Park House was a four-story wood-frame hotel built 1857 at 53rd Street on Lake Michigan; destroyed by fire 1879.",
+          "source": "Wikipedia (Hyde Park House); Encyclopedia of Chicago; Hyde Park Herald"
+        },
+        {
+          "claim": "Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad.",
+          "verdict": "verified",
+          "note": "Confirmed: Mary Todd Lincoln stayed at the Hyde Park House with sons Robert and Tad for about two and a half months in the summer of 1865.",
+          "source": "Wikipedia (Hyde Park House); Digital Research Library of Illinois History"
+        },
+        {
+          "claim": "A few months after her husband was killed.",
+          "verdict": "verified",
+          "note": "Abraham Lincoln was assassinated April 15, 1865; Mary moved to the Hyde Park House that summer, a few months later (she moved on to the Clifton House around mid-August).",
+          "source": "Wikipedia (Hyde Park House); OSU eHistory"
+        },
+        {
+          "claim": "Within ten years a thousand people lived here.",
+          "verdict": "verified",
+          "note": "The Hyde Park Historical Society states that within a decade there were one thousand residents in the community.",
+          "source": "Hyde Park Historical Society (paul-cornell page)"
+        },
+        {
+          "claim": "The township held 15,716 people in 1880.",
+          "verdict": "verified",
+          "note": "Confirmed: Hyde Park Township's 1880 census population was 15,716 (up from about 3,600 in 1870). Note the narration's 'township' (15,716) covers a far larger area than the Hyde Park neighborhood itself.",
+          "source": "Encyclopedia of Chicago (Hyde Park Township); 1880 U.S. Census"
+        },
+        {
+          "claim": "By 1889 it held about eighty-five thousand.",
+          "verdict": "verified",
+          "note": "Confirmed: the township population reached roughly 85,000 by 1889.",
+          "source": "Wikipedia (Hyde Park, Chicago); Encyclopedia of Chicago"
+        },
+        {
+          "claim": "That year (1889) the voters chose to join Chicago for the water and the sewers.",
+          "verdict": "verified",
+          "note": "Confirmed: Hyde Park Township was annexed to Chicago following the June 29, 1889 vote; voters sought improved water supply, sewerage, and fire/police protection. 'For the water and the sewers' is an accurate, if slightly compressed, summary.",
+          "source": "Encyclopedia of Chicago; Wikipedia (Hyde Park Township, Cook County)"
+        }
+      ]
+    },
+    {
+      "chapterId": "worlds-fair",
+      "finalVerdict": "clean",
+      "fixes": []
+    },
+    {
+      "chapterId": "university",
+      "finalVerdict": "clean",
+      "fixes": [],
+      "claims": [
+        {
+          "claim": "In 1889, John D. Rockefeller pledged $600,000 for a new Baptist university in Chicago",
+          "verdict": "verified",
+          "note": "Rockefeller's pledge was made in May 1889 through the American Baptist Education Society. Amount and year confirmed.",
+          "source": "University of Chicago Library, Building for a Long Future; Philanthropy Roundtable; Rockefeller Archive Center"
+        },
+        {
+          "claim": "Rockefeller set one condition: other donors had to match $400,000 more, and they did",
+          "verdict": "verified",
+          "note": "The $600,000 was conditioned on raising an additional $400,000 from other sources (originally within 90 days, then extended to within a year). The match was raised.",
+          "source": "University of Chicago Library; Rockefeller Archive Center; Philanthropy Roundtable"
+        },
+        {
+          "claim": "The school incorporated in 1890",
+          "verdict": "verified",
+          "note": "The new University of Chicago was incorporated in 1890 by the American Baptist Education Society. (The university dates its organizational founding to July 1, 1891, when Harper became president, but legal incorporation was 1890, as stated.)",
+          "source": "History of the University of Chicago (Wikipedia); University of Chicago"
+        },
+        {
+          "claim": "Marshall Field, the department store man, gave the first ten acres in Hyde Park",
+          "verdict": "verified",
+          "note": "Field donated a ten-acre site (valued at roughly $125,000). 'First' is accurate: he later required the university to purchase additional adjoining land rather than donate it. Goodspeed (the cited source) states the ten-acre gift directly.",
+          "source": "Goodspeed, The Story of the University of Chicago, ch. 3; Chicago Maroon land-ownership history"
+        },
+        {
+          "claim": "Rockefeller picked William Rainey Harper to run it",
+          "verdict": "verified",
+          "note": "Harper was selected as the university's first president; Rockefeller pressed for his appointment.",
+          "source": "University of Chicago Office of the President; William Rainey Harper (Britannica/Wikipedia)"
+        },
+        {
+          "claim": "Harper held a Yale doctorate he had earned in his teens",
+          "verdict": "verified",
+          "note": "Harper received his Yale PhD in 1875. Most sources say at age 18; a minority say 19 (just before his 19th birthday). Either way, 'in his teens' is accurate.",
+          "source": "University of Chicago Office of the President; Britannica; Harper College archives"
+        },
+        {
+          "claim": "Classes opened in 1892 with 594 men and women",
+          "verdict": "verified",
+          "note": "Opening Day was October 1, 1892, with an enrollment of 594 students at the College. The coeducational ('men and women') characterization is correct.",
+          "source": "University of Chicago architecture site (Main Quadrangle); Chicago Maroon; Encyclopedia of Chicago"
+        },
+        {
+          "claim": "Henry Ives Cobb laid out the gray Gothic quads",
+          "verdict": "verified",
+          "note": "Chicago architect Henry Ives Cobb designed the main quadrangles in Collegiate/Victorian Gothic, modeled on Oxford and Cambridge. The limestone reads gray, consistent with 'gray Gothic.'",
+          "source": "University of Chicago architecture site; Encyclopedia of Chicago; Julia Bachrach Consulting"
+        },
+        {
+          "claim": "Overlay caption: $600,000 pledge, May 1889, conditioned on a $400,000 match",
+          "verdict": "verified",
+          "note": "May 1889 date, $600,000 pledge, and $400,000 match condition all confirmed.",
+          "source": "University of Chicago Library; Philanthropy Roundtable"
+        },
+        {
+          "claim": "Overlay caption: 594 students on opening day, October 1, 1892",
+          "verdict": "verified",
+          "note": "Date and enrollment figure both confirmed.",
+          "source": "University of Chicago architecture site; Chicago Maroon"
+        },
+        {
+          "claim": "Overlay caption: $35 million in Rockefeller gifts by 1910",
+          "verdict": "imprecise",
+          "note": "Sources give Rockefeller's total as 'almost $35 million' / '$35 million' reached with his farewell $10 million gift in 1910, accumulated 1892-1910. The figure is correct but is an approximation ('almost $35 million'); the flat '$35 million by 1910' is right at the endpoint. Treat as essentially accurate; minor rounding. Consider 'nearly $35 million' for full precision.",
+          "correction": "Nearly $35 million in Rockefeller gifts by 1910 (his final $10 million farewell gift in 1910 brought the total to about $35 million)",
+          "source": "University of Chicago Library, Building for a Long Future, John D. Rockefeller; Rockefeller Archive Center"
+        },
+        {
+          "claim": "Overlay source credit: Goodspeed, The Story of the University of Chicago",
+          "verdict": "verified",
+          "note": "This is a real, standard primary source (Thomas W. Goodspeed, The Story of the University of Chicago, 1890-1925) and supports the ten-acre and founding claims.",
+          "source": "Goodspeed, The Story of the University of Chicago (Mead Project / brocku.ca)"
+        }
+      ]
+    },
+    {
+      "chapterId": "color-line",
+      "finalVerdict": "clean",
+      "fixes": [],
+      "claims": [
+        {
+          "claim": "The property was at 6140 South Rhodes Avenue in Woodlawn, and its deed carried a restrictive covenant.",
+          "verdict": "verified",
+          "note": "Carl Hansberry bought a three-flat at 6140 S. Rhodes Ave in 1937; it sits in the Washington Park subdivision of Woodlawn and was covered by a racial covenant signed Sept 30, 1927 and recorded Feb 1, 1928. This is the Hansberry v. Lee house.",
+          "source": "Washington Park Subdivision, Wikipedia; City of Chicago Lorraine Hansberry House Landmark Report; Steppenwolf Theatre, The House Hansberry Built"
+        },
+        {
+          "claim": "The covenant barred selling or renting the property to anyone who was not white.",
+          "verdict": "verified",
+          "note": "Covenant text barred sale, conveyance, lease, or occupancy by 'any negro or negroes' (except house servants, janitors, or chauffeurs). Effect is correctly summarized as barring sale or rental to non-white residents.",
+          "source": "Washington Park Subdivision, Wikipedia (covenant text); City of Chicago Landmark Report"
+        },
+        {
+          "claim": "Such a clause was called a racially restrictive covenant, and neighbors signed in blocs so the clause covered the whole block.",
+          "verdict": "verified",
+          "note": "Covenants were signed by owners across whole streets/blocks (Evans, Langley, Rhodes, etc., between 60th and 63rd); bloc signing to cover whole areas is documented.",
+          "source": "Washington Park Subdivision, Wikipedia; Chicago Covenants Project"
+        },
+        {
+          "claim": "Hyde Park and Woodlawn leaned on these covenants.",
+          "verdict": "verified",
+          "note": "First wave of covenants (1928-1929) covered Kenwood, Oakland, Hyde Park, and Woodlawn; Hyde Park is described as governed by racial covenants in the period. Woodlawn covenant (Washington Park subdivision) is the Hansberry covenant.",
+          "source": "Chicago Covenants Project; Encyclopedia of Chicago, Restrictive Covenants; Hyde Park Historical Society"
+        },
+        {
+          "claim": "The University of Chicago put quiet money behind defending the covenants in court.",
+          "verdict": "verified",
+          "note": "The university's own public history states it funded the legal defense of restrictive covenants; the Woodlawn covenant was organized with covert legal and financial support from the university. No single named official or dollar figure exists, and the narration correctly asserts none.",
+          "source": "University of Chicago, Southside/Housing history; Chicago Covenants Project; Hirsch, Making the Second Ghetto; Winling, Building the Ivory Tower"
+        },
+        {
+          "claim": "Chicago's Black population was about 40,000 people in 1910.",
+          "verdict": "imprecise",
+          "correction": "About 44,000 (1910 census figure 44,103); the Encyclopedia of Chicago uses 44,000.",
+          "note": "The authoritative figure is 44,000-44,103, not 40,000. 'About 40,000' is widely repeated in secondary sources and the hedge 'about' softens it, but for a museum the sharper, source-of-record number is ~44,000. Rounding 44,103 to 40,000 understates it by roughly 4,000.",
+          "source": "Encyclopedia of Chicago, Great Migration ('44,000'); 1910 U.S. Census (44,103)"
+        },
+        {
+          "claim": "Chicago's Black population was around 278,000 by 1940.",
+          "verdict": "verified",
+          "note": "1940 census figure is 277,731, routinely rounded to 278,000; Encyclopedia of Chicago says 'nearly 280,000.' 'Around 278,000' is exact.",
+          "source": "History of African Americans in Chicago, Wikipedia; 1940 U.S. Census (277,731); Encyclopedia of Chicago"
+        },
+        {
+          "claim": "Most of that population was held inside a thin strip of the South Side.",
+          "verdict": "verified",
+          "note": "The Black Belt corridor on the South Side confined most Black newcomers; standard in the scholarship.",
+          "source": "Encyclopedia of Chicago, Black Belt; Hirsch, Making the Second Ghetto"
+        },
+        {
+          "claim": "The covenants did not lose their teeth until 1948, in Shelley v. Kraemer.",
+          "verdict": "verified",
+          "note": "Shelley v. Kraemer (1948) held judicial enforcement of racial covenants unconstitutional, ending their enforceability. The 1940 Hansberry win was procedural and did not strike covenants down, so 1948 is the correct turning point.",
+          "source": "Shelley v. Kraemer, 334 U.S. 1 (1948), Justia; Encyclopedia of Chicago"
+        },
+        {
+          "claim": "(Overlay caption) Shelley v. Kraemer, decided May 3, 1948, 6 to 0; citation 334 U.S. 1 (1948).",
+          "verdict": "verified",
+          "note": "Decided May 3, 1948, 334 U.S. 1, unanimous 6-0 with Justices Jackson, Reed, and Rutledge recused; Chief Justice Fred Vinson wrote the opinion. All elements confirmed.",
+          "source": "Shelley v. Kraemer, 334 U.S. 1 (1948), Justia; Oyez; Wikipedia, Shelley v. Kraemer"
+        }
+      ]
+    },
+    {
+      "chapterId": "urban-renewal",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "The City Council made it official in 1958. By then about four thousand families were already being pushed out.",
+          "problem": "Independently confirmed. The AAIHS history states the 4,000-families figure is what 'the Plan proposed' (856 acres, 638 buildings, 4,000 families displaced), i.e. the total projected displacement across the whole Hyde Park-Kenwood program, not a count reached by 1958. The 1996 NYT Julian Levi obituary does not tie 4,000 to 1958 at all. Demolition did begin in May 1955, so families were being displaced before the 1958 approval, but the phrasing 'By then about four thousand families were already being pushed out' attaches the full program total to 1958. The program actually ran from the mid-1950s into the 1960s, so the full 4,000 was reached over years after the 1958 approval, not by it. The number 4,000 is correct; the temporal framing is wrong.",
+          "fix": "Replace the two sentences 'The City Council made it official in 1958. By then about four thousand families were already being pushed out.' with: 'The City Council made it official in 1958, though demolition had started three years earlier. All told, the plan would push out about four thousand families.'"
+        }
+      ],
+      "claims": [
+        {
+          "claim": "In 1952 the University of Chicago set up the South East Chicago Commission",
+          "verdict": "verified",
+          "note": "SECC organized in 1952 out of a mass meeting after a crime; planning ran March to May 1952 and the commission was announced in May 1952. The voiceover's looser 'In 1952' is correct and appropriately avoids the contested 'May 1952' establishment date the research draft had flagged.",
+          "source": "CEGU, University of Chicago, Constructing a Compatible Community (2023); South East Chicago Commission, Our Legacy (secc-chicago.org)"
+        },
+        {
+          "claim": "Chancellor Lawrence Kimpton chaired it",
+          "verdict": "verified",
+          "note": "Lawrence A. Kimpton, University Chancellor, headed the Committee of Five and chaired the SECC. Do not confuse with predecessor Robert Hutchins (a known source error).",
+          "source": "CEGU, University of Chicago (2023); UChicago Library, Renewal and Revival"
+        },
+        {
+          "claim": "A lawyer named Julian Levi ran it day to day (executive director)",
+          "verdict": "verified",
+          "note": "Julian H. Levi, a corporate attorney, was tapped by Kimpton as SECC executive director (commonly dated Sept 1, 1952) and ran the program until 1980. 'A lawyer' is accurate.",
+          "source": "NYT obituary of Julian Levi (1996); CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "The plan covered eight hundred fifty-six (856) acres",
+          "verdict": "verified",
+          "note": "The Hyde Park-Kenwood Urban Renewal Plan covered 856 acres. Consistently sourced.",
+          "source": "AAIHS, The University of Chicago, Urban Renewal, and the Black Community; UChicago Library, Renewal and Revival; Lost Hyde Park, Hyde Park Herald"
+        },
+        {
+          "claim": "It marked six hundred thirty-eight (638) buildings to come down",
+          "verdict": "verified",
+          "note": "Plan called for demolishing 638 buildings. Consistently sourced.",
+          "source": "AAIHS; Lost Hyde Park, Hyde Park Herald; NYT obituary of Julian Levi (1996)"
+        },
+        {
+          "claim": "The first building fell on May tenth, 1955, before the plan was even approved",
+          "verdict": "verified",
+          "note": "CEGU dates the first Hyde Park A demolition to May 10, 1955, well before the November 1958 council approval, so 'before the plan was even approved' is correct.",
+          "source": "CEGU, University of Chicago (2023): 'May 10, 1955: the first building in the Hyde Park A project is demolished'"
+        },
+        {
+          "claim": "The City Council made it official in 1958",
+          "verdict": "verified",
+          "note": "The Chicago City Council formally approved the Hyde Park-Kenwood Urban Renewal Plan on November 7, 1958. 'In 1958' is correct.",
+          "source": "UChicago Library, Renewal and Revival; Lost Hyde Park, Hyde Park Herald"
+        },
+        {
+          "claim": "By then [1958] about four thousand families were already being pushed out",
+          "verdict": "imprecise",
+          "note": "The 4,000-families figure is the TOTAL displaced by the plan, not a count completed by 1958. Demolition did start in 1955, so people were being displaced before approval, but '4,000 families already being pushed out [by 1958]' compresses the timeline and risks implying 4,000 were displaced by 1958. The number 4,000 is correct; the temporal framing is loose. Consider 'The plan would push out about four thousand families' or similar.",
+          "correction": "About 4,000 families is the total displaced by the program over its full course, not a figure reached by 1958.",
+          "source": "AAIHS; NYT obituary of Julian Levi (1996); Chicago Magazine (Jan 2018)"
+        },
+        {
+          "claim": "The university spent twenty-nine million (29 million) dollars of its own money to buy the land and rebuild it",
+          "verdict": "verified",
+          "note": "Direct quote from Chancellor Kimpton: the school supplied $29 million to 'buy, control, and rebuild our neighborhood.' The voiceover's 'buy the land and rebuild it' fairly paraphrases this.",
+          "source": "CEGU, University of Chicago (2023), quoting Chancellor Kimpton"
+        },
+        {
+          "claim": "In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park",
+          "verdict": "verified",
+          "note": "CEGU gives 46.1% of white families uprooted by the Hyde Park A & B projects relocated within Hyde Park-Kenwood. 'Forty-six percent' rounds 46.1% correctly, and 'those first projects' correctly limits the figure to Hyde Park A & B rather than the full 856-acre plan.",
+          "source": "CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "Among Black families, it was seventeen [percent]",
+          "verdict": "verified",
+          "note": "CEGU gives 16.6% of Black families relocated within Hyde Park-Kenwood (Hyde Park A & B). 'Seventeen' rounds 16.6% up. Defensible as spoken rounding, though the sharper source figure is 16.6%; if the museum wants exactness, 'about seventeen' or 'under seventeen' would be tighter.",
+          "source": "CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "Across the renewal, the neighborhood's Black population fell by about forty percent",
+          "verdict": "verified",
+          "note": "Multiple sources state Hyde Park's Black population fell by about 40 percent over the decade following renewal. The voiceover wisely uses this well-corroborated figure rather than the contested raw 71,689-to-46,035 pair flagged in the research file's own uncertainties.",
+          "source": "Wikipedia, Hyde Park, Chicago (citing local histories); Chicago Maroon, U of C/Hyde Park history"
+        },
+        {
+          "claim": "Then the university looked south, toward Woodlawn",
+          "verdict": "verified",
+          "note": "University officials turned to Woodlawn in 1960, after the plan's approval and Section 112's passage, prompting formation of The Woodlawn Organization. 'Looked south, toward Woodlawn' is accurate.",
+          "source": "AAIHS, The University of Chicago, Urban Renewal, and the Black Community; CEGU (2023)"
+        }
+      ]
+    },
+    {
+      "chapterId": "present",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "The site was picked around 2015.",
+          "problem": "Independently confirmed wrong. The Jackson Park site was selected and announced on July 29, 2016 (Obama Foundation press release, timestamped July 29, 2016). What happened in May 2015 was the decision to build in Chicago in partnership with the University of Chicago, not the choice of the actual site. The narration conflates the 2015 city/partnership decision with the 2016 site selection. The chapter's own research beat and verifiedFacts both say the site was chosen in 2016, so the on-camera line is internally inconsistent with the vetted research.",
+          "fix": "The site was picked in 2016."
+        }
+      ],
+      "claims": [
+        {
+          "claim": "The Obama Presidential Center opened on June 19, 2026, Juneteenth.",
+          "verdict": "verified",
+          "note": "Public opening was June 19, 2026 (Juneteenth), following a June 18 dedication ceremony. Matches the narration exactly.",
+          "source": "Obama Foundation (obama.org/visit/grand-opening), ABC7 Chicago, CBS News Chicago, CNN (June 2026)"
+        },
+        {
+          "claim": "The museum tower runs about two hundred twenty-five feet over Jackson Park.",
+          "verdict": "verified",
+          "note": "Museum tower is 225 feet (69 m), the campus's tallest structure, located in Jackson Park.",
+          "source": "Wikipedia (Barack Obama Presidential Center), Newsweek, WBEZ/Sun-Times architecture coverage (June 2026)"
+        },
+        {
+          "claim": "Olmsted and Vaux laid out this park in 1871.",
+          "verdict": "verified",
+          "note": "Jackson Park was designed in 1871 by Frederick Law Olmsted and Calvert Vaux as part of the South Park plan.",
+          "source": "Olmsted Network (olmsted.org/sites/jackson-park), TCLF, Wikipedia (Jackson Park, Chicago)"
+        },
+        {
+          "claim": "It's the same ground that held the 1893 World's Fair.",
+          "verdict": "verified",
+          "note": "Jackson Park was remodeled in 1893 to host the World's Columbian Exposition; the Center sits on that ground.",
+          "source": "Olmsted Network, Wikipedia (World's Columbian Exposition / Jackson Park)"
+        },
+        {
+          "claim": "The campus cost about eight hundred fifty million dollars.",
+          "verdict": "verified",
+          "note": "Cost was about $850 million (up from an initial ~$350M projection), per the Obama Foundation, as of Sept 30, 2025.",
+          "source": "CNN, CNBC, Newsweek (June 2026), Wikipedia"
+        },
+        {
+          "claim": "No presidential center has ever cost more.",
+          "verdict": "verified",
+          "note": "Widely described as the most expensive presidential library/center built. One caveat for museum precision: it is a privately operated center, not a NARA-run presidential library, so it is not strictly comparable to federal presidential libraries; sources still call it the most expensive presidential library/center.",
+          "source": "Newsweek, Britannica (Obama Presidential Center), CNN"
+        },
+        {
+          "claim": "The site was picked around 2015.",
+          "verdict": "wrong",
+          "correction": "The Jackson Park site was selected and announced on July 29, 2016. 2015 (May) is when the University of Chicago partnership / Chicago was chosen, not the site.",
+          "note": "The narration conflates the 2015 city/partnership decision with the 2016 site selection. The chapter's own research field correctly says the site was chosen in 2016. For a museum this should read 2016, not 'around 2015.'",
+          "source": "Obama Foundation press release (Jackson Park site, July 29, 2016), Wikipedia (Barack Obama Presidential Center)"
+        },
+        {
+          "claim": "A group called Protect Our Parks sued over and over to stop it, and lost every time.",
+          "verdict": "verified",
+          "note": "Protect Our Parks filed repeated suits (2018 onward); the district court ruled for the City (June 2019), injunctions were denied, and the Supreme Court declined to intervene. They never obtained a ruling that stopped construction. Minor nuance: the Seventh Circuit once remanded part of a case on jurisdictional grounds, but this did not pause construction, so 'lost every time' is fair as a statement of outcomes.",
+          "source": "Wikipedia (Barack Obama Presidential Center), CBS Chicago, Hyde Park Herald, The Hill"
+        },
+        {
+          "claim": "Construction started in 2021.",
+          "verdict": "verified",
+          "note": "Construction began August 16, 2021; ceremonial groundbreaking was September 28, 2021.",
+          "source": "Obama Foundation press release (2021 groundbreaking), Wikipedia, City of Chicago"
+        },
+        {
+          "claim": "On the blocks closest to it [Woodlawn], home prices doubled after 2019.",
+          "verdict": "verified",
+          "note": "DePaul Institute for Housing Studies data: single- and multi-family home prices on the east side of Woodlawn (closest to the Center) doubled since 2019, reaching a 2025 median of about $440,000.",
+          "source": "Block Club Chicago (May 8, 2026), Illinois Answers Project (May 7, 2026), citing DePaul Institute for Housing Studies"
+        },
+        {
+          "claim": "By 2024, less than a third of the housing nearby was still affordable.",
+          "verdict": "verified",
+          "note": "Reporting states that in 2024 less than a third of the area's housing stock was considered affordable, half the share of 15 years earlier.",
+          "source": "Block Club Chicago (May 8, 2026), Illinois Answers Project (May 7, 2026)"
+        }
+      ]
+    }
+  ],
+  "needsFix": [
+    {
+      "chapterId": "intro",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "A railroad reached the prairie first, then a world's fair, then a university.",
+          "problem": "The chronological order is wrong. The University of Chicago came before the World's Columbian Exposition, not after it. The university was incorporated in 1890, dates its founding to 1891, and held its first classes on October 1, 1892, all before the fair opened on May 1, 1893. The narration reverses the two, putting the world's fair before the university.",
+          "fix": "A railroad reached the prairie first, then a university, then a world's fair."
+        }
+      ],
+      "claims": [
+        {
+          "claim": "Hyde Park sits seven miles south of the Loop.",
+          "verdict": "verified",
+          "note": "Multiple sources confirm Hyde Park is 7 miles (11 km) south of the Loop. (One older Hyde Park Historical Society account phrases it as '6 miles south of downtown,' but the canonical figure is 7 miles.)",
+          "source": "Wikipedia, Hyde Park, Chicago (en.wikipedia.org/wiki/Hyde_Park,_Chicago): 'located on and near the shore of Lake Michigan 7 miles (11 km) south of the Loop.'"
+        },
+        {
+          "claim": "Hyde Park is right on the lake (Lake Michigan).",
+          "verdict": "verified",
+          "note": "Hyde Park is located on and near the shore of Lake Michigan.",
+          "source": "Wikipedia, Hyde Park, Chicago."
+        },
+        {
+          "claim": "Hyde Park is on the South Side (host script).",
+          "verdict": "verified",
+          "note": "Hyde Park is on the South Side of Chicago.",
+          "source": "Wikipedia, Hyde Park, Chicago: 'On the South Side of Chicago.'"
+        },
+        {
+          "claim": "The host is standing about seven miles south of downtown (host script).",
+          "verdict": "verified",
+          "note": "Same 7-miles-south figure, here measured to downtown rather than the Loop; the two are effectively the same point. Accurate.",
+          "source": "Wikipedia, Hyde Park, Chicago."
+        },
+        {
+          "claim": "A railroad reached the prairie first (before the fair and the university).",
+          "verdict": "verified",
+          "note": "The Illinois Central Railroad line predates the neighborhood's development; Paul Cornell deeded land to the IC for a 53rd Street station in the 1850s, and the railroad was the first of the three institutions to arrive. Correct that the railroad came first.",
+          "source": "Hyde Park Historical Society (hydeparkhistory.org/paul-cornell); Wikipedia, Hyde Park, Chicago (Cornell 'negotiated land in exchange for a railroad station at 53rd Street'; railroad constructed in the early 1850s)."
+        },
+        {
+          "claim": "After the railroad came a world's fair, then a university (in that order).",
+          "verdict": "wrong",
+          "note": "The ordering is reversed. The University of Chicago came BEFORE the world's fair, not after it. The University of Chicago was founded in 1890/1891 (first classes Oct 1892), while the World's Columbian Exposition was held in 1893. The correct sequence is railroad, then university, then world's fair.",
+          "correction": "...then a university, then a world's fair. (University of Chicago founded 1890/1891; World's Columbian Exposition 1893.)",
+          "source": "Wikipedia, University of Chicago / History of the University of Chicago (founded 1890, dates founding to July 1, 1891, first classes Oct 1, 1892); Wikipedia, Hyde Park, Chicago ('In 1893, Hyde Park hosted the World's Columbian Exposition'; 'In 1891... the University of Chicago was established')."
+        },
+        {
+          "claim": "In the 1950s a federal urban renewal program pushed more than fifteen thousand people off their blocks.",
+          "verdict": "verified",
+          "note": "The Hyde Park-Kenwood urban renewal project (planned mid-1950s, federally funded slum-clearance funds secured under the Eisenhower administration) displaced about 4,000 families, widely rendered as 'over 15,000 residents.' The 1950s timing, the federal character, and the >15,000 figure are all supported. Note a sharper figure exists: about 4,000 families / 638 buildings demolished across 856 acres; broader 1960-1970 population loss was nearly 30,000, but that wider number is not what the narration claims.",
+          "source": "Chicago Magazine, 'Chicago's Urban Renewal Displaced an Astonishing Number...' (Jan 2018) — 'Hyde Park-Kenwood, which displaced about 4,000 families'; 'federally funded urban renewal projects'; 'Hyde Park A & B... secured federal slum-clearance funds... during President Eisenhower's administration.' Also Docomomo, Hyde Park A & B Urban Renewal Project ('over 15,000 neighborhood residents were displaced')."
+        }
+      ]
+    },
+    {
+      "chapterId": "urban-renewal",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "The City Council made it official in 1958. By then about four thousand families were already being pushed out.",
+          "problem": "Independently confirmed. The AAIHS history states the 4,000-families figure is what 'the Plan proposed' (856 acres, 638 buildings, 4,000 families displaced), i.e. the total projected displacement across the whole Hyde Park-Kenwood program, not a count reached by 1958. The 1996 NYT Julian Levi obituary does not tie 4,000 to 1958 at all. Demolition did begin in May 1955, so families were being displaced before the 1958 approval, but the phrasing 'By then about four thousand families were already being pushed out' attaches the full program total to 1958. The program actually ran from the mid-1950s into the 1960s, so the full 4,000 was reached over years after the 1958 approval, not by it. The number 4,000 is correct; the temporal framing is wrong.",
+          "fix": "Replace the two sentences 'The City Council made it official in 1958. By then about four thousand families were already being pushed out.' with: 'The City Council made it official in 1958, though demolition had started three years earlier. All told, the plan would push out about four thousand families.'"
+        }
+      ],
+      "claims": [
+        {
+          "claim": "In 1952 the University of Chicago set up the South East Chicago Commission",
+          "verdict": "verified",
+          "note": "SECC organized in 1952 out of a mass meeting after a crime; planning ran March to May 1952 and the commission was announced in May 1952. The voiceover's looser 'In 1952' is correct and appropriately avoids the contested 'May 1952' establishment date the research draft had flagged.",
+          "source": "CEGU, University of Chicago, Constructing a Compatible Community (2023); South East Chicago Commission, Our Legacy (secc-chicago.org)"
+        },
+        {
+          "claim": "Chancellor Lawrence Kimpton chaired it",
+          "verdict": "verified",
+          "note": "Lawrence A. Kimpton, University Chancellor, headed the Committee of Five and chaired the SECC. Do not confuse with predecessor Robert Hutchins (a known source error).",
+          "source": "CEGU, University of Chicago (2023); UChicago Library, Renewal and Revival"
+        },
+        {
+          "claim": "A lawyer named Julian Levi ran it day to day (executive director)",
+          "verdict": "verified",
+          "note": "Julian H. Levi, a corporate attorney, was tapped by Kimpton as SECC executive director (commonly dated Sept 1, 1952) and ran the program until 1980. 'A lawyer' is accurate.",
+          "source": "NYT obituary of Julian Levi (1996); CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "The plan covered eight hundred fifty-six (856) acres",
+          "verdict": "verified",
+          "note": "The Hyde Park-Kenwood Urban Renewal Plan covered 856 acres. Consistently sourced.",
+          "source": "AAIHS, The University of Chicago, Urban Renewal, and the Black Community; UChicago Library, Renewal and Revival; Lost Hyde Park, Hyde Park Herald"
+        },
+        {
+          "claim": "It marked six hundred thirty-eight (638) buildings to come down",
+          "verdict": "verified",
+          "note": "Plan called for demolishing 638 buildings. Consistently sourced.",
+          "source": "AAIHS; Lost Hyde Park, Hyde Park Herald; NYT obituary of Julian Levi (1996)"
+        },
+        {
+          "claim": "The first building fell on May tenth, 1955, before the plan was even approved",
+          "verdict": "verified",
+          "note": "CEGU dates the first Hyde Park A demolition to May 10, 1955, well before the November 1958 council approval, so 'before the plan was even approved' is correct.",
+          "source": "CEGU, University of Chicago (2023): 'May 10, 1955: the first building in the Hyde Park A project is demolished'"
+        },
+        {
+          "claim": "The City Council made it official in 1958",
+          "verdict": "verified",
+          "note": "The Chicago City Council formally approved the Hyde Park-Kenwood Urban Renewal Plan on November 7, 1958. 'In 1958' is correct.",
+          "source": "UChicago Library, Renewal and Revival; Lost Hyde Park, Hyde Park Herald"
+        },
+        {
+          "claim": "By then [1958] about four thousand families were already being pushed out",
+          "verdict": "imprecise",
+          "note": "The 4,000-families figure is the TOTAL displaced by the plan, not a count completed by 1958. Demolition did start in 1955, so people were being displaced before approval, but '4,000 families already being pushed out [by 1958]' compresses the timeline and risks implying 4,000 were displaced by 1958. The number 4,000 is correct; the temporal framing is loose. Consider 'The plan would push out about four thousand families' or similar.",
+          "correction": "About 4,000 families is the total displaced by the program over its full course, not a figure reached by 1958.",
+          "source": "AAIHS; NYT obituary of Julian Levi (1996); Chicago Magazine (Jan 2018)"
+        },
+        {
+          "claim": "The university spent twenty-nine million (29 million) dollars of its own money to buy the land and rebuild it",
+          "verdict": "verified",
+          "note": "Direct quote from Chancellor Kimpton: the school supplied $29 million to 'buy, control, and rebuild our neighborhood.' The voiceover's 'buy the land and rebuild it' fairly paraphrases this.",
+          "source": "CEGU, University of Chicago (2023), quoting Chancellor Kimpton"
+        },
+        {
+          "claim": "In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park",
+          "verdict": "verified",
+          "note": "CEGU gives 46.1% of white families uprooted by the Hyde Park A & B projects relocated within Hyde Park-Kenwood. 'Forty-six percent' rounds 46.1% correctly, and 'those first projects' correctly limits the figure to Hyde Park A & B rather than the full 856-acre plan.",
+          "source": "CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "Among Black families, it was seventeen [percent]",
+          "verdict": "verified",
+          "note": "CEGU gives 16.6% of Black families relocated within Hyde Park-Kenwood (Hyde Park A & B). 'Seventeen' rounds 16.6% up. Defensible as spoken rounding, though the sharper source figure is 16.6%; if the museum wants exactness, 'about seventeen' or 'under seventeen' would be tighter.",
+          "source": "CEGU, University of Chicago (2023)"
+        },
+        {
+          "claim": "Across the renewal, the neighborhood's Black population fell by about forty percent",
+          "verdict": "verified",
+          "note": "Multiple sources state Hyde Park's Black population fell by about 40 percent over the decade following renewal. The voiceover wisely uses this well-corroborated figure rather than the contested raw 71,689-to-46,035 pair flagged in the research file's own uncertainties.",
+          "source": "Wikipedia, Hyde Park, Chicago (citing local histories); Chicago Maroon, U of C/Hyde Park history"
+        },
+        {
+          "claim": "Then the university looked south, toward Woodlawn",
+          "verdict": "verified",
+          "note": "University officials turned to Woodlawn in 1960, after the plan's approval and Section 112's passage, prompting formation of The Woodlawn Organization. 'Looked south, toward Woodlawn' is accurate.",
+          "source": "AAIHS, The University of Chicago, Urban Renewal, and the Black Community; CEGU (2023)"
+        }
+      ]
+    },
+    {
+      "chapterId": "present",
+      "finalVerdict": "needs-fix",
+      "fixes": [
+        {
+          "claim": "The site was picked around 2015.",
+          "problem": "Independently confirmed wrong. The Jackson Park site was selected and announced on July 29, 2016 (Obama Foundation press release, timestamped July 29, 2016). What happened in May 2015 was the decision to build in Chicago in partnership with the University of Chicago, not the choice of the actual site. The narration conflates the 2015 city/partnership decision with the 2016 site selection. The chapter's own research beat and verifiedFacts both say the site was chosen in 2016, so the on-camera line is internally inconsistent with the vetted research.",
+          "fix": "The site was picked in 2016."
+        }
+      ],
+      "claims": [
+        {
+          "claim": "The Obama Presidential Center opened on June 19, 2026, Juneteenth.",
+          "verdict": "verified",
+          "note": "Public opening was June 19, 2026 (Juneteenth), following a June 18 dedication ceremony. Matches the narration exactly.",
+          "source": "Obama Foundation (obama.org/visit/grand-opening), ABC7 Chicago, CBS News Chicago, CNN (June 2026)"
+        },
+        {
+          "claim": "The museum tower runs about two hundred twenty-five feet over Jackson Park.",
+          "verdict": "verified",
+          "note": "Museum tower is 225 feet (69 m), the campus's tallest structure, located in Jackson Park.",
+          "source": "Wikipedia (Barack Obama Presidential Center), Newsweek, WBEZ/Sun-Times architecture coverage (June 2026)"
+        },
+        {
+          "claim": "Olmsted and Vaux laid out this park in 1871.",
+          "verdict": "verified",
+          "note": "Jackson Park was designed in 1871 by Frederick Law Olmsted and Calvert Vaux as part of the South Park plan.",
+          "source": "Olmsted Network (olmsted.org/sites/jackson-park), TCLF, Wikipedia (Jackson Park, Chicago)"
+        },
+        {
+          "claim": "It's the same ground that held the 1893 World's Fair.",
+          "verdict": "verified",
+          "note": "Jackson Park was remodeled in 1893 to host the World's Columbian Exposition; the Center sits on that ground.",
+          "source": "Olmsted Network, Wikipedia (World's Columbian Exposition / Jackson Park)"
+        },
+        {
+          "claim": "The campus cost about eight hundred fifty million dollars.",
+          "verdict": "verified",
+          "note": "Cost was about $850 million (up from an initial ~$350M projection), per the Obama Foundation, as of Sept 30, 2025.",
+          "source": "CNN, CNBC, Newsweek (June 2026), Wikipedia"
+        },
+        {
+          "claim": "No presidential center has ever cost more.",
+          "verdict": "verified",
+          "note": "Widely described as the most expensive presidential library/center built. One caveat for museum precision: it is a privately operated center, not a NARA-run presidential library, so it is not strictly comparable to federal presidential libraries; sources still call it the most expensive presidential library/center.",
+          "source": "Newsweek, Britannica (Obama Presidential Center), CNN"
+        },
+        {
+          "claim": "The site was picked around 2015.",
+          "verdict": "wrong",
+          "correction": "The Jackson Park site was selected and announced on July 29, 2016. 2015 (May) is when the University of Chicago partnership / Chicago was chosen, not the site.",
+          "note": "The narration conflates the 2015 city/partnership decision with the 2016 site selection. The chapter's own research field correctly says the site was chosen in 2016. For a museum this should read 2016, not 'around 2015.'",
+          "source": "Obama Foundation press release (Jackson Park site, July 29, 2016), Wikipedia (Barack Obama Presidential Center)"
+        },
+        {
+          "claim": "A group called Protect Our Parks sued over and over to stop it, and lost every time.",
+          "verdict": "verified",
+          "note": "Protect Our Parks filed repeated suits (2018 onward); the district court ruled for the City (June 2019), injunctions were denied, and the Supreme Court declined to intervene. They never obtained a ruling that stopped construction. Minor nuance: the Seventh Circuit once remanded part of a case on jurisdictional grounds, but this did not pause construction, so 'lost every time' is fair as a statement of outcomes.",
+          "source": "Wikipedia (Barack Obama Presidential Center), CBS Chicago, Hyde Park Herald, The Hill"
+        },
+        {
+          "claim": "Construction started in 2021.",
+          "verdict": "verified",
+          "note": "Construction began August 16, 2021; ceremonial groundbreaking was September 28, 2021.",
+          "source": "Obama Foundation press release (2021 groundbreaking), Wikipedia, City of Chicago"
+        },
+        {
+          "claim": "On the blocks closest to it [Woodlawn], home prices doubled after 2019.",
+          "verdict": "verified",
+          "note": "DePaul Institute for Housing Studies data: single- and multi-family home prices on the east side of Woodlawn (closest to the Center) doubled since 2019, reaching a 2025 median of about $440,000.",
+          "source": "Block Club Chicago (May 8, 2026), Illinois Answers Project (May 7, 2026), citing DePaul Institute for Housing Studies"
+        },
+        {
+          "claim": "By 2024, less than a third of the housing nearby was still affordable.",
+          "verdict": "verified",
+          "note": "Reporting states that in 2024 less than a third of the area's housing stock was considered affordable, half the share of 15 years earlier.",
+          "source": "Block Club Chicago (May 8, 2026), Illinois Answers Project (May 7, 2026)"
+        }
+      ]
+    }
+  ]
+}

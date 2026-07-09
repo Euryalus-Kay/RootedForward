@@ -1,20 +1,98 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  Machine room M2, THE BULLDOZER (urban renewal). Entered through    */
-/*  the door at the tail of chapter eight. The instrument runs two     */
-/*  benches, the commission seat and then the law test. The still-     */
-/*  running station is the renamed lamp; no Harper Court figure is     */
+/*  the door at the tail of chapter eight. The instrument is a         */
+/*  document panel: the plan's own condemnation checklist read         */
+/*  against three described building types from dossiers.json (each    */
+/*  labeled a described composite; the commission and law-test         */
+/*  benches were retired with the reader rebuild). The still-running   */
+/*  station is the renamed lamp; no Harper Court figure is             */
 /*  registered, so the present-day reading stands on the registered    */
 /*  TIF siting fact and the Woodlawn record.                           */
 /* ------------------------------------------------------------------ */
-import { TestTheLaw, YouAreTheCommission } from "@/components/exhibit/rigged";
+import dossiersJson from "../../../../../data/exhibit/dossiers.json";
 import { MonoNumbers } from "@/components/exhibit/hud/BrassLamp";
+import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
 import VoiceCard from "@/components/exhibit/shared/VoiceCard";
 import { machineOf } from "@/lib/exhibit/machines";
 import { CardGrid, FactCard, PairCard, STATION_EYEBROWS, type RoomStation } from "./shared";
 
 const BULLDOZER = machineOf("bulldozer");
+
+interface DossierParcel {
+  parcelId: string;
+  title: string;
+  described: string;
+  checklist: Record<string, boolean>;
+  typeNote: string;
+}
+
+const DOSSIERS = dossiersJson as unknown as {
+  checklistFactRef: string;
+  planFactRefs: string[];
+  parcels: DossierParcel[];
+  verdict: { lesson: string };
+};
+
+const CHECK_LABELS: Record<string, string> = {
+  age: "Age",
+  density: "Density",
+  mixedUse: "Mixed use",
+  obsolescence: "Obsolescence",
+};
+
+/* The dossiers as documents. The checklist prints the way the plan
+ * scored it; there is nothing to approve and nothing to protect. */
+function TheDossiers() {
+  return (
+    <div data-testid="room-dossier-panel" className="space-y-4">
+      <PaperCard tone="deep" className="p-4 sm:p-5">
+        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+          The plan&rsquo;s checklist
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-exh-ink">
+          The renewal surveys scored a building on its age, its density, its mix of uses, and its
+          so-called obsolescence. Upkeep was not on the form. Anything old, dense, or mixed could
+          be condemned.
+        </p>
+        <div className="mt-2">
+          <FactValue id={DOSSIERS.checklistFactRef} size="sm" />
+        </div>
+      </PaperCard>
+      {DOSSIERS.parcels.map((p) => (
+        <PaperCard key={p.parcelId} data-testid={`room-dossier-${p.parcelId}`} className="p-4 sm:p-5">
+          <p className="font-display text-lg text-exh-ink">{p.title}</p>
+          <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+            {p.typeNote}
+          </span>
+          <p className="mt-2.5 text-sm leading-relaxed text-exh-ink">{p.described}</p>
+          <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-1 border-t border-exh-ink/15 pt-2.5">
+            {Object.entries(p.checklist).map(([key, hit]) => (
+              <div key={key} className="flex items-baseline gap-1.5">
+                <dt className="exh-plat text-[9px] font-semibold uppercase tracking-[0.16em] text-exh-ink-soft">
+                  {CHECK_LABELS[key] ?? key}
+                </dt>
+                <dd className="exh-mono text-xs text-exh-ink">{hit ? "checked" : "clear"}</dd>
+              </div>
+            ))}
+          </dl>
+        </PaperCard>
+      ))}
+      <PaperCard tone="deep" className="p-4 sm:p-5">
+        <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+          What the checklist was for
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-exh-ink">{DOSSIERS.verdict.lesson}</p>
+        <div className="mt-2 flex flex-col gap-1.5">
+          {DOSSIERS.planFactRefs.map((id) => (
+            <FactValue key={id} id={id} size="sm" />
+          ))}
+        </div>
+      </PaperCard>
+    </div>
+  );
+}
 
 function RenamedPlate() {
   if (!BULLDOZER?.renamedTo || !BULLDOZER.renamedNote) return null;
@@ -35,22 +113,8 @@ export const THE_BULLDOZER_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "Two benches. Take the commission's seat first, then test the law it worked with.",
-    body: (
-      <div className="space-y-10">
-        <YouAreTheCommission />
-        <div>
-          <div className="mb-4 flex items-center gap-3">
-            <span aria-hidden="true" className="h-px min-w-4 flex-1 bg-exh-ink/20" />
-            <h4 className="exh-plat shrink-0 text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-              A second bench. Test the law
-            </h4>
-            <span aria-hidden="true" className="h-px min-w-4 flex-1 bg-exh-ink/20" />
-          </div>
-          <TestTheLaw />
-        </div>
-      </div>
-    ),
+    lead: "The plan's condemnation checklist, read against three buildings of the kinds it scored.",
+    body: <TheDossiers />,
   },
   {
     id: "paper",

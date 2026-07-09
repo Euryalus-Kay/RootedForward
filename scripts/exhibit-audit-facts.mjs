@@ -5,14 +5,16 @@
 //   A. facts.json integrity: every fact has id/value/display/tier and a
 //      source with a title plus at least one of url/locator
 //   B. every factRef anywhere in data/exhibit/*.json resolves to a fact
-//   C. pre-TTS gate: every narration block factRef has a factcheck verdict
-//      of verified or corrected (any other verdict blocks TTS for the block)
+//   C. claims gate: every factRef in the reader's text (walltext.json,
+//      plus the retired narration.json while it remains in the data dir)
+//      has a factcheck verdict of verified or corrected
 //   D. ledger entries carry factRefs, never independent values; a display
 //      override must equal the fact's display
 //   E. tier gating: facts with tier "attributed" may only be referenced by
-//      components declared attribution-framed in data/exhibit/components.json
-//   F. cue/audio integrity when audio exists: every narration block has an
-//      mp3 + a positive duration in vo/exhibit durations.json
+//      components declared attribution-framed in data/exhibit/components.json;
+//      never by walltext or narration
+//   (the old F, mp3/cue audio integrity, was removed with the reader
+//   rebuild; the exhibit no longer plays audio)
 //   G. style lint (delegates to exhibit-lint-copy.mjs)
 //   H. writes usedBy back into facts.json (unless --no-write)
 // Warnings (do not fail): dead facts (empty usedBy), facts missing factcheckId.
@@ -25,7 +27,6 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const DATA = path.join(ROOT, "data/exhibit");
-const VO_DIR = path.join(ROOT, "public/media/hyde-park/vo/exhibit");
 const stage = process.argv.includes("--stage")
   ? process.argv[process.argv.indexOf("--stage") + 1]
   : "full";
@@ -85,25 +86,49 @@ for (const f of readdirSync(DATA).filter((f) => f.endsWith(".json") && f !== "fa
   }
 }
 
-// ---- C. pre-TTS narration gate ----
+// ---- C. claims gate for the reader's text ----
 let factcheck = { domains: [] };
 if (existsSync(path.join(DATA, "factcheck.json"))) factcheck = load("factcheck.json");
 const verdictOf = new Map();
 for (const d of factcheck.domains || []) {
   for (const c of d.claims || []) if (c.factId) verdictOf.set(c.factId, c.verdict);
 }
+function gateClaim(where, ref) {
+  const v = verdictOf.get(ref);
+  if (v === undefined) {
+    errors.push(`${where}: factRef ${ref} has no factcheck claim (publication blocked)`);
+  } else if (!["verified", "corrected"].includes(v)) {
+    errors.push(`${where}: factRef ${ref} verdict "${v}" (publication blocked)`);
+  }
+}
+// walltext.json is the live content spine; every section, context intro,
+// opening paragraph, and station intro must carry gated claims
+if (existsSync(path.join(DATA, "walltext.json"))) {
+  const walltext = load("walltext.json");
+  for (const p of walltext.opening?.plainWords || []) {
+    for (const ref of p.factRefs || []) gateClaim(`walltext opening ${p.id}`, ref);
+  }
+  for (const ch of walltext.chapters || []) {
+    for (const ref of ch.contextIntro?.factRefs || []) {
+      gateClaim(`walltext ${ch.id} contextIntro`, ref);
+    }
+    for (const s of ch.sections || []) {
+      for (const ref of s.factRefs || []) gateClaim(`walltext ${s.id}`, ref);
+    }
+    for (const [stationId, intro] of Object.entries(ch.stationIntros || {})) {
+      for (const ref of intro.factRefs || []) {
+        gateClaim(`walltext ${ch.id} stationIntro ${stationId}`, ref);
+      }
+    }
+  }
+}
+// narration.json is retired but preserved; while it sits in the data dir
+// its claims stay gated so nothing unverified lingers in the repo
 if (existsSync(path.join(DATA, "narration.json"))) {
   const narration = load("narration.json");
   for (const ch of narration.chapters || []) {
     for (const b of ch.blocks || []) {
-      for (const ref of b.factRefs || []) {
-        const v = verdictOf.get(ref);
-        if (v === undefined) {
-          errors.push(`narration ${b.id}: factRef ${ref} has no factcheck claim (TTS blocked)`);
-        } else if (!["verified", "corrected"].includes(v)) {
-          errors.push(`narration ${b.id}: factRef ${ref} verdict "${v}" (TTS blocked)`);
-        }
-      }
+      for (const ref of b.factRefs || []) gateClaim(`narration ${b.id}`, ref);
     }
   }
 }
@@ -130,25 +155,11 @@ if (stage === "full") {
     const f = facts.get(id);
     if (f?.tier === "attributed") {
       for (const site of sites) {
-        if (site === "narration.json") errors.push(`attributed fact ${id} used in narration (never allowed)`);
-        else if (!framed.has(site)) errors.push(`attributed fact ${id} used by ${site} which is not attribution-framed`);
-      }
-    }
-  }
-}
-
-// ---- F. audio/cue integrity ----
-if (stage === "full" && existsSync(path.join(VO_DIR, "durations.json")) && existsSync(path.join(DATA, "narration.json"))) {
-  const durations = JSON.parse(readFileSync(path.join(VO_DIR, "durations.json"), "utf8"));
-  const narration = load("narration.json");
-  for (const ch of narration.chapters || []) {
-    for (const b of ch.blocks || []) {
-      const key = `ex-${b.id}`;
-      const dur = durations[key] ?? durations[`vo-${key}`];
-      if (!existsSync(path.join(VO_DIR, `vo-${key}.mp3`))) {
-        errors.push(`audio missing for block ${b.id} (vo-${key}.mp3)`);
-      } else if (!(dur > 0)) {
-        errors.push(`no positive duration for block ${b.id}`);
+        if (site === "narration.json" || site === "walltext.json") {
+          errors.push(`attributed fact ${id} used in ${site} (never allowed)`);
+        } else if (!framed.has(site)) {
+          errors.push(`attributed fact ${id} used by ${site} which is not attribution-framed`);
+        }
       }
     }
   }

@@ -1,0 +1,500 @@
+{
+  "design": [
+    {
+      "lens": "Museum-style highlighting and annotation of the real archival photos. Animated spotlights that isolate a verifiable detail, restrained arrows/circles/brackets, and elegant Baskerville/Gill Sans labels that emerge on the narration beat that names the thing. Every callout points to a real object I have visually confirmed in the file, and every label states only a fact from data/hp-research.json or the image credits. The whole system reads as a curator quietly pointing, never as a motion-graphics flourish. Hold each annotation long enough to read at architectural scale (a Capitol wall), then let it recede so the photo breathes.",
+      "techniques": [
+        {
+          "name": "Spotlight isolate with darkened surround",
+          "what": "A soft-edged elliptical or rectangular spotlight brightens one real detail while the rest of the frame dims to ~50 percent and desaturates slightly, leading the eye to the thing the narrator just named, then the surround eases back up. The backbone move that makes every label feel earned.",
+          "where": "worlds-fair-6 (Ferris Wheel chapter): isolate the original 1893 Ferris Wheel itself. urban-renewal-1 (1928 aerial): isolate the lone tall lakefront tower and the raw graded shoreline. color-line-1 (1922 migrant family): isolate the stacked suitcases on the floor. worlds-fair-1 (Court of Honor): isolate the gilded Statue of the Republic on its plinth in the basin.",
+          "how": "PIL: feathered alpha mask (white ellipse/rounded-rect on black, GaussianBlur ~40-70px). Composite a full-brightness frame against an ImageEnhance.Brightness ~0.5 + slight Color-reduced copy, blended by the mask. Ease spotlight opacity and radius over ~18 frames in, hold ~2.5s, ease out. ffmpeg path for a moving subject: radial gblur/vignette keyed to overlay time expressions; numpy builds the radial falloff.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Emerging label with hairline leader",
+          "what": "A short fact label fades and rises a few pixels into place, joined to the detail by a thin leader that draws itself from object to text. Baskerville for the noun, Gill Sans small-caps for the date beneath. Appears on the voiceover word that names the thing, then dims to a low resting opacity so it stays legible without competing.",
+          "where": "worlds-fair-6 wheel: 'The original Ferris Wheel / built for the 1893 fair'. university-1 facade: 'Cobb Hall'. urban-renewal-3 slab: 'University Apartments / built on cleared land'. formation-1: 'Paul Cornell / 1822 to 1904'. university-2: 'William Rainey Harper / first president'. university-3: 'John D. Rockefeller / principal funder'.",
+          "how": "PIL ImageFont with Baskerville + Gill Sans. Text drawn to a transparent layer, y-offset eased over ~12 frames with alpha 0->1 settling to ~0.85. Leader grows by clamping its endpoint to an eased 0..1 t (ImageDraw.line). 2px rust (#c55d3e) hairline with a blurred dark stroke behind the text for legibility on busy photos. Place each label inside a low-contrast region checked per image.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Reveal circle that draws on, not pops on",
+          "what": "An ellipse traces itself around a detail in one ~0.5s stroke, the way a lecturer rings a thing on a slide, rather than blinking in. Reserved for the single most important detail in an image; the hand-drawn arc keeps it off clip-art territory.",
+          "where": "color-line-3 (HOLC map) already prints two cyan 'Blockbusting sites' circles and a legend, so do not add a competing ring on the map body; instead trace a rust ring around the legend's red 'D - Hazardous' swatch. urban-renewal-1 aerial: ring the lone modern tower in cleared ground. formation-4 (1857 bird's-eye map): ring the dense downtown grid to contrast with the empty prairie south, supporting 'a railroad reached the prairie first'.",
+          "how": "PIL parametric ellipse: draw points for theta in 0..(2*pi*t), t eased 0..1 over ~12 frames, ImageDraw.line between successive points; slight start/end overlap so it closes as a hand-drawn loop. 3px rust or cream stroke chosen by local value, 1px dark outer blur on the busy aerial. RESTRAINT: at most one drawn circle per image, never on color-line-3's map body which already carries printed circles, and never paired with an arrow on the same detail. If the spotlight already isolates the thing, skip the circle.",
+          "impact": "medium",
+          "effort": "small",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Architect's bracket and dimension label for scale facts",
+          "what": "Instead of a generic count-up, tie a verified figure to the real object with a surveyor-style bracket (two end ticks and a spanning line) across the thing, the number set above. Turns an abstract statistic into a measurement of the actual photograph.",
+          "where": "urban-renewal-1 1928 aerial: bracket the lakefront with 'More than 15,000 residents displaced / 1950s urban renewal'. worlds-fair-1 basin: bracket the grounds with 'World's Columbian Exposition / May 1 to October 30, 1893'. urban-renewal-3 slab: a vertical bracket up the tower edge.",
+          "how": "PIL: two short perpendicular end ticks plus a 2px rust spanning line; Gill Sans number centered above, Baskerville caption below. Span line grows from center outward (eased width), ticks fade in at the ends, number then counts or fades. Keep the bracket parallel to a real edge (horizon, cornice) so it looks surveyed. HONESTY: the 1928 aerial predates the 1950s clearance, so caption it as the lakefront before renewal with the figure attributed to the University of Chicago Library Centennial exhibit; never imply the photo shows the displacement.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Cross-image highlight match-cut on a repeated detail",
+          "what": "Carry one spotlight motif across two images to make a historical argument visually, highlighting the same parkland in an old and a present-day view so the audience sees the continuity the narration claims, the annotation acting as the through-line.",
+          "where": "Jackson Park parkland: spotlight the fairgrounds basin in worlds-fair-1 / the Midway in worlds-fair-7, then on the present-day Obama Center beat reuse the identical spotlight shape with 'Jackson Park / the same parkland, 1893 and today', serving the verified fact that the Obama Center sits on the parkland that held the 1893 fair.",
+          "how": "ffmpeg xfade timed so the spotlight ellipse holds roughly the same screen position across the cut; in PIL pre-render both frames with the matched mask so the bright region lands on the same pixels. A ~0.6s dissolve under a held label sells the continuity. REAL-DATA NOTE: no present-day Obama Center photo exists in credits.json, so do not fabricate one; match-cut only between the two confirmed 1893 views and let narration carry 'today'.",
+          "impact": "medium",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Detail push-in within the spotlight (annotated Ken Burns)",
+          "what": "Combine the existing 2.5D parallax with a slow zoompan ending framed on the highlighted detail, so spotlight and camera arrive on the subject together as the label resolves. The motion motivates the annotation instead of the annotation interrupting the motion.",
+          "where": "color-line-1 migrant family: slow push from the full group down to the suitcases as 'arrived in the Great Migration' resolves. color-line-4 (Lorraine Hansberry House two-flat): push toward the front stoop with label 'Lorraine Hansberry House'. university-1 Cobb Hall: push along the Gothic facade ending on the entrance tower.",
+          "how": "ffmpeg zoompan (z eased, x/y drifting to the detail's normalized coords) on the high-res still, run before the PIL annotation pass so the label is composited in the final framing. Keep zoom modest (1.0 -> ~1.25) to protect 1920x1080 resolution and stay museum-calm; sync the label resolve to the zoompan end frame. VERIFY the Hansberry covenant attribution in research before voicing any claim; label the house, never an unverified quote.",
+          "impact": "medium",
+          "effort": "medium",
+          "tackyRisk": "low"
+        }
+      ],
+      "lensKey": "annotation"
+    },
+    {
+      "lens": "Architectural-wall exhibition design. This plays large, likely projected in a state Capitol, so I judge every choice by how it reads across a room and survives close inspection, not how it looks in a laptop preview. At wall scale three things dominate. First, type is architecture, not caption: it has to carry weight as a built element, with generous margins, a strict two-size hierarchy (a monumental display size and a quiet sans for sourcing), and no third \"medium\" size competing in the middle. Second, motion is cadence, not decoration: a wall film must breathe with long held stillness punctuated by deliberate, slow moves, so the eye is invited rather than chased; the worst failure mode at scale is constant low-amplitude drift that reads as a screensaver. Third, emergence must feel material: elements should arrive as if developing, settling, or being carved, never sliding in like web UI. The film already has the right bones (warm duotone archival stills, contained 2.5D parallax, an overarching 1853-to-today timeline, a \"you are here\" ribbon, count-up stats). My job is to push those toward gallery-grade restraint and architectural scale, fix seams so chapters feel like one continuous wall piece, and ruthlessly cut anything that smells like a corporate slideshow. Every technique below maps to the PIL/ffmpeg engine and to verified facts in hp-research.json, with real Wikimedia/LOC assets named from credits.json. The single highest-leverage move is disciplining the motion cadence and type scale so the piece reads as an installation, not a video.",
+      "techniques": [
+        {
+          "name": "Motion cadence discipline (still-hold then deliberate move)",
+          "what": "Re-time every shot to a breathing rhythm. Archival stills hold dead still for the first ~1.0-1.5s after the cut, then begin one single slow continuous move (a 1.04-1.06 push or a slow lateral drift), and settle to stillness before the outgoing xfade. Stat and divider cards hold fully still once set. No element is in constant motion for its whole duration. Across a chapter the cadence alternates long stillness against one slow move, so the wall breathes instead of shimmering.",
+          "where": "All seven chapters, but most critical on the archival photo shots (Cornell-era stills, worlds-fair-1/3/4 Court of Honor and Palace of Fine Arts, university-1 Cobb Hall, the urban renewal stills, the present-day Jackson Park frame) and on the cold-open hold of the 15,000 figure.",
+          "how": "In render_shot, gate the zoompan so the zoom expression stays at 1.0 for the first N frames then ramps, e.g. z='if(lt(in, hold_frames),1.0, min(1.0+(in-hold_frames)*0.00022,1.055))' with hold_frames = 1.2*FPS, and ease the tail by capping the max so it arrives and stops rather than easing forever. Keep the existing blurred-bg parallax plane but slow its drift so foreground and background separate by only a few px/sec. Standardize XFADE offsets so the cut lands on the settle, not mid-move.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Architectural type scale with a strict two-size hierarchy",
+          "what": "Set display type to read from across a room. One monumental Baskerville size for the single load-bearing word or number per card (chapter titles, the 15,000, 27 million, 19.3 acres, 1853), and one quiet Gill Sans size for eyebrows, sourcing, and subtitles. Kill any in-between size so there is no 'caption' tier muddying the hierarchy. Wide letter-tracking on the small sans (the existing 0.25em eyebrow spec) versus tight, large display gives the contrast a wall needs.",
+          "where": "animated_title, animated_divider chapter titles, all stat_scene values (15,000 displaced; 27 million / 21 million paid fair admissions; 19.3 acres; 70% up / 40% down), the sources_card, end_card, and lower_third source credits.",
+          "how": "In serif()/sans() helpers raise the display point size substantially relative to the 1080 frame (the hero number should occupy roughly a third of frame height) and lock body sans to one small size. Use draw_tracked for all uppercase sans eyebrows/credits at fixed tracking. Enforce wide safe margins (text never inside ~8% of any edge) so it survives projector overscan and reads at architectural distance.",
+          "impact": "high",
+          "effort": "small",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Count-up stats reframed as carved monuments, not animated counters",
+          "what": "Make the stat moments feel weighed, not spun. The number counts up once, fast, then locks and holds in total stillness for a long beat while the context line fades in beneath a thin rust rule. The hold is the point. The most important one (more than 15,000 displaced) gets the longest, quietest hold, matching the narration instruction to 'hold that number, do not explain it yet.'",
+          "where": "stat_scene for the 15,000 displacement figure (cold open and the urban-renewal chapter payoff), 27 million fair visitors, 19.3-acre Obama Center campus, and the 70%-up/40%-down pair.",
+          "how": "Keep _parse_stat/_fmt_num count-up but cut the count duration to ~0.8s with ease_out, then freeze for the remaining 3+ seconds. Fade the context line in via elem() at ~+0.9s. Hold the existing rust rule still. For the 15,000 card, extend dur and remove all background motion (flat FOREST field, no drift) so nothing competes with the number.",
+          "impact": "high",
+          "effort": "small",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Material emergence for type (develop / settle, never slide)",
+          "what": "Reveal text as if it belongs to a physical surface. Titles and stat numbers emerge with a short blur-to-sharp 'develop' (like a print coming up in a tray) plus a few px of settling rise, rather than sliding in from offscreen or fading flatly. This reads as photographic and archival, in keeping with the duotone stills, and avoids the web-UI slide that signals corporate deck.",
+          "where": "animated_title reveal, every chapter title in animated_divider, the hero number in each stat_scene, the sources_card line-by-line build.",
+          "how": "In PIL, render the text to its own layer and composite it while ramping ImageFilter.GaussianBlur radius from ~10 down to 0 over ~0.5s with ease_out, combined with a small dy settle (6-8px) and alpha ramp. Because this is per-layer PIL compositing it is cheap and exact. Stagger sources_card lines with elem() offsets so they develop in sequence, not all at once.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Seamless chapter seams via a continuous duotone field and the timeline ribbon",
+          "what": "Bind the seven chapters into one wall piece. The warm-duotone grade, vignette, and fine grain already run on every frame; extend that so the dividers, stat cards, and motion cards share the exact same paper-grain and vignette as the photos, and let the 'you are here' timeline ribbon be the one element that persists across the seam, advancing its lit position as each chapter opens. The viewer feels one continuous ground moving through time rather than discrete slides.",
+          "where": "All six chapter transitions and the divider ribbon (_divider_ribbon / tl_pos / timeline_scene), 1853 founding through present-day Obama Center.",
+          "how": "Confirm seq_clip's noise+vignette grain values match render_shot's so there is no visible texture jump at xfade. Carry the divider ribbon's lit-year position forward chapter to chapter using tl_pos(year) for each chapter's anchor year (1853, 1890, 1893, color-line era, 1955-58, 2026). Use a single consistent XFADE duration site-wide so every seam has identical cadence. Optionally let the ribbon's lit dot animate from the previous chapter's year to the new one during the divider, as the only motion that crosses the cut.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Restrained pseudo-3D depth on the World's Fair architecture only",
+          "what": "Give the 1893 White City one moment of monumental depth. The Court of Honor and Palace of Fine Arts photos are deep one-point-perspective architectural views; a very slight perspective settle plus a slow push into the receding colonnade makes the scale of the fair felt without gimmickry. Reserve this for the fair so it reads as a deliberate accent, not a house style.",
+          "where": "Chapter 4, the 1893 World's Columbian Exposition, on worlds-fair-1 (Court of Honor) and worlds-fair-3 (Palace of Fine Arts), both verified 1893 C. D. Arnold views in credits.json.",
+          "how": "Use Image.transform PERSPECTIVE to introduce a barely-there 1-2 degree settle at the head of the shot (resolving to flat by ~0.6s), then hand off to a slow zoompan push toward the vanishing point along the basin axis. Keep amplitude tiny. Combine with the existing blurred-bg parallax plane so the colonnade edges separate slightly from the sky. Do not apply this treatment to portraits (Cornell, Harper, Rockefeller) or it will look like a warp effect.",
+          "impact": "medium",
+          "effort": "large",
+          "tackyRisk": "high"
+        },
+        {
+          "name": "Lower-third source credits as quiet architectural anchors",
+          "what": "Pin sourcing as a calm, permanent-feeling element so the piece reads as evidence, not promotion. Credits sit on a consistent baseline with a fixed thin rust rule, develop in quietly, hold, and retract the same way every time. This consistency at wall scale signals rigor and keeps the museum register, and it lets every archival claim carry its real provenance from credits.json (Library of Congress, Boston Public Library Tichnor, NYPL Schomburg, Project Gutenberg Official Views).",
+          "where": "Every archival shot: Cobb Hall (Tichnor Brothers / Boston Public Library), William Rainey Harper and the fair views (Library of Congress / C. D. Arnold), the Great Migration family (Schomburg/NYPL CC BY 4.0), the urban renewal University Apartments (CC BY-SA, Teemu008), present-day Jackson Park.",
+          "how": "In lower_third/credit_overlay, fix one baseline Y inside the safe margin, one sans size, one rust rule width, and one develop-in timing (alpha + small dy via elem()). Pull artist/credit/license strings verbatim from credits.json so attribution is exact. Keep it bottom-anchored and never let it drift into the subtitle band (the ASS subtitles are pinned to the very bottom, so seat credits in a reserved zone above them).",
+          "impact": "medium",
+          "effort": "small",
+          "tackyRisk": "low"
+        }
+      ],
+      "lensKey": "exhibition"
+    },
+    {
+      "lens": "Continuity and motion through-lines. The film already owns four motifs that recur but do not yet talk to each other. The timeline thread (hero scene plus divider ribbon, same six anchor years 1853, 1890, 1893, 1948, 1958, 2026). The lakefront shoreline line (the shore polygon in map_scene). The rust accent #c55d3e (spines, dots, underscores, the route line). And the spoken refrain 'the ground keeps moving' (timeline subtitle plus end card). Right now scenes are hard-concatenated and each one independently fades from and to black (seq_clip EDGE fade plus finish_chapter), so every chapter boundary reads as a curtain drop with a dead frame in the middle. The highest-leverage move is to stop treating the dip-to-black as a wall and start treating it as a hinge. Carry exactly one element across it every time, and make the four motifs reference each other so a thing planted in chapter one pays off in chapter six. The constraint that keeps this museum-grade is restraint. One carried element per hinge, never two. The rust accent stays a 2 to 3px line and a 5 to 7px dot, never a fill or a glow. The carried motion is always the timeline thread or the lakefront line, never decorative particles. Everything below is buildable in the existing PIL frame functions and the existing ffmpeg xfade and concat assembly, and every number cited is already verified in data/hp-research.json.",
+      "techniques": [
+        {
+          "name": "The timeline thread as the spine that never breaks",
+          "what": "Promote the existing divider ribbon (_divider_ribbon, the to-scale timeline pinned at the foot of each chapter divider) into the single continuity spine of the whole film. Each divider already lights its own year on the same six-anchor ribbon. Make that ribbon survive the dip-to-black on both sides. The divider leaves the ribbon lit and pinned at H-150, and the first ~0.8s of the following chapter's first photo shot re-draws the exact same ribbon at the same y, lit on the same year, then fades it out as the photo settles. The viewer reads the boundary as one camera moving along a continuous timeline rather than a jump between cards.",
+          "where": "All six chapter hinges (divider into first story shot). Most load-bearing at the 1948 color-line divider into the renewal chapter, where the lit dot visibly steps from 1948 to 1958 across the cut.",
+          "how": "Factor _divider_ribbon into a standalone ribbon(b, t, lit_year, alpha) helper at fixed coords rx0=380, rx1=W-380, ry=H-150. Keep calling it at the tail of animated_divider, and add a ribbon_year arg to render_shot/build_story_chapter so the first shot of each chapter composites the same ribbon as one more PIL overlay pass, alpha-ramped down with an inverted ease_out(elem(t,0,0.8)). No ffmpeg change, it is one more overlay inside the existing frame_fn.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Match-cut the lakefront line across the founding and closing chapters",
+          "what": "map_scene draws a soft Lake Michigan shoreline polygon on the right third. Cornell's verified founding fact is that he bought about 300 acres of lakefront between 51st and 55th streets. Plant the shoreline as a recurring vertical edge, a single faint cream line at roughly x=1210 (the shore's mean x in the existing polygon) that appears in the map, returns as a quiet right-edge compositional anchor in the Cornell 1853 chapter, and pays off in the final chapter when the Obama Center fact lands in Jackson Park, on that same lakefront. One line, three appearances, 170 years apart.",
+          "where": "Map scene (already has the shore), first shot of Chapter 02 Cornell 1853, and the present-day closing chapter where Jackson Park and the Obama Center sit on that shoreline (both verified).",
+          "how": "Add a thin ImageDraw.line at x~1210 from y=0 to H in those frame_fns, CREAM at alpha 30 to 45, width 2, faded in with ease_io. In the map it is the existing shore. In Cornell and the closer it is just that inherited vertical at the same x. Pure PIL, no new asset. Restraint note: keep it under alpha 50 and never label it, so it reads as composition, not a diagram element.",
+          "impact": "high",
+          "effort": "small",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Carry one real gesture through the dip-to-black with a short xfade hinge",
+          "what": "Replace the hard concat-with-independent-black-fades at the six chapter hinges with a short shared dip. Let the divider's closing motion (the lit ribbon and its rust dot on the new year) overlap the incoming chapter through a brief crossfade near black, so a single gesture spans the cut instead of two separate fades bookending a dead frame. The screen still darkens for a museum-grade breath, but one element threads through it.",
+          "where": "All six divider-to-chapter hinges, plus the timeline hero into Chapter 01. Not at the sources or end cards, which keep their full clean dip.",
+          "how": "At assembly, route each divider-plus-first-shot pair through the existing xfade_chain with transition=fade and a shortened ~0.5s duration so the divider tail and chapter head overlap. The divider's last frames already hold the lit ribbon and the chapter's first frames re-draw it (technique 1), so the overlap shows the same ribbon in both layers and the crossfade reads as continuous. Reuse xfade_chain, just feed it the boundary pair instead of hard concat.",
+          "impact": "high",
+          "effort": "medium",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "A re-emerging rust highlight grammar tied to the stat moments",
+          "what": "Give the rust accent one fixed meaning so every appearance reads the same. Rust marks the present spot on the timeline and marks the number that matters. Plant it in the title underscore, then make each full-frame count-up stat (638 buildings, about 4,000 families, the 856 acres, more than fifteen thousand displaced, all verified) resolve its rust underscore to the same width and y as the divider underscore that opened that chapter. Rust becomes a leitmotif, so by the renewal chapter the viewer is trained and the 638 and 4,000 land harder.",
+          "where": "Title card underscore, all six chapter dividers, and every stat_scene (renewal 638 and 4,000, 1893 fair 27 million, founding acreage). Climax on the renewal displacement numbers.",
+          "how": "Collapse the rust underscore into one helper rust_rule(d, cx, y, e) with width 0 to about W*0.057 via ease_out, height 3px, color RUST. animated_title, animated_divider, and stat_scene each draw their own rectangle today, so replace all three with the one call so width and timing match exactly. PIL rectangle only.",
+          "impact": "medium",
+          "effort": "small",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Plant-and-payoff on the displacement number",
+          "what": "The renewal narration literally says more than fifteen thousand people were displaced, then 'Hold that number.' Honor that line structurally. When the 4,000-families stat resolves, leave a faint rust tick on the ribbon at the 1958 position, carry that tick dimmed through the present-day chapter, and at the very end, under the 'Who gets to stay is still being decided' line, briefly re-light the full six-dot ribbon one last time so the 1958 displacement dot and the 2026 dot share one line. The early number is still visually present when the film closes.",
+          "where": "Renewal stat into the present-day chapter into the end card resolve, spanning roughly the final 90 seconds.",
+          "how": "In stat_scene add an optional ribbon_tick at the bottom reusing the ribbon helper as a single lit dot. In animated_end, before the final line, draw the full ribbon via the same helper at alpha ~140 for ~1.2s, lit on 2026 with 1958 still marked, fading under the closing text. Existing PIL ellipse and line draws, no new ffmpeg. Restraint note: keep this to one quiet re-light, not a recap montage.",
+          "impact": "medium",
+          "effort": "medium",
+          "tackyRisk": "medium"
+        },
+        {
+          "name": "Consistent parallax direction so depth reads as one continuous move",
+          "what": "render_shot drifts every foreground photo with the same sin(t/2.3) and sin(t/3.2) phase, so all shots breathe identically and independently. Add a slight consistent directional bias to the foreground relative to the blurred backdrop so the implied camera always travels the same way through the film, echoing the timeline reading left to right and the map route running north to south. Subliminal, but it makes the parallax feel like one journey through 170 years instead of separate wobbles.",
+          "where": "Every archival photo shot, all seven chapters, via the shared render_shot overlay expression.",
+          "how": "In render_shot's overlay x expression add a tiny constant directional drift, for example x='(W-w)/2 + sin(t/2.3)*9 - t*1.2', staying inside the existing 0.865 by 0.915 contain margin so an edge never reveals. One-line change to the existing overlay filter; the contain box already guarantees headroom.",
+          "impact": "medium",
+          "effort": "small",
+          "tackyRisk": "low"
+        },
+        {
+          "name": "Pin all overlays to one shared horizon baseline",
+          "what": "Give every floating element one invisible horizon so nothing feels independently placed. The divider ribbon sits at H-150. Register the source-credit overlays and the data lower-thirds against that same baseline grid, credits resting just above H-150 and lower-thirds rising to a stop aligned with it, so across the whole film all the chrome lives on one horizontal system the eye stops noticing. Quiet, but it is the difference between museum-grade and merely assembled.",
+          "where": "All credit_overlay and lower_third instances across every chapter.",
+          "how": "Define one BASELINE = H-150 constant and compute the credit y and the lower-third slide-stop y from it in credit_overlay and lower_third, which currently use independent values. The slide-up animation in render_shot stays, only the rest position changes. Pure PIL coordinate edit.",
+          "impact": "low",
+          "effort": "small",
+          "tackyRisk": "low"
+        }
+      ],
+      "lensKey": "fluidity"
+    }
+  ],
+  "dataviz": {
+    "charts": [
+      {
+        "id": "renewal-return-rate-gap",
+        "title": "Who Got To Stay",
+        "chapter": "urban-renewal",
+        "type": "Paired horizontal bars, two rows (White families, Black families), each bar filling toward a common 0 to 50 percent axis. A faint dotted equity line and a bracketed gap callout between the two bar ends.",
+        "data": "White families relocated within Hyde Park-Kenwood: 46.1 percent. Black families relocated within Hyde Park-Kenwood: 16.8 percent. Gap: 29.3 points, roughly a 2.7-to-1 ratio. Figures are for the Hyde Park A and B projects. Render the two bars to the SAME percent scale (axis 0 to 50). White bar reaches 46.1, Black bar reaches 16.8. Show each value as a count-up number at the bar tip.",
+        "source": "University of Chicago, Committee on Environment, Geography and Urbanization (CEGU), 'The Toasters of Hyde Park A,' Expositions Magazine, Nov 28 2023 (cegu.uchicago.edu/2023/11/28/hyde-park-a-toaster-buildings). Verified against the CEGU primary text, which reads 46.1 percent of white families and 16.8 percent of Black families relocated within the neighborhood. Note the source figure is 16.8 percent, not the 16.6 percent transcribed in hp-research.json.",
+        "animation": "Over ~5s. Both bars start at zero width on cream. The two grids and row labels (Gill Sans small caps) fade in first over 0.6s. White bar wipes rightward to 46.1 percent in forest green over 1.6s with an ease-out, its tip number counting 0 to 46.1. A 0.4s hold, then the Black bar wipes to 16.8 percent in rust over 1.4s, number counting 0 to 16.8, deliberately stopping far short of the first bar so the shortfall reads physically. Then a thin bracket draws between the two bar tips over 0.8s and the gap label '29.3 points' fades up. Built in PIL by drawing rounded rectangles per frame at increasing width; the count-up is per-frame drawtext. No bounce, no easing flourish.",
+        "layout": "1920x1080, deep cream #f5f0e8 ground with a faint forest baseline grid. Top-left eyebrow in Gill Sans, letterspaced small caps rust: 'HYDE PARK A & B, 1955 TO 1970'. Title 'Who Got To Stay' in Baskerville ~96px forest, upper third, left aligned to a 240px left margin. Two bar rows centered vertically, each ~110px tall, separated by ~80px. Row labels left of each bar in Baskerville ~44px ink: 'White families' over the forest bar, 'Black families' over the rust bar. Bars share a left origin at x=620 and a 50-percent scale ending near x=1560; axis ticks at 0/25/50 in faint warm gray below. Value numbers sit just past each bar tip in Baskerville ~64px matching the bar color. A vertical bracket and the gap note '29.3 points, about 2.7 to 1' sit at far right in ink ~36px. Bottom-left source credit in Gill Sans ~24px warm gray: 'Source: University of Chicago CEGU, Constructing a Compatible Community, 2023'. Generous margins, one accent color per bar, no gridline clutter, museum restraint.",
+        "verified": true
+      },
+      {
+        "id": "great-migration-black-population",
+        "title": "The Great Migration Reaches Chicago",
+        "chapter": "color-line",
+        "type": "Area-over-time (filled curve) with four anchored census-year markers, rising left to right, plus a large terminal count-up number.",
+        "data": "Chicago Black population by U.S. Census year. 1910: 44,103 (about 40,000). 1920: 109,458. 1930: 233,903 (about 234,000). 1940: 277,731 (about 278,000). Plot the four points on a time axis 1910 to 1940 and a population axis 0 to ~300,000; fill the area beneath the curve. Headline framing 'about 40,000 in 1910 to about 278,000 by 1940.'",
+        "source": "U.S. Decennial Census via Encyclopedia of Chicago, 'African Americans,' and History of African Americans in Chicago, Wikipedia. Exact counts 44,103 / 109,458 / 233,903 / 277,731 confirmed across multiple sources (BlackDemographics, NPS Black Metropolis). Round figures 40,000 and 278,000 match the census and hp-research.json.",
+        "animation": "Over ~6s. Time axis (1910 to 1940) and four faint vertical year guides draw first over 0.8s in warm gray. The filled area then sweeps left to right as a clip-mask reveal over 3s, the forest fill rising and steepening visibly between 1920 and 1930 to convey acceleration. As the leading edge passes each census year, a small rust dot lands and that year's value fades up beside it (44,103 then 109,458 then 233,903 then 277,731), so the numbers arrive in sequence like footfalls. In the final 1.4s a large terminal number in the upper right counts up 40,000 to 278,000 in Baskerville and the curve's end point pulses once. Built in PIL with a per-frame horizontal reveal mask over a precomputed polyline-and-fill; count-ups are per-frame drawtext. Optional very slow 2.5D parallax drift on the whole plate to match the film's archival treatment.",
+        "layout": "1920x1080, cream ground. Eyebrow Gill Sans small caps rust top-left: 'CHICAGO, U.S. CENSUS 1910 TO 1940'. Title 'The Great Migration Reaches Chicago' in Baskerville ~88px forest across the top, left aligned at 200px margin. Plot occupies the lower two-thirds: x-axis years 1910/1920/1930/1940 labeled in Gill Sans ~34px ink along the bottom; y-axis implied, no boxed frame. Filled area in forest green #122119 at ~85 percent opacity with a 1.5px darker top stroke; rust #c55d3e marker dots at each census node. Each node value in Baskerville ~40px ink sits above its dot. The terminal headline number '278,000' in Baskerville ~150px forest anchors the upper-right negative space, with a Gill Sans kicker beneath it ~30px warm gray reading 'up from about 40,000 in 1910.' Source credit bottom-left Gill Sans ~24px warm gray: 'Source: U.S. Census via Encyclopedia of Chicago'. One curve, two colors, lots of air.",
+        "verified": true
+      },
+      {
+        "id": "renewal-clearance-scope",
+        "title": "The Plan On Paper",
+        "chapter": "urban-renewal",
+        "type": "Three sequential count-up stat blocks (acres, buildings, families) with a small unit-dot motif under the families figure, presented as a triptych rather than a multi-series chart.",
+        "data": "Hyde Park-Kenwood Urban Renewal Plan as approved Nov 7 1958: 856 acres included; 638 buildings to be demolished; about 4,000 families displaced. The South West Hyde Park clearance land was nearly 80 percent Black at acquisition.",
+        "source": "Hyde Park Herald, 'Lost Hyde Park: Land clearance'; University of Chicago Library, 'Renewal and Revival' Centennial exhibit; New York Times obituary of Julian Levi (1996); CEGU, Constructing a Compatible Community (2023). The 856 acres / 638 buildings / ~4,000 families and the nearly 80 percent Black figure are all confirmed; hp-research.json rates each high confidence.",
+        "animation": "Over ~5.5s, staggered. Three stat blocks animate in sequence left to right, each ~1.2s apart. For each, the big number counts up from zero in Baskerville (0 to 856, 0 to 638, 0 to about 4,000) while its label fades up beneath. After the third number lands, a quiet row of small rust unit-dots fades in under the families figure with a single short line of type, 'cleared land in South West Hyde Park was nearly 80 percent Black,' to give the abstract counts a human anchor. Built in PIL as per-frame drawtext count-ups plus a static dot row; no spin or bounce. The 80-percent note appears as plain type, not a second chart, to keep the frame from feeling busy.",
+        "layout": "1920x1080, cream ground, used only if a third beat is wanted; otherwise the two charts above carry the data load. Eyebrow Gill Sans small caps rust top-center: 'HYDE PARK-KENWOOD RENEWAL PLAN, APPROVED NOV 7 1958'. Title 'The Plan On Paper' Baskerville ~80px forest, centered upper third. Three evenly spaced columns across the middle band, each with a large number in Baskerville ~140px (col 1 and 2 forest, col 3 rust for the human figure): '856' / '638' / '4,000'. Under each, a Gill Sans ~34px ink label: 'acres included' / 'buildings to be demolished' / 'families displaced'. Thin vertical hairline dividers in faint warm gray between columns. Below the third column, a single line in Gill Sans ~30px ink and a short rust dot row. Source credit bottom-center Gill Sans ~24px warm gray: 'Source: Hyde Park Herald; University of Chicago Library; CEGU'. Symmetric, restrained, architectural.",
+        "verified": true
+      }
+    ]
+  },
+  "annotations": {
+    "annotations": [
+      {
+        "imageId": "worlds-fair-6",
+        "detail": "The large vertical wheel with its two tall steel support towers filling the center of the frame is the original Ferris Wheel built by George Washington Gale Ferris Jr. for the 1893 fair, standing on the Midway Plaisance.",
+        "label": "The first Ferris Wheel, 1893",
+        "style": "circle",
+        "confidence": "high"
+      },
+      {
+        "imageId": "worlds-fair-6",
+        "detail": "The enclosed rectangular passenger cars hung around the rim of the wheel; each original car carried dozens of riders high above the Midway.",
+        "label": "Cars rode high over the Midway",
+        "style": "bracket",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "worlds-fair-1",
+        "detail": "The ring of large white neoclassical exhibit halls surrounding the long reflecting Grand Basin is the Court of Honor, finished in white staff, a plaster, cement, and jute mix, which gave the fair its White City nickname.",
+        "label": "The Court of Honor, the White City",
+        "style": "bracket",
+        "confidence": "high"
+      },
+      {
+        "imageId": "worlds-fair-1",
+        "detail": "The long rectangular water basin running down the center of the Court of Honor is the Grand Basin, the formal pool Olmsted's plan set at the heart of the fairgrounds.",
+        "label": "The Grand Basin",
+        "style": "underline",
+        "confidence": "high"
+      },
+      {
+        "imageId": "worlds-fair-7",
+        "detail": "The wide straight tree-lined boulevard receding to the horizon is the mile-long Midway Plaisance, the strip connecting Jackson Park to Washington Park that held the amusement zone.",
+        "label": "The Midway Plaisance, a mile long",
+        "style": "arrow",
+        "confidence": "high"
+      },
+      {
+        "imageId": "worlds-fair-7",
+        "detail": "The faint circular wheel form in the far distance down the Midway, looking west, is the Ferris Wheel seen from the opposite end of the strip.",
+        "label": "The Ferris Wheel, in the distance",
+        "style": "circle",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "worlds-fair-3",
+        "detail": "This is the Palace of Fine Arts, the one major fair building given a brick substructure to protect the art inside, which is why it outlasted the temporary halls and was later recast in limestone as the Museum of Science and Industry.",
+        "label": "Palace of Fine Arts, the one that survived",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "worlds-fair-3",
+        "detail": "The columned classical portico across the building's facade is the same colonnade form that stands today on the Museum of Science and Industry in Jackson Park.",
+        "label": "The colonnade still stands today",
+        "style": "bracket",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "color-line-3",
+        "detail": "The areas shaded in the lowest grade, the red D-grade zones, are the neighborhoods the Home Owners Loan Corporation marked as hazardous, the formal map of redlining across Chicago.",
+        "label": "Red zones graded hazardous",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "color-line-3",
+        "detail": "The narrow band of low-graded blocks running south along the lakefront South Side corresponds to the Black Belt corridor where Black Chicagoans were confined.",
+        "label": "The South Side Black Belt",
+        "style": "bracket",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "color-line-5",
+        "detail": "This South Side street scene was photographed by Russell Lee for the federal Farm Security Administration in April 1941, documenting the Black Belt where most Black Chicagoans were held by covenant and practice.",
+        "label": "Chicago's Black Belt, 1941",
+        "style": "underline",
+        "confidence": "high"
+      },
+      {
+        "imageId": "urban-renewal-1",
+        "detail": "The dense unbroken grid of streets and closely packed buildings along the lakefront is Hyde Park as it stood in 1928, before any urban renewal clearance, the fabric the plan would later demolish block by block.",
+        "label": "Hyde Park before clearance, 1928",
+        "style": "bracket",
+        "confidence": "high"
+      },
+      {
+        "imageId": "urban-renewal-1",
+        "detail": "The open water and beach along the right edge of the aerial is the Lake Michigan shoreline at Chicago Beach, fixing the view on the Hyde Park lakefront.",
+        "label": "The Lake Michigan shore",
+        "style": "arrow",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "urban-renewal-3",
+        "detail": "These are the University Apartments, the modernist residential towers designed by I. M. Pei's firm and built in the cleared center of 55th Street, the replacement housing that rose on land taken during Hyde Park renewal.",
+        "label": "University Apartments, built on cleared land",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "urban-renewal-3",
+        "detail": "The towers sit on a landscaped median running down the middle of the roadway, the redesigned 55th Street that replaced the old commercial corridor the plan demolished.",
+        "label": "Set in the rebuilt 55th Street",
+        "style": "underline",
+        "confidence": "medium"
+      },
+      {
+        "imageId": "formation-1",
+        "detail": "This is Paul Cornell, the Chicago lawyer and land developer who bought 300 acres of lakefront in 1853 and named the tract Hyde Park, later called the father of Hyde Park.",
+        "label": "Paul Cornell, founder of Hyde Park",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "university-3",
+        "detail": "This is John D. Rockefeller, the Standard Oil magnate whose 1889 pledge and roughly 35 million dollars in gifts by 1910 founded and built the University of Chicago.",
+        "label": "John D. Rockefeller, the university's benefactor",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "university-2",
+        "detail": "This is William Rainey Harper, the Yale-trained scholar Rockefeller chose to organize the University of Chicago and its first president, who built a research university from its 1892 opening.",
+        "label": "William Rainey Harper, first president",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "university-1",
+        "detail": "This is Cobb Lecture Hall, the first University of Chicago building completed and ready for the October 1892 opening, in the gray limestone English Gothic Revival style Henry Ives Cobb set for the campus.",
+        "label": "Cobb Hall, the first building",
+        "style": "spotlight",
+        "confidence": "high"
+      },
+      {
+        "imageId": "color-line-4",
+        "detail": "This is the Lorraine Hansberry House, the Woodlawn home tied to the family whose challenge to a racially restrictive covenant reached the Supreme Court in Hansberry v. Lee in 1940.",
+        "label": "The Hansberry House, Woodlawn",
+        "style": "spotlight",
+        "confidence": "medium"
+      }
+    ]
+  },
+  "synth": {
+    "headline": "Bind the seven chapters into one continuous wall piece governed by a single breathing cadence, where the timeline ribbon is an unbroken spine, every annotation reads as a curator quietly pointing at a confirmed object, and the three verified charts land as carved monuments rather than animated counters. Discipline, not addition, is the elevating move. Slow the motion, harden the two-size type hierarchy, make text emerge like a developing print, and let the rust accent carry one fixed meaning from the title to the final frame.",
+    "buildPlan": [
+      {
+        "title": "Motion cadence discipline across all seven chapters",
+        "action": "In render_shot, gate the zoompan and parallax so every archival still holds dead still for the first ~1.2s (hold_frames = 1.2*FPS) after the cut, then begins one single slow continuous move (z ramping to a hard cap of ~1.055, e.g. z='if(lt(in,hold_frames),1.0,min(1.0+(in-hold_frames)*0.00022,1.055))') and settles before the outgoing xfade. Slow the existing sin(t/2.3)*9 / sin(t/3.2)*7 backdrop drift so foreground and background separate by only a few px/sec. Standardize XFADE so cuts land on the settle, not mid-move. Stat and divider cards hold fully still once set. This kills the screensaver shimmer that is the single worst failure mode at architectural scale.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Promote the timeline ribbon into one unbroken spine across every hinge",
+        "action": "Factor _divider_ribbon into a standalone ribbon(b,t,lit_year,alpha) helper at fixed coords rx0=380, rx1=W-380, ry=H-150. Keep drawing it at the divider tail, and add a ribbon_year arg to render_shot so the first ~0.8s of each chapter's first shot re-composites the identical ribbon lit on the same year, then alpha-ramps it out as the photo settles (inverted ease_out(elem(t,0,0.8))). Carry the lit dot forward chapter to chapter via tl_pos(year) for the six anchor years 1853, 1890, 1893, 1948, 1958, 2026. Pure PIL overlay, no ffmpeg change. The viewer reads each boundary as one camera moving along a continuous timeline rather than a slide change.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Architectural two-size type hierarchy with wide safe margins",
+        "action": "In the serif()/sans() helpers raise display type substantially relative to 1080 (the hero number occupies roughly a third of frame height) and lock body sans to one small size. Kill any in-between caption tier so there is no middle size competing. Keep the existing 0.25em tracking on uppercase sans eyebrows and credits via draw_tracked. Enforce text never inside ~8 percent of any edge so it survives projector overscan and reads across a room. Apply to animated_title, animated_divider, every stat_scene value, sources, end card, and lower_third credits.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Reframe the three count-up stats as carved monuments, not spun counters",
+        "action": "Cut the count-up to ~0.8s with ease_out in stat_scene, then freeze the number in total stillness for 3+ seconds while a context line fades in beneath the existing rust rule at ~+0.9s. Give the more-than-15,000-displaced card the longest, quietest hold on a flat FOREST field with all background motion removed, matching the narration instruction to hold that number and not explain it yet. No bounce, no easing flourish.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "medium"
+      },
+      {
+        "title": "Spotlight-isolate plus emerging label as the one annotation system",
+        "action": "Build two reusable PIL passes. (1) Spotlight isolate: a feathered alpha mask (white ellipse on black, GaussianBlur ~40-70px) brightens one confirmed detail while the surround dims to ~0.5 brightness and slightly desaturates, eased over ~18 frames, hold ~2.5s, eased out. (2) Emerging label with hairline leader: Baskerville noun over Gill Sans small-caps date, fading and rising a few px, alpha settling to ~0.85, joined by a 2px rust leader that draws itself to an eased 0..1 t with a blurred dark stroke behind the text for legibility. Apply ONLY to visually confirmed objects from the annotation spec, stating only facts from hp-research.json or credits.json: worlds-fair-6 Ferris Wheel, worlds-fair-1 Court of Honor and Grand Basin, worlds-fair-3 Palace of Fine Arts, color-line-3 red D-grade zones, color-line-1 suitcases, urban-renewal-1 1928 lakefront, urban-renewal-3 University Apartments, formation-1 Cornell, university-1 Cobb Hall, university-2 Harper, university-3 Rockefeller. Reads as a curator pointing, never a motion-graphics flourish.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Build the Who Got To Stay paired-bar chart with the source conflict resolved",
+        "action": "Render the renewal return-rate gap as paired horizontal bars to a shared 0-50 percent axis on cream, white families forest bar and Black families rust bar, each value a per-frame count-up at the bar tip, then a thin bracket and gap label between the tips. RESOLVE THE CONFLICT FIRST: the data-viz spec cites CEGU primary text at 16.8 percent Black and 46.1 percent white, but hp-research.json currently carries 16.6 (7 occurrences). Do not ship until one figure is verified as canonical against the CEGU source and hp-research.json is corrected to match, since the hard rule is verified facts only. Forest bar to 46.1, rust bar stopping visibly short so the shortfall reads physically, gap label set from whichever value is confirmed.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Build the Great Migration area-over-time chart",
+        "action": "Render Chicago Black population 1910-1940 as a forest filled curve on cream with a per-frame horizontal clip-mask reveal over ~3s, steepening visibly between 1920 and 1930. Rust marker dots land at each census node (44,103 / 109,458 / 233,903 / 277,731) with the value fading up beside each as the leading edge passes, so numbers arrive in sequence like footfalls, and a terminal 278,000 in large Baskerville counts up in the upper-right negative space with a Gill Sans kicker reading up from about 40,000 in 1910. All counts verified across census sources. Optional very slow 2.5D drift to match the archival treatment.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Fix the rust accent to one fixed meaning via a shared rust_rule helper",
+        "action": "Collapse the rust underscore into one rust_rule(d,cx,y,e) helper, width 0 to ~W*0.057 via ease_out, 3px, RUST, and replace the separate rectangle draws in animated_title, animated_divider, and stat_scene so width and timing match exactly. Rust then means only two things everywhere it appears, namely the present spot on the timeline and the number that matters, so by the renewal chapter the 638 and 4,000 land harder.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Material emergence for type (develop, never slide)",
+        "action": "Render titles and hero numbers to their own PIL layer and composite while ramping GaussianBlur radius from ~10 to 0 over ~0.5s with ease_out, combined with a 6-8px settling rise and an alpha ramp, like a print coming up in a tray. Stagger sources_card lines with elem() offsets so they develop in sequence. Avoids the web-UI slide that signals a corporate deck and keeps the photographic register of the duotone stills. Apply to animated_title, divider titles, the stat hero numbers, and the sources build.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "medium"
+      },
+      {
+        "title": "Carry one gesture through each dip-to-black via a short xfade hinge",
+        "action": "Replace the hard concat-with-independent-black-fades at the six divider-to-chapter hinges by routing each divider-plus-first-shot pair through the existing xfade_chain with a shortened ~0.5s fade so the divider tail and chapter head overlap. Because the divider holds the lit ribbon and the chapter's first frames re-draw it, the overlap shows the same ribbon in both layers and the dip reads as continuous. Keep the full clean dip at the sources and end cards. Reuse xfade_chain, no new code path.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Build The Plan On Paper triptych only if a third data beat is wanted",
+        "action": "Render three sequential count-up stat blocks (856 acres, 638 buildings, ~4,000 families, the third in rust as the human figure) staggered ~1.2s apart on cream with thin warm-gray hairline dividers, followed by a quiet rust unit-dot row and one line of plain type reading cleared land in South West Hyde Park was nearly 80 percent Black. All figures verified high-confidence. Use only if the paired-bar and area charts do not already carry the renewal data load, to keep the film from feeling chart-heavy.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "Pin all chrome to one shared horizon baseline and unify grain",
+        "action": "Define BASELINE = H-150 and compute credit_overlay y and the lower_third slide-stop y from it, seating credits in a reserved zone above the bottom-pinned ASS subtitles. Pull artist, credit, and license strings verbatim from credits.json so attribution is exact (Library of Congress, Boston Public Library Tichnor, NYPL Schomburg, Project Gutenberg Official Views, CC BY-SA). Confirm seq_clip noise and vignette values match render_shot so there is no texture jump at the xfade and dividers, stat cards, and photos share one paper grain.",
+        "impact": "low",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "title": "One restrained pseudo-3D depth accent on the World's Fair architecture only",
+        "action": "On worlds-fair-1 and worlds-fair-3 (both verified 1893 C. D. Arnold views) use Image.transform PERSPECTIVE for a barely-there 1-2 degree settle at the head of the shot resolving to flat by ~0.6s, then hand to a slow zoompan push toward the vanishing point along the basin axis. Keep amplitude tiny and never apply it to portraits or it reads as a warp. Reserved for the fair so it is a deliberate accent, not a house style. Lowest priority and highest risk, cut it the moment it reads as an effect.",
+        "impact": "medium",
+        "effort": "large",
+        "tackyRisk": "high"
+      }
+    ],
+    "newImages": [
+      "Hyde Park urban renewal demolition or land clearance in progress, 1950s-1960s, to replace the honesty workaround on urban-renewal-1 (the 1928 aerial predates clearance). Search Wikimedia Commons and the University of Chicago Library Photographic Archive for 'Hyde Park urban renewal demolition', 'Hyde Park-Kenwood land clearance 1958', 'Julian Levi South East Chicago Commission'; check the Chicago Tribune and Hyde Park Herald archives for public-domain frames.",
+      "Russell Lee 1941 Farm Security Administration South Side Chicago Black Belt street scenes, public domain, via the Library of Congress FSA-OWI collection. LOC search 'Russell Lee Chicago 1941 Negro', 'FSA Black Belt Chicago South Side April 1941'. Supports the color-line-5 annotation already in the spec.",
+      "Original 1893 Ferris Wheel on the Midway Plaisance, additional C. D. Arnold or Official Views plates for cleaner spotlight isolation. Commons search 'Ferris Wheel 1893 Midway Plaisance Columbian Exposition', 'Official Views World's Columbian Exposition Ferris Wheel'.",
+      "HOLC residential security map of Chicago, the original 1940 sheet rather than a redrawn version, for a sharper red D-grade isolate. Search the National Archives and the Mapping Inequality (University of Richmond) project for 'HOLC Chicago residential security map 1940 public domain'.",
+      "Present-day Jackson Park and the Obama Presidential Center construction site, real CC-licensed photo, since credits.json has no present-day Obama Center image and the closing chapter currently leans on narration alone. Commons search 'Obama Presidential Center construction Jackson Park 2025', 'Jackson Park Chicago 2024', 'Midway Plaisance present day'. Verify license before use; do not fabricate the match-cut without it.",
+      "Frederick Law Olmsted Jackson Park / Midway plan or period map, public domain, to anchor the parkland continuity claim. Search 'Olmsted Jackson Park plan 1871', 'South Park Commission Jackson Park map'."
+    ],
+    "avoid": [
+      "Constant low-amplitude drift on every shot for its full duration. At wall scale it reads as a screensaver and is the single worst failure mode. Every move must arrive and stop.",
+      "Shipping the return-rate chart before the 16.8 vs 16.6 percent conflict is resolved against the CEGU primary source and hp-research.json is corrected. Putting an unverified number on a Capitol wall violates the real-data rule.",
+      "Implying the 1928 aerial (urban-renewal-1) shows the 1950s displacement. It predates clearance. Caption it strictly as the lakefront before renewal and attribute the 15,000 figure separately, or source a real demolition image.",
+      "Fabricating a present-day Obama Center match-cut from images that do not exist in credits.json. Either source a real CC-licensed present-day frame or let narration carry today.",
+      "Stacking two markers on one detail (a circle plus an arrow, or a circle on color-line-3's map body that already prints its own circles and legend). One annotation per detail, and skip the circle entirely if the spotlight already isolates the thing.",
+      "Em-dashes and sentence-internal colons anywhere in labels, lower-thirds, chart titles, or eyebrows. They are the most reliable AI tells on this project. The data-viz spec's gap note 'about 2.7 to 1' and similar phrasings are fine; keep all callout copy comma- or period-joined.",
+      "Applying the pseudo-3D perspective settle to portraits (Cornell, Harper, Rockefeller) or to more than the two fair architecture shots. Beyond a whisper it reads as a warp effect and becomes gimmicky.",
+      "A web-UI slide-in for any text. Type should develop, settle, or be carved, never slide from offscreen, or the piece reads as a corporate deck.",
+      "A third decorative motion that crosses the dip-to-black. Carry exactly one element per hinge (the ribbon), never two, and never decorative particles or glows. Rust stays a 2-3px line and a 5-7px dot, never a fill.",
+      "A recap montage at the end. The plant-and-payoff re-light of the ribbon on the closing line should be one quiet beat, not a highlight reel.",
+      "Reintroducing the removed design-system v2 shared components (PageBanner, SectionHeading, motion library). Out of scope and explicitly rejected by the owner."
+    ]
+  }
+}

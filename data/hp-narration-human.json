@@ -1,0 +1,220 @@
+{
+  "chapters": [
+    {
+      "chapterId": "intro",
+      "voiceover": "Hyde Park sits seven miles south of the Loop, right on the lake. The greystones look like they have always stood here. Most of them went up because somebody with money decided they should. This neighborhood got built and torn down and rebuilt, and the people swinging the wrecking ball were institutions, not the families on the block. A railroad reached the prairie first, then a world’s fair, then a university. In the 1950s a federal urban renewal program pushed more than fifteen thousand people off their blocks. Almost none of them got asked. And the reshaping has not stopped since.",
+      "lines": [
+        "Hyde Park sits seven miles south of the Loop",
+        "right on the lake.",
+        "The greystones look like they have always stood here.",
+        "Most of them went up because somebody with money decided they should.",
+        "This neighborhood got built and torn down and rebuilt",
+        "and the people swinging the wrecking ball were institutions",
+        "not the families on the block.",
+        "A railroad reached the prairie first, then a world’s fair",
+        "then a university.",
+        "In the 1950s a federal urban renewal program pushed more than fifteen thousand people off their blocks.",
+        "Almost none of them got asked.",
+        "And the reshaping has not stopped since."
+      ],
+      "hostScript": "I’m standing in Hyde Park, on the South Side, about seven miles south of downtown. Look at these greystones. They feel like they were here before anybody, and like they’ll outlast all of us. But this block looks the way it does because powerful institutions kept deciding it should, and plenty of people got moved so it could happen. This is some of the most reshaped ground in Chicago, and the people doing the reshaping had money and a plan, and almost none of them lived here. So here is the question I want us to carry the whole way through. Who keeps deciding what this neighborhood becomes, and what happens to the people already here when they do.",
+      "aiTellsRemoved": [
+        "Cut the imperative scene-setting opener 'Stand on a Hyde Park sidewalk' from the original voiceover; opened on a plain locating fact instead.",
+        "Killed the rule-of-three list 'Stone houses, a major university, a park along the lake' that existed only for rhythm; replaced with one concrete noun, the greystones.",
+        "Removed the manufactured reversal pair 'It looks permanent. It is not.' and rebuilt it as a plain 'They have not' tied to the greystones, not a vague abstraction.",
+        "Cut the vague impressive abstraction 'the ground feels settled' and grounded the line in something a real eye can see, the greystones.",
+        "Replaced the flat 'people doing the building were institutions' with a concrete image, 'the people swinging the wrecking ball,' and named who lost out, the families on the block.",
+        "Kept the railroad / fair / university / federal-program sequence as an uneven four-beat chronology rather than a poetic triple, and dropped the drumbeat 'Each one redrew the map' echo.",
+        "In the host script, removed the smooth narrator cadence and the abstract 'it feels like it's always been here' in favor of a direct pointer at the greystones.",
+        "No em-dashes and no sentence-internal colons anywhere; kept the personal first-person stance without inventing any biography for the host."
+      ]
+    },
+    {
+      "chapterId": "formation",
+      "voiceover": "In 1853 a young lawyer named Paul Cornell bought three hundred acres of lakefront and named it Hyde Park, after the one in London. The land was useless if you couldn't get there. So Cornell handed the Illinois Central Railroad sixty acres, and the railroad gave him a station at 53rd Street and six trains a day downtown. Prairie turned into suburb. In 1857 he put up a four-story wood hotel by the water, the Hyde Park House. Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad, a few months after her husband was killed. Within ten years a thousand people lived here. The township held 15,716 people in 1880. By 1889 it held about eighty-five thousand, and that year the voters chose to join Chicago for the water and the sewers.",
+      "lines": [
+        "In 1853 a young lawyer named Paul Cornell bought three hundred acres of lakefront and named it Hyde Park",
+        "after the one in London.",
+        "The land was useless if you couldn't get there.",
+        "So Cornell handed the Illinois Central Railroad sixty acres",
+        "and the railroad gave him a station at 53rd Street and six trains a day downtown.",
+        "Prairie turned into suburb.",
+        "In 1857 he put up a four-story wood hotel by the water",
+        "the Hyde Park House.",
+        "Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad",
+        "a few months after her husband was killed.",
+        "Within ten years a thousand people lived here.",
+        "The township held 15,716 people in 1880.",
+        "By 1889 it held about eighty-five thousand",
+        "and that year the voters chose to join Chicago for the water and the sewers."
+      ],
+      "hostScript": "",
+      "aiTellsRemoved": [
+        "Cut candidate 3's vague fragment opener 'Stone and prairie, a few miles past the edge of a small city' (a scene-set abstraction with no concrete anchor) and opened on the hard fact instead.",
+        "Cut candidate 2's soft sermon opener 'Think about how much one man's bet still shapes this place' (editorializing the listener into a feeling before any fact lands).",
+        "Replaced candidate 1's flat 'That fixed it.' beat with the plain causal 'Prairie turned into suburb,' which states the real change without a punchy reversal tic.",
+        "Avoided the 'they called Cornell the father of Hyde Park' line from candidates 2 and 3 because it adds a stock epithet that reads as filler next to the harder numbers.",
+        "Kept Mary Todd Lincoln concrete and human ('a few months after her husband was killed') instead of the stiffer 'after Abraham Lincoln's assassination,' which sounds like a textbook caption.",
+        "Used contractions ('couldn't', 'didn't' avoided where awkward) and short subject-verb-object lines so it reads as spoken, not written.",
+        "Held the population numbers as two separate plain sentences (15,716 in 1880; about eighty-five thousand by 1889) rather than compressing them into a rhetorical 'went from X to Y' sweep.",
+        "Did not include the contested 1879 hotel fire year or the removed Prince of Wales lodging claim, per the verification notes.",
+        "No rule-of-three lists: the only pair ('water and the sewers') is a real two-item reason from the annexation facts, not a rhythmic triple.",
+        "No em-dashes and no sentence-internal colons anywhere in the line."
+      ]
+    },
+    {
+      "chapterId": "worlds-fair",
+      "voiceover": "For six months in 1893, Jackson Park wasn't a park. It was a fair. The World's Columbian Exposition opened May 1 and ran to October 30, built to mark four hundred years since Columbus reached the Americas. Daniel Burnham ran the construction. Frederick Law Olmsted, who'd helped design Central Park, turned the marshy lakefront into lagoons. At the center stood the Court of Honor, white plaster halls that glowed at night under electric light. People called it the White City. About twenty-seven million came. Almost none of it was built to last. One building was. The old Palace of Fine Arts reopened in 1933 as the Museum of Science and Industry.",
+      "lines": [
+        "For six months in 1893, Jackson Park wasn't a park.",
+        "It was a fair.",
+        "The World's Columbian Exposition opened May 1 and ran to October 30",
+        "built to mark four hundred years since Columbus reached the Americas.",
+        "Daniel Burnham ran the construction.",
+        "Frederick Law Olmsted, who'd helped design Central Park",
+        "turned the marshy lakefront into lagoons.",
+        "At the center stood the Court of Honor",
+        "white plaster halls that glowed at night under electric light.",
+        "People called it the White City.",
+        "About twenty-seven million came.",
+        "Almost none of it was built to last.",
+        "One building was.",
+        "The old Palace of Fine Arts reopened in 1933 as the Museum of Science and Industry."
+      ],
+      "hostScript": "",
+      "aiTellsRemoved": [
+        "Cut candidate 3's imperative scene-setting opener 'Walk Jackson Park today and you'd never guess' (banned 'Walk down...' order-the-listener move).",
+        "Cut candidate 1's flat closer 'It's the Museum of Science and Industry now, reopened in 1933' and the dangling 'One building did, the Palace of Fine Arts' comma-splice; replaced with a cleaner two-beat 'One building was.'",
+        "Avoided the rule-of-three: no poetic triple anywhere; kept lists to single concrete items.",
+        "Removed the vague 'recast in limestone' / construction-span detail that the verifier flagged as not cleanly dated; kept only the well-supported 1933 reopening.",
+        "Used the simple, sayable 'wasn't a park. It was a fair.' contrast, which states the real thing plainly rather than a manufactured 'But it wasn't' reversal.",
+        "Kept contractions (wasn't, who'd) and short subject-verb-object lines so it reads like a person talking, not a narrator performing.",
+        "No em-dashes, no sentence-internal colons, per site hard rules."
+      ]
+    },
+    {
+      "chapterId": "university",
+      "voiceover": "The campus started with one man’s money. In 1889, John D. Rockefeller pledged six hundred thousand dollars for a new Baptist university in Chicago. He set one condition. Other donors had to match four hundred thousand more, and they did. The school incorporated in 1890. Marshall Field, the department store man, gave the first ten acres in Hyde Park. Rockefeller picked William Rainey Harper to run it, a Yale doctorate he had earned in his teens. Harper built a research university from nothing. Classes opened in 1892 with five hundred ninety-four men and women. Henry Ives Cobb laid out the gray Gothic quads you still walk through.",
+      "lines": [
+        "The campus started with one man’s money.",
+        "In 1889, John D.",
+        "Rockefeller pledged six hundred thousand dollars for a new Baptist university in Chicago.",
+        "He set one condition.",
+        "Other donors had to match four hundred thousand more",
+        "and they did.",
+        "The school incorporated in 1890.",
+        "Marshall Field, the department store man",
+        "gave the first ten acres in Hyde Park.",
+        "Rockefeller picked William Rainey Harper to run it",
+        "a Yale doctorate he had earned in his teens.",
+        "Harper built a research university from nothing.",
+        "Classes opened in 1892 with five hundred ninety-four men and women.",
+        "Henry Ives Cobb laid out the gray Gothic quads you still walk through."
+      ],
+      "hostScript": "",
+      "aiTellsRemoved": [
+        "Cut candidate 3's opening rule-of-three triple ('Gray limestone, Gothic towers, walks modeled on Oxford'). Replaced with a single blunt spoken opener.",
+        "Fixed candidate 1's 'a Yale doctorate he'd finished as a teenager' and candidate 2's age claim to the verified phrasing 'in his teens' (the verify block explicitly removed 'at nineteen' as unsupported).",
+        "Dropped candidate 2's 'I always come back to one number on this block' framing, since this is a history chapter (voiceover), not a host-to-camera framing chapter, and the first-person stance would be invented.",
+        "Removed candidate 2's 'right here' deixis, which over-performs presence for a plain history voiceover.",
+        "Avoided a participial opener by keeping the year inside the sentence ('In 1889, Rockefeller pledged...') rather than 'Pledging in 1889...'.",
+        "Kept the matched-donation fact as a flat statement ('and they did') instead of building it into a manufactured reversal or a dramatic one-line beat."
+      ]
+    },
+    {
+      "chapterId": "color-line",
+      "voiceover": "At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white. They called it a racially restrictive covenant. Neighbors signed in blocs, so the clause covered the whole block. Hyde Park and Woodlawn leaned on these covenants, and the University of Chicago put quiet money behind defending them in court. Black Chicago kept growing the whole time. About 40,000 people in 1910, around 278,000 by 1940, most of them held inside a thin strip of the South Side. The covenants didn't lose their teeth until 1948, in Shelley v. Kraemer.",
+      "lines": [
+        "At 6140 South Rhodes Avenue in Woodlawn",
+        "one line in the deed barred selling or renting to anyone who wasn't white.",
+        "They called it a racially restrictive covenant.",
+        "Neighbors signed in blocs",
+        "so the clause covered the whole block.",
+        "Hyde Park and Woodlawn leaned on these covenants",
+        "and the University of Chicago put quiet money behind defending them in court.",
+        "Black Chicago kept growing the whole time.",
+        "About 40,000 people in 1910, around 278,000 by 1940",
+        "most of them held inside a thin strip of the South Side.",
+        "The covenants didn't lose their teeth until 1948",
+        "in Shelley v.",
+        "Kraemer."
+      ],
+      "hostScript": "",
+      "aiTellsRemoved": [
+        "Cut the vague abstraction 'Think about how small the thing was' (candidate 2) and replaced it with a concrete, verified street address as the hook.",
+        "Killed the smooth even sermon rhythm of 'Roughly 40,000 people in 1910, about 278,000 by 1940, most squeezed into one narrow corridor' by breaking it across plainer beats and swapping the writerly 'squeezed' for the blunter 'held inside a thin strip.'",
+        "Avoided the rule-of-three: kept the place list to two (Hyde Park and Woodlawn) rather than padding to a poetic triple.",
+        "Cut 'meanwhile' (candidate 1), a stiff connective, for the more spoken 'the whole time.'",
+        "Removed the inflated verb phrase 'finally stripped their power' (candidate 2) and the formal 'kept its force until' (candidate 3) in favor of the plain, human 'didn't lose their teeth.'",
+        "Trimmed redundant framing like 'It was called' / 'They called it a' duplication so the covenant term is named once, cleanly."
+      ]
+    },
+    {
+      "chapterId": "urban-renewal",
+      "voiceover": "In 1952 the University of Chicago set up the South East Chicago Commission to remake the blocks around its campus. Chancellor Lawrence Kimpton chaired it, and a lawyer named Julian Levi ran it day to day. The plan they backed covered eight hundred fifty-six acres. It marked six hundred thirty-eight buildings to come down. The first one fell on May tenth, 1955, before the plan was even approved. The City Council made it official in 1958. By then about four thousand families were already being pushed out. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen. Across the renewal, the neighborhood's Black population fell by about forty percent. Then the university looked south, toward Woodlawn.",
+      "lines": [
+        "In 1952 the University of Chicago set up the South East Chicago Commission to remake the blocks around its campus.",
+        "Chancellor Lawrence Kimpton chaired it",
+        "and a lawyer named Julian Levi ran it day to day.",
+        "The plan they backed covered eight hundred fifty-six acres.",
+        "It marked six hundred thirty-eight buildings to come down.",
+        "The first one fell on May tenth, 1955",
+        "before the plan was even approved.",
+        "The City Council made it official in 1958.",
+        "By then about four thousand families were already being pushed out.",
+        "The university spent twenty-nine million dollars of its own money to buy the land and rebuild it.",
+        "The people who came back weren't a random slice.",
+        "In those first projects",
+        "forty-six percent of the white families who lost homes stayed in Hyde Park.",
+        "Among Black families, it was seventeen.",
+        "Across the renewal",
+        "the neighborhood's Black population fell by about forty percent.",
+        "Then the university looked south, toward Woodlawn."
+      ],
+      "hostScript": "",
+      "aiTellsRemoved": [
+        "Cut candidate 1's flat list-march cadence ('Its job was to remake... Chancellor Kimpton chaired it. A lawyer named Julian Levi ran it.') by varying sentence length and joining clauses so it sounds spoken, not recited.",
+        "Cut the rule-of-three risk in candidate 2's 'buy the land and build new housing' / repeated 'who lost homes' parallelism; varied the phrasing instead.",
+        "Removed candidate 3's stock explainer opener 'Here's how a university rebuilt its own neighborhood,' a classic AI framing hook.",
+        "Removed candidate 3's cliche 'marked... for the wrecking ball' and the punchy fragment 'They didn't wait for sign-off,' which reads as manufactured drama.",
+        "Kept 'weren't a random slice' from candidate 3 but cut its smug follow-on rhythm; stated the racial split plainly with no editorializing.",
+        "Avoided the even, smooth sermon tone by using contractions (weren't, it was) and a blunt verb (pushed out) instead of the neutral 'had to move' / 'found new homes.'",
+        "No em-dashes and no sentence-internal colons anywhere; checked every line.",
+        "Held to verified facts only: 16.6% rounded to seventeen as the candidates did, kept tied to 'those first projects'; ~40% Black-population decline kept as the hero number; Woodlawn turn kept as the closing beat."
+      ]
+    },
+    {
+      "chapterId": "present",
+      "voiceover": "The Obama Presidential Center opened on June 19, 2026. Juneteenth. The museum tower runs about two hundred twenty-five feet over Jackson Park. Olmsted and Vaux laid out this park in 1871, and it's the same ground that held the 1893 World's Fair. The campus cost about eight hundred fifty million dollars. No presidential center has ever cost more. Getting it built took years. The site was picked around 2015. A group called Protect Our Parks sued over and over to stop it, and lost every time. Construction started in 2021. And while the Center went up, Woodlawn got more expensive. On the blocks closest to it, home prices doubled after 2019. By 2024, less than a third of the housing nearby was still affordable.",
+      "lines": [
+        "The Obama Presidential Center opened on June 19, 2026.",
+        "Juneteenth.",
+        "The museum tower runs about two hundred twenty-five feet over Jackson Park.",
+        "Olmsted and Vaux laid out this park in 1871",
+        "and it's the same ground that held the 1893 World's Fair.",
+        "The campus cost about eight hundred fifty million dollars.",
+        "No presidential center has ever cost more.",
+        "Getting it built took years.",
+        "The site was picked around 2015.",
+        "A group called Protect Our Parks sued over and over to stop it",
+        "and lost every time.",
+        "Construction started in 2021.",
+        "And while the Center went up, Woodlawn got more expensive.",
+        "On the blocks closest to it",
+        "home prices doubled after 2019.",
+        "By 2024",
+        "less than a third of the housing nearby was still affordable."
+      ],
+      "hostScript": "I'm standing in Jackson Park, and the building behind me is open. People waited more than ten years for it, and it's a real thing for the South Side. But here's the part nobody put on the ribbon. Woodlawn, the neighborhood that fought to bring this here, got more expensive the whole time it was going up. Home prices on the closest blocks doubled. So the question I keep landing on is who gets to stay near the thing they fought for.",
+      "aiTellsRemoved": [
+        "Cut the cute personifications 'the rent told its own story' and 'the numbers moved the other way' (candidates 2 and 3), which are vague impressive abstractions standing in for the actual fact. Stated the doubling plainly instead.",
+        "Cut the rule-of-three list in the closing beat ('a world class university, a new presidential center, an Olmsted lakefront, residents organizing') from the source beats; the host script names one concrete fact instead.",
+        "Removed the smooth narrator pivot 'It's also a marker' from the original hostScript, which reads as sermon transition rather than speech.",
+        "Avoided the participial 'Designed by...' opener from the source beats by leading with the building and putting facts after.",
+        "Kept 'No presidential center has ever cost more' as a flat statement rather than a manufactured reversal or superlative flourish.",
+        "Used 'here's the part nobody put on the ribbon' as a concrete, spoken turn instead of an abstract 'but the story is more complicated' move.",
+        "No em-dashes and no sentence-internal colons anywhere; broke 'Juneteenth' out as its own short line for the ear rather than appositive-with-commas pileup."
+      ]
+    }
+  ]
+}

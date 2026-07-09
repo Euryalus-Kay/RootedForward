@@ -1,0 +1,142 @@
+[
+  {
+    "imageId": "worlds-fair-6",
+    "detail": "The large vertical wheel with its two tall steel support towers filling the center of the frame is the original Ferris Wheel built by George Washington Gale Ferris Jr. for the 1893 fair, standing on the Midway Plaisance.",
+    "label": "The first Ferris Wheel, 1893",
+    "style": "circle",
+    "confidence": "high"
+  },
+  {
+    "imageId": "worlds-fair-6",
+    "detail": "The enclosed rectangular passenger cars hung around the rim of the wheel; each original car carried dozens of riders high above the Midway.",
+    "label": "Cars rode high over the Midway",
+    "style": "bracket",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "worlds-fair-1",
+    "detail": "The ring of large white neoclassical exhibit halls surrounding the long reflecting Grand Basin is the Court of Honor, finished in white staff, a plaster, cement, and jute mix, which gave the fair its White City nickname.",
+    "label": "The Court of Honor, the White City",
+    "style": "bracket",
+    "confidence": "high"
+  },
+  {
+    "imageId": "worlds-fair-1",
+    "detail": "The long rectangular water basin running down the center of the Court of Honor is the Grand Basin, the formal pool Olmsted's plan set at the heart of the fairgrounds.",
+    "label": "The Grand Basin",
+    "style": "underline",
+    "confidence": "high"
+  },
+  {
+    "imageId": "worlds-fair-7",
+    "detail": "The wide straight tree-lined boulevard receding to the horizon is the mile-long Midway Plaisance, the strip connecting Jackson Park to Washington Park that held the amusement zone.",
+    "label": "The Midway Plaisance, a mile long",
+    "style": "arrow",
+    "confidence": "high"
+  },
+  {
+    "imageId": "worlds-fair-7",
+    "detail": "The faint circular wheel form in the far distance down the Midway, looking west, is the Ferris Wheel seen from the opposite end of the strip.",
+    "label": "The Ferris Wheel, in the distance",
+    "style": "circle",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "worlds-fair-3",
+    "detail": "This is the Palace of Fine Arts, the one major fair building given a brick substructure to protect the art inside, which is why it outlasted the temporary halls and was later recast in limestone as the Museum of Science and Industry.",
+    "label": "Palace of Fine Arts, the one that survived",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "worlds-fair-3",
+    "detail": "The columned classical portico across the building's facade is the same colonnade form that stands today on the Museum of Science and Industry in Jackson Park.",
+    "label": "The colonnade still stands today",
+    "style": "bracket",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "color-line-3",
+    "detail": "The areas shaded in the lowest grade, the red D-grade zones, are the neighborhoods the Home Owners Loan Corporation marked as hazardous, the formal map of redlining across Chicago.",
+    "label": "Red zones graded hazardous",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "color-line-3",
+    "detail": "The narrow band of low-graded blocks running south along the lakefront South Side corresponds to the Black Belt corridor where Black Chicagoans were confined.",
+    "label": "The South Side Black Belt",
+    "style": "bracket",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "color-line-5",
+    "detail": "This South Side street scene was photographed by Russell Lee for the federal Farm Security Administration in April 1941, documenting the Black Belt where most Black Chicagoans were held by covenant and practice.",
+    "label": "Chicago's Black Belt, 1941",
+    "style": "underline",
+    "confidence": "high"
+  },
+  {
+    "imageId": "urban-renewal-1",
+    "detail": "The dense unbroken grid of streets and closely packed buildings along the lakefront is Hyde Park as it stood in 1928, before any urban renewal clearance, the fabric the plan would later demolish block by block.",
+    "label": "Hyde Park before clearance, 1928",
+    "style": "bracket",
+    "confidence": "high"
+  },
+  {
+    "imageId": "urban-renewal-1",
+    "detail": "The open water and beach along the right edge of the aerial is the Lake Michigan shoreline at Chicago Beach, fixing the view on the Hyde Park lakefront.",
+    "label": "The Lake Michigan shore",
+    "style": "arrow",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "urban-renewal-3",
+    "detail": "These are the University Apartments, the modernist residential towers designed by I. M. Pei's firm and built in the cleared center of 55th Street, the replacement housing that rose on land taken during Hyde Park renewal.",
+    "label": "University Apartments, built on cleared land",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "urban-renewal-3",
+    "detail": "The towers sit on a landscaped median running down the middle of the roadway, the redesigned 55th Street that replaced the old commercial corridor the plan demolished.",
+    "label": "Set in the rebuilt 55th Street",
+    "style": "underline",
+    "confidence": "medium"
+  },
+  {
+    "imageId": "formation-1",
+    "detail": "This is Paul Cornell, the Chicago lawyer and land developer who bought 300 acres of lakefront in 1853 and named the tract Hyde Park, later called the father of Hyde Park.",
+    "label": "Paul Cornell, founder of Hyde Park",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "university-3",
+    "detail": "This is John D. Rockefeller, the Standard Oil magnate whose 1889 pledge and roughly 35 million dollars in gifts by 1910 founded and built the University of Chicago.",
+    "label": "John D. Rockefeller, the university's benefactor",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "university-2",
+    "detail": "This is William Rainey Harper, the Yale-trained scholar Rockefeller chose to organize the University of Chicago and its first president, who built a research university from its 1892 opening.",
+    "label": "William Rainey Harper, first president",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "university-1",
+    "detail": "This is Cobb Lecture Hall, the first University of Chicago building completed and ready for the October 1892 opening, in the gray limestone English Gothic Revival style Henry Ives Cobb set for the campus.",
+    "label": "Cobb Hall, the first building",
+    "style": "spotlight",
+    "confidence": "high"
+  },
+  {
+    "imageId": "color-line-4",
+    "detail": "This is the Lorraine Hansberry House, the Woodlawn home tied to the family whose challenge to a racially restrictive covenant reached the Supreme Court in Hansberry v. Lee in 1940.",
+    "label": "The Hansberry House, Woodlawn",
+    "style": "spotlight",
+    "confidence": "medium"
+  }
+]

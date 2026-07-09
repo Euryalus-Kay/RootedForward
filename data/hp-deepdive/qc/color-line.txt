@@ -1,0 +1,76 @@
+FRAME ASSETS: contact sheets + full-res zooms in /private/tmp/claude-501/-Users-zainzaidi-Desktop-Rooted-Forward/9de4bd74-68b1-4411-842a-986fd76874dd/scratchpad/qc-color-line (sheets/ and zoom/). Frame F = F*3 seconds. Total runtime 12:09.
+
+==================== P1 (MUST FIX) ====================
+
+[P1-1] 00:01:44 - 00:01:53 (Fannie Barrier Williams stat card)
+On screen: stat card, eyebrow "FANNIE BARRIER WILLIAMS", hero number "1,855-1944", subline "clubwoman and writer, the kind of neighbor the club shut out", caption "She had been the first Black woman admitted to the Chicago Woman's Club...".
+WHY WRONG: The big number reads "1,855-1944" - a thousands-comma has been injected into the birth year 1855. Fannie Barrier Williams was born 1855, not "1,855". This is the classic comma-in-a-year defect, full-screen for ~9 seconds. The storyboard value in color-line.sections.json is correctly "1855-1944" (no comma); the renderer is corrupting it.
+ROOT CAUSE (concrete): scripts/hp_render_museum.py, function _parse_stat (lines 427-437). The regex grabs only the first number run ("1855"); the is_year test `re.fullmatch(r"(1\d{3}|20\d{2})", value.strip())` is run against the WHOLE value "1855-1944", which fails to fullmatch because of "-1944", so is_year=False, so comma = (1855>=1000 and not False) = True, and _fmt_num renders "1,855". Any "YEAR-YEAR" lifespan value hits this bug.
+FIX: In _parse_stat, base the year test on the CAPTURED token, not the whole string. Either (a) compute is_year from numstr/m.group(1): `is_year = bool(re.fullmatch(r"(1\d{3}|20\d{2})", m.group(1)))`, or (b) add an early guard: if the value matches `^\d{4}\s*[-–]\s*\d{4}$` treat as a no-comma label and skip number animation entirely (render the literal "1855-1944"). Option (b) is safest because it also avoids count-up animation on a year range. Re-render and confirm the card reads "1855-1944".
+
+==================== P2 (POLISH / OSCAR BAR) ====================
+
+[P2-1] ~00:04:51 (and recurs ~00:07:48, and every deed-doc reuse) - deed document "Only Members of the Caucasian Race"
+On screen: full-frame period deed-notice halftone whose OWN printed headline is the large words "Only Members of the / Caucasian Race"; the burned-in WALL LABEL reads the identical text "Only Members of the Caucasian Race / A PERIOD NOTICE QUOTING A DEED CLAUSE...".
+WHY WRONG: The wall label sits directly on top of the image's own identical headline, doubling the same words and producing a tangled, unreadable smear across the top third. Worst collision in the film. Borderline P1 (unreadable).
+FIX: For annot "racial-hierarchy-doc", either drop the wall label entirely (the image already says it) or move the label to the lower-left over the dead margin of the document and shorten it to just the subtitle. Edit the annot label placement / suppress label on this asset in the renderer.
+
+[P2-2] ~00:03:27 (recurs ~00:08:00, ~00:08:15) - HOLC redlining map double-title collision
+On screen: HOLC grade map of Chicago; the map's own printed title block top-left "Home Owners' Loan Corp. (HOLC) Neighborhood Redlining Grade in Chicago, Illinois"; the burned-in WALL LABEL "HOLC grades on the South Side / THE GRADED RING OF NEIGHBORHOODS..." lands on the same top-left corner.
+WHY WRONG: Two titles stack and overlap during the label fade, muddy and unreadable for ~1.5s each time. Recurs on all three reuses of this map (color-line-3).
+FIX: Move this wall label to the top-RIGHT or bottom-LEFT (the map's right side and lower-left are empty), or suppress the label on color-line-3 since the map is self-titled. One placement edit fixes all three instances.
+
+[P2-3] 00:02:42 - "Spring 1917" callout collides with caption (Chicago Defender building)
+On screen: modern color photo of the Defender building; bottom-left callout "GREAT NORTHERN DRIVE / Spring 1917"; burned-in caption "Its publisher, Robert Abbott, printed train schedules and job listings and called for a Great Northern Drive in the spring of 1917."
+WHY WRONG: The "Spring 1917" callout line overlaps the first line of the caption, both bottom-left, hard to read.
+FIX: Raise the callout block ~120px or move it top-left; or drop the callout here since the caption already states "spring of 1917." Adjust callout y-position for this shot.
+
+[P2-4] 00:08:15 - "MacChesney, 1927" callout collides with caption (HOLC map)
+On screen: HOLC map; bottom-left callout "MODEL COVENANT / MacChesney, 1927"; caption "A Chicago attorney named Nathan MacChesney drafted a model covenant in 1927...".
+WHY WRONG: Callout text overlaps the caption text, same bottom-left zone.
+FIX: Same as P2-3 - lift callout or suppress (caption already carries the date).
+
+[P2-5] 00:00:15 - modern-color anachronism, greystones (s1 opening)
+On screen: wall label "Greystones on Ellis Avenue / THE KENWOOD HOUSING STOCK..."; caption "In the autumn of 1908, white homeowners in Hyde Park formed the Hyde Park Improvement Protective Club." Image is a present-day color street photo with 2000s-era parked cars (a red SUV prominent).
+WHY WRONG: A full-color modern street with contemporary cars reads as present-day under a 1908 narration beat, breaking the period spell right at the film's open.
+FIX: Re-anchor this beat to a period still, or recrop the greystones photo tight on the facades to crop out the parked cars (the upper two-thirds of the frame is period-neutral). Tighten the crop in the protective-club-era asset, or swap to a B&W/sepia-graded version for the 1908 moment.
+
+[P2-6] 00:02:24 - modern drone aerial labeled "today" during 1910s migration VO
+On screen: wall label "The Illinois Central, today / STILL ON THE LAKEFRONT IT BUILT"; modern color drone aerial of Chicago; caption "Across the South, Black families were leaving sharecropping, lynching, and Jim Crow, drawn north by wartime jobs...".
+WHY WRONG: A present-day color drone shot collides hard with VO about 1910s Southern migrants; the "today" label underlines the anachronism. Confusing image-to-caption link.
+FIX: Move this clip later to a "today/present" beat (e.g. s7 closing "blocks the next chapter would reshape") or replace with the period IC-train still (formation-ic-train) for the migration line. Reorder shots in s2 so the migration/Jim-Crow caption sits on a period image, not the modern aerial.
+
+[P2-7] 00:09:18 - image-caption confusion, family portrait under riot line
+On screen: posed studio family group portrait (color-line-1, "An African American family, South Chicago, 1922"); caption "The police refused to arrest the white man witnesses named."
+WHY WRONG: A calm studio family portrait does not illustrate police refusing to arrest a killer; the audio has drifted off the storyboard anchor (color-line-1 was meant for "A white man threw rocks... and he drowned"). Reads as a non-sequitur.
+FIX: Re-anchor color-line-1 earlier to the drowning/beach line, and place a period riot/street image (the riot composite dd-color-line-7 is available) under "The police refused to arrest..." Adjust shot timings in s4 so images track the VO.
+
+[P2-8] Recurring (every stat card, e.g. 00:01:44, 00:03:16, 00:05:00) - low-contrast sublines and source lines
+On screen: stat cards - the gray context subline (e.g. "the pace of bombings against Black homes and offices, 1917 to 1920") and the tiny "SOURCE: ..." line render as dim gray on dark-green/forest, near-invisible.
+WHY WRONG: Below broadcast legibility; the attribution line in particular is essentially unreadable, which undercuts the "every number is sourced" intent.
+FIX: In stat_scene (hp_render_museum.py ~line 459 and the src block ~461), raise the subline fill from (214,209,199) toward cream and bump the source-line alpha/value by ~30-40 percent, or add a subtle drop shadow. One color/alpha tweak lifts every card.
+
+[P2-9] 00:01:36 - washed-out wall label on Fannie portrait
+On screen: Fannie Barrier Williams portrait (light sepia); wall label "Fannie Barrier Williams, c.1880 / FIRST BLACK WOMAN ADMITTED..." rendered in light type over the light upper-left background of the photo.
+WHY WRONG: Light label on light sepia = barely readable; the subtitle line nearly disappears.
+FIX: Add/raise the label scrim or move the label to the darker lower-left of the portrait; ensure the rust accent bar and a semi-opaque backing plate sit behind the text for this light-background asset.
+
+==================== P3 (PACING) ====================
+
+[P3-1] 00:01:44 - 00:01:53 - the broken Fannie card holds ~9s
+Once fixed per P1-1, also tighten: a single static stat card on screen for nine seconds drags. Trim to ~5-6s (the dur default is 4.4 elsewhere) so it does not outstay the VO line.
+
+[P3-2] Deed doc and HOLC map over-reuse
+The "Only Members of the Caucasian Race" deed appears 4x (s4, s5 twice, s7) and the HOLC map 3-4x (s3, s6 twice, s7). By the third appearance each reads as filler and the section drags. Introduce one alternate covenant/deed still and one alternate map crop (e.g. zoom into a single graded block) so repeated returns feel like new information, not a loop.
+
+[P3-3] 00:02:24 - rough tonal jump, modern drone amid period stills
+Beyond the anachronism (P2-6), the cut from sepia migration stills to a saturated modern color aerial and back is a jarring tonal whiplash. If the clip stays, grade it down to match the sepia/desaturated look of its neighbors so the transition is not abrupt.
+
+==================== NON-ISSUES VERIFIED (do not touch) ====================
+- Population card "40,000 to 278,000" (00:03:15): commas correct, no false comma.
+- great-migration chart (00:02:57): 44,103 / 109,458 / 233,903 / 277,731, "278,000 by 1940" - accurate, well-formatted, commas correct.
+- Date cards "Nov 12, 1940" (Hansberry) and "May 3, 1948" (Shelley): render with NO false comma - correct.
+- Cards "350", "40 years", "1 every 20 days", "23 Black, 15 white", "at least 5", "$83,000+": all clean.
+- Hansberry portrait->house dissolve (~00:09:51): normal crossfade, not a corrupt frame.
+- Riot newspaper composite (00:05:21) and Eugene Williams callout: strong, no collision.
+- No black/corrupt frames detected across 243 sampled frames; credits/outro (12:00-12:09) clean.

@@ -1,0 +1,43 @@
+METHOD NOTE: 707s film (11:47), 16:9 1080p, audio is final "ash" VO (not judged). Frames every 3s with burned-in source timecodes + targeted full-res zooms. IMPORTANT: low-res contact-sheet thumbnails produced several FALSE number alarms (I thought I saw "$10,470/yr", "2,139,424", "634") — every one was a thumbnail artifact and read CORRECT at full res. All stat numerals were re-verified at full resolution. Confirmed-correct cards: $14,000/yr (5:48), 5,000,000 (5:45), 800 (6:30), 859 (7:21), 660 mi/61 days (7:45), 6,000+ (8:21), 300 to 4,000+ (8:45), 300 acres (10:48), 60 (11:09), 150 (4:42), 1,000 (4:03), 40+ (8:00). No black/corrupt frames. No stock watermarks (the "DRONE, ROOTED FORWARD" top-right on the aerials and the "WIKIMEDIA COMMONS"/"HENRY LEWIS"/"CHARLES BIRD KING" corner credits are intentional source labels).
+
+=== P1 (must fix before anyone sees it) ===
+None. No final-state wrong numbers, no contradicted captions that persist, no corrupt/black frames, no watermarked or wrong-subject stills. (The two items below were P1 candidates that resolved on full-res inspection — see DOWNGRADED.)
+
+=== P2 (graphics + image polish, the Oscar bar) ===
+
+P2-1  2:30-2:36  "Second Fort Dearborn" postcard (dd-land-3). Wall label "Second Fort Dearborn / PERIOD POSTCARD OF THE REBUILT FORT AT THE RIVER MOUTH"; the artwork's OWN embedded caption reads "Second Fort Dearborn, Built in 1816, Abandoned in 1824." VO caption under it: "In 1803, soldiers under Captain John Whistler built Fort Dearborn at the mouth of the river." The on-image text "Built in 1816" directly contradicts the spoken "In 1803" — this is the FIRST fort line illustrated by the SECOND fort. FIX: in land.sections.json s2 shots, move dd-land-3 off the "built Fort Dearborn at the mouth of the river" anchor and re-anchor it to the later phrase "then rebuilt four years later" (the 1816 rebuild it actually depicts). Put a first-fort image or a neutral river-mouth/sandbar still on the 1803 line (the sandbar/elephant-trunk line already calls dd-land-4; consider using land-early-chicago or a Fort-Dearborn-1803 asset on the 1803 line).
+
+P2-2  9:09  Illinois Central locomotive (formation-ic-train), no wall label visible, VO caption "Speculators bought and flipped the wet lots faster than anyone could build on them, until the panic of 1837 wiped out the easy money." An 1893 steam locomotive illustrating an 1837 land-speculation panic is anachronistic (56 years off) and has zero visual link to lot-flipping. FIX: in s5, swap formation-ic-train on the "panic of 1837" anchor for land-early-chicago (Chicago 1833 cabins/wet river lots) or formation-4 (1857 bird's-eye); reserve the locomotive for the IC-railroad beat in s6 where it belongs.
+
+P2-3  ~10:54-11:00  "300 acres" stat card (cornellBuy) is composited OVER the "Hyde Park, London" engraving (dd-formation-1) while the VO has already moved to "He named the place Hyde Park, after the London park... deeded sixty of those acres to the Illinois Central." The big "300 acres" numerals sit on a busy detailed engraving (low contrast, numerals fight the artwork) AND the card has drifted off its own "he bought three hundred acres" line into the London-park + depot beat. The London-park image's wall label is fully hidden behind the stat card. FIX: tighten cornellBuy stat timing to end on the "no one else wanted" line (~10:48-10:53) so dd-formation-1 plays clean with its own wall label on "after the London park"; never lay a numeral stat card over a detailed still — keep stat cards on the dark green plate.
+
+P2-4  2:00-2:09  Allium tricoccum botanical plate (dd-land-2). Wall-label title "Allium tricoccum, the Wild Leek" collides with the white plate edge — the words after "the" run into the artwork and are unreadable. FIX: nudge the wall-label origin left, or shrink the framed plate ~6-8% so the label clears the image margin in the museum-frame layout.
+
+P2-5  Whole film  Carte de la Louisiane wide French map (dd-land-8) is reused ~6x (1:00, 1:51, 2:03 area, 3:00/5:00, 4:54) and the Royce Illinois-cession map (dd-land-7) ~5x (2:57, 3:24, 4:06-4:24, 6:33-6:48). Sepia maps dominate minutes 0:45-1:54 and 2:54-4:24, making long stretches visually monotonous and hard to tell apart. FIX: cut the dd-land-8 instances on the Council-of-Three-Fires line (s1) and the Indian-Removal-Act line (s3/5:00) — a 1718 watershed map does not illustrate either; substitute land-potawatomi or dd-land-6 there, and reduce dd-land-7 repeats to two max.
+
+P2-6  5:00  Carte de la Louisiane (dd-land-8) on VO "The Indian Removal Act of 1830 had already made that the policy of the country." A French Mississippi-watershed map from 1718 has no connection to a U.S. removal statute of 1830 — confusing pairing. FIX: re-anchor to dd-land-7 (Royce cessions, the legal act of taking land) or hold on the Bad Axe lithograph aftermath instead.
+
+P2-7  6:21  "Chicago in 1833" cabins engraving (land-early-chicago) on VO "They had roached their hair and tied hawk and eagle feathers nearly to the ground." Empty log cabins illustrate a vivid line about the 800 dancers' regalia — no figures, no dancers, confusing. FIX: in s4 reorder so the lastDancers "800" stat card (which IS about the dancers) covers this regalia line, and move land-early-chicago to the "dance through the streets of Chicago" geography line just before it.
+
+P2-8  1:24-1:30 (and all year cards)  The portage1673 card odometer-rolls its YEAR: it reads 1599 at 1:27, 1661 at ~1:27.2, and only settles on the correct 1673 at ~1:28.7. A historical-date card that displays factually wrong years (1599, 1640, 1661...) for most of its on-screen life is a documentary credibility problem. (Quantity cards counting up — 1,000 / 5,000,000 / 859 / 60 — are fine; this is YEAR-valued cards only.) FIX: in the stat-card graphic function, disable the count-up tween when the value is a 4-digit year (or any year-typed stat), snap-cut or fade the final year in instead of rolling.
+
+=== P3 (pacing) ===
+
+P3-1  9:48-10:21  dd-formation-7 "Hyde Park Township" grid map held ~33s as one near-static still (and it looks nearly identical to dd-land-11 shown just before at 9:39-9:45). Longest single-still hold in the film; section 6 visually stalls here. FIX: cut to ~12-14s and intercut the old-new aerial or the Cornell portrait earlier.
+
+P3-2  9:00-9:21  formation-4 "Bird's-Eye View of Chicago 1857" lithograph held ~21s with little movement. FIX: trim to ~10s or add a slow push to justify the length.
+
+P3-3  5:48-6:12  Wa-baun-see Potawatomi portrait (land-potawatomi) held ~24s under the "seventy thousand dollars for schools" line and the treaty-terms run. FIX: break with the land-treaty-chicago manuscript or a second portrait around the midpoint.
+
+P3-4  7:09-7:39  Trail of Death Memorial color photo (dd-land-5) held ~30s while three stat cards (859, 660mi) cycle over the same modern green photo. The lone modern color image in a sepia film, parked too long. FIX: cut between the memorial photo and the dd-land-10 Pokagon portrait so the stat cards don't all sit on one image.
+
+P3-5  4:06-4:24  Royce Illinois map (dd-land-7) held ~18s across "1804 treaty" and "April to August." FIX: trim and bring the Bad Axe lithograph in earlier.
+
+P3-6  7:21-7:30  Stat-card desync: the "859" (trailRemoved) card lingers under the VO caption "The march began at Twin Lakes... ended on the fourth of November along the Osage River" (which is the trailDistance content). Minor, both are Trail-of-Death, but the number and the words don't match. FIX: advance to the 660mi/61-days card on the route-description line.
+
+P3-7  Wall-label note (red cloak)  3:42-3:48 Black Hawk portrait (dd-land-1) wall label says "CHARLES BIRD KING PORTRAIT IN A RED CLOAK," but the film's sepia grade renders it monochrome so no red is visible. Cosmetic mismatch. FIX: drop "in a red cloak" from the label or warm the grade on this one still.
+
+=== DOWNGRADED (looked like P1 in thumbnails, verified fine at full res) ===
+- 1:27 "1599" on the portage card → count-up tween, settles correctly on 1673 by 1:28.7 (now logged as P2-8).
+- 0:09-0:27 modern red-brick apartment aerials over "there was prairie and marsh" → intentional "Hyde Park, today / SEVEN MILES SOUTH OF THE LOOP" present-day bookend; deliberate contrast, keep.
+- Suspected wrong numbers $10,470/yr, 2,139,424, 634 → all thumbnail artifacts; full res shows $14,000/yr, the 5,000,000 manuscript, and 800 respectively. Correct.

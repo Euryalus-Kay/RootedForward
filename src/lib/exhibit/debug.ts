@@ -1,24 +1,22 @@
 /* ------------------------------------------------------------------ */
 /*  Debug/testability singleton behind ?debug=1. The verify harness    */
 /*  drives the exhibit through window.__exhibit, and deterministic     */
-/*  mode (seeded RNG, near-instant animation, silent audio stubs)      */
-/*  keeps scenarios reproducible.                                      */
+/*  mode (seeded RNG, near-instant animation) keeps scenarios          */
+/*  reproducible.                                                      */
 /* ------------------------------------------------------------------ */
 
 export interface DebugFlags {
   enabled: boolean;
-  audioStub: boolean;
   seed: number;
 }
 
-const flags: DebugFlags = { enabled: false, audioStub: false, seed: 1 };
+const flags: DebugFlags = { enabled: false, seed: 1 };
 
 export function initDebug(): DebugFlags {
   if (typeof window !== "undefined") {
     const q = new URLSearchParams(window.location.search);
     if (q.get("debug") === "1") {
       flags.enabled = true;
-      flags.audioStub = true; // deterministic by default under debug
       const s = Number(q.get("seed"));
       if (Number.isFinite(s) && s > 0) flags.seed = s;
     }

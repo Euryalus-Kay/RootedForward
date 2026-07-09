@@ -1,50 +1,26 @@
 /* ------------------------------------------------------------------ */
-/*  Chapter registry. CHAPTER_META is eager (feeds HUD, spine, jump    */
-/*  chips). Stage definitions are auto-derived from narration.json     */
-/*  (every VO block becomes a prose card; every pausePointAfter        */
-/*  becomes an interactive slot) plus per-chapter stage overrides for  */
-/*  figures, stats, and doors. Interactives that are not yet built     */
-/*  render as labeled in-production cards, never silent gaps.          */
+/*  Chapter registry for the reader-paced exhibit. CHAPTER_META keeps  */
+/*  the rail geometry and end-of-chapter record effects; wall text     */
+/*  (titles, eras, sections, station intros) ships from                */
+/*  data/exhibit/walltext.json through src/lib/exhibit/walltext.ts     */
+/*  and always wins over the fallback title here. CHAPTER_LAYOUTS      */
+/*  interleaves figures, stations, doors, and quotes with the wall-    */
+/*  text sections; EXHIBIT_FLOW is the top-to-bottom render order      */
+/*  (the five-instruments overture sits between ch2 and ch3).          */
 /* ------------------------------------------------------------------ */
-import narrationJson from "../../../../data/exhibit/narration.json";
 import {
   CHAPTER_ORDER,
-  type ChapterDef,
   type ChapterId,
   type ChapterMeta,
-  type NarrationBlockData,
-  type NarrationChapterData,
-  type StageBlock,
+  type FlowBlock,
 } from "../types";
+import { wallChapter } from "../walltext";
 
-export const NARRATION = narrationJson as unknown as {
-  title: string;
-  kicker: string;
-  chapters: NarrationChapterData[];
-};
-
-const narrationByChapter = new Map<string, NarrationChapterData>(
-  NARRATION.chapters.map((c) => [c.id, c])
-);
-
-export function narrationChapter(id: ChapterId): NarrationChapterData | undefined {
-  return narrationByChapter.get(id);
-}
-
-export function narrationBlock(blockId: string): NarrationBlockData | undefined {
-  const chId = blockId.split("-")[0];
-  return narrationByChapter.get(chId)?.blocks.find((b) => b.id === blockId);
-}
-
-export const BLOCK_COUNTS: Record<string, number> = Object.fromEntries(
-  NARRATION.chapters.map((c) => [c.id, c.blocks.length])
-);
-
-/* ---- chapter meta: eras, spine anchors, end-of-chapter effects ---- */
+/* ---- chapter meta: eras, spine anchors, end-of-chapter records ---- */
 
 export const CHAPTER_META: ChapterMeta[] = [
-  { id: "ch0", index: 0, title: "Declined", era: "1940", spineYear: 1940, effects: {} },
-  { id: "ch0_5", index: 1, title: "The Five Machines", era: "Overture", spineYear: 1832, effects: {} },
+  { id: "ch0", index: 0, title: "The Map", era: "1940", spineYear: 1940, effects: {} },
+  { id: "ch0_5", index: 1, title: "Five Instruments", era: "Overture", spineYear: 1832, effects: {} },
   {
     id: "ch1",
     index: 2,
@@ -146,25 +122,59 @@ export const CHAPTER_META: ChapterMeta[] = [
 export const metaOf = (id: ChapterId): ChapterMeta =>
   CHAPTER_META[CHAPTER_ORDER.indexOf(id)];
 
-/* ---- stage overrides: figures, stats, quotes inserted around the ---- */
-/* ---- auto-derived narration + interactive slots, keyed by blockId ---- */
-
-interface StageOverrides {
-  /** blocks inserted after the given narration blockId (before its interactive slot) */
-  after?: Record<string, StageBlock[]>;
-  /** blocks appended at chapter end */
-  tail?: StageBlock[];
+/** Display title and era prefer the walltext chapter when it exists. */
+export function displayTitleOf(id: ChapterId): string {
+  return wallChapter(id)?.title ?? metaOf(id).title;
 }
 
-const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
+export function displayEraOf(id: ChapterId): string {
+  return wallChapter(id)?.era ?? metaOf(id).era;
+}
+
+/* ---- render order, top of the page to the bottom ------------------ */
+/* The overture (five instruments) sits after ch2, where the machines  */
+/* concept is introduced before the chapters that switch them on.      */
+
+export const EXHIBIT_FLOW: ChapterId[] = [
+  "ch0",
+  "ch1",
+  "ch2",
+  "ch0_5",
+  "ch3",
+  "ch4",
+  "ch5",
+  "ch6",
+  "ch7",
+  "ch8",
+  "ch9",
+  "ch10",
+  "ch11",
+];
+
+/* ---- per-chapter layout: extras interleaved with wall sections ---- */
+
+export interface ChapterLayout {
+  /** blocks inserted after the Nth wall-text section (1-based). If the
+   *  chapter has fewer sections than N, the blocks land at the tail. */
+  afterSection?: Record<number, FlowBlock[]>;
+  /** blocks appended after the last section */
+  tail?: FlowBlock[];
+}
+
+export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
+  ch0: {
+    afterSection: {
+      1: [{ kind: "station", station: "holc-map", props: { framing: "ch0" } }],
+    },
+  },
   ch1: {
-    after: {
-      "ch1-b2": [{ kind: "interactive", interactive: "layer-slider" }],
+    afterSection: {
+      2: [{ kind: "station", station: "layer-slider" }],
     },
   },
   ch2: {
-    after: {
-      "ch2-b1": [
+    afterSection: {
+      1: [
         {
           kind: "figure",
           src: "/media/hyde-park/img/worlds-fair-1.jpg",
@@ -185,8 +195,8 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     ],
   },
   ch3: {
-    after: {
-      "ch3-b2": [
+    afterSection: {
+      2: [
         {
           kind: "figure",
           src: "/media/hyde-park/exhibit/fig/fannie-barrier-williams.jpg",
@@ -198,8 +208,9 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     },
   },
   ch4: {
-    after: {
-      "ch4-b1": [
+    afterSection: {
+      1: [{ kind: "station", station: "bombing-map" }],
+      2: [
         {
           kind: "figure",
           src: "/media/hyde-park/exhibit/fig/jesse-binga.jpg",
@@ -211,8 +222,8 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     },
   },
   ch5: {
-    after: {
-      "ch5-b2": [
+    afterSection: {
+      2: [
         {
           kind: "figure",
           src: "/media/hyde-park/exhibit/fig/racial-hierarchy-doc.jpg",
@@ -228,22 +239,23 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     ],
   },
   ch6: {
-    after: {
-      "ch6-b1": [
+    afterSection: {
+      2: [
         {
           kind: "figure",
           src: "/media/hyde-park/exhibit/fig/homer-hoyt.jpg",
           alt: "The Home Owners' Loan Corporation Residential Security Map of Chicago, around 1940.",
           creditKey: "homer-hoyt",
-          caption: "The Residential Security Map of Chicago, the document behind the lens.",
+          caption: "The Residential Security Map of Chicago, as issued.",
         },
       ],
+      3: [{ kind: "station", station: "holc-map", props: { framing: "ch6" } }],
     },
     tail: [{ kind: "door", roomId: "map", label: "The Map" }],
   },
   ch7: {
-    after: {
-      "ch7-b1": [
+    afterSection: {
+      1: [
         {
           kind: "figure",
           src: "/media/hyde-park/exhibit/fig/dd-redlining-11.jpg",
@@ -252,7 +264,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
           caption: "Carl Hansberry, who bought the house and carried the covenant to the Supreme Court.",
         },
       ],
-      "ch7-b2": [
+      2: [
         {
           kind: "figure",
           src: "/media/hyde-park/img/dd-color-line-10.jpg",
@@ -260,6 +272,7 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
           creditKey: "dd-color-line-10",
           caption: "The Supreme Court chamber, photographed in 1937, where the armor finally failed in 1948.",
         },
+        { kind: "cases" },
       ],
     },
     tail: [
@@ -276,8 +289,9 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     tail: [{ kind: "door", roomId: "bulldozer", label: "The Bulldozer" }],
   },
   ch9: {
-    after: {
-      "ch9-b1": [{ kind: "quote", voiceId: "dempsey-travis" }],
+    afterSection: {
+      1: [{ kind: "quote", voiceId: "dempsey-travis" }],
+      3: [{ kind: "station", station: "two-buyers" }],
     },
     tail: [{ kind: "door", roomId: "contract", label: "The Contract" }],
   },
@@ -285,26 +299,10 @@ const OVERRIDES: Partial<Record<ChapterId, StageOverrides>> = {
     tail: [{ kind: "door", roomId: "counter", label: "The Counter-Machine" }],
   },
   ch11: {
-    after: {
-      "ch11-b2": [{ kind: "quote", voiceId: "martin-luther-king" }],
+    afterSection: {
+      1: [{ kind: "ledger-table" }, { kind: "station", station: "gap-at-scale" }],
+      2: [{ kind: "quote", voiceId: "martin-luther-king" }],
     },
+    tail: [{ kind: "station", station: "answer-wall" }],
   },
 };
-
-export function buildChapterDef(id: ChapterId): ChapterDef {
-  const meta = metaOf(id);
-  const narr = narrationChapter(id);
-  const ov = OVERRIDES[id] ?? {};
-  const stage: StageBlock[] = [];
-  for (const block of narr?.blocks ?? []) {
-    stage.push({ kind: "narration", blockId: block.id });
-    for (const extra of ov.after?.[block.id] ?? []) stage.push(extra);
-    if (block.pausePointAfter) {
-      stage.push({ kind: "interactive", interactive: block.pausePointAfter });
-    }
-  }
-  for (const extra of ov.tail ?? []) stage.push(extra);
-  return { meta, stage };
-}
-
-export const CHAPTER_DEFS: ChapterDef[] = CHAPTER_ORDER.map((id) => buildChapterDef(id));

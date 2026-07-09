@@ -298,6 +298,14 @@
           "verdict": "verified",
           "note": "Standard neighborhood history; Encyclopedia of Chicago Hyde Park entry documents the exposition boom.",
           "source": "Encyclopedia of Chicago, Hyde Park"
+        },
+        {
+          "id": "fc-fair-12",
+          "factId": "fair.us_pop_1890",
+          "claim": "The 1890 United States population was about 63 million.",
+          "verdict": "verified",
+          "note": "Census total 62,979,766.",
+          "source": "US Census Bureau, 1890"
         }
       ]
     },
@@ -844,6 +852,14 @@
           "verdict": "verified",
           "note": "Board action December 21, 1939 under Hutchins.",
           "source": "University of Chicago histories"
+        },
+        {
+          "id": "fc-renewal-18",
+          "factId": "renewal.housing_act_1949",
+          "claim": "Title I of the federal Housing Act of 1949 funded slum clearance, letting cities condemn land declared blighted, clear it, and resell it to redevelopers with federal grants covering most of the write-down.",
+          "verdict": "verified",
+          "note": "Public Law 81-171, signed July 15, 1949. Registered for the exhibit wall text. hp-research.json carries the act as the statute Section 112 (1959) amends; machines.json already ships the 1949 arming claim.",
+          "source": "Housing Act of 1949, Public Law 81-171, 63 Stat. 413"
         }
       ]
     },

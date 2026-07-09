@@ -1,0 +1,330 @@
+[
+  {
+    "lens": "Museum-style highlighting and annotation of the real archival photos. Animated spotlights that isolate a verifiable detail, restrained arrows/circles/brackets, and elegant Baskerville/Gill Sans labels that emerge on the narration beat that names the thing. Every callout points to a real object I have visually confirmed in the file, and every label states only a fact from data/hp-research.json or the image credits. The whole system reads as a curator quietly pointing, never as a motion-graphics flourish. Hold each annotation long enough to read at architectural scale (a Capitol wall), then let it recede so the photo breathes.",
+    "techniques": [
+      {
+        "name": "Spotlight isolate with darkened surround",
+        "what": "A soft-edged elliptical or rectangular spotlight brightens one real detail in the photo while the rest of the frame dims to roughly 45 to 55 percent and desaturates slightly. The eye is led to the thing the narrator just named, then the surround eases back up so the full image returns. This is the backbone move that makes every label feel earned.",
+        "where": "worlds-fair-6 (Ferris Wheel chapter): isolate the original 1893 Ferris Wheel itself as the line names it. urban-renewal-1 (1928 Hyde Park aerial): isolate the single tall apartment tower on the lakefront and the raw graded shoreline. color-line-1 (1922 migrant family): isolate the stacked suitcases on the floor as narration reaches the Great Migration arrival. worlds-fair-1 (Court of Honor): isolate the gilded Statue of the Republic on its plinth in the basin.",
+        "how": "PIL: build a feathered alpha mask (white ellipse/rounded-rect on black, GaussianBlur radius ~40 to 70px). Composite two versions of the frame, one full-brightness and one with ImageEnhance.Brightness ~0.5 + slight Color reduction, using the mask as the blend alpha. Animate the mask: ease the spotlight's opacity and radius over ~18 frames in, hold ~2.5s, ease out. ffmpeg alternative for a moving subject: a radial gblur/vignette pass keyed to overlay time expressions. numpy for the radial falloff gradient.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low",
+        "where_note": ""
+      },
+      {
+        "name": "Emerging label with hairline leader",
+        "what": "A short fact label fades and rises a few pixels into place, connected to the highlighted detail by a thin hairline leader that draws itself from the object to the text. Baskerville for the noun, Gill Sans small-caps for the date or qualifier underneath. The label appears only on the word in the voiceover that names the thing, then dims to a resting low opacity so it stays legible without competing.",
+        "where": "worlds-fair-6 wheel -> label 'The original Ferris Wheel / Built for the 1893 fair'. university-1 Cobb Hall facade -> 'Cobb Hall'. urban-renewal-3 I.M. Pei slab -> 'University Apartments / built on cleared land, 1961'. formation-1 Cornell portrait -> 'Paul Cornell / 1822 to 1904'. university-2 -> 'William Rainey Harper / first president'. university-3 -> 'John D. Rockefeller / principal funder'.",
+        "how": "PIL: ImageFont with Baskerville + Gill Sans. Draw text to a transparent layer, animate y-offset (ease-out over ~12 frames) and alpha 0->1, then settle alpha to ~0.85. Leader line: ImageDraw.line drawn progressively by clamping its endpoint to an eased 0..1 t (line 'grows' from anchor to label). 2px rust (#c55d3e) hairline; 1px cream halo behind text via a blurred dark stroke for legibility on busy photos. Keep label inside a low-contrast region of each specific image (checked per frame).",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low",
+        "where_note": ""
+      },
+      {
+        "name": "Reveal circle that draws on, not pops on",
+        "what": "An ellipse traces itself around a detail in one smooth ~0.5s stroke, the way a lecturer rings a thing on a slide, rather than blinking into existence. Used sparingly for the single most important detail in an image. The hand-drawn-arc restraint keeps it from feeling like clip art.",
+        "where": "color-line-3 (HOLC redlining map): the map already contains two printed cyan 'Blockbusting sites' circles and a legend. Do NOT add a competing circle. Instead trace a rust ring around the legend's red 'D - Hazardous' swatch as narration names redlining, then a second restrained ring tying the red zones near Hyde Park. urban-renewal-1 aerial: ring the lone modern tower standing in newly cleared ground. formation-4 (1857 bird's-eye map): ring the dense built-up grid downtown to contrast with the empty prairie south, supporting 'a railroad reached the prairie first'.",
+        "how": "PIL: parametric ellipse, draw points for theta in 0..(2*pi*t) with t eased 0..1 over ~12 frames, ImageDraw.line between successive points for a continuous stroke; slight start/end overlap so it reads as a closed hand-drawn loop. 3px stroke, rust or cream depending on the photo's local value. Add a 1px outer dark blur for contrast on the busy aerial.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "medium",
+        "where_note": "Tacky risk is in over-circling. Restraint note: at most one drawn circle per image, never on an image that already carries printed circles (color-line-3), and never combined with an arrow on the same detail. If the spotlight already isolates the thing, skip the circle."
+      },
+      {
+        "name": "Architect's bracket and dimension label for scale facts",
+        "what": "Instead of a generic count-up, tie a verified figure to the real object using a thin surveyor-style bracket (two end ticks and a connecting line) spanning the thing, with the number set above it. This turns an abstract statistic into a measurement of the actual photograph, which is the museum-grade move.",
+        "where": "urban-renewal-1 1928 aerial: bracket the cleared lakefront strip with 'More than 15,000 residents displaced / 1950s urban renewal' (figure from research; image predates clearance, so frame it as the ground that would be cleared, captioned honestly). worlds-fair-1 Court of Honor basin: bracket the grounds with 'World's Columbian Exposition / May 1 to October 30, 1893'. urban-renewal-3 University Apartments slab: vertical bracket up the tower edge.",
+        "how": "PIL: draw two short perpendicular end ticks + a spanning line (rust, 2px); place Gill Sans number centered above with Baskerville caption below. Animate the span line growing from center outward (eased width), ticks fade in at the ends, then the number counts or fades. Keep the bracket parallel to a real edge in the photo (horizon line, building cornice) so it looks surveyed, not pasted.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "medium",
+        "where_note": "Restraint note: the 1928 aerial predates the 1950s clearance, so the label must not imply the photo shows displacement. Caption it as the lakefront before renewal, with the figure attributed (University of Chicago Library Centennial exhibit). Honesty over impact."
+      },
+      {
+        "name": "Cross-image highlight match-cut on a repeated detail",
+        "what": "Carry a single spotlight motif across two images to make a historical argument visually. Highlight the same lakefront edge or the same parkland in an old image and a present-day one so the audience sees the continuity the narration claims, with the annotation acting as the through-line.",
+        "where": "Jackson Park parkland: spotlight the fairgrounds basin in worlds-fair-1 / the Midway in worlds-fair-7, then on the present-day Obama Center beat reuse the identical spotlight shape and a label 'Jackson Park / the same parkland, 1893 and today'. This directly serves the verified closing fact that the Obama Center sits on the parkland that held the 1893 fair.",
+        "how": "ffmpeg xfade between the two stills timed so the spotlight ellipse stays in roughly the same screen position across the cut; in PIL pre-render both frames with the matched mask so the bright region lands in the same pixels. A 0.6s dissolve under a held label sells the continuity. No present-day Obama Center photo is in the roster, so use only confirmed images; if none shows the site, keep the match-cut between the two 1893 views and let narration carry 'today'.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low",
+        "where_note": "Real-data note: do not fabricate a present-day Obama Center image. Only match-cut between images actually present in credits.json."
+      },
+      {
+        "name": "Detail push-in within the spotlight (annotated Ken Burns)",
+        "what": "Combine the existing 2.5D parallax with a slow zoompan that ends framed on the highlighted detail, so the spotlight and the camera arrive on the subject together at the moment the label resolves. The motion motivates the annotation instead of the annotation interrupting the motion.",
+        "where": "color-line-1 migrant family: slow push from the full group down toward the suitcases as the label 'arrived in the Great Migration' resolves. color-line-4 (Lorraine Hansberry House two-flat): push toward the front entrance/stoop with label 'Lorraine Hansberry House' (she is verifiable as the family whose Washington Park covenant case reached the Supreme Court). university-1 Cobb Hall: push along the Gothic facade ending on the entrance tower.",
+        "how": "ffmpeg zoompan (z eased, x/y drifting toward the detail's normalized coords) on the high-res still, run before the PIL annotation pass so the label is composited in the final framing. Keep zoom modest (1.0 -> ~1.25) to protect resolution at 1920x1080 and to stay museum-calm. Sync label resolve to the zoompan end frame.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low",
+        "where_note": "Verify the Hansberry attribution in research before voicing any covenant claim; label the house, not an unverified quote."
+      }
+    ]
+  },
+  {
+    "lens": "Museum-style highlighting and annotation of the real archival photos. Animated spotlights that isolate a verifiable detail, restrained arrows/circles/brackets, and elegant Baskerville/Gill Sans labels that emerge on the narration beat that names the thing. Every callout points to a real object I have visually confirmed in the file, and every label states only a fact from data/hp-research.json or the image credits. The whole system reads as a curator quietly pointing, never as a motion-graphics flourish. Hold each annotation long enough to read at architectural scale (a Capitol wall), then let it recede so the photo breathes.",
+    "techniques": [
+      {
+        "name": "Spotlight isolate with darkened surround",
+        "what": "A soft-edged elliptical or rectangular spotlight brightens one real detail while the rest of the frame dims to ~50 percent and desaturates slightly, leading the eye to the thing the narrator just named, then the surround eases back up. The backbone move that makes every label feel earned.",
+        "where": "worlds-fair-6 (Ferris Wheel chapter): isolate the original 1893 Ferris Wheel itself. urban-renewal-1 (1928 aerial): isolate the lone tall lakefront tower and the raw graded shoreline. color-line-1 (1922 migrant family): isolate the stacked suitcases on the floor. worlds-fair-1 (Court of Honor): isolate the gilded Statue of the Republic on its plinth in the basin.",
+        "how": "PIL: feathered alpha mask (white ellipse/rounded-rect on black, GaussianBlur ~40-70px). Composite a full-brightness frame against an ImageEnhance.Brightness ~0.5 + slight Color-reduced copy, blended by the mask. Ease spotlight opacity and radius over ~18 frames in, hold ~2.5s, ease out. ffmpeg path for a moving subject: radial gblur/vignette keyed to overlay time expressions; numpy builds the radial falloff.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Emerging label with hairline leader",
+        "what": "A short fact label fades and rises a few pixels into place, joined to the detail by a thin leader that draws itself from object to text. Baskerville for the noun, Gill Sans small-caps for the date beneath. Appears on the voiceover word that names the thing, then dims to a low resting opacity so it stays legible without competing.",
+        "where": "worlds-fair-6 wheel: 'The original Ferris Wheel / built for the 1893 fair'. university-1 facade: 'Cobb Hall'. urban-renewal-3 slab: 'University Apartments / built on cleared land'. formation-1: 'Paul Cornell / 1822 to 1904'. university-2: 'William Rainey Harper / first president'. university-3: 'John D. Rockefeller / principal funder'.",
+        "how": "PIL ImageFont with Baskerville + Gill Sans. Text drawn to a transparent layer, y-offset eased over ~12 frames with alpha 0->1 settling to ~0.85. Leader grows by clamping its endpoint to an eased 0..1 t (ImageDraw.line). 2px rust (#c55d3e) hairline with a blurred dark stroke behind the text for legibility on busy photos. Place each label inside a low-contrast region checked per image.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Reveal circle that draws on, not pops on",
+        "what": "An ellipse traces itself around a detail in one ~0.5s stroke, the way a lecturer rings a thing on a slide, rather than blinking in. Reserved for the single most important detail in an image; the hand-drawn arc keeps it off clip-art territory.",
+        "where": "color-line-3 (HOLC map) already prints two cyan 'Blockbusting sites' circles and a legend, so do not add a competing ring on the map body; instead trace a rust ring around the legend's red 'D - Hazardous' swatch. urban-renewal-1 aerial: ring the lone modern tower in cleared ground. formation-4 (1857 bird's-eye map): ring the dense downtown grid to contrast with the empty prairie south, supporting 'a railroad reached the prairie first'.",
+        "how": "PIL parametric ellipse: draw points for theta in 0..(2*pi*t), t eased 0..1 over ~12 frames, ImageDraw.line between successive points; slight start/end overlap so it closes as a hand-drawn loop. 3px rust or cream stroke chosen by local value, 1px dark outer blur on the busy aerial. RESTRAINT: at most one drawn circle per image, never on color-line-3's map body which already carries printed circles, and never paired with an arrow on the same detail. If the spotlight already isolates the thing, skip the circle.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Architect's bracket and dimension label for scale facts",
+        "what": "Instead of a generic count-up, tie a verified figure to the real object with a surveyor-style bracket (two end ticks and a spanning line) across the thing, the number set above. Turns an abstract statistic into a measurement of the actual photograph.",
+        "where": "urban-renewal-1 1928 aerial: bracket the lakefront with 'More than 15,000 residents displaced / 1950s urban renewal'. worlds-fair-1 basin: bracket the grounds with 'World's Columbian Exposition / May 1 to October 30, 1893'. urban-renewal-3 slab: a vertical bracket up the tower edge.",
+        "how": "PIL: two short perpendicular end ticks plus a 2px rust spanning line; Gill Sans number centered above, Baskerville caption below. Span line grows from center outward (eased width), ticks fade in at the ends, number then counts or fades. Keep the bracket parallel to a real edge (horizon, cornice) so it looks surveyed. HONESTY: the 1928 aerial predates the 1950s clearance, so caption it as the lakefront before renewal with the figure attributed to the University of Chicago Library Centennial exhibit; never imply the photo shows the displacement.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Cross-image highlight match-cut on a repeated detail",
+        "what": "Carry one spotlight motif across two images to make a historical argument visually, highlighting the same parkland in an old and a present-day view so the audience sees the continuity the narration claims, the annotation acting as the through-line.",
+        "where": "Jackson Park parkland: spotlight the fairgrounds basin in worlds-fair-1 / the Midway in worlds-fair-7, then on the present-day Obama Center beat reuse the identical spotlight shape with 'Jackson Park / the same parkland, 1893 and today', serving the verified fact that the Obama Center sits on the parkland that held the 1893 fair.",
+        "how": "ffmpeg xfade timed so the spotlight ellipse holds roughly the same screen position across the cut; in PIL pre-render both frames with the matched mask so the bright region lands on the same pixels. A ~0.6s dissolve under a held label sells the continuity. REAL-DATA NOTE: no present-day Obama Center photo exists in credits.json, so do not fabricate one; match-cut only between the two confirmed 1893 views and let narration carry 'today'.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Detail push-in within the spotlight (annotated Ken Burns)",
+        "what": "Combine the existing 2.5D parallax with a slow zoompan ending framed on the highlighted detail, so spotlight and camera arrive on the subject together as the label resolves. The motion motivates the annotation instead of the annotation interrupting the motion.",
+        "where": "color-line-1 migrant family: slow push from the full group down to the suitcases as 'arrived in the Great Migration' resolves. color-line-4 (Lorraine Hansberry House two-flat): push toward the front stoop with label 'Lorraine Hansberry House'. university-1 Cobb Hall: push along the Gothic facade ending on the entrance tower.",
+        "how": "ffmpeg zoompan (z eased, x/y drifting to the detail's normalized coords) on the high-res still, run before the PIL annotation pass so the label is composited in the final framing. Keep zoom modest (1.0 -> ~1.25) to protect 1920x1080 resolution and stay museum-calm; sync the label resolve to the zoompan end frame. VERIFY the Hansberry covenant attribution in research before voicing any claim; label the house, never an unverified quote.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "low"
+      }
+    ]
+  },
+  {
+    "lens": "Continuity and motion through-lines. The film already owns four motifs that recur but do not yet TALK to each other: the timeline thread (hero scene + divider ribbon, same six anchor years), the lakefront shoreline line (map_scene shore polygon), the rust accent (#c55d3e, used for spines, dots, underscores, the route), and the spoken refrain \"the ground keeps moving\" (timeline subtitle + end card). Right now scenes are hard-concatenated and each one independently fades from and to black (seq_clip EDGE fade + finish_chapter), so every transition reads as a curtain drop. The single highest-leverage move is to stop treating the dip-to-black as a wall and start treating it as a hinge: carry ONE element across it every time, and make the four motifs reference each other so a thing planted in chapter one pays off in chapter six. The constraint that makes this safe and museum-grade is restraint. One carried element per hinge, never two; the rust accent stays a 2-3px line and a 5-7px dot, never a fill or a glow; the carried motion is always the timeline thread or the lakefront line, never decorative particles. Everything below is buildable in the existing PIL frame functions and the existing ffmpeg xfade/concat assembly, and every number cited is already verified in data/hp-research.json.",
+    "techniques": [
+      {
+        "name": "The timeline thread as the spine that never breaks",
+        "what": "Promote the existing divider ribbon (the to-scale timeline at the foot of each chapter divider, _divider_ribbon) into the single continuity spine of the whole film. Every chapter divider already lights its own year on the same six-anchor ribbon (1853, 1890, 1893, 1948, 1958, 2026). Make that ribbon the thing that survives the dip-to-black on BOTH sides: the divider's last second leaves the ribbon lit and pinned at H-150, and the first ~0.8s of the following chapter's first photo shot re-draws that exact same ribbon at the exact same y, lit on the same year, then lets it fade out as the photo settles. The viewer reads the cut as the camera moving along one continuous timeline rather than jumping between cards.",
+        "where": "At all six chapter hinges (divider -> first story shot of that chapter). Most load-bearing at the 1948 color-line divider into the renewal chapter, where the ribbon visibly steps from the 1948 dot to the 1958 dot across the cut.",
+        "how": "Factor _divider_ribbon into a standalone ribbon(b, t, lit_year, intro_alpha) helper drawing at fixed coords rx0=380,rx1=W-380,ry=H-150. Call it at the tail of animated_divider (already done) and add an optional ribbon_year arg to render_shot/build_story_chapter so the FIRST shot of each chapter composites the same ribbon via a put_text/ImageDraw pass on the PIL frame, alpha-ramped down with ease_out(elem(t,0,0.8)) inverted. No ffmpeg change; it is one more overlay in the existing frame_fn.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Match-cut the lakefront line across the founding hinge",
+        "what": "The map_scene draws a soft Lake Michigan shoreline as a polygon on the right third of the frame. Cornell's founding fact is that he bought 300 acres of lakefront between 51st and 55th. Plant the shoreline as a recurring vertical edge: a single 2px cream line at roughly x=1210 (the shore's mean x in the existing polygon) that appears in the map, then re-appears as a faint compositional anchor on the right edge during the Cornell founding chapter and pays off in the final chapter when the Obama Center fact lands in Jackson Park, on the same lakefront. Same line, three appearances, 170 years apart.",
+        "where": "Map scene (already has the shore), first shot of Chapter 02 Cornell 1853, and the present-day/Obama closing chapter (Jackson Park is on that shoreline, verified).",
+        "how": "Add a thin draw_line at x~1210 from y=0 to y=H in the relevant frame_fns, color CREAM at alpha 30-45, width 2, faded in with ease_io. In the map it is the existing shore; in Cornell and the closer it is just that one inherited vertical at the same x, so the eye registers continuity of place. Pure PIL ImageDraw.line on the frame, no new asset.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Carry real motion through the dip-to-black with a short xfade hinge",
+        "what": "Replace the hard concat-with-independent-black-fades at the six chapter hinges with a short shared dip: let the divider's closing motion (the rust underscore retracting, or the ribbon dot pulsing on the new year) overlap the incoming chapter by a brief crossfade through near-black, so a single gesture spans the cut instead of two separate fades bookending a dead frame. The screen still darkens (museum-grade breath between chapters) but one moving element threads through it.",
+        "where": "All six divider-to-chapter hinges, and the timeline-hero into Chapter 01. NOT at the sources/end cards, which should keep their full clean dip.",
+        "how": "At assembly, instead of plain concat for divider+first-shot pairs, route them through the existing xfade_chain with transition=fade and a shortened duration (~0.5s) so the tail of the divider and head of the chapter overlap. The divider's final frames already hold the lit ribbon; the chapter's first frames already re-draw it (technique 1), so the overlap shows the same ribbon in both layers and the crossfade reads as continuous. Reuse xfade_chain, just feed it the boundary pair.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Re-emerging rust highlight system tied to the stat moments",
+        "what": "Establish a strict grammar for the rust accent so its every appearance means the same thing: rust marks the present location on the timeline and marks the number that matters. Plant it in the title underscore, pay it off so that each full-frame count-up stat (638 buildings, about 4,000 families, the 856 acres, more than fifteen thousand displaced, all verified) resolves its rust underscore to the SAME width and y as the divider underscore that introduced that chapter. The accent becomes a leitmotif: when rust appears, a fact is being pinned. By the renewal chapter the viewer has been trained, so the 638 and 4,000 land harder.",
+        "where": "Title card underscore, all chapter dividers, and every stat_scene (renewal 638/4,000, 1893 fair 27 million, founding acreage). Climax on the renewal displacement numbers.",
+        "how": "Unify the rust underscore to one helper: width animates 0->W*0.057 via ease_out, height 3px, color RUST, at a y computed the same way in animated_divider, stat_scene, and animated_title. They already each draw their own rectangle; collapse them to one rust_rule(d,cx,y,e) call so the width and timing are identical everywhere. PIL rectangle only.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Plant-and-payoff on the displacement number",
+        "what": "The narration in the renewal chapter literally says 'more than fifteen thousand people were displaced ... Hold that number.' Honor that line structurally. When the 4,000-families stat_scene resolves, leave a faint rust tick on the timeline ribbon at the 1958 position; carry that tick (dimmed) through the present-day chapter; and at the very end, on the 'Who gets to stay is still being decided' line of animated_end, briefly re-light the full six-dot ribbon one last time so the 1958 displacement dot and the 2026 dot sit on the same line. The early number is visually still present when the film closes.",
+        "where": "Renewal chapter stat -> present-day chapter -> end card resolve, spanning roughly the last 90 seconds.",
+        "how": "In stat_scene add an optional ribbon_tick at the bottom (reuse the ribbon helper, single lit dot). In animated_end, before the final line, draw the full ribbon via the same helper at low alpha (~140) for ~1.2s, lit on 2026 with 1958 still marked, fading out under the closing text. All existing PIL ellipse/line draws; zero new ffmpeg.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Consistent parallax direction so depth reads as one continuous space",
+        "what": "render_shot currently drifts every foreground photo with the same sin(t/2.3) and sin(t/3.2) phase, so all shots breathe identically. Give the drift a slight consistent leftward bias chapter to chapter (very small negative x offset on the foreground relative to the blurred backdrop) so the implied camera always travels the same direction through the film, the way the timeline reads left to right and the route on the map runs north to south. It is subliminal but it makes the parallax feel like one move through 170 years rather than independent wobbles.",
+        "where": "Every archival photo shot, all seven chapters, via the shared render_shot overlay expression.",
+        "how": "In render_shot's overlay x expression, add a tiny constant directional term, e.g. x='(W-w)/2 + sin(t/2.3)*9 - (t*1.2)' clamped within the existing 0.865/0.915 contain margin so it never reveals an edge. One-line change to the existing overlay filter; the contain box already guarantees safe headroom.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Lower-third and credit overlays inherit the timeline y as a horizon",
+        "what": "Give every floating element a shared invisible horizon line so nothing feels independently placed. The divider ribbon sits at H-150; pin the source-credit overlays and the data lower-thirds to register against that same baseline grid (credits bottom-right just above H-150, lower-thirds rising to a stop that aligns with it), so across the whole film all the chrome lives on one consistent horizontal system the eye stops noticing. Quiet, but it is the difference between museum-grade and assembled.",
+        "where": "All credit_overlay and lower_third instances across every chapter.",
+        "how": "Define a single BASELINE = H-150 constant and compute credit y and the lower_third slide-stop y from it in credit_overlay/lower_third (they currently use independent y values). The slide-up animation in render_shot already exists; only the rest position changes. Pure PIL coordinate edit.",
+        "impact": "low",
+        "effort": "small",
+        "tackyRisk": "low"
+      }
+    ]
+  },
+  {
+    "lens": "Continuity and motion through-lines. The film already owns four motifs that recur but do not yet talk to each other. The timeline thread (hero scene plus divider ribbon, same six anchor years 1853, 1890, 1893, 1948, 1958, 2026). The lakefront shoreline line (the shore polygon in map_scene). The rust accent #c55d3e (spines, dots, underscores, the route line). And the spoken refrain 'the ground keeps moving' (timeline subtitle plus end card). Right now scenes are hard-concatenated and each one independently fades from and to black (seq_clip EDGE fade plus finish_chapter), so every chapter boundary reads as a curtain drop with a dead frame in the middle. The highest-leverage move is to stop treating the dip-to-black as a wall and start treating it as a hinge. Carry exactly one element across it every time, and make the four motifs reference each other so a thing planted in chapter one pays off in chapter six. The constraint that keeps this museum-grade is restraint. One carried element per hinge, never two. The rust accent stays a 2 to 3px line and a 5 to 7px dot, never a fill or a glow. The carried motion is always the timeline thread or the lakefront line, never decorative particles. Everything below is buildable in the existing PIL frame functions and the existing ffmpeg xfade and concat assembly, and every number cited is already verified in data/hp-research.json.",
+    "techniques": [
+      {
+        "name": "The timeline thread as the spine that never breaks",
+        "what": "Promote the existing divider ribbon (_divider_ribbon, the to-scale timeline pinned at the foot of each chapter divider) into the single continuity spine of the whole film. Each divider already lights its own year on the same six-anchor ribbon. Make that ribbon survive the dip-to-black on both sides. The divider leaves the ribbon lit and pinned at H-150, and the first ~0.8s of the following chapter's first photo shot re-draws the exact same ribbon at the same y, lit on the same year, then fades it out as the photo settles. The viewer reads the boundary as one camera moving along a continuous timeline rather than a jump between cards.",
+        "where": "All six chapter hinges (divider into first story shot). Most load-bearing at the 1948 color-line divider into the renewal chapter, where the lit dot visibly steps from 1948 to 1958 across the cut.",
+        "how": "Factor _divider_ribbon into a standalone ribbon(b, t, lit_year, alpha) helper at fixed coords rx0=380, rx1=W-380, ry=H-150. Keep calling it at the tail of animated_divider, and add a ribbon_year arg to render_shot/build_story_chapter so the first shot of each chapter composites the same ribbon as one more PIL overlay pass, alpha-ramped down with an inverted ease_out(elem(t,0,0.8)). No ffmpeg change, it is one more overlay inside the existing frame_fn.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Match-cut the lakefront line across the founding and closing chapters",
+        "what": "map_scene draws a soft Lake Michigan shoreline polygon on the right third. Cornell's verified founding fact is that he bought about 300 acres of lakefront between 51st and 55th streets. Plant the shoreline as a recurring vertical edge, a single faint cream line at roughly x=1210 (the shore's mean x in the existing polygon) that appears in the map, returns as a quiet right-edge compositional anchor in the Cornell 1853 chapter, and pays off in the final chapter when the Obama Center fact lands in Jackson Park, on that same lakefront. One line, three appearances, 170 years apart.",
+        "where": "Map scene (already has the shore), first shot of Chapter 02 Cornell 1853, and the present-day closing chapter where Jackson Park and the Obama Center sit on that shoreline (both verified).",
+        "how": "Add a thin ImageDraw.line at x~1210 from y=0 to H in those frame_fns, CREAM at alpha 30 to 45, width 2, faded in with ease_io. In the map it is the existing shore. In Cornell and the closer it is just that inherited vertical at the same x. Pure PIL, no new asset. Restraint note: keep it under alpha 50 and never label it, so it reads as composition, not a diagram element.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Carry one real gesture through the dip-to-black with a short xfade hinge",
+        "what": "Replace the hard concat-with-independent-black-fades at the six chapter hinges with a short shared dip. Let the divider's closing motion (the lit ribbon and its rust dot on the new year) overlap the incoming chapter through a brief crossfade near black, so a single gesture spans the cut instead of two separate fades bookending a dead frame. The screen still darkens for a museum-grade breath, but one element threads through it.",
+        "where": "All six divider-to-chapter hinges, plus the timeline hero into Chapter 01. Not at the sources or end cards, which keep their full clean dip.",
+        "how": "At assembly, route each divider-plus-first-shot pair through the existing xfade_chain with transition=fade and a shortened ~0.5s duration so the divider tail and chapter head overlap. The divider's last frames already hold the lit ribbon and the chapter's first frames re-draw it (technique 1), so the overlap shows the same ribbon in both layers and the crossfade reads as continuous. Reuse xfade_chain, just feed it the boundary pair instead of hard concat.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "A re-emerging rust highlight grammar tied to the stat moments",
+        "what": "Give the rust accent one fixed meaning so every appearance reads the same. Rust marks the present spot on the timeline and marks the number that matters. Plant it in the title underscore, then make each full-frame count-up stat (638 buildings, about 4,000 families, the 856 acres, more than fifteen thousand displaced, all verified) resolve its rust underscore to the same width and y as the divider underscore that opened that chapter. Rust becomes a leitmotif, so by the renewal chapter the viewer is trained and the 638 and 4,000 land harder.",
+        "where": "Title card underscore, all six chapter dividers, and every stat_scene (renewal 638 and 4,000, 1893 fair 27 million, founding acreage). Climax on the renewal displacement numbers.",
+        "how": "Collapse the rust underscore into one helper rust_rule(d, cx, y, e) with width 0 to about W*0.057 via ease_out, height 3px, color RUST. animated_title, animated_divider, and stat_scene each draw their own rectangle today, so replace all three with the one call so width and timing match exactly. PIL rectangle only.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Plant-and-payoff on the displacement number",
+        "what": "The renewal narration literally says more than fifteen thousand people were displaced, then 'Hold that number.' Honor that line structurally. When the 4,000-families stat resolves, leave a faint rust tick on the ribbon at the 1958 position, carry that tick dimmed through the present-day chapter, and at the very end, under the 'Who gets to stay is still being decided' line, briefly re-light the full six-dot ribbon one last time so the 1958 displacement dot and the 2026 dot share one line. The early number is still visually present when the film closes.",
+        "where": "Renewal stat into the present-day chapter into the end card resolve, spanning roughly the final 90 seconds.",
+        "how": "In stat_scene add an optional ribbon_tick at the bottom reusing the ribbon helper as a single lit dot. In animated_end, before the final line, draw the full ribbon via the same helper at alpha ~140 for ~1.2s, lit on 2026 with 1958 still marked, fading under the closing text. Existing PIL ellipse and line draws, no new ffmpeg. Restraint note: keep this to one quiet re-light, not a recap montage.",
+        "impact": "medium",
+        "effort": "medium",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Consistent parallax direction so depth reads as one continuous move",
+        "what": "render_shot drifts every foreground photo with the same sin(t/2.3) and sin(t/3.2) phase, so all shots breathe identically and independently. Add a slight consistent directional bias to the foreground relative to the blurred backdrop so the implied camera always travels the same way through the film, echoing the timeline reading left to right and the map route running north to south. Subliminal, but it makes the parallax feel like one journey through 170 years instead of separate wobbles.",
+        "where": "Every archival photo shot, all seven chapters, via the shared render_shot overlay expression.",
+        "how": "In render_shot's overlay x expression add a tiny constant directional drift, for example x='(W-w)/2 + sin(t/2.3)*9 - t*1.2', staying inside the existing 0.865 by 0.915 contain margin so an edge never reveals. One-line change to the existing overlay filter; the contain box already guarantees headroom.",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Pin all overlays to one shared horizon baseline",
+        "what": "Give every floating element one invisible horizon so nothing feels independently placed. The divider ribbon sits at H-150. Register the source-credit overlays and the data lower-thirds against that same baseline grid, credits resting just above H-150 and lower-thirds rising to a stop aligned with it, so across the whole film all the chrome lives on one horizontal system the eye stops noticing. Quiet, but it is the difference between museum-grade and merely assembled.",
+        "where": "All credit_overlay and lower_third instances across every chapter.",
+        "how": "Define one BASELINE = H-150 constant and compute the credit y and the lower-third slide-stop y from it in credit_overlay and lower_third, which currently use independent values. The slide-up animation in render_shot stays, only the rest position changes. Pure PIL coordinate edit.",
+        "impact": "low",
+        "effort": "small",
+        "tackyRisk": "low"
+      }
+    ]
+  },
+  {
+    "lens": "Architectural-wall exhibition design. This plays large, likely projected in a state Capitol, so I judge every choice by how it reads across a room and survives close inspection, not how it looks in a laptop preview. At wall scale three things dominate. First, type is architecture, not caption: it has to carry weight as a built element, with generous margins, a strict two-size hierarchy (a monumental display size and a quiet sans for sourcing), and no third \"medium\" size competing in the middle. Second, motion is cadence, not decoration: a wall film must breathe with long held stillness punctuated by deliberate, slow moves, so the eye is invited rather than chased; the worst failure mode at scale is constant low-amplitude drift that reads as a screensaver. Third, emergence must feel material: elements should arrive as if developing, settling, or being carved, never sliding in like web UI. The film already has the right bones (warm duotone archival stills, contained 2.5D parallax, an overarching 1853-to-today timeline, a \"you are here\" ribbon, count-up stats). My job is to push those toward gallery-grade restraint and architectural scale, fix seams so chapters feel like one continuous wall piece, and ruthlessly cut anything that smells like a corporate slideshow. Every technique below maps to the PIL/ffmpeg engine and to verified facts in hp-research.json, with real Wikimedia/LOC assets named from credits.json. The single highest-leverage move is disciplining the motion cadence and type scale so the piece reads as an installation, not a video.",
+    "techniques": [
+      {
+        "name": "Motion cadence discipline (still-hold then deliberate move)",
+        "what": "Re-time every shot to a breathing rhythm. Archival stills hold dead still for the first ~1.0-1.5s after the cut, then begin one single slow continuous move (a 1.04-1.06 push or a slow lateral drift), and settle to stillness before the outgoing xfade. Stat and divider cards hold fully still once set. No element is in constant motion for its whole duration. Across a chapter the cadence alternates long stillness against one slow move, so the wall breathes instead of shimmering.",
+        "where": "All seven chapters, but most critical on the archival photo shots (Cornell-era stills, worlds-fair-1/3/4 Court of Honor and Palace of Fine Arts, university-1 Cobb Hall, the urban renewal stills, the present-day Jackson Park frame) and on the cold-open hold of the 15,000 figure.",
+        "how": "In render_shot, gate the zoompan so the zoom expression stays at 1.0 for the first N frames then ramps, e.g. z='if(lt(in, hold_frames),1.0, min(1.0+(in-hold_frames)*0.00022,1.055))' with hold_frames = 1.2*FPS, and ease the tail by capping the max so it arrives and stops rather than easing forever. Keep the existing blurred-bg parallax plane but slow its drift so foreground and background separate by only a few px/sec. Standardize XFADE offsets so the cut lands on the settle, not mid-move.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Architectural type scale with a strict two-size hierarchy",
+        "what": "Set display type to read from across a room. One monumental Baskerville size for the single load-bearing word or number per card (chapter titles, the 15,000, 27 million, 19.3 acres, 1853), and one quiet Gill Sans size for eyebrows, sourcing, and subtitles. Kill any in-between size so there is no 'caption' tier muddying the hierarchy. Wide letter-tracking on the small sans (the existing 0.25em eyebrow spec) versus tight, large display gives the contrast a wall needs.",
+        "where": "animated_title, animated_divider chapter titles, all stat_scene values (15,000 displaced; 27 million / 21 million paid fair admissions; 19.3 acres; 70% up / 40% down), the sources_card, end_card, and lower_third source credits.",
+        "how": "In serif()/sans() helpers raise the display point size substantially relative to the 1080 frame (the hero number should occupy roughly a third of frame height) and lock body sans to one small size. Use draw_tracked for all uppercase sans eyebrows/credits at fixed tracking. Enforce wide safe margins (text never inside ~8% of any edge) so it survives projector overscan and reads at architectural distance.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Count-up stats reframed as carved monuments, not animated counters",
+        "what": "Make the stat moments feel weighed, not spun. The number counts up once, fast, then locks and holds in total stillness for a long beat while the context line fades in beneath a thin rust rule. The hold is the point. The most important one (more than 15,000 displaced) gets the longest, quietest hold, matching the narration instruction to 'hold that number, do not explain it yet.'",
+        "where": "stat_scene for the 15,000 displacement figure (cold open and the urban-renewal chapter payoff), 27 million fair visitors, 19.3-acre Obama Center campus, and the 70%-up/40%-down pair.",
+        "how": "Keep _parse_stat/_fmt_num count-up but cut the count duration to ~0.8s with ease_out, then freeze for the remaining 3+ seconds. Fade the context line in via elem() at ~+0.9s. Hold the existing rust rule still. For the 15,000 card, extend dur and remove all background motion (flat FOREST field, no drift) so nothing competes with the number.",
+        "impact": "high",
+        "effort": "small",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Material emergence for type (develop / settle, never slide)",
+        "what": "Reveal text as if it belongs to a physical surface. Titles and stat numbers emerge with a short blur-to-sharp 'develop' (like a print coming up in a tray) plus a few px of settling rise, rather than sliding in from offscreen or fading flatly. This reads as photographic and archival, in keeping with the duotone stills, and avoids the web-UI slide that signals corporate deck.",
+        "where": "animated_title reveal, every chapter title in animated_divider, the hero number in each stat_scene, the sources_card line-by-line build.",
+        "how": "In PIL, render the text to its own layer and composite it while ramping ImageFilter.GaussianBlur radius from ~10 down to 0 over ~0.5s with ease_out, combined with a small dy settle (6-8px) and alpha ramp. Because this is per-layer PIL compositing it is cheap and exact. Stagger sources_card lines with elem() offsets so they develop in sequence, not all at once.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "medium"
+      },
+      {
+        "name": "Seamless chapter seams via a continuous duotone field and the timeline ribbon",
+        "what": "Bind the seven chapters into one wall piece. The warm-duotone grade, vignette, and fine grain already run on every frame; extend that so the dividers, stat cards, and motion cards share the exact same paper-grain and vignette as the photos, and let the 'you are here' timeline ribbon be the one element that persists across the seam, advancing its lit position as each chapter opens. The viewer feels one continuous ground moving through time rather than discrete slides.",
+        "where": "All six chapter transitions and the divider ribbon (_divider_ribbon / tl_pos / timeline_scene), 1853 founding through present-day Obama Center.",
+        "how": "Confirm seq_clip's noise+vignette grain values match render_shot's so there is no visible texture jump at xfade. Carry the divider ribbon's lit-year position forward chapter to chapter using tl_pos(year) for each chapter's anchor year (1853, 1890, 1893, color-line era, 1955-58, 2026). Use a single consistent XFADE duration site-wide so every seam has identical cadence. Optionally let the ribbon's lit dot animate from the previous chapter's year to the new one during the divider, as the only motion that crosses the cut.",
+        "impact": "high",
+        "effort": "medium",
+        "tackyRisk": "low"
+      },
+      {
+        "name": "Restrained pseudo-3D depth on the World's Fair architecture only",
+        "what": "Give the 1893 White City one moment of monumental depth. The Court of Honor and Palace of Fine Arts photos are deep one-point-perspective architectural views; a very slight perspective settle plus a slow push into the receding colonnade makes the scale of the fair felt without gimmickry. Reserve this for the fair so it reads as a deliberate accent, not a house style.",
+        "where": "Chapter 4, the 1893 World's Columbian Exposition, on worlds-fair-1 (Court of Honor) and worlds-fair-3 (Palace of Fine Arts), both verified 1893 C. D. Arnold views in credits.json.",
+        "how": "Use Image.transform PERSPECTIVE to introduce a barely-there 1-2 degree settle at the head of the shot (resolving to flat by ~0.6s), then hand off to a slow zoompan push toward the vanishing point along the basin axis. Keep amplitude tiny. Combine with the existing blurred-bg parallax plane so the colonnade edges separate slightly from the sky. Do not apply this treatment to portraits (Cornell, Harper, Rockefeller) or it will look like a warp effect.",
+        "impact": "medium",
+        "effort": "large",
+        "tackyRisk": "high"
+      },
+      {
+        "name": "Lower-third source credits as quiet architectural anchors",
+        "what": "Pin sourcing as a calm, permanent-feeling element so the piece reads as evidence, not promotion. Credits sit on a consistent baseline with a fixed thin rust rule, develop in quietly, hold, and retract the same way every time. This consistency at wall scale signals rigor and keeps the museum register, and it lets every archival claim carry its real provenance from credits.json (Library of Congress, Boston Public Library Tichnor, NYPL Schomburg, Project Gutenberg Official Views).",
+        "where": "Every archival shot: Cobb Hall (Tichnor Brothers / Boston Public Library), William Rainey Harper and the fair views (Library of Congress / C. D. Arnold), the Great Migration family (Schomburg/NYPL CC BY 4.0), the urban renewal University Apartments (CC BY-SA, Teemu008), present-day Jackson Park.",
+        "how": "In lower_third/credit_overlay, fix one baseline Y inside the safe margin, one sans size, one rust rule width, and one develop-in timing (alpha + small dy via elem()). Pull artist/credit/license strings verbatim from credits.json so attribution is exact. Keep it bottom-anchored and never let it drift into the subtitle band (the ASS subtitles are pinned to the very bottom, so seat credits in a reserved zone above them).",
+        "impact": "medium",
+        "effort": "small",
+        "tackyRisk": "low"
+      }
+    ]
+  }
+]

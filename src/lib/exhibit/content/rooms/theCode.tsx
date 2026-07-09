@@ -2,15 +2,15 @@
 /* ------------------------------------------------------------------ */
 /*  Machine room M5, THE CODE (the realtors' rule). Entered through a  */
 /*  door at the tail of chapter five, beside the deed room's. The      */
-/*  instrument is the Ethics Exam rigged bench; the room mounts it     */
-/*  fresh because the code has no pause-point bench in the tour. The   */
-/*  fight station is deliberately spare: this machine's record holds   */
-/*  no march and no lawsuit, only a deletion that followed the courts, */
-/*  so the station says exactly that. The still-running station ends   */
-/*  on THE COUNTER, a plain subtraction between two registered dates,  */
+/*  instrument is the real Article 34 text, annotated; the rigged      */
+/*  exam bench was retired with the reader rebuild. The fight station  */
+/*  is deliberately spare: this machine's record holds no march and    */
+/*  no lawsuit, only a deletion that followed the courts, so the       */
+/*  station says exactly that. The still-running station ends on THE   */
+/*  COUNTER, a plain subtraction between two registered dates,         */
 /*  labeled as arithmetic and nothing more.                            */
 /* ------------------------------------------------------------------ */
-import { EthicsExam } from "@/components/exhibit/rigged";
+import ethicsJson from "../../../../../data/exhibit/ethics_exam.json";
 import FactValue from "@/components/exhibit/shared/FactValue";
 import PaperCard from "@/components/exhibit/shared/PaperCard";
 import VoiceCard from "@/components/exhibit/shared/VoiceCard";
@@ -18,6 +18,57 @@ import { machineOf } from "@/lib/exhibit/machines";
 import { CardGrid, FactCard, STATION_EYEBROWS, type RoomStation } from "./shared";
 
 const CODE = machineOf("code");
+
+const ETHICS = ethicsJson as unknown as {
+  articleText: string;
+  articleFactRef: string;
+  expulsionFactRef: string;
+};
+
+/* Article 34, the document itself, annotated. No exam, no stamps;
+ * the words and what they cost are the exhibit. */
+function Article34() {
+  return (
+    <PaperCard tone="deep" data-testid="room-article34" className="p-4 sm:p-5">
+      <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+        Article 34, Code of Ethics, National Association of Real Estate Boards, adopted 1924
+      </p>
+      <span className="exh-plat mt-1.5 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[9px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft">
+        period document, quoted verbatim
+      </span>
+      <blockquote className="exh-serif mt-3 font-display text-lg italic leading-relaxed text-exh-ink">
+        &ldquo;{ETHICS.articleText}&rdquo;
+      </blockquote>
+      <div className="mt-2">
+        <FactValue id={ETHICS.articleFactRef} size="sm" />
+      </div>
+      <div className="mt-4 space-y-3 border-t border-exh-ink/15 pt-3">
+        <div>
+          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+            What the words did
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-exh-ink">
+            Selling across the color line stopped being a private choice and became a professional
+            offense. The article made steering a duty of membership in every board that adopted
+            the code.
+          </p>
+        </div>
+        <div>
+          <p className="exh-plat text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+            What breaking them cost
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-exh-ink">
+            Chicago&rsquo;s board had already shown the penalty. Expulsion, and with it the
+            listings and standing a livelihood depended on.
+          </p>
+          <div className="mt-1.5">
+            <FactValue id={ETHICS.expulsionFactRef} size="sm" />
+          </div>
+        </div>
+      </div>
+    </PaperCard>
+  );
+}
 
 /* THE COUNTER. 2020 minus 1924 is arithmetic, not a source; both
  * dates ride their registered facts beside the subtraction. */
@@ -46,8 +97,8 @@ export const THE_CODE_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "Sit the exam the code set for every member. Answer the way a decent person would and read the marking.",
-    body: <EthicsExam />,
+    lead: "The rule itself, one sentence long. Read it the way a member had to.",
+    body: <Article34 />,
   },
   {
     id: "paper",
@@ -61,8 +112,8 @@ export const THE_CODE_STATIONS: RoomStation[] = [
         </FactCard>
         <CardGrid>
           <FactCard id="code.nareb_article34_1924" label="The article">
-            Steering became professional ethics nationwide. The exam above holds the article&rsquo;s
-            own words.
+            Steering became professional ethics nationwide. The panel above holds the
+            article&rsquo;s own words.
           </FactCard>
           <FactCard id="code.deleted_1950" label="The deletion">
             The words race and nationality came out. Vaguer language about incompatible occupancy

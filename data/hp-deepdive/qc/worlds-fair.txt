@@ -1,0 +1,62 @@
+FILM: deepdive-worlds-fair.mp4 (10:58 runtime). Each frame sampled every 3s; full-res zooms pulled for every graphic below. Audio not judged (final ash VO). Timecodes are where the defect is clearly on screen.
+
+==================== P1 — MUST FIX BEFORE ANYONE SEES IT ====================
+
+P1-A  COMMA IN A YEAR (the single worst defect).  09:42–09:48, section s6, stat card "icOrdinance".
+  ON SCREEN: eyebrow "IC TRACK ORDINANCE"; the big number animates "May 1,891" (09:42) then settles on "May 1,892" (09:45); sub "First order to elevate the Illinois Central through Hyde Park"; source "Chicago Railfan, Metra Electric National Register report"; caption "The first ordinance for the work passed in May of 1892..."
+  WHY WRONG: the stat value "May 1892" is being run through the same count-up + thousands-separator formatter used for dollar/population cards, so it (a) counts up through "1,891" and (b) inserts a comma, rendering the year as "1,892". A comma in a year is the most reliable AI tell on this site and reads as a broken graphic.
+  FIX: in the stat-card graphic function, treat any value matching /^(Jan|Feb|...|May|...)\s*\d{4}$/ (or simply non-numeric / date-typed values) as a literal string — no Number() parse, no count-up animation, no toLocaleString grouping. The card should hold "May 1892" static (or fade in, not count). Same guard protects "May 1, 1893", "Aug 25, 1893", "Aug 30, 1893" date cards (those happen to render fine now but are one refactor away from the same bug).
+
+P1-B  WRONG / ANACHRONISTIC GRAPHIC.  04:00–04:11, section s3, shot ["graphic","hierarchy", "It laid the world out as a ladder"].
+  ON SCREEN: eyebrow "RANKED BY THEIR EFFECT ON LAND VALUES"; subtitle "The hierarchy Chicago's real-estate industry invented, then taught the nation"; horizontal bars MOST VALUED->DEEMED HARMFUL = English/German/Scandinavian, Northern Italians, Poles/Lithuanians/Greeks, Southern Italians, Jews and Mexicans, Black and Asian Americans; source "Chicago real-estate appraisal, 1920s to 1930s".
+  WHY WRONG: this is a 1920s–1930s HOLC/real-estate-appraisal race-ranking chart reused from a redlining chapter. It flatly contradicts its own context. The VO/caption here are about the 1893 Midway's "ladder" of peoples (German, Irish, Cairo/Egyptian, Dahomey/West African, Native American). The chart names groups (Northern/Southern Italians, Poles, Jews, Mexicans, Asian Americans) and a date range (1920s–30s) that have nothing to do with the 1893 fair. A viewer reads it as a 30-year-anachronism dropped into the wrong film.
+  FIX: replace the "hierarchy" graphic with a Midway-specific ladder. Re-author the bars to the fair's actual hierarchy, top->bottom: "Court of Honor (white America, N. Europe)", "German & Irish villages", "Street of Cairo", "Dahomey village (West Africa)", "Native American encampment" — eyebrow "THE MIDWAY AS A LADDER", source the fair/Putnam scholarship. If a clean re-authored graphic can't be built in time, cut the graphic and extend the worlds-fair-7 Midway still (or midway-1893-crowd) under "It laid the world out as a ladder" instead — better an honest photo than a wrong chart.
+
+P1-C  "SCRATCH RECORDING TO BE REPLACED" ON A FINISHED FILM.  10:50–10:58 (also visible 10:51–10:54), closing credits card "On the public record".
+  ON SCREEN: "SOURCES AND CREDITS / On the public record ... Narration here is a scratch recording, to be replaced with a read. Drone footage by Rooted Forward. The 360 look-arounds are real captures."
+  WHY WRONG: the film ships with the FINAL OpenAI ash narration. A burned-in disclaimer telling the audience the voice is a placeholder "to be replaced" destroys credibility on a finished, festival-bound cut and contradicts the actual deliverable.
+  FIX: delete the sentence "Narration here is a scratch recording, to be replaced with a read." Replace with a real narration credit (e.g. "Narration generated with OpenAI text-to-speech.") or drop the line entirely. Verify the same placeholder string isn't templated into the other 7 deep-dive credits cards.
+
+==================== P2 — GRAPHICS + IMAGE POLISH (the Oscar bar) ====================
+
+P2-A  GHOST-FACE CROSS-DISSOLVE.  ~04:27–04:32, s3, transition from dd-worlds-fair-10 (Putnam) into midway-village-hist (Street of Cairo).
+  ON SCREEN (~04:30): Frederic Ward Putnam's bearded face ~50% superimposed over the Street of Cairo crowd — reads as a garbled floating face. Endpoints are clean (Putnam clean at 04:24; Cairo clean at 04:33).
+  WHY: the cross-dissolve is too long/slow, so the muddiest blended midpoint holds long enough to look like a corrupt frame.
+  FIX: shorten this dissolve to ~0.4–0.6s (or hard cut). Ensure the Putnam layer is fully cleared before the Cairo still settles. Re-anchor the Cairo still's in-point to the phrase "a street in Cairo with camels and dancers".
+
+P2-B  CONFUSING IMAGE/CAPTION PAIRING.  06:18–06:24, s4, shot worlds-fair-7 under "a small group of Black Americans set out to tell them what the fair was leaving out" / caption on screen "The organizers had refused to give African Americans any real part in planning the exposition."
+  ON SCREEN: a sunny Midway-Looking-West photo, well-dressed white fairgoers strolling toward the Ferris Wheel.
+  WHY: pairing a cheerful white-crowd Midway shot with the line about Black Americans being excluded is tonally and logically confusing.
+  FIX: swap to worlds-fair-1 (Court of Honor) or worlds-fair-10 for the "no place at the table" beat (the storyboard already calls worlds-fair-1 on the next line), or hold the Ida B. Wells portrait (dd-worlds-fair-12) a beat earlier. Reserve the Midway crowd for a Midway line.
+
+P2-C  WALL-LABEL / CAPTION BOTTOM COLLISIONS (recurring).  Confirmed on the full-bleed Official-Views stills whose archival label sits flush at the image's bottom edge and overlaps the burned-in caption:
+   - 03:18 Palace of Fine Arts ("...THE LASTING FAIR BUILDING" — ok, top-left, fine) — NOT this one.
+   - 01:09 / 09:48 bird's-eye "BIRDS EYE VIEW LOOKING NORTHWEST FROM LIBERAL ARTS BUILDING" collides with caption bottom (frame 01:39 / 01:42 region and dd-worlds-fair-1 reuse).
+   - 03:12–03:18 Transportation Building "THE GOLDEN DOOR, TRANSPORTATION BUILDING" printed label sits directly under the burned-in caption (07:42 region too).
+  WHY: the asset's own printed plate caption + the renderer's caption stack in the same lower band, two text lines fighting.
+  FIX: nudge burned-in caption safe-area up ~6% on full-bleed stills, OR top-anchor the renderer wall-label so it never lands in the lower third where the caption lives. Prefer cropping the asset's printed bottom-margin label out of frame when the renderer is supplying its own label.
+
+P2-D  STAT COUNT-UP MID-VALUES ARE VISIBLE LONG ENOUGH TO READ.  00:39 outlay shows "$23,564,014" before "$28,340,700" (00:42); 08:03 pamphlet shows "9,793" before "10,000" (08:15).
+  WHY: these land on the correct final value so they are not P1, but the count-up is slow enough that a wrong intermediate ($23.5M, 9,793) is legible for ~1s and looks like a different stat.
+  FIX: speed the count-up to <0.5s or ease-out so only the final value dwells; or drop count-up on these two and fade the final number in (consistent with the date-card fix in P1-A).
+
+P2-E  STREET OF CAIRO WALL LABEL — stray/odd source string.  ~04:33, top-right of midway-village-hist shows a clipped source fragment ("...TEMS IN HIGH DEMAND, 1893") in addition to the main "A MIDWAY ETHNOGRAPHIC DISPLAY, LIBRARY OF CONGRESS 1893".
+  WHY: looks like two overlaid credit strings; the fragment is unreadable and distracting.
+  FIX: confirm the annot source field is a single clean string ("Library of Congress, 1893"); remove the stray "...in high demand, 1893" artifact.
+
+P2-F  TITLE/SECTION-COUNT MISMATCH ON CHAPTER TIMELINE.  00:54 chapter card "Jackson Park Becomes A Fair" timeline rail shows 5 dots, but the film has 6 chapters.
+  WHY: minor, but an attentive viewer counts a missing node.
+  FIX: render 6 nodes on the chapter-timeline rail to match the 6 sections.
+
+==================== P3 — PACING ====================
+
+P3-A  BURNHAM PORTRAIT HELD TOO LONG.  01:45–02:03 (~18s) on dd-worlds-fair-4 (Daniel Burnham), a single static portrait over the "chief of construction / chose ten firms" VO. Drags.
+  FIX: cut to the Administration Building (dd-worlds-fair-6, which arrives at 02:06) ~6s earlier on "Richard Morris Hunt drew the Administration Building", trimming the Burnham hold to ~10–11s.
+
+P3-B  DOUGLASS PORTRAIT REPEATED + HELD.  s5 holds dd-worlds-fair-13 (Douglass) across 06:48–06:54 then again 08:00–08:09 and Carter-Harrison portrait 08:33–08:51 runs ~18s of near-static face. The s5 stretch leans heavily on alternating two portraits.
+  FIX: intercut the Haitian Pavilion still (dd-worlds-fair-16, already in the deck) and the pamphlet stat to break up the portrait dwell; trim the Harrison hold to ~10s.
+
+P3-C  SECTION-5 PORTRAIT BLOCK 08:54–09:12 (Dunbar) held ~18s static.  
+  FIX: shorten to ~10–12s, or push-in/Ken-Burns the Dunbar portrait so it isn't a dead-still; cut to Palace of Fine Arts (09:12) a few seconds earlier on "The day had not been a mockery after all."
+
+NOTE (verified clean, no action): opening title 00:06; chapter cards; 686 acres / $28,340,700 / 32 deaths / 264 feet / 27 million / 751,026 / 10,000 final values; Ida B. Wells (Mary Garrity) portrait 06:32; Douglass (Warren 1879) 08:03; IC locomotive No. 1376 still 09:30; Palace of Fine Arts 03:18 / 09:24; Court of Honor From the Dome 03:54; fair-map two-up 00:51. All correctly subject-matched and well-cropped.

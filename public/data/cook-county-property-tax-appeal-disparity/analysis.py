@@ -182,6 +182,22 @@ cut_by_type = (
 )
 print(cut_by_type.to_string())
 
+# Residential winners: quartiles of the percent cut, so the paper's
+# interquartile-range statement is reproducible from this script.
+res_cut = winners.loc[winners["appeal_type"] == "residential", "pct_cut"]
+print(f"\nResidential winners ({len(res_cut)}), pct cut quartiles: "
+      f"q25={res_cut.quantile(0.25):.1f}  median={res_cut.median():.1f}  "
+      f"q75={res_cut.quantile(0.75):.1f}")
+
+# Land winners: how many were certified down to exactly $1 (the extreme
+# tail that drives the 99.6% land median), and the range of the rest.
+land_w = winners[winners["appeal_type"] == "land"]
+land_dollar = (land_w["certified_tot"] == 1).sum()
+land_rest = land_w.loc[land_w["certified_tot"] != 1, "certified_tot"]
+print(f"Land winners certified at exactly $1 : {land_dollar} of {len(land_w)}")
+print(f"Remaining land winners' certified totals : "
+      f"${land_rest.min():,.0f} to ${land_rest.max():,.0f}")
+
 # ---------------------------------------------------------------------------
 # 6. Who files vs who wins (share of filings vs share of wins)
 # ---------------------------------------------------------------------------

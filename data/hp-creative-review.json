@@ -1,0 +1,601 @@
+{
+  "panel": [
+    {
+      "lens": "Narrative arc, pacing, momentum, cold open, chapter-to-chapter flow, redundancy, and the function of the placeholder host pieces in the cut.",
+      "overall": "This is a genuinely strong 6.5-minute cut with a real spine. The cold open is excellent, the thesis is stated cleanly, and the urban-renewal chapter lands the argument with the right combination of names, numbers, and restraint. The film knows what it is about. The two problems that will most hurt it in a screening room are both structural. First, the thesis the cold open promises (a railroad, a fair, a university, a federal program, each deciding who stayed and who had to move) goes dark for the middle three chapters. Cornell, the University, and the World's Fair are told as a development story with no displacement counterweight, so the film reads as celebratory for roughly three minutes before the color line snaps it back. The displacement thread needs at least one beat in each of those chapters so the pattern the narrator named is visible building, not announced at the start and then abandoned until minute four. Second, the pacing is lopsided. The color-line chapter is the moral hinge of the whole film and it is the shortest history chapter (100 words), while urban renewal is the longest (162) and the most number-dense. The hinge is rushed and the climax is slightly overstuffed. Rebalancing roughly thirty words from renewal into the color line would even the arc and let the covenants chapter breathe. On the host placeholders, do not run the host VO and the chapter VO as two passes of the same content. In the cut they are the same beat told twice. Pick the host read for the two framing chapters and let the recorded narrator carry chapters two through six. The host bookends are the film's only human face and present-day register; treat them as the frame, not as redundant narration. With the middle-chapter displacement beats added and the color-line and renewal rebalance, this goes from good to genuinely tight.",
+      "strengths": [
+        "The cold open is the best thing in the film. 'The greystones look like they have always stood here. Most of them went up because somebody with money decided they should.' That is a real documentary opening. It states the thesis through a concrete object the viewer is looking at, withholds the history, and earns the 15,000-displaced number by holding it without explaining. Ken Burns would keep this nearly as-is.",
+        "The urban-renewal chapter lands the argument with discipline. The 46-percent-versus-17-percent return-rate contrast between white and Black families is the single most damning and most human statistic in the film, and it is delivered plainly without a sermon. 'The people who came back weren't a random slice' is exactly the right setup line. This is the payoff the whole film is built toward and it works.",
+        "The 'Then the university looked south, toward Woodlawn' button on chapter six is a superb hinge. It turns a closed historical chapter into a live thread and hands the baton directly to the present-day Obama Center and Woodlawn material. Strong serialized momentum.",
+        "The present-day close resists the easy triumphant ending. Opening the Obama Center on Juneteenth, then immediately turning to 'the part nobody put on the ribbon' and the doubling of Woodlawn home prices, rhymes the ending back to the thesis. 'Who gets to stay near the thing they fought for' is a clean, earned closing question that echoes the cold open's 'who keeps deciding.'",
+        "Fact discipline is excellent and the verification work is visibly load-bearing. Softening Cornell from 'speculator' to 'lawyer,' cutting the unverifiable Prince of Wales lodging claim, hedging the contested hotel-fire year, and correcting the Obama Center from 'under construction' to opened in June 2026 all show a film that earned the right to be trusted."
+      ],
+      "issues": [
+        {
+          "title": "The thesis promises displacement, then the middle three chapters drop the thread",
+          "area": "structure",
+          "severity": "high",
+          "recommendation": "The cold open names four forces that 'each decided who stayed and who had to move,' but the Cornell, University, and World's Fair chapters tell only the building half and never the moving half. The pattern the narrator promised disappears for roughly 3 minutes, so those chapters play as boosterism. Add one short displacement or exclusion beat to each. The cleanest real addition is on the Cornell chapter, since the research already establishes he marketed Hyde Park to wealthy Chicagoans 'who wanted leisure and distance from the crowded city.' End that chapter with a line like 'From the start, the pitch was distance from the city's crowds. Hyde Park was built to be selective.' For the University chapter, the research already notes its presence shaped the neighborhood 'including later patterns of land control and displacement that the university itself would help drive.' Add a one-sentence foreshadow at chapter end: 'The university would not stay inside its quadrangles. In time it would decide who lived around them.' For the World's Fair, the verifiable beat is that the fair was built on public parkland and pulled new development into the surrounding South Side. These are all real, sourced, and they keep the spine visible.",
+          "effort": "medium"
+        },
+        {
+          "title": "The color-line chapter is the moral hinge and it is the shortest, most rushed history chapter",
+          "area": "pacing",
+          "severity": "high",
+          "recommendation": "At 100 words this chapter compresses racially restrictive covenants, bloc-signing, the University's funding of covenant defense, the Great Migration numbers, and Shelley v. Kraemer into one breathless run. It is the explanatory keystone of the whole film and it needs room. Pull roughly 25 to 30 words from the overstuffed urban-renewal chapter and spend them here. Specifically, give the University's role its own beat instead of a subordinate clause. The current 'the University of Chicago put quiet money behind defending them in court' is the most important single fact in the chapter and it goes by in half a sentence. Break it out: 'And the University of Chicago was not a bystander. It put money behind defending these covenants in court, to keep the blocks around its campus white.' That sourced sharpening, which the renewal chapter's documented institutional record supports, does more for the film's argument than any number in chapter six.",
+          "effort": "medium"
+        },
+        {
+          "title": "Urban-renewal chapter is the longest and stacks too many numbers in one breath",
+          "area": "pacing",
+          "severity": "medium",
+          "recommendation": "At 162 words this is 50 percent longer than its neighbors and front-loads a dense stack of figures (856 acres, 638 buildings, May 10 1955, 1958, about 4,000 families, $29 million) before reaching the beat that actually matters, the 46-versus-17 return-rate contrast. The early acreage and building counts blur together and delay the human payoff. Trim the setup so the contrast arrives sooner. Cut 'though demolition had started three years earlier' since the May 10 1955 line already established demolition preceded approval, and consider dropping either the 856-acre or the 638-building figure from the voiceover rather than speaking both back to back. Keep one as the spoken scale number and move the other to a lower-third. That trims roughly 15 to 20 words and tightens the runway to the chapter's real punch.",
+          "effort": "small"
+        },
+        {
+          "title": "Host VO and chapter VO are the same beat told twice in the two framing chapters",
+          "area": "structure",
+          "severity": "medium",
+          "recommendation": "In both the intro and present chapters the hostScript and the voiceover cover nearly identical content (intro covers greystones, institutions deciding, the carry-through question; present covers the Center open, Woodlawn getting more expensive, who gets to stay). In the finished cut these cannot both play, or the bookends will feel like the film clearing its throat twice. Decide now that the host read is the framing-chapter narration, not a separate layer. Cut the framing-chapter voiceover tracks entirely and let the recorded host carry chapters one and seven, with the polished narrator voice reserved for the five history chapters. This also solves a tonal problem, since the placeholder host pieces are the film's only first-person, present-tense, on-camera register, and that register belongs at the open and close, not duplicated underneath a voiceover.",
+          "effort": "small"
+        },
+        {
+          "title": "The master timeline dates the color-line marker to 1948, the year the practice ended rather than operated",
+          "area": "graphics",
+          "severity": "low",
+          "recommendation": "The overarching timeline carries 1853 Cornell, 1890 University, 1893 Fair, 1948 color line, 1958 urban renewal, 2026 today. The color-line marker is dated 1948 (Shelley v. Kraemer), but the covenants chapter spans the 1920s to 1948, and the harm happened across those three decades, not at the moment they were struck down. Dating the marker to the end of the practice undersells it. Relabel the marker '1920s to 1948 Covenants' or anchor it to the practice rather than its defeat, so the timeline reads the covenants as a force that operated for a generation rather than a single Supreme Court date.",
+          "effort": "small"
+        },
+        {
+          "title": "The 27-million fair attendance figure is the soft number the verifier flagged, voiced as a hard stat",
+          "area": "accuracy",
+          "severity": "low",
+          "recommendation": "The World's Fair voiceover says 'About twenty-seven million came.' The verification notes explicitly flag this as the popular but soft figure (Britannica gives about 21.5 million paid admissions and about 25.8 million total, and 27 to 28 million reflects double-counting) and recommend hedging if a professor is watching. The spoken 'About' is a light hedge, but the on-screen count-up stat moment will display 27 million as a hard number. Either keep the spoken 'About twenty-seven million' and footnote the source caveat in the lower-third, or switch the count-up to the defensible 'More than 21 million paid admissions.' Given the professor-safe standard everywhere else in the film, the harder number is the safer choice for the full-frame stat moment.",
+          "effort": "small"
+        },
+        {
+          "title": "The World's Fair to color-line cut jumps 25 years with no bridge",
+          "area": "structure",
+          "severity": "low",
+          "recommendation": "The World's Fair chapter ends on the Museum of Science and Industry reopening in 1933, a warm preservationist grace note. The next chapter opens cold on a restrictive covenant at 6140 South Rhodes in the 1920s. The tonal and chronological whiplash, since the film just told you what was saved and now tells you who was excluded, is jarring without a connective beat. Add a one-line bridge at the head of the color-line chapter that reuses the lakefront ground the film has been building: 'The fair drew the city's eyes to the South Side lakefront. So did the people arriving from the South, by the tens of thousands. And the neighborhood drew a line to keep them out.' That ties the Great Migration influx already in the research (40,000 in 1910 to 278,000 by 1940) to the covenant response and smooths the cut.",
+          "effort": "small"
+        }
+      ],
+      "lensKey": "doc-editor"
+    },
+    {
+      "lens": "Museum exhibition designer and curator — gallery-wall durability, dwell time, walk-up legibility, caption/credit convention, and emotional throughline on a loop",
+      "overall": "As a gallery piece this holds. The throughline is genuine and rare: one neighborhood, the same pattern (railroad, university, fair, federal program, presidential center) deciding who stays and who moves, stated cleanly in the cold open and paid off hard in the urban-renewal chapter's 46-percent-versus-17-percent beat. The archival-photo-over-blurred-self treatment with a contained, never-cropped frame is the right museum instinct (it reads as respect for the document, not Ken Burns showmanship), and the count-up stat moments with on-screen source credits already meet wall-label convention better than most documentary loops. The factual spine is unusually disciplined for this length. My real concerns are pacing and emotional shape for a walk-up viewer on a loop. The film front-loads its two most human chapters' worth of weight into chapters 5 and 6, while chapters 2 through 4 (Cornell, Rockefeller, the Fair) run as competent institutional history with no person at human scale and no displacement thread, so a viewer who walks up mid-loop during the Fair chapter meets a tourism reel, not the film's argument. Several chapters also end on flat descriptive lines (\"the gray Gothic quads you still walk through,\" \"in Shelley v. Kraemer\") that drop the thesis instead of carrying it. On a loop with no fixed entry point, every chapter has to re-seed the argument and every chapter has to land. Right now four of seven do. The machine VO and placeholder host cards are the obvious blockers and you already know that. Below are the gallery-specific fixes that matter most before this goes on a wall.",
+      "strengths": [
+        "The central argument survives compression. The intro VO states the pattern in plain language ('the people swinging the wrecking ball were institutions, not the families on the block') and the urban-renewal chapter delivers the payoff with a stat that needs no narration to wound: 46 percent of displaced white families stayed in the neighborhood versus 17 percent of Black families. That single contrast is the strongest dwell-moment in the film and it earns the whole tour.",
+        "Source credits are baked into the image, not buried in an end crawl. Every stat moment carries an on-screen source lower-third (Illinois Answers Project, University of Chicago Library, Justia, CEGU). For a gallery audience that cannot click a footnote, this is exactly right and it is the thing that lets the piece survive a skeptical viewer or a docent's scrutiny.",
+        "The archival-image discipline is curatorial, not decorative. Showing each public-domain photo complete and contained over a blurred copy of itself, never cropped, with a gentle parallax, treats the document as an artifact rather than B-roll. That is the correct register for a redlining-and-displacement exhibit where the images are evidence.",
+        "The fact-checking layer is genuinely professor-safe and self-corrected (Chicago Day attendance fixed from 716,881 to ~751,000, the Obama Center corrected from 'under construction' to opened June 2026, Hansberry attributed to the correct property-owners association). Nothing on the wall will get the institution called out, which for a youth-led nonprofit is a reputational must.",
+        "House style holds. No em-dashes, no sentence-internal colons in the spoken VO across all seven chapters. The writing reads human, with short declaratives that will track as subtitles at distance ('For six months in 1893, Jackson Park wasn't a park. It was a fair.')."
+      ],
+      "issues": [
+        {
+          "title": "The World's Fair chapter has no human cost and breaks the emotional throughline mid-loop",
+          "area": "structure",
+          "severity": "high",
+          "recommendation": "Chapter 4 currently ends on 'The old Palace of Fine Arts reopened in 1933 as the Museum of Science and Industry,' a tourism note that lands between two chapters about confinement and displacement. A walk-up viewer who enters here meets a different, lighter film. Add one closing VO line that plants the thread the rest of the tour carries, using only verified material already in the research. Exact wording: 'The fair pulled money and attention to this lakefront. Who that new value would belong to was a fight still to come.' This keeps the chapter factual, adds no invented claim, and hands the viewer forward instead of stranding them in a museum brochure.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapters end on flat descriptive lines that drop the argument",
+          "area": "narration",
+          "severity": "high",
+          "recommendation": "On a loop, the last line of each chapter is the line a passing viewer is most likely to catch. Chapter 3 ends 'the gray Gothic quads you still walk through' (pure description) and Chapter 5 ends mid-citation 'in Shelley v. Kraemer' (no consequence stated). Rewrite both to carry the thesis. Chapter 3, replace the final line with: 'The same institution that built those quads would later decide who got to live around them.' Chapter 5, add one line after the Shelley reference: 'The clause stayed in the deeds. The court just stopped enforcing it.' Both are supported verbatim by the verified facts in the research file and both restate the stakes for a mid-loop viewer.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapters 2 through 4 have no person at human scale, so the displacement argument arrives abstract",
+          "area": "structure",
+          "severity": "medium",
+          "recommendation": "The film names institutions (the university, the commission, the fair) for three straight chapters before it names a displaced person. The one human anchor available is real and already in the research: Carl and Lorraine Hansberry at 6140 South Rhodes Avenue. Pull that name forward in delivery by giving the Hansberry beat its own full-frame stat-style moment ('6140 South Rhodes Avenue') the way the film treats '300 acres' and '4,000 families,' so a face-scale human story registers before the mass-displacement numbers. This rebalances the emotional load without adding length.",
+          "effort": "medium"
+        },
+        {
+          "title": "Two placeholder framing chapters bookend the loop and currently break it",
+          "area": "structure",
+          "severity": "high",
+          "recommendation": "Chapters 1 and 7 carry the host pieces as labeled 'to be filmed' cards. On a continuous gallery loop, a viewer hitting two title-card placeholders back-to-back at the seam (end of 7 into start of 1) will read the piece as unfinished and walk. Until the host is filmed, cut a temporary VO-only version of the loop that uses the existing voiceover text for chapters 1 and 7 (both are already written and verified) over the locator map and present-day stills, and drop the host placeholder cards from the looping cut entirely. Keep the host cards only in the festival/screening cut, not the wall loop.",
+          "effort": "medium"
+        },
+        {
+          "title": "Subtitle line-breaks are split at grammatically awkward points for distance reading",
+          "area": "accessibility",
+          "severity": "medium",
+          "recommendation": "The 'lines' arrays break mid-phrase in ways that read fine synced to audio but poorly as standalone captions at gallery distance, e.g. 'Rockefeller pledged six hundred thousand' / 'dollars for a new Baptist university in' / 'Chicago.' A viewer reading at six to ten feet parses one card at a time. Re-chunk captions on grammatical boundaries (noun phrases and clauses kept whole): 'Rockefeller pledged six hundred thousand dollars' / 'for a new Baptist university in Chicago.' This is a pass over every chapter's line array, no script change, and it materially improves readability at distance and for hard-of-hearing visitors who rely on the captions as the primary channel.",
+          "effort": "medium"
+        },
+        {
+          "title": "Overlay text reintroduces a colon the spoken script carefully avoids",
+          "area": "accuracy",
+          "severity": "low",
+          "recommendation": "The color-line chapter's data overlay reads 'Chicago's Black population: ~40,000 in 1910 to ~278,000 by 1940,' a sentence-internal colon that violates the house rule the VO honors. On-screen wall text is held longer than speech and is the most scrutinized text in the piece. Rewrite to 'Chicago's Black population grew from about 40,000 in 1910 to about 278,000 by 1940.' Audit all overlay strings for the same issue before lock.",
+          "effort": "small"
+        },
+        {
+          "title": "Stat overlays use number formats that read slowly at a glance",
+          "area": "graphics",
+          "severity": "low",
+          "recommendation": "Mixed formats like '46.1% vs 16.6%' and '71,689 to 46,035' force a walk-up viewer to do arithmetic the film should do for them. For the headline relocation contrast, set the full-frame stat as two stacked figures with plain labels, '46% of white families stayed' over '17% of Black families stayed,' and reserve the precise decimals for the source lower-third. Round, labeled, contrasted numbers land in the two to three seconds a viewer gives a wall stat; raw census pairs do not.",
+          "effort": "small"
+        },
+        {
+          "title": "No reading-level or contrast guarantee stated for the caption layer",
+          "area": "accessibility",
+          "severity": "medium",
+          "recommendation": "Baskerville is a beautiful display serif and a poor caption face at distance and low contrast. Confirm the subtitle track is set in the Gill Sans (or a comparable sans) at high contrast against a solid or scrimmed bar, not in the Baskerville serif over the duotone image, and that the type meets a minimum legible cap-height for the expected viewing distance. The duotone-plus-vignette grade will eat thin serif strokes. If captions are currently serif-over-image, that is the single biggest distance-legibility risk in the build.",
+          "effort": "small"
+        },
+        {
+          "title": "Loop length and seam are untested for gallery dwell behavior",
+          "area": "pacing",
+          "severity": "medium",
+          "recommendation": "At about 6.5 minutes the piece is long for an unseated wall loop where median dwell is often under 90 seconds. Either accept that most viewers see one or two chapters (which makes the per-chapter self-seeding fixes above mandatory, not optional), or author a hard chapter-select affordance so a viewer can jump to the urban-renewal payoff. At minimum, design the dip-to-black seam between chapter 7 and chapter 1 to read as an intentional restart (a held end card with the central question) rather than an abrupt cut, so a viewer arriving at the seam understands they have caught the end, not a glitch.",
+          "effort": "medium"
+        },
+        {
+          "title": "End card and sources card have no stated 'what to do next' for the viewer",
+          "area": "structure",
+          "severity": "low",
+          "recommendation": "A civic exhibit should convert dwell into action. The animated sources card is good provenance but the end card currently resolves only on the open question. Add one line and a QR or short URL on the end card pointing to the Rooted Forward Woodlawn/housing material, framed as the answer-in-progress to the question the film leaves open, e.g. 'The organizing continues. See how at rooted-forward.org.' This is a real, current campaign per the research, not an invented call to action.",
+          "effort": "small"
+        }
+      ],
+      "lensKey": "curator"
+    },
+    {
+      "lens": "Graphic system, typography, motion quality, transitions, the timeline and map treatments, the stat moments and lower-thirds, and high-end finishing touches",
+      "overall": "For a piece built procedurally in PIL and ffmpeg, the title sequence, the count-up stat cards, and the contained-photo-over-blurred-self treatment are genuinely strong and would not embarrass a broadcast cut. The type system is disciplined: Baskerville for display and numerals, tracked Gill Sans for eyebrows and credits, a single rust hairline rule used as a recurring motif. The house rules hold throughout (no em-dashes, no sentence-internal colons in the on-screen copy, the dot-separated HYDE PARK . CHICAGO lockup is a clean substitute for a colon). The film knows what it is and the restraint reads as taste, not as a limitation. Three things keep it from looking finished. First, the archival grade is not actually a warm duotone on screen; hue=s=0 drops the image to pure black and white and the warm colorbalance push is too weak to register, so the promised signature look is missing and the stills read as flat monochrome scans. Second, the master timeline graphic, which is the spine of the whole concept, has colliding labels and unscaled-looking spacing at exactly the two moments it most needs to be legible (1890/1893 and 1948/1958). Third, the locator map is the one graphic that looks like a placeholder rather than a designed object, and a few archival pairings (a modern parked SUV under the 1948 covenant beat, an uploader handle used as a photo credit) quietly break the museum illusion. None of these are hard to fix and all of them are worth fixing before a real voice replaces the scratch read.",
+      "strengths": [
+        "Title sequence is the high point. The staggered ease-out reveal of ROOTED FORWARD PRESENTS, the large Baskerville Hyde Park, the italic Built and Rebuilt, the growing rust rule, then the tracked tagline, is paced and weighted like a real broadcast main title. Letter spacing, size jumps, and the forest field all read as considered.",
+        "The count-up stat cards (300, 27 million, 594, 278,000, about 4,000) are clean, legible, and well composed: rust tracked label, oversized cream Baskerville numeral, rust hairline, muted context line. The numeric animation easing and the comma formatting on 278,000 are correct and feel premium.",
+        "The contained-photo-over-its-own-blurred-copy treatment is the right call and is executed well. Nothing is ever cropped, the margin keeps the subject off the frame edge, and the slow sine-driven parallax drift of the sharp layer against the blurred backdrop gives a convincing 2.5D depth without the cheap full-frame Ken Burns push.",
+        "Typographic system is consistent and on-brand. One serif for display and numerals, one tracked sans for eyebrows, lower-third labels, and credits, a single rust accent rule reused as a through-line, and ASS subtitles pinned low with a translucent backplate so they never collide with the lower-thirds.",
+        "House style is respected in the on-screen copy. No em-dashes, no sentence-internal colons, and the dot-separated lockups (HYDE PARK . CHICAGO . ROOTED-FORWARD.ORG) elegantly dodge the colon rule while still reading as a title plate.",
+        "Honesty scaffolding is handled with dignity. The to-be-filmed host, 360, and present-day slates are designed as framed film slates with a clear eyebrow, not left as ugly gaps, and the sources card openly states the narration is scratch and the host and 360 pieces are placeholders."
+      ],
+      "issues": [
+        {
+          "title": "Archival grade reads as flat black-and-white, not a warm duotone",
+          "area": "graphics",
+          "severity": "high",
+          "recommendation": "In GRADE_COLOR['archival'] the hue=s=0 fully desaturates and the colorbalance push (rs=0.07 etc.) is far too weak to reintroduce warmth, so every historical still lands as a flat gray scan. Build a real duotone instead of relying on colorbalance. Replace the archival chain with a curves-based sepia, for example: format=gbrp,hue=s=0,curves=r='0/0.06 0.5/0.5 1/0.97':g='0/0.04 0.5/0.45 1/0.86':b='0/0.02 0.5/0.36 1/0.7',eq=contrast=1.06:brightness=0.01. That maps the midtones toward warm paper and the shadows toward cool ink, which is the look the brief promises. Verify on the worlds-fair and university stills, which currently look like pure monochrome.",
+          "effort": "medium"
+        },
+        {
+          "title": "Master timeline has colliding labels and reads as evenly spaced rather than to scale",
+          "area": "graphics",
+          "severity": "high",
+          "recommendation": "On the hero timeline the 1890 and 1893 markers sit almost on top of each other and their labels (The University / The World's Fair) crowd, and 1948/1958 do the same, while the 1893-to-1948 gap is a huge empty run. The alternating above/below stagger is not enough separation. Add a minimum-pixel-gap nudge so any two markers closer than about 70px are pushed apart for label layout only (keep the dot on the true date, lead the label out with a short rust elbow line to its offset position). Also lighten the inter-marker spine and add faint decade ticks so the long 1893-1948 gap reads as time passing rather than as a layout error. The same fix applies to _divider_ribbon, where 1890/1893 and 1948/1958 also overlap.",
+          "effort": "medium"
+        },
+        {
+          "title": "Locator map looks like a placeholder, not a designed graphic",
+          "area": "graphics",
+          "severity": "high",
+          "recommendation": "The map is the weakest object in the film: a single jagged shoreline polygon, a flat 110px grid, two floating labels, and a dotted line. It does not read as Chicago and the proportions feel arbitrary. Raise it with three cheap moves. (1) Draw Jackson Park and Washington Park as two small filled green rectangles flanking Hyde Park so the box has context instead of sitting in void. (2) Add 2 or 3 labeled cross streets (55th, 57th) as faint tick labels so the grid reads as a real street grid. (3) Animate the dotted Loop-to-Hyde-Park line as a continuous draw-on with an easing curve rather than discrete dots popping in, and end it with a soft pulse on the Hyde Park box. If time allows, replace the hand-jagged shoreline with the actual lakefront path; a six-point hand polygon is the giveaway that this is generated.",
+          "effort": "large"
+        },
+        {
+          "title": "Modern parked car under the 1948 covenant beat breaks the period illusion",
+          "area": "accuracy",
+          "severity": "medium",
+          "recommendation": "In the color-line chapter, color-line-4 (the present-day photo of 6140 South Rhodes) is on screen with the lower-third COVENANTS STRUCK DOWN / 1948 while a modern white SUV sits at the curb in frame. The house still standing is a fine idea, but the modern car plus the 1948 tag fights itself. Either crop or contain the photo tighter to exclude the car (raise the contain box top so the street parking falls outside the frame), or relabel that shot's lower-third to make the present-tense reading explicit, for example 'Still standing today' / '6140 S. Rhodes' instead of '1948', and move the 1948 callout onto the deed graphic (color-line-3) where it belongs.",
+          "effort": "small"
+        },
+        {
+          "title": "Uploader handles are appearing as on-screen photo credits",
+          "area": "accuracy",
+          "severity": "medium",
+          "recommendation": "CREDIT_OVERRIDE still ships Wikimedia uploader handles as if they were photographers: Legimet on color-line-4 and Teemu008 on urban-renewal-3 both read as usernames on a museum lower-third. For any modern Creative Commons photo where the credit is a handle, render the institutional or license credit instead, for example 'Photo, CC BY-SA' or 'Wikimedia Commons', and reserve a personal-name credit only where a real photographer name is verified. A username in a corner credit is the single fastest way to make a graded archival film look like a slideshow.",
+          "effort": "small"
+        },
+        {
+          "title": "Dividers leave a large dead zone between title and the you-are-here ribbon",
+          "area": "structure",
+          "severity": "medium",
+          "recommendation": "On the chapter dividers the title block sits centered around y=560 and the ribbon sits at y=930, leaving a wide empty band of cream through the lower third. Tighten the composition: move the title block up to about y=470, place the rust rule under it, then lift the ribbon to about y=760 so the eyebrow, title, rule, and ribbon read as one stacked unit. Right now the ribbon feels orphaned at the very bottom and, because its line is (170,158,140) on cream, it is also too low-contrast; darken the inactive ribbon line and dots to roughly (120,110,96) so the lit rust current-year marker pops against a readable track.",
+          "effort": "small"
+        },
+        {
+          "title": "Stat count-up lands a beat after the narrator says the number",
+          "area": "pacing",
+          "severity": "medium",
+          "recommendation": "build_story_chapter enforces a 2.8s minimum gap between shots, which on short lead-ins pushes the stat card slightly past the spoken number (the 300 card is still counting while the subtitle has moved on to 'named it Hyde Park'). Anchor the stat card's start to the exact caption cue for the spoken figure rather than to the running shot clock, and let the preceding image shot absorb the timing slack. The count-up should begin within about 0.2s of the narrator hitting the number, since the whole point of the full-frame moment is the sync.",
+          "effort": "medium"
+        },
+        {
+          "title": "Flat motion-graphic cards lack the grain and vignette of the photo shots",
+          "area": "graphics",
+          "severity": "low",
+          "recommendation": "The forest and cream cards (title, dividers, stats, timeline, end) are perfectly flat fields. grain_card is defined but disabled (the Image.composite line is guarded by 'if False'). Enable a very subtle film grain and a faint radial vignette on these flat cards so they sit in the same world as the grained, vignetted photo shots; right now the cut from a textured still to a dead-flat stat card is visible. Keep it extremely subtle; the restraint elsewhere is the film's strength.",
+          "effort": "medium"
+        },
+        {
+          "title": "Silent dips between chapters and no ambient bed under the cards",
+          "area": "audio",
+          "severity": "low",
+          "recommendation": "Every dip-to-black between chapters is pure digital silence, and the motion-graphic cards play with no audio bed at all. Lay a low, continuous room-tone or a soft sustained pad under the entire film so the chapter gaps feel like breaths rather than dropouts, and reserve one slower, longer dip-to-black entering the color-line and urban-renewal chapters so the two destruction-and-rebuild pivots carry structural weight instead of using the same 0.9s crossfade grammar as everything else.",
+          "effort": "medium"
+        },
+        {
+          "title": "End and sources cards freeze while every other card breathes",
+          "area": "graphics",
+          "severity": "low",
+          "recommendation": "animated_end and animated_sources do staggered text fade-ins, which is good, but they then sit dead still for several seconds. Add the same slow life the photo shots have: a very slight scale drift (1.0 to 1.02 over the duration) on the end-card lockup, or a slow upward settle, so the final frame breathes instead of freezing. A frozen last card after six minutes of gentle motion reads as the render ending rather than the film closing.",
+          "effort": "small"
+        }
+      ],
+      "lensKey": "motion-designer"
+    },
+    {
+      "lens": "Reading every voiceover and host line aloud, hunting for AI tells (rule-of-three lists, manufactured reversals, generic abstraction, throat-clearing) and cliche, then rewriting in a plainer human voice inside the verified facts and house style.",
+      "overall": "This script is well above the AI baseline. Somebody clearly went through it stripping em-dashes and softening colons, and the writer has a real instinct for the short declarative (\"Prairie turned into suburb.\" \"It was a fair.\"). The facts are clean and the house style holds. But the ear is not consistent. Two tells recur often enough to read as a tic. First, the manufactured reversal: a flat assertion followed by a one-beat contradiction (\"It reads as permanent. It is not.\" / \"Jackson Park wasn't a park. It was a fair.\" / \"Almost none of it was built to last. One building was.\"). Once is a good move; four or five times in six minutes becomes a verbal formula a listener starts to hear coming. Second, the rule-of-three list, which survives in several places (\"a railroad, a world's fair, a university, a federal program,\" \"police protection, building-code enforcement, and a plan,\" \"to buy the land and rebuild it\"). A few phrases are still doing the AI thing of narrating significance instead of just stating the fact (\"The timing matters\" is gone from the VO but \"The people who came back weren't a random slice\" is the same throat-clear in folksier clothes). The strongest chapters are 2 (Cornell) and 6 (urban renewal), where the writer trusts the facts to land. The weakest line in the whole film is the intro's \"the people swinging the wrecking ball were institutions, not the families on the block,\" which mixes a dead metaphor with a forced antithesis. Fixes below are line-level and stay inside the verified record.",
+      "strengths": [
+        "The short fragments earn their keep. \"Prairie turned into suburb.\" (ch2) and \"It was a fair.\" (ch4) are exactly the kind of plain, confident beat that does not sound generated. Keep these.",
+        "Chapter 6 (urban renewal) is the best-written stretch. The relocation contrast is delivered without editorializing: \"In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen.\" The clipped \"Among Black families, it was seventeen.\" lets the number do the work. This is the model the rest of the film should follow.",
+        "The covenant chapter opens on a real address instead of an abstraction: \"At 6140 South Rhodes Avenue in Woodlawn, one line in the deed barred selling or renting to anyone who wasn't white.\" Concrete, specific, human. Strong.",
+        "The host close in chapter 7 lands the throughline in plain speech: \"here's the part nobody put on the ribbon.\" That is a human turn of phrase, not an AI one, and it carries the irony without sermonizing.",
+        "House rules are genuinely respected. No em-dashes, no sentence-internal colons, and the numbers are spelled for the read (\"eight hundred fifty-six acres\") which shows the writer was thinking about the voice actor, not just the page."
+      ],
+      "issues": [
+        {
+          "title": "Intro: the wrecking-ball line mixes a dead metaphor with a forced antithesis",
+          "area": "narration",
+          "severity": "high",
+          "recommendation": "The line \"This neighborhood got built and torn down and rebuilt, and the people swinging the wrecking ball were institutions, not the families on the block.\" is the weakest in the film. \"Swinging the wrecking ball\" is a cliche, and \"institutions, not the families on the block\" is the manufactured-antithesis tic. Cut the metaphor and state it flat. Replace with: \"This neighborhood got built and torn down and rebuilt, again and again. The people deciding were institutions with money. The people moved out lived here.\" That keeps the contrast but drops the cliche and the neat A-not-B snap.",
+          "effort": "small"
+        },
+        {
+          "title": "Manufactured reversal is overused across chapters",
+          "area": "narration",
+          "severity": "high",
+          "recommendation": "The \"X. Not X.\" / \"wasn't X, was Y\" move appears in the intro (\"It reads as permanent. It is not.\"), ch4 (\"Jackson Park wasn't a park. It was a fair.\"), and ch4 again (\"Almost none of it was built to last. One building was.\"). Each is fine alone, but together they read as a formula. Keep the ch4 opener (\"Jackson Park wasn't a park. It was a fair.\") because it is the best instance, and the \"One building was.\" beat because it sets up a real fact. Rework the intro one so the device does not fire three times. The intro's permanence beat lives in the hostScript, not the VO, so this is mostly about not letting ch4 stack two reversals back to back. If you want to vary ch4, change \"Almost none of it was built to last. One building was.\" to \"Almost none of it was built to last. The Palace of Fine Arts was the exception.\" That trades the snap for a name and feeds straight into the next line.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 6: \"weren't a random slice\" is throat-clearing that telegraphs the point",
+          "area": "narration",
+          "severity": "medium",
+          "recommendation": "\"The people who came back weren't a random slice.\" announces the significance of the number before the number arrives, which is the AI habit of narrating meaning instead of trusting the fact. The two relocation figures are strong enough to stand alone. Cut the line and go straight in: \"In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen.\" The gap between 46 and 17 makes the point without a setup line.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 5 ending is abrupt and drops the chapter's own thesis",
+          "area": "narration",
+          "severity": "medium",
+          "recommendation": "The covenant chapter ends on \"The covenants didn't lose their teeth until 1948, in Shelley v. Kraemer.\" and stops. \"Lose their teeth\" is a mild cliche, and the chapter never lands what Shelley actually did, namely that it made covenants unenforceable but left them in the deeds, which is the verified and more interesting fact. Replace the last beat with: \"Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn't enforce them anymore.\" This drops the cliche, uses a verified fact (verifiedFacts: \"Shelley made covenants unenforceable in court but did not remove the clauses\"), and gives the chapter a real close instead of a trailing-off.",
+          "effort": "medium"
+        },
+        {
+          "title": "Chapter 3: \"started with one man's money\" then immediately complicates itself",
+          "area": "narration",
+          "severity": "medium",
+          "recommendation": "The chapter opens \"The campus started with one man's money.\" and the very next facts are that Rockefeller required a 400,000-dollar match from other donors and that Marshall Field gave the land. The opening overstates to set up a hook, then the script walks it back within four sentences, which is a small version of the manufactured-setup pattern. Tighten to something the facts support: \"The campus was built on Rockefeller money and a Marshall Field land gift.\" Then proceed to the pledge. Less punchy, but it does not promise a one-man story the next breath contradicts.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 2: the Mary Todd Lincoln line buries its own weight under a softened clause",
+          "area": "narration",
+          "severity": "low",
+          "recommendation": "\"Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad, a few months after her husband was killed.\" The euphemism \"her husband was killed\" is oddly vague for a fact this famous, and \"a few months after\" floats. Tighten to: \"Mary Todd Lincoln stayed there in the summer of 1865 with her sons Robert and Tad, just after Lincoln was assassinated.\" \"Summer of 1865\" is the verified detail (verifiedFacts) and naming the assassination plainly is stronger than the soft \"her husband was killed.\"",
+          "effort": "small"
+        },
+        {
+          "title": "Rule-of-three and list cadence still surfaces in a few spots",
+          "area": "narration",
+          "severity": "low",
+          "recommendation": "Watch the listing rhythm. Intro VO: \"A railroad reached the prairie first, then a university, then a world's fair.\" is a clean three and reads fine as parallel history, so keep it. But the intro's separate \"A railroad, a world's fair, a university, a federal program\" (in the host/research framing) is the generic four-item abstraction; it is not in the final VO, so just make sure it does not get added back. In ch7 hostScript, \"a world class university, a new presidential center, an Olmsted lakefront\" is a three-item list of abstractions in the research beat; it did not make the spoken hostScript, which is good. No change needed to shipped lines, but flag for whoever finalizes copy not to reintroduce these.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 7 VO: \"sued over and over to stop it, and lost every time\" overstates a corrected fact",
+          "area": "accuracy",
+          "severity": "medium",
+          "recommendation": "The VO says Protect Our Parks \"sued over and over to stop it, and lost every time.\" The film's own verify step softened this: the Seventh Circuit remanded at one stage and found only some claims should have been dismissed before later suits were tossed (removedClaims and notes). \"Lost every time\" is the clean-dismissal framing the verifier explicitly flagged as wrong. Change to: \"A group called Protect Our Parks sued over and over to stop it. The suits failed and construction went ahead.\" That stays accurate to the corrected record without narrating a single clean loss.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 7 host close question is slightly soft and abstract",
+          "area": "narration",
+          "severity": "low",
+          "recommendation": "\"So the question I keep landing on is who gets to stay near the thing they fought for.\" is good but \"I keep landing on\" is a small filler and \"the thing they fought for\" is vague after the concrete Woodlawn detail just before it. Tighten to: \"So the question I keep coming back to is simple. Who gets to stay in the neighborhood that fought to bring this here.\" It points back at Woodlawn by name-logic rather than \"the thing,\" and closes harder.",
+          "effort": "small"
+        },
+        {
+          "title": "Chapter 4: \"who'd helped design Central Park\" is fine, but \"glowed at night under electric light\" leans pretty",
+          "area": "narration",
+          "severity": "low",
+          "recommendation": "Minor. \"white plaster halls that glowed at night under electric light\" is the one place the writing reaches for atmosphere over fact. It is accurate (the staff buildings were electrically lit and gave the fair its White City name), so it can stay, but if you want it plainer and less greeting-card: \"white plaster halls, lit up at night by electricity. People called it the White City.\" Keeps the verified causal link (the lighting is why it was nicknamed the White City) and drops \"glowed.\"",
+          "effort": "small"
+        }
+      ],
+      "lensKey": "ai-critic"
+    },
+    {
+      "lens": "Documentary sound design and music. Where score swells or drops, where silence and room tone carry the cut, how the placeholder narration should be paced and re-marked for the real read, and concrete royalty-free / licensable music direction (style, tempo, instrumentation) for a measured civic history film.",
+      "overall": "The bones of an audio plan are sound. Narration runs about 315 seconds of pure VO inside a roughly 6.5 minute film, which leaves close to two minutes of breathing space for dividers, count-up stat moments, crossfades, and music-only passages. That headroom is the single best thing this film has going for it acoustically, and right now nothing in the build claims it. There is no music spec, no room-tone plan, no silence map, and no pacing direction for the scratch read beyond raw clip lengths. The biggest risk is that a placeholder machine VO, played wall-to-wall over a continuous music bed, flattens seven chapters that should each have a distinct emotional temperature. The covenant and urban-renewal chapters in particular carry hard human numbers (278,000 people held inside a thin strip, about 4,000 families pushed out, a 46 percent versus 17 percent return gap) and the score should get out of their way, not underline them. My recommendations below give a per-chapter dynamic map, a specific royalty-free palette (solo piano and small strings, 60 to 76 bpm, no percussion until the present-day chapter), explicit silence and room-tone placements, and a re-marking of the narration into breath beats so the real read lands the numbers instead of racing past them. One note for the writing as it will be heard aloud. The scripts are clean of em-dashes and sentence-internal colons, the facts are sourced and specific, and the host voice sounds genuinely human. That is real and worth protecting.",
+      "strengths": [
+        "Real headroom for sound design. About 315s of VO inside a ~6.5 min runtime leaves roughly 100 to 120 seconds for dividers, stat cards, crossfades, and music-only beats. That is generous and rare, and it means the film can afford genuine silence at its heaviest moments instead of talking over them.",
+        "The count-up stat moments (300 acres, 27 million, 594, 278,000, ~4,000 families) are natural audio punctuation points. Full-frame numbers that land on a held note or a sudden drop to room tone are the single most effective civic-doc device available, and the build already isolates these beats visually so the audio can sync to them cleanly.",
+        "Dip-to-black between chapters is already in the cut, which gives the score natural cadence points to resolve and restart rather than crossfading one continuous bed across seven tonally different chapters.",
+        "The host bookends (intro and present) are written in a real spoken cadence with genuine questions, not narration. They invite a sparser, more intimate audio treatment (close room tone, little or no music under the questions) that will contrast well with the scored history chapters.",
+        "The narration is clean of em-dashes and sentence-internal colons and the facts are specific and sourced, so the audio team is not going to trip over AI-tell phrasing or unverifiable claims when timing the read."
+      ],
+      "issues": [
+        {
+          "title": "No per-chapter music dynamic map. A single continuous bed will flatten seven different emotional registers.",
+          "area": "audio",
+          "severity": "high",
+          "effort": "medium",
+          "recommendation": "Score each chapter as its own cue with a defined arc, and let the dip-to-black between chapters be a true musical rest of 0.8 to 1.2 seconds before the next cue starts. Concrete map. Title and locator map: a single sustained low string drone plus one rising piano figure, no rhythm, establish place. Formation (Cornell): gentle, hopeful, solo piano with light pizzicato strings, the only genuinely warm cue in the film. University (Rockefeller): same key, add a cello counter-line, slightly more formal and institutional. World's Fair: the one moment of grandeur, let strings open up and add a soft glockenspiel or celesta shimmer for the White City electric-light line, then deliberately collapse it back to solo piano on 'almost none of it was built to last.' Color line: pull music down to a single held low note or near-silence, this is the gut of the film. Urban renewal: cold, spare, a repeating two-note piano figure with no resolution, tension that never releases. Present: the only cue allowed a pulse, a slow felt-piano with a low synth or sub-bass swell under the Obama Center, then strip back to solo piano and end unresolved on 'who gets to stay near the thing they fought for.' This map is the deliverable the build is currently missing."
+        },
+        {
+          "title": "No silence or room-tone plan. The heaviest human numbers are at risk of being scored over.",
+          "area": "audio",
+          "severity": "high",
+          "effort": "small",
+          "recommendation": "Write three hard silence beats into the edit where music fully drops to room tone only. One, the covenant population figures: hold music out from 'About 40,000 people in 1910' through 'around 278,000 by 1940, most of them held inside a thin strip of the South Side.' Let those numbers sit on room tone, then bring music back on the Shelley v. Kraemer line. Two, the urban-renewal return-gap stat: drop to silence on 'forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen.' The contrast lands harder with no music telling the audience how to feel. Three, the final host question 'who gets to stay near the thing they fought for' plays on close room tone, music already gone, two to three seconds of held silence before the sources card. Source the room tone from the same locations being filmed for the to-be-shot b-roll (Jackson Park, a quiet Kenwood block, a lakefront wind bed) so the silence is the place, not a digital floor."
+        },
+        {
+          "title": "Placeholder narration has no breath-beat marking, so the real read will likely race the numbers.",
+          "area": "pacing",
+          "severity": "high",
+          "effort": "small",
+          "recommendation": "Re-mark the scripts with explicit breath beats for the recording session, especially around stat lines. Add a held beat before and after every count-up number so it lands on the visual. Examples to mark in the session script. Color line: 'About 40,000 people in 1910, [beat] around 278,000 by 1940, [beat] most of them held inside a thin strip of the South Side.' Urban renewal: 'It marked six hundred thirty-eight buildings to come down. [beat] The first one fell on May tenth, 1955, [beat] before the plan was even approved.' And the return gap as two separate sentences with a full stop and a clear pause between them, which the script already does well, just protect it in the read. Target roughly 135 to 145 wpm for history chapters and a slower 120 to 130 wpm for the two host bookends. The scratch clip lengths (urban renewal 60.6s for 162 words is about 160 wpm) suggest the machine read is currently too fast for the weight of the material."
+        },
+        {
+          "title": "Music style and licensing are unspecified, leaving a real risk of a generic, over-emotive library bed.",
+          "area": "audio",
+          "severity": "medium",
+          "effort": "medium",
+          "recommendation": "Specify a measured chamber palette and name licensable sources so the team does not default to swelling cinematic trailer music. Instrumentation: solo felt or upright piano as the spine, a small string section (no full orchestra), occasional cello solo, and celesta or glockenspiel reserved only for the World's Fair shimmer. Tempo 60 to 76 bpm throughout, no drum kit anywhere, the only low pulse allowed is in the present-day chapter. For royalty-free or licensable sources that fit this register, point the team at: Blue Dot Sessions (their catalog is built for exactly this measured-doc tone and licenses cleanly via Marmoset or their own subscription), the Free Music Archive Blue Dot collection under CC-BY for budget cuts, Musopen for genuinely public-domain solo piano and chamber recordings (verify the recording license, not just the composition), and the YouTube Audio Library filtered to calm cinematic for placeholder scoring before licensing. Whatever is chosen, document the license and attribution in the same sources card the film already shows, consistent with the site's real-data and credit honesty."
+        },
+        {
+          "title": "The placeholder machine VO will be heard against a near-final picture and may set the wrong rhythm for editors.",
+          "area": "narration",
+          "severity": "medium",
+          "effort": "small",
+          "recommendation": "Treat the scratch VO as timing reference only and label it so in the build, the same way the to-be-filmed cards are labeled. Add a small persistent 'scratch voiceover' marker during placeholder VO playback so reviewers do not judge delivery, and lock the stat-card sync to the marked breath beats above rather than to the machine read's timing, since the real read will be slower. When the real read is recorded, record at least two takes of every stat line and the two host bookends, plus 30 seconds of clean room silence from the booth for noise matching, so the editor can rebuild pauses without artifacts."
+        },
+        {
+          "title": "No transition-audio plan across the dip-to-black chapter breaks, risking abrupt or mushy cuts.",
+          "area": "audio",
+          "severity": "medium",
+          "effort": "small",
+          "recommendation": "Decide the chapter-seam audio deliberately rather than crossfading beds. Recommended: let each cue resolve or decay into the dip-to-black, hold 0.8 to 1.2 seconds of near-silence (a low room-tone bed, not digital black silence, so the cut does not feel dead), then open the next divider card with a single piano note or the new cue's first phrase landing on the 'you are here' timeline ribbon animation. The one place to break this rule is the World's Fair to color-line seam. Carry a low sustained string note across that dip so the grandeur of the White City curdles directly into the covenant chapter without a clean reset, which mirrors the historical turn the film is making."
+        },
+        {
+          "title": "The World's Fair grandeur cue could overshoot and read as celebratory in a film about displacement.",
+          "area": "audio",
+          "severity": "low",
+          "effort": "small",
+          "recommendation": "Cap the World's Fair swell. Let the strings open only on 'white plaster halls that glowed at night under electric light' and 'About twenty-seven million came,' then deliberately undercut it on 'Almost none of it was built to last.' Drop back to solo piano on that line so the chapter ends on impermanence, not spectacle. This keeps the one big musical moment from contradicting the film's argument, and it sets up the collapse into the color-line chapter."
+        },
+        {
+          "title": "Stat-card audio accents are unspecified, so the count-up moments may land silently or with a generic whoosh.",
+          "area": "audio",
+          "severity": "low",
+          "effort": "small",
+          "recommendation": "Give the full-frame count-up numbers a single, restrained audio signature and reuse it every time so it becomes the film's punctuation. Recommended: a soft low piano note or a single struck felt-piano chord on the number's arrival, with the music bed ducking about 3 to 4 dB underneath for the duration of the count. No risers, no whooshes, no cinematic booms. For the two heaviest numbers (278,000 and the 46 versus 17 return gap) drop even the accent and let them land on room tone per the silence plan above, so the absence of the usual accent is itself the emphasis."
+        }
+      ],
+      "lensKey": "sound"
+    }
+  ],
+  "synth": {
+    "biggestOpportunity": "Make the displacement thesis visible the whole way through, not just stated in the cold open and paid off at minute four. The cold open promises that a railroad, a university, a fair, and a federal program each decided who stayed and who had to move, then chapters 2 through 4 (Cornell, Rockefeller, the Fair) play as celebratory institutional history with no person at human scale and no displacement counterweight for roughly three minutes, so a screening-room viewer (and any walk-up gallery viewer who enters mid-loop) meets a tourism reel rather than the film's argument. Four of the six reviewers independently flagged this as the single largest structural weakness. The fix is cheap and stays strictly inside verified facts: add one short, sourced closing beat to each of chapters 2, 3, and 4 that hands the displacement thread forward (Cornell marketed Hyde Park as selective distance from the city's crowds; the same university that built the quads would later decide who lived around them; the fair pulled new value to the lakefront and the fight over who that value belonged to was still to come), and rebalance roughly 25 to 30 words from the overstuffed urban-renewal chapter into the rushed, 100-word color-line chapter, which is the moral hinge and is currently the shortest history chapter. Do this before the real voiceover is recorded, since every fix here is a script change that the recorded read must carry.",
+    "prioritized": [
+      {
+        "title": "Cut duplicate VO under the two host bookends",
+        "action": "In chapters 1 (intro) and 7 (present), the hostScript and the voiceover cover nearly identical content and cannot both play. Decide now that the recorded host read IS the framing-chapter narration. Delete the chapter-1 and chapter-7 voiceover tracks from the cut and let the host carry both bookends, reserving the polished narrator voice for the five history chapters (2 through 6). This also fixes a tonal problem since the first-person present-tense register belongs only at the open and close.",
+        "impact": "high",
+        "effort": "small"
+      },
+      {
+        "title": "Add one verified displacement beat to the end of chapters 2, 3, and 4",
+        "action": "Append a single sourced closing line to each middle history chapter so the thesis stays visible. Ch2 (Cornell): 'From the start, the pitch was distance from the city's crowds. Hyde Park was built to be selective.' (supported by verifiedBeat: Cornell marketed Hyde Park to wealthy Chicagoans who wanted leisure and distance from the crowded city). Ch3 (University): replace the flat final line with 'The same institution that built those quads would later decide who got to live around them.' (supported by verifiedBeat: its presence shaped later patterns of land control and displacement the university itself would drive). Ch4 (Fair): 'The fair pulled money and attention to this lakefront. Who that new value would belong to was a fight still to come.' (no new claim; sets up the color line).",
+        "impact": "high",
+        "effort": "medium"
+      },
+      {
+        "title": "Rebalance words from urban renewal into the color-line chapter",
+        "action": "Color line is the moral hinge at 100 words and is rushed; urban renewal is 162 words and stacks figures. Break the University's covenant role out of a subordinate clause into its own beat: replace 'and the University of Chicago put quiet money behind defending them in court' with 'And the University of Chicago was not a bystander. It put money behind defending these covenants in court, to keep the blocks around its campus white.' In urban renewal, cut 'though demolition had started three years earlier' (redundant with the May 10 1955 line) and move one of the two scale numbers (856 acres / 638 buildings) to a lower-third instead of speaking both back to back. Net effect moves roughly 25 words from ch6 to ch5.",
+        "impact": "high",
+        "effort": "medium"
+      },
+      {
+        "title": "Fix the archival grade so it reads as warm duotone, not flat black-and-white",
+        "action": "In GRADE_COLOR['archival'] the hue=s=0 fully desaturates and the colorbalance push (rs=0.07 etc.) is too weak to register, so every historical still lands as a gray scan instead of the promised warm-duotone signature. Replace the archival chain with a curves-based sepia, e.g. format=gbrp,hue=s=0,curves=r='0/0.06 0.5/0.5 1/0.97':g='0/0.04 0.5/0.45 1/0.86':b='0/0.02 0.5/0.36 1/0.7',eq=contrast=1.06:brightness=0.01. Verify on the worlds-fair and university stills, which currently look pure monochrome.",
+        "impact": "high",
+        "effort": "medium"
+      },
+      {
+        "title": "Replace uploader handles in on-screen photo credits",
+        "action": "CREDIT_OVERRIDE ships Wikimedia uploader usernames as if they were photographers (Legimet on color-line-4, Teemu008 on urban-renewal-3). For any modern Creative Commons photo where the credit is a handle, render the institutional or license credit instead, e.g. 'Wikimedia Commons, CC BY-SA', and reserve a personal-name credit only where a real photographer name is verified. A username in a museum lower-third instantly reads as a slideshow.",
+        "impact": "high",
+        "effort": "small"
+      },
+      {
+        "title": "Remove the sentence-internal colon from on-screen overlay text",
+        "action": "The color-line data overlay reads \"Chicago's Black population: ~40,000 in 1910 to ~278,000 by 1940,\" which violates the house no-colon rule the spoken VO honors. Rewrite to 'Chicago's Black population grew from about 40,000 in 1910 to about 278,000 by 1940.' Audit every overlay string for the same issue before lock (overlay text is held longer and scrutinized harder than speech).",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Fix the master timeline label collisions",
+        "action": "On the hero timeline and the _divider_ribbon, the 1890/1893 and 1948/1958 markers and labels overlap while 1893 to 1948 is a large empty run. Add a minimum-pixel-gap nudge so any two markers closer than about 70px are pushed apart for label layout only (keep the dot on the true date, lead the label out with a short rust elbow line). Add faint decade ticks so the long 1893-1948 gap reads as time passing rather than a layout error. Apply the same fix to both the hero timeline and the divider ribbon.",
+        "impact": "medium",
+        "effort": "medium"
+      },
+      {
+        "title": "Relabel the color-line timeline marker to the practice, not its defeat",
+        "action": "The master timeline dates the color-line marker to 1948 (Shelley v. Kraemer), the year the practice was struck down rather than when it operated. Relabel it '1920s to 1948 Covenants' (or anchor it to the 1920s) so the timeline reads the covenants as a force that operated for a generation, not a single Supreme Court date.",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Resolve the modern-car-under-1948-tag conflict on the 6140 S. Rhodes shot",
+        "action": "color-line-4 (present-day photo of 6140 South Rhodes) is on screen with the lower-third 'COVENANTS STRUCK DOWN / 1948' while a modern white SUV sits at the curb. Either contain the photo tighter to exclude the car, or relabel that shot 'Still standing today / 6140 S. Rhodes' and move the 1948 callout onto the deed graphic (color-line-3) where it belongs.",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Switch the 27-million fair stat to the defensible figure",
+        "action": "The verify ledger flags 27 million as the soft, double-counted number (Britannica gives about 21.5 million paid admissions, about 25.8 million total). The full-frame count-up currently shows 27 million as a hard stat. Either change the count-up to 'More than 21 million paid admissions' and footnote the caveat in the source lower-third, or keep spoken 'About twenty-seven million' but set the on-screen stat to the paid-admissions figure. Given the professor-safe standard everywhere else, the harder number is the safer choice for the full-frame moment.",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Format the headline relocation stat for a 2-to-3-second read",
+        "action": "Set the full-frame relocation contrast as two stacked plain figures, '46% of white families stayed' over '17% of Black families stayed,' and reserve the precise '46.1% vs 16.6%' decimals for the source lower-third. Round, labeled, contrasted numbers land in the dwell a wall stat gets; raw census pairs force arithmetic.",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Confirm captions are sans-serif on a scrim, not Baskerville over the image",
+        "action": "Baskerville is a poor caption face at distance and the duotone-plus-vignette grade eats thin serif strokes. Confirm the subtitle track is set in Gill Sans (or comparable sans) at high contrast against a solid or scrimmed bar, with a cap-height legible at gallery distance. If captions are currently serif-over-image, this is the single biggest distance-legibility risk in the build.",
+        "impact": "medium",
+        "effort": "small"
+      },
+      {
+        "title": "Re-chunk subtitle line breaks on grammatical boundaries",
+        "action": "The 'lines' arrays break mid-phrase (e.g. 'Rockefeller pledged six hundred thousand' / 'dollars for a new Baptist university in' / 'Chicago.'). Re-chunk every chapter's line array so noun phrases and clauses stay whole ('Rockefeller pledged six hundred thousand dollars' / 'for a new Baptist university in Chicago.'). No script change, materially better at distance and for hard-of-hearing viewers.",
+        "impact": "medium",
+        "effort": "medium"
+      },
+      {
+        "title": "Write a per-chapter music dynamic map with true rests between chapters",
+        "action": "Score each chapter as its own cue and let the dip-to-black be a real 0.8 to 1.2s musical rest. Map: title/map a single low string drone plus one rising piano figure; Cornell warm solo piano with light pizzicato (the only genuinely warm cue); University add a cello counter-line; World's Fair let strings open with a soft celesta shimmer on the electric-light line, then collapse to solo piano on 'almost none of it was built to last'; color line pull to a single held low note or near-silence; urban renewal a cold unresolved two-note piano figure; present a slow felt-piano with a low sub-bass swell, ending unresolved.",
+        "impact": "high",
+        "effort": "medium"
+      },
+      {
+        "title": "Author three hard silence beats over the heaviest numbers",
+        "action": "Drop music to room tone only on: (1) the covenant population figures, from 'About 40,000 people in 1910' through 'held inside a thin strip of the South Side,' bringing music back on the Shelley line; (2) the relocation gap, 'forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen.'; (3) the final host question, two to three seconds of held silence before the sources card. Source room tone from the locations being filmed for b-roll so the silence is the place, not a digital floor.",
+        "impact": "high",
+        "effort": "small"
+      },
+      {
+        "title": "Re-mark the scripts with breath beats and a target words-per-minute before the real read",
+        "action": "Mark explicit beats around every count-up number so it lands on the visual (e.g. 'About 40,000 people in 1910, [beat] around 278,000 by 1940, [beat] most of them held inside a thin strip of the South Side.'). Target 135 to 145 wpm for history chapters and 120 to 130 wpm for the two host bookends; the scratch read is running near 160 wpm, too fast for the material. Record at least two takes of every stat line and the bookends plus 30 seconds of clean booth room tone for noise matching.",
+        "impact": "high",
+        "effort": "small"
+      },
+      {
+        "title": "Anchor each stat count-up to the spoken-number caption cue",
+        "action": "build_story_chapter enforces a 2.8s minimum gap between shots, which pushes the count-up slightly past the spoken number (the 300 card is still counting while the subtitle has moved to 'named it Hyde Park'). Start each stat card from the exact caption cue for the spoken figure rather than the running shot clock, and let the preceding image shot absorb the slack, so the count begins within about 0.2s of the narrator hitting the number.",
+        "impact": "medium",
+        "effort": "medium"
+      },
+      {
+        "title": "Add a VO-only loop variant and an intentional restart seam for the gallery",
+        "action": "On a continuous wall loop, two host placeholder cards hitting back-to-back at the 7-to-1 seam read as unfinished. Cut a temporary VO-only loop that uses the existing chapter-1 and chapter-7 voiceover text over the locator map and present-day stills and drops the host placeholder cards entirely; keep the host cards only in the festival cut. Design the 7-to-1 dip-to-black as a held end card carrying the central question so a viewer arriving at the seam reads a restart, not a glitch.",
+        "impact": "medium",
+        "effort": "medium"
+      },
+      {
+        "title": "Give the Hansberry address its own full-frame human-scale moment",
+        "action": "Chapters 2 through 4 name only institutions; the first displaced human arrives abstractly. Treat '6140 South Rhodes Avenue' as a full-frame stat-style moment the way the film treats '300 acres' and '4,000 families,' so a face-scale human story registers before the mass-displacement numbers. Rebalances the emotional load without adding runtime.",
+        "impact": "medium",
+        "effort": "medium"
+      },
+      {
+        "title": "Tighten the divider composition and darken the inactive ribbon",
+        "action": "On chapter dividers the title block (~y=560) and the you-are-here ribbon (~y=930) leave a wide dead band of cream. Lift the title to ~y=470 with the rust rule under it and the ribbon to ~y=760 so eyebrow, title, rule, and ribbon read as one stacked unit. Darken the inactive ribbon line and dots from (170,158,140) to about (120,110,96) so the lit rust current-year marker pops against a readable track.",
+        "impact": "low",
+        "effort": "small"
+      },
+      {
+        "title": "Add subtle grain and vignette to the flat motion-graphic cards",
+        "action": "The forest and cream cards (title, dividers, stats, timeline, end) are dead-flat fields while the photo shots are grained and vignetted, so the cut between them is visible. grain_card exists but is disabled (Image.composite guarded by 'if False'). Enable a very subtle grain and a faint radial vignette on the flat cards so they sit in the same world. Keep it extremely subtle.",
+        "impact": "low",
+        "effort": "medium"
+      },
+      {
+        "title": "Add a low room-tone bed under chapter dips and a small breath to the end cards",
+        "action": "Every dip-to-black is currently pure digital silence and the motion-graphic cards have no audio bed, so gaps read as dropouts. Lay a low continuous room tone under the whole film, and carry a single low sustained string note across the World's Fair to color-line dip so the grandeur curdles into the covenant chapter without a clean reset. Add a slight scale drift (1.0 to 1.02 over the hold) to the end and sources cards so the final frame breathes instead of freezing.",
+        "impact": "low",
+        "effort": "medium"
+      },
+      {
+        "title": "Add a 'what to do next' line and short URL to the end card",
+        "action": "The end card resolves only on the open question. Add one line and a QR or short URL pointing to the Rooted Forward Woodlawn/housing material, framed as the answer-in-progress, e.g. 'The organizing continues. See how at rooted-forward.org.' This is a real current campaign per the research, not an invented call to action, and it converts gallery dwell into action.",
+        "impact": "low",
+        "effort": "small"
+      },
+      {
+        "title": "Upgrade or replace the locator map",
+        "action": "The map is the weakest object in the film (one jagged shoreline polygon, a flat grid, two floating labels, a dotted line) and does not read as Chicago. Add filled green rectangles for Jackson Park and Washington Park flanking Hyde Park, label two or three cross streets (55th, 57th) as faint ticks, and animate the Loop-to-Hyde-Park line as a continuous eased draw-on ending in a soft pulse on the Hyde Park box. If time allows, replace the six-point hand polygon with the actual lakefront path.",
+        "impact": "medium",
+        "effort": "large"
+      }
+    ],
+    "lineRewrites": [
+      {
+        "chapterId": "intro",
+        "from": "This neighborhood got built and torn down and rebuilt, and the people swinging the wrecking ball were institutions, not the families on the block.",
+        "to": "This neighborhood got built and torn down and rebuilt, again and again. The people deciding were institutions with money. The people moved out lived here."
+      },
+      {
+        "chapterId": "university",
+        "from": "Henry Ives Cobb laid out the gray Gothic quads you still walk through.",
+        "to": "Henry Ives Cobb laid out the gray Gothic quads you still walk through. The same institution that built them would later decide who got to live around them."
+      },
+      {
+        "chapterId": "university",
+        "from": "The campus started with one man's money. In 1889, John D. Rockefeller pledged six hundred thousand dollars for a new Baptist university in Chicago.",
+        "to": "The campus was built on Rockefeller money and a Marshall Field land gift. In 1889, John D. Rockefeller pledged six hundred thousand dollars for a new Baptist university in Chicago."
+      },
+      {
+        "chapterId": "formation",
+        "from": "Mary Todd Lincoln stayed there in 1865 with her sons Robert and Tad, a few months after her husband was killed.",
+        "to": "Mary Todd Lincoln stayed there in the summer of 1865 with her sons Robert and Tad, just after Lincoln was assassinated."
+      },
+      {
+        "chapterId": "worlds-fair",
+        "from": "Almost none of it was built to last. One building was. The old Palace of Fine Arts reopened in 1933 as the Museum of Science and Industry.",
+        "to": "Almost none of it was built to last. The Palace of Fine Arts was the exception. It reopened in 1933 as the Museum of Science and Industry. The fair pulled money and attention to this lakefront. Who that new value would belong to was a fight still to come."
+      },
+      {
+        "chapterId": "worlds-fair",
+        "from": "white plaster halls that glowed at night under electric light. People called it the White City.",
+        "to": "white plaster halls, lit up at night by electricity. People called it the White City."
+      },
+      {
+        "chapterId": "color-line",
+        "from": "Hyde Park and Woodlawn leaned on these covenants, and the University of Chicago put quiet money behind defending them in court.",
+        "to": "Hyde Park and Woodlawn leaned on these covenants. And the University of Chicago was not a bystander. It put money behind defending them in court, to keep the blocks around its campus white."
+      },
+      {
+        "chapterId": "color-line",
+        "from": "The covenants didn't lose their teeth until 1948, in Shelley v. Kraemer.",
+        "to": "Not until 1948 did the Supreme Court take their force away, in Shelley v. Kraemer. The clauses stayed in the deeds. Courts just couldn't enforce them anymore."
+      },
+      {
+        "chapterId": "urban-renewal",
+        "from": "All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. The people who came back weren't a random slice. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen.",
+        "to": "All told, the plan would push out about four thousand families. The university spent twenty-nine million dollars of its own money to buy the land and rebuild it. In those first projects, forty-six percent of the white families who lost homes stayed in Hyde Park. Among Black families, it was seventeen."
+      },
+      {
+        "chapterId": "urban-renewal",
+        "from": "The City Council made it official in 1958, though demolition had started three years earlier.",
+        "to": "The City Council made it official in 1958."
+      },
+      {
+        "chapterId": "present",
+        "from": "A group called Protect Our Parks sued over and over to stop it, and lost every time.",
+        "to": "A group called Protect Our Parks sued over and over to stop it. The suits failed and construction went ahead."
+      },
+      {
+        "chapterId": "present",
+        "from": "So the question I keep landing on is who gets to stay near the thing they fought for.",
+        "to": "So the question I keep coming back to is simple. Who gets to stay in the neighborhood that fought to bring this here."
+      }
+    ]
+  }
+}

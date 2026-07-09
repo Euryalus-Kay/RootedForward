@@ -394,6 +394,11 @@
    "shots": [
     [
      "img",
+     "land-cession-map",
+     "The Three Fires nations gave up about five million acres"
+    ],
+    [
+     "img",
      "land-treaty-chicago",
      "pressed them to sign"
     ],
@@ -881,6 +886,20 @@
    "focus": [
     0.78,
     0.5
+   ]
+  },
+  "land-cession-map": {
+   "kind": "point",
+   "pts": [
+    [
+     0.675,
+     0.185
+    ]
+   ],
+   "label": "This lakefront, ceded 1833",
+   "focus": [
+    0.62,
+    0.27
    ]
   }
  }

@@ -26,9 +26,8 @@ function TwoBuyersCrossReference() {
       </p>
       <p className="mt-2 font-display text-xl text-exh-ink">Two Buyers, One House</p>
       <p className="mt-2 text-sm leading-relaxed text-exh-ink-soft">
-        You slide the years and watch two families pay for the same house. The bench sits at its
-        pause point in chapter nine, The Color Tax, just outside this door. It stays in the tour
-        so your work there is never disturbed.
+        You slide the years and watch two families pay for the same house. The bench sits in
+        chapter nine, The Color Tax, just outside this door.
       </p>
     </PaperCard>
   );
@@ -58,7 +57,7 @@ export const THE_CONTRACT_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "The bench for this machine is in the tour itself. This room adds the circle the money traveled.",
+    lead: "The bench for this machine is in the exhibit itself. This room adds the circle the money traveled.",
     body: (
       <div className="space-y-10">
         <TwoBuyersCrossReference />

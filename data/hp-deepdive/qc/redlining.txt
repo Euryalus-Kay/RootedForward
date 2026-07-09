@@ -1,0 +1,59 @@
+FILM: deepdive-redlining.mp4 (12:05 / 725s, 1920x1080). Frames sampled every 3s + dense 2fps scans of stat/graphic windows. Timecodes are from the burned-in frames (±1.5s). Edit targets are in data/hp-deepdive/redlining.sections.json unless a graphic function is named.
+
+=================== P1 — MUST FIX BEFORE ANYONE SEES IT ===================
+
+[P1-a] ~01:09-01:13 (and every reuse of racial-hierarchy-doc) — BROKEN BURNED-IN WALL LABEL.
+On screen: the "Only Members of the Caucasian Race" covenant clipping (annot key `racial-hierarchy-doc`). Top-right wall label renders literally as: KIMBAL &AMP; RICHARDS "LAND MERCHA, 1920 — i.e. (1) a raw HTML entity "&AMP;" instead of "&", (2) an unclosed stray double-quote before LAND, (3) the credit is truncated mid-word ("MERCHA" should be "MERCHANTS"). A second label fragment ("A Racially Re...") is fading in underneath it at the same time, so two labels collide during the cross-fade. This is a code artifact on a finished render and is the single most damaging defect.
+FIX: In the credit/annotation string for this asset, replace the HTML-escaped "&amp;" with a literal "&" (the renderer is double-escaping), close/remove the stray quote, and stop truncating long credits (either widen the label box or shorten the credit to "Kimball & Richards, Land Merchants, 1920"). Also confirm which label is correct — storyboard `annot["racial-hierarchy-doc"]` says "A Racially Restrictive Covenant / Period promotion limiting sale to the Caucasian race", but the burned label says "Kimball & Richards Land Merchants 1920". Pick ONE and kill the overlap so two labels never stack.
+
+[P1-b] ~06:42-06:48 (s5, shot color-line-3) — WATERMARKED THIRD-PARTY GRAPHIC + IMAGE CONTRADICTS NARRATION.
+On screen: the colored "Home Owners' Loan Corp. (HOLC) Neighborhood Redlining Grade in Chicago" map. Top-right corner is watermarked "JOELEAN HALL" and bottom-right reads "Created by: Joelean Hall". VO at this exact moment is "Those surveys covered cities in nearly every corner of the country, from Atlanta to Los Angeles, from Boston to Birmingham." A Chicago-only map under a line that explicitly names four OTHER cities is a direct image/VO contradiction. The watermark is also a rights/credit problem that violates the project's media-honesty rule.
+FIX: For the national beat ("Atlanta to Los Angeles, Boston to Birmingham") swap to the existing `dd-redlining-8b` (HOLC Security Map of Brooklyn) which is already in the annot table and already used as shot 0 of s5, OR a multi-city plate — do not show the Chicago map here. Wherever the colored Chicago grade map IS used (s4, "graded them block by block in color"), re-export it from a clean, unwatermarked source (Mapping Inequality / dsl.richmond.edu allows clean export) and remove the "Joelean Hall" credit burn-in, or replace with an in-house recolor.
+
+[P1-c] ~08:00-08:36 (s6, dd-redlining-14) and ~09:30-10:33 (s6/s7, dd-redlining-15) — MODERN COLOR PHOTOS BREAK THE ARCHIVAL FILM AND READ AS WRONG-ERA STILLS.
+On screen: (1) dd-redlining-14 "The United States Supreme Court" is a crisp modern full-color dusk photo with electric lights on; (2) dd-redlining-15 "The Shelley House on Labadie Avenue" is a present-day color snapshot (modern windows, a window AC unit, recent landscaping). Both sit inside an otherwise 100% sepia/B&W 1930s-40s film. The Supreme Court shot is captioned "the building, completed 1935, that heard both cases" yet shows a modern photograph; the Shelley House is the modern house, not a period image. Against the period material this reads as wrong-subject/wrong-era and is the most jarring tonal break in the film.
+FIX: Either (a) source period (1930s-40s) B&W images of the Supreme Court building and of the Shelley house, or (b) at minimum run both stills through the same sepia/desaturate + grain grade used on every other asset so they stop looking like modern stock photos. The Supreme Court in particular has abundant public-domain 1930s-40s exteriors.
+
+=================== P2 — GRAPHICS + IMAGE POLISH (THE OSCAR BAR) ===================
+
+[P2-a] ~00:24-00:33 (s1, stat hoytBook) — STAT-CARD COUNT-UP ROLLS THROUGH NONSENSE YEARS.
+The "1933" year animates by counting up and passes through 1607, 1873, 1978 mid-tween. A publication-YEAR stat counting up through a future year (1978) and random years looks broken for ~1s before it settles. Settled card is clean.
+FIX: In the stat-card graphic function, disable the rolling count-up for year-type values (or have years snap/fade in rather than odometer-roll). Same effect should be applied to all year stats (fhaCreated 1934, shelley, illinois2022 2022).
+
+[P2-b] ~02:28-02:33 (s2, graphic wealth-gap) — DOLLAR COUNT-UP ROLLS THROUGH ABSURD VALUES.
+Same odometer problem: the $285K / $45K bars animate through values like "$7773K" and "$1.3K" before settling. Settled chart (THE GAP IT LEFT, $285K vs $45K, MORE THAN 6 to 1, Fed 2022 SCF) is excellent.
+FIX: Cap the count-up range so intermediate frames never exceed the final value, or ease the number in without the odometer roll.
+
+[P2-c] ~05:03-05:21 (s4, homer-hoyt) — HERO MAP IS LOW-LEGIBILITY MONOCHROME, SHOWN SMALL.
+On screen: the real B&W "Residential Security Map" of Chicago, but it's dense, monochrome, vignetted and floated small. VO here is literally about COLOR grading ("Green was A... Red was D, hazardous"), so a colorless map undercuts the line and reads as a generic old map.
+FIX: Push in (Ken-Burns zoom) on the South Side / Black Belt quadrant so the grading is readable, OR move the cleaned colored grade map to THIS color-described beat and use the monochrome original only as a brief establishing wide.
+
+[P2-d] Whole film — racial-hierarchy-doc (covenant clipping) IS OVERUSED (asset-shortage feel).
+It carries at least 5 different beats: ~01:09 (s1), ~02:40 (s2), ~03:00-04:30 long run (s3), ~07:00 (s5), and ~10:36-11:06 (s7). One static document doing this much narrative work is the clearest "we ran short on stills" tell in an otherwise rich reel.
+FIX: Diversify. The annot table already lists unused/under-used period stills (great-migration, dd-color-line-7 1919 riot, dd-color-line-3 Defender, color-line-6 Arthur family). Re-anchor 2-3 of the covenant-doc instances to these so the clipping appears at most twice.
+
+[P2-e] ~05:18-08:36 — SUPREME COURT EXTERIOR and SHELLEY HOUSE each held in long static runs.
+Beyond the era mismatch (P1-c), the SCOTUS exterior sits nearly motionless ~08:00-08:36 and the Shelley house repeats across ~09:30-10:33 with large empty blurred side margins (portrait image on 16:9). Reads static and under-designed.
+FIX: Add a slow push/pan, and fill the portrait-image side margins with a darker treatment or a tighter crop so the blurred-duplicate background isn't so prominent.
+
+[P2-f] ~10:30 vs ~09:30 — POSSIBLE CAPTION/IMAGE MISALIGNMENT on the s7 covenant beat.
+At ~10:33 the caption "It did not strike the covenants from the deeds" shows the Shelley HOUSE, then the covenant DOC appears a beat later. The storyboard maps that exact line to `racial-hierarchy-doc`. The doc should be on screen ON that line, not the house.
+FIX: Nudge the covenant-doc shot earlier so it lands on "It did not strike the covenants from the deeds", and move the house to "Black families across the country began to cross the old lines".
+
+[P2-g] Chart vs script ordering (s1 hierarchy graphic, ~01:12-01:24) — MINOR FACTUAL DIVERGENCE.
+The bar chart's bottom two rows are "Jews and Mexicans" then "Black and Asian Americans". The script/VO states Hoyt's actual order as "...Russian Jews of the lower class and South Italians... at the very bottom Negroes, and then Mexicans." So the chart pairs Mexicans with Jews and Asians with Black, which doesn't match the narrated bottom ("Negroes, then Mexicans"). The chart itself is beautifully built; only the grouping diverges.
+FIX: Either relabel the bottom bars to track the script (…Southern Italians / Jews / Negroes / Mexicans) or add a one-line note that the chart simplifies Hoyt's categories. Low risk but a sharp viewer will catch it.
+
+=================== P3 — PACING / TRANSITIONS ===================
+
+[P3-a] ~10:36-11:06 (s7) — covenant doc held static ~25-30s, the single longest static hold in the film. Drags right before the close. Cut to ~12-15s or intercut a second still.
+
+[P3-b] ~03:00-04:30 (s3) — covenant-doc + Sanborn-map stretch is the slowest passage; several near-identical map/doc holds back to back. Tighten by 5-8s and vary the assets (see P2-d).
+
+[P3-c] ~08:00-08:36 (s6) — SCOTUS exterior run feels long against a fast VO turn ("The wall had a gap... still stood"). Trim ~6-8s or add motion.
+
+[P3-d] ~04:42 (Bricks chapter card) and ~04:54 — "Bricks on Rhodes Avenue" chapter title is dark-gray text on a dark-gray field; borderline contrast vs the bright s7 "Dead Words That Stayed" card. Lift the title luminance to match the s7 card.
+
+[P3-e] ~00:03 opening title — eyebrow separator "ROOTED FORWARD . A DETAILED FILM" uses a stray space-period-space that looks like a typo. Use a middot/bullet or restyle to "ROOTED FORWARD — A DETAILED FILM" equivalent (note: site bans em-dashes in copy; use a centered dot).
+
+CLEAN / VERIFIED GOOD (no action): opening title card (00:03); hierarchy bar chart (01:12-01:24, best graphic in the film); under-2% stat (04:45); about-54% stat (08:54) with correct Hansberry v. Lee 311 U.S. 32 (1940) cite; wealth-gap settled chart; Dead Words That Stayed chapter card (09:51); 2022 stat; Black Belt / kitchenette Russell Lee stills (06:18 etc., on-tone); end card "Rooted Forward / The ground keeps moving" (12:00). No black/corrupt frames found; no comma-in-year defects in settled cards; divider numbers (239, 2, $83,000+, 1934) all read correctly.

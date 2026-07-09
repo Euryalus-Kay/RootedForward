@@ -3,7 +3,7 @@
 // Exhibit screenshot harness: state-driven captures at desktop
 // (1440x900) and mobile (390x844 @2x), console errors flagged.
 //   node scripts/exhibit-shots.mjs               all states
-//   node scripts/exhibit-shots.mjs --states gate,ch0-pause
+//   node scripts/exhibit-shots.mjs --states top,ch0-map
 //   node scripts/exhibit-shots.mjs --base https://rooted-forward.org
 // Output: /tmp/exhibit-shots/<state>--desktop.png / --mobile.png
 // ------------------------------------------------------------------
@@ -16,67 +16,49 @@ mkdirSync(OUT, { recursive: true });
 const EX = "/tours/chicago/hyde-park";
 const DEBUG = `${EX}?debug=1`;
 
-/** Each state: route + optional setup(page) to drive the UI there. */
+/** viewport-height shot at an anchor */
+const atAnchor = (anchor) => async (page) => {
+  await page.evaluate((a) => document.getElementById(a)?.scrollIntoView(), anchor);
+  await new Promise((r) => setTimeout(r, 600));
+};
+
+/** Each state: route + optional setup(page); fullPage captures the
+ *  whole document, others frame the anchored section. */
 const STATES = [
-  { id: "gate", route: DEBUG },
+  { id: "top", route: DEBUG },
   {
-    id: "ch0-cold-open",
-    route: DEBUG,
+    id: "ch0-map",
+    route: `${DEBUG}&ch=ch0`,
     async setup(page) {
-      await page.click('[data-testid="mode-guided"]');
-      await new Promise((r) => setTimeout(r, 700));
-    },
-  },
-  {
-    id: "ch0-pause-declined",
-    route: DEBUG,
-    async setup(page) {
-      await page.click('[data-testid="mode-guided"]');
+      // open one area sheet and frame the station itself
       await page
-        .waitForFunction(() => window.__exhibit?.state().playState === "pause_point", { timeout: 15000 })
+        .waitForSelector('#ch0 [data-station="holc-map"] [role="button"]', { timeout: 20000 })
         .catch(() => {});
-      // stamp a couple of declines so the shot shows the interaction
       await page.evaluate(() => {
-        const areas = document.querySelectorAll('[data-testid="interactive-declined-map"] [role="button"]');
-        for (const a of Array.from(areas).slice(0, 2)) a.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        const a = document.querySelector('#ch0 [data-station="holc-map"] [role="button"]');
+        a?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        document.querySelector('#ch0 [data-station="holc-map"]')?.scrollIntoView();
       });
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 600));
     },
   },
   { id: "ch1-first-taking", route: `${DEBUG}&ch=ch1` },
-  { id: "ch2-fair-boom", route: `${DEBUG}&ch=ch2` },
-  { id: "ch3-machinery", route: `${DEBUG}&ch=ch3` },
-  {
-    id: "ch4-witness",
-    route: `${DEBUG}&ch=ch4`,
-    async setup(page) {
-      await page.evaluate(() => {
-        [...document.querySelectorAll('[data-testid="advisory-gate"] button')]
-          .find((b) => b.textContent.trim() === "Continue")?.click();
-      });
-      await page
-        .waitForFunction(
-          () => document.querySelector('[data-testid="bombing-marks"]')?.getAttribute("data-count") === "32",
-          { timeout: 20000 }
-        )
-        .catch(() => {});
-    },
-  },
-  { id: "ch5-hud-lamps", route: `${DEBUG}&ch=ch5` },
-  { id: "ch6-lens", route: `${DEBUG}&ch=ch6` },
-  { id: "ch7-walls-crack", route: `${DEBUG}&ch=ch7` },
-  { id: "ch8-mid-tour-hud", route: `${DEBUG}&ch=ch8` },
+  { id: "ch2-fair", route: `${DEBUG}&ch=ch2` },
+  { id: "overture-machines", route: `${DEBUG}&ch=ch0_5` },
+  { id: "ch4-advisory", route: `${DEBUG}&ch=ch4` },
+  { id: "ch6-map-again", route: `${DEBUG}&ch=ch6` },
   { id: "ch9-two-buyers", route: `${DEBUG}&ch=ch9` },
-  { id: "ch10-hold-line", route: `${DEBUG}&ch=ch10` },
-  { id: "ch11-closing", route: `${DEBUG}&ch=ch11` },
   {
-    id: "explore-mode",
-    route: DEBUG,
+    id: "ch11-ledger",
+    route: `${DEBUG}&ch=ch11`,
     async setup(page) {
-      await page.click('[data-testid="mode-explore"]');
-      await new Promise((r) => setTimeout(r, 700));
+      await page.evaluate(() =>
+        document.querySelector('[data-testid="ledger-table"]')?.scrollIntoView()
+      );
+      await new Promise((r) => setTimeout(r, 600));
     },
   },
+  { id: "about", route: DEBUG, setup: atAnchor("about") },
 ];
 
 function arg(name) {
@@ -106,7 +88,7 @@ for (const state of list) {
       if (state.setup) await state.setup(page);
       await new Promise((r) => setTimeout(r, 400));
       const file = `${OUT}/${state.id}--${vp.name}.png`;
-      await page.screenshot({ path: file, fullPage: vp.name === "desktop" });
+      await page.screenshot({ path: file });
       const flag = errs.length ? `  [${errs.length} console error(s)!]` : "";
       console.log(`shot ${file}${flag}`);
       if (errs.length) {

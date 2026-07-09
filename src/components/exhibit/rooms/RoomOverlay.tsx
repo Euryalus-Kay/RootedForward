@@ -17,10 +17,9 @@ import { useEffect, useRef, type Dispatch } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import dynamic from "next/dynamic";
 import type { ExhibitAction } from "@/lib/exhibit/types";
-import { allMachines, COUNTER_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
+import { COUNTER_ROOM_ID, isRoomId, machineOf, type RoomId } from "@/lib/exhibit/machines";
 import { COUNTER_ROOM } from "@/lib/exhibit/content/rooms";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
-import { announce } from "@/lib/exhibit/focus";
 import { moveFocus } from "@/lib/exhibit/focus";
 import { machineTitle } from "../hud/BrassLamp";
 
@@ -62,19 +61,11 @@ const MachineRoom = dynamic(() => import("./MachineRoom"), {
 
 export default function RoomOverlay() {
   const state = useExhibitState();
-  const stateRef = useRef(state);
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
   const dispatch = useExhibitDispatch();
 
   const openRoom = state.openRoom;
   const isCounter = openRoom === COUNTER_ROOM_ID;
   const machine = openRoom && !isCounter ? machineOf(openRoom) : undefined;
-
-  /* the collectible set: visiting a machine room collects its card
-     (derived from visitedRooms; the counter room is not a card) */
-  const cardCount = allMachines().filter((m) => state.visitedRooms.includes(m.machineId)).length;
 
   const plateTitle = machine ? machineTitle(machine) : isCounter ? COUNTER_ROOM.title : undefined;
   const platePlain = machine ? machine.plainName : isCounter ? COUNTER_ROOM.plainName : undefined;
@@ -121,28 +112,7 @@ export default function RoomOverlay() {
     return () => window.removeEventListener("popstate", onPop);
   }, [dispatch]);
 
-  const close = () => {
-    dispatch({ type: "CLOSE_ROOM" });
-    // "Back to the tour" must not strand a guided visitor in silence: the
-    // tour stays paused by design, and the first time this happens we say
-    // so, out loud and in a brief chip near the play control (C2 curator)
-    if (stateRef.current.mode === "guided" && stateRef.current.playState === "paused") {
-      announce("Tour paused. Press play when you are ready.");
-      if (!stateRef.current.firedOnce.includes("room-pause-cue")) {
-        dispatch({ type: "MARK_FIRED", key: "room-pause-cue" });
-        const host = document.getElementById("exh-hud-continue-chip");
-        if (host) {
-          const chip = document.createElement("div");
-          chip.setAttribute("data-testid", "room-pause-chip");
-          chip.className =
-            "exh-plat flex min-h-12 items-center rounded-sm border border-exh-ink/15 bg-exh-linen px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink shadow-[0_1px_3px_rgba(28,26,23,0.12)]";
-          chip.textContent = "Tour paused. Press play when you are ready.";
-          host.appendChild(chip);
-          setTimeout(() => chip.remove(), 8000);
-        }
-      }
-    }
-  };
+  const close = () => dispatch({ type: "CLOSE_ROOM" });
 
   return (
     <Dialog.Root
@@ -169,7 +139,7 @@ export default function RoomOverlay() {
           const door = lastRoomRef.current
             ? document.querySelector<HTMLElement>(`[data-testid="door-enter-${lastRoomRef.current}"]`)
             : null;
-          moveFocus(door ?? document.querySelector<HTMLElement>('[data-testid="chapter-stage"]'));
+          moveFocus(door ?? document.querySelector<HTMLElement>('[data-testid="exhibit-root"]'));
         }}
         className="exh-paper fixed inset-0 z-[56] overflow-y-auto overscroll-contain border-exh-ink/30 bg-exh-linen shadow-[0_8px_40px_rgba(28,26,23,0.5)] focus:outline-none md:inset-x-6 md:inset-y-5 md:rounded-sm md:border"
       >
@@ -188,20 +158,13 @@ export default function RoomOverlay() {
                 </p>
               ) : null}
             </div>
-            <span
-              data-testid="machine-cards-chip"
-              className="exh-plat inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[2px] border border-exh-ink/30 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-exh-ink-soft"
-            >
-              Machine cards, <span className="exh-mono text-exh-ink">{cardCount}</span> of{" "}
-              <span className="exh-mono text-exh-ink">5</span>
-            </span>
             <Dialog.Close asChild>
               <button
                 type="button"
                 data-testid="room-close"
                 className="exh-plat inline-flex min-h-12 shrink-0 cursor-pointer items-center border border-exh-ink/40 bg-exh-linen px-4 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink transition-colors duration-200 hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen"
               >
-                Back to the tour
+                Back to the exhibit
               </button>
             </Dialog.Close>
           </div>

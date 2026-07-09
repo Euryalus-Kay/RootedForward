@@ -3,7 +3,7 @@ import ExhibitApp from "./ExhibitApp";
 
 /* ------------------------------------------------------------------ */
 /*  Server shell for The Ground Keeps Moving. Renders the crawlable    */
-/*  breadcrumb, title, and dek, then mounts the client exhibit. This   */
+/*  breadcrumb and summary, then mounts the client exhibit. This       */
 /*  page intentionally skips PageTransition; QC screenshots must       */
 /*  capture real frames.                                               */
 /* ------------------------------------------------------------------ */
@@ -11,7 +11,7 @@ import ExhibitApp from "./ExhibitApp";
 export const EXHIBIT_TITLE = "The Ground Keeps Moving";
 export const EXHIBIT_KICKER = "Hyde Park, 1832 to 2026";
 export const EXHIBIT_DEK =
-  "A guided, interactive history of one Chicago neighborhood and the five machines that built the racial wealth gap. Redlining, urban renewal, land contracts, restrictive covenants, and the realtors' code, told on the ground where they ran, with the people who fought back.";
+  "A reader-paced history of one Chicago neighborhood and the paperwork that decided who could live there. Property deeds, appraisal forms, a realtors' rule book, and a federal map, shown as the real documents, with the people who fought back.";
 
 export default function ExhibitShell() {
   return (
@@ -44,17 +44,13 @@ export default function ExhibitShell() {
               <li className="font-semibold text-exh-ink">{EXHIBIT_TITLE}</li>
             </ol>
           </nav>
-          {/* Crawlable summary; the client app repeats the title inside the mode gate */}
-          <header className="sr-only">
-            <p>{EXHIBIT_KICKER}</p>
-            <h1>{EXHIBIT_TITLE}</h1>
-            <p>{EXHIBIT_DEK}</p>
-            <p>
-              This exhibit documents racial terrorism, including bombings and the killing of a
-              teenager. No graphic imagery is shown. A full text transcript is available inside
-              the exhibit.
-            </p>
-          </header>
+          {/* Crawlable summary; the visible h1 renders in the exhibit header */}
+          <p className="sr-only">{EXHIBIT_KICKER}</p>
+          <p className="sr-only">{EXHIBIT_DEK}</p>
+          <p className="sr-only">
+            One chapter documents racial terrorism, including bombings and the killing of a
+            teenager. No graphic imagery is shown, and an inline advisory marks the chapter.
+          </p>
         </div>
       </section>
       <ExhibitApp />

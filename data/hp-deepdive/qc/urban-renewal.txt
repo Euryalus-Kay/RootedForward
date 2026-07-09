@@ -1,0 +1,35 @@
+ROOT CAUSE (drives the 3 worst P1/P2 items): the stat-card renderer treats the numeric part of every "value" string as an integer, applies thousands-separator formatting, AND runs a count-up animation toward it. That is correct for true counts (~4,000, $250 million) but corrupts values that merely CONTAIN a number that is not a quantity: a year ("1955"), a year inside a phrase ("completed 1961"), and an ordinal street ("61st Street"). Fix in the graphic/stat-card function: add a per-stat flag like literal:true (or detect when the numeric token is a 4-digit year or is glued to letters such as "st"/"completed") so those values are typed out as a static string with NO comma-grouping and NO count-up. This single fix clears P1-1, P1-2, and P2-1.
+
+=== P1 — must fix before anyone sees it ===
+
+P1-1  ~04:24-04:33 (firstdemo card). Wall label FIRST DEMOLITION, value renders and HOLDS on "May 1,955" with a thousands comma; mid-count it reads "May 1,549" (04:24). Caption/VO "the first demolition came that May, in 1955". A comma in a year is the single most disqualifying graphic in the film and it is the FINAL held state, not a transient. Fix: mark stat "firstdemo" as literal (value "May 1955"), no grouping, no count-up.
+
+P1-2  ~07:12-07:24 (pei card). Wall label UNIVERSITY APARTMENTS, value renders and HOLDS on "completed 1,961"; mid-count "completed 1,874" (07:15). VO "finished in 1961". Same comma-in-year defect, again in the final held frame. Fix: mark stat "pei" literal (value "completed 1961").
+
+P1-3  Generic portrait stands in for THREE different named real people, contradicting its own caption each time. The same Wikimedia-Commons photo of a bald, round-spectacled older man (asset dd-redlining-4a, wall-labeled "The Chicago Sociologist") is used at ~01:24 as Julian Levi ("a corporate lawyer named Julian Levi"), reused ~05:42-05:51 as "Two sociologists, Peter Rossi and Robert Dentler" (one face for two men, neither of whom is the man pictured), and again in s6 ~09:54 for "a community that reads nothing." On a film whose whole thesis is naming who did what, putting one stranger's face on Levi AND Rossi AND Dentler is a factual-integrity break. Fix: source a real Julian Levi portrait for s1/s2; for the Rossi-Dentler beat (s4 shot 8) DROP the portrait and show the book instead (you already cite "The Politics of Urban Renewal" in the callout) or a neutral document card; never label the same face as three people.
+
+=== P2 — Oscar-worthy polish bar ===
+
+P2-1  Count-up animation manufactures FALSE on-screen numbers on every numeric card for ~1-2s before landing. Confirmed instances: "18%" climbing to crime 32% (~01:03), "1623" climbing to secc 1952 (~01:06), "~3,461" to families ~4,000 (~04:39), "29%" to money $29M region (~05:42), and the street/year cases above. "1623" in particular reads as a plausible wrong year and "56st/21st Street" reads as gibberish. Fix: kill the count-up for all non-quantity cards (years, dates, ordinals, currency phrases) via the literal flag; for true quantities keep the count-up but shorten it so the wrong intermediate is not legible for a full sampling beat.
+
+P2-2  ~04:48-04:57 (61st card upstream) and ~10:36-10:39 WOODLAWN BOUNDARY card animates through "21st Street" (10:37) and "56st Street" toward "61st Street". Same root cause; listed separately because the intermediate is nonsense text, not just a wrong number. Fix: literal flag on stat "line61".
+
+P2-3  Burned-in "WIKIMEDIA COMMONS" credit runs across the middle-right of the Levi/"Chicago Sociologist" portrait every time it appears (clear at ~05:54, also ~01:24, ~03:00, ~09:54). A source watermark stamped across the subject's face reads as un-cleared art on a festival cut. Fix: recrop the asset to exclude the credit band, or replace with a clean-scan portrait (ties into the P1-3 swap anyway).
+
+P2-4  Double wall labels collide on the Levi portrait. At ~05:42-05:51 the frame carries BOTH a top-left label "The Chicago Sociologist / University of Chicago social science..." and a bottom-left "The Politics of Urban Renewal / Rossi and Dentler 1961" on the same still (also a stray "46%" chart ghost bleeding through behind the head at ~05:51). Two competing identifications on one face is confusing and contradictory. Fix: one label per shot; when the asset changes meaning, change the asset.
+
+P2-5  Stat/chart redundancy in s4. The "return-rate" bar chart (WHO GOT TO STAY, 46% white vs 17% Black, ~05:48-05:54, which itself renders cleanly) is immediately followed by standalone "46%" and "17%" stat cards (~05:57-06:18) saying the same two numbers a second time. It double-spends ~25s on one comparison. Fix: keep the chart, cut the two duplicate stat cards (or vice-versa), and reclaim the time for the thin demolition/clearance imagery.
+
+P2-6  Crime stat shown in two inconsistent treatments back to back. At ~01:03 "32%" (mid 18%) is overlaid on an aerial photo with the REPORTED CRIME JUMP label small and orange and low-contrast over the buildings; at ~01:05 the same stat re-appears as a clean dark-card "32%". The photo-overlay version is hard to read (orange label on grey rooftops). Fix: pick one treatment; if keeping the overlay, darken the scrim behind the label.
+
+P2-7  Opening Gothic-campus stills (Cobb Hall / Tower Group, ~00:15-00:33) are graded very dark — buildings read as near-silhouette against the dark-green background, washing out detail. Fix: lift the asset exposure/contrast a stop or add a subtle vignette-light so the stone reads; these are establishing shots and currently look murky rather than intentional.
+
+=== P3 — pacing ===
+
+P3-1  ~09:00-10:33 (s6) the "Plan of the Midway Plaisance" map graphic (dd-urban-renewal-1) is the dominant image for long stretches and recurs four times in the section with little visual change; it starts to drag. Fix: intercut the existing dd-urban-renewal-2 "63rd Street in Woodlawn" street photo more, or hold each map instance shorter.
+
+P3-2  ~09:42-10:12 the Levi/"reads nothing" portrait plus the Brazier portrait beats sit on near-static single stills for ~6-8s each with only a slow push. Fix: trim each to ~4-5s or add a second Woodlawn/TWO still so the s6 climax keeps momentum.
+
+P3-3  Transition into the firstdemo card (~04:21-04:24) hard-cuts from a moving clearance photo straight into the count-up card mid-animation, so the eye lands on the broken "May 1,549" at the cut. Once the literal-value fix lands, also give this card a brief fade-in so it resolves to "May 1955" cleanly rather than snapping in mid-count.
+
+VERIFIED-CLEAN (no action): main title card (00:00) and Rooted Forward outro (11:33) are well composed and legible; "Nov 7 1958" council card renders with no comma; families "~4,000", "$29 million", "~$250 million", "down ~40%", "up ~70%", "15,000+", "up ~500%" all format correctly; the 46/17 bar chart geometry and labels are correct. No black/corrupt frames found across all 232 sampled frames.
