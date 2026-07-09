@@ -38,6 +38,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /* Render markdown content with basic formatting */
+
+/* Inline pass shared by paragraphs and list items. Handles [text](url)
+   links and **bold** segments; everything else passes through as text. */
+function renderInline(text: string, keyPrefix: string): React.ReactNode[] {
+  const parts = text.split(/(\[.*?\]\(.*?\)|\*\*[^*]+\*\*)/);
+  return parts.map((part, j) => {
+    const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+    if (linkMatch) {
+      return (
+        <a
+          key={`${keyPrefix}-${j}`}
+          href={linkMatch[2]}
+          target={linkMatch[2].startsWith("/") ? undefined : "_blank"}
+          rel={linkMatch[2].startsWith("/") ? undefined : "noopener noreferrer"}
+          className="text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust"
+        >
+          {linkMatch[1]}
+        </a>
+      );
+    }
+    const boldMatch = part.match(/^\*\*([^*]+)\*\*$/);
+    if (boldMatch) {
+      return (
+        <strong key={`${keyPrefix}-${j}`} className="font-semibold text-ink">
+          {boldMatch[1]}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 function RenderGuideContent({ markdown }: { markdown: string }) {
   const lines = markdown.split("\n");
   const elements: React.ReactNode[] = [];
@@ -75,36 +107,16 @@ function RenderGuideContent({ markdown }: { markdown: string }) {
       elements.push(
         <ul key={i} className="my-3 list-disc pl-6 font-body text-base leading-relaxed text-ink/75 space-y-1">
           {items.map((item, j) => (
-            <li key={j}>{item}</li>
+            <li key={j}>{renderInline(item, `li-${i}-${j}`)}</li>
           ))}
         </ul>
       );
     } else if (line.trim() === "") {
       // skip blank lines
     } else {
-      // Render links in text: [text](url)
-      const parts = line.split(/(\[.*?\]\(.*?\))/);
-      const rendered = parts.map((part, j) => {
-        const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-          return (
-            <a
-              key={j}
-              href={linkMatch[2]}
-              target={linkMatch[2].startsWith("/") ? undefined : "_blank"}
-              rel={linkMatch[2].startsWith("/") ? undefined : "noopener noreferrer"}
-              className="text-rust underline decoration-rust/30 underline-offset-2 hover:decoration-rust"
-            >
-              {linkMatch[1]}
-            </a>
-          );
-        }
-        return part;
-      });
-
       elements.push(
         <p key={i} className="my-3 font-body text-base leading-relaxed text-ink/75">
-          {rendered}
+          {renderInline(line, `p-${i}`)}
         </p>
       );
     }

@@ -11,6 +11,15 @@ import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import { getImmersiveTour } from "@/lib/immersive/data";
 import type { TourStop } from "@/lib/types/database";
 
+/* Meta descriptions come from longer body copy; cut at a word boundary
+   under the limit instead of mid-word. */
+function metaDescription(text: string, limit = 160): string {
+  if (text.length <= limit) return text;
+  const cut = text.slice(0, limit);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${cut.slice(0, lastSpace > 0 ? lastSpace : limit).replace(/[,;.]?$/, "")}...`;
+}
+
 interface PageProps {
   params: Promise<{ city: string; slug: string }>;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -46,9 +55,11 @@ function buildFallbackStop(
 }
 
 function getAllFallbackStops(citySlug: string): TourStop[] {
+  // ids must match buildFallbackStop's `placeholder-${slug}` scheme or
+  // RelatedStops cannot exclude the current stop from its own list
   return PLACEHOLDER_STOPS.filter((s) => s.city === citySlug).map(
-    (s, index) => ({
-      id: `placeholder-${index}`,
+    (s) => ({
+      id: `placeholder-${s.slug}`,
       city: s.city,
       slug: s.slug,
       title: s.title,
@@ -134,7 +145,7 @@ export async function generateMetadata({
   if (city === "chicago" && (slug === "hyde-park" || slug === "hyde-park-exhibit")) {
     return {
       title: `${EXHIBIT_TITLE} | Hyde Park | Rooted Forward`,
-      description: EXHIBIT_DEK.slice(0, 160),
+      description: metaDescription(EXHIBIT_DEK),
     };
   }
 
@@ -143,7 +154,7 @@ export async function generateMetadata({
   if (immersive) {
     return {
       title: `${immersive.title} | ${getCityName(city)} | Rooted Forward`,
-      description: immersive.dek.slice(0, 160),
+      description: metaDescription(immersive.dek),
     };
   }
 
@@ -155,7 +166,7 @@ export async function generateMetadata({
 
   return {
     title: `${data.stop.title} | ${data.cityName} Tour | Rooted Forward`,
-    description: data.stop.description.slice(0, 160),
+    description: metaDescription(data.stop.description),
   };
 }
 

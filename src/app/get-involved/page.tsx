@@ -282,9 +282,9 @@ export default function GetInvolvedPage() {
                 Join or Start a Chapter
               </h2>
               <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
-                Chapters research their city&rsquo;s history, build tours,
-                and organize around local policy. Join the Chicago chapter or
-                start one in your own city.
+                Chapters dig into their city&rsquo;s history and turn what
+                they find into tours and policy work. Join the Chicago
+                chapter or start one in your own city.
               </p>
             </div>
             <div className="md:col-span-8">
@@ -331,7 +331,7 @@ export default function GetInvolvedPage() {
                 Explore Our Work
               </h2>
               <p className="mt-4 font-body text-sm leading-relaxed text-ink/60">
-                Walk the tours, listen to the podcast, or use our policy tools.
+                Walk the tours or listen to the podcast.
               </p>
               <div className="mt-6 flex flex-col gap-3">
                 <Link

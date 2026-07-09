@@ -98,7 +98,7 @@ export const PLACEHOLDER_CAMPAIGNS: Campaign[] = [
     problem_markdown:
       "## The Problem\n\nThe Obama Presidential Center broke ground in Jackson Park in 2021 and opened in June 2026. It is drawing visitors and new investment into the neighborhoods around it. That pressure lands in Woodlawn, a neighborhood that census counts show lost most of its population between 1960 and 2010 as urban renewal, redlining, and disinvestment hollowed out its blocks.\n\nThe residents who stayed, or who moved in during the decades when nobody else would invest, now face displacement by the very revitalization their neighborhood was promised. Property values and rents in the area have been rising since the center was announced.\n\nIn 2020, City Council passed the Woodlawn housing preservation ordinance, which created new affordability tools for the neighborhood. It did not include the rent stabilization provisions that community groups had been demanding.",
     proposal_markdown:
-      "## What We're Proposing\n\nA binding affordable housing covenant attached to all residential properties within a half-mile of the Obama Presidential Center site. The covenant would:\n\n1. Cap annual rent increases at 3% or CPI (whichever is lower) for existing tenants for 15 years\n2. Require landlords receiving any city subsidy in the impact zone to maintain 30% of units at or below 60% AMI\n3. Establish an independent monitoring body with community representation\n4. Create an anti-displacement fund financed by a 1% transfer tax on property sales over $500,000 in the impact zone\n\nThis is not a blanket rent control proposal. It is a targeted protection for a specific geography facing a specific displacement pressure, modeled on protections other cities have adopted near major public investments.",
+      "## What We're Proposing\n\nA binding affordable housing covenant attached to all residential properties within a half-mile of the Obama Presidential Center site. The covenant would:\n\n1. Cap annual rent increases at 3% or CPI (whichever is lower) for existing tenants for 15 years\n2. Require landlords receiving any city subsidy in the impact zone to maintain 30% of units at or below 60% AMI\n3. Establish an independent monitoring body with community representation\n4. Create an anti-displacement fund financed by a 1% transfer tax on property sales over $500,000 in the impact zone\n\nThe covenant is narrower than citywide rent control. It applies only to the blocks facing the most direct displacement pressure, follows measures other cities have adopted near major public investments, and expires after fifteen years.",
     comment_template:
       "I am a Chicago resident writing to urge the Department of Housing to adopt a binding affordable housing covenant for the Woodlawn impact zone surrounding the Obama Presidential Center. The 2020 Woodlawn housing preservation ordinance left out the rent stabilization protections community organizations had been demanding. As development pressure increases, existing renters, many of whom stayed through decades of disinvestment, need binding protections against displacement. I support Rooted Forward's proposal for a 15-year covenant capping rent increases and requiring affordable unit set-asides in subsidized properties.",
     decision_makers: [
@@ -137,7 +137,7 @@ Written comments submitted to the City Clerk's office are distributed to all 50 
 
 ## When to submit
 
-Submit your comment **before** the scheduled vote. Comments submitted after a vote still enter the record, but they cannot influence the outcome. City Council meets roughly once a month; check the [City Clerk meeting schedule](https://www.chicityclerk.com/legislation-records/journals-and-reports/meetings) for exact dates. Committee hearings, where most of the real debate happens, are listed separately.
+Submit your comment **before** the scheduled vote. Comments submitted after a vote still enter the record, but they cannot influence the outcome. City Council meets roughly once a month; check the [City Council meeting calendar](https://chicago.legistar.com/Calendar.aspx) for exact dates. Committee hearings, where most of the real debate happens, are listed on the same calendar.
 
 For maximum impact, submit at least **48 hours** before the committee hearing where the ordinance will be discussed. That is when staff are compiling briefing materials.
 
@@ -149,9 +149,9 @@ Do not use form letters if you can avoid it. Staff can tell. A two-paragraph com
 
 ## Where to send it
 
-**Email**: Send to your alderperson directly (find them at [Ward Office Finder](https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html)) and CC the City Clerk at officeofthecityclerk@cityofchicago.org.
+**By email.** Send to your alderperson directly (find them at [Ward Office Finder](https://www.chicago.gov/city/en/depts/mayor/iframe/lookup_ward_and_alderman.html)) and CC the City Clerk's office (current contact details are on [chicityclerk.com](https://www.chicityclerk.com)).
 
-**In person**: You can also deliver written testimony at the committee hearing or full Council meeting. Sign up to speak during the public comment period, and you will usually get two to three minutes.
+**In person.** You can also deliver written testimony at the committee hearing or full Council meeting. Sign up to speak during the public comment period, and you will usually get two to three minutes.
 
 ## What happens after
 
@@ -191,7 +191,7 @@ You do not need to be a zoning expert. Describe the impact in concrete terms. Sa
 
 ## Where to submit
 
-Written comments go to the Zoning Board of Appeals at zba@cityofchicago.org or to the Committee on Zoning at the City Clerk's office. Copy your alderperson. Attend the hearing in person if you can. Spoken testimony is entered into the hearing record.
+Written comments go to the Zoning Board of Appeals (current submission details are on the [Department of Planning and Development site](https://www.chicago.gov/city/en/depts/dcd.html)) or to the Committee on Zoning through the City Clerk's office. Copy your alderperson. Attend the hearing in person if you can. Spoken testimony is entered into the hearing record.
 
 ## Timing
 
@@ -245,7 +245,7 @@ Legislators track witness slip counts. A bill with 500 opponent slips and 12 pro
       "Use this when you have identified a problem that needs a policy solution and you want to put a concrete recommendation in front of decision-makers.",
     content_markdown: `## What a policy proposal is (and is not)
 
-A policy proposal is a document that identifies a specific problem, proposes a specific solution, and explains why the solution will work. It is not a petition. It is not an op-ed. It is not a list of demands. It is a detailed, evidence-based argument for a particular course of action directed at a particular decision-making body.
+A policy proposal is a document that identifies a specific problem, proposes a specific solution, and explains why the solution will work. It is not a petition or an op-ed. It is a detailed, evidence-based argument for a particular course of action, directed at a particular decision-making body.
 
 Good policy proposals get read because they do the work for the reader. A busy alderperson or committee staffer does not have time to research your issue from scratch. If you hand them a proposal that lays out the problem, the solution, the evidence, the cost, and the precedent, you have made it easy for them to act.
 
@@ -296,7 +296,7 @@ Your alderperson is the most likely sponsor because you are their constituent. F
 
 ## What to bring to the meeting
 
-Bring a written policy proposal (see our [guide on writing one](/policy/guides/write-policy-proposal)). Bring evidence. Bring the names of other constituents who support it. If you have signatures or public comments, bring those too. The alderperson needs to see that this is not just your personal issue. It is a constituency issue.
+Bring a written policy proposal (see our [guide on writing one](/policy/guides/write-policy-proposal)). Bring evidence. Bring the names of other constituents who support it. If you have signatures or public comments, bring those too. The alderperson needs to see that the issue reaches beyond you and into the constituency.
 
 Be specific about what you are asking. "We would like you to introduce an ordinance that does X" lands better than "We would like you to look into the problem of Y."
 
@@ -323,7 +323,7 @@ Twenty-six votes passes an ordinance. You need to get there. That is the math.`,
       "Use this when you want to demonstrate broad support for a position by collecting organizational and individual endorsements on a single letter to a decision-maker.",
     content_markdown: `## What a sign-on letter does
 
-A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It tells the recipient that this is not one person's opinion. This is a coalition position. The recipient sees fifty organizations and three hundred individuals who all agree on a specific ask. That is harder to dismiss than a single comment.
+A sign-on letter is a document sent to a decision-maker that carries the endorsement of multiple organizations and individuals. It shows the recipient a coalition position rather than one person's opinion. Fifty organizations and three hundred individuals who all agree on a specific ask are harder to dismiss than a single comment.
 
 ## Write the letter first
 
@@ -349,7 +349,7 @@ Set a deadline for signatures. Two weeks is standard. Send the form to every org
 
 ## Who to send it to
 
-Address the letter to the specific person who can act on your request. CC their staff, the relevant committee, and any other officials who should see it. Send it as a PDF with all signatures listed. Include a cover page with the total count: "This letter has been signed by 47 organizations and 312 individuals."
+Address the letter to the specific person who can act on your request. CC their staff, the relevant committee, and any other officials who should see it. Send it as a PDF with all signatures listed. Include a cover page with the total count, for example "This letter has been signed by 47 organizations and 312 individuals."
 
 ## After you send it
 
@@ -441,7 +441,7 @@ export const PLACEHOLDER_LEARNING_RESOURCES: LearningResource[] = [
     id: "lr8",
     title: "Get an Ordinance Introduced",
     description:
-      "What it takes to get an alderperson to put their name on your proposal and move it through committee. The real process, not the civics textbook version.",
+      "What it takes to get an alderperson to put their name on your proposal and move it through committee, the way it actually works in City Hall.",
     type: "guide",
     icon: "book",
     href: "/policy/guides/get-alderperson-to-sponsor-ordinance",

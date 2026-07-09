@@ -57,14 +57,19 @@ function BoardCard({ member }: { member: BoardMember }) {
   );
 }
 
-/* Founder photo. Drop a square image at public/founder.jpg and it     */
-/* appears automatically; until then the initials mark holds the spot. */
-/* onError misses failures that happen before hydration, so the effect */
-/* also checks the img's loaded state after mount.                     */
+/* Founder photo. While no photo has shipped, this stays null and the  */
+/* initials mark renders with no image request at all (an img pointing */
+/* at a missing file would 404 on every visit and flash broken before  */
+/* hydration). When the photo lands, drop it at public/founder.jpg and */
+/* set this to "/founder.jpg".                                          */
+const FOUNDER_PHOTO_SRC: string | null = null;
+
 function FounderPhoto() {
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  // onError misses failures that happen before hydration, so also
+  // check the img's loaded state after mount
   useEffect(() => {
     const el = imgRef.current;
     if (el && el.complete && el.naturalWidth === 0) {
@@ -73,13 +78,13 @@ function FounderPhoto() {
     }
   }, []);
 
-  if (failed) {
+  if (!FOUNDER_PHOTO_SRC || failed) {
     return <InitialsAvatar name="Zain Zaidi" />;
   }
   return (
     <img
       ref={imgRef}
-      src="/founder.jpg"
+      src={FOUNDER_PHOTO_SRC}
       alt="Zain Zaidi, founder of Rooted Forward"
       className="h-full w-full object-cover"
       onError={() => setFailed(true)}
@@ -277,8 +282,7 @@ export default function AboutPage() {
           <div className="mt-16">
             <h3 className="font-display text-2xl text-forest">Advisory Board</h3>
             <p className="mt-2 font-body text-sm text-ink/60">
-              Educators, researchers, and policy professionals who advise the
-              work.
+              Adults who advise the work without running it.
             </p>
             {advisoryBoard.length > 0 ? (
               <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

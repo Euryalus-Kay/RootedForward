@@ -75,8 +75,8 @@ export default function DraftingArea({ guideTitle, guideSlug, template }: Drafti
         Draft It Here
       </h2>
       <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
-        Use the space below to write your draft. When you are done, copy
-        it to send yourself or request a Rooted Forward member to review it
+        Use the space below to write your draft. When you are done, copy it
+        to email to yourself, or ask a Rooted Forward member to look it over
         before you submit.
       </p>
 

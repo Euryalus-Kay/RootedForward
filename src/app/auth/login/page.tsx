@@ -8,7 +8,15 @@ import toast from "react-hot-toast";
 
 export default function LoginPage() {
   return (
-    <Suspense>
+    // useSearchParams in LoginContent forces a client-side render; the
+    // fallback keeps first paint from being an empty main
+    <Suspense
+      fallback={
+        <div className="flex min-h-[60vh] items-center justify-center bg-cream">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-rust" />
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   );
