@@ -1019,6 +1019,7 @@
       ],
       "factcheckId": "fc-redlining-04",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "machines",
         "walltext"

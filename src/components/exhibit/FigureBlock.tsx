@@ -68,10 +68,13 @@ function composeCreditLine(credit: CreditRecord): string | null {
     /\s+from\s+[A-Z][A-Za-z.'-]*(?:[ -][A-Za-z.'-]+){0,3}(?:,\s*[A-Z][A-Za-z.'-]*(?:[ -][A-Za-z.'-]+){0,3}){0,3}$/,
     ""
   );
-  // a single inverted personal name ("Rees, James H.") reads name-first on
-  // a label; only touch one-segment, one-comma, digit-free personal names
-  if (!/[;\d]/.test(artist) && (artist.match(/,/g) ?? []).length === 1) {
-    const [last, first] = artist.split(",").map((s) => s.trim());
+  // an inverted personal name ("Rees, James H.") reads name-first on a
+  // label; only touch one-comma, digit-free personal names, applied per
+  // semicolon-separated credit segment so multi-artist strings ("Rees,
+  // James H.; Ferd. Mayer & Co.") un-invert the personal parts only
+  const unInvert = (seg: string): string => {
+    if (/\d/.test(seg) || (seg.match(/,/g) ?? []).length !== 1) return seg;
+    const [last, first] = seg.split(",").map((s) => s.trim());
     const nameWord = /^[A-Z][A-Za-z'’.-]*$/;
     const roleWord = /^(?:publisher|photographer|printer|engraver|lithographer|artist|editor|firm|company|co\.?|inc\.?)$/i;
     const personal = [last, first].every(
@@ -80,8 +83,12 @@ function composeCreditLine(credit: CreditRecord): string | null {
         side.length < 30 &&
         side.split(/\s+/).every((w) => nameWord.test(w) && !roleWord.test(w))
     );
-    if (personal) artist = `${first} ${last}`;
-  }
+    return personal ? `${first} ${last}` : seg;
+  };
+  artist = artist
+    .split(";")
+    .map((seg) => unInvert(seg.trim()))
+    .join("; ");
 
   let date = decodeEntities((credit.date ?? "").trim());
   date = date.replace(/date QS:.*$/i, "").trim();

@@ -46,11 +46,12 @@ function StepCard({ step }: { step: ResolvedStep }) {
   }
 
   if (step.role === "takeaway") {
+    /* div, not p: the citation popover mounts block elements inline */
     return (
-      <p ref={refCb} id={step.id} data-testid={`gstep-${step.id}`} className="ground-takeaway">
+      <div ref={refCb} id={step.id} data-testid={`gstep-${step.id}`} className="ground-takeaway">
         {renderRichText(step.text ?? "")}
         <SourceSupGroup factIds={step.factRefs ?? []} />
-      </p>
+      </div>
     );
   }
 
@@ -61,10 +62,10 @@ function StepCard({ step }: { step: ResolvedStep }) {
       data-testid={`gstep-${step.id}`}
       className={step.role === "charge" ? "ground-charge" : "ground-step"}
     >
-      <p>
+      <div className="gstep-text">
         {renderRichText(step.text ?? "")}
         <SourceSupGroup factIds={step.factRefs ?? []} />
-      </p>
+      </div>
     </div>
   );
 }

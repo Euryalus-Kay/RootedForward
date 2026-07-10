@@ -192,7 +192,7 @@
         {
           "id": "a3-s1",
           "role": "step",
-          "text": "By the 1940s, **hundreds of Cook County subdivisions carried covenants** on the model NAREB's general counsel drafted in 1927. A neighbor signed each one and a clerk recorded it.",
+          "text": "By the 1940s, **hundreds of Cook County subdivisions carried covenants** on the model NAREB's general counsel drafted in 1927. The paper spread faster than the dynamite ever had.",
           "factRefs": ["covenants.coverage_claim", "covenants.macchesney_template"],
           "post": ["covenant-armor"]
         },
@@ -269,7 +269,7 @@
           "role": "chapterHead",
           "title": "The university rebuilds the neighborhood",
           "years": "1949 to 1963",
-          "stage": { "frame": "hydePark", "era": "1955", "grades": "none", "linework": false, "boundary": true, "labels": true, "note": { "text": "Hyde Park A and B renewal area", "anchor": "hydePark" } }
+          "stage": { "frame": "hydePark", "era": "1955", "grades": "none", "linework": false, "boundary": true, "labels": false, "note": { "text": "Hyde Park A and B renewal area", "anchor": "hydePark" } }
         },
         {
           "id": "a4-s1",
