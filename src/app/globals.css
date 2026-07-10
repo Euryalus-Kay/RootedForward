@@ -548,7 +548,7 @@ body.exhibit-immersive > footer { display: none; }
 @media (min-width: 1024px) {
   .ground-layout {
     display: grid;
-    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
   }
   .ground-stage-pane {
@@ -558,18 +558,20 @@ body.exhibit-immersive > footer { display: none; }
     justify-content: center;
     border-bottom: none;
     border-right: 1px solid color-mix(in srgb, var(--color-exh-ink) 20%, transparent);
-    padding: 0 20px;
+    padding: 0 16px;
   }
   .ground-steps-pane { margin-inline: 0; padding: 0 48px 18vh; max-width: 44rem; }
 }
 
 /* --- the Stage ----------------------------------------------------- */
 .ground-stage { position: relative; }
-.ground-svg { display: block; width: 100%; height: calc(44svh - 32px); }
-@media (min-width: 1024px) { .ground-svg { height: min(74svh, 640px); } }
+.ground-svg { display: block; width: 100%; height: calc(44svh - 58px); }
+/* the desktop pane holds the map edge to edge; the svg takes the full
+   pane height (fit-height) and the register strip keeps its own lane */
+@media (min-width: 1024px) { .ground-svg { height: calc(100svh - 128px); } }
 @supports not (height: 1svh) {
-  .ground-svg { height: 40vh; }
-  @media (min-width: 1024px) { .ground-svg { height: 70vh; } }
+  .ground-svg { height: calc(40vh - 58px); }
+  @media (min-width: 1024px) { .ground-svg { height: calc(100vh - 128px); } }
 }
 
 /* stage transitions live on layers, not on the svg element */
@@ -622,8 +624,12 @@ body.exhibit-immersive > footer { display: none; }
 .ground-stage [data-mark] { fill: var(--color-exh-ink); fill-opacity: 0.85; }
 .ground-stage [data-square] { fill: none; stroke: var(--color-exh-ink); stroke-opacity: 0.7; stroke-width: 1.4; stroke-dasharray: 6 4; }
 .ground-stage[data-marks="off"] [data-marks] { opacity: 0; }
-.ground-stage[data-frame="blackBelt"] [data-mark] { r: 2.2; }
+/* in the Black Belt crop the marks carry the chapter: larger, with a
+   hairline linen ring so each one reads against the dark ground */
+.ground-stage[data-frame="blackBelt"] [data-mark] { r: 3.3; stroke: var(--color-exh-linen); stroke-width: 0.55; stroke-opacity: 0.8; }
 .ground-stage[data-frame="blackBelt"] [data-square] { stroke-width: 0.7; stroke-dasharray: 3 2; }
+/* labels whose anchor clips against the Black Belt crop hide with it */
+.ground-stage[data-frame="blackBelt"] [data-city-labels] text[data-bb="out"] { display: none; }
 
 /* labels set in the plat face */
 .ground-stage text {
@@ -647,7 +653,15 @@ body.exhibit-immersive > footer { display: none; }
 
 /* the exhibit's two designed value shifts land as cuts, never tweens */
 .ground-stage[data-dim="on"] .ground-svg { filter: brightness(0.5) saturate(0.55); }
-.ground-stage[data-warm="on"] .ground-svg { filter: brightness(1.03) sepia(0.14); }
+/* in the dim the drained linework stays faintly visible (a few percent
+   of contrast against the dark value) so the marks sit in a city, not
+   a void; a cut, no transition, the bombing chapter has no motion */
+.ground-stage[data-dim="on"] [data-linework] { opacity: 0.25; transition: none; }
+/* the basement chapter's warm value shift moves the paper and the page,
+   never the grade pigments (the pigment law); see data-ground-warm */
+.ground-stage[data-warm="on"] [data-paper] { fill: var(--exh-warm-linen); }
+[data-ground-warm="on"] .ground-stage-pane,
+[data-ground-warm="on"] .ground-layout { background-color: var(--exh-warm-linen); }
 
 /* era readout and the stage note */
 .ground-era {
@@ -673,41 +687,85 @@ body.exhibit-immersive > footer { display: none; }
   pointer-events: none;
 }
 
-/* --- the docked Instrument Register -------------------------------- */
+/* --- the docked Instrument Register --------------------------------
+   Its own reserved lane under the map (never over map type). Anatomy,
+   top to bottom: a 12px year-figure zone, five 2px bars with 2px gaps
+   (an initial at each bar's left edge), a hairline baseline, and three
+   plat-face tick labels. The whole strip is a link to the register
+   wall; the rust cursor rides the story's year. */
 .ground-register-docked {
   position: relative;
-  height: 32px;
-  margin: 0 4px;
-  display: flex;
-  align-items: stretch;
-  gap: 10px;
+  display: block;
+  height: 48px;
+  margin: 2px 14px 6px 14px;
+  text-decoration: none;
+  color: inherit;
 }
-.ground-register-docked .gr-track { position: relative; flex: 1; }
+.ground-register-docked:focus-visible { outline: 2px solid var(--exh-rust); outline-offset: 3px; }
+.ground-register-docked .gr-track { position: absolute; inset: 0; display: block; }
+.ground-register-docked .gr-lane { position: absolute; left: 0; right: 0; height: 2px; display: block; }
 .ground-register-docked .gr-bar {
   position: absolute;
-  height: 3px;
+  top: 0;
+  height: 2px;
   background: var(--color-exh-ink);
-  opacity: 0.25;
+  opacity: 0.3;
   transition: opacity 300ms ease;
 }
-.ground-register-docked .gr-bar[data-live="on"] { opacity: 0.85; }
+.ground-register-docked .gr-bar[data-live="on"] { opacity: 0.9; }
+.ground-register-docked .gr-init {
+  position: absolute;
+  top: -3px;
+  transform: translateX(calc(-100% - 4px));
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0;
+  color: var(--color-exh-ink-soft);
+}
 .ground-register-docked .gr-cursor {
   position: absolute;
-  top: 0;
-  bottom: 6px;
+  top: 10px;
+  height: 21px;
   width: 1.5px;
-  background: var(--color-exh-red);
+  background: var(--exh-rust);
   transition: left 300ms ease;
 }
-[data-motion="off"] .ground-register-docked .gr-cursor,
-[data-motion="off"] .ground-register-docked .gr-bar { transition: none; }
-.ground-register-docked .gr-year {
-  align-self: center;
-  font-size: 12px;
-  min-width: 3.2em;
-  text-align: right;
-  color: var(--color-exh-ink);
+.ground-register-docked .gr-yearfig {
+  position: absolute;
+  top: -2px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 600;
+  color: var(--exh-rust);
+  /* the 1px linen halo that keeps the figure legible over bars */
+  text-shadow:
+    -1px 0 var(--color-exh-linen), 1px 0 var(--color-exh-linen),
+    0 -1px var(--color-exh-linen), 0 1px var(--color-exh-linen);
+  transition: left 300ms ease;
 }
+.ground-register-docked .gr-baseline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 31px;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-exh-ink) 35%, transparent);
+}
+.ground-register-docked .gr-tick {
+  position: absolute;
+  top: 36px;
+  transform: translateX(-50%);
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0.08em;
+  color: var(--color-exh-ink-soft);
+}
+.ground-register-docked .gr-tick[data-year="1900"] { transform: translateX(0); }
+.ground-register-docked .gr-tick[data-year="2026"] { transform: translateX(-100%); }
+[data-motion="off"] .ground-register-docked .gr-cursor,
+[data-motion="off"] .ground-register-docked .gr-yearfig,
+[data-motion="off"] .ground-register-docked .gr-bar { transition: none; }
 
 /* --- the Register wall (overture scene) ----------------------------- */
 .ground-register-wall { margin: 10vh 0; }
@@ -767,33 +825,39 @@ body.exhibit-immersive > footer { display: none; }
   line-height: 1.6;
 }
 
-/* --- the Ledger Rail ------------------------------------------------ */
+/* --- the Ledger Rail ------------------------------------------------
+   Nothing in the rail may ever truncate; below 480px the entry's
+   shortLabel carries the line instead of an ellipsis. */
 .ground-ledger-rail {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 30;
-  height: 30px;
+  min-height: 30px;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 14px 0 18px;
+  padding: 5px 14px 5px 18px;
   background: var(--color-exh-linen-deep);
   border-top: 1px solid color-mix(in srgb, var(--color-exh-ink) 30%, transparent);
   font-size: 12px;
+  line-height: 1.3;
 }
-.ground-ledger-rail .glr-year { color: var(--color-exh-red); font-weight: 600; }
+.ground-ledger-rail .glr-year { color: var(--exh-rust, #A8502F); font-weight: 600; }
 .ground-ledger-rail .glr-label {
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
   color: var(--color-exh-ink);
+}
+.ground-ledger-rail .glr-label-short { display: none; }
+@media (max-width: 479px) {
+  .ground-ledger-rail .glr-label-full { display: none; }
+  .ground-ledger-rail .glr-label-short { display: inline; }
 }
 .ground-ledger-rail .glr-label[data-sign="credit"] { color: var(--color-exh-green); }
 .ground-ledger-rail .glr-empty { color: var(--color-exh-ink-soft); }
-.ground-ledger-rail .glr-count { color: var(--color-exh-ink-soft); }
+.ground-ledger-rail .glr-count { color: var(--color-exh-ink-soft); white-space: nowrap; }
 
 /* --- the step column ------------------------------------------------ */
 .ground-intro { padding: 12vh 0 4vh; }
@@ -873,6 +937,54 @@ body.exhibit-immersive > footer { display: none; }
   max-width: 32rem;
 }
 .ground-scene-slot { margin: 16vh 0; min-height: 8vh; }
+/* document scenes get spread width in the desktop column while text
+   steps keep their reading measure */
+@media (min-width: 1024px) {
+  .ground-scene-slot { margin-inline: -24px; max-width: none; }
+}
+
+/* the posting moment: the quiet record a step leaves in its own card
+   when it posts to the ledger; static, plat face, no motion */
+.gstep-posted {
+  margin-top: 18px;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--color-exh-ink) 22%, transparent);
+  max-width: 32rem;
+}
+.gstep-posted p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  color: var(--color-exh-ink-soft);
+}
+
+/* deep links land under the sticky stage without occlusion */
+.ground-steps-pane [id] { scroll-margin-top: calc(44svh + 12px); }
+@media (min-width: 1024px) {
+  .ground-steps-pane [id] { scroll-margin-top: 32px; }
+}
+@supports not (height: 1svh) {
+  .ground-steps-pane [id] { scroll-margin-top: calc(40vh + 12px); }
+  @media (min-width: 1024px) {
+    .ground-steps-pane [id] { scroll-margin-top: 32px; }
+  }
+}
+
+/* mobile pacing: a chapter head enters within about half a viewport of
+   the previous takeaway; only the bombing chapter keeps its long dark
+   air (the full-viewport breath is that chapter's designed silence) */
+@media (max-width: 1023px) {
+  .ground-chapterhead { padding: 22vh 0 5vh; }
+  .ground-step { padding: 16vh 0; }
+  .ground-charge { margin: 20vh 0; }
+  .ground-takeaway { margin: 12vh 0 16vh; }
+  .ground-scene-slot { margin: 10vh 0; }
+  #ch4.ground-chapterhead { padding: 48vh 0 8vh; }
+  #a2-docket.ground-scene-slot { margin: 26vh 0 32vh; }
+}
 
 /* --- the locate card ------------------------------------------------ */
 .ground-locate { max-width: 34rem; }
@@ -902,9 +1014,16 @@ body.exhibit-immersive > footer { display: none; }
 
 /* R9 round-1: rust is its own ink, never the D-grade pigment; the one
    present-day map mark; focus labels replace their base label */
-.ground-root { --exh-rust: #A8502F; }
+.ground-root {
+  --exh-rust: #A8502F;
+  /* the basement chapter's warm paper (same value, warmer hue; the
+     grade pigments never tint) */
+  --exh-warm-linen: #F5E9C8;
+}
 .ground-stage [data-today] { display: none; }
 .ground-stage[data-today="on"] [data-today] { display: block; }
 .ground-stage [data-today-mark] { fill: none; stroke: var(--exh-rust); stroke-width: 3.5; }
 .ground-stage[data-note-anchor="woodlawn"] text[data-name="WOODLAWN"],
-.ground-stage[data-note-anchor="lawndale"] text[data-name="NORTH LAWNDALE"] { opacity: 0; }
+.ground-stage[data-note-anchor="lawndale"] text[data-name="NORTH LAWNDALE"],
+.ground-stage[data-note-anchor="hydePark"] [data-hp-labels] text[data-name="HYDE PARK"],
+.ground-stage[data-note-anchor="jacksonPark"] [data-hp-labels] text[data-name="JACKSON PARK"] { opacity: 0; }

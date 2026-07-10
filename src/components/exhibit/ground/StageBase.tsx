@@ -14,6 +14,20 @@ const GRADES = ["A", "B", "C", "D", "U"] as const;
 const VIEW_PAPER_W = 3760;
 const VIEW_PAPER_H = 2640;
 
+/* a label may only render inside a frame if its anchor sits at least
+   this far from every viewBox edge; anything closer clips mid-word */
+const LABEL_EDGE_PAD = 40;
+
+function insideFrame(viewBox: string, x: number, y: number): boolean {
+  const [vx, vy, vw, vh] = viewBox.split(" ").map(Number);
+  return (
+    x >= vx + LABEL_EDGE_PAD &&
+    x <= vx + vw - LABEL_EDGE_PAD &&
+    y >= vy + LABEL_EDGE_PAD &&
+    y <= vy + vh - LABEL_EDGE_PAD
+  );
+}
+
 export default function StageBase() {
   const city = geometry.citywide;
   const hp = geometry.hydePark;
@@ -60,7 +74,16 @@ export default function StageBase() {
         </g>
         <g data-city-labels aria-hidden="true">
           {city.labels.map((l) => (
-            <text key={l.t} x={l.x} y={l.y} data-role={l.role} data-name={l.t}>
+            <text
+              key={l.t}
+              x={l.x}
+              y={l.y}
+              data-role={l.role}
+              data-name={l.t}
+              /* labels whose anchor clips against the Black Belt crop
+                 hide while that frame is up (CSS reads this flag) */
+              data-bb={insideFrame(city.blackBeltViewBox, l.x, l.y) ? "in" : "out"}
+            >
               {l.t}
             </text>
           ))}
@@ -88,11 +111,16 @@ export default function StageBase() {
         </g>
         <path data-hp-boundary d={hp.boundary} aria-hidden="true" />
         <g data-hp-labels aria-hidden="true">
-          {hp.labels.map((l) => (
-            <text key={l.t} x={l.x} y={l.y} data-role={l.role}>
-              {l.t}
-            </text>
-          ))}
+          {/* only labels that sit honestly inside the township frame
+              render; off-frame anchors (Kenwood, Woodlawn south of the
+              crop, the lake name) would clip mid-word at the edges */}
+          {hp.labels
+            .filter((l) => insideFrame(hp.viewBox, l.x, l.y))
+            .map((l) => (
+              <text key={l.t} x={l.x} y={l.y} data-role={l.role} data-name={l.t}>
+                {l.t}
+              </text>
+            ))}
         </g>
       </g>
     </svg>

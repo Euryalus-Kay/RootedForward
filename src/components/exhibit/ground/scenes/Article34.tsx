@@ -31,8 +31,8 @@ export default function Article34(_props: SceneProps) {
         <FactValue id={ETHICS.articleFactRef} size="sm" mono={false} />
         {/* div, not p: the citation popover mounts block elements inline */}
         <div className="mt-3 text-sm leading-relaxed text-exh-ink-soft">
-          Chicago&rsquo;s board had already set the penalty in 1921, expulsion for any member who
-          sold to a Black family on a white block.
+          Chicago&rsquo;s board had already set the penalty in 1921. Expulsion awaited any member
+          who sold to a Black family on a white block.
           <SourceSupGroup factIds={[ETHICS.expulsionFactRef]} />
         </div>
       </figcaption>

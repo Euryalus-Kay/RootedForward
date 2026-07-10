@@ -86,8 +86,25 @@ export default function Colophon(_props: SceneProps) {
 
   return (
     <section data-testid="scene-colophon" className="border-t border-exh-ink/25 pt-10">
-      <p className={EYEBROW_CLASS}>Colophon</p>
-      <p className="mt-3 max-w-prose font-display text-lg leading-[1.7] text-exh-ink">
+      {/* the wall label plate; sized to screenshot whole on a phone */}
+      <div
+        data-testid="colophon-plate"
+        className="max-w-[26rem] border border-exh-ink/40 bg-exh-linen-deep/30 px-5 py-5"
+      >
+        <p className={EYEBROW_CLASS}>Colophon</p>
+        <p className="mt-2 font-display text-2xl leading-tight text-exh-ink">
+          {GROUND_COPY.opening.title}
+        </p>
+        <p className="exh-mono mt-1 text-sm text-exh-ink">1832 to 2026</p>
+        <p className="mt-3 text-sm leading-relaxed text-exh-ink">
+          <span className="exh-mono">{factCount}</span> registered facts ·{" "}
+          <span className="exh-mono">{bibliography.length}</span> works and records
+        </p>
+        <p className="exh-plat mt-3 border-t border-exh-ink/25 pt-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
+          rooted-forward.org
+        </p>
+      </div>
+      <p className="mt-5 max-w-prose font-display text-lg leading-[1.7] text-exh-ink">
         {GROUND_COPY.closing.colophonLine}
       </p>
 
@@ -159,7 +176,7 @@ export default function Colophon(_props: SceneProps) {
           >
             <span className={EYEBROW_CLASS}>Study room</span>
             <span className="mt-1 block font-display text-lg leading-snug text-exh-ink">
-              All <span className="exh-mono">{sheetTotal}</span> surveyor sheets, searchable.
+              All <span className="exh-mono">{sheetTotal}</span> surveyors&rsquo; sheets, searchable.
             </span>
           </button>
         </Dialog.Trigger>

@@ -13,13 +13,14 @@ import type { SceneProps } from "./registry";
 import { getFact, hasFact } from "@/lib/exhibit/facts";
 import { cn } from "@/lib/utils";
 import { FactValue } from "../../shared/FactValue";
+import { SourceSup } from "../../shared/SourceSup";
 
 /* Both states stay mounted (opacity swap, not display) so the second
  * photograph is already decoded when the visitor first toggles. */
 const STATES = [
   {
     key: "before",
-    label: "Before the clearance",
+    label: "1928, before the plan",
     src: "/media/hyde-park/img/urban-renewal-1.jpg",
     alt: "Hyde Park from the air in 1928. Blocks of flats, hotels, and houses fill the street grid down to the lakefront.",
     caption: "Hyde Park from the air, decades before the plan. The blocks stood fully built.",
@@ -27,7 +28,7 @@ const STATES = [
   },
   {
     key: "after",
-    label: "After the clearance",
+    label: "The 1960s replacement",
     src: "/media/hyde-park/img/urban-renewal-3.jpg",
     alt: "A long modernist apartment slab, University Apartments, standing in the median of 55th Street in Hyde Park.",
     caption:
@@ -100,9 +101,15 @@ function FamilyGrid() {
         One mark, one family
       </p>
       <div className="mt-3 border border-exh-ink/25 p-3">
-        {/* the estimate label lives inside the graphic margin on purpose */}
-        <p className="exh-plat text-[10px] uppercase tracking-[0.18em] text-exh-ink-soft">
-          One square is one displaced family. The count is an estimate.
+        {/* the estimate label lives inside the graphic margin on purpose,
+            and stays pinned at the grid's edge while any of the canvas is
+            in view; the top offset clears the sticky stage pane on phones */}
+        <p
+          data-testid="clearance-grid-caption"
+          className="exh-plat sticky z-[2] bg-exh-linen py-1 text-[10px] uppercase tracking-[0.18em] text-exh-ink-soft top-[calc(44svh+40px)] lg:top-4"
+        >
+          One square is one displaced family. About 4,000, an estimate.
+          <SourceSup factId={FAMILIES_FACT_ID} />
         </p>
         <div ref={wrapRef} className="mt-3">
           <canvas

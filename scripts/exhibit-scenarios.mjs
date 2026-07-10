@@ -663,6 +663,20 @@ export const scenarios = [
       t.assert("the map returns whole", s2.grades === "full", JSON.stringify(s2));
       const today = await stageAt("#ch11");
       t.assert("the finale holds the marked map in 2026", today.era === "2026" && today.marks === "on", JSON.stringify(today));
+      const spineAtCh5 = await page.evaluate(() => {
+        document.querySelector("#ch5")?.scrollIntoView({ block: "center", behavior: "instant" });
+        return new Promise((res) => setTimeout(() => res(document.querySelector('[data-testid="ground-spine"]')?.dataset.red), 700));
+      });
+      t.assert("spine still ink at the paperwork chapter", spineAtCh5 === "off", String(spineAtCh5));
+      const spineAtCh6 = await page.evaluate(() => {
+        document.querySelector("#ch6")?.scrollIntoView({ block: "start", behavior: "instant" });
+        return new Promise((res) => setTimeout(() => res(document.querySelector('[data-testid="ground-spine"]')?.dataset.red), 700));
+      });
+      t.assert("spine turns D-red at the federal chapter", spineAtCh6 === "on", String(spineAtCh6));
+      const sum = await stageAt("#a6-sum");
+      t.assert("the sum state composites the century", sum.marks === "on" && sum.grades === "full", JSON.stringify(sum));
+      const sumToday = await page.$eval('[data-testid="ground-stage"]', (el) => el.dataset.today);
+      t.assert("the one present-day mark stands at Woodlawn", sumToday === "on", String(sumToday));
     },
   },
   {
@@ -766,7 +780,8 @@ export const scenarios = [
         els.filter((e) => e.className.includes("truncate")).length
       );
       t.assert("addresses never truncate", truncated === 0, `truncate=${truncated}`);
-      t.assert("Wells closes the act in her own words", await page.$('[data-testid="scene-wellsClose"]'));
+      t.assert("Wells closes the fair chapter, in her own words", await page.$('[data-testid="scene-wellsClose"]'));
+      t.assert("the advisory plate stands before the docket", await page.$("#a2-advisory [data-testid=\"scene-advisory\"], #a2-advisory > *"));
     },
   },
   {

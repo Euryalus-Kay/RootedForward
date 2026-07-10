@@ -26,23 +26,39 @@ const ENTRIES: LedgerEntry[] = [...(ledgerJson as { entries: LedgerEntry[] }).en
   (a, b) => a.year - b.year
 );
 
-/* Dollar figures for the amount column. Every string here resolves to
-   the fact cited beside it; entries without a clean dollar fact keep
-   the amount cell empty, per the column-head convention. */
+/* Figures for the value column. Every figure here resolves to the
+   fact cited beside it; entries without a clean fact for the column
+   keep the cell empty, per the column-head convention. The figure
+   line never wraps mid-figure; units and second counts get their own
+   line beneath, like the dollar-year tags. */
 interface AmountLine {
-  text: string;
+  fig: string;
+  sub?: string;
   tag?: string;
   factIds: string[];
 }
 const AMOUNTS: Record<string, AmountLine[]> = {
-  "color-tax": [
-    { text: "$71,000 per family", tag: "2019 dollars", factIds: ["contracts.avg_overpayment_71000"] },
-  ],
-  "cbl-credit": [{ text: "$14,000 per contract", factIds: ["cbl.savings"] }],
-  "closing-totals": [
-    { text: "$3.2 to $4 billion", tag: "2019 dollars", factIds: ["contracts.extraction_3_4b"] },
+  "red-summer": [
     {
-      text: "$285,010 against $44,890",
+      fig: "38 dead",
+      sub: "about 1,000 burned out",
+      factIds: ["bombings.riot_1919_dead", "bombings.riot_homeless_1000"],
+    },
+  ],
+  "color-tax": [
+    {
+      fig: "$71,000",
+      sub: "per family",
+      tag: "2019 dollars",
+      factIds: ["contracts.avg_overpayment_71000"],
+    },
+  ],
+  "cbl-credit": [{ fig: "$14,000", sub: "per contract", factIds: ["cbl.savings"] }],
+  "closing-totals": [
+    { fig: "$3.2 to $4", sub: "billion", tag: "2019 dollars", factIds: ["contracts.extraction_3_4b"] },
+    {
+      fig: "$285,010",
+      sub: "against $44,890",
       tag: "2022 medians",
       factIds: ["present.scf_white_285000", "present.scf_black_44900"],
     },
@@ -55,7 +71,7 @@ function refsFor(e: LedgerEntry): string[] {
   const remaining = all.filter((id) => !inAmount.has(id));
   // an entry whose only facts moved into the amount cell keeps one
   // marker on the label so the row never reads unsourced at a glance
-  return remaining.length > 0 ? remaining : all;
+  return remaining.length > 0 ? remaining : all.slice(0, 1);
 }
 
 export default function LedgerColumn(_props: SceneProps) {
@@ -124,9 +140,14 @@ export default function LedgerColumn(_props: SceneProps) {
                 >
                   {amounts
                     ? amounts.map((a) => (
-                        <span key={a.text} className="block">
-                          {a.text}
+                        <span key={a.fig} className="block [&+span]:mt-1.5">
+                          <span className="whitespace-nowrap">{a.fig}</span>
                           <SourceSupGroup factIds={a.factIds} />
+                          {a.sub && (
+                            <span className="block whitespace-nowrap text-xs text-exh-ink-soft">
+                              {a.sub}
+                            </span>
+                          )}
                           {a.tag && (
                             <span className="exh-plat block text-[10px] uppercase tracking-[0.14em] text-exh-ink-soft">
                               {a.tag}

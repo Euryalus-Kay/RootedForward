@@ -24,20 +24,33 @@ import type { SceneProps } from "./registry";
 
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
-/* the plain sentence of meaning under the columns; model numbers only */
-function takeaway(months: number, extra: number): string {
+/* spoken time span, shared by the takeaway and aria-valuetext */
+function spanWords(months: number): string {
+  const yr = Math.floor(months / 12);
+  const mo = months % 12;
+  if (yr === 0) return `${mo} month${mo === 1 ? "" : "s"}`;
+  if (mo === 0) return `${yr} year${yr === 1 ? "" : "s"}`;
+  return `${yr} year${yr === 1 ? "" : "s"} and ${mo} month${mo === 1 ? "" : "s"}`;
+}
+
+/* the plain sentence of meaning under the columns; model numbers only.
+   At rest the registry figure leads and the synthetic tally is shown
+   as the declared arithmetic behind it, so the two reconcile on the
+   page instead of reading as a rounding slip. */
+function takeaway(months: number, extra: number, atRest: boolean): string {
   if (months === 0) {
     return "Both families start today. Drag the years forward and the gap opens again.";
   }
-  const yr = Math.floor(months / 12);
-  const mo = months % 12;
-  const time =
-    yr === 0
-      ? `After ${mo} month${mo === 1 ? "" : "s"}`
-      : mo === 0
-        ? `After ${yr} year${yr === 1 ? "" : "s"}`
-        : `After ${yr} year${yr === 1 ? "" : "s"} and ${mo} month${mo === 1 ? "" : "s"}`;
-  return `${time}, the mortgage buyer has paid nothing beyond a fair price. The contract buyer has paid ${usd(
+  if (atRest) {
+    return `The study’s average, about ${usd(
+      TWO_BUYERS.avgTotalOverpaymentUsd
+    )} more for the same house. ${months} months at ${usd(TWO_BUYERS.monthlyExtraUsd)} more is ${usd(
+      extra
+    )}.`;
+  }
+  return `After ${spanWords(
+    months
+  )}, the mortgage buyer has paid nothing beyond a fair price. The contract buyer has paid ${usd(
     extra
   )} more for the same house.`;
 }
@@ -141,7 +154,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
         aria-live="polite"
         className="exh-serif mt-5 border-t border-exh-ink/15 pt-3 text-base leading-snug text-exh-ink sm:text-lg"
       >
-        {takeaway(months, extra)}
+        {takeaway(months, extra, months === TWO_BUYERS.monthsToAverage)}
         <SourceSupGroup factIds={TWO_BUYERS.basisFactRefs} />
       </p>
 
@@ -164,7 +177,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
           step={1}
           value={months}
           onChange={(e) => setMonths(Number(e.target.value))}
-          aria-valuetext={`${yr} years and ${mo} months of payments`}
+          aria-valuetext={`${spanWords(months)} of payments`}
           className="gtb-range"
         />
         <p className="text-right text-xs leading-snug text-exh-ink-soft">

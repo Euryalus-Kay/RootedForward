@@ -43,7 +43,7 @@ export default function LocateScene() {
             onClick={run}
             disabled={state.s === "working"}
           >
-            {state.s === "working" ? "Reading the 1940 boundaries" : "What grade is the ground under you?"}
+            {state.s === "working" ? "Reading the 1940 boundaries" : "What grade is the ground under you?"}
           </button>
           <p className="gl-privacy">
             Uses your device location once, with your permission. Nothing leaves this page.
@@ -64,8 +64,11 @@ export default function LocateScene() {
         </p>
       ) : state.r.state === "miss" ? (
         <p className="gl-result" data-testid="ground-locate-result">
-          The ground under you was never graded. The 1940 survey stopped at the edges of
-          metropolitan Chicago; the century this exhibit shows did not.
+          This survey never reached the ground under you. The 1940 survey graded metropolitan
+          Chicago; 238 other cities got maps of their own.
+          <SourceSupGroup
+            factIds={["redlining.holc_survey_chicago", "redlining.holc_239_cities"]}
+          />
         </p>
       ) : (
         <p className="gl-result" data-testid="ground-locate-result">

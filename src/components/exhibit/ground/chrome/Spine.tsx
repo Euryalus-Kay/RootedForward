@@ -14,16 +14,10 @@ export default function Spine() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let redAt = 0.55;
-    const measure = () => {
-      const ch6 = document.getElementById("ch6");
-      const doc = document.documentElement;
-      const total = doc.scrollHeight - window.innerHeight;
-      if (ch6 && total > 0) {
-        redAt = Math.min(0.98, Math.max(0.02, ch6.offsetTop / total));
-      }
-    };
     let raf = 0;
+    /* redAt is recomputed on every frame (two cheap property reads),
+       because client scenes keep expanding the document after mount
+       and a once-at-mount measure fires the color turn acts early */
     const onScroll = () => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
@@ -32,16 +26,27 @@ export default function Spine() {
         const total = doc.scrollHeight - window.innerHeight;
         const p = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0;
         el.style.setProperty("--gp", p.toFixed(4));
-        el.dataset.red = p >= redAt ? "on" : "off";
+        /* document offset via the rect (offsetTop would be relative to
+           the act's position:relative container); the ink turns when
+           the ch6 head crosses the middle of the viewport, the same
+           band that activates a step */
+        const ch6 = document.getElementById("ch6");
+        if (ch6) {
+          const ch6Top = ch6.getBoundingClientRect().top + window.scrollY;
+          el.dataset.red = window.scrollY + window.innerHeight * 0.5 >= ch6Top ? "on" : "off";
+        }
       });
     };
-    measure();
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onScroll);
+    /* scenes hydrating below the fold change offsets without a scroll */
+    const ro = new ResizeObserver(onScroll);
+    ro.observe(document.body);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onScroll);
+      ro.disconnect();
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

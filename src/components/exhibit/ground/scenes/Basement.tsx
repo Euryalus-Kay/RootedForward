@@ -8,10 +8,12 @@
 /*  paraphrases for both, so the room shows summaries behind the       */
 /*  "in summary" chip rather than invented quotes. The paperwork is    */
 /*  demoted to one evidence line; the honest cost is stated; King      */
-/*  closes. The credited 1973 DOCUMERICA photograph anchors the room.  */
+/*  closes. No photograph: the archive holds no North Lawndale or      */
+/*  CBL image in window (the nearest candidate was a 1973 newsstand    */
+/*  five miles and five years away), so per the data-absence rule      */
+/*  the two voices carry the room unaccompanied.                       */
 /* ------------------------------------------------------------------ */
 import { isVerbatim, voiceOf } from "@/lib/exhibit/voices";
-import FigureBlock from "../../FigureBlock";
 import FactValue from "../../shared/FactValue";
 import SourceSup, { SourceSupGroup } from "../../shared/SourceSup";
 import type { SceneProps } from "./registry";
@@ -62,15 +64,6 @@ export default function Basement(_props: SceneProps) {
         They organized as the Contract Buyers League.
         <SourceSupGroup factIds={["cbl.founded_1968"]} />
       </p>
-
-      <div className="mt-6">
-        <FigureBlock
-          src="/media/hyde-park/img/dd-urban-renewal-3.jpg"
-          alt="A man at his newsstand at 22nd and South State Streets in 1973, round public housing towers rising behind him."
-          creditKey="dd-urban-renewal-3"
-          caption="A newsstand at 22nd and South State Streets, July 1973. John H. White photographed Black Chicago for the federal DOCUMERICA project in the years the League's trials ended."
-        />
-      </div>
 
       <div className="mt-8 space-y-8">
         <RoomVoice personId="ruth-wells" />

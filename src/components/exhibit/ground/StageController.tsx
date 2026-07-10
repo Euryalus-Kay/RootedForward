@@ -81,7 +81,14 @@ export default function StageController({
   }, [areaTapRef]);
 
   const note = stage.note ?? null;
-  const anchor = note ? clientProps.anchors[note.anchor] : null;
+  /* the fairgrounds note names Jackson Park, so it anchors there, not
+     on the HYDE PARK label (the shell computes a clamped in-frame
+     anchor from the geometry's own JACKSON PARK entry) */
+  const anchorKey =
+    note && /jackson park/i.test(note.text) && clientProps.anchors.jacksonPark
+      ? "jacksonPark"
+      : (note?.anchor ?? "none");
+  const anchor = note ? clientProps.anchors[anchorKey] : null;
   /* anchor position as a percentage of the viewBox for CSS placement */
   const vb = (
     stage.frame === "blackBelt"
@@ -114,7 +121,7 @@ export default function StageController({
       data-dim={stage.dim ? "on" : "off"}
       data-warm={stage.warm ? "on" : "off"}
       data-today={stage.today ? "on" : "off"}
-      data-note-anchor={note ? note.anchor : "none"}
+      data-note-anchor={note ? anchorKey : "none"}
     >
       {stageBase}
       {stage.era ? (

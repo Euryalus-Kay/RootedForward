@@ -6,7 +6,7 @@
     "title": "The Ground Keeps Moving",
     "mapCaption": "Federal surveyors finished this map of Chicago in 1940. It graded every neighborhood for mortgage lenders, A down to D, and the Black Belt runs through its middle in red.",
     "mapCaptionFactRefs": ["redlining.holc_survey_chicago", "redlining.holc_239_cities"],
-    "howTo": "A ten minute walk down one century, on one map. Every figure carries its source, one tap away."
+    "howTo": "A ten-minute walk down one century, on one map. Every figure carries its source, one tap away."
   },
   "acts": [
     {
@@ -35,13 +35,13 @@
         {
           "id": "a0-r3",
           "role": "step",
-          "text": "Begin in 1832. **Every line you just saw was drawn in the century between**, and this exhibit shows who drew each one.",
+          "text": "Begin in 1832. **Every line you just saw was drawn in the century between**, and the chapters ahead show who drew each one.",
           "stage": { "frame": "citywide", "era": "1832", "grades": "none", "linework": false, "labels": true }
         },
         {
           "id": "a0-charge",
           "role": "charge",
-          "text": "What happened to this ground was engineered. **Five instruments did the work**, a realtors' rule, a deed clause, a federal map, a demolition program, and a sales contract, each one written down, each one leaving a record. By the 2022 federal survey, median family wealth stood at $285,010 for white families and $44,890 for Black families. **This exhibit is the paperwork in between.**",
+          "text": "What happened to this ground was engineered. **Five instruments did the work**, a realtors’ rule, a deed clause, a federal map, a demolition program, and a sales contract. Every one of them left a record. By the 2022 federal survey, median family wealth stood at $285,010 for white families and $44,890 for Black families. **This exhibit is the paperwork in between.**",
           "factRefs": ["present.scf_white_285000", "present.scf_black_44900", "present.gap_6to1"]
         },
         {
@@ -65,14 +65,14 @@
         {
           "id": "a1-s1",
           "role": "step",
-          "text": "The 1833 Treaty of Chicago moved about **5 million acres under force**, this shore included. Within a few years the Potawatomi were marched west. The Pokagon Band counts more than 6,000 citizens today.",
+          "text": "The 1833 Treaty of Chicago took about **5 million acres under force**, this shore included. Within a few years the Potawatomi were marched west. The Pokagon Band counts more than 6,000 citizens today.",
           "factRefs": ["land.treaty_1833", "land.removal_west", "land.pokagon_today"],
           "post": ["land-taken"]
         },
         {
           "id": "a1-s2",
           "role": "step",
-          "text": "In 1853 Paul Cornell bought **300 acres of this shore** and platted a suburb to sell. The survey below is the township his purchase seeded.",
+          "text": "In 1853 Paul Cornell bought **300 acres of this shore** and platted a suburb to sell. The land agent’s 1851 map below shows the grid his purchase joined two years later.",
           "factRefs": ["land.cornell_purchase_1853"],
           "stage": { "frame": "hydePark", "era": "1853", "grades": "none", "linework": false, "boundary": true, "labels": true }
         },
@@ -89,9 +89,9 @@
           "stage": { "frame": "hydePark", "era": "1893", "grades": "none", "linework": false, "boundary": true, "labels": true, "note": { "text": "Jackson Park, fairgrounds 1893", "anchor": "hydePark" } }
         },
         {
-          "id": "a2-s1",
+          "id": "a1-fair",
           "role": "step",
-          "text": "The World's Fair ran **six months and drew about 27 million admissions**. It left behind the hotels, the flats, and the raised rail embankment that cut the neighborhood in two.",
+          "text": "The World’s Fair ran **six months and drew about 27 million admissions**. It left behind the hotels, the flats, and the raised rail embankment that cut the neighborhood in two.",
           "factRefs": ["fair.six_months", "fair.attendance_27m", "fair.ic_embankment", "fair.building_boom"],
           "post": ["fair-stock"]
         },
@@ -103,13 +103,18 @@
         {
           "id": "a1-s3",
           "role": "step",
-          "text": "At the gates, Ida B. Wells handed out 10,000 copies of a pamphlet titled *The Reason Why the Colored American Is Not in the World's Columbian Exposition*. **The exclusion was already organized.**",
+          "text": "At the Haitian Building, Ida B. Wells handed out 10,000 copies of a pamphlet titled *The Reason Why the Colored American Is Not in the World’s Columbian Exposition*. **The exclusion was already organized.**",
           "factRefs": ["fair.reason_why_10000"]
+        },
+        {
+          "id": "a1-wells",
+          "role": "quote",
+          "scene": "wellsClose"
         },
         {
           "id": "a1-takeaway",
           "role": "takeaway",
-          "text": "The ground was surveyed and sold before it was ever graded."
+          "text": "By the time anyone graded this ground, it had been changing hands for a century."
         }
       ]
     },
@@ -122,12 +127,22 @@
           "role": "chapterHead",
           "title": "Five instruments",
           "years": "1921 to 1970",
-          "stage": { "frame": "citywide", "era": "1908", "grades": "none", "linework": false, "labels": true }
+          "stage": { "frame": "citywide", "era": "", "grades": "none", "linework": false, "labels": true }
+        },
+        {
+          "id": "a2-overture-in",
+          "role": "step",
+          "text": "Before the story reaches them, see all five at once."
         },
         {
           "id": "a2-register",
           "role": "scene",
           "scene": "registerExpand"
+        },
+        {
+          "id": "a2-overture-out",
+          "role": "step",
+          "text": "It began by hand, in 1908."
         },
         {
           "id": "ch3",
@@ -139,7 +154,7 @@
         {
           "id": "a2-s1",
           "role": "step",
-          "text": "In autumn 1908 the Hyde Park Improvement Protective Club organized to remove every Black neighbor, **block by block, by name**. Fannie Barrier Williams, a founder of provident institutions across this city, was among the people it meant.",
+          "text": "In autumn 1908 the Hyde Park Improvement Protective Club organized to remove every Black neighbor, **block by block, by name**. Among the people it meant was Fannie Barrier Williams, the neighbor the club shut out.",
           "factRefs": ["colorline.club_founded", "people.fannie_barrier_williams"],
           "post": ["club-organizes"]
         },
@@ -147,8 +162,13 @@
           "id": "ch4",
           "role": "chapterHead",
           "title": "The bombing years",
-          "years": "1917 to 1922",
+          "years": "1917 to 1921",
           "stage": { "frame": "blackBelt", "era": "1917", "grades": "none", "linework": false, "labels": false, "marks": true, "dim": true }
+        },
+        {
+          "id": "a2-advisory",
+          "role": "scene",
+          "scene": "advisory"
         },
         {
           "id": "a2-docket",
@@ -157,14 +177,10 @@
           "post": ["red-summer"]
         },
         {
-          "id": "a2-wells",
-          "role": "quote",
-          "scene": "wellsClose"
-        },
-        {
           "id": "a2-takeaway",
           "role": "takeaway",
-          "text": "Four years of dynamite enforced the line before any paper did."
+          "text": "Three years and eight months of dynamite enforced the line before any paper did.",
+          "stage": { "frame": "citywide", "era": "1921", "grades": "none", "linework": false, "labels": true, "marks": true, "dim": false }
         }
       ]
     },
@@ -192,14 +208,14 @@
         {
           "id": "a3-s1",
           "role": "step",
-          "text": "By the 1940s, **hundreds of Cook County subdivisions carried covenants** on the model NAREB's general counsel drafted in 1927. The paper spread faster than the dynamite ever had.",
+          "text": "By the 1940s, **hundreds of Cook County subdivisions carried covenants** on the model the National Association of Real Estate Boards’ general counsel drafted in 1927. The paper spread faster than the dynamite ever had.",
           "factRefs": ["covenants.coverage_claim", "covenants.macchesney_template"],
           "post": ["covenant-armor"]
         },
         {
           "id": "ch6",
           "role": "chapterHead",
-          "title": "Washington adopts the plan",
+          "title": "The plan goes federal",
           "years": "1933 to 1940",
           "stage": { "frame": "citywide", "era": "1934", "grades": "none", "linework": true, "labels": true, "marks": true }
         },
@@ -219,7 +235,7 @@
         {
           "id": "a3-f3",
           "role": "step",
-          "text": "By spring 1940 the survey is done. **The map you began with is back**, and now you know every hand that drew it.",
+          "text": "By spring 1940 the survey is done. **The map you began with is back.** This time you watched it drawn.",
           "factRefs": ["redlining.holc_survey_chicago"],
           "stage": { "frame": "citywide", "era": "1940", "grades": "flood", "floodStep": 8, "linework": true, "labels": true, "marks": true }
         },
@@ -231,7 +247,7 @@
         {
           "id": "a3-s2",
           "role": "step",
-          "text": "Under 2 percent of federally insured mortgage money reached Black Americans in the program's first decades. **The city's doctrine had become the country's underwriting.**",
+          "text": "From 1945 to 1959, under 2 percent of federally insured home loans went to Black Americans. **The city’s doctrine had become the country’s underwriting.**",
           "factRefs": ["redlining.black_loans_under_2pct", "redlining.babcock_manual"],
           "post": ["redlined"],
           "stage": { "frame": "citywide", "era": "1940", "grades": "full", "linework": true, "labels": true, "marks": true }
@@ -245,7 +261,8 @@
         {
           "id": "a3-cases",
           "role": "scene",
-          "scene": "casesReroute"
+          "scene": "casesReroute",
+          "stage": { "frame": "citywide", "era": "1948", "grades": "full", "linework": true, "labels": true, "marks": true }
         },
         {
           "id": "a3-hansberry",
@@ -274,7 +291,7 @@
         {
           "id": "a4-s1",
           "role": "step",
-          "text": "The South East Chicago Commission, founded 1952 and run by Julian Levi, drew an **856 acre renewal plan** for this ground. The first demolition came May 10, 1955, before the council approved it.",
+          "text": "The South East Chicago Commission, founded 1952 and run by Julian Levi, drew an **856-acre renewal plan** for this ground. The first demolition came May 10, 1955, before the council approved it.",
           "factRefs": ["renewal.secc_1952", "renewal.plan_856_acres", "renewal.first_demolition_1955", "renewal.approved_1958"]
         },
         {
@@ -285,9 +302,10 @@
         {
           "id": "a4-s2",
           "role": "step",
-          "text": "Of the displaced who could be traced, **46 percent of white families stayed in Hyde Park and Kenwood. About 17 percent of Black families did.** The neighborhood's Black population fell about 40 percent.",
+          "text": "Of the displaced who could be traced, **46 percent of white families stayed in Hyde Park and Kenwood. About 17 percent of Black families did.** The neighborhood’s Black population fell about 40 percent.",
           "factRefs": ["renewal.white_return_46pct", "renewal.black_return_17pct", "renewal.black_pop_drop_40pct"],
-          "post": ["renewal-removals"]
+          "post": ["renewal-removals"],
+          "stage": { "frame": "hydePark", "era": "1962", "grades": "none", "linework": false, "boundary": true, "labels": false, "marks": true, "note": { "text": "Hyde Park A and B renewal area", "anchor": "hydePark" } }
         },
         {
           "id": "a4-baldwin",
@@ -297,7 +315,7 @@
         {
           "id": "a4-takeaway",
           "role": "takeaway",
-          "text": "The bulldozer did openly what the paper had done quietly."
+          "text": "The removal was now policy, carried out with public money."
         }
       ]
     },
@@ -338,8 +356,9 @@
         {
           "id": "a5-takeaway",
           "role": "takeaway",
-          "text": "The neighbors in the basement won back what the ledger says no one gives back.",
-          "post": ["color-tax", "cbl-credit"]
+          "text": "The neighbors in the basement organized and won some of it back.",
+          "post": ["color-tax", "cbl-credit"],
+          "stage": { "frame": "citywide", "era": "1971", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": true, "note": { "text": "North Lawndale", "anchor": "lawndale" } }
         }
       ]
     },
@@ -352,7 +371,7 @@
           "role": "chapterHead",
           "title": "The ledger and the ground today",
           "years": "1971 to 2026",
-          "stage": { "frame": "citywide", "era": "2026", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": false, "note": { "text": "Woodlawn", "anchor": "woodlawn" } }
+          "stage": { "frame": "citywide", "era": "2026", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": false, "today": true, "note": { "text": "Woodlawn", "anchor": "woodlawn" } }
         },
         {
           "id": "a6-bridge",
@@ -369,6 +388,12 @@
           "id": "a6-climb",
           "role": "scene",
           "scene": "climb"
+        },
+        {
+          "id": "a6-sum",
+          "role": "step",
+          "text": "**Every mark you watched sits on the one map.**",
+          "stage": { "frame": "citywide", "era": "2026", "grades": "full", "linework": true, "labels": false, "marks": true, "today": true }
         },
         {
           "id": "a6-receipt",
@@ -389,6 +414,6 @@
     }
   ],
   "closing": {
-    "colophonLine": "Every figure in this exhibit resolves to one of 126 registered facts with a named source. The full record, including the 576 surveyors' sheets, is one door away."
+    "colophonLine": "Every figure on this page resolves to one of 126 registered facts with a named source. The full record, including the 576 surveyors’ sheets, is one door away."
   }
 }

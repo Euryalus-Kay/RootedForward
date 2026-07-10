@@ -40,7 +40,7 @@ const PRIVATE_X = 252;
 const GATES: Record<string, { x: number; y: number; blurb: string }> = {
   buchanan: { x: PUBLIC_X, y: 116, blurb: "Racial zoning struck down" },
   corrigan: { x: PRIVATE_X, y: 258, blurb: "Challenge dismissed, covenants spread" },
-  hansberry: { x: PRIVATE_X, y: 352, blurb: "A Chicago family dents the armor" },
+  hansberry: { x: PRIVATE_X, y: 352, blurb: "A Chicago family cracks the gate" },
   shelley: { x: PRIVATE_X, y: 456, blurb: "Courts may not enforce the clauses" },
 };
 
@@ -59,8 +59,11 @@ export default function CasesReroute(_props: SceneProps) {
         <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />
       </div>
       <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-exh-ink-soft">
-        The red line is the practice of exclusion. Each ruling stands in its path. The line did
-        not stop; it turned.
+        The rust line is the practice of exclusion. Where a ruling barred one lane, the
+        practice turned into the next.
+      </p>
+      <p className="exh-plat mx-auto mt-2 max-w-xl text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
+        Open any ruling below
       </p>
 
       <div className="relative mx-auto mt-5 max-w-[24rem]">
@@ -92,12 +95,12 @@ export default function CasesReroute(_props: SceneProps) {
           <path
             d="M96 44 V88 C96 122 120 142 160 146 L188 149 C226 153 252 174 252 208 V424 C252 448 234 462 206 468 L196 470 C168 476 148 492 148 518 V548"
             fill="none"
-            stroke="#B0322B"
+            stroke="var(--exh-rust, #A8502F)"
             strokeWidth={4}
             strokeLinecap="round"
           />
           {/* arrowhead out */}
-          <path d="M148 556 l-7 -12 h14 Z" fill="#B0322B" />
+          <path d="M148 556 l-7 -12 h14 Z" fill="var(--exh-rust, #A8502F)" />
 
           {/* Buchanan bars the public lane */}
           <rect x={60} y={112} width={72} height={7} rx={2} fill="#1C1A17" />
@@ -129,17 +132,26 @@ export default function CasesReroute(_props: SceneProps) {
             <text x={164} y={548}>to sales on contract</text>
           </g>
 
-          {/* selected gate ring */}
+          {/* selected gate ring, a double ink ring; never grade pigment */}
           {selected in GATES && (
-            <circle
-              cx={GATES[selected].x}
-              cy={GATES[selected].y}
-              r={15}
-              fill="none"
-              stroke="#C9A227"
-              strokeWidth={3}
-              data-testid="cases-reroute-ring"
-            />
+            <g data-testid="cases-reroute-ring">
+              <circle
+                cx={GATES[selected].x}
+                cy={GATES[selected].y}
+                r={18}
+                fill="none"
+                stroke="#1C1A17"
+                strokeWidth={1.25}
+              />
+              <circle
+                cx={GATES[selected].x}
+                cy={GATES[selected].y}
+                r={14}
+                fill="none"
+                stroke="#1C1A17"
+                strokeWidth={2.5}
+              />
+            </g>
           )}
         </svg>
 

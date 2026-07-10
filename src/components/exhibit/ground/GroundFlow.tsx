@@ -10,10 +10,36 @@
 import { useCallback } from "react";
 import { GROUND_COPY, RESOLVED_STEPS, CHAPTER_NUMBERS, CHAPTER_COUNT } from "@/lib/exhibit/ground/copy";
 import type { ResolvedStep } from "@/lib/exhibit/ground/types";
+import ledgerData from "../../../../data/exhibit/ledger.json";
 import { useGround } from "./engine/GroundProvider";
 import { renderRichText } from "../shared/richText";
 import { SourceSupGroup } from "../shared/SourceSup";
 import { GROUND_SCENES } from "./scenes/registry";
+
+/* the posting moment: a step that posts ledger entries records the
+   line inside its own card, quiet plat face, no motion */
+const LEDGER_BY_ID = new Map(
+  (ledgerData as { entries: Array<{ entryId: string; year: number; label: string }> }).entries.map(
+    (e) => [e.entryId, e]
+  )
+);
+
+function PostedRecord({ post }: { post?: string[] }) {
+  if (!post?.length) return null;
+  return (
+    <div className="gstep-posted exh-plat" data-testid="gstep-posted">
+      {post.map((id) => {
+        const entry = LEDGER_BY_ID.get(id);
+        if (!entry) return null;
+        return (
+          <p key={id}>
+            Posted to the ledger. {entry.year}, {entry.label}.
+          </p>
+        );
+      })}
+    </div>
+  );
+}
 
 function StepCard({ step }: { step: ResolvedStep }) {
   const { registerStep } = useGround();
@@ -28,6 +54,7 @@ function StepCard({ step }: { step: ResolvedStep }) {
     return (
       <div ref={refCb} id={step.id} data-testid={`gstep-${step.id}`} className="ground-scene-slot">
         <Scene stepId={step.id} />
+        <PostedRecord post={step.post} />
       </div>
     );
   }
@@ -51,6 +78,7 @@ function StepCard({ step }: { step: ResolvedStep }) {
       <div ref={refCb} id={step.id} data-testid={`gstep-${step.id}`} className="ground-takeaway">
         {renderRichText(step.text ?? "")}
         <SourceSupGroup factIds={step.factRefs ?? []} />
+        <PostedRecord post={step.post} />
       </div>
     );
   }
@@ -66,6 +94,7 @@ function StepCard({ step }: { step: ResolvedStep }) {
         {renderRichText(step.text ?? "")}
         <SourceSupGroup factIds={step.factRefs ?? []} />
       </div>
+      <PostedRecord post={step.post} />
     </div>
   );
 }

@@ -2,11 +2,13 @@
 /* ------------------------------------------------------------------ */
 /*  The Instrument Register, the exhibit's thesis graphic. Five bars   */
 /*  on one 1900 to 2026 axis with true dates from machines.json.       */
-/*  Docked mode is the 24px strip riding under the Stage with a date   */
-/*  cursor; wall mode is the full-size annotated version the overture  */
-/*  scene mounts once. Bars are anchor links to their chapters. Court  */
-/*  defeats end bars with dated annotations; the strip itself runs to  */
-/*  2026 because the ground is still moving.                           */
+/*  Docked mode is the strip riding under the Stage; it carries a      */
+/*  hairline baseline with three tick labels, one-letter instrument    */
+/*  initials, a rust date cursor with a live year figure, and the      */
+/*  whole strip is a link that jumps to the full register wall. Wall   */
+/*  mode is the annotated version the overture scene mounts once.      */
+/*  Court defeats end bars with dated annotations; the strip itself    */
+/*  runs to 2026 because the ground is still moving.                   */
 /* ------------------------------------------------------------------ */
 import { allMachines } from "@/lib/exhibit/machines";
 import { machineTitle } from "../legacy";
@@ -27,6 +29,14 @@ const CHAPTER_OF: Record<string, string> = {
 };
 /** the order the bars stack, first written to last */
 const ORDER = ["code", "deed", "map", "bulldozer", "contract"];
+/** one-letter marks at each bar's left edge in the docked strip */
+const INITIAL_OF: Record<string, string> = {
+  code: "R", // the realtors' rule
+  deed: "C", // restrictive covenants
+  map: "M", // the map (redlining)
+  bulldozer: "U", // urban renewal
+  contract: "S", // contract selling
+};
 /** dated end annotations where a court or a repeal stopped an instrument */
 const END_NOTES: Record<string, { text: string; at: number }> = {
   deed: { text: "unenforceable 1948", at: 1948 },
@@ -52,36 +62,73 @@ export default function InstrumentRegister({ mode }: { mode: "docked" | "wall" }
   const machines = useOrderedMachines();
 
   if (mode === "docked") {
+    const cursorAt = pct(Math.max(AXIS_START, Math.min(AXIS_END, cursorYear)));
+    /* initials sit just left of their bar's start; when two nearby
+       lanes start the same year (urban renewal and contract selling,
+       both 1952) the later letter steps one slot further left */
+    const initialShift = machines.map((m, i) => {
+      let s = 0;
+      for (let j = 0; j < i; j++) {
+        if (Math.abs(machines[j].onYear - m.onYear) < 5 && Math.abs(j - i) <= 1) s += 1;
+      }
+      return s;
+    });
     return (
-      <div
+      <a
+        href="#a2-register"
         className="ground-register-docked"
         data-testid="ground-register"
-        aria-label={`Five instruments, 1921 to 1970 with no gap. The story is at ${cursorYear}.`}
-        role="img"
+        aria-label={`Instrument register, five instruments on one timeline, 1900 to 2026, no gap from 1921 to 1970. The story is at ${cursorYear}. Jump to the full register.`}
       >
-        <div className="gr-track">
+        <span className="gr-track" aria-hidden="true">
           {machines.map((m, i) => (
-            <span
-              key={m.machineId}
-              className="gr-bar"
-              data-live={cursorYear >= m.onYear && cursorYear <= (m.offYear ?? AXIS_END) ? "on" : "off"}
-              style={{
-                left: `${pct(m.onYear)}%`,
-                width: `${pct(m.offYear ?? AXIS_END) - pct(m.onYear)}%`,
-                top: `${3 + i * 4}px`,
-              }}
-            />
+            <span key={m.machineId} className="gr-lane" style={{ top: `${12 + i * 4}px` }}>
+              <span
+                className="gr-init exh-plat"
+                style={{
+                  left: `${pct(m.onYear)}%`,
+                  transform: `translateX(calc(-100% - ${4 + initialShift[i] * 9}px))`,
+                }}
+                title={m.plainName}
+              >
+                {INITIAL_OF[m.machineId] ?? m.plainName.slice(0, 1)}
+              </span>
+              <span
+                className="gr-bar"
+                title={`${m.plainName}, ${m.onYear} to ${m.offYear ?? "now"}`}
+                data-live={cursorYear >= m.onYear && cursorYear <= (m.offYear ?? AXIS_END) ? "on" : "off"}
+                style={{
+                  left: `${pct(m.onYear)}%`,
+                  width: `${pct(m.offYear ?? AXIS_END) - pct(m.onYear)}%`,
+                }}
+              />
+            </span>
           ))}
-          <span className="gr-cursor" style={{ left: `${pct(Math.max(AXIS_START, Math.min(AXIS_END, cursorYear)))}%` }} />
-        </div>
-      </div>
+          <span className="gr-cursor" style={{ left: `${cursorAt}%` }} />
+          <span
+            className="gr-yearfig exh-mono"
+            style={{ left: `clamp(16px, ${cursorAt}%, calc(100% - 16px))` }}
+          >
+            {cursorYear}
+          </span>
+          <span className="gr-baseline" />
+          {[1900, 1963, 2026].map((y) => (
+            <span key={y} className="gr-tick exh-plat" data-year={y} style={{ left: `${pct(y)}%` }}>
+              {y}
+            </span>
+          ))}
+        </span>
+      </a>
     );
   }
+
+  const allFactRefs = [...new Set(machines.flatMap((m) => m.evidenceFactRefs))];
 
   return (
     <figure className="ground-register-wall" data-testid="ground-register-wall">
       <figcaption className="gr-wall-title exh-plat">
         Five instruments, one relay
+        <SourceSupGroup factIds={allFactRefs} />
       </figcaption>
       <div className="gr-wall-axis exh-mono" aria-hidden="true">
         {[1900, 1920, 1940, 1960, 1980, 2000, 2026].map((y) => (
@@ -122,9 +169,6 @@ export default function InstrumentRegister({ mode }: { mode: "docked" | "wall" }
                 </span>
               ) : null}
             </div>
-            <span className="sr-only">
-              <SourceSupGroup factIds={m.evidenceFactRefs} />
-            </span>
           </li>
         ))}
       </ul>

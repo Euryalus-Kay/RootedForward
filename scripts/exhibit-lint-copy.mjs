@@ -8,6 +8,15 @@
 //   2. no colons inside sentences or in titles/headings
 //      (URLs, "9:30" times, and objects flagged historical:true are exempt)
 //   3. a small AI-tell phrase list
+//   4. straight apostrophes (U+0027) are an ERROR in the visitor strings
+//      of data/exhibit/ground-copy.json and data/exhibit/ledger.json
+//      (ids, code fields, and other files are exempt); use U+2019
+// Tell-pattern rules run as WARNINGS (printed, never fail the gate):
+//   W1. negative parallelism ("not x; it y", "did not stop")
+//   W2. paired anaphora ("each one ..., each one ...")
+//   W3. the "N X, M Y" numeric heading formula in title/heading/kicker
+// The scan already covers every data/exhibit/*.json file, so ledger.json
+// and cases.json are gated; shortLabel is a visible key.
 // Exit 1 on any error. Used standalone and from exhibit-audit-facts.mjs.
 // ------------------------------------------------------------------
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
@@ -30,15 +39,32 @@ const VISIBLE_KEYS = new Set([
 // are quotes of period documents) when a sibling `historical: true` exists.
 const EXEMPT_WITH_FLAG = new Set(["excerpt", "quote", "text"]);
 
+// Heading-register keys checked against the numeric-pair formula (W3).
+const HEADING_KEYS = new Set(["title", "heading", "kicker"]);
+
+// Files whose visitor strings must use typographic apostrophes (U+2019).
+const APOSTROPHE_FILES = new Set(["ground-copy.json", "ledger.json"]);
+
 const AI_TELLS = [
   /\bdelve\b/i, /\btapestry\b/i, /a testament to/i, /\bboasts\b/i,
   /stark reminder/i, /rich history/i, /nestled\b/i, /\bvibrant\b/i,
   /not just [a-z]+, but/i, /it'?s important to note/i, /\bshowcasing\b/i,
 ];
 
-const problems = [];
+// Rhythm-level tell patterns. Warnings, not errors: they flag drafts for
+// a human pass without blocking a legitimate sentence.
+const TELL_WARNINGS = [
+  { rule: "negative-parallelism", re: /\bnot\b[^.;:!?]{0,60};\s*(it|its|they|their|he|she|we|the)\b/i },
+  { rule: "negative-parallelism", re: /\bdid not stop\b/i },
+  { rule: "paired-anaphora", re: /\b(each one|every one)\b[^.!?]{0,80}\b\1\b/i },
+];
+// "N X, M Y" heading formula, e.g. "58 bombings, 2 dead"
+const HEADING_FORMULA = /\b\d[\d,.]*\s+[a-z]+,\s+\d[\d,.]*\s+[a-z]+/i;
 
-function checkString(str, where, historical) {
+const problems = [];
+const warnings = [];
+
+function checkString(str, where, historical, key, fileBase) {
   if (typeof str !== "string" || !str.trim()) return;
   // 1. em-dash (and spaced en-dash used as one)
   if (str.includes("—") || / – /.test(str)) {
@@ -56,21 +82,35 @@ function checkString(str, where, historical) {
       problems.push({ where, rule: `ai-tell ${re.source}`, sample: str.slice(0, 90) });
     }
   }
+  // 4. straight apostrophes in the strict files
+  if (fileBase && APOSTROPHE_FILES.has(fileBase) && str.includes("'")) {
+    problems.push({ where, rule: "straight-apostrophe (use U+2019)", sample: str.slice(0, 90) });
+  }
+  // W1/W2. rhythm tells
+  for (const { rule, re } of TELL_WARNINGS) {
+    if (re.test(str)) {
+      warnings.push({ where, rule, sample: str.slice(0, 90) });
+    }
+  }
+  // W3. numeric-pair heading formula
+  if (key && HEADING_KEYS.has(key) && HEADING_FORMULA.test(str)) {
+    warnings.push({ where, rule: "heading-formula N-X-M-Y", sample: str.slice(0, 90) });
+  }
 }
 
-function walk(node, where, parentHistorical = false) {
+function walk(node, where, parentHistorical = false, fileBase = "") {
   if (node == null) return;
   if (Array.isArray(node)) {
-    node.forEach((v, i) => walk(v, `${where}[${i}]`, parentHistorical));
+    node.forEach((v, i) => walk(v, `${where}[${i}]`, parentHistorical, fileBase));
     return;
   }
   if (typeof node === "object") {
     const historical = node.historical === true || parentHistorical;
     for (const [k, v] of Object.entries(node)) {
       if (typeof v === "string" && (VISIBLE_KEYS.has(k) || (historical && EXEMPT_WITH_FLAG.has(k)))) {
-        checkString(v, `${where}.${k}`, historical && EXEMPT_WITH_FLAG.has(k));
+        checkString(v, `${where}.${k}`, historical && EXEMPT_WITH_FLAG.has(k), k, fileBase);
       } else if (typeof v === "object") {
-        walk(v, `${where}.${k}`, historical);
+        walk(v, `${where}.${k}`, historical, fileBase);
       }
     }
   }
@@ -84,7 +124,7 @@ function lintJsonFile(file) {
     problems.push({ where: file, rule: "invalid-json", sample: e.message.slice(0, 120) });
     return;
   }
-  walk(data, path.relative(ROOT, file));
+  walk(data, path.relative(ROOT, file), false, path.basename(file));
 }
 
 // --- data/exhibit + public/exhibit-data JSON ---
@@ -120,6 +160,10 @@ if (process.argv.includes("--src")) {
   srcDirs.forEach(walkSrc);
 }
 
+if (warnings.length) {
+  console.log(`exhibit-lint-copy: ${warnings.length} warning(s) (tell patterns, non-blocking)`);
+  for (const w of warnings) console.log(`  warn [${w.rule}] ${w.where}\n      ${JSON.stringify(w.sample)}`);
+}
 if (problems.length) {
   console.error(`exhibit-lint-copy FAILED with ${problems.length} problem(s)\n`);
   for (const p of problems) console.error(`  [${p.rule}] ${p.where}\n      ${JSON.stringify(p.sample)}`);

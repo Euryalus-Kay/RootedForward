@@ -36,6 +36,17 @@ function buildClientProps(): StageClientProps {
   }
   for (const l of geometry.hydePark.labels as Array<{ t: string; x: number; y: number }>) {
     if (l.t === "HYDE PARK") anchors.hydePark = { x: l.x, y: l.y };
+    if (l.t === "JACKSON PARK") {
+      /* the fairgrounds note belongs at Jackson Park. The label's own
+         anchor sits just south of the township crop, so clamp it into
+         the frame (the park runs well north of its centroid); the note
+         then reads at the park's in-frame portion, the lake edge south */
+      const [vx, vy, vw, vh] = (geometry.hydePark.viewBox as string).split(" ").map(Number);
+      anchors.jacksonPark = {
+        x: Math.min(Math.max(l.x, vx + vw * 0.08), vx + vw * 0.92),
+        y: Math.min(Math.max(l.y, vy + vh * 0.1), vy + vh * 0.88),
+      };
+    }
   }
   const sq = geometry.citywide.square as { x: number; y: number; w: number; h: number };
   anchors.square = { x: sq.x + sq.w / 2, y: sq.y + sq.h / 2 };

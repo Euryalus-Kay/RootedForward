@@ -995,6 +995,7 @@
       "factcheckId": "fc-redlining-03",
       "usedBy": [
         "ground-copy",
+        "ledger",
         "machines",
         "walltext"
       ],

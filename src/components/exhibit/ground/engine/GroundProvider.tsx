@@ -96,6 +96,49 @@ export default function GroundProvider({ children }: { children: ReactNode }) {
     areaTapRef.current = fn;
   }, []);
 
+  /* Deep links. The browser's native hash scroll fires before the
+     scenes hydrate and expand the document, so a #anchor URL lands at
+     the top. After load, re-scroll to the hash once layout settles
+     (double rAF, then a short retry loop while offsets keep moving),
+     and stand down the moment the visitor scrolls on their own. */
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    const id = decodeURIComponent(hash.slice(1));
+    /* the reading-room permalink contract (#room-files:<areaId>) has
+       its own handler; leave it alone */
+    if (id.includes(":")) return;
+    let cancelled = false;
+    let timer = 0;
+    const cancel = () => {
+      cancelled = true;
+    };
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("keydown", cancel);
+    const attempt = (triesLeft: number) => {
+      if (cancelled) return;
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ block: "start", behavior: "auto" });
+      if (triesLeft > 0) {
+        timer = window.setTimeout(() => attempt(triesLeft - 1), 300);
+      }
+    };
+    /* double rAF so the first pass runs after hydration paints */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => attempt(6));
+    });
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+      window.removeEventListener("keydown", cancel);
+    };
+  }, []);
+
+  const activeStep = RESOLVED_STEPS[Math.min(activeIndex, RESOLVED_STEPS.length - 1)];
+
   const value = useMemo<GroundApi>(() => {
     const step = RESOLVED_STEPS[Math.min(activeIndex, RESOLVED_STEPS.length - 1)];
     return {
@@ -113,7 +156,14 @@ export default function GroundProvider({ children }: { children: ReactNode }) {
 
   return (
     <GroundContext.Provider value={value}>
-      <div data-motion={reducedMotion ? "off" : "on"}>{children}</div>
+      {/* data-ground-warm extends the basement chapter's designed warm
+          value to the page column, not just the stage (a cut, no tween) */}
+      <div
+        data-motion={reducedMotion ? "off" : "on"}
+        data-ground-warm={activeStep.resolvedStage.warm ? "on" : "off"}
+      >
+        {children}
+      </div>
     </GroundContext.Provider>
   );
 }
