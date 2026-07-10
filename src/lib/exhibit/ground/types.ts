@@ -29,6 +29,8 @@ export interface StageState {
   dim?: boolean;
   /** warm value shift, the church basement only */
   warm?: boolean;
+  /** the exhibit's one present-day map mark (rust ring at East Woodlawn) */
+  today?: boolean;
   /** a single named annotation pinned on the stage */
   note?: { text: string; anchor: "hydePark" | "lawndale" | "woodlawn" | "square" } | null;
 }

@@ -113,6 +113,8 @@ export default function StageController({
       data-marks={stage.marks ? "on" : "off"}
       data-dim={stage.dim ? "on" : "off"}
       data-warm={stage.warm ? "on" : "off"}
+      data-today={stage.today ? "on" : "off"}
+      data-note-anchor={note ? note.anchor : "none"}
     >
       {stageBase}
       {stage.era ? (

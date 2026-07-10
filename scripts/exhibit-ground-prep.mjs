@@ -194,8 +194,13 @@ const cityLabels = cityLabelDefs.map((l) => {
   return { t: l.t, x: Math.round(x), y: Math.round(y), role: l.role };
 });
 
-// --- bombing marks (32 placeable incidents, citywide frame px) ---
-const marks = bombings.incidents
+// --- bombing marks (32 placeable incidents, citywide frame px).
+//     Repeat attacks at one address would overplot to a single dot and
+//     erase the record's core truth (the same families bombed again
+//     and again), so co-located incidents fan out on a small
+//     deterministic ring, well inside the documented 250m block
+//     precision (~6 SVG units at this zoom). ---
+const rawMarks = bombings.incidents
   .filter((i) => i.geo && i.geo.frame)
   .map((i) => ({
     id: i.id,
@@ -203,6 +208,30 @@ const marks = bombings.incidents
     y: Math.round(i.geo.frame.y * 10) / 10,
     precision: i.precision,
   }));
+const byLoc = new Map();
+for (const m of rawMarks) {
+  const key = `${m.x},${m.y}`;
+  const list = byLoc.get(key) ?? [];
+  list.push(m);
+  byLoc.set(key, list);
+}
+const RING_R = 5.5;
+const marks = [];
+for (const list of byLoc.values()) {
+  if (list.length === 1) {
+    marks.push({ ...list[0], siblings: 1 });
+    continue;
+  }
+  list.forEach((m, i) => {
+    const angle = (2 * Math.PI * i) / list.length - Math.PI / 2;
+    marks.push({
+      ...m,
+      x: Math.round((m.x + RING_R * Math.cos(angle)) * 10) / 10,
+      y: Math.round((m.y + RING_R * Math.sin(angle)) * 10) / 10,
+      siblings: list.length,
+    });
+  });
+}
 
 // --- the commission's square (41st/60th/Cottage Grove/State), if we can place it ---
 // State St ~ -87.6270, Cottage Grove ~ -87.6063, 41st ~ 41.8216, 60th ~ 41.7857

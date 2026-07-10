@@ -29,6 +29,7 @@ export const GROUND_SCENES: Record<string, ComponentType<SceneProps>> = {
   registerExpand: RegisterWall,
   platDoc: lazyScene(() => import("./PlatDoc")),
   fairFigure: lazyScene(() => import("./FairFigure")),
+  advisory: lazyScene(() => import("./AdvisoryGround")),
   docket: lazyScene(() => import("./Docket")),
   wellsClose: lazyScene(() => import("./WellsClose")),
   article34: lazyScene(() => import("./Article34")),

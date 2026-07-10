@@ -60,10 +60,21 @@ export default function StageBase() {
         </g>
         <g data-city-labels aria-hidden="true">
           {city.labels.map((l) => (
-            <text key={l.t} x={l.x} y={l.y} data-role={l.role}>
+            <text key={l.t} x={l.x} y={l.y} data-role={l.role} data-name={l.t}>
               {l.t}
             </text>
           ))}
+        </g>
+        {/* the one present-day mark; rust means now and this is its only
+            appearance on the map itself (East Woodlawn beside the Obama
+            Center, the ground moving again) */}
+        <g data-today aria-hidden="true">
+          {(() => {
+            const woodlawn = city.labels.find((l) => l.t === "WOODLAWN");
+            return woodlawn ? (
+              <circle data-today-mark cx={woodlawn.x} cy={woodlawn.y + 26} r={15} />
+            ) : null;
+          })()}
         </g>
       </g>
 

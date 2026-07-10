@@ -899,3 +899,12 @@ body.exhibit-immersive > footer { display: none; }
 /* R9 gate fixes: the paper, label anchoring */
 .ground-stage [data-paper] { fill: var(--color-exh-linen); }
 .ground-stage text { text-anchor: middle; }
+
+/* R9 round-1: rust is its own ink, never the D-grade pigment; the one
+   present-day map mark; focus labels replace their base label */
+.ground-root { --exh-rust: #A8502F; }
+.ground-stage [data-today] { display: none; }
+.ground-stage[data-today="on"] [data-today] { display: block; }
+.ground-stage [data-today-mark] { fill: none; stroke: var(--exh-rust); stroke-width: 3.5; }
+.ground-stage[data-note-anchor="woodlawn"] text[data-name="WOODLAWN"],
+.ground-stage[data-note-anchor="lawndale"] text[data-name="NORTH LAWNDALE"] { opacity: 0; }
