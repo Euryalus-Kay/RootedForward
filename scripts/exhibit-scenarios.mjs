@@ -622,6 +622,8 @@ export const scenarios = [
       t.assert("ledger rail", await page.$('[data-testid="ground-ledger-rail"]'));
       t.assert("spine", await page.$('[data-testid="ground-spine"]'));
       t.assert("locate anchor", await page.$("#find-your-ground"));
+      const html = await page.content();
+      t.assert("the study-room door renders its space", html.includes("576</span> surveyors") || / 576\s*<\/span>\s*surveyors/.test(html) || html.includes("576 surveyors"), "door string");
       t.assert("zero console errors", consoleErrors.length === 0, consoleErrors.join(" | ").slice(0, 300));
     },
   },
@@ -676,7 +678,11 @@ export const scenarios = [
       const sum = await stageAt("#a6-sum");
       t.assert("the sum state composites the century", sum.marks === "on" && sum.grades === "full", JSON.stringify(sum));
       const sumToday = await page.$eval('[data-testid="ground-stage"]', (el) => el.dataset.today);
-      t.assert("the one present-day mark stands at Woodlawn", sumToday === "on", String(sumToday));
+      t.assert("the one present-day mark stands at East Woodlawn", sumToday === "on", String(sumToday));
+      const sumBoundary = await page.$eval('[data-testid="ground-stage"]', (el) => el.dataset.boundary);
+      t.assert("the township ghost returns for the sum", sumBoundary === "on", String(sumBoundary));
+      const tag = await page.$eval("[data-today-tag]", (el) => el.textContent ?? "");
+      t.assert("the present-day mark carries its name and date", tag.includes("EAST WOODLAWN") && tag.includes("2026"), tag);
     },
   },
   {
@@ -781,6 +787,12 @@ export const scenarios = [
       );
       t.assert("addresses never truncate", truncated === 0, `truncate=${truncated}`);
       t.assert("Wells closes the fair chapter, in her own words", await page.$('[data-testid="scene-wellsClose"]'));
+      const docketText = await page.$eval('[data-testid="scene-docket"]', (el) => el.textContent ?? "");
+      t.assert("the record's line of refusal closes the chapter", docketText.includes("Only two of the forty"), docketText.slice(-200));
+      const firstDate = await page.$eval('[data-testid="scene-docket"] tbody tr td', (el) => el.textContent ?? "");
+      t.assert("the record's earliest bombing opens the table", firstDate.includes("July 1, 1917"), firstDate);
+      const headRow = await page.$eval('[data-testid="scene-docket"] thead', (el) => el.textContent ?? "");
+      t.assert("the empty column is named Conviction", headRow.includes("Conviction"), headRow);
       t.assert("the advisory plate stands before the docket", await page.$("#a2-advisory [data-testid=\"scene-advisory\"], #a2-advisory > *"));
     },
   },
@@ -914,6 +926,39 @@ export const scenarios = [
       await dispatchClick(page, '[data-testid="ground-files-close"]');
       await new Promise((r) => setTimeout(r, 500));
       t.assert("back button closes the room", !(await page.$('[data-testid="ground-files-room"]')));
+    },
+  },
+
+  {
+    id: "ground-deeplink",
+    milestone: "R9",
+    tags: ["ground"],
+    route: `${GROUND}#ch6`,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-root"]', { timeout: 30000 });
+      // wait until the re-scroll settles (document stops growing and
+      // the target rests at the viewport top band), up to 14s
+      const landed = await page.evaluate(
+        () =>
+          new Promise((resolve) => {
+            const started = Date.now();
+            const check = () => {
+              const el = document.getElementById("ch6");
+              if (el) {
+                const top = el.getBoundingClientRect().top;
+                if (top > -40 && top < window.innerHeight * 0.6) return resolve({ ok: true, top });
+              }
+              if (Date.now() - started > 14000) {
+                return resolve({ ok: false, top: el ? el.getBoundingClientRect().top : null });
+              }
+              setTimeout(check, 400);
+            };
+            check();
+          })
+      );
+      t.assert("a cold #ch6 deep link lands on the federal chapter", landed.ok, JSON.stringify(landed));
+      const red = await page.$eval('[data-testid="ground-spine"]', (el) => el.dataset.red);
+      t.assert("the spine is red where the deep link lands", red === "on", String(red));
     },
   },
 ];

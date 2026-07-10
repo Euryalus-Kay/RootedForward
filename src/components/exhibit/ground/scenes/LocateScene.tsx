@@ -55,7 +55,7 @@ export default function LocateScene() {
             <>
               In 1940 the surveyors graded the ground under you{" "}
               <strong data-grade={state.r.hit.grade}>{GRADE_WORD[state.r.hit.grade]}</strong>. The
-              sheet they filed on it is in this exhibit&apos;s study room, and the receipt returns
+              sheet they filed on it is in this exhibit&rsquo;s study room, and the receipt returns
               at the end of the walk.
             </>
           ) : (

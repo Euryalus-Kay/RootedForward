@@ -32,7 +32,7 @@
 // Flags: --stage pre-tts (only A,B,C,G) · --no-write · --quiet
 // Exit 1 on any error.
 // ------------------------------------------------------------------
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
 import path from "node:path";
 
@@ -98,6 +98,51 @@ for (const f of readdirSync(DATA).filter(
   } catch (e) {
     errors.push(`${f} is not valid JSON (${e.message.slice(0, 80)})`);
   }
+}
+
+// Component-level consumers (the R9 ground scenes reference facts
+// straight from TSX through <FactValue id>, <SourceSup factId>, and
+// SourceSupGroup factIds arrays), so the usedBy ledger and the dead-
+// fact warnings stay truthful for the whole page, not just the data
+// files. Ids are only counted when they resolve in the registry.
+{
+  const SRC_ROOTS = ["src/components/exhibit", "src/lib/exhibit"];
+  const ID_PATTERNS = [
+    /<FactValue\s+id="([a-z0-9_]+\.[a-z0-9_]+)"/g,
+    /factId="([a-z0-9_]+\.[a-z0-9_]+)"/g,
+    /factId=\{"([a-z0-9_]+\.[a-z0-9_]+)"\}/g,
+    /"([a-z0-9_]+\.[a-z0-9_]+)"/g, // inside factIds={[...]} lines only, filtered below
+  ];
+  const walkSrc = (dir) => {
+    if (!existsSync(dir)) return;
+    for (const entry of readdirSync(dir)) {
+      const p = path.join(dir, entry);
+      if (statSync(p).isDirectory()) {
+        walkSrc(p);
+        continue;
+      }
+      if (!/\.(tsx|ts)$/.test(entry)) continue;
+      const src = readFileSync(p, "utf8");
+      const where = path.relative(process.cwd(), p);
+      for (const line of src.split("\n")) {
+        const scanWholeLine =
+          /<FactValue|factId=|factIds=|factRefs?[:=]/.test(line);
+        if (!scanWholeLine) continue;
+        for (const re of ID_PATTERNS) {
+          re.lastIndex = 0;
+          let m;
+          while ((m = re.exec(line))) {
+            const id = m[1];
+            if (facts.has(id)) {
+              if (!usedBy.has(id)) usedBy.set(id, new Set());
+              usedBy.get(id).add(where);
+            }
+          }
+        }
+      }
+    }
+  };
+  SRC_ROOTS.forEach(walkSrc);
 }
 
 // ---- C. claims gate for the reader's text ----

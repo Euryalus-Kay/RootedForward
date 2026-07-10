@@ -88,20 +88,17 @@ export default function StageBase() {
             </text>
           ))}
         </g>
+        {/* the township line's ghost, for the finale sum state */}
+        <path data-city-boundary d={city.boundary} aria-hidden="true" />
         {/* the one present-day mark; rust means now and this is its only
             appearance on the map itself (East Woodlawn beside the Obama
-            Center, the ground moving again) */}
+            Center, the ground moving again), at its true geography */}
         <g data-today aria-hidden="true">
-          {(() => {
-            const woodlawn = city.labels.find((l) => l.t === "WOODLAWN");
-            if (!woodlawn) return null;
-            return (
-              <>
-                <circle data-today-halo cx={woodlawn.x} cy={woodlawn.y + 26} r={17} />
-                <circle data-today-mark cx={woodlawn.x} cy={woodlawn.y + 26} r={15} />
-              </>
-            );
-          })()}
+          <circle data-today-halo cx={city.todayAnchor.x} cy={city.todayAnchor.y} r={34} />
+          <circle data-today-mark cx={city.todayAnchor.x} cy={city.todayAnchor.y} r={31} />
+          <text data-today-tag x={city.todayAnchor.x} y={city.todayAnchor.y + 62}>
+            EAST WOODLAWN, 2026
+          </text>
         </g>
       </g>
 

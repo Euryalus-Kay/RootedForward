@@ -491,6 +491,8 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-01",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Docket.tsx",
+        "src/components/exhibit/interactives/BombingMap/BombingMap.tsx",
         "walltext"
       ],
       "notes": "The commission counted fifty-eight bomb explosions aimed at Black homes and at real estate men, white and Black, who sold or rented to Black families."
@@ -512,6 +514,8 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-02",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Docket.tsx",
+        "src/components/exhibit/interactives/BombingMap/BombingMap.tsx",
         "walltext"
       ],
       "notes": "Verbatim from the report, thirty-two were exploded within the square bounded by Forty-first and Sixtieth streets, Cottage Grove Avenue and State Street. That square borders Hyde Park and Kenwood."
@@ -533,6 +537,9 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-03",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/AdvisoryGround.tsx",
+        "src/components/exhibit/ground/scenes/Docket.tsx",
+        "src/components/exhibit/interactives/BombingMap/BombingMap.tsx",
         "walltext"
       ],
       "notes": "Two persons, both Negroes, were killed, in the report's words, and damage to property exceeded $100,000. One victim documented by the report's photographs was a six-year-old child killed at 3365 Indiana Avenue."
@@ -554,6 +561,8 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-04",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Docket.tsx",
+        "src/components/exhibit/interactives/BombingMap/BombingMap.tsx",
         "walltext"
       ],
       "notes": "Only two suspects were ever arrested. One was released on a $500 bond and never tried, the other was held two days and released. The report concludes the police accomplished nothing definite in all fifty-eight bombings."
@@ -596,6 +605,7 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-05",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Docket.tsx",
         "walltext"
       ],
       "notes": "The report gives an average of one race bombing every twenty days for three years and eight months."
@@ -734,6 +744,7 @@
       ],
       "factcheckId": "fc-covenants-02",
       "usedBy": [
+        "src/components/exhibit/interactives/ReadTheDeed/ReadTheDeed.tsx",
         "walltext"
       ],
       "notes": "Hirsch documents University of Chicago subsidies to neighborhood associations defending restrictive covenants. The repo corpus independently carries the rounded more-than-$83,000 figure within more than $110,000 of community interests spending over the same years."
@@ -759,6 +770,7 @@
       "usedBy": [
         "ground-copy",
         "machines",
+        "src/components/exhibit/ground/scenes/DeedFacsimile.tsx",
         "walltext"
       ],
       "notes": "Nathan William MacChesney, general counsel of the National Association of Real Estate Boards, drafted a standard racial covenant in 1927, the year after Corrigan. Real estate boards distributed the printed form so any block could adopt it, and it sealed off whole streets at once."
@@ -782,6 +794,7 @@
       "usedBy": [
         "ground-copy",
         "ledger",
+        "src/components/exhibit/interactives/ReadTheDeed/ReadTheDeed.tsx",
         "walltext"
       ],
       "notes": "The corpus and the Covenants Project support hundreds of covenanted subdivisions across Cook County by the 1940s. The often quoted claims that half, or 80 percent, of Chicago's residential land was covenanted could not be attributed to a verifiable named source and were not shipped."
@@ -874,6 +887,7 @@
       "factcheckId": "fc-code-02",
       "usedBy": [
         "machines",
+        "src/lib/exhibit/content/rooms/theCode.tsx",
         "timeline",
         "walltext"
       ],
@@ -926,7 +940,9 @@
       "factcheckId": "fc-code-04",
       "usedBy": [
         "ethics_exam",
-        "machines"
+        "machines",
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
+        "src/lib/exhibit/content/rooms/theCode.tsx"
       ],
       "notes": "Incoming NAR president Charlie Oppler apologized for the association's role in housing discrimination, saying what Realtors did was an outrage to our morals and our ideals. It was the 1.4 million member association's first formal apology, 96 years after Article 34."
     },
@@ -997,6 +1013,7 @@
         "ground-copy",
         "ledger",
         "machines",
+        "src/components/exhibit/rigged/configs/GradeYourBlock.tsx",
         "walltext"
       ],
       "notes": "The 1938 edition reads, Areas surrounding a location are investigated to determine whether incompatible racial and social groups are present, and elsewhere, If a neighborhood is to retain stability, it is necessary that properties shall continue to be occupied by the same social and racial classes. It praised barriers giving protection from adverse influences and recommended restrictive deed clauses. An earlier shorthand, incompatible racial groups, was corrected to the full verbatim phrase."
@@ -1023,6 +1040,12 @@
         "ground-copy",
         "ledger",
         "machines",
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
+        "src/components/exhibit/ground/scenes/LocateScene.tsx",
+        "src/components/exhibit/ground/scenes/Receipt.tsx",
+        "src/components/exhibit/rigged/configs/GradeYourBlock.tsx",
+        "src/components/exhibit/stations/HolcMapStation.tsx",
+        "src/lib/exhibit/content/rooms/theMap.tsx",
         "walltext"
       ],
       "notes": "Surveyors graded the metro A to D on sheets dated September 1939 to April 1940, and the master map was issued in 1940; Mapping Inequality catalogs the Chicago map under 1940. The corpus states the Black Belt came back shaded red. An earlier 1938 label survives in the public dataset filename and in the site's research paper and refers to this same map; the file is not renamed so the research pages keep working."
@@ -1067,6 +1090,8 @@
       "secondarySources": [],
       "factcheckId": "fc-redlining-06",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/LocateScene.tsx",
+        "src/components/exhibit/ground/scenes/Receipt.tsx",
         "walltext"
       ],
       "notes": "Green A, blue B, yellow C, red D. The word redlining comes from that red ink."
@@ -1089,6 +1114,7 @@
       "factcheckId": "fc-redlining-07",
       "usedBy": [
         "ground-copy",
+        "src/components/exhibit/stations/HolcMapStation.tsx",
         "walltext"
       ],
       "notes": "Hanchett's sentence reads, Between 1945 and 1959, less than 2 percent of all federally insured home loans went to African Americans. The date range and the base (all federally insured home loans) are the source's own. The subsidy that built the postwar white middle class flowed one way."
@@ -1110,6 +1136,8 @@
       "secondarySources": [],
       "factcheckId": "fc-redlining-08",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
+        "src/lib/exhibit/content/rooms/theDeed.tsx",
         "walltext"
       ],
       "notes": "Not until 2022 did Illinois homeowners get a formal way to strike dead covenant language from the record. The clauses had sat in deeds, unenforceable but unerased, since 1948."
@@ -1181,6 +1209,7 @@
       "factcheckId": "fc-cases-03",
       "usedBy": [
         "cases",
+        "src/components/exhibit/ground/scenes/HansberryVoice.tsx",
         "timeline",
         "walltext"
       ],
@@ -1206,6 +1235,7 @@
         "cases",
         "ledger",
         "machines",
+        "src/lib/exhibit/content/rooms/theDeed.tsx",
         "timeline",
         "walltext"
       ],
@@ -1230,6 +1260,7 @@
       "usedBy": [
         "ground-copy",
         "machines",
+        "src/components/exhibit/rigged/configs/TestTheLaw.tsx",
         "timeline",
         "walltext"
       ],
@@ -1303,6 +1334,7 @@
       "factcheckId": "fc-renewal-04",
       "usedBy": [
         "ledger",
+        "src/components/exhibit/ground/scenes/Clearance.tsx",
         "walltext"
       ],
       "notes": "The plan called for demolishing 638 buildings judged too crowded, too old, or too far gone to keep."
@@ -1329,6 +1361,7 @@
       "usedBy": [
         "ledger",
         "machines",
+        "src/components/exhibit/interactives/PlannersTable/PlannersTable.tsx",
         "walltext"
       ],
       "notes": "About 4,000 families displaced over the program's full course. A more precise count near 4,371 households circulates from the Rossi and Dentler literature but was not independently verified in this pass, so the rounded figure ships."
@@ -1470,6 +1503,7 @@
       "usedBy": [
         "ground-copy",
         "ledger",
+        "src/components/exhibit/interactives/PlannersTable/PlannersTable.tsx",
         "walltext"
       ],
       "notes": "The library's historical note reads, after this plan, the average income of Hyde Park increased sharply by 70 percent, but the population of African Americans decreased by 40 percent. Wikipedia carries the same figure without a footnote and is no longer cited."
@@ -1533,6 +1567,7 @@
       "secondarySources": [],
       "factcheckId": "fc-renewal-16",
       "usedBy": [
+        "src/components/exhibit/interactives/PlannersTable/PlannersTable.tsx",
         "walltext"
       ],
       "notes": "Chicago Magazine quotes Chancellor Kimpton describing renewal as a way of cutting down the number of Negroes in the neighborhood. Use as a sourced quotation with attribution, not paraphrased as policy text."
@@ -1556,6 +1591,7 @@
       "usedBy": [
         "ground-copy",
         "machines",
+        "src/components/exhibit/rooms/FollowTheDollar.tsx",
         "voices",
         "walltext"
       ],
@@ -1578,6 +1614,8 @@
       "secondarySources": [],
       "factcheckId": "fc-contracts-02",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/TwoBuyersGround.tsx",
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "Ross bought his North Lawndale house on contract for $27,500. The spec's $27,000 was corrected to $27,500 per Coates."
@@ -1599,6 +1637,8 @@
       "secondarySources": [],
       "factcheckId": "fc-contracts-03",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/TwoBuyersGround.tsx",
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "The speculator who sold Ross the house had bought it for $12,000 six months before selling it to him at $27,500, keeping the deed until the last payment."
@@ -1623,6 +1663,8 @@
       "factcheckId": "fc-contracts-04",
       "usedBy": [
         "ledger",
+        "src/components/exhibit/ground/scenes/TwoBuyersGround.tsx",
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "Adjusted for inflation, Black contract buyers paid an average of $71,000 more per home than they would have with a conventional mortgage, per the Cook Center study."
@@ -1672,6 +1714,8 @@
       ],
       "factcheckId": "fc-contracts-06",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/TwoBuyersGround.tsx",
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "The average contract buyer paid $587 more per month, in 2019 dollars, than a conventional mortgage would have cost. This ships in place of the unverified FHA-versus-contract terms comparison."
@@ -1695,6 +1739,8 @@
       ],
       "factcheckId": "fc-contracts-07",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/TwoBuyersGround.tsx",
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "Contract sellers marked homes up 84 percent on average over what a white buyer had just paid for the same house."
@@ -1717,6 +1763,7 @@
       "factcheckId": "fc-contracts-08",
       "usedBy": [
         "ledger",
+        "src/components/exhibit/rooms/FollowTheDollar.tsx",
         "walltext"
       ],
       "notes": "The study's aggregate estimate of wealth expropriated through contract selling, expressed in 2019 dollars. Money that should have become equity flowed to sellers instead."
@@ -1740,6 +1787,7 @@
       ],
       "factcheckId": "fc-contracts-09",
       "usedBy": [
+        "src/components/exhibit/interactives/TwoBuyers/TwoBuyers.tsx",
         "walltext"
       ],
       "notes": "The study's count of Chicago homes Black families bought on contract in the period."
@@ -1764,6 +1812,7 @@
       ],
       "factcheckId": "fc-cbl-01",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "timeline",
         "walltext"
       ],
@@ -1786,6 +1835,7 @@
       "secondarySources": [],
       "factcheckId": "fc-cbl-02",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "walltext"
       ],
       "notes": "Families held payments in escrow until contracts were renegotiated. When evictions began, crowds of CBL members moved evicted families back in."
@@ -1809,6 +1859,7 @@
       "usedBy": [
         "ledger",
         "machines",
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "timeline",
         "walltext"
       ],
@@ -1831,6 +1882,7 @@
       "secondarySources": [],
       "factcheckId": "fc-cbl-04",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "walltext"
       ],
       "notes": "The spec's about 50 evicted was replaced with the named source's approximately seventy families who permanently lost their homes. The same article records families evicted in January's cold and crowds of CBL members moving evicted families back in; for many months the sheriff and his deputies backed off when confronted with hundreds of residents. Re-tiered reported at integration. The Chicago Reporter is a published investigative outlet; the attributed tier is reserved for single-source oral claims."
@@ -1853,6 +1905,7 @@
       "factcheckId": "fc-cbl-05",
       "usedBy": [
         "ledger",
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "walltext"
       ],
       "notes": "Period dollars, about half a typical contract purchase price. The spec's $6 million total attributed to McPherson's 1972 Atlantic piece could not be verified, so the per-contract average from a named source ships instead. No inflation adjustment computed. Re-tiered reported at integration. The Chicago Reporter is a published investigative outlet; the attributed tier is reserved for single-source oral claims. Corroboration against Satter, Family Properties page cites remains open."
@@ -1876,6 +1929,8 @@
       ],
       "factcheckId": "fc-present-01",
       "usedBy": [
+        "ground-copy",
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
         "timeline",
         "walltext"
       ],
@@ -1901,6 +1956,8 @@
       ],
       "factcheckId": "fc-present-03",
       "usedBy": [
+        "ground-copy",
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
         "walltext"
       ],
       "notes": "Single-family prices on the blocks nearest the Center doubled between 2019 and 2025, reaching a median of about $440,000."
@@ -1922,6 +1979,7 @@
       "secondarySources": [],
       "factcheckId": "fc-present-04",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
         "walltext"
       ],
       "notes": "By 2024 less than a third of the area's housing stock counted as affordable, about half the share of fifteen years earlier."
@@ -2012,7 +2070,9 @@
         "Block Club Chicago, September 9, 2020"
       ],
       "factcheckId": "fc-present-10",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx"
+      ],
       "notes": "Passed after a roughly five year campaign by the Obama CBA Coalition, including KOCO, STOP, and BYP100. It reserved 52 city-owned vacant lots for affordable housing and set up a loan fund, repair grants, and a tenant right of first refusal."
     },
     {
@@ -2031,7 +2091,9 @@
       },
       "secondarySources": [],
       "factcheckId": "fc-present-11",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx"
+      ],
       "notes": "One finished building of 58 units on the 52 reserved lots, zero tenant right of first refusal notices in five years, 36 home repair grants of up to $20,000, and about $2 million in preservation funds sitting unspent."
     },
     {
@@ -2054,6 +2116,7 @@
       ],
       "factcheckId": "fc-present-13",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
         "walltext"
       ],
       "notes": "Median of tract medians across Cook County tracts assigned to 1938 HOLC zones. Grade A is only 15 tracts and its incomes press the ACS top-code, so the A figure understates its own top."
@@ -2077,6 +2140,7 @@
       ],
       "factcheckId": "fc-present-14",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx",
         "walltext"
       ],
       "notes": "Owner-occupied over occupied units summed within each 1938 grade. Descriptive cross-section, not a causal estimate."
@@ -2120,7 +2184,9 @@
         "City of Chicago open data portals for affordable rental developments and TIF projects"
       ],
       "factcheckId": "fc-present-17",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/ground/scenes/Bridge.tsx"
+      ],
       "notes": "Counts are sites, not dollars. The geography the HOLC graded down in 1938 is still the geography the city intervenes in."
     },
     {
@@ -2228,6 +2294,7 @@
       "secondarySources": [],
       "factcheckId": "fc-people-05",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/HansberryVoice.tsx",
         "voices",
         "walltext"
       ],
@@ -2293,7 +2360,9 @@
       },
       "secondarySources": [],
       "factcheckId": "fc-covenants-07",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/interactives/ReadTheDeed/ReadTheDeed.tsx"
+      ],
       "notes": "Characterization, not quotation. The widely reproduced armor phrasing and its 1928 Hyde Park Herald attribution could not be verified against an accessible primary or the cited secondary this session; the exhibit displays the paraphrase until the archival clipping is on file."
     },
     {
@@ -2444,7 +2513,8 @@
       "secondarySources": [],
       "factcheckId": "fc-contracts-11",
       "usedBy": [
-        "machines"
+        "machines",
+        "src/components/exhibit/ground/scenes/Bridge.tsx"
       ],
       "notes": "The Contract machine's residue line, registered for the Machine Rooms."
     },
@@ -2510,6 +2580,7 @@
       ],
       "factcheckId": "fc-people-08",
       "usedBy": [
+        "src/components/exhibit/ground/scenes/Basement.tsx",
         "voices",
         "walltext"
       ],
@@ -2532,6 +2603,7 @@
       "secondarySources": [],
       "factcheckId": "fc-sheets-01",
       "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx",
         "walltext"
       ],
       "notes": "Of sheets whose Negro percent field parses as a number, A grade 0 of 35 record any Black residents, B grade 1 of 127 (a single family), C grade 53 of 263, D grade 89 of 122. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
@@ -2552,7 +2624,9 @@
       },
       "secondarySources": [],
       "factcheckId": "fc-sheets-02",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx"
+      ],
       "notes": "The infiltration_of field names Negro or colored on 25 D sheets and 1 C sheet, and on no A or B sheet. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
     },
     {
@@ -2572,6 +2646,7 @@
       "secondarySources": [],
       "factcheckId": "fc-sheets-03",
       "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx",
         "walltext"
       ],
       "notes": "The availability-of-mortgage-funds field, categorized ample/good vs limited/none: A 23 vs 0, B 85 vs 5, C 76 vs 106, D 10 vs 97. The sheets record credit already being withheld from the areas graded lowest. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
@@ -2592,7 +2667,9 @@
       },
       "secondarySources": [],
       "factcheckId": "fc-sheets-04",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx"
+      ],
       "notes": "Clarifying-remarks text contains blight/blighted on 37 D sheets, 1 C sheet, 0 A and 0 B sheets. The same word later authorized clearance under the Illinois Blighted Areas Redevelopment Act of 1947 and the federal Housing Act of 1949. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
     },
     {
@@ -2613,7 +2690,9 @@
         "verbatim from the clarifying remarks of sheet A11 in the exhibit's Surveyor's Files"
       ],
       "factcheckId": "fc-sheets-05",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx"
+      ],
       "notes": "Verbatim, sheet A11 (areaId 1097). historical punctuation preserved. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
     },
     {
@@ -2634,7 +2713,9 @@
         "verbatim from the clarifying remarks of sheet D106 in the exhibit's Surveyor's Files"
       ],
       "factcheckId": "fc-sheets-06",
-      "usedBy": [],
+      "usedBy": [
+        "src/components/exhibit/rooms/SurveyorsFiles.tsx"
+      ],
       "notes": "Verbatim, sheet D106 (areaId 1635). The phrase so far treats restriction as the expected default. Reproducible: node scripts/exhibit-sheets-analysis.mjs regenerates every count from data/exhibit-src/ad-data-chicago.json."
     },
     {
@@ -2836,6 +2917,27 @@
         "walltext"
       ],
       "notes": "Winling and Michney trace how the race-and-value doctrine moved from academic land economics (Hoyt among its authors) through the appraisal profession into HOLC's forms and FHA's manual. The surveyors' sheets distilled what local lenders and realtors already practiced."
+    },
+    {
+      "id": "bombings.families_stayed",
+      "value": "Only two of the forty Negro families bombed have moved; the others have made repairs, secured private watchmen or themselves kept vigil for night bombers, and still occupy the properties.",
+      "display": "only two of the forty families bombed moved away",
+      "unit": "quote",
+      "asOf": "as the commission recorded it, 1922",
+      "tier": "documented",
+      "source": {
+        "title": "The Negro in Chicago, A Study of Race Relations and a Race Riot",
+        "author": "Chicago Commission on Race Relations",
+        "year": 1922,
+        "url": "https://www.gutenberg.org/files/57343/57343-h/57343-h.htm",
+        "locator": "Bombings section, p. 122 ff."
+      },
+      "historical": true,
+      "notes": "Verbatim from the report's bombing survey (the passage naming Clarke and Binga's refusals); cached at data/exhibit-src/ccrr-negro-in-chicago.txt. Used as the memorial chapter's closing line of refusal.",
+      "usedBy": [
+        "src/components/exhibit/ground/scenes/Docket.tsx"
+      ],
+      "factcheckId": "fc-bomb-families-stayed"
     }
   ]
 }

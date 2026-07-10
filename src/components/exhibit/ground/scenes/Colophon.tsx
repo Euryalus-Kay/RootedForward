@@ -50,6 +50,10 @@ function isFilesHash(): boolean {
 export default function Colophon(_props: SceneProps) {
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  /* whoever opened the room (the door, a flood sheet card, the receipt
+     stub) gets focus back on close; Radix's default would send focus
+     to the colophon door and teleport a reader out of Act 3 */
+  const openerRef = useRef<HTMLElement | null>(null);
 
   const bibliography = useMemo(() => buildBibliography(), []);
   const factCount = allFacts().length;
@@ -67,7 +71,18 @@ export default function Colophon(_props: SceneProps) {
     if (isFilesHash()) setOpen(true);
     const onPop = () => setOpen(isFilesHash());
     window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    /* capture the opener for ANY route into the room (door, sheet-card
+       link, receipt stub, hashchange) before focus moves inside it */
+    const onHash = () => {
+      if (isFilesHash() && document.activeElement instanceof HTMLElement) {
+        openerRef.current = document.activeElement;
+      }
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("hashchange", onHash);
+    };
   }, []);
 
   const openRoom = () => {
@@ -164,8 +179,12 @@ export default function Colophon(_props: SceneProps) {
       <Dialog.Root
         open={open}
         onOpenChange={(o) => {
-          if (o) openRoom();
-          else closeRoom();
+          if (o) {
+            if (document.activeElement instanceof HTMLElement) {
+              openerRef.current = document.activeElement;
+            }
+            openRoom();
+          } else closeRoom();
         }}
       >
         <Dialog.Trigger asChild>
@@ -176,7 +195,7 @@ export default function Colophon(_props: SceneProps) {
           >
             <span className={EYEBROW_CLASS}>Study room</span>
             <span className="mt-1 block font-display text-lg leading-snug text-exh-ink">
-              All <span className="exh-mono">{sheetTotal}</span> surveyors&rsquo; sheets, searchable.
+              All <span className="exh-mono">{sheetTotal}</span>{" "}surveyors&rsquo; sheets, searchable.
             </span>
           </button>
         </Dialog.Trigger>
@@ -191,6 +210,15 @@ export default function Colophon(_props: SceneProps) {
             <Dialog.Content
           ref={contentRef}
           data-testid="ground-files-room"
+          onCloseAutoFocus={(e) => {
+            /* return focus to whoever opened the room, wherever they
+               were reading, without scrolling the page anywhere */
+            e.preventDefault();
+            const opener = openerRef.current;
+            if (opener && document.contains(opener)) {
+              opener.focus({ preventScroll: true });
+            }
+          }}
           onEscapeKeyDown={(e) => {
             /* an open citation popover inside the room claims the
                Escape; the room stays while the popover closes itself */

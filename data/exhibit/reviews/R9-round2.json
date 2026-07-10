@@ -1,0 +1,250 @@
+{
+ "punchList": [
+  {
+   "severity": "p1",
+   "where": "src/components/exhibit/ground/engine/GroundProvider.tsx:104-138 (deep-link re-scroll, 6 retries x 300ms); verified failing live on cold loads of #a3-flood and #ch4",
+   "what": "The round-1 deep-link fix is racy. The retry loop gives up after about 1.8 seconds while lazy scenes are still expanding the document from roughly 1,843px to 45,500px, so cold loads land mid-hydration and drift. Measured live, #a3-flood rested at scrollY 0 with its target at 17,968px, and #ch4 ended near the page bottom with the chapter 28,430px above the viewport. The area permalink and chapter anchors, the exhibit's declared shareable unit, deliver recipients to the wrong room in exactly the cold-load case that sharing creates. Dev chunk loading amplified the delay, but a mid-range phone on cellular hits the same window.",
+   "fix": "Replace the fixed retry count with layout-quiescence detection, the pattern Spine.tsx:44 already proves. A ResizeObserver on document.body re-runs scrollIntoView whenever scrollHeight changes while the hash target exists, stands down permanently on the first user wheel, touch, or keydown (the cancel plumbing exists), and caps around 10 to 15 seconds. Add a throttled cold-load deep-link scenario to the verify suite so it cannot regress silently.",
+   "lenses": 2
+  },
+  {
+   "severity": "p1",
+   "where": "src/components/exhibit/ground/scenes/Receipt.tsx:185-188 (mount-only sessionStorage read) and :138-141 (hit-state copy); a6-receipt, both viewports",
+   "what": "The finale receipt is wrong on both of its paths. In a single continuous visit, the designed primary path, the mount-only storage read runs at page hydration before the visitor has done the Act 0 lookup, so the reprise never fires and the card asks for device location a second time against its own line that it uses location once. And a visitor who skipped Act 0 and runs the lookup fresh at the receipt gets a card claiming the grade was kept from an earlier lookup that never happened; the stored and fresh paths render the identical sentence. On a page whose ethic is saying exactly what the record supports, the one line about the visitor's own record is false half the time.",
+   "fix": "Re-read storedGround() when the receipt step activates, via an effect keyed on activeIndex from useGround or a window CustomEvent that LocateScene dispatches on a successful hit, keeping the mount read for reload and deep-link arrivals. Track how the hit arrived in the state union and render the earlier-lookup line only on the stored path, with a neutral line ('The grade the surveyors filed on the ground under you.') on the fresh path.",
+   "lenses": 2
+  },
+  {
+   "severity": "p1",
+   "where": "src/components/exhibit/ground/scenes/Colophon.tsx Dialog.Content (~line 191, no onCloseAutoFocus handler, grep-confirmed); triggered from every #room-files link (GradeFlood.tsx:211 and :364, Receipt.tsx:153) and from deep-link arrivals",
+   "what": "Closing the study room teleports the reader to the end of the exhibit. Radix Dialog's default onCloseAutoFocus returns focus to the trigger, which lives in the colophon scene, whenever the room was opened by anything other than that door. Verified live at 390px, closing the room while reading the flood chapter jumped the visitor from scrollY 21,657 to 44,645 with focus on the study door; a cold #room-files arrival did the same from scrollY 0. Reading position is destroyed, the visitor is thrown about 23,000px forward, and the finale is spoiled mid-Act-3, on the exhibit's most-linked interaction.",
+   "fix": "In Dialog.Content, prevent the default close focus and refocus the element captured at open time with preventScroll, the same openerRef pattern GradeFlood already uses for its sheet card. For deep-link arrivals with no opener, prevent default and leave scroll untouched. Add a verify scenario that opens the room from the flood link, closes via Escape and via the button, and asserts scrollY unchanged with focus returned.",
+   "lenses": 1
+  },
+  {
+   "severity": "p1",
+   "where": "src/components/exhibit/ground/scenes/Docket.tsx:157-159 (intro, grep-confirmed at :158), :186-190 (sr-only caption), :3-4 (header comment); propagated from data/exhibit/design/R9/design.md:57-59 and scripts/exhibit-scenarios.mjs:770",
+   "what": "The memorial chapter's framing sentence is false about its own source. 'Its appendix lists 40 of them one by one' misstates the 1922 report, whose appendix holds commissioner biographies, staff, and the epitome of riot deaths, with no bombing list. Every row's own locator cites ch. IV or ch. X body text, and bombings.json's methods block says the rows were assembled from narrative, quoted press items, cluster counts, and one caption. A descendant or historian who runs the five-minute check finds no such appendix, and the discovery discredits the exhibit's most carefully sourced chapter at the moment trust matters most.",
+   "fix": "Recite to what the registry supports, e.g. 'From July 1917 to March 1921 the commission recorded 58 bombings. Its report documents 40 of them one by one, and this table holds all 40.' Mirror the change in the sr-only caption, the file header comment, the scenario assert label, and the round record so the error does not carry into R10.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "data/exhibit/ground-copy.json:395 (a6-sum caption) against StageBase.tsx citywide layers, both viewports",
+   "what": "The thesis moment closes on a checkable overclaim. 'Every mark you watched sits on the one map', but the citywide sum composites only the grade pigment, the bombing marks, the commission square, and the near-invisible today ring; the township plat boundary and the renewal area exist only in the Hyde Park layer group and never render citywide, so two marks the visitor watched for three chapters are absent exactly when the caption claims totality. At 390px, what does render sits at or below one-pixel legibility, so the pull-back lands softer than the promise. Four lenses flagged this independently.",
+   "fix": "Ghost the township plat boundary and the renewal region onto the citywide sum state as hairlines; both paths already live in geometry.json in the same coordinate space, so this is composition plus a caption verify check. If any layer cannot land, recite the caption to what shows. Pair with the plat-face map key in the ideas list so the inventory is checkable at phone scale.",
+   "lenses": 4
+  },
+  {
+   "severity": "p2",
+   "where": "data/exhibit/ground-copy.json:177 (a2-docket still carries the red-summer post, grep-confirmed) and :213 (covenant-armor posting under a 1921 cursor); data/exhibit/ledger.json:47-52 (covenant-armor year 1927 resolves to no attached fact); ch9 head rewinding the cursor to 1958 while the 1962 renewal entry rides the rail",
+   "what": "Round 1's clock rule, that the dateline is never earlier than a posted entry, and its explicit order to move the riot post, only half landed. The 1919 riot entry still posts at the top of the docket under a 1917 cursor, riding beneath all 40 bombing rows for roughly six thousand pixels and inviting readers to fold 38 riot dead into a table whose own total is two. The 1927 covenant entry posts under a 1921 cursor, and its displayed year 1927 pairs with a fact dated by the 1940s. Three lenses flagged the riot post as the exact violation round 1 named.",
+   "fix": "Move the red-summer post from the a2-docket step to the a2-takeaway step, which already carries era 1921, so it lands after the table closes. Give a3-s1 a 1940 stage era or move covenant-armor to that step's exit, and add covenants.macchesney_template to the entry's factRefs so 1927 has a source. Set ch9's era to 1962 or lead its kicker with the 1958 fact so the rewind reads sourced. Extend the verify suite's ledger audit to assert no posted entry's year exceeds its posting step's resolved cursor year.",
+   "lenses": 3
+  },
+  {
+   "severity": "p2",
+   "where": "src/components/exhibit/ground/StageBase.tsx data-today mark (r=15, halo 17, in a 1132x1845 viewBox), anchored at the WOODLAWN label anchor plus 26 units (:96-101); visible at ch11, a6-bridge, a6-sum",
+   "what": "The exhibit's only present-day map mark renders about 5px wide at 390px, carries no name or date, and is positioned by typographic convenience rather than the East Woodlawn geography its sources describe. At 'The ground is moving again', the row that answers the visitor who concedes everything through 1970, the visitor cannot find the thing that is moving, so rust-means-now pays off only in chrome and the 2026 half of the thesis is asserted rather than shown at the exact moment the cold open promised it.",
+   "fix": "Roughly double the ring (r 30 to 36, stroke 6, halo to match), give it a clamped plat-face leader tag with the registry's own noun and the date ('EAST WOODLAWN · 2026') shown while data-today is on and base labels are off, and anchor it at a named East Woodlawn coordinate in geometry.json near the Jackson Park edge rather than a label offset. Gate on a 390px screenshot check at ch11 and a6-sum; a blind reader should point to the present-day mark within five seconds.",
+   "lenses": 3
+  },
+  {
+   "severity": "p2",
+   "where": "src/components/exhibit/ground/StageBase.tsx:72 (circle r={3.2} in viewBox units) with the a2-takeaway citywide state and every later citywide frame carrying marks",
+   "what": "The fixed radius scales with the map, so at the bombing chapter's closing pull-back all 32 marks measure 1.1 CSS px and the dashed commission square goes hairline. The image built to say the whole city held every bomb inside one small patch reads as an accidental smudge beside 'Three years and eight months of dynamite enforced the line'. Exposed by the round-1 frame change; the blackBelt dim-state mark work is fine. The same scale failure feeds the sum-state softness in the item above.",
+   "fix": "Give marks a screen-space floor on the citywide frame, either a frame-conditional radius of roughly 2.5x when citywide or a fixed on-screen paint size, keeping the hairline linen ring so the cluster reads as a deliberate data layer. Static, no motion, same ink. Verify at a2-takeaway and a6-sum at 390px.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "StageBase data-hp-boundary with the 'HYDE PARK A AND B RENEWAL AREA' label; all a4 anchors, both viewports (d-a4-s1, d-a4-clearance, m-ch8)",
+   "what": "The full Hyde Park township outline is the only stroke on stage while the label names it the renewal area, so the visual asserts the 856-acre plan covered the whole township, several times its true extent, directly beside copy quoting the 856-acre figure. Fresh-visitor confusion verbatim, the visitor read the whole chapter-2 outline as the renewal area. The sanctioned fallback was label-carries-the-layer with no boundary, not a relabeled township outline.",
+   "fix": "Reword to a caption that cannot name the outline ('The 856-acre renewal area lay inside this township') with the existing factRef, or move it off the boundary with a short leader. The real fix, if the 1958 plan-map scan supports it, is tracing the dashed sub-boundary, which also feeds the a6-sum composite.",
+   "lenses": 2
+  },
+  {
+   "severity": "p2",
+   "where": "data/exhibit/ground-copy.json:44 (a0-charge) and src/components/exhibit/ground/scenes/LedgerColumn.tsx:63 ('2022 medians' tag)",
+   "what": "The most-read card says 'By the 2022 federal survey', and this page trains visitors to hear federal survey as the HOLC survey, so the $285,010 against $44,890 medians can read as Chicago figures. Round 1 asked for a national scope word on every SCF surface; only the climb and summit got 'nationwide'. The charge card and the ledger tag did not.",
+   "fix": "Name the instrument and scope once, 'By the federal Survey of Consumer Finances in 2022, median family wealth nationwide stood at $285,010 for white families and $44,890 for Black families.' The ledger tag becomes '2022 national medians'. Same factRefs; the proper noun also breaks the HOLC vocabulary collision.",
+   "lenses": 2
+  },
+  {
+   "severity": "p2",
+   "where": "data/exhibit/ground-copy.json:211 (a3-s1) and data/exhibit/ledger.json:50 (covenant-armor shortLabel)",
+   "what": "The round-1 covenant split did not land. The sentence still welds the two facts neither source joins, hundreds of Cook County subdivisions carrying covenants on the model the NAREB general counsel drafted in 1927; coverage_claim supports the hundreds by the 1940s, macchesney_template supports the 1927 model, neither says the hundreds were on that model. The mobile rail compresses the same claim further to 'Covenants cover the county', blanket coverage the Covenants Project does not support.",
+   "fix": "Split into two sentences with their own refs, 'In 1927 the Realtors' general counsel drafted a model covenant that real estate boards printed for any block to adopt. By the 1940s, hundreds of Cook County subdivisions carried covenants.' Attach macchesney_template to the first and coverage_claim to the second. Change the shortLabel to 'Covenants across the county' (26 characters, inside the budget).",
+   "lenses": 2
+  },
+  {
+   "severity": "p2",
+   "where": "data/exhibit/ground-copy.json:336 (a5-s1); compare voices.json dempsey-travis and the facts.json contracts.lenders_241_1 notes",
+   "what": "The step drops Satter's qualifier and changes the denominator. 'Of 241 savings and loans in Cook County, exactly one would lend to a Black buyer' counts all Cook County S&Ls, but the registry's own notes and the Travis voice card say 241 white-run associations. Cook County had Black-run thrifts outside that 241, so the sentence overstates the registered claim and contradicts the Travis card two chapters later.",
+   "fix": "Reword to 'Of Cook County's 241 white-run savings and loans, exactly one would lend to a Black buyer.' Consider adding white-run to the fact's display string so the chip matches.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "src/components/exhibit/ground/scenes/GradeFlood.tsx:56 (a3-flood evidence pair, D-106 caption, both viewports)",
+   "what": "The fulcrum's D-sheet caption does not parse as English. 'On the lowest grade, the words so far treat restriction as the expected condition.' means to point at the surveyor's own phrase so far in the quote above it, but with no quotation marks it reads as a broken clause. The exhibit's strongest single piece of evidence closes on a garble.",
+   "fix": "Quote the phrase so the reading lands, 'On the lowest grade, the surveyor's “so far” treats restriction as the expected condition.' Historian register, no colon, and it turns the visitor back to the two words that convict the form.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "src/components/exhibit/ground/scenes/Colophon.tsx:179 (Study Room door); a6-colophon, both viewports",
+   "what": "The door renders 'All 576surveyors' sheets, searchable.' with no space between the mono figure and the word. The JSX source has the space but the served HTML and hydrated DOM both drop it, so a display-size line at the exhibit's exit ships with a visible typo that no source-file gate can see.",
+   "fix": "Make the space explicit and unstrippable, an explicit {\" \"} between the mono span and the word. Confirm the served HTML contains '576 surveyors' and add that exact string to the verify suite as a rendered-output regression check.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "Mobile anchor landings at ch0_5 and a2-takeaway (m-ch0_5 shows era 1893 beside the '1921 TO 1970' head; m-a2-takeaway shows cursor 1917 beside the corrected takeaway); desktop resolves correctly",
+   "what": "At 390px the anchor scroll position rests one step early, so deep-linked visitors land on a resting state whose era stamp and register cursor contradict the visible card. This resurrects, at rest, the overture flash-forward disagreement round 1 fixed, and it is a resting state, not the known mid-scroll slide.",
+   "fix": "Bias the mobile landing so the linked step is the active one at rest, via larger scroll-margin-top on step ids at the mobile breakpoint or a lower IO activation threshold once the card clears the stage seam. Assert per-anchor in the verify suite that the anchor's own step is active at 390px, and consider snapshotting each anchor's resolved chrome tuple as fixtures.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "src/components/exhibit/ground/scenes/GradeFlood.tsx:151-153 with the sticky stage pane; sheet card at a3-flood, 390x844",
+   "what": "When a map tap opens the sheet card, the card rests with its header (grade word, area label, filing date) and its Close button underneath the sticky pane. Measured live, card top 230, Close at 251, pane bottom 370, and elementFromPoint on the Close button returns the stage SVG. The Close button is untappable at rest and the tap's answer is hidden while the quote body shows, a resting-state occlusion on the exhibit's fulcrum interaction.",
+   "fix": "Scroll the opened card clear of the pane before focusing, scrollIntoView centered then focus with preventScroll, or give the card the anchored ids' scroll-margin-top of calc(44svh + 12px) plus an id so focus scrolling honors it. The bottom-drawer idea in the interaction lens is the fuller fix if budget allows.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "SourceSup / SourceSupGroup dagger buttons, 136 instances live on the page at 390px",
+   "what": "Every citation dagger, the primary INSPECT control on a phone-first exhibit whose contract is that every number opens its registry source, is a 7x11px tap target. Names and aria-expanded are correct, but the physical target is far below the 24px minimum and genuinely hard to thumb, and it is the single most repeated interactive element on the page.",
+   "fix": "Expand the hit area in the shared component without changing the mark, a centered 24x24 pseudo-element overlay or padding with compensating negative margin, so all 136 instances update at once.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "src/app/globals.css:42 and :813 (.gr-wall-endnote uses --color-exh-red, still aliased to the D-grade hex #B0322B); visible at m-a2-register and d-a2-register",
+   "what": "The register wall's court-defeat annotations ('unenforceable 1948', 'written out 1950', 'outlawed 1968', 'returned after 2008') are typeset in the exact D-grade pigment. The round-1 token split separated rust from grade D, but this alias survived, so on the one screen that teaches the five instruments, red carries a second meaning in violation of the pigment law. The Spine's designed D-red turn is exempt; these annotations are not.",
+   "fix": "Set .gr-wall-endnote in plain ink or a muted ink token. Not rust either, since 1948 and 1950 are not present-day consequence. One CSS line, confirmed by register screenshot.",
+   "lenses": 1
+  },
+  {
+   "severity": "p2",
+   "where": "Whole page under slow chunk delivery; scene mounting via next/dynamic in scenes/registry.tsx plus the IO engine in GroundProvider.tsx; PLAUSIBLE, confounded by dev-server HMR churn",
+   "what": "On three of four dev loads the page collapsed to 1,835px, era frozen at 1940, zero registered steps, spine dead, persisting over 60 seconds, while the full argument exists in the 899KB server HTML. Hydration is discarding or gating the server content. The healthy load and all harness shots were fine, so this may be dev-only, but if a production visitor on slow transit wifi hits even ten seconds of the frozen 1940 page, the exit flick wins.",
+   "fix": "Before ship, run a production-build smoke throttled to Fast 3G with a mid-page reload, asserting document height above 40,000, the era readout advancing past 1940 within a few seconds of scroll, and spine data-red on at a3-f2. If it reproduces on prod, treat as p1 and make scene loading height-preserving, keeping server HTML visible during hydration with no null loading state. The same throttled scenario gates the deep-link fix.",
+   "lenses": 1
+  },
+  {
+   "severity": "p3",
+   "where": "data/exhibit/ground-copy.json:330 (ch9 head '1948 to 1968', grep-confirmed) vs machines.json contract bar (onYear 1952, offYear 1970)",
+   "what": "The round-1 contract-era reconciliation was skipped again, and this round all four of the curator, fresh visitor, historian, and creative lenses flagged it. The chapter head and the register bar still give two spans for the same instrument one scroll apart, neither resolving to a single registry fact, on a page whose whole ethic is dated exactness. It is the last date a careful reader can catch the exhibit contradicting itself on.",
+   "fix": "Keep the bar's design-sanctioned 1952 to 1970 and align the ch9 kicker to it, or keep 1948 to 1968 and add the one-line convention note round 1 specified ('Shelley opens the market in 1948; the trade peaks 1952 to 1970'). One convention, both surfaces, every number through the registry.",
+   "lenses": 4
+  },
+  {
+   "severity": "p3",
+   "where": "Citywide frames ch5 onward (bombing cluster striking through the HYDE PARK base label); WOODLAWN stage note overprinting HYDE PARK at the finale states ('...DE PARK' visibly sticking out); NORTH LAWNDALE focus label nearly touching THE LOOP at 1280px (d-ch10, d-a5-twobuyers, d-a6-bridge)",
+   "what": "Three residual label collisions of the class round 1 cleaned elsewhere, worst on the most-looked-at finale frames. The base-label hiding CSS only suppresses text matching the note's own anchor name, so neighboring labels still overprint.",
+   "fix": "One paint-order linen halo rule on stage SVG text (2px linen stroke, ink fill, period plat-map practice) immunizes labels against marks and fills permanently. Additionally fade base labels whose anchors fall inside an active note or focus label's inflated bounds, and nudge the HYDE PARK anchor a few viewBox units southeast so the cluster clears its letterforms. Verify ch5 and ch11 at both widths.",
+   "lenses": 3
+  },
+  {
+   "severity": "p3",
+   "where": "StageBase label and note <text> layers (pointer-events auto, probe-confirmed swallowing taps); GradeFlood invite line at a3-flood, 390px",
+   "what": "Map name labels sit above the per-area hit paths and swallow taps exactly where attention is drawn (HYDE PARK, WOODLAWN), and a median citywide polygon is 2 to 6px wide at 390px (one measured 1.7px), so the invited gesture is a thumb lottery. The select fallback is reliable but the invite never mentions it.",
+   "fix": "Set pointer-events none on the label and note layers so taps fall through. Extend the invite line with 'or choose an area below'. Consider a nearest-area tolerance of a few viewBox units on the delegated hit test so a near-miss opens the closest sheet rather than nothing.",
+   "lenses": 2
+  },
+  {
+   "severity": "p3",
+   "where": "src/components/exhibit/ground/scenes/BaldwinBench.tsx:30-32 figcaption (a4-baldwin, both viewports)",
+   "what": "Round 1's attribution note half-landed. Wells, Hansberry, and Ross get the house stack of name, mono dates, and mono-caps source line, while Baldwin remains one plain grey sentence, so the exhibit's four voices read as three registers plus a caption.",
+   "fix": "Set Baldwin in the house stack, name on its own line, '1924 to 1987' in mono, 'TELEVISED CONVERSATION WITH KENNETH CLARK, 1963' in mono caps. Better, extract one attribution component and use it on Wells, Hansberry, Ross, Baldwin, and King, keeping each card's content.",
+   "lenses": 2
+  },
+  {
+   "severity": "p3",
+   "where": "TwoBuyersGround.tsx:93, 104, 184, 192, 216; Receipt.tsx:163; LocateScene.tsx:58; GradeFlood.tsx:357; LedgerColumn.tsx:93; data/exhibit/machines.json visitor strings including plainName 'The realtors' rule'; plus the 1939 ledger row wrapping its citation dagger alone onto the next line (d-a6-ledger)",
+   "what": "The round-1 apostrophe pass converted ground-copy.json but not the scene components or machines.json, so nine straight apostrophes render, including the row title of the wall register, the exhibit's most carefully typeset object, while the charge card prints curly on the same page. The visual lens also caught a typographic orphan in the ledger's namesake object.",
+   "fix": "Replace the HTML apostrophe entity with the right-single-quote entity in the listed TSX lines and U+0027 with U+2019 in machines.json visitor strings. Bind the dagger to its last word with a non-breaking space and sweep the other ten rows at both viewports. Add machines.json and TSX string literals to the lint gate (see ideas).",
+   "lenses": 2
+  },
+  {
+   "severity": "p3",
+   "where": "src/components/exhibit/ground/scenes/GradeFlood.tsx:161-163 and :240-241",
+   "what": "One caption line carries two defects. 'Each grade on the map above rests on a one-page form' asserts a page count no registered fact supports (late-period sheets scan as multi-page documents, falsifiable in the study room) and points the wrong way on desktop, where the map sits beside the text. The tap invite's 'map above' misdirects the same way.",
+   "fix": "One viewport-neutral rewrite retires both, 'Each grade on this map rests on a form a federal surveyor filed.' and 'Tap any area of the map for the sheet behind its grade.'",
+   "lenses": 2
+  },
+  {
+   "severity": "p3",
+   "where": ".r9shots m-a2-wells.png and d-a2-wells.png (12:32 leftovers of the removed a2-wells anchor against the 13:48 to 17:11 suite); shoot.mjs anchor list",
+   "what": "Two stale screenshots of a removed anchor sat in the audit corpus showing the Wells quote still closing the bombing act, and cost two lenses an hour of false-positive chasing this round.",
+   "fix": "Have shoot.mjs empty the shots directory before capturing and fail loudly on any ANCHORS entry whose id document.getElementById cannot resolve, so the shot corpus always matches the live anchor set.",
+   "lenses": 2
+  },
+  {
+   "severity": "p3",
+   "where": "GradeFlood.tsx areaTap guard :141-148; verified live at a6-bridge, 390px",
+   "what": "From the flood onward the whole map stays tappable, so a tap on the finale's 2026 frame, where the today layer invites the eye to the map, silently opens the sheet card 13,000px away inside Act 3 with no visible response and focus falling to body. A dead gesture at the exact moment the exhibit closes its argument.",
+   "fix": "Scope the areaTap consumer to Act 3's steps with an upper bound beside the existing floodIndex lower bound, or when the tap arrives with the flood scene far off-screen, render the card as a fixed bottom drawer above the ledger rail so the answer appears where the visitor is.",
+   "lenses": 1
+  },
+  {
+   "severity": "p3",
+   "where": "CasesReroute gate buttons (no aria-expanded or aria-controls); Receipt.tsx CopySheetLink :93-95",
+   "what": "Two state-communication gaps. The four court gate buttons have excellent labels and 44px targets but a screen-reader user cannot tell which ruling is open. The copy-link button swallows clipboard rejection silently, and the 'Link copied' text swap has no aria-live, so it may go unannounced.",
+   "fix": "Add aria-expanded and aria-controls tied to the open ruling card. On clipboard failure show a 'Copy failed, use the link above' state. Wrap the button label swap in an aria-live polite span.",
+   "lenses": 1
+  },
+  {
+   "severity": "p3",
+   "where": "src/components/exhibit/ground/scenes/Docket.tsx:41-43 (INCIDENTS renders in bombings.json file order)",
+   "what": "Nine undated 'Before 1919' rows open the table ahead of July 1, 1917, reading as a sorting error and quietly contradicting the record's own note that the Motley bombing is the earliest in the 58-bombing survey period. Position implies the undated rows came first when the record says they did not.",
+   "fix": "Sort the render order in Docket only, no data change. Motley (July 1, 1917), then 4529 Vincennes (May 1918), then the nine 'Before 1919' cluster rows, then January 1919 onward. The 'Before 1919' label already carries their true precision.",
+   "lenses": 1
+  },
+  {
+   "severity": "p3",
+   "where": "data/exhibit/ground-copy.json:7 (opening mapCaption); src/components/exhibit/ground/scenes/Bridge.tsx:38; data/exhibit/cases.json hansberry consequence",
+   "what": "Historian fidelity batch, three claims slightly ahead of their sources. 'It graded every neighborhood' contradicts the exhibit's own ungraded areas and sourced no-grade states; 'Measured on the same polygons the surveyors drew' overstates the tract-assignment methodology the facts describe; and 'The armor dents but holds' survives from round 1 with a metaphor the scene's legend never establishes (it teaches gates, lanes, bars, and a crack).",
+   "fix": "Reword to 'It graded the city's neighborhoods for mortgage lenders, A down to D'; 'Measured across today's census tracts matched to the surveyors' polygons' with the same SourceSup; and 'A Chicago family wins on procedure. The gate cracks but stands.'",
+   "lenses": 1
+  },
+  {
+   "severity": "p3",
+   "where": "data/exhibit/ledger.json:71 (covenants-fall label); ground-copy.json:211 tail sentence; grade words in GradeFlood.tsx:36-40 vs Receipt.tsx:24-29 and LocateScene.tsx:12-17; Climb.tsx:213 vs LedgerColumn.tsx:87; voices.json ruth-wells role line; CasesReroute.tsx:57, Clearance.tsx:141, Climb.tsx:246 headings",
+   "what": "Humanizer voice batch. An editorial epigram sits inside the account column ('Covenants lose the courts. Containment finds new tools'), duplicating the sanctioned act-3 takeaway; Act 3 carries three balanced flourishes in five cards against the one-per-act budget; grade words drift ('Grade A, best' vs 'A, called best') and the dollar phrase drifts ('dollars of their years' vs 'of their year'); Ruth Wells's role line restates her paraphrase three lines above; and the paired-noun heading formula runs five deep across the page.",
+   "fix": "Flatten the ledger label to 'Covenants ruled unenforceable' with shortLabel 'Ruled unenforceable'. Cut the a3-s1 tail sentence ('The paper spread faster than the dynamite ever had.'). Hoist the grade-word map into one shared module all three files import and align the climb to the singular dollar phrase. Rewrite the Wells role to plain biography, 'Contract buyer and Contract Buyers League leader'. Rename the two weakest headings, 'Before and after the plan' and 'The whole climb at once', keeping the two that name their graphics.",
+   "lenses": 1
+  }
+ ],
+ "ideas": [
+  {
+   "idea": "Close the memorial chapter on the record's line of refusal. After 'The record counts the dead. It names neither; one was a child of six.', add one quiet sourced sentence from the commission's own text, 'Only two of the forty Negro families bombed have moved' (already cached in bombings.json contextQuotes.forty-families), optionally with Binga's verbatim 'I will not run. The race is at stake and not myself.'",
+   "why": "Standing in front of descendants, the chapter currently leaves only victimhood and impunity, and the record itself holds the staying. It is the Legacy Museum move, dignity drawn from the primary source, zero new claims, and it respects the unnamed-dead rule since Binga is a named target the commission itself names.",
+   "cost": "small"
+  },
+  {
+   "idea": "Cash the thesis sentence with a plat-face map key on the sum state. Under the a6-sum caption, one line naming each persistent mark with its date (cession line 1833, 32 bombings 1917 to 1921, Hansberry house 1940, renewal area 1955, East Woodlawn 2026), plus two micro-captions on the map itself, '1917-1921' beside the bombing cluster and '2026' beside the enlarged rust ring.",
+   "why": "Curator and creative converged on this independently. Every item is already drawn and registry-dated, so the key converts 'every mark you watched' from an assertion into a checkable inventory at the exact frame that will circulate as a screenshot, and it completes the sum-state and today-ring punch items rather than adding scope.",
+   "cost": "small"
+  },
+  {
+   "idea": "Add a throttled production smoke plus a modal-contract scenario to the verify suite. Load the production build at Fast 3G with a mid-page reload, asserting document height, era progression past 1940, spine data-red at a3-f2, and a cold deep-link landing on its target. In the same run, open the study room from the flood link, close via Escape and via the button, and assert scrollY unchanged with focus returned.",
+   "why": "Every current gate runs on a warm local server, and all three remaining ship risks (the frozen-hydration page, the deep-link race, the modal teleport) live exactly in the class those gates cannot see. One scenario gates all three fixes permanently and answers the only confidence question standing between four lenses and the floor.",
+   "cost": "medium"
+  },
+  {
+   "idea": "Extend scripts/exhibit-lint-copy.mjs to scan string literals inside src/components/exhibit/ground/**/*.tsx and the machines.json visitor strings for straight apostrophes, banned pairs, and sentence-internal colons, plus a short served-HTML assertion list of exact rendered strings ('576 surveyors', 'three years and eight months').",
+   "why": "Both rounds show the same failure mode, the JSON gets surgically cleaned while scene components reintroduce the exact tells the gate exists to catch, and this round's clearest typo lived only in the rendered output. The gate currently reports clean while nine straight apostrophes and one eaten space render on the page.",
+   "cost": "small"
+  },
+  {
+   "idea": "Teach the docked strip's five letters at the one moment the visitor studies the wall register, by printing each overture bar's initial (R, C, M, U, S) as a small plat-face prefix on the full-size bar labels.",
+   "why": "For three chapters the strip is five bars tagged with letters that are never decoded; after the overture the visitor could map them but is never told they correspond. One character per row closes the loop at zero chrome cost and makes the thesis object fully self-teaching.",
+   "cost": "small"
+  }
+ ],
+ "summary": "Round 2 confirms the round-1 waves genuinely landed. All eight lenses verified the fulcrum built end to end (the GradeFlood filing-order re-ink, the A-11 and D-106 verbatim pair with highlighted sentences and filing dates, the corpus fact lines, a live area tap with a labeled select fallback and Study Room doors), the memorial chapter honored (target names as primary cells, 32 fanned-out marks with the Binga cluster reading as a cluster, the child's line on the fatal row, the advisory remounted with a working skip, the 1917 to 1921 span with the three-years-and-eight-months takeaway, the pace sentence, the commission's square in its own words, 2 arrests and no convictions), the chrome finished (register baseline, ticks, initials and riding year, an untruncated rail with the Entry N of 11 counter, desktop width used, the spine turning exactly at ch6, sr-only focus traps gone), and the copy surgery held (Hanchett restated to loans 1945 to 1959, Wells at the Haitian Building and moved to the fair chapter, the charge tail, 'The plan goes federal', overture signposts, climb dollars off-axis with multiples waypoints, Two Buyers reconciled at $71,027, the receipt carrying area id, filing date, sheet excerpt and copy link, the basement photo cut under the data-absence rule, the colophon wall plate, rust split from grade D). What remains splits into four small waves. First, four p1s, each a one-file fix. The deep-link retry loses its race to hydration, the study-room close teleports readers 23,000px to the colophon, the receipt never reprises in a continuous visit and claims an earlier lookup that may not exist, and the docket's framing sentence invents an appendix the 1922 report does not have. Second, the present-day payoff. The sum caption claims marks the citywide frame does not show (four lenses), citywide marks render near one pixel, and the today ring is a nameless 5px speck anchored to a label offset, so the 2026 half of the thesis is asserted rather than shown. Third, twice-skipped round-1 residue. The riot post still rides the docket under a 1917 cursor (three lenses), the covenant weld and the dropped white-run qualifier survive, the ch9 head still disagrees with the register bar on the contract era (four lenses), Baldwin's attribution stays off-system, the apostrophe pass missed the TSX and machines.json, and the SCF national scope missed the charge card. Fourth, a polish pass of label halos, flood tap reliability, dagger tap targets, the sheet-card occlusion, docket row order, and two batched copy items. Nothing in this round's list contradicts the deliberate decisions on the covenant layer, the unnamed dead, the no-deflator rule, the label-carries-the-layer fallback, or the as-filed shorthand. The collective estimate across lenses is one to two days of surgical work plus one throttled production smoke, then floor.",
+ "floorable": "Four of eight lenses would floor the exhibit now. The curator floors it outright, naming the present-day payoff (the 5px rust speck and the sum caption's overclaim) as the single remaining gap. The fresh visitor floors it on content, withholding full confidence only until a throttled production smoke proves the scroll engine never presents the frozen 1940 page and the rust mark becomes findable at 390px. The visual lens floors it on craft grounds, calling the round-1 chrome debt genuinely paid, with a day of resting-state seam fixes remaining. The creative lens floors it except for one gap, the deep-link cold-load race that delivers shared links to the wrong room. Four say close but not yet. The historian is a morning away, wanting the covenant weld split, the white-run qualifier restored, the sum caption made literally true, and the riot post moved. The interaction lens blocks on its two p1s, the study-room teleport and the dead receipt reprise, both one-file fixes, and would floor with those plus deep-link quiescence. The humanizer would not floor today because two rebuilt flagship scenes state something wrong in visitor-facing text, the D-106 caption garble and the receipt's false earlier-lookup line, plus the charge card's federal-survey collision, and would floor with those three sentences fixed. Sensitivity is one sentence away, refusing to floor a memorial chapter whose first paragraph makes a source claim (the invented appendix) that fails a five-minute check, with the riot post move as the companion fix. No lens asked for another full wave, and every blocking item named in a verdict appears in the punch list."
+}

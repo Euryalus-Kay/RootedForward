@@ -4,8 +4,11 @@
   "opening": {
     "kicker": "Hyde Park, Chicago, 1832 to 2026",
     "title": "The Ground Keeps Moving",
-    "mapCaption": "Federal surveyors finished this map of Chicago in 1940. It graded every neighborhood for mortgage lenders, A down to D, and the Black Belt runs through its middle in red.",
-    "mapCaptionFactRefs": ["redlining.holc_survey_chicago", "redlining.holc_239_cities"],
+    "mapCaption": "Federal surveyors finished this map of Chicago in 1940. It graded the city’s neighborhoods for mortgage lenders, A down to D, and the Black Belt runs through its middle in red.",
+    "mapCaptionFactRefs": [
+      "redlining.holc_survey_chicago",
+      "redlining.holc_239_cities"
+    ],
     "howTo": "A ten-minute walk down one century, on one map. Every figure carries its source, one tap away."
   },
   "acts": [
@@ -18,31 +21,59 @@
           "role": "chapterHead",
           "title": "The map",
           "years": "1940",
-          "stage": { "frame": "citywide", "era": "1940", "grades": "full", "linework": true, "labels": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1940",
+            "grades": "full",
+            "linework": true,
+            "labels": true
+          }
         },
         {
           "id": "a0-r1",
           "role": "step",
           "text": "**Take the grades away** and what is left is a survey of the same ground.",
-          "stage": { "frame": "citywide", "era": "1940", "grades": "none", "linework": true, "labels": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1940",
+            "grades": "none",
+            "linework": true,
+            "labels": true
+          }
         },
         {
           "id": "a0-r2",
           "role": "step",
           "text": "Take the survey away and it is ground again. **Nothing about it prices a family.**",
-          "stage": { "frame": "citywide", "era": "", "grades": "none", "linework": false, "labels": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "",
+            "grades": "none",
+            "linework": false,
+            "labels": true
+          }
         },
         {
           "id": "a0-r3",
           "role": "step",
           "text": "Begin in 1832. **Every line you just saw was drawn in the century between**, and the chapters ahead show who drew each one.",
-          "stage": { "frame": "citywide", "era": "1832", "grades": "none", "linework": false, "labels": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1832",
+            "grades": "none",
+            "linework": false,
+            "labels": true
+          }
         },
         {
           "id": "a0-charge",
           "role": "charge",
-          "text": "What happened to this ground was engineered. **Five instruments did the work**, a realtors’ rule, a deed clause, a federal map, a demolition program, and a sales contract. Every one of them left a record. By the 2022 federal survey, median family wealth stood at $285,010 for white families and $44,890 for Black families. **This exhibit is the paperwork in between.**",
-          "factRefs": ["present.scf_white_285000", "present.scf_black_44900", "present.gap_6to1"]
+          "text": "What happened to this ground was engineered. **Five instruments did the work**, a realtors’ rule, a deed clause, a federal map, a demolition program, and a sales contract. Every one of them left a record. By the federal Survey of Consumer Finances in 2022, median family wealth nationwide stood at $285,010 for white families and $44,890 for Black families. **This exhibit is the paperwork in between.**",
+          "factRefs": [
+            "present.scf_white_285000",
+            "present.scf_black_44900",
+            "present.gap_6to1"
+          ]
         },
         {
           "id": "a0-locate",
@@ -60,21 +91,43 @@
           "role": "chapterHead",
           "title": "The first taking",
           "years": "1832 to 1889",
-          "stage": { "frame": "hydePark", "era": "1833", "grades": "none", "linework": false, "boundary": false, "labels": true }
+          "stage": {
+            "frame": "hydePark",
+            "era": "1833",
+            "grades": "none",
+            "linework": false,
+            "boundary": false,
+            "labels": true
+          }
         },
         {
           "id": "a1-s1",
           "role": "step",
           "text": "The 1833 Treaty of Chicago took about **5 million acres under force**, this shore included. Within a few years the Potawatomi were marched west. The Pokagon Band counts more than 6,000 citizens today.",
-          "factRefs": ["land.treaty_1833", "land.removal_west", "land.pokagon_today"],
-          "post": ["land-taken"]
+          "factRefs": [
+            "land.treaty_1833",
+            "land.removal_west",
+            "land.pokagon_today"
+          ],
+          "post": [
+            "land-taken"
+          ]
         },
         {
           "id": "a1-s2",
           "role": "step",
           "text": "In 1853 Paul Cornell bought **300 acres of this shore** and platted a suburb to sell. The land agent’s 1851 map below shows the grid his purchase joined two years later.",
-          "factRefs": ["land.cornell_purchase_1853"],
-          "stage": { "frame": "hydePark", "era": "1853", "grades": "none", "linework": false, "boundary": true, "labels": true }
+          "factRefs": [
+            "land.cornell_purchase_1853"
+          ],
+          "stage": {
+            "frame": "hydePark",
+            "era": "1853",
+            "grades": "none",
+            "linework": false,
+            "boundary": true,
+            "labels": true
+          }
         },
         {
           "id": "a1-plat",
@@ -86,14 +139,32 @@
           "role": "chapterHead",
           "title": "The fair builds a neighborhood",
           "years": "1893",
-          "stage": { "frame": "hydePark", "era": "1893", "grades": "none", "linework": false, "boundary": true, "labels": true, "note": { "text": "Jackson Park, fairgrounds 1893", "anchor": "hydePark" } }
+          "stage": {
+            "frame": "hydePark",
+            "era": "1893",
+            "grades": "none",
+            "linework": false,
+            "boundary": true,
+            "labels": true,
+            "note": {
+              "text": "Jackson Park, fairgrounds 1893",
+              "anchor": "hydePark"
+            }
+          }
         },
         {
           "id": "a1-fair",
           "role": "step",
           "text": "The World’s Fair ran **six months and drew about 27 million admissions**. It left behind the hotels, the flats, and the raised rail embankment that cut the neighborhood in two.",
-          "factRefs": ["fair.six_months", "fair.attendance_27m", "fair.ic_embankment", "fair.building_boom"],
-          "post": ["fair-stock"]
+          "factRefs": [
+            "fair.six_months",
+            "fair.attendance_27m",
+            "fair.ic_embankment",
+            "fair.building_boom"
+          ],
+          "post": [
+            "fair-stock"
+          ]
         },
         {
           "id": "a1-fairfig",
@@ -104,7 +175,9 @@
           "id": "a1-s3",
           "role": "step",
           "text": "At the Haitian Building, Ida B. Wells handed out 10,000 copies of a pamphlet titled *The Reason Why the Colored American Is Not in the World’s Columbian Exposition*. **The exclusion was already organized.**",
-          "factRefs": ["fair.reason_why_10000"]
+          "factRefs": [
+            "fair.reason_why_10000"
+          ]
         },
         {
           "id": "a1-wells",
@@ -127,7 +200,13 @@
           "role": "chapterHead",
           "title": "Five instruments",
           "years": "1921 to 1970",
-          "stage": { "frame": "citywide", "era": "", "grades": "none", "linework": false, "labels": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "",
+            "grades": "none",
+            "linework": false,
+            "labels": true
+          }
         },
         {
           "id": "a2-overture-in",
@@ -149,21 +228,41 @@
           "role": "chapterHead",
           "title": "The purge",
           "years": "1908 to 1917",
-          "stage": { "frame": "hydePark", "era": "1908", "grades": "none", "linework": false, "boundary": true, "labels": true }
+          "stage": {
+            "frame": "hydePark",
+            "era": "1908",
+            "grades": "none",
+            "linework": false,
+            "boundary": true,
+            "labels": true
+          }
         },
         {
           "id": "a2-s1",
           "role": "step",
           "text": "In autumn 1908 the Hyde Park Improvement Protective Club organized to remove every Black neighbor, **block by block, by name**. Among the people it meant was Fannie Barrier Williams, the neighbor the club shut out.",
-          "factRefs": ["colorline.club_founded", "people.fannie_barrier_williams"],
-          "post": ["club-organizes"]
+          "factRefs": [
+            "colorline.club_founded",
+            "people.fannie_barrier_williams"
+          ],
+          "post": [
+            "club-organizes"
+          ]
         },
         {
           "id": "ch4",
           "role": "chapterHead",
           "title": "The bombing years",
           "years": "1917 to 1921",
-          "stage": { "frame": "blackBelt", "era": "1917", "grades": "none", "linework": false, "labels": false, "marks": true, "dim": true }
+          "stage": {
+            "frame": "blackBelt",
+            "era": "1917",
+            "grades": "none",
+            "linework": false,
+            "labels": false,
+            "marks": true,
+            "dim": true
+          }
         },
         {
           "id": "a2-advisory",
@@ -173,14 +272,24 @@
         {
           "id": "a2-docket",
           "role": "scene",
-          "scene": "docket",
-          "post": ["red-summer"]
+          "scene": "docket"
         },
         {
           "id": "a2-takeaway",
           "role": "takeaway",
           "text": "Three years and eight months of dynamite enforced the line before any paper did.",
-          "stage": { "frame": "citywide", "era": "1921", "grades": "none", "linework": false, "labels": true, "marks": true, "dim": false }
+          "stage": {
+            "frame": "citywide",
+            "era": "1921",
+            "grades": "none",
+            "linework": false,
+            "labels": true,
+            "marks": true,
+            "dim": false
+          },
+          "post": [
+            "red-summer"
+          ]
         }
       ]
     },
@@ -193,7 +302,15 @@
           "role": "chapterHead",
           "title": "The paperwork",
           "years": "1921 to 1947",
-          "stage": { "frame": "citywide", "era": "1921", "grades": "none", "linework": false, "labels": true, "marks": true, "dim": false }
+          "stage": {
+            "frame": "citywide",
+            "era": "1921",
+            "grades": "none",
+            "linework": false,
+            "labels": true,
+            "marks": true,
+            "dim": false
+          }
         },
         {
           "id": "a3-article34",
@@ -208,36 +325,84 @@
         {
           "id": "a3-s1",
           "role": "step",
-          "text": "By the 1940s, **hundreds of Cook County subdivisions carried covenants** on the model the National Association of Real Estate Boards’ general counsel drafted in 1927. The paper spread faster than the dynamite ever had.",
-          "factRefs": ["covenants.coverage_claim", "covenants.macchesney_template"],
-          "post": ["covenant-armor"]
+          "text": "In 1927 the Realtors’ general counsel drafted a model covenant that real estate boards printed for any block to adopt. **By the 1940s, hundreds of Cook County subdivisions carried covenants.**",
+          "factRefs": [
+            "covenants.macchesney_template",
+            "covenants.coverage_claim"
+          ],
+          "post": [
+            "covenant-armor"
+          ],
+          "stage": {
+            "frame": "citywide",
+            "era": "1927",
+            "grades": "none",
+            "linework": false,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "ch6",
           "role": "chapterHead",
           "title": "The plan goes federal",
           "years": "1933 to 1940",
-          "stage": { "frame": "citywide", "era": "1934", "grades": "none", "linework": true, "labels": true, "marks": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1934",
+            "grades": "none",
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "a3-f1",
           "role": "step",
           "text": "September 1939. Federal surveyors begin filing their sheets on Chicago, and **each area takes its grade the moment its sheet is signed.**",
-          "factRefs": ["redlining.holc_survey_chicago"],
-          "stage": { "frame": "citywide", "era": "1939", "grades": "flood", "floodStep": 0, "linework": true, "labels": true, "marks": true }
+          "factRefs": [
+            "redlining.holc_survey_chicago"
+          ],
+          "stage": {
+            "frame": "citywide",
+            "era": "1939",
+            "grades": "flood",
+            "floodStep": 0,
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "a3-f2",
           "role": "step",
           "text": "Through the winter the sheets keep coming and the map fills, area by area, in the order the surveyors filed them.",
-          "stage": { "frame": "citywide", "era": "1939", "grades": "flood", "floodStep": 3, "linework": true, "labels": true, "marks": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1939",
+            "grades": "flood",
+            "floodStep": 3,
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "a3-f3",
           "role": "step",
           "text": "By spring 1940 the survey is done. **The map you began with is back.** This time you watched it drawn.",
-          "factRefs": ["redlining.holc_survey_chicago"],
-          "stage": { "frame": "citywide", "era": "1940", "grades": "flood", "floodStep": 8, "linework": true, "labels": true, "marks": true }
+          "factRefs": [
+            "redlining.holc_survey_chicago"
+          ],
+          "stage": {
+            "frame": "citywide",
+            "era": "1940",
+            "grades": "flood",
+            "floodStep": 8,
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "a3-flood",
@@ -248,9 +413,21 @@
           "id": "a3-s2",
           "role": "step",
           "text": "From 1945 to 1959, under 2 percent of federally insured home loans went to Black Americans. **The city’s doctrine had become the country’s underwriting.**",
-          "factRefs": ["redlining.black_loans_under_2pct", "redlining.babcock_manual"],
-          "post": ["redlined"],
-          "stage": { "frame": "citywide", "era": "1940", "grades": "full", "linework": true, "labels": true, "marks": true }
+          "factRefs": [
+            "redlining.black_loans_under_2pct",
+            "redlining.babcock_manual"
+          ],
+          "post": [
+            "redlined"
+          ],
+          "stage": {
+            "frame": "citywide",
+            "era": "1940",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "ch7",
@@ -262,7 +439,14 @@
           "id": "a3-cases",
           "role": "scene",
           "scene": "casesReroute",
-          "stage": { "frame": "citywide", "era": "1948", "grades": "full", "linework": true, "labels": true, "marks": true }
+          "stage": {
+            "frame": "citywide",
+            "era": "1948",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true
+          }
         },
         {
           "id": "a3-hansberry",
@@ -273,7 +457,9 @@
           "id": "a3-takeaway",
           "role": "takeaway",
           "text": "The courts cracked the paper and the money changed instruments.",
-          "post": ["covenants-fall"]
+          "post": [
+            "covenants-fall"
+          ]
         }
       ]
     },
@@ -286,13 +472,29 @@
           "role": "chapterHead",
           "title": "The university rebuilds the neighborhood",
           "years": "1949 to 1963",
-          "stage": { "frame": "hydePark", "era": "1955", "grades": "none", "linework": false, "boundary": true, "labels": false, "note": { "text": "Hyde Park A and B renewal area", "anchor": "hydePark" } }
+          "stage": {
+            "frame": "hydePark",
+            "era": "1955",
+            "grades": "none",
+            "linework": false,
+            "boundary": true,
+            "labels": false,
+            "note": {
+              "text": "The renewal plan lay inside this township",
+              "anchor": "hydePark"
+            }
+          }
         },
         {
           "id": "a4-s1",
           "role": "step",
           "text": "The South East Chicago Commission, founded 1952 and run by Julian Levi, drew an **856-acre renewal plan** for this ground. The first demolition came May 10, 1955, before the council approved it.",
-          "factRefs": ["renewal.secc_1952", "renewal.plan_856_acres", "renewal.first_demolition_1955", "renewal.approved_1958"]
+          "factRefs": [
+            "renewal.secc_1952",
+            "renewal.plan_856_acres",
+            "renewal.first_demolition_1955",
+            "renewal.approved_1958"
+          ]
         },
         {
           "id": "a4-clearance",
@@ -303,9 +505,27 @@
           "id": "a4-s2",
           "role": "step",
           "text": "Of the displaced who could be traced, **46 percent of white families stayed in Hyde Park and Kenwood. About 17 percent of Black families did.** The neighborhood’s Black population fell about 40 percent.",
-          "factRefs": ["renewal.white_return_46pct", "renewal.black_return_17pct", "renewal.black_pop_drop_40pct"],
-          "post": ["renewal-removals"],
-          "stage": { "frame": "hydePark", "era": "1962", "grades": "none", "linework": false, "boundary": true, "labels": false, "marks": true, "note": { "text": "Hyde Park A and B renewal area", "anchor": "hydePark" } }
+          "factRefs": [
+            "renewal.white_return_46pct",
+            "renewal.black_return_17pct",
+            "renewal.black_pop_drop_40pct"
+          ],
+          "post": [
+            "renewal-removals"
+          ],
+          "stage": {
+            "frame": "hydePark",
+            "era": "1962",
+            "grades": "none",
+            "linework": false,
+            "boundary": true,
+            "labels": false,
+            "marks": true,
+            "note": {
+              "text": "The renewal plan lay inside this township",
+              "anchor": "hydePark"
+            }
+          }
         },
         {
           "id": "a4-baldwin",
@@ -327,14 +547,28 @@
           "id": "ch9",
           "role": "chapterHead",
           "title": "The color tax",
-          "years": "1948 to 1968",
-          "stage": { "frame": "citywide", "era": "1958", "grades": "full", "linework": true, "labels": true, "marks": true, "note": { "text": "North Lawndale", "anchor": "lawndale" } }
+          "years": "1952 to 1970",
+          "stage": {
+            "frame": "citywide",
+            "era": "1958",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true,
+            "note": {
+              "text": "North Lawndale",
+              "anchor": "lawndale"
+            }
+          }
         },
         {
           "id": "a5-s1",
           "role": "step",
-          "text": "Of 241 savings and loans in Cook County, **exactly one would lend to a Black buyer**. The alternative was the land contract, no equity until the last payment, eviction after one miss.",
-          "factRefs": ["contracts.lenders_241_1", "contracts.share_75_95"]
+          "text": "Of Cook County’s 241 white-run savings and loans, **exactly one would lend to a Black buyer**. The alternative was the land contract, no equity until the last payment, eviction after one miss.",
+          "factRefs": [
+            "contracts.lenders_241_1",
+            "contracts.share_75_95"
+          ]
         },
         {
           "id": "a5-twobuyers",
@@ -346,7 +580,19 @@
           "role": "chapterHead",
           "title": "The Contract Buyers League",
           "years": "1968 to 1971",
-          "stage": { "frame": "citywide", "era": "1968", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": true, "note": { "text": "North Lawndale", "anchor": "lawndale" } }
+          "stage": {
+            "frame": "citywide",
+            "era": "1968",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true,
+            "warm": true,
+            "note": {
+              "text": "North Lawndale",
+              "anchor": "lawndale"
+            }
+          }
         },
         {
           "id": "a5-basement",
@@ -357,8 +603,23 @@
           "id": "a5-takeaway",
           "role": "takeaway",
           "text": "The neighbors in the basement organized and won some of it back.",
-          "post": ["color-tax", "cbl-credit"],
-          "stage": { "frame": "citywide", "era": "1971", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": true, "note": { "text": "North Lawndale", "anchor": "lawndale" } }
+          "post": [
+            "color-tax",
+            "cbl-credit"
+          ],
+          "stage": {
+            "frame": "citywide",
+            "era": "1971",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true,
+            "warm": true,
+            "note": {
+              "text": "North Lawndale",
+              "anchor": "lawndale"
+            }
+          }
         }
       ]
     },
@@ -371,7 +632,20 @@
           "role": "chapterHead",
           "title": "The ledger and the ground today",
           "years": "1971 to 2026",
-          "stage": { "frame": "citywide", "era": "2026", "grades": "full", "linework": true, "labels": true, "marks": true, "warm": false, "today": true, "note": { "text": "Woodlawn", "anchor": "woodlawn" } }
+          "stage": {
+            "frame": "citywide",
+            "era": "2026",
+            "grades": "full",
+            "linework": true,
+            "labels": true,
+            "marks": true,
+            "warm": false,
+            "today": true,
+            "note": {
+              "text": "Woodlawn",
+              "anchor": "woodlawn"
+            }
+          }
         },
         {
           "id": "a6-bridge",
@@ -382,7 +656,9 @@
           "id": "a6-ledger",
           "role": "scene",
           "scene": "ledgerColumn",
-          "post": ["closing-totals"]
+          "post": [
+            "closing-totals"
+          ]
         },
         {
           "id": "a6-climb",
@@ -392,8 +668,21 @@
         {
           "id": "a6-sum",
           "role": "step",
-          "text": "**Every mark you watched sits on the one map.**",
-          "stage": { "frame": "citywide", "era": "2026", "grades": "full", "linework": true, "labels": false, "marks": true, "today": true }
+          "text": "**The grades, the bombings, and the ground moving again, on the one map.** The township line marks where the walk began; the rust ring at East Woodlawn is 2026.",
+          "stage": {
+            "frame": "citywide",
+            "era": "2026",
+            "grades": "full",
+            "linework": true,
+            "labels": false,
+            "marks": true,
+            "today": true,
+            "boundary": true
+          },
+          "factRefs": [
+            "present.woodlawn_prices",
+            "present.obama_center_opened"
+          ]
         },
         {
           "id": "a6-receipt",

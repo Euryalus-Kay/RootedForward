@@ -27,8 +27,12 @@ export default function BaldwinBench(_props: SceneProps) {
             {voice.factRef ? <SourceSup factId={voice.factRef} /> : null}
           </p>
         </blockquote>
-        <figcaption className="mt-6 text-sm text-exh-ink-soft">
-          {voice.name}, televised conversation with Kenneth Clark, broadcast 1963
+        <figcaption className="mt-6">
+          <span className="block font-display text-base text-exh-ink">{voice.name}</span>
+          <span className="exh-mono block text-xs text-exh-ink-soft">1924 to 1987</span>
+          <span className="exh-plat block text-[10px] uppercase tracking-[0.16em] text-exh-ink-soft">
+            Televised conversation with Kenneth Clark, 1963
+          </span>
         </figcaption>
       </figure>
     </section>

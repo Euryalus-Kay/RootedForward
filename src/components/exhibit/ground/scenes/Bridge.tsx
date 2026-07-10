@@ -35,7 +35,7 @@ export default function Bridge(_props: SceneProps) {
         <article className="border-t border-exh-ink/25 pt-4" data-testid="bridge-row-grades">
           <RowTitle>The grades still price the ground</RowTitle>
           <div className="mt-2 text-[0.95rem] leading-relaxed text-exh-ink">
-            Measured on the same polygons the surveyors drew.
+            Measured across today’s census tracts matched to the surveyors’ polygons.
             <SourceSup factId="redlining.holc_survey_chicago" />
           </div>
           <ul className="mt-3 flex flex-col gap-2">

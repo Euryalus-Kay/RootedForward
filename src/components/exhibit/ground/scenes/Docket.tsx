@@ -50,12 +50,27 @@ const AT_BLOCK = PLACED.filter((i) => i.precision === "block").length;
 
 /* repeat attacks at one location, counted by identical address key in
    the data (the same counting the incident notes use, "Bombing 2 of 2
-   at this location"); no ordinal appears that the data cannot support */
+   at this location"); no ordinal appears that the data cannot support.
+   Counted in render order so an ordinal never precedes its first. */
 const ORDINAL_WORDS = ["second", "third", "fourth", "fifth", "sixth", "seventh"];
 const REPEAT_NOTE = new Map<string, string>();
+
+/* Render order follows the record's own chronology. Dated rows sort by
+   their ISO date; the undated "Before 1919" rows sit as a cluster after
+   the last 1918 date and before January 1919 (their true precision),
+   keeping file order within the cluster. Without this, nine undated
+   rows would open the table ahead of the July 1917 Motley bombing the
+   record itself calls the earliest. Display only; no data changes. */
+const ORDERED_INCIDENTS: DocketIncident[] = [...INCIDENTS].sort((a, b) => {
+  const key = (i: DocketIncident) => (i.date ? i.date : "1918-12-31");
+  const ka = key(a);
+  const kb = key(b);
+  if (ka !== kb) return ka < kb ? -1 : 1;
+  return INCIDENTS.indexOf(a) - INCIDENTS.indexOf(b);
+});
 {
   const seen = new Map<string, number>();
-  for (const incident of INCIDENTS) {
+  for (const incident of ORDERED_INCIDENTS) {
     if (!incident.address) continue;
     const n = (seen.get(incident.address) ?? 0) + 1;
     seen.set(incident.address, n);
@@ -155,7 +170,7 @@ export default function Docket(_props: SceneProps) {
     >
       <p className="max-w-[34rem] font-display text-lg leading-relaxed text-exh-ink">
         From July 1917 to March 1921 the commission recorded 58 bombings. Its
-        appendix lists 40 of them one by one, and this table holds all 40. The
+        report documents 40 of them one by one, and this table holds all 40. The
         map can place {PLACED.length}, {AT_ADDRESS} at a street address and{" "}
         {AT_BLOCK} at a block. Across all 58 the record shows 2 arrests. No
         convictions.
@@ -184,9 +199,9 @@ export default function Docket(_props: SceneProps) {
 
       <table className="mt-10 w-full border-separate border-spacing-0">
         <caption className="sr-only">
-          One row per incident in the commission&rsquo;s appendix, target and
-          address as the record gives them. The conviction column is blank in
-          every row.
+          One row per incident the commission&rsquo;s report documents, target
+          and address as the record gives them. The conviction column is blank
+          in every row.
         </caption>
         <thead>
           <tr>
@@ -210,7 +225,7 @@ export default function Docket(_props: SceneProps) {
           </tr>
         </thead>
         <tbody>
-          {INCIDENTS.map((incident) => {
+          {ORDERED_INCIDENTS.map((incident) => {
             const address = addressLine(incident.address);
             const repeat = REPEAT_NOTE.get(incident.id);
             const target = targetLine(incident.target);
@@ -276,6 +291,17 @@ export default function Docket(_props: SceneProps) {
       <p className="mt-10 max-w-[34rem] font-display text-lg leading-relaxed text-exh-ink">
         The record counts the dead. It names neither; one was a child of six.
         <SourceSup factId="bombings.deaths_2" />
+      </p>
+
+      {/* the record's own line of refusal closes the chapter */}
+      <p className="mt-6 max-w-[34rem] font-display text-lg leading-relaxed text-exh-ink">
+        The commission recorded the answer the bombing years got.{" "}
+        <span lang="en">
+          &ldquo;Only two of the forty Negro families bombed have moved; the
+          others have made repairs, secured private watchmen or themselves kept
+          vigil for night bombers, and still occupy the properties.&rdquo;
+        </span>
+        <SourceSup factId="bombings.families_stayed" />
       </p>
     </section>
   );

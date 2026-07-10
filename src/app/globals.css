@@ -815,7 +815,7 @@ body.exhibit-immersive > footer { display: none; }
   top: -10px;
   transform: translateX(-2px);
   font-size: 10px;
-  color: var(--color-exh-red);
+  color: var(--color-exh-ink-soft);
   white-space: nowrap;
 }
 .ground-register-wall .gr-wall-note {
@@ -1028,6 +1028,53 @@ body.exhibit-immersive > footer { display: none; }
 .ground-stage[data-note-anchor="hydePark"] [data-hp-labels] text[data-name="HYDE PARK"],
 .ground-stage[data-note-anchor="jacksonPark"] [data-hp-labels] text[data-name="JACKSON PARK"] { opacity: 0; }
 
-/* the present-day ring separates from the D-red band with a linen halo */
-.ground-stage [data-today-halo] { fill: none; stroke: var(--color-exh-linen); stroke-width: 8; }
-.ground-stage [data-today-mark] { stroke-width: 4.5; }
+
+
+/* R9 round-2 stage craft. Labels wear a linen halo (period plat-map
+   practice) and never swallow taps; the bombing marks keep a screen-
+   space floor on the citywide pull-back; the township ghost and the
+   present-day ring carry the finale. */
+.ground-stage text {
+  paint-order: stroke;
+  stroke: var(--color-exh-linen);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.ground-stage [data-city-labels],
+.ground-stage [data-hp-labels],
+.ground-stage [data-today],
+.ground-stage .ground-note { pointer-events: none; }
+
+.ground-stage[data-frame="citywide"] [data-mark] {
+  r: 6.5px;
+  stroke: var(--color-exh-linen);
+  stroke-width: 1.4px;
+}
+.ground-stage[data-frame="citywide"] [data-square] { stroke-width: 2.2; }
+
+.ground-stage [data-city-boundary] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.5;
+  stroke-width: 2;
+}
+.ground-stage[data-boundary="off"] [data-city-boundary] { opacity: 0; }
+
+.ground-stage [data-today-halo] { fill: none; stroke: var(--color-exh-linen); stroke-width: 10; }
+.ground-stage [data-today-mark] { fill: none; stroke: var(--exh-rust); stroke-width: 6; }
+.ground-stage [data-today-tag] {
+  font-size: 26px;
+  fill: var(--exh-rust);
+  letter-spacing: 0.18em;
+}
+.ground-stage[data-today="on"] text[data-name="WOODLAWN"] { opacity: 0; }
+.ground-register-wall .gr-wall-initial {
+  display: inline-flex;
+  min-width: 1.2em;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 40%, transparent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-exh-ink-soft);
+}

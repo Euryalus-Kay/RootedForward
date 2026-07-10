@@ -20,6 +20,7 @@ import {
 import { sheetHash } from "@/lib/exhibit/files-room";
 import { SourceSup, SourceSupGroup } from "../../shared/SourceSup";
 import { PaperCard } from "../../shared/PaperCard";
+import { useGround } from "../engine/GroundProvider";
 
 const GRADE_WORD: Record<string, string> = {
   A: "A, called best",
@@ -83,15 +84,18 @@ function useSheetMeta(areaId: string): SheetMeta | null {
 }
 
 function CopySheetLink({ areaId }: { areaId: string }) {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const copy = async () => {
     const url = `${window.location.origin}${window.location.pathname}${sheetHash(areaId)}`;
     try {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2500);
+      setCopyState("copied");
+      window.setTimeout(() => setCopyState("idle"), 2500);
     } catch {
-      /* clipboard may be unavailable; the visible permalink still works */
+      /* clipboard unavailable; say so instead of failing silently,
+         the visible permalink above still works */
+      setCopyState("failed");
+      window.setTimeout(() => setCopyState("idle"), 4000);
     }
   };
   return (
@@ -101,12 +105,18 @@ function CopySheetLink({ areaId }: { areaId: string }) {
       onClick={copy}
       className="exh-plat mt-2 inline-flex min-h-10 items-center border border-exh-ink/40 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink hover:border-exh-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-exh-blue"
     >
-      {copied ? "Link copied" : "Copy the sheet link"}
+      <span aria-live="polite">
+        {copyState === "copied"
+          ? "Link copied"
+          : copyState === "failed"
+            ? "Copy failed, use the link above"
+            : "Copy the sheet link"}
+      </span>
     </button>
   );
 }
 
-function ReceiptCard({ hit }: { hit: GroundHit }) {
+function ReceiptCard({ hit, via }: { hit: GroundHit; via: "stored" | "fresh" }) {
   const word = hit.grade ? GRADE_WORD[hit.grade] : undefined;
   const meta = useSheetMeta(hit.areaId);
   return (
@@ -136,8 +146,9 @@ function ReceiptCard({ hit }: { hit: GroundHit }) {
         </p>
       )}
       <p className="mt-2 text-sm leading-relaxed text-exh-ink-soft">
-        The grade the surveyors filed on the ground under you, kept from your
-        earlier lookup.
+        {via === "stored"
+          ? "The grade the surveyors filed on the ground under you, kept from your earlier lookup."
+          : "The grade the surveyors filed on the ground under you."}
       </p>
       {meta?.excerpt && (
         <p data-testid="receipt-excerpt" className="mt-3 border-l-2 border-exh-ink/25 pl-3 text-sm italic leading-relaxed text-exh-ink">
@@ -160,7 +171,7 @@ function ReceiptCard({ hit }: { hit: GroundHit }) {
         <CopySheetLink areaId={hit.areaId} />
       </div>
       <div className="mt-2 text-xs leading-relaxed text-exh-ink-soft">
-        Home Owners&apos; Loan Corporation survey of Chicago, 1939 to 1940.
+        Home Owners&rsquo; Loan Corporation survey of Chicago, 1939 to 1940.
         <SourceSupGroup factIds={["redlining.holc_survey_chicago"]} />
       </div>
       <p className="mt-4 border-t border-exh-ink/25 pt-2.5 text-xs text-exh-ink-soft">
@@ -173,24 +184,30 @@ function ReceiptCard({ hit }: { hit: GroundHit }) {
 type State =
   | { s: "offer" }
   | { s: "working" }
-  | { s: "hit"; hit: GroundHit }
+  | { s: "hit"; hit: GroundHit; via: "stored" | "fresh" }
   | { s: "miss" }
   | { s: "denied" };
 
 export default function Receipt(_props: SceneProps) {
+  const { activeIndex } = useGround();
   const [state, setState] = useState<State>({ s: "offer" });
 
-  // sessionStorage is client-only; read it after mount so the server
-  // and first client render agree
+  // sessionStorage is client-only, and a visitor who ran the Act 0
+  // lookup DURING this visit stored it long after this scene mounted,
+  // so re-read whenever the active step moves while the offer stands
+  // (covers reloads, deep links, and the continuous walk alike)
   useEffect(() => {
-    const stored = storedGround();
-    if (stored) setState({ s: "hit", hit: stored });
-  }, []);
+    setState((prev) => {
+      if (prev.s !== "offer") return prev;
+      const stored = storedGround();
+      return stored ? { s: "hit", hit: stored, via: "stored" } : prev;
+    });
+  }, [activeIndex]);
 
   const run = async () => {
     setState({ s: "working" });
     const r: LocateResult = await locateGround();
-    if (r.state === "hit") setState({ s: "hit", hit: r.hit });
+    if (r.state === "hit") setState({ s: "hit", hit: r.hit, via: "fresh" });
     else setState({ s: r.state });
   };
 
@@ -201,7 +218,7 @@ export default function Receipt(_props: SceneProps) {
           <p className="font-display text-xl leading-relaxed text-exh-ink">
             The walk ends where it started, on the ground under you.
           </p>
-          <ReceiptCard hit={state.hit} />
+          <ReceiptCard hit={state.hit} via={state.via} />
         </>
       ) : state.s === "miss" ? (
         <p className="font-display text-lg leading-relaxed text-exh-ink" data-testid="receipt-miss">

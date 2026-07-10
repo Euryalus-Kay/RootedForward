@@ -53,7 +53,7 @@ const PAIR = [
   {
     areaId: 1635,
     factId: "sheets.d106_not_restricted_quote",
-    caption: "On the lowest grade, the words so far treat restriction as the expected condition.",
+    caption: "On the lowest grade, the surveyor\u2019s \u201cso far\u201d treats restriction as the expected condition.",
   },
 ];
 
@@ -83,8 +83,11 @@ export default function GradeFlood(_props: SceneProps) {
   const { setAreaTap, activeIndex } = useGround();
 
   /* the inspect gesture answers from this step onward, never before
-     the flood has run (the map above is still bare paper until then) */
+     the flood has run (the map above is still bare paper until then),
+     and stands down after Act 3 so a tap on the finale's 2026 frame
+     does not silently open a sheet card 13,000px away */
   const floodIndex = STEP_BY_ID["a3-flood"]?.index ?? 0;
+  const actEndIndex = STEP_BY_ID["a3-takeaway"]?.index ?? Number.MAX_SAFE_INTEGER;
   const activeRef = useRef(activeIndex);
   useEffect(() => {
     activeRef.current = activeIndex;
@@ -140,16 +143,20 @@ export default function GradeFlood(_props: SceneProps) {
      scene is mounted; unregister on unmount so no dead handler lives on */
   useEffect(() => {
     setAreaTap((areaId: number) => {
-      if (activeRef.current < floodIndex) return;
+      if (activeRef.current < floodIndex || activeRef.current > actEndIndex) return;
       openCard(areaId);
       if (byId.has(areaId)) setSelectValue(String(areaId));
     });
     return () => setAreaTap(null);
-  }, [setAreaTap, openCard, floodIndex, byId]);
+  }, [setAreaTap, openCard, floodIndex, actEndIndex, byId]);
 
-  /* focus lands on the card whenever it opens or switches sheets */
+  /* focus lands on the card whenever it opens or switches sheets; the
+     card first scrolls clear of the sticky stage pane so its header
+     and Close button are never trapped beneath it */
   useEffect(() => {
-    if (openId !== null) cardRef.current?.focus();
+    if (openId === null) return;
+    cardRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
+    cardRef.current?.focus({ preventScroll: true });
   }, [openId]);
 
   const area = openId !== null ? byId.get(openId) : undefined;
@@ -159,7 +166,7 @@ export default function GradeFlood(_props: SceneProps) {
     <section data-testid="scene-gradeFlood" className="max-w-[44rem]">
       <p className={EYEBROW_CLASS}>The sheets behind the grades</p>
       <p className="mt-3 max-w-[34rem] font-display text-lg leading-[1.65] text-exh-ink">
-        Each grade on the map above rests on a one-page form a federal surveyor filed. Here is
+        Each grade on this map rests on a form a federal surveyor filed. Here is
         what two of those forms say, word for word.
       </p>
 
@@ -238,7 +245,7 @@ export default function GradeFlood(_props: SceneProps) {
       {/* ---------------- the inspect gesture ---------------- */}
       <div className="mt-8">
         <p className="exh-plat text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink">
-          Tap any area on the map above for the sheet behind its grade.
+          Tap any area of the map for the sheet behind its grade, or choose an area below.
         </p>
         <div className="mt-4 max-w-[26rem]">
           <label

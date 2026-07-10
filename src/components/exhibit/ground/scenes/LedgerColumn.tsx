@@ -59,7 +59,7 @@ const AMOUNTS: Record<string, AmountLine[]> = {
     {
       fig: "$285,010",
       sub: "against $44,890",
-      tag: "2022 medians",
+      tag: "2022 national medians",
       factIds: ["present.scf_white_285000", "present.scf_black_44900"],
     },
   ],
@@ -90,7 +90,7 @@ export default function LedgerColumn(_props: SceneProps) {
 
       <table className="mt-5 w-full border-collapse text-left">
         <caption className="sr-only">
-          The exhibit&apos;s account column, eleven dated entries in
+          The exhibit&rsquo;s account column, eleven dated entries in
           chronological order, each with its sources
         </caption>
         <thead>

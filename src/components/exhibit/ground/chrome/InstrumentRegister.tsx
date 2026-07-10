@@ -141,6 +141,11 @@ export default function InstrumentRegister({ mode }: { mode: "docked" | "wall" }
         {machines.map((m) => (
           <li key={m.machineId} className="gr-wall-row">
             <a href={`#${CHAPTER_OF[m.machineId] ?? "ch0"}`} className="gr-wall-label">
+              {/* the letter the docked strip rides under the map; taught
+                  here, at the one moment the visitor studies the wall */}
+              <span className="gr-wall-initial exh-plat" aria-hidden="true">
+                {INITIAL_OF[m.machineId] ?? ""}
+              </span>
               <span className="gr-wall-name">{m.plainName}</span>
               <span className="gr-wall-alias exh-mono">{machineTitle(m).toLowerCase()}</span>
             </a>

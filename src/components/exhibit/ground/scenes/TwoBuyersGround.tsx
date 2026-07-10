@@ -90,7 +90,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
       <p className="mt-2 text-sm leading-relaxed text-exh-ink-soft">
         Both families buy the same house on the same day. One carries a federally insured
         mortgage. One signs a land contract. The columns count what each pays beyond a fair
-        price, in the study&apos;s 2019 dollars.
+        price, in the study&rsquo;s 2019 dollars.
       </p>
       <div className="mt-2 border-b border-exh-ink/15 pb-3">
         <FactValue id="contracts.extra_monthly_587" size="sm" />
@@ -101,7 +101,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
         {/* the study-average rule the contract column climbs toward */}
         <div className="absolute inset-x-0 top-0 border-t border-dashed border-exh-ink/50">
           <span className="exh-plat absolute left-0 top-1 text-[10px] uppercase tracking-[0.18em] text-exh-ink-soft">
-            the study&apos;s average
+            the study&rsquo;s average
           </span>
         </div>
         <div className="flex h-full items-end justify-center gap-10 border-b-2 border-exh-ink/60 px-2 sm:gap-16">
@@ -181,7 +181,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
           className="gtb-range"
         />
         <p className="text-right text-xs leading-snug text-exh-ink-soft">
-          The track ends where the extra payments reach the study&apos;s average.
+          The track ends where the extra payments reach the study&rsquo;s average.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
       <div className="mt-5 border-t border-exh-ink/15 pt-4">
         <FactValue id="contracts.avg_overpayment_71000" size="lg" />
         <p className="mt-2 text-sm leading-relaxed text-exh-ink">
-          The figure is the study&apos;s average loss per contract-buying family, in 2019
+          The figure is the study&rsquo;s average loss per contract-buying family, in 2019
           dollars. The study found <FactValue id="contracts.markup_84pct" size="sm" /> over what
           sellers had just paid for the same houses.
         </p>
@@ -213,7 +213,7 @@ export default function TwoBuyersGround(_props: SceneProps) {
         </div>
         <p className="mt-2 text-sm leading-snug text-exh-ink">
           More than double what the seller had paid, months apart, for the same house. His case
-          ran worse than the study&apos;s average.
+          ran worse than the study&rsquo;s average.
         </p>
       </PaperCard>
     </section>

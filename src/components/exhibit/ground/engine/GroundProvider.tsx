@@ -97,10 +97,14 @@ export default function GroundProvider({ children }: { children: ReactNode }) {
   }, []);
 
   /* Deep links. The browser's native hash scroll fires before the
-     scenes hydrate and expand the document, so a #anchor URL lands at
-     the top. After load, re-scroll to the hash once layout settles
-     (double rAF, then a short retry loop while offsets keep moving),
-     and stand down the moment the visitor scrolls on their own. */
+     scenes hydrate and expand the document (roughly 1,800px at first
+     paint against 45,000px settled), so a fixed retry count gives up
+     mid-hydration on a slow connection and the shared permalink lands
+     in the wrong room. Instead, follow the layout itself: a
+     ResizeObserver on the body re-runs the scroll whenever the
+     document grows while the hash target exists (the same quiescence
+     pattern the Spine uses), stands down permanently on the first
+     wheel, touch, or keydown, and caps at 15 seconds. */
   useEffect(() => {
     const hash = window.location.hash;
     if (!hash || hash.length < 2) return;
@@ -109,28 +113,33 @@ export default function GroundProvider({ children }: { children: ReactNode }) {
        its own handler; leave it alone */
     if (id.includes(":")) return;
     let cancelled = false;
-    let timer = 0;
+    let raf = 0;
     const cancel = () => {
       cancelled = true;
     };
     window.addEventListener("wheel", cancel, { passive: true });
     window.addEventListener("touchstart", cancel, { passive: true });
     window.addEventListener("keydown", cancel);
-    const attempt = (triesLeft: number) => {
-      if (cancelled) return;
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ block: "start", behavior: "auto" });
-      if (triesLeft > 0) {
-        timer = window.setTimeout(() => attempt(triesLeft - 1), 300);
-      }
+    const rescroll = () => {
+      if (cancelled || raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (cancelled) return;
+        document.getElementById(id)?.scrollIntoView({ block: "start", behavior: "auto" });
+      });
     };
-    /* double rAF so the first pass runs after hydration paints */
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => attempt(6));
-    });
+    const ro = new ResizeObserver(rescroll);
+    ro.observe(document.body);
+    requestAnimationFrame(() => requestAnimationFrame(rescroll));
+    const cap = window.setTimeout(() => {
+      cancelled = true;
+      ro.disconnect();
+    }, 15000);
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
+      ro.disconnect();
+      window.clearTimeout(cap);
+      if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("wheel", cancel);
       window.removeEventListener("touchstart", cancel);
       window.removeEventListener("keydown", cancel);

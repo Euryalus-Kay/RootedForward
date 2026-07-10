@@ -166,6 +166,7 @@ export default function CasesReroute(_props: SceneProps) {
               type="button"
               data-testid={`case-${c.caseId}`}
               aria-pressed={current}
+              aria-controls="cases-ruling-card"
               aria-label={`${c.name}, ${c.decided}. ${g.blurb}. Opens the ruling below.`}
               onClick={() => setSelected(c.caseId)}
               className={cn(
@@ -181,9 +182,12 @@ export default function CasesReroute(_props: SceneProps) {
       <p className="mx-auto mt-1 max-w-[24rem] text-center text-[11px] italic leading-snug text-exh-ink-soft">
         Solid bars mark rulings that closed a lane. The split bar marks the crack.
       </p>
+      <p className="exh-plat mx-auto mt-1 max-w-[24rem] text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-exh-ink">
+        Open any ruling below
+      </p>
 
       {/* the selected ruling, one card instead of four */}
-      <PaperCard data-testid="case-detail" className="mt-4 p-4 sm:p-5">
+      <PaperCard id="cases-ruling-card" data-testid="case-detail" className="mt-4 p-4 sm:p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <p className="font-display text-lg text-exh-ink">{active.name}</p>
           <p className="exh-mono text-xs text-exh-ink-soft">

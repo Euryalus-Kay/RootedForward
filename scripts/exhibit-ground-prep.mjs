@@ -164,6 +164,25 @@ const cityViewBox = `${cityCrop.x} ${cityCrop.y} ${cityCrop.w} ${cityCrop.h}`;
 const hpLake = ringToD(simplify(quantize(hpLayers.lake), 0));
 const hpBoundary = ringToD(simplify(quantize(hpLayers.boundary), 0));
 
+// the township boundary reprojected into the citywide frame (both are
+// Web Mercator crops of one plane, so the transform is exact), for the
+// finale sum state's ghost of where the walk began
+const HP_FRAME = hpLayers.frame; // {zoom:15, center 41.7908,-87.5815, 2560x1440}
+const [hpCx, hpCy] = worldPx(HP_FRAME.centerLat, HP_FRAME.centerLng, HP_FRAME.zoom);
+const hpOx = hpCx - HP_FRAME.width / 2;
+const hpOy = hpCy - HP_FRAME.height / 2;
+const [cwCx, cwCy] = worldPx(CITYWIDE_FRAME.centerLat, CITYWIDE_FRAME.centerLng, CITYWIDE_FRAME.zoom);
+const cwOx = cwCx - CITYWIDE_FRAME.width / 2;
+const cwOy = cwCy - CITYWIDE_FRAME.height / 2;
+const zScale = Math.pow(2, CITYWIDE_FRAME.zoom - HP_FRAME.zoom);
+const hpToCity = ([x, y]) => [(x + hpOx) * zScale - cwOx, (y + hpOy) * zScale - cwOy];
+const cityBoundary = ringToD(simplify(quantize(hpLayers.boundary.map(hpToCity)), 0.8));
+
+// the one present-day mark sits at its true geography, East Woodlawn
+// beside the Obama Center site, not at a label's typographic anchor
+const [twX, twY] = projectCitywide(41.7801, -87.5958);
+const todayAnchor = { x: Math.round(twX), y: Math.round(twY) };
+
 // crop the hydePark framing to the township boundary plus air
 let hbx = Infinity, hby = Infinity, hbX = -Infinity, hbY = -Infinity;
 for (const [x, y] of hpLayers.boundary) {
@@ -313,6 +332,8 @@ const out = {
     labels: cityLabels,
     marks,
     square,
+    boundary: cityBoundary,
+    todayAnchor,
   },
   hydePark: {
     viewBox: hpViewBox,
