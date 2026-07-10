@@ -7,7 +7,7 @@
 
 export const FILES_ROOM_PLATE = {
   title: "The Surveyor's Files",
-  plainName: "the area description sheets, 1939 to 1940",
+  plainName: "The Area Description Sheets, 1939 to 1940",
   definition:
     "Every digitized description sheet the federal surveyors filed for Chicago's graded areas. Read them in their own words, and link to any sheet.",
 };

@@ -25,11 +25,11 @@ function entry(
 
 export const STATION_REGISTRY: Record<StationId, RegistryEntry> = {
   "holc-map": entry(
-    "The 1940 Map, and the Sheets Behind It",
+    "The 1940 Map and the Sheets Behind It",
     () => import("../stations/HolcMapStation") as Promise<{ default: ComponentType<Record<string, unknown>> }>
   ),
   "layer-slider": entry(
-    "Four Claims, One Ground",
+    "Four Claims on the Same Ground",
     () => import("./LayerSlider/LayerSlider") as Promise<{ default: ComponentType<Record<string, unknown>> }>
   ),
   "bombing-map": entry(
@@ -37,11 +37,11 @@ export const STATION_REGISTRY: Record<StationId, RegistryEntry> = {
     () => import("./BombingMap/BombingMap") as Promise<{ default: ComponentType<Record<string, unknown>> }>
   ),
   "two-buyers": entry(
-    "Two Buyers, One House",
+    "Two Buyers of the Same House",
     () => import("./TwoBuyers/TwoBuyers") as Promise<{ default: ComponentType<Record<string, unknown>> }>
   ),
   "gap-at-scale": entry(
-    "The Gap, at Scale",
+    "The Gap at True Scale",
     () => import("./GapAtScale/GapAtScale") as Promise<{ default: ComponentType<Record<string, unknown>> }>
   ),
   "answer-wall": entry(

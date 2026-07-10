@@ -9,7 +9,7 @@
 /*  a compact rail (tapping it, or the era chip, opens the chapter     */
 /*  sheet); both list About and sources at the end.                    */
 /* ------------------------------------------------------------------ */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import timelineJson from "../../../../data/exhibit/timeline.json";
 import { CHAPTER_ORDER, type ChapterId } from "@/lib/exhibit/types";
@@ -70,8 +70,27 @@ export function TimelineSpine() {
   const dispatch = useExhibitDispatch();
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  /* the rail waits until the visitor crosses into chapter 1; on the
+     opening wall there is no current chapter for it to claim */
+  const [begun, setBegun] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const first = document.getElementById("ch0");
+      if (!first) return;
+      const passed = first.getBoundingClientRect().top < window.innerHeight * 0.6;
+      setBegun((was) => was || passed);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const activeId = CHAPTER_ORDER[state.chapterIndex];
   const behavior: ScrollBehavior = state.reducedMotion ? "auto" : "smooth";
+
+  /* the era band names itself only while the reader is inside it */
+  const activeYear = CHAPTER_META[CHAPTER_ORDER.indexOf(activeId)]?.spineYear ?? 0;
+  const inBand = activeYear >= TIMELINE.redSpan.start && activeYear <= TIMELINE.redSpan.end;
 
   /* the overture (ch0_5) has no node of its own; the nearest node by
      spine year stays marked so the rail never goes blank */
@@ -100,7 +119,11 @@ export function TimelineSpine() {
     <nav
       aria-label="Exhibit timeline"
       data-testid="timeline-spine"
-      className="exh-paper fixed inset-x-0 bottom-0 z-40 border-t border-exh-ink/15 pb-[env(safe-area-inset-bottom)]"
+      data-begun={String(begun)}
+      className={cn(
+        "exh-paper fixed inset-x-0 bottom-0 z-40 border-t border-exh-ink/15 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 motion-reduce:transition-none",
+        !begun && "translate-y-full"
+      )}
       style={{ backgroundColor: "var(--color-exh-linen-deep)" }}
     >
       <div className="relative h-11 md:h-16">
@@ -118,18 +141,23 @@ export function TimelineSpine() {
               left: `${pctOf(TIMELINE.redSpan.start)}%`,
               width: `${pctOf(TIMELINE.redSpan.end) - pctOf(TIMELINE.redSpan.start)}%`,
             }}
-            className="absolute top-[19px] h-1.5 rounded-full bg-exh-red/80 md:top-[21px] md:h-2"
+            className={cn(
+              "absolute top-[19px] h-1.5 rounded-full md:top-[21px] md:h-2",
+              inBand ? "bg-exh-red/80" : "bg-exh-red/35"
+            )}
           />
-          <span
-            aria-hidden="true"
-            data-testid="spine-red-label"
-            style={{
-              left: `${(pctOf(TIMELINE.redSpan.start) + pctOf(TIMELINE.redSpan.end)) / 2}%`,
-            }}
-            className="exh-plat absolute top-0.5 hidden -translate-x-1/2 whitespace-nowrap text-[9px] uppercase tracking-[0.16em] text-exh-red/90 md:block"
-          >
-            1921 to 1968, the machinery at full power
-          </span>
+          {inBand && (
+            <span
+              aria-hidden="true"
+              data-testid="spine-red-label"
+              style={{
+                left: `${(pctOf(TIMELINE.redSpan.start) + pctOf(TIMELINE.redSpan.end)) / 2}%`,
+              }}
+              className="exh-plat absolute top-0.5 hidden -translate-x-1/2 whitespace-nowrap text-[9px] uppercase tracking-[0.16em] text-exh-ink-soft md:block"
+            >
+              1921 to 1968
+            </span>
+          )}
 
           {/* nodes: the dots always render; below md the individual
               24px hit areas are sub-target-size, so the buttons are

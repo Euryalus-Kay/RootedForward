@@ -148,7 +148,8 @@ export default function RoomOverlay() {
         if (!o) close();
       }}
     >
-      <Dialog.Overlay className="fixed inset-0 z-[55] bg-exh-ink/60" />
+      {/* heavy scrim; the page behind should read as texture, not text */}
+      <Dialog.Overlay className="fixed inset-0 z-[55] bg-exh-ink/80 backdrop-blur-[3px]" />
       <Dialog.Content
         ref={contentRef}
         data-testid="room-overlay"
@@ -196,13 +197,13 @@ export default function RoomOverlay() {
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
             <div className="min-w-0">
               <Dialog.Title asChild>
-                <h2 className="exh-plat truncate text-sm font-semibold uppercase tracking-[0.25em] text-exh-ink">
+                <h2 className="exh-plat text-sm font-semibold uppercase leading-snug tracking-[0.25em] text-exh-ink">
                   {platePlain ?? "Document room"}
                 </h2>
               </Dialog.Title>
-              {plateTitle ? (
-                <p className="exh-plat mt-0.5 truncate text-[11px] uppercase tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
-                  {platePlain}
+              {plateTitle && plateTitle.trim().toLowerCase() !== (platePlain ?? "").trim().toLowerCase() ? (
+                <p className="exh-plat mt-0.5 text-[11px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
+                  {plateTitle}
                 </p>
               ) : null}
             </div>
@@ -210,7 +211,7 @@ export default function RoomOverlay() {
               <button
                 type="button"
                 data-testid="room-close"
-                className="exh-plat inline-flex min-h-12 shrink-0 cursor-pointer items-center border border-exh-ink/40 bg-exh-linen px-4 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink transition-colors duration-200 hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen"
+                className="exh-plat inline-flex min-h-12 shrink-0 cursor-pointer items-center border border-exh-ink/40 bg-exh-linen px-4 text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink outline-none transition-colors duration-200 hover:border-exh-ink hover:bg-exh-ink hover:text-exh-linen focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-exh-blue"
               >
                 Back to the exhibit
               </button>

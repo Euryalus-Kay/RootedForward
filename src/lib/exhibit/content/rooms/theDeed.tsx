@@ -144,7 +144,7 @@ export const THE_DEED_STATIONS: RoomStation[] = [
         {DEED ? (
           <PaperCard tone="deep" data-testid="room-residue-card" className="p-4 sm:p-5">
             <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-              The residue
+              {DEED.residueSince != null ? `Residue, after ${DEED.residueSince}` : "Residue"}
             </p>
             <p className="mt-2 font-display text-xl leading-relaxed text-exh-ink">{DEED.residue}</p>
             <p className="exh-plat mt-4 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">

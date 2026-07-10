@@ -205,7 +205,8 @@ export default function HolcReliefStage({
                 letterSpacing={2.5}
                 fill="#1C1A17"
                 stroke="#EDE6D6"
-                strokeWidth={6}
+                strokeWidth={3.5}
+                strokeOpacity={0.85}
                 paintOrder="stroke"
                 strokeLinejoin="round"
                 className="exh-plat"
@@ -254,9 +255,6 @@ export default function HolcReliefStage({
           aria-valuetext={`turned ${TURN_STOPS[turnIdx] - TURN_STOPS[TURN_DEFAULT_INDEX]} degrees from rest`}
           className="h-11 w-44 max-w-full cursor-pointer accent-[var(--color-exh-ink)]"
         />
-        <span className="exh-mono text-xs text-exh-ink-soft" aria-hidden="true">
-          {TURN_STOPS[turnIdx] - TURN_STOPS[TURN_DEFAULT_INDEX]}&deg;
-        </span>
       </div>
 
       {/* the height legend and its honesty line */}
@@ -281,8 +279,8 @@ export default function HolcReliefStage({
         ))}
       </div>
       <p data-testid="holc-relief-ranknote" className="mt-2 max-w-[60ch] text-[13px] leading-relaxed text-exh-ink-soft">
-        The higher the ground, the easier the money. Height shows the grade and nothing else, a
-        rank the surveyors assigned, not a measurement. Areas the survey left ungraded lie flat.
+        Height shows only the grade the surveyors assigned, not a measurement. Areas the survey
+        left ungraded lie flat.
       </p>
     </div>
   );

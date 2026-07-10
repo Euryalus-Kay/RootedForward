@@ -104,15 +104,16 @@ export type HolcMapFraming = "ch0" | "ch6";
 
 const FRAMING_COPY: Record<
   HolcMapFraming,
-  { lead: string; overlayCaption: string }
+  { lead: string | null; overlayCaption: string }
 > = {
   ch0: {
-    lead: "Select any graded area. The sheet the surveyors filed for it opens below.",
+    /* the empty sheet panel below carries the one instruction */
+    lead: null,
     overlayCaption:
       "Nothing lights. The Black Belt came back graded hazardous, and no ordinary loan reached a red area.",
   },
   ch6: {
-    lead: "The same map, read again now that you know who drew it. Select any area to open its sheet.",
+    lead: "The same map, with its files attached, now that you know who drew it.",
     overlayCaption:
       "Nothing lights. The Black Belt came back graded hazardous, and no ordinary loan reached a red area.",
   },
@@ -353,9 +354,13 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
       data-selected={selected ? String(selected.label ?? selected.id) : "none"}
     >
       <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-          {copy.lead}
-        </p>
+        {copy.lead ? (
+          <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+            {copy.lead}
+          </p>
+        ) : (
+          <span aria-hidden="true" />
+        )}
         {/* the two views of the same map; the flat study map is one tap away */}
         <div className="flex" role="group" aria-label="Map view">
           {(
@@ -426,7 +431,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
           data-testid="holc-map-nearby"
           className="mt-2 border border-exh-ink/25 bg-exh-linen-deep/30"
         >
-          <p className="exh-plat border-b border-exh-ink/15 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
+          <p className="exh-plat border-b border-exh-ink/15 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
             Areas near your selection
           </p>
           <ul className="divide-y divide-exh-ink/10">
@@ -455,20 +460,6 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
         </div>
       )}
 
-      {/* on a phone the graded areas render only a few pixels wide; the
-          reading room lists every sheet and needs no map precision */}
-      <p className="mt-2 text-xs leading-snug text-exh-ink-soft md:hidden">
-        {"The graded areas are small at this size. For a specific sheet, the "}
-        <button
-          type="button"
-          data-testid="holc-map-files-hint"
-          onClick={openFilesRoom}
-          className="cursor-pointer text-exh-ink underline decoration-exh-ink/40 underline-offset-2 hover:decoration-exh-ink"
-        >
-          Surveyor&rsquo;s Files reading room
-        </button>
-        {" is the surer path."}
-      </p>
 
       {/* ---------------- the surveyor sheet ---------------- */}
       <PaperCard
@@ -478,9 +469,22 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
       >
         {!selected && (
           <p className="text-sm leading-snug text-exh-ink-soft">
-            {mapReady
-              ? "No area is open. Select a graded area to read its file."
-              : "Map data is being prepared. The sheets open once it loads."}
+            {mapReady ? (
+              <>
+                {"No area is open. Select a graded area to read its file. Every sheet is also listed in the "}
+                <button
+                  type="button"
+                  data-testid="holc-map-files-hint"
+                  onClick={openFilesRoom}
+                  className="cursor-pointer text-exh-ink underline decoration-exh-ink/40 underline-offset-2 hover:decoration-exh-ink"
+                >
+                  Surveyor&rsquo;s Files reading room
+                </button>
+                {"."}
+              </>
+            ) : (
+              "Map data is being prepared. The sheets open once it loads."
+            )}
           </p>
         )}
         {selected && (
@@ -509,14 +513,14 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
             <div className="mt-3 border-t border-exh-ink/15 pt-3">
               {excerptUsable && selDesc ? (
                 <div>
-                  <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
+                  <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
                     from the sheet HOLC&rsquo;s surveyors filed, 1939 to 1940
                   </p>
                   <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[11px] md:text-[9px]">
                     period document; contains the era&rsquo;s racist language
                   </span>
                   {selDesc.excerptLabel && (
-                    <p className="exh-mono mt-2 text-[11px] text-exh-ink/70 md:text-[11px] md:text-[10px]">{selDesc.excerptLabel}</p>
+                    <p className="exh-mono mt-2 text-[11px] text-exh-ink/70 md:text-[10px]">{selDesc.excerptLabel}</p>
                   )}
                   <blockquote className="exh-serif mt-1 text-sm leading-snug text-exh-ink italic">
                     &ldquo;{selDesc.excerpt.trim()}&rdquo;
@@ -546,30 +550,20 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
 
       {/* ---------------- the loans overlay toggle ---------------- */}
       <div className="mt-4">
-        <button
-          type="button"
-          data-testid="holc-map-hold"
-          aria-pressed={overlayOn}
-          onClick={toggleOverlay}
-          className={`flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-sm border px-4 py-2 text-left transition-colors ${
-            overlayOn ? "border-exh-ink bg-exh-ink/90" : "border-exh-ink/40 bg-exh-linen-deep/50"
-          }`}
-        >
-          <span
-            className={`text-sm font-semibold ${
-              overlayOn ? "text-exh-linen" : "text-exh-ink"
-            }`}
-          >
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-exh-ink/20 pt-3">
+          <p className="font-display text-base leading-snug text-exh-ink sm:text-lg">
             Where could a Black family get a federally backed loan?
-          </span>
-          <span
-            className={`exh-plat shrink-0 text-[11px] uppercase tracking-[0.15em] md:text-[11px] md:text-[10px] ${
-              overlayOn ? "text-exh-linen/80" : "text-exh-ink-soft"
-            }`}
+          </p>
+          <button
+            type="button"
+            data-testid="holc-map-hold"
+            aria-pressed={overlayOn}
+            onClick={toggleOverlay}
+            className="exh-plat min-h-10 cursor-pointer text-[11px] font-semibold uppercase tracking-[0.16em] text-exh-ink underline decoration-exh-ink/40 underline-offset-4 transition-colors hover:decoration-exh-ink"
           >
-            {overlayOn ? "showing. Select again to restore the map" : "select to see"}
-          </span>
-        </button>
+            {overlayOn ? "Restore the map" : "Show the answer on the map"}
+          </button>
+        </div>
 
         {toggledOnce && (
           <div
@@ -601,7 +595,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
         </button>
         <p data-testid="holc-map-locate-result" className="min-w-0 flex-1 text-sm leading-snug text-exh-ink-soft">
           {locateState === "idle" &&
-            "Uses your device location once, on your permission. Nothing leaves this page."}
+            "Uses your device location once, with your permission. Nothing leaves this page."}
           {locateState === "hit" &&
             (locateGrade
               ? `You are standing on ground the surveyors graded ${locateGrade} in 1940. Its sheet is open above.`

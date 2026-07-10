@@ -1,0 +1,22 @@
+{
+  "milestone": "R8",
+  "date": "2026-07-09",
+  "brief": "Owner: make it so perfect it could be displayed anywhere; scrutinize every detail with the lens 'is there a way for this to be less AI, more clear, more elevated'; license to undo old work.",
+  "process": "35 section screenshots (every chapter, header, About, both room types, at 390px and 1280px) reviewed by six parallel exhibition-design scrutineers, one slice each, plus a code-level pass (conflicting utility classes, AI-tell scan of all 98 wall-text blocks). Findings consolidated, deduplicated against dev-mode artifacts, and fixed in one wave; two isolated clusters (About colophon + credit lines; document rooms) were delegated with strict file ownership.",
+  "headlineFixes": [
+    "Timeline dock no longer renders before the visitor begins (it claimed '13 of 13 · Today' over the opening wall and covered the Begin button); the era-band caption quiets to years only and appears only inside 1921 to 1968.",
+    "The wealth-gap station's resting frame told the opposite of the truth (two equal columns, no figures). It now opens at true proportion, the Black median's full column and figure in frame, the white column visibly running past the top, both dollar figures printed at the feet; the climb remains.",
+    "The bombing docket rendered the commission's repeat attacks as apparent copy-paste duplicates; rows now carry 'Attack k of n recorded at this address', addresses wrap instead of truncating, and one reconciling sentence separates the three counts (58 recorded, 40 in the appendix, 32 placeable).",
+    "Room overlay printed its title twice (a literal bug rendering plainName in the subtitle slot); citation daggers no longer stack (single grouped mark from two refs up) and never orphan onto their own line (the mark rides inside the text span).",
+    "The MK/DT/CR initials-avatar pattern and 'Select to read their words' became 'In his own words'; the 1940 grades' HOLC agency is named at first mention; published titles set in italic; verbatim passages set in typographic double quotes.",
+    "Register pass across interactives: the loans question is a curator line with one quiet action instead of a teaser pill; the mobile map apology is gone; the gap and Try instructions lose developer vocabulary; station titles lose the comma-appositive tic; the five-instruments table maps formal names to the chapters' short names and says '1952 onward' instead of 'never switched off'.",
+    "About colophon: bibliography truly alphabetized (surname or institution, leading articles ignored), access years print as 'accessed 2026', archival credit lines cleaned of life dates, scraped place suffixes, and inverted names.",
+    "Files room: computed 2026 tallies no longer dress as period typescript (body face plus 'present-day tally' framing); the racist-language advisory sits directly above the actual documents."
+  ],
+  "declined": [
+    "Unbolding the quick-read layer (three scrutineers called it an AI tell): declined; the owner asked for the bold layer in R6. It was thinned only where it landed on the deaths in the bombing chapter.",
+    "Demoting two Wikipedia bibliography rows: declined after checking the proposed substitute sources, which do not state the cited figures; honesty outranks appearance and the decision is noted on the facts.",
+    "Making the flat map the phone default: declined; the relief is the exhibit's opening argument, and the sheet panel now carries the reading-room path."
+  ],
+  "suite": "151 checks across 15 scenarios green; typecheck, both copy lints, and the fact audit pass; production build clean."
+}

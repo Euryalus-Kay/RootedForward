@@ -334,7 +334,7 @@ export default function AnswerWall() {
       )}
 
       {/* ---------------- the wall (only once it has voices) ---------------- */}
-      {(!wallLoaded || answers.length > 0) && (
+      {wallLoaded && answers.length > 0 && (
         <div className="mt-7 border-t border-exh-ink/20 pt-5">
           <p className="exh-plat text-center text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft md:text-[10px]">
             From earlier visitors
@@ -343,17 +343,15 @@ export default function AnswerWall() {
             data-testid="aw-field"
             className="mt-4 flex flex-wrap items-start justify-center gap-3"
           >
-            {wallLoaded &&
-              answers.map((a, i) => (
-                <AnswerChip key={`${a.createdAt}-${i}`} answer={a} index={i} drift={drift} />
-              ))}
+            {answers.map((a, i) => (
+              <AnswerChip key={`${a.createdAt}-${i}`} answer={a} index={i} drift={drift} />
+            ))}
           </div>
-          {!wallLoaded && (
-            <p className="mt-2 text-center text-sm text-exh-ink-soft">Reading the wall</p>
-          )}
         </div>
       )}
-      {wallLoaded && answers.length === 0 && (
+      {/* while loading and when empty, one quiet promise; never a
+          heading over a blank case */}
+      {(!wallLoaded || answers.length === 0) && (
         <p data-testid="aw-field" className="mt-4 text-center text-sm text-exh-ink-soft">
           Answers appear here once the first ones clear review.
         </p>

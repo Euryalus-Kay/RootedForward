@@ -54,7 +54,7 @@ export interface WallSection {
 
 export interface StationIntroDef {
   what: string;
-  when: string;
+  when?: string;
   why: string;
   /** one imperative line telling the visitor exactly what to do */
   tryIt?: string;
@@ -123,7 +123,13 @@ export type FactTier = "documented" | "reported" | "attributed";
 export interface FactSource {
   title: string;
   author?: string;
+  /** publication year, or the year the resource was read when
+   *  yearIsAccess is true */
   year?: number;
+  /** true when year records when a living web resource (Wikipedia,
+   *  Britannica) was consulted; citations then render "accessed 2026"
+   *  instead of posing as a publication year */
+  yearIsAccess?: boolean;
   url?: string;
   locator?: string;
 }
@@ -168,6 +174,10 @@ export interface MachineDef {
   renamedTo?: string;
   renamedNote?: string;
   residue: string;
+  /** the year the residue slot is dated from; absent while a machine still runs */
+  residueSince?: number;
+  /** one factual line under the status disc, no metaphor reading */
+  lampCaption: string;
   evidenceFactRefs: string[];
   homeChapter: ChapterId;
   cardIcon: string;

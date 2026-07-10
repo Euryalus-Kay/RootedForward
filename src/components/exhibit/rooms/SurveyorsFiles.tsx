@@ -197,11 +197,7 @@ export default function SurveyorsFiles() {
         for it. This room holds every sheet in the digitized record for Chicago and its suburbs
         {areas ? `, ${areas.length} in all` : ""}. The form asked for the race and national
         origin of an area&rsquo;s residents before it asked about the condition of the houses.
-        The entries below are shown as they were typed.
       </p>
-      <span className="exh-plat mt-3 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[9px]">
-        period documents; they contain the era&rsquo;s racist language
-      </span>
 
       {/* ---------------- patterns in the record ---------------- */}
       <PaperCard data-testid="files-patterns" className="mt-6 p-4 sm:p-6">
@@ -210,8 +206,8 @@ export default function SurveyorsFiles() {
         </p>
         <p className="mt-2 max-w-prose text-sm leading-relaxed text-exh-ink">
           Read one sheet and you see a neighborhood. Counted together, the sheets show the
-          system. Every count below is computed from the archive on this page and can be
-          re-run against it.
+          system. Every count below is a present-day tally, computed from the archive on this
+          page and checkable against it.
         </p>
         <ul className="mt-4 space-y-3">
           <li className="border-t border-exh-ink/15 pt-3">
@@ -219,28 +215,28 @@ export default function SurveyorsFiles() {
               The form asked for race before it asked about the houses, and the answers sort
               cleanly by grade.
             </p>
-            <div className="mt-1"><FactValue id="sheets.race_by_grade" size="sm" /></div>
+            <div className="mt-1"><FactValue id="sheets.race_by_grade" size="sm" mono={false} /></div>
           </li>
           <li className="border-t border-exh-ink/15 pt-3">
             <p className="text-sm leading-relaxed text-exh-ink">
               The form&rsquo;s Infiltration question, asking what was moving in, was answered
               with a race almost only on the lowest grade.
             </p>
-            <div className="mt-1"><FactValue id="sheets.infiltration_negro" size="sm" /></div>
+            <div className="mt-1"><FactValue id="sheets.infiltration_negro" size="sm" mono={false} /></div>
           </li>
           <li className="border-t border-exh-ink/15 pt-3">
             <p className="text-sm leading-relaxed text-exh-ink">
               The surveyors also recorded what lenders were already doing. Credit followed
               the grade before the map was printed.
             </p>
-            <div className="mt-1"><FactValue id="sheets.mortgage_gradient" size="sm" /></div>
+            <div className="mt-1"><FactValue id="sheets.mortgage_gradient" size="sm" mono={false} /></div>
           </li>
           <li className="border-t border-exh-ink/15 pt-3">
             <p className="text-sm leading-relaxed text-exh-ink">
               The vocabulary that would later justify clearance appears here first, and only
               at the bottom of the scale.
             </p>
-            <div className="mt-1"><FactValue id="sheets.blighted_by_grade" size="sm" /></div>
+            <div className="mt-1"><FactValue id="sheets.blighted_by_grade" size="sm" mono={false} /></div>
           </li>
         </ul>
         {areas && (
@@ -258,7 +254,7 @@ export default function SurveyorsFiles() {
                     &ldquo;{q.quote}&rdquo;
                   </blockquote>
                   <div className="mt-1">
-                    <FactValue id={qid === "1097" ? "sheets.a11_restricted_quote" : "sheets.d106_not_restricted_quote"} size="sm" />
+                    <FactValue id={qid === "1097" ? "sheets.a11_restricted_quote" : "sheets.d106_not_restricted_quote"} size="sm" mono={false} />
                   </div>
                   {target && (
                     <button
@@ -277,8 +273,14 @@ export default function SurveyorsFiles() {
         )}
       </PaperCard>
 
+      {/* ---------------- the sheets, with their advisory ---------------- */}
+      <p className="exh-plat mt-8 text-[11px] uppercase leading-relaxed tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
+        Period documents; they contain the era&rsquo;s racist language. Entries are shown as
+        they were typed.
+      </p>
+
       {/* ---------------- the open sheet ---------------- */}
-      <div ref={sheetRef} className="mt-6 scroll-mt-20">
+      <div ref={sheetRef} className="mt-4 scroll-mt-20">
         {selected ? (
           <PaperCard tone="deep" data-testid="files-sheet" className="p-4 sm:p-6">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">

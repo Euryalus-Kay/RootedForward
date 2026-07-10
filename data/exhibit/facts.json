@@ -5,7 +5,7 @@
     {
       "id": "land.treaty_1833",
       "value": 5000000,
-      "display": "about 5 million acres ceded",
+      "display": "About 5 million acres ceded",
       "unit": "acres",
       "asOf": "September 26, 1833",
       "tier": "documented",
@@ -124,6 +124,7 @@
         "title": "Paul Cornell (lawyer)",
         "author": "Wikipedia",
         "year": 2026,
+        "yearIsAccess": true,
         "url": "https://en.wikipedia.org/wiki/Paul_Cornell_(lawyer)",
         "locator": "railroad land exchange"
       },
@@ -134,7 +135,7 @@
       "usedBy": [
         "walltext"
       ],
-      "notes": "Cornell traded 60 of his acres to the Illinois Central Railroad for a station at 53rd Street and a commitment of six daily trains each way to Chicago's Central Depot."
+      "notes": "Cornell traded 60 of his acres to the Illinois Central Railroad for a station at 53rd Street and a commitment of six daily trains each way to Chicago's Central Depot. The Hyde Park Historical Society's Paul Cornell page confirms the deed to the Illinois Central but says only that he deeded some of the land, without the 60 acre figure, so the Wikipedia citation stays primary for the number (page checked July 2026)."
     },
     {
       "id": "formation.annexation_1889",
@@ -190,6 +191,7 @@
         "title": "World's Columbian Exposition",
         "author": "Encyclopaedia Britannica",
         "year": 2026,
+        "yearIsAccess": true,
         "url": "https://www.britannica.com/event/Worlds-Columbian-Exposition",
         "locator": ""
       },
@@ -212,6 +214,7 @@
         "title": "World's Columbian Exposition",
         "author": "Wikipedia",
         "year": 2026,
+        "yearIsAccess": true,
         "url": "https://en.wikipedia.org/wiki/World's_Columbian_Exposition",
         "locator": ""
       },
@@ -220,7 +223,7 @@
       "usedBy": [
         "walltext"
       ],
-      "notes": "The gates shut for good on October 30, 1893, two days after Mayor Carter Harrison's assassination canceled the closing ceremony."
+      "notes": "The gates shut for good on October 30, 1893, two days after Mayor Carter Harrison's assassination canceled the closing ceremony. This fact carries no non-Wikipedia source for the closing date, so the Wikipedia citation stays rather than leaving the fact unsourced; its year is the access year."
     },
     {
       "id": "fair.attendance_27m",
@@ -233,6 +236,7 @@
         "title": "World's Columbian Exposition",
         "author": "Encyclopaedia Britannica",
         "year": 2026,
+        "yearIsAccess": true,
         "url": "https://www.britannica.com/event/Worlds-Columbian-Exposition",
         "locator": "attendance figures"
       },
@@ -292,7 +296,7 @@
     {
       "id": "colorline.club_founded",
       "value": 1908,
-      "display": "the Hyde Park Improvement Protective Club formed in autumn 1908",
+      "display": "The Hyde Park Improvement Protective Club formed in autumn 1908",
       "unit": "year",
       "asOf": "autumn 1908",
       "tier": "reported",
@@ -506,7 +510,7 @@
     {
       "id": "bombings.deaths_2",
       "value": 2,
-      "display": "two people killed, both Black",
+      "display": "2 killed, both Black",
       "unit": "deaths",
       "asOf": "July 1, 1917 to March 1, 1921",
       "tier": "documented",
@@ -527,7 +531,7 @@
     {
       "id": "bombings.convictions_0",
       "value": 0,
-      "display": "zero convictions",
+      "display": "0 convictions",
       "unit": "convictions",
       "asOf": "as of the 1922 report",
       "tier": "documented",
@@ -632,7 +636,7 @@
     {
       "id": "bombings.riot_homeless_1000",
       "value": 1000,
-      "display": "about 1,000 left homeless",
+      "display": "About 1,000 left homeless",
       "unit": "people",
       "asOf": "July 27 to August 2, 1919",
       "tier": "documented",
@@ -752,7 +756,7 @@
     {
       "id": "covenants.coverage_claim",
       "value": "hundreds of subdivisions",
-      "display": "hundreds of Cook County subdivisions carried covenants by the 1940s",
+      "display": "Hundreds of Cook County subdivisions carried covenants by the 1940s",
       "unit": "",
       "asOf": "by the 1940s",
       "tier": "reported",
@@ -987,7 +991,7 @@
     {
       "id": "redlining.holc_survey_chicago",
       "value": 1940,
-      "display": "on the Chicago HOLC map, the Black Belt was washed in red",
+      "display": "On the Chicago HOLC map, the Black Belt was washed in red",
       "unit": "map year",
       "asOf": "surveyed 1939 to 1940; map issued 1940",
       "tier": "documented",
@@ -1289,7 +1293,7 @@
     {
       "id": "renewal.families_displaced",
       "value": 4000,
-      "display": "about 4,000 families",
+      "display": "About 4,000 families",
       "unit": "families",
       "asOf": "full course of the program",
       "tier": "reported",
@@ -1428,7 +1432,7 @@
     {
       "id": "renewal.black_pop_drop_40pct",
       "value": 40,
-      "display": "the Black population fell about 40 percent",
+      "display": "The Black population fell about 40 percent",
       "unit": "percent",
       "asOf": "across the renewal period",
       "tier": "reported",
@@ -1579,7 +1583,7 @@
     {
       "id": "contracts.avg_overpayment_71000",
       "value": 71000,
-      "display": "an average of $71,000 more per home",
+      "display": "An average of $71,000 more per home",
       "unit": "USD (inflation adjusted, 2019)",
       "asOf": "1950s to 1960s purchases, 2019 dollars",
       "tier": "reported",
@@ -1810,7 +1814,7 @@
     {
       "id": "cbl.savings",
       "value": 14000,
-      "display": "an average of $14,000 saved per renegotiated contract",
+      "display": "An average of $14,000 saved per renegotiated contract",
       "unit": "USD (period dollars)",
       "asOf": "renegotiations counted through July 1971",
       "tier": "reported",
@@ -1901,7 +1905,7 @@
     {
       "id": "present.scf_white_285000",
       "value": 285010,
-      "display": "median white family wealth, about $285,000",
+      "display": "Median white family wealth, $285,010",
       "unit": "USD",
       "asOf": "2022 survey",
       "tier": "documented",
@@ -1923,7 +1927,7 @@
     {
       "id": "present.scf_black_44900",
       "value": 44890,
-      "display": "median Black family wealth, about $44,900",
+      "display": "Median Black family wealth, $44,890",
       "unit": "USD",
       "asOf": "2022 survey",
       "tier": "documented",
@@ -2225,7 +2229,7 @@
     {
       "id": "fair.building_boom",
       "value": 1893,
-      "display": "the building boom of the fair years, hotels east of the tracks, cottages west",
+      "display": "The building boom of the fair years, hotels east of the tracks, cottages west",
       "unit": "era",
       "asOf": "1891-1893",
       "tier": "documented",
@@ -2485,7 +2489,7 @@
     {
       "id": "sheets.race_by_grade",
       "value": "0 of 35 vs 89 of 122",
-      "display": "not one A grade sheet with a race entry records a Black resident; 89 of the 122 D grade sheets with an entry do",
+      "display": "Not one A grade sheet with a race entry records a Black resident; 89 of the 122 D grade sheets with an entry do",
       "unit": "sheets",
       "asOf": "surveyed 1939 to 1940",
       "tier": "documented",
@@ -2525,7 +2529,7 @@
     {
       "id": "sheets.mortgage_gradient",
       "value": "A 23 ample 0 limited; D 10 ample 97 limited",
-      "display": "on A grade sheets lenders report mortgage money ample or good 23 times and limited never; on D grade sheets, limited or unavailable 97 times against 10 ample",
+      "display": "On A grade sheets lenders report mortgage money ample or good 23 times and limited never; on D grade sheets, limited or unavailable 97 times against 10 ample",
       "unit": "sheets",
       "asOf": "surveyed 1939 to 1940",
       "tier": "documented",
@@ -2546,7 +2550,7 @@
     {
       "id": "sheets.blighted_by_grade",
       "value": 37,
-      "display": "the word blighted appears in the remarks of 37 D grade sheets and of no A or B sheet",
+      "display": "The word blighted appears in the remarks of 37 D grade sheets and of no A or B sheet",
       "unit": "sheets",
       "asOf": "surveyed 1939 to 1940",
       "tier": "documented",

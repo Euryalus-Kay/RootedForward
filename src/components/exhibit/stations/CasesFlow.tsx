@@ -39,7 +39,8 @@ const JUNCTIONS: Record<string, { x: number; y: number; blurb: string }> = {
 };
 
 export default function CasesFlow() {
-  const [selected, setSelected] = useState<string>("buchanan");
+  /* the chapter's own protagonist opens the reading */
+  const [selected, setSelected] = useState<string>("hansberry");
   const active = byId.get(selected) ?? CASES[0];
 
   return (
@@ -72,8 +73,11 @@ export default function CasesFlow() {
           <text x={260} y={20} textAnchor="middle" className="exh-plat" fontSize={11} letterSpacing={2} fill="#4A453D">
             PRIVATE PAPER
           </text>
-          <text x={100} y={38} textAnchor="middle" fontSize={11} fontStyle="italic" fill="#4A453D">
+          <text x={14} y={38} textAnchor="start" fontSize={11} fontStyle="italic" fill="#4A453D">
             city ordinances draw the line
+          </text>
+          <text x={346} y={52} textAnchor="end" fontSize={11} fontStyle="italic" fill="#4A453D">
+            deeds and covenants draw it next
           </text>
 
           {/* the current: down the public lane, bend right, down, bend out */}
@@ -84,9 +88,6 @@ export default function CasesFlow() {
             strokeWidth={4}
             strokeLinecap="round"
           />
-          {/* blocked stubs, the attempts each barrier stopped */}
-          <path d="M100 78 V98" fill="none" stroke="#B0322B" strokeWidth={4} strokeDasharray="2 5" strokeLinecap="round" />
-          <path d="M260 318 V340" fill="none" stroke="#B0322B" strokeWidth={4} strokeDasharray="2 5" strokeLinecap="round" />
           {/* arrowhead out */}
           <path d="M160 446 l-7 -12 h14 Z" fill="#B0322B" />
 
@@ -97,21 +98,19 @@ export default function CasesFlow() {
           {/* junction nodes on the private run */}
           <circle cx={260} cy={220} r={8} fill="#EDE6D6" stroke="#1C1A17" strokeWidth={2.5} />
           <circle cx={260} cy={282} r={8} fill="#EDE6D6" stroke="#1C1A17" strokeWidth={2.5} />
-          {/* the Hansberry crack */}
-          <path d="M256 278 l4 3 l-3 3 l6 2" fill="none" stroke="#1C1A17" strokeWidth={1.4} />
 
           {/* labels */}
           <g className="exh-plat" fontSize={12} fontWeight={600} fill="#1C1A17">
             <text x={14} y={136}>1917 &middot; Buchanan v. Warley</text>
             <text x={238} y={224} textAnchor="end">1926 &middot; Corrigan v. Buckley</text>
             <text x={238} y={286} textAnchor="end">1940 &middot; Hansberry v. Lee</text>
-            <text x={346} y={374} textAnchor="end">1948 &middot; Shelley v. Kraemer</text>
+            <text x={346} y={400} textAnchor="end">1948 &middot; Shelley v. Kraemer</text>
           </g>
           <g fontSize={11} fontStyle="italic" fill="#4A453D">
             <text x={14} y={151}>{JUNCTIONS.buchanan.blurb}</text>
             <text x={238} y={239} textAnchor="end">{JUNCTIONS.corrigan.blurb}</text>
             <text x={238} y={301} textAnchor="end">{JUNCTIONS.hansberry.blurb}</text>
-            <text x={346} y={389} textAnchor="end">{JUNCTIONS.shelley.blurb}</text>
+            <text x={346} y={415} textAnchor="end">{JUNCTIONS.shelley.blurb}</text>
             <text x={176} y={442}>the route turns again,</text>
             <text x={176} y={456}>to sales on contract</text>
           </g>
@@ -152,6 +151,10 @@ export default function CasesFlow() {
           );
         })}
       </div>
+
+      <p className="mx-auto mt-1 max-w-[26rem] text-center text-[11px] italic leading-snug text-exh-ink-soft">
+        The bars mark rulings that closed a lane.
+      </p>
 
       {/* the selected ruling, one card instead of four */}
       <PaperCard data-testid="case-detail" className="mt-4 p-4 sm:p-5">

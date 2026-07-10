@@ -10,8 +10,9 @@
 /*  reference never starts off-screen on a phone.                      */
 /* ------------------------------------------------------------------ */
 import { allMachines } from "@/lib/exhibit/machines";
+import { machineTitle } from "../hud/BrassLamp";
 import type { MachineDef } from "@/lib/exhibit/types";
-import SourceSup from "../shared/SourceSup";
+import { SourceSupGroup } from "../shared/SourceSup";
 
 /* the order ch0_5's wall text names the instruments */
 const PROSE_ORDER = ["code", "deed", "map", "bulldozer", "contract"];
@@ -25,18 +26,21 @@ function orderedMachines(): MachineDef[] {
   return [...all].sort((a, b) => rank(a) - rank(b));
 }
 
-/** the years an instrument ran; a null offYear is still running */
+/** the years an instrument was in force; a null offYear is still running */
 function ranLabel(m: MachineDef): string {
-  return m.offYear !== null ? `${m.onYear} to ${m.offYear}` : `${m.onYear}, never switched off`;
+  return m.offYear !== null ? `${m.onYear} to ${m.offYear}` : `${m.onYear} onward`;
+}
+
+/** the short name the chapters use for this instrument */
+function aliasOf(m: MachineDef): string {
+  return machineTitle(m).toLowerCase();
 }
 
 function Definition({ m }: { m: MachineDef }) {
   return (
     <p className="text-sm leading-snug text-exh-ink">
       {m.definition}
-      {m.evidenceFactRefs.map((ref) => (
-        <SourceSup key={ref} factId={ref} />
-      ))}
+      <SourceSupGroup factIds={m.evidenceFactRefs} />
     </p>
   );
 }
@@ -46,9 +50,9 @@ export default function MachinesPanel() {
   return (
     <div data-testid="machines-panel">
       <p className="max-w-[65ch] text-sm leading-relaxed text-exh-ink-soft">
-        The chapters ahead follow five instruments of exclusion. Each was paperwork, each had an
-        operator, and each left a record. This table is the reference; the chapters show the
-        documents.
+        Every instrument here ran on paperwork and left a record. The table below is the
+        reference, and the chapters show the documents. The short name under each instrument is
+        the one the chapters use.
       </p>
 
       {/* below md, the same reference as stacked cards, no side scroll */}
@@ -63,6 +67,7 @@ export default function MachinesPanel() {
               <p className="font-display text-base text-exh-ink">{m.plainName}</p>
               <p className="exh-mono text-xs text-exh-ink">{ranLabel(m)}</p>
             </div>
+            <p className="font-display text-sm italic text-exh-ink-soft">{aliasOf(m)}</p>
             <div className="mt-1.5">
               <Definition m={m} />
             </div>
@@ -82,7 +87,7 @@ export default function MachinesPanel() {
                 What it did
               </th>
               <th className="exh-plat px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-                Ran
+                In force
               </th>
             </tr>
           </thead>
@@ -95,6 +100,7 @@ export default function MachinesPanel() {
               >
                 <td className="px-3 py-2.5">
                   <p className="font-display text-base text-exh-ink">{m.plainName}</p>
+                  <p className="font-display text-sm italic text-exh-ink-soft">{aliasOf(m)}</p>
                 </td>
                 <td className="px-3 py-2.5">
                   <Definition m={m} />

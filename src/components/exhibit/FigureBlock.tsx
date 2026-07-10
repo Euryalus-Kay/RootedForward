@@ -60,9 +60,33 @@ function composeCreditLine(credit: CreditRecord): string | null {
   artist = artist.replace(/\s+/g, " ").trim();
   // Commons' "Unknown author" reads as a name; use the house wording
   if (/^unknown author$/i.test(artist)) artist = "Photographer unknown";
+  // life-date ranges after a name, "(1844-1927)", are catalog data, not label copy
+  artist = artist.replace(/\s*\(\d{4}\s*[-\u2013\u2014]\s*\d{4}\)/g, "").replace(/\s+/g, " ").trim();
+  // Commons usernames often carry a trailing home-town clause ("Teemu008
+  // from Palatine, Illinois"); the label wants the name alone
+  artist = artist.replace(
+    /\s+from\s+[A-Z][A-Za-z.'-]*(?:[ -][A-Za-z.'-]+){0,3}(?:,\s*[A-Z][A-Za-z.'-]*(?:[ -][A-Za-z.'-]+){0,3}){0,3}$/,
+    ""
+  );
+  // a single inverted personal name ("Rees, James H.") reads name-first on
+  // a label; only touch one-segment, one-comma, digit-free personal names
+  if (!/[;\d]/.test(artist) && (artist.match(/,/g) ?? []).length === 1) {
+    const [last, first] = artist.split(",").map((s) => s.trim());
+    const nameWord = /^[A-Z][A-Za-z'’.-]*$/;
+    const roleWord = /^(?:publisher|photographer|printer|engraver|lithographer|artist|editor|firm|company|co\.?|inc\.?)$/i;
+    const personal = [last, first].every(
+      (side) =>
+        side.length > 0 &&
+        side.length < 30 &&
+        side.split(/\s+/).every((w) => nameWord.test(w) && !roleWord.test(w))
+    );
+    if (personal) artist = `${first} ${last}`;
+  }
 
   let date = decodeEntities((credit.date ?? "").trim());
   date = date.replace(/date QS:.*$/i, "").trim();
+  // "C.1940" and "c.1940" mean circa; print the conventional "c. 1940"
+  date = date.replace(/^[Cc]\.\s*(\d{4})/, "c. $1");
   // any ISO-like prefix (1923-11-05 or 1923-11) prints the year only
   const iso = date.match(/^(\d{4})(?:-\d{2}){1,2}\b/);
   if (iso) {

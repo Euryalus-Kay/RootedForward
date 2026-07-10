@@ -7,40 +7,10 @@
 /*  reference list.                                                    */
 /* ------------------------------------------------------------------ */
 import { useMemo } from "react";
-import { allFacts } from "@/lib/exhibit/facts";
-import type { FactSource } from "@/lib/exhibit/types";
-
-interface BibEntry {
-  title: string;
-  author?: string;
-  year?: number;
-  url?: string;
-}
-
-function keyOf(s: FactSource): string {
-  return [s.title, s.author ?? "", s.year ?? ""].join("|");
-}
-
-function collectSources(): BibEntry[] {
-  const seen = new Map<string, BibEntry>();
-  for (const f of allFacts()) {
-    for (const s of [f.source, ...(f.secondarySources ?? [])]) {
-      if (!s?.title) continue;
-      const k = keyOf(s);
-      if (!seen.has(k)) {
-        seen.set(k, { title: s.title, author: s.author, year: s.year, url: s.url });
-      } else if (!seen.get(k)!.url && s.url) {
-        seen.get(k)!.url = s.url;
-      }
-    }
-  }
-  return [...seen.values()].sort((a, b) =>
-    (a.author ?? a.title).localeCompare(b.author ?? b.title)
-  );
-}
+import { buildBibliography } from "@/lib/exhibit/facts";
 
 export default function AboutPanel() {
-  const sources = useMemo(() => collectSources(), []);
+  const sources = useMemo(() => buildBibliography(), []);
 
   return (
     <section
@@ -97,7 +67,7 @@ export default function AboutPanel() {
         >
           {sources.map((s) => (
             <li
-              key={keyOf(s)}
+              key={[s.title, s.author ?? "", s.yearLabel ?? ""].join("|")}
               data-testid="bib-entry"
               className="break-inside-avoid pb-3 text-sm leading-snug text-exh-ink"
             >
@@ -114,7 +84,9 @@ export default function AboutPanel() {
               ) : (
                 <span>{s.title}</span>
               )}
-              {s.year ? <span className="exh-mono text-exh-ink-soft"> ({s.year})</span> : null}
+              {s.yearLabel ? (
+                <span className="exh-mono text-exh-ink-soft"> ({s.yearLabel})</span>
+              ) : null}
             </li>
           ))}
         </ul>

@@ -33,21 +33,7 @@ const SECTION_CLASS =
 const INTRO_CLASS =
   "max-w-[65ch] font-display text-xl leading-[1.65] text-exh-ink md:text-2xl md:leading-[1.6]";
 
-/** Split wall text on **bold** runs. The bold runs are the quick-read
- *  layer; reading only them tells the chapter's story. */
-function renderWallText(text: string) {
-  const parts = text.split(/\*\*(.+?)\*\*/g);
-  if (parts.length === 1) return text;
-  return parts.map((part, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-semibold text-exh-ink">
-        {part}
-      </strong>
-    ) : (
-      part
-    )
-  );
-}
+import { renderRichText as renderWallText } from "./shared/richText";
 
 function WallParagraph({ section, intro = false }: { section: WallSection; intro?: boolean }) {
   return (

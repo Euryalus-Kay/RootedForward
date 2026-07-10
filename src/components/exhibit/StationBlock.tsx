@@ -11,17 +11,19 @@ import type { StationId, StationIntroDef } from "@/lib/exhibit/types";
 import { useExhibitDispatch, useExhibitState } from "@/lib/exhibit/ExhibitProvider";
 import { STATION_REGISTRY } from "./interactives/registry";
 import { InteractiveContext, type InteractiveApi } from "./interactives/InteractiveContext";
-import SourceSup from "./shared/SourceSup";
+import { SourceSupGroup } from "./shared/SourceSup";
+import { renderRichText } from "./shared/richText";
 
 const noop = () => undefined;
 
-function IntroLine({ label, text }: { label: string; text: string }) {
+function IntroLine({ label, text }: { label: string; text?: string }) {
+  if (!text) return null;
   return (
     <div className="grid gap-0.5 sm:grid-cols-[5.5rem_1fr] sm:gap-3">
       <dt className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-exh-ink-soft">
         {label}
       </dt>
-      <dd className="text-sm leading-relaxed text-exh-ink">{text}</dd>
+      <dd className="text-sm leading-relaxed text-exh-ink">{renderRichText(text)}</dd>
     </div>
   );
 }
@@ -40,10 +42,8 @@ export function StationIntro({ id, intro }: { id: string; intro: StationIntroDef
           Why
         </dt>
         <dd className="text-sm leading-relaxed text-exh-ink">
-          {intro.why}
-          {(intro.factRefs ?? []).map((ref) => (
-            <SourceSup key={ref} factId={ref} />
-          ))}
+          {renderRichText(intro.why)}
+          <SourceSupGroup factIds={intro.factRefs ?? []} />
         </dd>
       </div>
       {intro.tryIt && (

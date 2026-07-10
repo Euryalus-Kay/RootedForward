@@ -41,8 +41,15 @@ const RIGHT_SUB = "an installment contract, no deed until the end";
 const RIGHT_LINE = "Pays more for the same house. The seller keeps the deed until the last payment.";
 const RIGHT_COUNTER_LABEL = "Paid beyond a fair price";
 const RIGHT_BAR_LABEL = "Share of the house owned";
-const TICK_LABEL = "The slider ends at the study's average loss, $71,000";
-const LIFE_HINT = "Even after years of flawless payments";
+const TICK_LABEL = "The track runs until the buyer's extra payments reach the study's average, $71,000";
+
+/** the miss-a-payment hint tells the truth at every slider position */
+function lifeHint(months: number): string {
+  if (months === 0) return "From the very first payment, one miss forfeits everything";
+  const yr = Math.floor(months / 12);
+  if (yr === 0) return "Even after months of flawless payments, one miss forfeits everything";
+  return `Even after ${yr} year${yr === 1 ? "" : "s"} of flawless payments, one miss forfeits everything`;
+}
 const SOLD_LINE = "Can sell or refinance at any point and walk away with the share built.";
 const NOTICE_BODY =
   "One missed payment ends the contract. Everything paid stays with the seller. The family leaves.";
@@ -380,7 +387,7 @@ export default function TwoBuyers() {
             {fired ? "one missed payment shown" : "Miss one payment"}
           </button>
           {!fired && (
-            <p className="mt-1.5 text-center text-xs text-exh-ink-soft">{LIFE_HINT}</p>
+            <p className="mt-1.5 text-center text-xs text-exh-ink-soft">{lifeHint(months)}</p>
           )}
         </div>
 
@@ -414,11 +421,11 @@ export default function TwoBuyers() {
           </div>
         </div>
         <p className="mt-2 text-sm leading-snug text-exh-ink">
-          {"That is "}
-          <span className="exh-mono">{TWO_BUYERS.ross.priceRatio}</span>
-          {" times what the seller had just paid, worse than the study's "}
+          {"That is a "}
+          <span className="exh-mono">{Math.round((TWO_BUYERS.ross.priceRatio - 1) * 100)}</span>
+          {" percent markup on what the seller had just paid, against the study's "}
           <span className="exh-mono">{TWO_BUYERS.markupAvgPct}</span>
-          {" percent average markup."}
+          {" percent average."}
           <SourceSup factId="contracts.markup_84pct" />
         </p>
         <div className="mt-3">

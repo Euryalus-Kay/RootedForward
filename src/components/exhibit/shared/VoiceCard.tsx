@@ -108,7 +108,7 @@ export function VoiceCard({ personId, size = "md" }: VoiceCardProps) {
       </span>
       {!open && (
         <span className="exh-plat -mt-1 max-w-40 text-center text-[11px] md:text-[9px] uppercase leading-tight tracking-[0.14em] text-exh-ink/70">
-          Select to read their words
+          In his own words
         </span>
       )}
 

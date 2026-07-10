@@ -21,8 +21,9 @@ import { PaperCard } from "./PaperCard";
 
 const POPOVER_WIDTH = 272;
 
-/* a run of this many refs or more collapses into one grouped popover */
-const GROUP_THRESHOLD = 4;
+/* a run of this many refs or more collapses into one grouped popover;
+   even two identical daggers side by side read as a glitch */
+const GROUP_THRESHOLD = 2;
 
 /* one-line tier definitions, matching the About panel's Method block,
    so REPORTED can never be read as "reported to police" */

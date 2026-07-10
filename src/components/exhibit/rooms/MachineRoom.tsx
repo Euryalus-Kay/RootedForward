@@ -19,18 +19,6 @@ import { InteractiveContext, type InteractiveApi } from "../interactives/Interac
 import { LampDisc, MonoNumbers, machineTitle } from "../hud/BrassLamp";
 import PaperCard from "../shared/PaperCard";
 
-/* One plain line under the lamp disc. The ledger above already quotes
- * the record verbatim; this line only explains what the lamp means. */
-function lampReading(lamp: LampState): string {
-  if (lamp === "renamed") {
-    return "This lamp stays lit. The record shows no stop for this machine, only a new name. The plate at the end of the room reads it.";
-  }
-  if (lamp === "off_residue") {
-    return "The lamp is out, with residue. The dates above say when the machine stopped, and the residue line says what it left behind.";
-  }
-  return "This lamp is still lit. Nothing in the record above switches this machine off.";
-}
-
 export interface MachineRoomProps {
   roomId: RoomId;
 }
@@ -149,15 +137,15 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
         </p>
 
         <dl className="mt-8 space-y-4 border-y border-exh-ink/15 py-6">
-          <div className="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
+          <div className="grid gap-1 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
             <dt className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-              Armed <span className="exh-mono normal-case tracking-normal">{machine.armedYear}</span>
+              Precondition <span className="exh-mono normal-case tracking-normal">{machine.armedYear}</span>
             </dt>
             <dd className="text-sm leading-relaxed text-exh-ink">
               <MonoNumbers text={machine.armedBy} />
             </dd>
           </div>
-          <div className="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
+          <div className="grid gap-1 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
             <dt className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
               Switched on <span className="exh-mono normal-case tracking-normal">{machine.onYear}</span>
             </dt>
@@ -165,7 +153,7 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
               <MonoNumbers text={machine.onBy} />
             </dd>
           </div>
-          <div className="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
+          <div className="grid gap-1 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
             <dt className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
               Switched off{" "}
               {machine.offYear !== null ? (
@@ -180,9 +168,15 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
               )}
             </dd>
           </div>
-          <div className="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
+          <div className="grid gap-1 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
             <dt className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-              The residue
+              Residue
+              {machine.residueSince != null ? (
+                <>
+                  , after{" "}
+                  <span className="exh-mono normal-case tracking-normal">{machine.residueSince}</span>
+                </>
+              ) : null}
             </dt>
             <dd className="text-sm leading-relaxed text-exh-ink">
               <MonoNumbers text={machine.residue} />
@@ -190,20 +184,17 @@ export default function MachineRoom({ roomId }: MachineRoomProps) {
           </div>
         </dl>
 
-        {/* the machine's lamp, live from exhibit state */}
+        {/* the machine's status disc, captioned with the record's own dates */}
         <PaperCard
           tone="deep"
           data-testid="room-lamp"
           data-lamp-state={lamp}
-          className="mt-6 flex items-start gap-3 p-3.5"
+          className="mt-6 flex items-center gap-3 p-3.5"
         >
           <LampDisc lampState={lamp} />
-          <div className="min-w-0">
-            <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
-              The lamp
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-exh-ink">{lampReading(lamp)}</p>
-          </div>
+          <p className="min-w-0 text-xs leading-relaxed text-exh-ink">
+            <MonoNumbers text={machine.lampCaption} />
+          </p>
         </PaperCard>
       </header>
 

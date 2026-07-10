@@ -38,7 +38,7 @@ function ResidueCard() {
   return (
     <PaperCard tone="deep" data-testid="room-residue-card" className="p-4 sm:p-5">
       <p className="exh-plat text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
-        The residue
+        {CONTRACT.residueSince != null ? `Residue, after ${CONTRACT.residueSince}` : "Residue"}
       </p>
       <p className="mt-2 font-display text-xl leading-relaxed text-exh-ink">{CONTRACT.residue}</p>
       <p className="exh-plat mt-4 text-[11px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-exh-ink-soft">
@@ -57,7 +57,7 @@ export const THE_CONTRACT_STATIONS: RoomStation[] = [
   {
     id: "instrument",
     eyebrow: STATION_EYEBROWS.instrument,
-    lead: "The bench for this machine is in the exhibit itself. This room adds the circle the money traveled.",
+    lead: "The main exhibit introduces the contract. This room adds the circle the money traveled.",
     body: (
       <div className="space-y-10">
         <TwoBuyersCrossReference />

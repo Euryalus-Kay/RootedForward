@@ -13,6 +13,8 @@
       "offYear": 1968,
       "offBy": "The Fair Housing Act of 1968 outlaws lending discrimination. Enforcement, not the statute alone, does the work.",
       "residue": "Lending, heat, tree cover, and life expectancy still trace the 1939 to 1940 grade lines.",
+      "residueSince": 1968,
+      "lampCaption": "Off since 1968. Lending, heat, tree cover, and life expectancy still trace the grade lines.",
       "evidenceFactRefs": ["redlining.fha_1934", "redlining.holc_survey_chicago", "redlining.babcock_manual"],
       "homeChapter": "ch6",
       "cardIcon": "magnifier"
@@ -31,6 +33,7 @@
       "renamedTo": "TIF",
       "renamedNote": "The clearance toolkit did not retire. It was renamed. Tax increment financing now steers the same power.",
       "residue": "Still running.",
+      "lampCaption": "Never switched off. It runs today under another name, tax increment financing.",
       "evidenceFactRefs": ["renewal.secc_1952", "renewal.plan_856_acres", "renewal.families_displaced"],
       "homeChapter": "ch8",
       "cardIcon": "blade"
@@ -47,6 +50,8 @@
       "offYear": 1970,
       "offBy": "The Contract Buyers League's escrow strike and renegotiations break the trade's grip.",
       "residue": "Contract-for-deed selling returned to Black neighborhoods after the 2008 crash.",
+      "residueSince": 2008,
+      "lampCaption": "Off since 1970. The trade returned in another form after 2008.",
       "evidenceFactRefs": ["contracts.lenders_241_1", "contracts.share_75_95", "cbl.renegotiated_155_by_1971", "contracts.post_2008_return"],
       "homeChapter": "ch9",
       "cardIcon": "trapdoor-signature"
@@ -63,6 +68,8 @@
       "offYear": 1948,
       "offBy": "Shelley versus Kraemer ends court enforcement. The clauses stay in the deeds.",
       "residue": "The racist language still sits in thousands of Cook County deeds today.",
+      "residueSince": 1948,
+      "lampCaption": "Off since 1948. The dead language still sits in Cook County deeds.",
       "evidenceFactRefs": ["cases.corrigan_1926", "covenants.macchesney_template", "cases.shelley_1948"],
       "homeChapter": "ch5",
       "cardIcon": "wax-seal"
@@ -79,6 +86,8 @@
       "offYear": 1950,
       "offBy": "The explicit racial language comes out of the code in 1950.",
       "residue": "Paired-tester investigations keep catching steering. The association formally apologized in 2020.",
+      "residueSince": 1950,
+      "lampCaption": "Off since 1950. Paired-tester investigations keep catching steering.",
       "evidenceFactRefs": ["code.cireb_expulsion_1921", "code.nareb_article34_1924", "code.deleted_1950", "code.apology_2020"],
       "homeChapter": "ch5",
       "cardIcon": "lapel-badge"

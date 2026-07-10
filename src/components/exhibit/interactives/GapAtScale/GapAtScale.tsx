@@ -24,7 +24,12 @@ const BLACK_FACT = "present.scf_black_44900";
 const GAP_FACT = "present.gap_6to1";
 
 /* layout, px unless noted */
-const BLACK_BAR_VIEW_FRACTION = 1.5; /* H as a share of the visible region; the white column then runs to roughly ten regions, so the climb takes real scrolling */
+/* The Black median's full column, top and figure included, must be
+   visible in the resting frame, with the white column plainly running
+   off the top edge; a resting view showing two equal columns would
+   say the opposite of the data. At 0.55 the climb to the white top
+   still runs about three and a half frames. */
+const BLACK_BAR_VIEW_FRACTION = 0.55;
 const CAP_PX = 172; /* zone above the white column's top */
 const BASE_PX = 88; /* baseline zone under both columns */
 const COMPLETE_AT = 0.9; /* completion at 90 percent of the climb */
@@ -198,7 +203,7 @@ export default function GapAtScale() {
   return (
     <div ref={rootRef} data-testid="gap-at-scale" data-progress="0" className="w-full">
       <p className="exh-plat text-[11px] uppercase tracking-[0.22em] text-exh-ink-soft">
-        Scroll to raise the white column, or focus it and use the arrow keys
+        Scroll inside the frame to climb the white column; the arrow keys climb too
       </p>
 
       <div
@@ -277,18 +282,26 @@ export default function GapAtScale() {
                 wraps, so the tracked uppercase strings cannot run
                 together on narrow viewports. */}
             <div className="absolute inset-x-0 bottom-0 border-t border-exh-ink/40" style={{ height: BASE_PX }}>
-              <p
+              <div
                 className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: BLACK_X }}
               >
                 the median Black family
-              </p>
-              <p
+                <span className="exh-mono mt-0.5 block normal-case tracking-normal text-exh-ink">
+                  {String(blackFact?.display ?? "").replace(/^.*?,\s*/, "")}
+                  <SourceSup factId={BLACK_FACT} />
+                </span>
+              </div>
+              <div
                 className="exh-plat absolute top-2 w-max max-w-[30%] -translate-x-1/2 text-center text-[11px] md:text-[10px] uppercase leading-snug tracking-[0.18em] text-exh-ink-soft sm:max-w-[40%]"
                 style={{ left: WHITE_X }}
               >
                 the median white family
-              </p>
+                <span className="exh-mono mt-0.5 block normal-case tracking-normal text-exh-ink">
+                  {String(whiteFact?.display ?? "").replace(/^.*?,\s*/, "")}
+                  <SourceSup factId={WHITE_FACT} />
+                </span>
+              </div>
             </div>
           </div>
         )}

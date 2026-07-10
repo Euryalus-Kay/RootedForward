@@ -7,11 +7,11 @@
   "plainWords": [
    {
     "id": "open-p1",
-    "text": "Hyde Park is the neighborhood around the University of Chicago, seven miles south of the Loop. What happened here happened in some form in every large American city, and a good deal of the method was written here. Every number on these pages carries its source, and every document is the real one.",
+    "text": "Hyde Park is the neighborhood around the University of Chicago, seven miles south of the Loop. What happened here happened in some form in every large American city, and a good deal of the method was written here. Every number on these pages carries its source.",
     "factRefs": []
    }
   ],
-  "howToRead": "A twenty-minute walk, at your own pace. The timeline below jumps between chapters. Doors along the way open rooms of original documents. Chapter 4 documents deadly violence and can be skipped.",
+  "howToRead": "A twenty-minute walk, at your own pace. The timeline below jumps between chapters. Doors along the way open rooms of original documents. Chapter 4 shows deadly violence; you can pass over it from the timeline.",
   "bigIdea": "For a century, ordinary paperwork decided who could own a home here, and the money it moved never came back."
  },
  "chapters": [
@@ -21,7 +21,7 @@
    "era": "1940",
    "contextIntro": {
     "id": "ch0-ctx",
-    "text": "Start with the document that organizes this exhibit. In 1939 and 1940, surveyors for a federal agency graded Chicago block by block for mortgage risk, wrote a description sheet for each area, and colored a master map. **Green meant best, blue still desirable, yellow declining, red hazardous.**",
+    "text": "Start with the document that organizes this exhibit. In 1939 and 1940, surveyors for the federal Home Owners' Loan Corporation graded Chicago block by block for mortgage risk, wrote a description sheet for each area, and colored a master map. **Green meant best, blue still desirable, yellow declining, red hazardous.**",
     "factRefs": [
      "redlining.holc_survey_chicago"
     ]
@@ -29,7 +29,7 @@
    "sections": [
     {
      "id": "ch0-s1",
-     "text": "The map below is the real one, redrawn from the government's files, all 703 areas the surveyors drew. **The printed form recorded the race of an area's residents before the condition of its houses.** The Black Belt came back shaded red, graded hazardous, and along that corridor a federally backed mortgage was, in practice, not available.",
+     "text": "The map below is redrawn from the government's files, all 703 areas the surveyors drew. **The printed form recorded the race of an area's residents before the condition of its houses.** The Black Belt came back shaded red, graded hazardous, and along that corridor a federally backed mortgage was, in practice, not available.",
      "factRefs": [
       "redlining.holc_survey_chicago",
       "redlining.black_loans_under_2pct"
@@ -46,13 +46,12 @@
      "what": "The 1940 federal map of Chicago in relief, all 703 areas as the government filed them, each raised or sunk by its grade, with the surveyors' original description sheets.",
      "when": "Surveyed 1939 to 1940, issued 1940. Polygons and transcriptions from the Mapping Inequality project; sheets survive for 576 areas.",
      "why": "The language on the sheets, not the colors, is the evidence.",
-     "tryIt": "Turn the city with the handle under the map. Select any area and its sheet opens below. The flat study map is one tap away.",
+     "tryIt": "Turn the city with the handle under the map. The flat study map is one tap away.",
      "factRefs": [
       "redlining.holc_survey_chicago"
      ]
     }
-   },
-   "dek": "In 1940, federal surveyors graded every Chicago block for mortgage risk. The colors decided where money could go."
+   }
   },
   {
    "id": "ch1",
@@ -89,7 +88,7 @@
     "layer-slider": {
      "what": "Four maps of the same ground. The pre-1832 shore, Cornell's 1853 plat, the built blocks of 1893, and today's streets.",
      "when": "Drawn from surviving plats and the modern street grid.",
-     "why": "Sixty years, four regimes of ownership.",
+     "why": "Four regimes of ownership in sixty years.",
      "tryIt": "Drag the slider through the four eras.",
      "factRefs": [
       "land.cornell_purchase_1853"
@@ -112,7 +111,7 @@
    "sections": [
     {
      "id": "ch2-s1",
-     "text": "The fair ran six months in 1893 and counted twenty-seven million admissions, in a country of sixty-three million. **Its organizers refused Black Americans any part in planning it.** From the fair's Haiti building, Ida B. Wells and Frederick Douglass distributed ten thousand copies of a pamphlet answering the exclusion. Wells wrote that 'the exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute' the fair could show. Douglass closed his catalogue of America's claims plainly. 'But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.'",
+     "text": "The fair ran six months in 1893 and counted twenty-seven million admissions, in a country of sixty-three million. **Its organizers refused Black Americans any part in planning it.** From the fair's Haiti building, Ida B. Wells and Frederick Douglass distributed ten thousand copies of a pamphlet answering the exclusion. Wells wrote that “the exhibit of the progress made by a race in 25 years of freedom as against 250 years of slavery, would have been the greatest tribute” the fair could show. Douglass closed his catalogue of America's claims plainly. “But unhappily, nothing of all this can be said, without qualification and without flagrant disregard of the truth.”",
      "factRefs": [
       "fair.opened_1893",
       "fair.six_months",
@@ -141,7 +140,7 @@
    "era": "1921 to 1970",
    "contextIntro": {
     "id": "ch0_5-ctx",
-    "text": "The story from here turns on five instruments. Each was legal for most of its working life, and each left the paper trail this exhibit draws on. Meet all five once, plainly.",
+    "text": "The story from here turns on five instruments. Each was legal for most of its working life, and each left the paper trail this exhibit draws on.",
     "factRefs": []
    },
    "sections": [
@@ -182,7 +181,7 @@
    "era": "1908 to 1917",
    "contextIntro": {
     "id": "ch3-ctx",
-    "text": "At the century's start no rule fixed where Black Chicagoans could live. The 1910 census counted about 44,000, two percent of the city, living in many neighborhoods, Hyde Park included. **This chapter is about the organized effort to end that.**",
+    "text": "At the century's start no rule fixed where Black Chicagoans could live. The 1910 census counted about 44,000, two percent of the city, living in many neighborhoods, Hyde Park included. **The organized effort to end that began in this neighborhood.**",
     "factRefs": [
      "colorline.black_pop_1910_40k",
      "colorline.line_held_40_years"
@@ -200,7 +199,7 @@
     },
     {
      "id": "ch3-s2",
-     "text": "Arithmetic made the campaign citywide. The Great Migration was under way, the Defender printing the train schedules south, and **Chicago's Black population grew from about 44,000 in 1910 toward 278,000 by 1940 while the housing open to the newcomers barely grew.** In the summer of 1917 the Urban League counted, in a single day, 664 Black applicants for fifty available houses.",
+     "text": "Arithmetic made the campaign citywide. The Great Migration was under way, the *Defender* printing the train schedules south, and **Chicago's Black population grew from about 44,000 in 1910 toward 278,000 by 1940 while the housing open to the newcomers barely grew.** In the summer of 1917 the Urban League counted, in a single day, 664 Black applicants for fifty available houses.",
      "factRefs": [
       "colorline.defender_125k",
       "colorline.black_pop_1910_40k",
@@ -227,7 +226,7 @@
    "sensitivity": "no-motion",
    "contextIntro": {
     "id": "ch4-ctx",
-    "text": "Between 1917 and 1921 the color line was enforced with dynamite. **This chapter documents deadly violence, including the killing of a teenager and the death of a child.** It keeps to the record compiled by the Chicago Commission on Race Relations in 1922; one figure, the count of attacks on Jesse Binga, follows his biographer.",
+    "text": "Between 1917 and 1921 the color line was enforced with dynamite. **The record here is the one the Chicago Commission on Race Relations compiled in 1922**; one figure, the count of attacks on Jesse Binga, follows his biographer.",
     "factRefs": [
      "bombings.total_58",
      "bombings.ccrr_report"
@@ -256,7 +255,7 @@
     },
     {
      "id": "ch4-s3",
-     "text": "On July 27, 1919, seventeen-year-old Eugene Williams, swimming off the 29th Street beach, drifted past the unmarked line that divided the water by race. Stones came from the shore. He went under and drowned, and the officer present refused to arrest the man witnesses named. **A week of rioting left 38 dead, 23 of them Black, and about 1,000 people, most of them Black families burned out by arson, homeless.**",
+     "text": "On July 27, 1919, seventeen-year-old Eugene Williams, swimming off the 29th Street beach, drifted past the unmarked line that divided the water by race. Stones came from the shore. He went under and drowned, and the officer present refused to arrest the man witnesses named. A week of rioting left 38 dead, 23 of them Black, and about 1,000 people, most of them Black families burned out by arson, homeless.",
      "factRefs": [
       "bombings.williams_drowned_1919",
       "bombings.riot_1919_dead",
@@ -265,7 +264,7 @@
     },
     {
      "id": "ch4-s3b",
-     "text": "The bombers were never named, but the campaign's voice survives because the commission reprinted it. The Kenwood and Hyde Park Property Owners' Association published a journal. Its issue of December 13, 1919 declared that 'any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.' **Its issue of February 1, 1920 opened, 'Our neighborhood must continue white.'** Within weeks, the commission records, three homes the journal had marked out were bombed in eleven days. Delegations appealed to the police, the mayor, the state's attorney. The bombings continued; almost no one was charged.",
+     "text": "The bombers were never named, but the campaign's voice survives because the commission reprinted it. The Kenwood and Hyde Park Property Owners' Association published a journal. Its issue of December 13, 1919 declared that “any property owner who sells property anywhere in our district to undesirables is an enemy to the white owner and should be discovered and punished.” **Its issue of February 1, 1920 opened, “Our neighborhood must continue white.”** Within weeks, the commission records, three homes the journal had marked out were bombed in eleven days. Delegations appealed to the police, the mayor, the state's attorney. The bombings continued; almost no one was charged.",
      "factRefs": [
       "bombings.poj_enemy_owner",
       "bombings.poj_continue_white",
@@ -275,7 +274,7 @@
     },
     {
      "id": "ch4-s4",
-     "text": "The state's commission published The Negro in Chicago in 1922, 672 pages of casework; the bombing map in this chapter is digitized from it. **The commission warned explicitly against forcing the residential line. Its recommendations bound no one.**",
+     "text": "The state's commission published *The Negro in Chicago* in 1922, 672 pages of casework; the bombing map in this chapter is digitized from it. **The commission warned explicitly against forcing the residential line. Its recommendations bound no one.**",
      "factRefs": [
       "bombings.ccrr_report"
      ]
@@ -284,9 +283,9 @@
    "stationIntros": {
     "bombing-map": {
      "what": "The commission's bombing record on a street map, forty incidents digitized from the 1922 report, 32 placed by address.",
-     "when": "July 1917 to March 1921, from The Negro in Chicago.",
+     "when": "July 1917 to March 1921, from *The Negro in Chicago*.",
      "why": "The cluster sits inside the square the report names, along the borders of Hyde Park and Kenwood.",
-     "tryIt": "Click any mark. The report's own entry for it opens.",
+     "tryIt": "Select any mark. The report's own entry for it opens.",
      "factRefs": [
       "bombings.total_58",
       "bombings.square_32",
@@ -312,7 +311,7 @@
    "sections": [
     {
      "id": "ch5-s1",
-     "text": "In May 1921 the Chicago board voted unanimously to expel any member who sold to a Black buyer on an all-white block. Expulsion ended careers. **In 1924 the national association wrote the principle into Article 34 of its code of ethics,** whose full text read, 'A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.' The clause stayed in the code until 1950.",
+     "text": "In May 1921 the Chicago board voted unanimously to expel any member who sold to a Black buyer on an all-white block. Expulsion ended careers. **In 1924 the national association wrote the principle into Article 34 of its code of ethics,** whose full text read, “A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.” The clause stayed in the code until 1950.",
      "factRefs": [
       "code.cireb_expulsion_1921",
       "code.nareb_article34_1924",
@@ -355,7 +354,7 @@
    "sections": [
     {
      "id": "ch6-s1",
-     "text": "In 1933 the University of Chicago Press published Homer Hoyt's One Hundred Years of Land Values in Chicago. **One table ranked races and nationalities by their supposed effect on land values, English and German households at the top, Negroes and then Mexicans at the bottom.** It dressed prejudice as measurement, calm enough for a banker to cite. In 1934 the new Federal Housing Administration hired Hoyt as its chief land economist.",
+     "text": "In 1933 the University of Chicago Press published Homer Hoyt's *One Hundred Years of Land Values in Chicago*. **One table ranked races and nationalities by their supposed effect on land values, English and German households at the top, Negroes and then Mexicans at the bottom.** It dressed prejudice as measurement, calm enough for a banker to cite. In 1934 the new Federal Housing Administration hired Hoyt as its chief land economist.",
      "factRefs": [
       "redlining.hoyt_hierarchy",
       "redlining.hoyt_fha"
@@ -363,7 +362,7 @@
     },
     {
      "id": "ch6-s2",
-     "text": "The agency's appraisal rules were built under Frederick Babcock. Paragraph 937 of the 1938 Underwriting Manual told appraisers that areas around a property 'are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.' **Its recommended deed restrictions included, at paragraph 980, the 'prohibition of the occupancy of properties except by the race for which they are intended.'** These were the conditions of federal mortgage insurance. Between 1945 and 1959, under them, less than 2 percent of insured home loans went to Black Americans.",
+     "text": "The agency's appraisal rules were built under Frederick Babcock. Paragraph 937 of the 1938 Underwriting Manual told appraisers that areas around a property “are investigated to determine whether incompatible racial and social groups are present, for the purpose of making a prediction regarding the probability of the location being invaded by such groups.” **Its recommended deed restrictions included, at paragraph 980, the “prohibition of the occupancy of properties except by the race for which they are intended.”** These were the conditions of federal mortgage insurance. Between 1945 and 1959, under them, less than 2 percent of insured home loans went to Black Americans.",
      "factRefs": [
       "redlining.babcock_manual",
       "redlining.fha_manual_937",
@@ -381,7 +380,7 @@
     },
     {
      "id": "ch6-s4",
-     "text": "Historians still argue how much the colored map itself changed lending, and this exhibit does not overclaim it. Amy Hillier found the corporation lending in the areas it graded red; later work traced the doctrine through appraisal courses into federal practice. **On the sheets behind this map, not one A grade area with a race entry records a Black resident, 89 of the 122 graded D do, and lenders' own entries show money ample where grades were high and withheld where they were low.** The sheets are in the Surveyor's Files, behind the door below.",
+     "text": "Historians still argue how much the colored map itself changed lending. Amy Hillier found the corporation lending in the areas it graded red; later work traced the doctrine through appraisal courses into federal practice. **On the sheets behind this map, not one A grade area with a race entry records a Black resident; 89 of the 122 graded D do.** Lenders' own entries show money ample where grades were high and withheld where they were low. The sheets are in the Surveyor's Files, behind the door below.",
      "factRefs": [
       "redlining.hillier_2003",
       "redlining.winling_michney_2021",
@@ -447,7 +446,7 @@
      "what": "The four Supreme Court decisions of this story, drawn as one route of exclusion that turns each time a ruling closes a lane.",
      "when": "Buchanan 1917, Corrigan 1926, Hansberry 1940, Shelley 1948.",
      "why": "Each ruling closed one route of exclusion and left another standing.",
-     "tryIt": "Tap a year on the diagram. The ruling and what it changed open below.",
+     "tryIt": "Select a year on the diagram. The ruling and what it changed open below.",
      "factRefs": [
       "cases.buchanan_1917",
       "cases.corrigan_1926",
@@ -501,7 +500,7 @@
     },
     {
      "id": "ch8-s4",
-     "text": "Who returned is the measurable part. **In the first projects, 46 percent of displaced white families found new homes in Hyde Park and Kenwood; among Black families, 17 percent.** The neighborhood's Black population fell by about 40 percent while incomes climbed. Kimpton described the work as 'cutting down the number of Negroes' in the neighborhood. James Baldwin, asked on television in 1963 about urban renewal in the northern cities, answered for the era. 'It means Negro removal, that is what it means.'",
+     "text": "Who returned is the measurable part. **In the first projects, 46 percent of displaced white families found new homes in Hyde Park and Kenwood; among Black families, 17 percent.** The neighborhood's Black population fell by about 40 percent while incomes climbed. Kimpton described the work as “cutting down the number of Negroes” in the neighborhood. James Baldwin, asked on television in 1963 about urban renewal in the northern cities, answered for the era. “It means Negro removal, that is what it means.”",
      "factRefs": [
       "renewal.white_return_46pct",
       "renewal.black_return_17pct",
@@ -597,7 +596,7 @@
     },
     {
      "id": "ch10-s2",
-     "text": "The sellers answered with eviction suits. Families were put out in the January cold, and crowds of neighbors moved them back in; about 70 families permanently lost their homes. **By July 1971, 155 contracts had been renegotiated at an average saving of $14,000 per family, roughly half a typical contract price.** The ledger this exhibit keeps records money leaving Black Chicago on nearly every line. This chapter is the one credit entry, and the buyers wrote it themselves.",
+     "text": "The sellers answered with eviction suits. Families were put out in the January cold, and crowds of neighbors moved them back in; about 70 families permanently lost their homes. **By July 1971, 155 contracts had been renegotiated at an average saving of $14,000 per family, roughly half a typical contract price.** Nearly every line in the ledger this exhibit keeps is money leaving Black Chicago. This chapter is the one credit entry, and the buyers wrote it themselves.",
      "factRefs": [
       "cbl.evicted_70",
       "cbl.strike_500",
@@ -611,7 +610,7 @@
   },
   {
    "id": "ch11",
-   "title": "The ledger, and the ground today",
+   "title": "The ledger and the ground today",
    "era": "Today",
    "contextIntro": {
     "id": "ch11-ctx",
@@ -621,7 +620,7 @@
    "sections": [
     {
      "id": "ch11-s1",
-     "text": "The contract trade alone took an estimated $3.2 to $4 billion from Black Chicago, one instrument of five. The Federal Reserve's 2022 survey gives the national arithmetic. **The median white family held $285,010. The median Black family held $44,890, a gap of more than six to one.** Housing is where American families build what they pass to their children, and the chapters behind this page describe how that channel was closed. The closing is still on this county's ground. On land graded A in 1940, median income today is $207,434 and homeownership runs 90 percent; on land graded D, $65,240 and 44 percent.",
+     "text": "The contract trade alone took an estimated $3.2 to $4 billion from Black Chicago, one instrument of five. The Federal Reserve's 2022 survey gives the national arithmetic. **The median white family held $285,010. The median Black family held $44,890, a gap of more than six to one.** Housing is where American families build what they pass to their children, and the chapters behind this page describe how that channel was closed. The closing is still on Cook County ground. On land graded A in 1940, median income today is $207,434 and homeownership runs 90 percent; on land graded D, $65,240 and 44 percent.",
      "factRefs": [
       "contracts.extraction_3_4b",
       "present.scf_white_285000",
@@ -645,7 +644,7 @@
    "stationIntros": {
     "gap-at-scale": {
      "what": "The two 2022 medians drawn as columns at true proportion.",
-     "when": "Survey of Consumer Finances, 2022.",
+     "when": "Wealth measured as of 2022, in the Federal Reserve's Survey of Consumer Finances.",
      "why": "Nothing is compressed to fit the page.",
      "tryIt": "Scroll inside the frame. The climb to the white median is the point.",
      "factRefs": [
@@ -656,9 +655,7 @@
     },
     "answer-wall": {
      "what": "A visitor book on the exhibit's closing question.",
-     "when": "Open now. Answers appear after review.",
      "why": "The question has been carried since the first page; the answers belong to visitors.",
-     "tryIt": "Leave your answer, 140 characters. A first name is optional.",
      "factRefs": []
     }
    },

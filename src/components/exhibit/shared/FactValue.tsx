@@ -18,6 +18,8 @@ export interface FactValueProps {
   /** defaults to true when the tier is not documented */
   showTierBadge?: boolean;
   size?: "sm" | "md" | "lg";
+  /** mono marks a figure; body face suits computed prose tallies */
+  mono?: boolean;
   className?: string;
 }
 
@@ -27,7 +29,7 @@ const SIZE_CLASS: Record<NonNullable<FactValueProps["size"]>, string> = {
   lg: "text-xl md:text-2xl",
 };
 
-export function FactValue({ id, label, showTierBadge, size = "md", className }: FactValueProps) {
+export function FactValue({ id, label, showTierBadge, size = "md", mono = true, className }: FactValueProps) {
   if (!hasFact(id)) {
     // loud but survivable while facts.json is generated in parallel
     return (
@@ -55,8 +57,12 @@ export function FactValue({ id, label, showTierBadge, size = "md", className }: 
           {label}
         </span>
       )}
-      <span className={cn("exh-mono font-medium text-exh-ink", SIZE_CLASS[size])}>{fact.display}</span>
-      <SourceSup factId={id} />
+      {/* the citation mark rides inside the text span so it can never
+          wrap onto a line of its own */}
+      <span className={cn(mono && "exh-mono", "font-medium text-exh-ink", SIZE_CLASS[size])}>
+        {fact.display}
+        <SourceSup factId={id} />
+      </span>
       {showBadge && <TierBadge tier={fact.tier} compact />}
     </span>
   );

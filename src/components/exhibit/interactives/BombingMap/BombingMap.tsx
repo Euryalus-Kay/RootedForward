@@ -175,7 +175,7 @@ function dateLong(inc: BombingIncident): string {
 }
 
 function dateShort(inc: BombingIncident): string {
-  if (!inc.date) return "pre-1919";
+  if (!inc.date) return "before 1919";
   const [y, m, d] = inc.date.split("-");
   const month = m ? MONTHS[Number(m) - 1]?.slice(0, 3) : null;
   if (!month) return y;
@@ -398,7 +398,7 @@ export default function BombingMap() {
           <p className="exh-plat text-xs uppercase tracking-[0.25em] text-exh-ink/70">
             The evidence is being prepared
           </p>
-          <p className="exh-plat mt-3 text-[11px] uppercase tracking-[0.2em] text-exh-ink/70 md:text-[11px] md:text-[10px]">
+          <p className="exh-plat mt-3 text-[11px] uppercase tracking-[0.2em] text-exh-ink/70 md:text-[10px]">
             Tap to continue
           </p>
         </div>
@@ -420,7 +420,7 @@ export default function BombingMap() {
           <FactValue id="bombings.deaths_2" size="sm" />
           {typeof arrests === "number" && doc?.source && (
             <span className="inline-flex items-baseline gap-x-1.5">
-              <span className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
+              <span className="exh-plat text-[11px] font-semibold uppercase tracking-[0.18em] text-exh-ink-soft md:text-[10px]">
                 arrests
               </span>
               <span className="exh-mono text-xs font-medium text-exh-ink">{arrests}</span>
@@ -648,50 +648,66 @@ export default function BombingMap() {
         <div className="min-w-0">
           {marks.length > 0 && (
             <>
-              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
-                {`The docket, ${marks.length} of the ${marks.length + noGeo.length} appendix records carry a plottable address`}
+              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
+                The docket
               </p>
               {totalCount != null && (
                 <p className="mt-1 text-xs leading-snug text-exh-ink-soft">
-                  {`The pins are the subset of the commission's ${totalCount} recorded bombings that its appendix lists with an address.`}
+                  {`The commission recorded ${totalCount} bombings. Its appendix lists ${marks.length + noGeo.length}; ${marks.length} carry an address the map can place, some outside the square.`}
                 </p>
               )}
             </>
           )}
           <ul className="mt-2 max-h-72 divide-y divide-exh-ink/10 overflow-y-auto border border-exh-ink/20 bg-exh-linen-deep/30">
-            {marks.map((m, i) => (
-              <li key={m.incident.id}>
-                {/* Docket rows are numbered like the record they come from,
-                    so the commission's repeat attacks at one address read
-                    as separate entries, never as an accidental duplicate. */}
-                <button
-                  type="button"
-                  onClick={(e) => openIncident(m.incident.id, e.currentTarget)}
-                  aria-pressed={selectedId === m.incident.id}
-                  aria-label={rowLabel(m.incident)}
-                  className={`flex min-h-12 w-full items-baseline gap-2.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
-                    selectedId === m.incident.id ? "bg-exh-linen-deep" : ""
-                  }`}
-                >
-                  <span className="exh-mono shrink-0 text-[11px] text-exh-ink/70">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <span className="flex w-full items-baseline justify-between gap-3">
-                      <span className="exh-mono min-w-0 flex-1 truncate text-[11px] text-exh-ink">
-                        {m.incident.address ?? "address not in the record"}
+            {(() => {
+              /* the commission's appendix lists repeat attacks at one
+                 address as separate records; number them so the docket
+                 reads as its source does, never as a duplicate */
+              const perAddress = new Map<string, number>();
+              for (const m of marks) {
+                const a = m.incident.address ?? "";
+                perAddress.set(a, (perAddress.get(a) ?? 0) + 1);
+              }
+              const runningAt = new Map<string, number>();
+              return marks.map((m, i) => {
+                const addr = m.incident.address ?? "";
+                const nAt = perAddress.get(addr) ?? 1;
+                const k = (runningAt.get(addr) ?? 0) + 1;
+                runningAt.set(addr, k);
+                const ordinal =
+                  nAt > 1 ? `Attack ${k} of ${nAt} recorded at this address.` : null;
+                return (
+                  <li key={m.incident.id}>
+                    <button
+                      type="button"
+                      onClick={(e) => openIncident(m.incident.id, e.currentTarget)}
+                      aria-pressed={selectedId === m.incident.id}
+                      aria-label={rowLabel(m.incident)}
+                      className={`flex min-h-12 w-full items-baseline gap-2.5 px-3 py-2 text-left hover:bg-exh-linen-deep/70 ${
+                        selectedId === m.incident.id ? "bg-exh-linen-deep" : ""
+                      }`}
+                    >
+                      <span className="exh-mono shrink-0 text-[11px] text-exh-ink/70">
+                        {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="exh-mono shrink-0 text-[11px] text-exh-ink/75">
-                        {dateShort(m.incident)}
+                      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                        <span className="flex w-full items-baseline justify-between gap-3">
+                          <span className="exh-mono min-w-0 flex-1 whitespace-normal text-[11px] leading-snug text-exh-ink">
+                            {m.incident.address ?? "address not in the record"}
+                          </span>
+                          <span className="exh-mono shrink-0 text-[11px] text-exh-ink/75">
+                            {dateShort(m.incident)}
+                          </span>
+                        </span>
+                        <span className="line-clamp-2 w-full text-xs leading-snug text-exh-ink-soft">
+                          {ordinal ?? m.incident.target}
+                        </span>
                       </span>
-                    </span>
-                    <span className="line-clamp-2 w-full text-xs leading-snug text-exh-ink-soft">
-                      {m.incident.target}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            ))}
+                    </button>
+                  </li>
+                );
+              });
+            })()}
           </ul>
 
           {noGeo.length > 0 && (
@@ -748,17 +764,17 @@ export default function BombingMap() {
               <p className="exh-mono mt-0.5 text-xs text-exh-ink/70">{selected.address}</p>
             )}
             <div className="mt-3 border-l-2 border-exh-ink/25 pl-3">
-              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
+              <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[10px]">
                 from the 1922 record
               </p>
               <p className="mt-1.5 font-display text-sm italic leading-relaxed text-exh-ink">
                 {selected.excerpt}
               </p>
             </div>
-            <p className="exh-plat mt-3 text-[11px] leading-snug text-exh-ink/70 md:text-[11px] md:text-[10px]">
+            <p className="exh-plat mt-3 text-[11px] leading-snug text-exh-ink/70 md:text-[10px]">
               {selected.locator}
             </p>
-            <p className="exh-plat mt-1 text-[11px] leading-snug text-exh-ink/70 md:text-[11px] md:text-[10px]">
+            <p className="exh-plat mt-1 text-[11px] leading-snug text-exh-ink/70 md:text-[10px]">
               {selected.geo?.precisionMeters
                 ? `Plotted to the ${selected.precision === "block" ? "block" : "address"}, within about ${selected.geo.precisionMeters} meters`
                 : "No street address appears in the record"}
