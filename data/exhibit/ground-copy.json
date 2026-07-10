@@ -261,7 +261,8 @@
             "linework": false,
             "labels": false,
             "marks": true,
-            "dim": true
+            "dim": true,
+            "boundary": false
           }
         },
         {
@@ -309,7 +310,8 @@
             "linework": false,
             "labels": true,
             "marks": true,
-            "dim": false
+            "dim": false,
+            "boundary": false
           }
         },
         {

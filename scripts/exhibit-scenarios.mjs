@@ -659,6 +659,8 @@ export const scenarios = [
       t.assert("act 1 cuts to the township", act1.frame === "hydePark", JSON.stringify(act1));
       const ch4 = await stageAt("#ch4");
       t.assert("bombing chapter crops, dims, marks", ch4.frame === "blackBelt" && ch4.dim === "on" && ch4.marks === "on", JSON.stringify(ch4));
+      const ch4Boundary = await page.$eval('[data-testid="ground-stage"]', (el) => el.dataset.boundary);
+      t.assert("no township ghost intrudes on the memorial crop", ch4Boundary === "off", String(ch4Boundary));
       const f2 = await stageAt("#a3-f2");
       t.assert("flood inks part of the map in filing order", f2.grades === "flood" && f2.inked > 100 && f2.inked < 694, JSON.stringify(f2));
       const s2 = await stageAt("#a3-s2");
