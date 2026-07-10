@@ -122,13 +122,14 @@
   {
    "id": "R9",
    "title": "Ground-up presentation redesign (show, don't tell)",
-   "status": "in-progress",
+   "status": "live",
    "started": "2026-07-10",
-   "notes": "Owner rejected the current document-flow presentation outright. Blank-slate redesign of the display layer; all content, research, and the 126-fact registry are retained. Owner process: (1) ideation council, (2) refine, (3) lead does first-hand research on museum/scrollytelling craft, (4) reflect and edit plan, (5) build end to end, (6) council-driven build-audit-rebuild loop incl. humanizer copy audits until nothing is left, all agents on fable/opus. Design artifacts under data/exhibit/design/R9/."
+   "notes": "SHIPPED. The Same Map, the ground-up presentation rebuild, live on /tours/chicago/hyde-park (swap commit 9ce9241). One server-rendered accumulating map (52KB gz geometry, 694 area paths in initial HTML), IO-stepped discrete states, docked five-bar Instrument Register with riding rust year, Ledger Rail with short labels, D-red Spine, seven acts over the thirteen chapter anchors. Process: 7-concept council + peer review + chairman (design/R9/), lead research memo (ten laws), 8-agent scene wave under strict file ownership, two full 8-lens audit rounds (reviews/R9-round1.json, R9-round2.json, both resolved), inline round-2 surgery by the lead, throttled Fast-3G production smoke, three-lens closing walk. Suite rebuilt: 14 ground scenarios / 80 checks, green locally AND against production. Fact registry at 127 (new: bombings.families_stayed, the record line of refusal, factchecked); audit-facts now scans component-level consumers (5 truthful warnings). 50 old presentation files deleted at swap; survivors: shared registry components, SurveyorsFiles reading room behind the colophon door, AnswerWall, moderation lib. Deep-link contract (#room-files:<areaId>, #ch anchors) verified end to end; NOTE headless Chrome drops URL fragments across the construction-slug redirect, so hash links must target the live slug.",
+   "completed": "2026-07-10"
   }
  ],
  "updated": "2026-07-10",
  "milestone": "R9",
  "lastUpdated": "2026-07-10",
- "notes": "R9 in progress: ground-up redesign of the presentation. R8 state preserved in git (e263244) and reviews/R8.json."
+ "notes": "R9 live: The Same Map. Suite 80 checks / 14 scenarios against production."
 }
