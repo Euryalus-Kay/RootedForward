@@ -259,8 +259,7 @@ export default async function PolicyPage() {
               We are building our first one. When it launches it will live
               right here, with the specific ask, the people who can say yes
               to it, and a way to sign on. Until then the guides below are
-              the best place to start, and if you have an idea worth
-              fighting for, send it in.
+              the best place to start, and if you have an idea, send it in.
             </p>
             <Link
               href="/policy/submit-proposal"

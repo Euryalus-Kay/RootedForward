@@ -257,9 +257,9 @@ export default function AboutPage() {
           {studentBoard.length === 0 && advisoryBoard.length === 0 && (
             <p className="mt-8 max-w-[58ch] font-body text-base leading-relaxed text-ink/60">
               A student board and an advisory board are forming now. If you
-              want in early,{" "}
+              want a seat on either one, say so on the{" "}
               <Link href="/get-involved" className="text-rust underline underline-offset-2">
-                this is the moment
+                get involved page
               </Link>
               .
             </p>

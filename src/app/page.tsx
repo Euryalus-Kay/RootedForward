@@ -90,9 +90,9 @@ export default function Home() {
               <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
                 Our researchers walk you through the neighborhood and tell
                 you what happened on the blocks you are standing on. The
-                university&rsquo;s expansion, the restrictive covenants, the
-                urban renewal bulldozers. Every stop comes with the
-                documents to back it up.
+                route covers the university&rsquo;s expansion campaigns, the
+                restrictive covenants, and the urban renewal bulldozers.
+                Every stop comes with the documents to back it up.
               </p>
               <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
                 2 hours &middot; Small groups &middot; Led by students
@@ -151,14 +151,15 @@ export default function Home() {
                 Can&rsquo;t make the tour? Read the whole story online.
               </h2>
               <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                The exhibit shows the real paperwork that built Hyde Park.
-                Deeds with the racial covenants still printed in them, bank
-                appraisal forms, the federal map from 1940. It walks you
-                through them from 1832 to today, one long page, at your own
-                pace.
+                The exhibit shows the real paperwork that built Hyde Park,
+                including deeds with the racial covenants still printed in
+                them, bank appraisal forms, and the federal map from 1940.
+                It walks you through them from 1832 to today on one long
+                page, at your own pace.
               </p>
               <p className="mt-4 font-body text-sm text-cream/75">
-                Free. No account. We call it {EXHIBIT_TITLE}.
+                It is free to read and needs no account. We call it{" "}
+                {EXHIBIT_TITLE}.
               </p>
               <Link
                 href="/tours/chicago/hyde-park"
@@ -206,7 +207,7 @@ export default function Home() {
               </h2>
               <p className="mt-3 max-w-[48ch] font-body text-base leading-relaxed text-ink/70">
                 Plain guides to testifying, commenting, and getting an
-                ordinance moving. No campaign is running right now; the
+                ordinance moving. No campaign is running right now. The
                 first one is in the works.
               </p>
               <Link
@@ -235,7 +236,7 @@ export default function Home() {
           <p className="mx-auto mt-5 max-w-[48ch] font-body text-lg leading-relaxed text-cream/75">
             Rooted Forward is small and run by students. If you can dig
             through an archive, lead a tour, or edit audio, there is work
-            here for you. No experience needed.
+            here for you, and you do not need experience to start.
           </p>
           <Link
             href="/get-involved"

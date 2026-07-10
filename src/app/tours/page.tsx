@@ -64,10 +64,11 @@ export default function ToursPage() {
                 Read the Hyde Park story online
               </h2>
               <p className="mt-5 max-w-[55ch] font-body text-base leading-relaxed text-ink/70">
-                The paperwork that built the neighborhood, on one long page.
-                Deeds with the racial covenants still printed in them, bank
-                appraisal forms, the federal map from 1940. It runs from
-                1832 to today, and you scroll through it at your own pace.
+                The exhibit gathers the paperwork that built the
+                neighborhood on one long page, including deeds with the
+                racial covenants still printed in them, bank appraisal
+                forms, and the federal map from 1940. It runs from 1832 to
+                today, and you scroll through it at your own pace.
               </p>
               <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
                 One page &middot; Free &middot; No account
