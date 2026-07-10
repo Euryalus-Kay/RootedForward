@@ -47,9 +47,13 @@
    "chapter": "ch5",
    "year": 1927,
    "label": "Covenants spread across Cook County",
-   "shortLabel": "Covenants cover the county",
+   "shortLabel": "Covenants across the county",
    "factRef": "covenants.coverage_claim",
-   "sign": "debit"
+   "sign": "debit",
+   "factRefs": [
+    "covenants.macchesney_template",
+    "covenants.coverage_claim"
+   ]
   },
   {
    "entryId": "redlined",

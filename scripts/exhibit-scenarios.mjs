@@ -33,8 +33,8 @@ export const scenarios = [
       t.assert("ledger rail", await page.$('[data-testid="ground-ledger-rail"]'));
       t.assert("spine", await page.$('[data-testid="ground-spine"]'));
       t.assert("locate anchor", await page.$("#find-your-ground"));
-      const html = await page.content();
-      t.assert("the study-room door renders its space", html.includes("576</span> surveyors") || / 576\s*<\/span>\s*surveyors/.test(html) || html.includes("576 surveyors"), "door string");
+      const doorText = await page.$eval('[data-testid="ground-study-door"]', (el) => (el.textContent ?? "").replace(/\s+/g, " "));
+      t.assert("the study-room door renders its space", doorText.includes("576 surveyors"), doorText);
       t.assert("zero console errors", consoleErrors.length === 0, consoleErrors.join(" | ").slice(0, 300));
     },
   },

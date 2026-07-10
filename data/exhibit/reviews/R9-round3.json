@@ -1,0 +1,129 @@
+{
+ "milestone": "R9",
+ "round": 3,
+ "date": "2026-07-10",
+ "kind": "three-lens closing walk on the shipped page",
+ "reviews": {
+  "summary": "Three-lens confirmation round on the shipped R9 exhibit",
+  "agentCount": 3,
+  "logs": [],
+  "result": [
+   {
+    "lens": "curator",
+    "blockers": [
+     {
+      "where": "data/exhibit/ground-copy.json line 708 (colophonLine), rendered by src/components/exhibit/ground/scenes/Colophon.tsx; visible in .r9shots/m-a6-colophon.png and live in production",
+      "what": "The closing colophon contradicts itself on its own fact count. The plate above and the source-record line below both compute 127 from the registry (data/exhibit/facts.json holds 127 facts), but the static sentence between them says 'one of 126 registered facts'. The exhibit's credibility statement miscounts its own facts within one screen, which is the single line a hostile committee would quote.",
+      "fix": "Change '126' to '127' in colophonLine, or better, split the sentence in the component and interpolate {factCount} so the line can never drift from the registry again. Rebuild, redeploy, re-shoot m-a6-colophon and d-a6-colophon."
+     }
+    ],
+    "verdict": "Yes, I would open the doors tomorrow, with one line corrected tonight. The full mobile walk reads as finished rooms: the named rust ring at East Woodlawn lands in both the map and the sum caption, the docket holds its order and closes on the record's own refusal ('2 arrests. No convictions.'), the register wall initials read as one clean relay, the content advisory and counted dead are handled with the restraint the subject deserves, and every quote and figure I could check against the record (Article 34, Wells, Hansberry, Baldwin, Ross, the SCF medians, the two-buyer arithmetic) is accurate and attributed. The single blocker is the colophon saying '126 registered facts' between two live counts that say 127; it is a two-character fix in static copy, but it sits on the exact wall where the exhibit stakes its credibility, so it must be corrected and redeployed before opening."
+   },
+   {
+    "lens": "historian",
+    "blockers": [
+     {
+      "where": "data/exhibit/ground-copy.json, closing.colophonLine (rendered by src/components/exhibit/ground/scenes/Colophon.tsx:123); confirmed live on https://rooted-forward.org/tours/chicago/hyde-park",
+      "what": "The colophon contradicts itself on the exactness wall. The plate computes the live registry count and prints '127 registered facts' (round 2's new fact bombings.families_stayed bumped facts.json from 126 to 127), while the hardcoded closing line one paragraph below still reads 'Every figure on this page resolves to one of 126 registered facts with a named source.' Both strings verified in the served production HTML. A hostile committee finds this in seconds, on the exact sentence that stakes the exhibit's credibility.",
+      "fix": "Change the colophonLine to 127, or better, drop the hardcoded number and interpolate the same allFacts().length the plate already uses so the line can never go stale again. Add a served-HTML check that the two counts agree."
+     },
+     {
+      "where": "data/exhibit/ledger.json:50, covenant-armor entry shortLabel; rendered on the mobile ledger rail by src/components/exhibit/ground/chrome/LedgerRail.tsx:43",
+      "what": "The covenant split's companion fix did not land. The shortLabel still reads 'Covenants cover the county', the exact phrase round 2 ruled as blanket coverage the Chicago Covenants Project does not support (the registered fact says hundreds of subdivisions, not the county). It is user-visible on phones the moment the entry posts at a3-s1. The same round-2 item's order to add covenants.macchesney_template to the entry's factRefs (so the displayed year 1927 has a source; the attached coverage_claim is dated 'by the 1940s') was also not applied.",
+      "fix": "Set shortLabel to the round-2 sanctioned 'Covenants across the county' and add covenants.macchesney_template to the entry's factRefs alongside coverage_claim."
+     },
+     {
+      "where": "src/components/exhibit/ground/scenes/Docket.tsx:3-4 (file header comment)",
+      "what": "Non-visitor-facing, flagged only because the round-2 fix explicitly ordered it mirrored: the header comment still says 'All 40 incidents the 1922 commission appendix documents individually', repeating the false appendix claim the p1 corrected everywhere visitors can see. The rendered intro, sr-only caption, and scenario label are all correctly 'report', so this cannot embarrass the exhibit on the floor, but it carries the debunked claim into R10's source tree.",
+      "fix": "Change 'commission appendix documents individually' to 'commission report documents individually' in the comment."
+     }
+    ],
+    "verdict": "Yes, open the doors tomorrow, after two one-line data edits and a redeploy tonight. Every sentence round 2 changed now sits exactly on its source: the docket says report not appendix and its 58/40/2/0 figures match the registry; the refusal quote is verbatim against the cached 1922 text, quoted and attributed; the SCF card names the instrument, the year, and the national scope with the Fed's exact published figures; the covenant claim is split with each half on its own fact; the 241 sentence restores Satter's white-run qualifier word for word; the so-far caption now points in quotation marks at two words that really appear on sheet D-106; the sum caption names only marks that actually render, with East Woodlawn as the registry's own noun; the ch9 span matches the register bar's sanctioned 1952 to 1970; and the bridge's tract line matches the stated methodology. What survived are two stragglers from the round-2 punch list, both checkable by a hostile reader: the colophon's hardcoded 'one of 126 registered facts' sits one paragraph below a live-computed '127 registered facts' (confirmed in production HTML), and the mobile rail's covenant line still says 'Covenants cover the county', the blanket phrase round 2 already ruled unsupported. Neither requires design work; both are single-string edits in data files. Fix, redeploy, verify the served HTML shows 127 twice and the new rail label, and the exhibit is ready for its subject's descendants."
+   },
+   {
+    "lens": "fresh-visitor",
+    "blockers": [
+     {
+      "where": "Colophon, live at the bottom of the page (data/exhibit/ground-copy.json line 708, rendered by src/components/exhibit/ground/scenes/Colophon.tsx line 123)",
+      "what": "The colophon contradicts itself on one phone screen. The wall plate says \"127 registered facts\" and the source-record line says \"The 127 facts rest on 71 works\" (both computed live from allFacts().length), but the prose line between them is hardcoded copy that says \"Every figure on this page resolves to one of 126 registered facts with a named source.\" This is the exact sentence a hostile committee would read aloud: the exhibit's whole credibility claim is count discipline, and its own accounting is off by one in the paragraph that makes the claim.",
+      "fix": "Either interpolate the live factCount into the sentence in Colophon.tsx (replace the raw GROUND_COPY.closing.colophonLine render with a version that substitutes allFacts().length, keeping the copy string as a template), or update ground-copy.json line 708 from 126 to 127 and add a verify check asserting the colophon prose count equals allFacts().length so it can never drift again. The interpolation is the durable fix; a fact added in R10 would silently break the hardcoded number a second time."
+     }
+    ],
+    "verdict": "Yes, I would open the doors tomorrow, with one screw tightened tonight. I walked the whole page on a 390px viewport at the live URL as someone who knows nothing: the opening map lands, the treaty-to-fair-to-purge arc builds without a wasted chapter, the bombing memorial is restrained and devastating (blank conviction column doing the work), the two-buyers meter and the wealth-gap climb both read instantly, the citation dagger I tapped opened real, named sources, and the console is silent. Nothing rang false, nothing confused me, and what I carried out the door was the intended thing, that the record itself convicts. The single blocker is the colophon counting its own facts two different ways (127 on the plate, 126 in the prose beneath it) within one phone screen; it is a one-line copy fix, but it sits precisely on the exhibit's credibility claim and is the first thing a hostile reader would circle, so it should be corrected before the ribbon is cut."
+   }
+  ],
+  "workflowProgress": [
+   {
+    "type": "workflow_phase",
+    "index": 1,
+    "title": "Confirm"
+   },
+   {
+    "type": "workflow_agent",
+    "index": 1,
+    "label": "confirm:curator",
+    "phaseIndex": 1,
+    "phaseTitle": "Confirm",
+    "agentId": "a12038a52e7d9507a",
+    "model": "claude-fable-5",
+    "state": "done",
+    "startedAt": 1783727053812,
+    "queuedAt": 1783727053802,
+    "attempt": 1,
+    "lastToolName": "StructuredOutput",
+    "lastToolSummary": "Yes, I would open the doors tomorrow, with one line correct…",
+    "promptPreview": "FINAL CONFIRMATION ROUND. \"The Ground Keeps Moving\" R9 rebuild is LIVE at https://rooted-forward.org/tours/chicago/hyde-park (identical build runs at http://localhost:3000/tours/chicago/hyde-park; fresh screenshots of every anchor in the repo folder /Users/zainzaidi/Desktop/Rooted Forward/.r9shots/, m-*.png 390x844 and d-*.png 1280x800). Two full eight-lens audit rounds ran (records: data/exhibit/…",
+    "lastProgressAt": 1783727346274,
+    "tokens": 99530,
+    "toolCalls": 66,
+    "durationMs": 292462,
+    "resultPreview": "{\"blockers\":[{\"where\":\"data/exhibit/ground-copy.json line 708 (colophonLine), rendered by src/components/exhibit/ground/scenes/Colophon.tsx; visible in .r9shots/m-a6-colophon.png and live in production\",\"what\":\"The closing colophon contradicts itself on its own fact count. The plate above and the source-record line below both compute 127 from the registry (data/exhibit/facts.json holds 127 facts),…"
+   },
+   {
+    "type": "workflow_agent",
+    "index": 2,
+    "label": "confirm:historian",
+    "phaseIndex": 1,
+    "phaseTitle": "Confirm",
+    "agentId": "aba2d75fbc1a53860",
+    "model": "claude-fable-5",
+    "state": "done",
+    "startedAt": 1783727053812,
+    "queuedAt": 1783727053802,
+    "attempt": 1,
+    "lastToolName": "StructuredOutput",
+    "lastToolSummary": "Yes, open the doors tomorrow, after two one-line data edits…",
+    "promptPreview": "FINAL CONFIRMATION ROUND. \"The Ground Keeps Moving\" R9 rebuild is LIVE at https://rooted-forward.org/tours/chicago/hyde-park (identical build runs at http://localhost:3000/tours/chicago/hyde-park; fresh screenshots of every anchor in the repo folder /Users/zainzaidi/Desktop/Rooted Forward/.r9shots/, m-*.png 390x844 and d-*.png 1280x800). Two full eight-lens audit rounds ran (records: data/exhibit/…",
+    "lastProgressAt": 1783727591094,
+    "tokens": 109318,
+    "toolCalls": 54,
+    "durationMs": 537282,
+    "resultPreview": "{\"blockers\":[{\"where\":\"data/exhibit/ground-copy.json, closing.colophonLine (rendered by src/components/exhibit/ground/scenes/Colophon.tsx:123); confirmed live on https://rooted-forward.org/tours/chicago/hyde-park\",\"what\":\"The colophon contradicts itself on the exactness wall. The plate computes the live registry count and prints '127 registered facts' (round 2's new fact bombings.families_stayed b…"
+   },
+   {
+    "type": "workflow_agent",
+    "index": 3,
+    "label": "confirm:fresh-visitor",
+    "phaseIndex": 1,
+    "phaseTitle": "Confirm",
+    "agentId": "ae59b21c8c3fb4b3f",
+    "model": "claude-fable-5",
+    "state": "done",
+    "startedAt": 1783727053813,
+    "queuedAt": 1783727053802,
+    "attempt": 1,
+    "lastToolName": "StructuredOutput",
+    "lastToolSummary": "Yes, I would open the doors tomorrow, with one screw tighte…",
+    "promptPreview": "FINAL CONFIRMATION ROUND. \"The Ground Keeps Moving\" R9 rebuild is LIVE at https://rooted-forward.org/tours/chicago/hyde-park (identical build runs at http://localhost:3000/tours/chicago/hyde-park; fresh screenshots of every anchor in the repo folder /Users/zainzaidi/Desktop/Rooted Forward/.r9shots/, m-*.png 390x844 and d-*.png 1280x800). Two full eight-lens audit rounds ran (records: data/exhibit/…",
+    "lastProgressAt": 1783727334934,
+    "tokens": 97860,
+    "toolCalls": 42,
+    "durationMs": 281121,
+    "resultPreview": "{\"blockers\":[{\"where\":\"Colophon, live at the bottom of the page (data/exhibit/ground-copy.json line 708, rendered by src/components/exhibit/ground/scenes/Colophon.tsx line 123)\",\"what\":\"The colophon contradicts itself on one phone screen. The wall plate says \\\"127 registered facts\\\" and the source-record line says \\\"The 127 facts rest on 71 works\\\" (both computed live from allFacts().length), but …"
+   }
+  ],
+  "totalTokens": 306708,
+  "totalToolCalls": 162
+ },
+ "resolution": "All three lenses answered open the doors tomorrow. Three straggler strings fixed the same night (the colophon prose is now count-free so it can never drift from the live registry counts, the covenant rail shortLabel dropped the blanket-coverage phrase and the entry carries both its facts, the docket file-header comment mirrors the report-not-appendix correction) plus the door regression check moved to rendered text. Suite 80/80 after."
+}

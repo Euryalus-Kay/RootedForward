@@ -1,7 +1,7 @@
 "use client";
 /* ------------------------------------------------------------------ */
 /*  R9 scene "Docket", the Empty Column. All 40 incidents the 1922     */
-/*  commission appendix documents individually, as a real HTML table.  */
+/*  commission report documents individually, as a real HTML table.  */
 /*  The record's own targets lead each row (the commission names who   */
 /*  it bombed even though it names no victim), the address sits under  */
 /*  the name in the plat face, and repeat attacks at one location      */
