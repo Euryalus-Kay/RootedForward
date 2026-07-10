@@ -43,10 +43,10 @@
    ],
    "stationIntros": {
     "holc-map": {
-     "what": "The 1940 federal map of Chicago, all 703 areas as the government filed them, with the surveyors' original description sheets.",
+     "what": "The 1940 federal map of Chicago in relief, all 703 areas as the government filed them, each raised or sunk by its grade, with the surveyors' original description sheets.",
      "when": "Surveyed 1939 to 1940, issued 1940. Polygons and transcriptions from the Mapping Inequality project; sheets survive for 576 areas.",
      "why": "The language on the sheets, not the colors, is the evidence.",
-     "tryIt": "Click any graded area. Its sheet opens below. Then try the loan question under the map.",
+     "tryIt": "Turn the city with the handle under the map. Select any area and its sheet opens below. The flat study map is one tap away.",
      "factRefs": [
       "redlining.holc_survey_chicago"
      ]

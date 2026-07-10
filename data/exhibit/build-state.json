@@ -1,124 +1,127 @@
 {
-  "version": 1,
-  "exhibit": "the-ground-keeps-moving",
-  "previewSlug": "/tours/chicago/hyde-park-exhibit",
-  "liveSlug": "/tours/chicago/hyde-park",
-  "swapped": true,
-  "milestones": [
-    {
-      "id": "0a",
-      "title": "Data foundations",
-      "status": "completed",
-      "gateTag": null
-    },
-    {
-      "id": "0b",
-      "title": "Narration + TTS",
-      "status": "completed",
-      "gateTag": null,
-      "note": "Whisper word-level cue alignment deferred to A4; captions derive proportionally"
-    },
-    {
-      "id": "A1",
-      "title": "Vertical slice, CH0-CH1 + HUD + harness",
-      "status": "approved",
-      "gateTag": "exhibit-gate-A1",
-      "approvedAt": "2026-07-04",
-      "reviewRef": null
-    },
-    {
-      "id": "A2",
-      "title": "CH2-CH7 + interactives",
-      "status": "approved",
-      "gateTag": "exhibit-gate-A2",
-      "reviewRef": "data/exhibit/reviews/A2.json",
-      "approvedAt": "2026-07-04"
-    },
-    {
-      "id": "A3",
-      "title": "CH8-CH11 + TwoBuyers + PlannersTable",
-      "status": "approved",
-      "gateTag": "exhibit-gate-A3",
-      "approvedAt": "2026-07-04"
-    },
-    {
-      "id": "A4",
-      "title": "HUD polish + audio pass + full panel",
-      "status": "approved",
-      "gateTag": "exhibit-gate-A4",
-      "approvedAt": "2026-07-04",
-      "reviewRef": "data/exhibit/reviews/A4.json"
-    },
-    {
-      "id": "B1",
-      "title": "Rigged Instruments + rooms M1-M3",
-      "status": "approved",
-      "gateTag": "exhibit-gate-B1",
-      "approvedAt": "2026-07-04"
-    },
-    {
-      "id": "B2",
-      "title": "Rooms M4-M5 + counter-machine + galleries",
-      "status": "approved",
-      "gateTag": "exhibit-gate-B2",
-      "approvedAt": "2026-07-04"
-    },
-    {
-      "id": "C1",
-      "title": "Visitor input + moderation",
-      "status": "approved",
-      "gateTag": "exhibit-gate-B2",
-      "approvedAt": "2026-07-04",
-      "note": "shipped with B2; migration 008 pending owner application"
-    },
-    {
-      "id": "C2",
-      "title": "Action layer + hardening + go-live swap",
-      "status": "live",
-      "gateTag": "exhibit-live",
-      "reviewRef": "data/exhibit/reviews/C2.json",
-      "approvedAt": "2026-07-08"
-    },
-    {
-      "id": "R1",
-      "title": "Reader-paced structure, meta-game removal",
-      "status": "complete",
-      "completed": "2026-07-08"
-    },
-    {
-      "id": "R2",
-      "title": "Wall text rewrite, context layer, About panel",
-      "status": "complete",
-      "completed": "2026-07-08"
-    },
-    {
-      "id": "R3",
-      "title": "Evidence stations, Surveyor's Files, rooms to reading rooms",
-      "status": "complete",
-      "completed": "2026-07-08",
-      "notes": "Surveyor's Files reading room (576 sheets, permalinks), loans toggle, chronological ledger table. Suite 115/115, deployed, prod-verified."
-    },
-    {
-      "id": "R4",
-      "title": "Naive-visitor + humanizer panel, ship",
-      "status": "complete",
-      "notes": "8-lens panel: 77 raw findings, 31 consolidated (5 p1), all fixed. Mobile overflow + tap targets, finale question, FHA re-sourcing (Hanchett), categorical HOLC claim softened, bibliography deduped to 67 works / 111 live facts, Article 34 quoted in full, map dated 1939-40/1940, narration pipeline fully removed.",
-      "completed": "2026-07-09"
-    },
-    {
-      "id": "R5",
-      "title": "Expert-depth pass, primary sources and corpus analysis",
-      "status": "complete",
-      "completed": "2026-07-09",
-      "notes": "Verbatim primary sources added from digitized texts verified this session (Wells preface and Douglass introduction 1893 via UPenn transcription; Property Owners' Journal Dec 13 1919 and Feb 1 1920 via CCRR Gutenberg 57343; FHA Underwriting Manual 1938 paras 937 and 980(3)(g) via HUD USER scan). ch6 gained a historiography section carrying Hillier 2003 and Winling-Michney 2021 without overclaiming map causation. New reproducible corpus analysis (scripts/exhibit-sheets-analysis.mjs) computes race, infiltration, mortgage-funds, and blight patterns across all 576 sheets; Patterns in the Record panel added to the Surveyor's Files with the A11 and D106 verbatim sheets one click away. 16 new facts, registry at 126. Suite 136/136."
-    },
-    {
-      "id": "R6",
-      "title": "Museum-communication pass, council-directed",
-      "status": "complete",
-      "completed": "2026-07-09",
-      "notes": "LLM council (5 advisors, 3 peer reviews, chairman) redirected the plan from relabeling to cutting. Big Idea line on the opening; opening cut to 53 words + one how-to line; all 13 chapters cut to 40-90 word label blocks with a one-bold-clause quick-read spine; dek under every title; Chapter N of 13; Try lines on every station in quiet adult register; chrome renamed (Document room, Added to the record, tier tooltips); door prominence swapped to plain names; TwoBuyers restyled sentence-case with a running takeaway sentence. Skeptical-adult test verdict: serious museum piece, not an AI demo. Its four findings fixed: toggle register, empty answer-wall ending, 3x longer gap climb, and the Find-the-ground-under-you geolocation lookup (client-side point-in-polygon on the real 1940 boundaries). Fresh-reader pilot on ch9: clarity B+ (defects fixed), tone A, retention A. Suite 139/139."
-    }
-  ],
-  "updated": "2026-07-09"
+ "version": 1,
+ "exhibit": "the-ground-keeps-moving",
+ "previewSlug": "/tours/chicago/hyde-park-exhibit",
+ "liveSlug": "/tours/chicago/hyde-park",
+ "swapped": true,
+ "milestones": [
+  {
+   "id": "0a",
+   "title": "Data foundations",
+   "status": "completed",
+   "gateTag": null
+  },
+  {
+   "id": "0b",
+   "title": "Narration + TTS",
+   "status": "completed",
+   "gateTag": null,
+   "note": "Whisper word-level cue alignment deferred to A4; captions derive proportionally"
+  },
+  {
+   "id": "A1",
+   "title": "Vertical slice, CH0-CH1 + HUD + harness",
+   "status": "approved",
+   "gateTag": "exhibit-gate-A1",
+   "approvedAt": "2026-07-04",
+   "reviewRef": null
+  },
+  {
+   "id": "A2",
+   "title": "CH2-CH7 + interactives",
+   "status": "approved",
+   "gateTag": "exhibit-gate-A2",
+   "reviewRef": "data/exhibit/reviews/A2.json",
+   "approvedAt": "2026-07-04"
+  },
+  {
+   "id": "A3",
+   "title": "CH8-CH11 + TwoBuyers + PlannersTable",
+   "status": "approved",
+   "gateTag": "exhibit-gate-A3",
+   "approvedAt": "2026-07-04"
+  },
+  {
+   "id": "A4",
+   "title": "HUD polish + audio pass + full panel",
+   "status": "approved",
+   "gateTag": "exhibit-gate-A4",
+   "approvedAt": "2026-07-04",
+   "reviewRef": "data/exhibit/reviews/A4.json"
+  },
+  {
+   "id": "B1",
+   "title": "Rigged Instruments + rooms M1-M3",
+   "status": "approved",
+   "gateTag": "exhibit-gate-B1",
+   "approvedAt": "2026-07-04"
+  },
+  {
+   "id": "B2",
+   "title": "Rooms M4-M5 + counter-machine + galleries",
+   "status": "approved",
+   "gateTag": "exhibit-gate-B2",
+   "approvedAt": "2026-07-04"
+  },
+  {
+   "id": "C1",
+   "title": "Visitor input + moderation",
+   "status": "approved",
+   "gateTag": "exhibit-gate-B2",
+   "approvedAt": "2026-07-04",
+   "note": "shipped with B2; migration 008 pending owner application"
+  },
+  {
+   "id": "C2",
+   "title": "Action layer + hardening + go-live swap",
+   "status": "live",
+   "gateTag": "exhibit-live",
+   "reviewRef": "data/exhibit/reviews/C2.json",
+   "approvedAt": "2026-07-08"
+  },
+  {
+   "id": "R1",
+   "title": "Reader-paced structure, meta-game removal",
+   "status": "complete",
+   "completed": "2026-07-08"
+  },
+  {
+   "id": "R2",
+   "title": "Wall text rewrite, context layer, About panel",
+   "status": "complete",
+   "completed": "2026-07-08"
+  },
+  {
+   "id": "R3",
+   "title": "Evidence stations, Surveyor's Files, rooms to reading rooms",
+   "status": "complete",
+   "completed": "2026-07-08",
+   "notes": "Surveyor's Files reading room (576 sheets, permalinks), loans toggle, chronological ledger table. Suite 115/115, deployed, prod-verified."
+  },
+  {
+   "id": "R4",
+   "title": "Naive-visitor + humanizer panel, ship",
+   "status": "complete",
+   "notes": "8-lens panel: 77 raw findings, 31 consolidated (5 p1), all fixed. Mobile overflow + tap targets, finale question, FHA re-sourcing (Hanchett), categorical HOLC claim softened, bibliography deduped to 67 works / 111 live facts, Article 34 quoted in full, map dated 1939-40/1940, narration pipeline fully removed.",
+   "completed": "2026-07-09"
+  },
+  {
+   "id": "R5",
+   "title": "Expert-depth pass, primary sources and corpus analysis",
+   "status": "complete",
+   "completed": "2026-07-09",
+   "notes": "Verbatim primary sources added from digitized texts verified this session (Wells preface and Douglass introduction 1893 via UPenn transcription; Property Owners' Journal Dec 13 1919 and Feb 1 1920 via CCRR Gutenberg 57343; FHA Underwriting Manual 1938 paras 937 and 980(3)(g) via HUD USER scan). ch6 gained a historiography section carrying Hillier 2003 and Winling-Michney 2021 without overclaiming map causation. New reproducible corpus analysis (scripts/exhibit-sheets-analysis.mjs) computes race, infiltration, mortgage-funds, and blight patterns across all 576 sheets; Patterns in the Record panel added to the Surveyor's Files with the A11 and D106 verbatim sheets one click away. 16 new facts, registry at 126. Suite 136/136."
+  },
+  {
+   "id": "R6",
+   "title": "Museum-communication pass, council-directed",
+   "status": "complete",
+   "completed": "2026-07-09",
+   "notes": "LLM council (5 advisors, 3 peer reviews, chairman) redirected the plan from relabeling to cutting. Big Idea line on the opening; opening cut to 53 words + one how-to line; all 13 chapters cut to 40-90 word label blocks with a one-bold-clause quick-read spine; dek under every title; Chapter N of 13; Try lines on every station in quiet adult register; chrome renamed (Document room, Added to the record, tier tooltips); door prominence swapped to plain names; TwoBuyers restyled sentence-case with a running takeaway sentence. Skeptical-adult test verdict: serious museum piece, not an AI demo. Its four findings fixed: toggle register, empty answer-wall ending, 3x longer gap climb, and the Find-the-ground-under-you geolocation lookup (client-side point-in-polygon on the real 1940 boundaries). Fresh-reader pilot on ch9: clarity B+ (defects fixed), tone A, retention A. Suite 139/139."
+  }
+ ],
+ "updated": "2026-07-09",
+ "milestone": "R7",
+ "lastUpdated": "2026-07-09",
+ "notes": "R7 shipped: relief map (SVG 2.5D, stepped grade ranks, turn handle), cases rerouting flow, vertical record timeline, archival figure pass, retention layer. Suite 151 checks / 15 scenarios."
 }

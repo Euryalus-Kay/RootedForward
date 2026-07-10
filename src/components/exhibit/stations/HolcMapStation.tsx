@@ -24,6 +24,7 @@ import { FILES_ROOM_ID } from "@/lib/exhibit/machines";
 import { useExhibitDispatch } from "@/lib/exhibit/ExhibitProvider";
 import MapStage, { VIEW_H, VIEW_W } from "@/components/exhibit/map/MapStage";
 import HolcLayer from "@/components/exhibit/map/layers/HolcLayer";
+import HolcReliefStage from "@/components/exhibit/map/HolcReliefStage";
 import { useInteractive } from "../interactives/InteractiveContext";
 import PaperCard from "../shared/PaperCard";
 import FactValue from "../shared/FactValue";
@@ -152,6 +153,8 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
 
   const [selected, setSelected] = useState<HolcArea | null>(null);
   const [nearby, setNearby] = useState<HolcArea[] | null>(null);
+  /* ch0 opens in relief; ch6, the rereading, opens on the study map */
+  const [view, setView] = useState<"relief" | "flat">(framing === "ch0" ? "relief" : "flat");
   const [overlayOn, setOverlayOn] = useState(false);
   const [toggledOnce, setToggledOnce] = useState(false);
   const [locateState, setLocateState] = useState<"idle" | "working" | "hit" | "miss" | "denied">("idle");
@@ -349,30 +352,73 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
       data-framing={framing}
       data-selected={selected ? String(selected.label ?? selected.id) : "none"}
     >
-      <p className="exh-plat mb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
-        {copy.lead}
-      </p>
-
-      <div ref={stageRef} onClick={onStageClick}>
-        <MapStage frame="citywide" showPlaceholder={!mapReady}>
-          {mapReady && (
-            <HolcLayer frame="citywide" interactive dimUngraded onAreaTap={onAreaTap} />
-          )}
-          {/* the darkness: what remains when only lendable areas stay lit */}
-          <rect
-            x={0}
-            y={0}
-            width={VIEW_W}
-            height={VIEW_H}
-            pointerEvents="none"
-            style={{
-              fill: "var(--color-exh-ink)",
-              opacity: overlayOn ? 0.93 : 0,
-              transition: api.reducedMotion ? "none" : `opacity ${motionMs(320)}ms ease`,
-            }}
-          />
-        </MapStage>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.25em] text-exh-ink-soft">
+          {copy.lead}
+        </p>
+        {/* the two views of the same map; the flat study map is one tap away */}
+        <div className="flex" role="group" aria-label="Map view">
+          {(
+            [
+              ["relief", "In relief"],
+              ["flat", "Flat map"],
+            ] as const
+          ).map(([id, word]) => (
+            <button
+              key={id}
+              type="button"
+              data-testid={`holc-map-view-${id}`}
+              aria-pressed={view === id}
+              onClick={() => {
+                if (view !== id) {
+                  api.onInteraction();
+                  setView(id);
+                  setNearby(null);
+                }
+              }}
+              className={`exh-plat min-h-10 cursor-pointer border px-3 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors first:rounded-l-sm first:border-r-0 last:rounded-r-sm ${
+                view === id
+                  ? "border-exh-ink bg-exh-ink text-exh-linen"
+                  : "border-exh-ink/40 bg-exh-linen text-exh-ink hover:border-exh-ink"
+              }`}
+            >
+              {word}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {view === "relief" ? (
+        <HolcReliefStage
+          interactive
+          onAreaTap={onAreaTap}
+          selectedId={selected?.id ?? null}
+          overlayOn={overlayOn}
+          reducedMotion={api.reducedMotion}
+          onInteraction={api.onInteraction}
+        />
+      ) : (
+        <div ref={stageRef} onClick={onStageClick}>
+          <MapStage frame="citywide" showPlaceholder={!mapReady}>
+            {mapReady && (
+              <HolcLayer frame="citywide" interactive dimUngraded onAreaTap={onAreaTap} />
+            )}
+            {/* the darkness: what remains when only lendable areas stay lit */}
+            <rect
+              x={0}
+              y={0}
+              width={VIEW_W}
+              height={VIEW_H}
+              pointerEvents="none"
+              style={{
+                fill: "var(--color-exh-ink)",
+                opacity: overlayOn ? 0.93 : 0,
+                transition: api.reducedMotion ? "none" : `opacity ${motionMs(320)}ms ease`,
+              }}
+            />
+          </MapStage>
+        </div>
+      )}
 
       {/* ---------------- areas under an ambiguous tap ---------------- */}
       {nearby && nearby.length >= 2 && (
@@ -464,7 +510,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
               {excerptUsable && selDesc ? (
                 <div>
                   <p className="exh-plat text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft md:text-[11px] md:text-[10px]">
-                    from the 1939 to 1940 survey record
+                    from the sheet HOLC&rsquo;s surveyors filed, 1939 to 1940
                   </p>
                   <span className="exh-plat mt-1 inline-block rounded-[2px] border border-exh-ink/40 px-1.5 py-0.5 text-[11px] uppercase leading-snug tracking-[0.12em] text-exh-ink-soft md:text-[11px] md:text-[9px]">
                     period document; contains the era&rsquo;s racist language

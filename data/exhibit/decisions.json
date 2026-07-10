@@ -1,223 +1,231 @@
 {
-  "version": 1,
-  "note": "Owner decisions at milestone gates. Milestone entry requires zero open fix-now items. Panel lenses receive this file so declined items are never re-raised.",
-  "decisions": [
-    {
-      "id": "D-SCOPE-01",
-      "milestone": "plan",
-      "date": "2026-07-03",
-      "source": "owner",
-      "title": "Full spec, phased, approval gates between phases",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-SCOPE-02",
-      "milestone": "plan",
-      "date": "2026-07-03",
-      "source": "owner",
-      "title": "Replace the tour page entirely at go-live; film player deleted",
-      "decision": "approved",
-      "status": "open"
-    },
-    {
-      "id": "D-SCOPE-03",
-      "milestone": "plan",
-      "date": "2026-07-03",
-      "source": "owner",
-      "title": "OpenAI TTS narration (ash) via existing pipeline; owner may record real VO later",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-SCOPE-04",
-      "milestone": "plan",
-      "date": "2026-07-03",
-      "source": "owner",
-      "title": "All visitor-input features behind one shared moderation queue",
-      "decision": "approved",
-      "status": "open"
-    },
-    {
-      "id": "D-0B-01",
-      "milestone": "0b",
-      "date": "2026-07-03",
-      "source": "integrator",
-      "title": "Chicago Reporter CBL figures re-tiered reported; ids renamed to match verified values (155 renegotiated by Jul 1971, about 70 evicted, $14,000 average saved)",
-      "decision": "adjudicated",
-      "status": "honored"
-    },
-    {
-      "id": "D-0B-02",
-      "milestone": "0b",
-      "date": "2026-07-03",
-      "source": "integrator",
-      "title": "Whisper word-level cue alignment deferred to A4; sentence-proportional captions until then",
-      "decision": "deferred",
-      "status": "open"
-    },
-    {
-      "id": "D-A1-01",
-      "milestone": "A1",
-      "date": "2026-07-04",
-      "source": "owner",
-      "title": "A1 approved as-is; interaction grammar locked, A2 authorized",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-A1-02",
-      "milestone": "A1",
-      "date": "2026-07-04",
-      "source": "owner",
-      "title": "Self-review recommendations (immersive chrome, tighter cold-open crop, visible board labels) deferred to the A4 polish gate",
-      "decision": "next-phase",
-      "status": "open"
-    },
-    {
-      "id": "D-A2-01",
-      "milestone": "A2",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "Panel P1s fixed before the gate. explore-mode advisory wiring, ch1 chronology (two hundred years), ch2 pamphlet at the Haiti building (narration + voice card + Midway panel, TTS regenerated)",
-      "decision": "fix-now",
-      "status": "done"
-    },
-    {
-      "id": "D-A2-02",
-      "milestone": "A2",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "Panel P2s fixed at the gate. credit-line sanitizer, Shelley caption dated, cursor affordance + mode-card action cues, idle timer resets on wheel/scroll, countdown ring steps whole seconds under no-motion",
-      "decision": "fix-now",
-      "status": "done"
-    },
-    {
-      "id": "D-A2-03",
-      "milestone": "A2",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "Deferred to A3 and A4. off-screen countdown chip in HUD, ch5 era plate span, bombing docket row layout, dynamic-chunk loading blurbs, voices tray collect-verbs copy, audit extension to interactive aggregates, credits ingest sanitizing",
-      "decision": "next-phase",
-      "status": "open"
-    },
-    {
-      "id": "D-A2-04",
-      "milestone": "A2",
-      "date": "2026-07-04",
-      "source": "owner",
-      "title": "Standing authorization to proceed autonomously through the phases with the quality system as the gate. Milestones self-approve when the verify suite, audits, and review panels are green (P1 and P2 findings always fixed first, P3 deferrals recorded). The owner ask is reserved for the C2 go-live swap that replaces the public film page.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-A3-01",
-      "milestone": "A3",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "A3 self-approved per standing authorization D-A2-04. 99 of 99 regression checks across 22 scenarios, all audits green, deferred P3 batch cleared. New finding carried to A4. the site navbar overlays the exhibit's top HUD strip at page top on desktop (merges with the immersive-chrome item).",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-A4-01",
-      "milestone": "A4",
-      "date": "2026-07-04",
-      "source": "integrator",
-      "title": "Further citywide map cropping declined with rationale. The cold open's claim is citywide (find a neighborhood anywhere), so the frame must keep the whole city visible; the A2 tightening already made the Black Belt corridor legible, and the bombing map solves its own scale with a reprojection window.",
-      "decision": "declined",
-      "status": "honored"
-    },
-    {
-      "id": "D-A4-02",
-      "milestone": "A4",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "A4 self-approved and phase A closed per D-A2-04. Full nine-lens panel ran on production; both P1s fixed (mobile HUD composed as one plated strip; universal redlining claims softened to the registry's corrected Black Belt scope with TTS regenerated) plus the full P2 batch (tour end plate, terminal final station, scoped explore playback, roving map tabindex, focus and announcement utility, HoldTheLine reword, credit formatter, figure recompression 6MB to 2MB, caption plating, dagger hit areas). Remaining P3s recorded. VO re-encode to 64 to 80 kbps folded into the phase B pipeline settings.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-B1-01",
-      "milestone": "B1",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "B1 self-approved per D-A2-04. Rigged Instrument system (four configs on documented instruments) and Machine Rooms M1 to M3 with the six-station floor plan, room overlay with hash deep links, doors in ch6, ch8, and ch9. 115 of 115 checks across 26 scenarios. Facts registered for the rooms, fair_housing_1968 and post_2008_return.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-B2-01",
-      "milestone": "B2",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "B2 self-approved per D-A2-04. Rooms for THE DEED and THE CODE, the counter-machine room with the Answer Key on registered facts, the gear train unlock, and machine cards. Strike the Clause ships as the static primary-text panel pending counsel review. Community build-back stories (Kimbark, Harper Court, the savings and loan) honestly plated as collection in progress pending sourced records. Galleries deferred to the sourcing effort.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-C1-01",
-      "milestone": "C1",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "C1 self-approved per D-A2-04. Visitor input pipeline live behind migration 008 (exhibit_submissions, RLS, 101-term screen, admin queue). The Answer Wall takes the honest migration-pending path until the owner applies supabase/migrations/008_exhibit.sql in the SQL editor, the same procedure as 006. Memorial and oral-history stations ship with the galleries; their API kinds are already supported.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-C2-01",
-      "milestone": "C2",
-      "date": "2026-07-04",
-      "source": "panel",
-      "title": "Closing panel P1 and all eight P2s fixed before the swap ask. Answer Key contrast, bare room deep links, the wall's honest not-yet-collected stamp with focus management, the strike figure softened to about 500, the armor phrasing displayed as characterization pending its archival clipping, the room-close pause cue, the AA contrast token sweep, and the audio fleet re-encoded to 80 kbps mono (18.9MB to 9.8MB). P3s recorded for post-swap polish, including the HOLC map-year convention pass, room-content audit coverage, gear caption timing, spine tab stops, and the wall latency re-measure after migration 008.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-C2-02",
-      "milestone": "C2",
-      "date": "2026-07-08",
-      "source": "owner",
-      "title": "GO-LIVE EXECUTED. The Ground Keeps Moving replaced the film page on chicago/hyde-park (owner chose the full swap). Film player deleted, media pruned to the poster, preview slug redirects with queries preserved, sitemap and indexing on, tag exhibit-live. Root-caused at the gate. the harness still pointed at the preview slug after a failed command chain, and the streamed redirect drops query strings, both fixed. Remaining owner action, apply migration 008 in the Supabase SQL editor to open the wall.",
-      "decision": "approved",
-      "status": "honored"
-    },
-    {
-      "id": "D-R0-01",
-      "milestone": "R (rebuild)",
-      "date": "2026-07-08",
-      "source": "owner + council",
-      "title": "Owner verdict on v1, feels AI and gimmicky, like a kids game, confusing without context, remove the TTS voice, needs museum-grade education. Council diagnosis, the AI feeling is epistemological, simulations standing where real documents exist. Rebuild plan, one reader-paced experience (no audio, no modes, no auto-advance), delete the meta-game layer (medallion collectibles, machine board HUD, DECLINED tap game, press-and-hold, count-ups, gear train, answer key game, machine cards), rewrite all text as historian wall text per humanizer rules, keep only evidence-forward stations (real HOLC map with real surveyor sheets, bombing record, Two Buyers arithmetic, wealth gap scale, annotated real documents), add the Surveyor's Files reading room (576 real descriptions, permalinks), an opening context panel in plain words, and an About this exhibit authorship panel with the registry as bibliography. No visual-system redesign. Fact registry, HOLC data, and harness untouched as infrastructure.",
-      "decision": "approved",
-      "status": "open"
-    },
-    {
-      "id": "D-R3-01",
-      "date": "2026-07-08",
-      "milestone": "R3",
-      "decision": "Ship the Surveyor's Files as a reading room off ch6 with per-sheet permalinks keyed by areaId (area_number is missing on 130 sheets and duplicated, so it is display-only). Convert the loans overlay from press-and-hold to a plain toggle so the darkened map can be studied, per the rebuild's no-gimmick rule. Sort the full record table by year because a YEAR column that runs backwards reads as an error.",
-      "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, fact audit, verify 115/115, build)"
-    },
-    {
-      "id": "D-R4-01",
-      "date": "2026-07-09",
-      "milestone": "R4",
-      "decision": "Panel verdict accepted and all 31 punch-list items fixed. Notable calls: narration.json deleted with its pipeline scripts (voice removed at owner demand; git history preserves), 28 unused game-era facts archived to facts-archive.json, redlining.hoyt_fha downgraded documented to reported, holc_survey_chicago re-dated 1938 to 1940 on sheet evidence, King medallion moved ch11 to ch10 anchored by a new registered fact, and the research paper holc-redlining-present-day-outcomes-chicago.ts still dates the map 1938 (flagged, out of exhibit scope).",
-      "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, audit 111 facts, verify 133/133, build)"
-    },
-    {
-      "id": "D-R5-01",
-      "date": "2026-07-09",
-      "milestone": "R5",
-      "decision": "Depth pass done inline after the research workflow hit the account spend limit. Scope kept tight per the chair-plan priorities the workflow would have produced: correctness (HOLC/FHA causation framing now explicit, with the exhibit's own mortgage-funds gradient carrying the argument), paraphrase-to-verbatim upgrades (Wells, Douglass, Property Owners' Journal, FHA manual paragraphs with numbers), and one computed panel (Patterns in the Record) whose every number is reproducible by scripts/exhibit-sheets-analysis.mjs. Remaining research domains (renewal deep sources, CBL litigation, present-day IHS numbers) deferred until the spend limit resets or is raised.",
-      "by": "autonomous under D-A2-04; gates green (tsc, copy lint, audit 126 facts, verify 136/136, build)"
-    },
-    {
-      "id": "D-R6-01",
-      "date": "2026-07-09",
-      "milestone": "R6",
-      "decision": "Council verdict adopted over the original relabeling plan: keep the architecture the owner praised, cut the interior text to museum label discipline (bolding is not cutting), fix the wall text cadence rather than sweep chrome copy, and pilot one chapter (ch9) against a fresh reader before rolling to twelve. The r6 writer agent died on the output-token cap; the twelve chapters were rewritten inline in three batches. The one aphoristic closer retained exhibit-wide is ch10's credit-entry line, which states the ledger device. Geolocation lookup runs entirely client side; no position ever leaves the page.",
-      "by": "autonomous under D-A2-04; gates green (tsc, copy lint, audit 126 facts, verify 139/139, build)"
-    }
-  ]
+ "version": 1,
+ "note": "Owner decisions at milestone gates. Milestone entry requires zero open fix-now items. Panel lenses receive this file so declined items are never re-raised.",
+ "decisions": [
+  {
+   "id": "D-SCOPE-01",
+   "milestone": "plan",
+   "date": "2026-07-03",
+   "source": "owner",
+   "title": "Full spec, phased, approval gates between phases",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-SCOPE-02",
+   "milestone": "plan",
+   "date": "2026-07-03",
+   "source": "owner",
+   "title": "Replace the tour page entirely at go-live; film player deleted",
+   "decision": "approved",
+   "status": "open"
+  },
+  {
+   "id": "D-SCOPE-03",
+   "milestone": "plan",
+   "date": "2026-07-03",
+   "source": "owner",
+   "title": "OpenAI TTS narration (ash) via existing pipeline; owner may record real VO later",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-SCOPE-04",
+   "milestone": "plan",
+   "date": "2026-07-03",
+   "source": "owner",
+   "title": "All visitor-input features behind one shared moderation queue",
+   "decision": "approved",
+   "status": "open"
+  },
+  {
+   "id": "D-0B-01",
+   "milestone": "0b",
+   "date": "2026-07-03",
+   "source": "integrator",
+   "title": "Chicago Reporter CBL figures re-tiered reported; ids renamed to match verified values (155 renegotiated by Jul 1971, about 70 evicted, $14,000 average saved)",
+   "decision": "adjudicated",
+   "status": "honored"
+  },
+  {
+   "id": "D-0B-02",
+   "milestone": "0b",
+   "date": "2026-07-03",
+   "source": "integrator",
+   "title": "Whisper word-level cue alignment deferred to A4; sentence-proportional captions until then",
+   "decision": "deferred",
+   "status": "open"
+  },
+  {
+   "id": "D-A1-01",
+   "milestone": "A1",
+   "date": "2026-07-04",
+   "source": "owner",
+   "title": "A1 approved as-is; interaction grammar locked, A2 authorized",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-A1-02",
+   "milestone": "A1",
+   "date": "2026-07-04",
+   "source": "owner",
+   "title": "Self-review recommendations (immersive chrome, tighter cold-open crop, visible board labels) deferred to the A4 polish gate",
+   "decision": "next-phase",
+   "status": "open"
+  },
+  {
+   "id": "D-A2-01",
+   "milestone": "A2",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "Panel P1s fixed before the gate. explore-mode advisory wiring, ch1 chronology (two hundred years), ch2 pamphlet at the Haiti building (narration + voice card + Midway panel, TTS regenerated)",
+   "decision": "fix-now",
+   "status": "done"
+  },
+  {
+   "id": "D-A2-02",
+   "milestone": "A2",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "Panel P2s fixed at the gate. credit-line sanitizer, Shelley caption dated, cursor affordance + mode-card action cues, idle timer resets on wheel/scroll, countdown ring steps whole seconds under no-motion",
+   "decision": "fix-now",
+   "status": "done"
+  },
+  {
+   "id": "D-A2-03",
+   "milestone": "A2",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "Deferred to A3 and A4. off-screen countdown chip in HUD, ch5 era plate span, bombing docket row layout, dynamic-chunk loading blurbs, voices tray collect-verbs copy, audit extension to interactive aggregates, credits ingest sanitizing",
+   "decision": "next-phase",
+   "status": "open"
+  },
+  {
+   "id": "D-A2-04",
+   "milestone": "A2",
+   "date": "2026-07-04",
+   "source": "owner",
+   "title": "Standing authorization to proceed autonomously through the phases with the quality system as the gate. Milestones self-approve when the verify suite, audits, and review panels are green (P1 and P2 findings always fixed first, P3 deferrals recorded). The owner ask is reserved for the C2 go-live swap that replaces the public film page.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-A3-01",
+   "milestone": "A3",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "A3 self-approved per standing authorization D-A2-04. 99 of 99 regression checks across 22 scenarios, all audits green, deferred P3 batch cleared. New finding carried to A4. the site navbar overlays the exhibit's top HUD strip at page top on desktop (merges with the immersive-chrome item).",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-A4-01",
+   "milestone": "A4",
+   "date": "2026-07-04",
+   "source": "integrator",
+   "title": "Further citywide map cropping declined with rationale. The cold open's claim is citywide (find a neighborhood anywhere), so the frame must keep the whole city visible; the A2 tightening already made the Black Belt corridor legible, and the bombing map solves its own scale with a reprojection window.",
+   "decision": "declined",
+   "status": "honored"
+  },
+  {
+   "id": "D-A4-02",
+   "milestone": "A4",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "A4 self-approved and phase A closed per D-A2-04. Full nine-lens panel ran on production; both P1s fixed (mobile HUD composed as one plated strip; universal redlining claims softened to the registry's corrected Black Belt scope with TTS regenerated) plus the full P2 batch (tour end plate, terminal final station, scoped explore playback, roving map tabindex, focus and announcement utility, HoldTheLine reword, credit formatter, figure recompression 6MB to 2MB, caption plating, dagger hit areas). Remaining P3s recorded. VO re-encode to 64 to 80 kbps folded into the phase B pipeline settings.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-B1-01",
+   "milestone": "B1",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "B1 self-approved per D-A2-04. Rigged Instrument system (four configs on documented instruments) and Machine Rooms M1 to M3 with the six-station floor plan, room overlay with hash deep links, doors in ch6, ch8, and ch9. 115 of 115 checks across 26 scenarios. Facts registered for the rooms, fair_housing_1968 and post_2008_return.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-B2-01",
+   "milestone": "B2",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "B2 self-approved per D-A2-04. Rooms for THE DEED and THE CODE, the counter-machine room with the Answer Key on registered facts, the gear train unlock, and machine cards. Strike the Clause ships as the static primary-text panel pending counsel review. Community build-back stories (Kimbark, Harper Court, the savings and loan) honestly plated as collection in progress pending sourced records. Galleries deferred to the sourcing effort.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-C1-01",
+   "milestone": "C1",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "C1 self-approved per D-A2-04. Visitor input pipeline live behind migration 008 (exhibit_submissions, RLS, 101-term screen, admin queue). The Answer Wall takes the honest migration-pending path until the owner applies supabase/migrations/008_exhibit.sql in the SQL editor, the same procedure as 006. Memorial and oral-history stations ship with the galleries; their API kinds are already supported.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-C2-01",
+   "milestone": "C2",
+   "date": "2026-07-04",
+   "source": "panel",
+   "title": "Closing panel P1 and all eight P2s fixed before the swap ask. Answer Key contrast, bare room deep links, the wall's honest not-yet-collected stamp with focus management, the strike figure softened to about 500, the armor phrasing displayed as characterization pending its archival clipping, the room-close pause cue, the AA contrast token sweep, and the audio fleet re-encoded to 80 kbps mono (18.9MB to 9.8MB). P3s recorded for post-swap polish, including the HOLC map-year convention pass, room-content audit coverage, gear caption timing, spine tab stops, and the wall latency re-measure after migration 008.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-C2-02",
+   "milestone": "C2",
+   "date": "2026-07-08",
+   "source": "owner",
+   "title": "GO-LIVE EXECUTED. The Ground Keeps Moving replaced the film page on chicago/hyde-park (owner chose the full swap). Film player deleted, media pruned to the poster, preview slug redirects with queries preserved, sitemap and indexing on, tag exhibit-live. Root-caused at the gate. the harness still pointed at the preview slug after a failed command chain, and the streamed redirect drops query strings, both fixed. Remaining owner action, apply migration 008 in the Supabase SQL editor to open the wall.",
+   "decision": "approved",
+   "status": "honored"
+  },
+  {
+   "id": "D-R0-01",
+   "milestone": "R (rebuild)",
+   "date": "2026-07-08",
+   "source": "owner + council",
+   "title": "Owner verdict on v1, feels AI and gimmicky, like a kids game, confusing without context, remove the TTS voice, needs museum-grade education. Council diagnosis, the AI feeling is epistemological, simulations standing where real documents exist. Rebuild plan, one reader-paced experience (no audio, no modes, no auto-advance), delete the meta-game layer (medallion collectibles, machine board HUD, DECLINED tap game, press-and-hold, count-ups, gear train, answer key game, machine cards), rewrite all text as historian wall text per humanizer rules, keep only evidence-forward stations (real HOLC map with real surveyor sheets, bombing record, Two Buyers arithmetic, wealth gap scale, annotated real documents), add the Surveyor's Files reading room (576 real descriptions, permalinks), an opening context panel in plain words, and an About this exhibit authorship panel with the registry as bibliography. No visual-system redesign. Fact registry, HOLC data, and harness untouched as infrastructure.",
+   "decision": "approved",
+   "status": "open"
+  },
+  {
+   "id": "D-R3-01",
+   "date": "2026-07-08",
+   "milestone": "R3",
+   "decision": "Ship the Surveyor's Files as a reading room off ch6 with per-sheet permalinks keyed by areaId (area_number is missing on 130 sheets and duplicated, so it is display-only). Convert the loans overlay from press-and-hold to a plain toggle so the darkened map can be studied, per the rebuild's no-gimmick rule. Sort the full record table by year because a YEAR column that runs backwards reads as an error.",
+   "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, fact audit, verify 115/115, build)"
+  },
+  {
+   "id": "D-R4-01",
+   "date": "2026-07-09",
+   "milestone": "R4",
+   "decision": "Panel verdict accepted and all 31 punch-list items fixed. Notable calls: narration.json deleted with its pipeline scripts (voice removed at owner demand; git history preserves), 28 unused game-era facts archived to facts-archive.json, redlining.hoyt_fha downgraded documented to reported, holc_survey_chicago re-dated 1938 to 1940 on sheet evidence, King medallion moved ch11 to ch10 anchored by a new registered fact, and the research paper holc-redlining-present-day-outcomes-chicago.ts still dates the map 1938 (flagged, out of exhibit scope).",
+   "by": "autonomous under D-A2-04; gates green (tsc, eslint, copy lint, audit 111 facts, verify 133/133, build)"
+  },
+  {
+   "id": "D-R5-01",
+   "date": "2026-07-09",
+   "milestone": "R5",
+   "decision": "Depth pass done inline after the research workflow hit the account spend limit. Scope kept tight per the chair-plan priorities the workflow would have produced: correctness (HOLC/FHA causation framing now explicit, with the exhibit's own mortgage-funds gradient carrying the argument), paraphrase-to-verbatim upgrades (Wells, Douglass, Property Owners' Journal, FHA manual paragraphs with numbers), and one computed panel (Patterns in the Record) whose every number is reproducible by scripts/exhibit-sheets-analysis.mjs. Remaining research domains (renewal deep sources, CBL litigation, present-day IHS numbers) deferred until the spend limit resets or is raised.",
+   "by": "autonomous under D-A2-04; gates green (tsc, copy lint, audit 126 facts, verify 136/136, build)"
+  },
+  {
+   "id": "D-R6-01",
+   "date": "2026-07-09",
+   "milestone": "R6",
+   "decision": "Council verdict adopted over the original relabeling plan: keep the architecture the owner praised, cut the interior text to museum label discipline (bolding is not cutting), fix the wall text cadence rather than sweep chrome copy, and pilot one chapter (ch9) against a fresh reader before rolling to twelve. The r6 writer agent died on the output-token cap; the twelve chapters were rewritten inline in three batches. The one aphoristic closer retained exhibit-wide is ch10's credit-entry line, which states the ledger device. Geolocation lookup runs entirely client side; no position ever leaves the page.",
+   "by": "autonomous under D-A2-04; gates green (tsc, copy lint, audit 126 facts, verify 139/139, build)"
+  },
+  {
+   "id": "D-R7-01",
+   "date": "2026-07-09",
+   "title": "R7 graphical overhaul, council-directed",
+   "decision": "Owner asked for a graphically led pass with 3D ambition. Full LLM council (5 advisors, anonymized peer review, chairman) shaped the build. Shipped: (1) the 1940 map as an SVG relief, every area extruded by a quantized step per grade with an explicit rank-not-measurement disclosure, a 7-stop native-slider turn handle (no drag, never fights scroll), flat study map one tap away, relief default in ch0 and flat in ch6; SVG over WebGL so all 703 areas stay keyboard-operable DOM buttons and the a11y suite sees everything. (2) The four covenant cases redrawn as one red current rerouting around two ink barriers (CasesFlow), one detail card, replacing four identical stacked cards. (3) ch11 ledger table replaced by a vertical record timeline with machinery-era years in red. (4) Archival figure pass: 1851 Rees plat (ch1), University Apartments + 63rd Street Woodlawn 1973 (ch8), 22nd/State newsstand 1973 (ch10); captions verified against NARA/LOC records. (5) Retention: stated reading time, chapter position on the mobile chip, find-the-ground link at the top.",
+   "alternativesRejected": "Geological strata timeline killed (scroll-inversion caught twice; geology naturalizes an engineered process). Four-doors metaphor killed (illustration standing in for editing). Parallax photo mounts killed unanimously. WebGL terrain deferred (SVG met the bar; parallel-DOM and iOS risks avoided). Extrusion by continuous magnitude rejected for v1 (grade is ordinal; stepped tiers labeled as rank are the honest encoding; real-magnitude extrusion possible later only with a cited per-area dataset). Typed-neighborhood lookup skipped, sheet names too coarse (51 areas share 'South Chicago'); the top-of-page hook link delivers the intent.",
+   "validation": "Gate 1 static render blind test: skeptic 'serious museum evidence', curator 'yes, I'd floor this', fresh visitor would share it. Live-page check flagged only dev-mode screenshot artifacts. Suite grew to 151 checks / 15 scenarios, all green; turn-step recompute 81ms."
+  }
+ ]
 }

@@ -149,6 +149,76 @@ export const scenarios = [
     },
   },
   {
+    id: "holc-relief",
+    milestone: "R7",
+    tags: ["core"],
+    route: `${DEBUG}&ch=ch0`,
+    async run(page, t) {
+      await waitReady(page);
+      await page.waitForSelector('#ch0 [data-testid="holc-relief"]', { timeout: 30000 });
+      const reliefPressed = await page.$eval(
+        '#ch0 [data-testid="holc-map-view-relief"]',
+        (el) => el.getAttribute("aria-pressed")
+      );
+      t.assert("relief is ch0's resting view", reliefPressed === "true", String(reliefPressed));
+      const buttons = await page.$$eval(
+        '#ch0 [data-testid="holc-relief"] [role="button"]',
+        (els) => els.length
+      );
+      t.assert("all graded areas tappable in relief", buttons >= 600, `buttons=${buttons}`);
+      t.assert(
+        "rank disclosure under the relief",
+        await page.$('#ch0 [data-testid="holc-relief-ranknote"]')
+      );
+      // the turn handle recomputes the scene
+      const dBefore = await page.$eval(
+        '#ch0 [data-testid="holc-relief"] [data-relief-area] path',
+        (el) => el.getAttribute("d")
+      );
+      await page.$eval('#ch0 [data-testid="holc-relief-turn"]', (el) => {
+        Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set.call(el, "1");
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      await new Promise((r) => setTimeout(r, 400));
+      const dAfter = await page.$eval(
+        '#ch0 [data-testid="holc-relief"] [data-relief-area] path',
+        (el) => el.getAttribute("d")
+      );
+      t.assert("turn handle recomputes the relief", dBefore !== dAfter);
+      // roving tab stop: one stop, arrows move between areas
+      await page.evaluate(() => {
+        const first = document.querySelector('#ch0 [data-testid="holc-relief"] [role="button"]');
+        if (first instanceof SVGElement) first.focus();
+      });
+      const beforeFocus = await page.evaluate(() => document.activeElement?.getAttribute("aria-label") ?? "");
+      await page.keyboard.press("ArrowRight");
+      const afterFocus = await page.evaluate(() => document.activeElement?.getAttribute("aria-label") ?? "");
+      t.assert(
+        "arrow keys walk the relief areas",
+        beforeFocus !== "" && afterFocus !== "" && beforeFocus !== afterFocus,
+        `${beforeFocus} -> ${afterFocus}`
+      );
+      // the flat study map stays one tap away, and back
+      await dispatchClick(page, '#ch0 [data-testid="holc-map-view-flat"]');
+      await new Promise((r) => setTimeout(r, 500));
+      t.assert("relief stows on flat view", !(await page.$('#ch0 [data-testid="holc-relief"]')));
+      const flatButtons = await page.$$eval(
+        '#ch0 [data-station="holc-map"] [role="button"]',
+        (els) => els.length
+      );
+      t.assert("flat map is fully tappable", flatButtons >= 600, `buttons=${flatButtons}`);
+      await dispatchClick(page, '#ch0 [data-testid="holc-map-view-relief"]');
+      await new Promise((r) => setTimeout(r, 500));
+      t.assert("relief returns", await page.$('#ch0 [data-testid="holc-relief"]'));
+      // ch6, the rereading, rests on the flat study map
+      const ch6flat = await page
+        .$eval('#ch6 [data-testid="holc-map-view-flat"]', (el) => el.getAttribute("aria-pressed"))
+        .catch(() => null);
+      t.assert("ch6 rests on the flat map", ch6flat === "true", String(ch6flat));
+    },
+  },
+  {
     id: "advisory-inline",
     milestone: "R1",
     tags: ["core", "sensitivity"],

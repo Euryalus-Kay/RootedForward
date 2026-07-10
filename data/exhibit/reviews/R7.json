@@ -1,0 +1,36 @@
+{
+  "milestone": "R7",
+  "date": "2026-07-09",
+  "brief": "Owner direction: less AI, more graphically focused, lots of info but clear; timeline more central; fix info-overload runs (the four Supreme Court case cards named); maps, images, interactive things; play with 3D, push limits, go outside normal 2D.",
+  "process": {
+    "council": "Full LLM council: 5 advisors (Contrarian, First Principles, Expansionist, Outsider, Executor), anonymized peer review by 5 reviewers, chairman synthesis.",
+    "keyRulings": [
+      "Archival image pass and record-table conversion were unanimous sure wins; parallax photo mounts unanimously killed.",
+      "The Contrarian's honesty objection (ordinal grade extruded as continuous height fabricates a magnitude) was resolved with discrete stepped tiers explicitly labeled as rank, not measurement.",
+      "The geological strata timeline was killed for the scroll inversion two advisors caught independently and for naturalizing an engineered process.",
+      "Four-doors became one-current-rerouting after First Principles showed the cases are one mechanism rerouting, not four separate doors.",
+      "The persistent terrain-spine and time-scrub visions were cut; the terrain is one station's centerpiece, and any real-magnitude extrusion waits for a cited per-area dataset."
+    ]
+  },
+  "gate1": {
+    "artifact": "Static stepped-tier render of all 703 real citywide polygons, one real sheet (D-30, filed March 1940) with the period-language note, composed as a phone-width mock.",
+    "killQuestion": "Does this read as museum evidence or a tech demo?",
+    "results": [
+      "Blind skeptic: 'serious museum evidence'; the rank-not-measurement disclosure and the primary document earned it; asked for a facsimile path to the original scan.",
+      "Blind museum curator: 'Yes, I'd floor this'; required the content framing before the document and naming the actor (HOLC's surveyors); both shipped.",
+      "Blind fresh visitor: understood the encoding in 15 seconds from the page alone, wanted to interact, would share it."
+    ],
+    "verdict": "PASS; the relief was built"
+  },
+  "implementation": {
+    "relief": "SVG 2.5D over WebGL, deliberately: all 703 areas stay real DOM buttons behind one roving tab stop, the suite sees everything, no context-loss or gesture-conflict class of failure. Turn is a 7-stop native range input; measured recompute 81ms per stop. Relief is ch0's resting view; ch6 rests on the flat study map; the flat map is one tap away in both.",
+    "casesFlow": "One red current down two lanes, public law and private paper; ink barriers at 1917 and 1948; nodes at 1926 and 1940; the current exits toward sales on contract. Four junction hit targets keep the case- testids; one detail card with holding, consequence, registered fact, and the opinion link.",
+    "recordTimeline": "Vertical spine, all 11 entries oldest to newest, machinery-era years (1921 to 1968) in red, same registered FactValues.",
+    "figures": "ch1 1851 Rees plat (LOC); ch8 University Apartments (CC BY-SA) and 63rd Street Woodlawn July 1973 with its National Archives caption quoted; ch10 22nd and South State newsstand July 1973 (NARA DOCUMERICA, captions verified against the archival records).",
+    "retention": "Reading time in the opening line, chapter position added to the mobile era chip, find-the-ground link at the top of the exhibit jumping to the locate control."
+  },
+  "liveCheck": {
+    "note": "A blind skeptical pass over the live dev-mode station returned 'impressive but showing off' with four complaints; all four traced to dev-mode or element-screenshot artifacts (Next.js dev button, fixed bottom rail crossing an element screenshot, the test script's own area selection landing on Lake Bluff, popover invisible in a still). The static-mock test on the identical design had passed 3 of 3. No design change was made; recorded here for honesty."
+  },
+  "suite": "151 checks across 15 scenarios, all green; production build clean."
+}
