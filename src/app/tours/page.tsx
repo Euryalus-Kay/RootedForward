@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
-import { EXHIBIT_TITLE } from "@/components/exhibit/ExhibitShell";
+import { GROUND_TITLE as EXHIBIT_TITLE } from "@/components/exhibit/ground/GroundShell";
 
 /* ------------------------------------------------------------------ */
 /*  /tours                                                             */
