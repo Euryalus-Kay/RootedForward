@@ -1027,3 +1027,7 @@ body.exhibit-immersive > footer { display: none; }
 .ground-stage[data-note-anchor="lawndale"] text[data-name="NORTH LAWNDALE"],
 .ground-stage[data-note-anchor="hydePark"] [data-hp-labels] text[data-name="HYDE PARK"],
 .ground-stage[data-note-anchor="jacksonPark"] [data-hp-labels] text[data-name="JACKSON PARK"] { opacity: 0; }
+
+/* the present-day ring separates from the D-red band with a linen halo */
+.ground-stage [data-today-halo] { fill: none; stroke: var(--color-exh-linen); stroke-width: 8; }
+.ground-stage [data-today-mark] { stroke-width: 4.5; }

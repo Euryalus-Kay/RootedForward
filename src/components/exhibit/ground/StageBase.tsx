@@ -94,9 +94,13 @@ export default function StageBase() {
         <g data-today aria-hidden="true">
           {(() => {
             const woodlawn = city.labels.find((l) => l.t === "WOODLAWN");
-            return woodlawn ? (
-              <circle data-today-mark cx={woodlawn.x} cy={woodlawn.y + 26} r={15} />
-            ) : null;
+            if (!woodlawn) return null;
+            return (
+              <>
+                <circle data-today-halo cx={woodlawn.x} cy={woodlawn.y + 26} r={17} />
+                <circle data-today-mark cx={woodlawn.x} cy={woodlawn.y + 26} r={15} />
+              </>
+            );
           })()}
         </g>
       </g>
