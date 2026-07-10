@@ -118,10 +118,17 @@
    "status": "complete",
    "completed": "2026-07-09",
    "notes": "LLM council (5 advisors, 3 peer reviews, chairman) redirected the plan from relabeling to cutting. Big Idea line on the opening; opening cut to 53 words + one how-to line; all 13 chapters cut to 40-90 word label blocks with a one-bold-clause quick-read spine; dek under every title; Chapter N of 13; Try lines on every station in quiet adult register; chrome renamed (Document room, Added to the record, tier tooltips); door prominence swapped to plain names; TwoBuyers restyled sentence-case with a running takeaway sentence. Skeptical-adult test verdict: serious museum piece, not an AI demo. Its four findings fixed: toggle register, empty answer-wall ending, 3x longer gap climb, and the Find-the-ground-under-you geolocation lookup (client-side point-in-polygon on the real 1940 boundaries). Fresh-reader pilot on ch9: clarity B+ (defects fixed), tone A, retention A. Suite 139/139."
+  },
+  {
+   "id": "R9",
+   "title": "Ground-up presentation redesign (show, don't tell)",
+   "status": "in-progress",
+   "started": "2026-07-10",
+   "notes": "Owner rejected the current document-flow presentation outright. Blank-slate redesign of the display layer; all content, research, and the 126-fact registry are retained. Owner process: (1) ideation council, (2) refine, (3) lead does first-hand research on museum/scrollytelling craft, (4) reflect and edit plan, (5) build end to end, (6) council-driven build-audit-rebuild loop incl. humanizer copy audits until nothing is left, all agents on fable/opus. Design artifacts under data/exhibit/design/R9/."
   }
  ],
- "updated": "2026-07-09",
- "milestone": "R8",
- "lastUpdated": "2026-07-09",
- "notes": "R8 shipped: six-scrutineer perfectionist pass; chrome, evidence-integrity (gap rest state, bombing docket), citation furniture, register, colophon fixes. Suite 151 checks / 15 scenarios."
+ "updated": "2026-07-10",
+ "milestone": "R9",
+ "lastUpdated": "2026-07-10",
+ "notes": "R9 in progress: ground-up redesign of the presentation. R8 state preserved in git (e263244) and reviews/R8.json."
 }

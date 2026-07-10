@@ -1,0 +1,991 @@
+[
+ {
+  "title": "The Same Map",
+  "thesis": "One map of Hyde Park loads before anything else and never leaves the screen. Thirteen chapters scroll beneath the visitor's thumb and each one does something TO that map (plats it, purges it, stamps it, grades it, bulldozes it) until the final chapter turns the map over and shows the bill. The phone is the primary medium, not a shrunken desktop; the whole exhibit is scroll plus one clearly labeled tap per chapter, and the two seconds after page load already contain the argument.",
+  "visitorTakeaway": "A week later the visitor remembers three things. The map they saw in the first two seconds is the same map the federal government adopted; five stamps sat in a tray on top of it by the end; and they had to scroll six full phone screens past the Black family's wealth bar to reach the top of the white family's. The argument survives as muscle memory, not as a paragraph.",
+  "arc": [
+   {
+    "act": "Act I. The map is already here",
+    "years": "1832-1893",
+    "chapters": "Chapters 1-3 (The map, The first taking, The fair)",
+    "onScreen": "Cold open: the 1940 HOLC map of Hyde Park fills the top 55svh as inline SVG, grade-colored, with one caption line: this map was drawn in 1940 and priced every block by race. First scroll pins the map as a sticky stage and slides the first narrative card under the thumb. A rust button offers 'What grade is under your feet' (geolocation, opt-in, with tap-the-map fallback). Scrolling into 1832 desaturates the stage to a blank plat; the 1853 plat lines draw in as a single CSS stroke transition; the 1893 fair appears as one archival photo card with a tap-to-expand bottom sheet. The visitor learns the ground was surveyed and sold before it was graded."
+   },
+   {
+    "act": "Act II. The machinery gets named",
+    "years": "1908-1922",
+    "chapters": "Chapters 4-6 (Five instruments, The purge, The bombing years)",
+    "onScreen": "The five-instruments overture is one screen: five stamp icons appear one per scroll tick, each with a name and a date range, then dock into a slim tray pinned above the map. The tray persists for the rest of the exhibit; tapping a stamp later jumps to its chapter. The purge chapter marks the homeowners club's target blocks on the stage. The bombing chapter is fully static: the stage dims, 32 placeable incidents appear as small fixed marks, and the scrolling cards are the docket itself, one incident per card, address and date in plain type. The closing card reads '58 bombings. 2 dead. 0 convictions.' in the same quiet register as every other card. No motion, no counters, no sound."
+   },
+   {
+    "act": "Act III. Paper, then public money",
+    "years": "1921-1948",
+    "chapters": "Chapters 7-8 (The paperwork, Washington adopts the plan)",
+    "onScreen": "A real covenant facsimile fills the stage as a scrollable scanned sheet; tapping the restrictive clause overlays a clean transcription with the source chip. Covenanted parcels crosshatch on the map as the visitor scrolls. Then the stage snaps back to the exact map from the cold open, now with a federal survey header composited above it and the surveyor's area-description sheet for the block the visitor geolocated earlier (if they did). The point lands visually: the private rule and the federal map are the same drawing."
+   },
+   {
+    "act": "Act IV. Courts and bulldozers",
+    "years": "1937-1963",
+    "chapters": "Chapters 9-10 (The walls crack, The university rebuilds the neighborhood)",
+    "onScreen": "The four Supreme Court cases run as a vertical two-lane diagram sized for 390px: public law on the left, private paper on the right, with reroute arrows showing exclusion flowing around each ruling (Buchanan closes ordinances, traffic moves to covenants; Shelley cracks covenants, traffic moves to appraisal and renewal). Each case is a tappable station opening a one-paragraph holding with citation. Urban renewal is a single before/after toggle on the stage: tap and 638 building footprints turn to blank paper white, with the caption 'about 4,000 families' and its fact chip. One tap, one irreversible-looking change to the map they have been watching for ten minutes."
+   },
+   {
+    "act": "Act V. The color tax",
+    "years": "1948-1971",
+    "chapters": "Chapters 11-12 (The color tax, The Contract Buyers League)",
+    "onScreen": "The Two Buyers model is the exhibit's one slider: a horizontal thumb drag across years 1952-1970. Two equity columns grow from the same house at the same price; the contract column bleeds while the mortgage column compounds; releasing the thumb at 1970 prints the $71,000 average overpayment with its source chip. The Contract Buyers League chapter is photographs and verbatim voices (Clyde Ross, Ruth Wells) in full-bleed cards, ending with what the church-basement organizing actually won."
+   },
+   {
+    "act": "Act VI. The ledger",
+    "years": "1968-2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "The thin ledger strip that has been accruing entries at the bottom of the screen all along expands to take over. Then the true-scale climb, rebuilt phone-native: the Black median family wealth bar ($44,890) is about one thumb-length tall; the white bar ($285,010) requires roughly six screens of continuous upward scroll to top out, with the 11 ledger entries (1833-2026) annotated as milestones along the climb so the scroll never feels empty. At the top: the geolocation result restated ('the grade under your feet in 1940 was C'), the moderated answer wall, and a quiet door into the 576-sheet files reading room."
+   }
+  ],
+  "throughLine": "Three persistent objects, all cheap to render and all visible on a 390px screen at once. (1) The map stage: one sticky SVG component in the top 55svh that every chapter modifies and never unloads; the map the visitor sees at second two is the map that gets stamped, crosshatched, dimmed, and bulldozed. (2) The stamp tray: a slim strip above the stage where the five instruments dock as they are introduced; by chapter 13 all five sit over the map like exhibit tags, each a jump link. (3) The ledger strip: a 28px band at the bottom edge that silently accrues dollar entries chapter by chapter and becomes the finale. Together they make the timeline literally carry into the present: the last screen is the same map, all five stamps, and the full ledger.",
+  "signatureMoments": [
+   {
+    "name": "The map loads first",
+    "where": "Cold open, second 0 to 2",
+    "description": "The 1940 HOLC map ships as inline SVG in the initial HTML (703 polygons simplified offline with topojson to roughly 60-80KB gzipped, one path per graded area, fills from four desaturated archival grade colors as CSS classes). No hero image, no webfont blocking render, no JS required for first paint. One caption line beneath it. LCP under 2.0s on a Moto G class device over 4G is the acceptance test, measured in CI with Lighthouse."
+   },
+   {
+    "name": "Grade under your feet",
+    "where": "End of Act I, button persists in the stage header",
+    "description": "A rust CTA reading 'What grade is under your feet' triggers the existing client-side geolocation lookup. Result renders as a bottom sheet: the 1940 grade, the polygon highlighted on the stage, and one verbatim line from that area's actual surveyor sheet with its fact chip. Decline path: 'or tap your block on the map.' The result is remembered in sessionStorage and replayed in the finale."
+   },
+   {
+    "name": "The stamp tray",
+    "where": "Chapter 4 overture, persists to the end",
+    "description": "Five 44px stamp icons (realtors' rule, covenants, HOLC, renewal, contract selling), each appearing on a scroll tick with name and date range, then docking into a horizontally scrollable strip pinned above the map stage. Each stamp is a jump link back to its chapter and lights up while its chapter is active. This is the argument's spine rendered as UI chrome: five instruments, visible at all times."
+   },
+   {
+    "name": "The docket",
+    "where": "Chapter 6, the bombing years",
+    "description": "Stage dims to near-black with 32 static marks. The scroll column becomes the docket: one card per dated incident, address and date in plain type, no images of victims, no motion, no counters. The chapter closes on a plain card: '58 bombings. 2 dead. 0 convictions.' Reduced-motion users see exactly what everyone sees, because there is no motion to reduce. This chapter must pass a read-aloud test in front of the owner before ship."
+   },
+   {
+    "name": "The one slider",
+    "where": "Chapter 11, Two Buyers",
+    "description": "A single horizontal range input styled as a year scrubber (1952-1970), full width, 48px tall hit area. Dragging it grows two SVG equity columns for the same house bought on contract versus mortgage. It is a native input element, so keyboard arrows and screen readers work for free; the drawn columns are aria-hidden with a live-region text equivalent. Releasing at 1970 prints $71,000 with the fact chip."
+   },
+   {
+    "name": "The six-screen climb",
+    "where": "Finale",
+    "description": "True scale rebuilt as vertical scroll: the $44,890 bar renders about 500px tall; the $285,010 bar extends the page roughly 3,200px so the visitor physically scrolls six screens to reach its top. The 11 ledger entries annotate the climb as dated milestones so no stretch is blank. A skip link ('jump to the top of the bar') satisfies keyboard and impatience. The scroll distance is the data; no animation needed."
+   }
+  ],
+  "showDontTell": [
+   {
+    "content": "HOLC redlining was federal adoption of the neighborhood rule (chapter 8)",
+    "treatment": "The stage snaps back to the exact map from the cold open and a federal survey header composites above it. Nothing new is drawn. The visitor recognizes the map they have already been living with for eight minutes and understands adoption without a sentence of explanation."
+   },
+   {
+    "content": "58 bombings, 2 dead, 0 convictions (chapter 6)",
+    "treatment": "The docket format: each incident is its own card with address and date, so the visitor's thumb has to pass all of them one by one. Scale is felt through scroll length, not through an animated counter."
+   },
+   {
+    "content": "638 buildings cleared, about 4,000 families displaced (chapter 10)",
+    "treatment": "One before/after toggle. Tap, and the footprints the visitor can see on the map turn to blank paper white. Erasure shown as erasure, on the object the visitor has been watching all along."
+   },
+   {
+    "content": "$71,000 average contract-sale overpayment (chapter 11)",
+    "treatment": "The visitor's own thumb drags eighteen years of payments and watches one column compound while the other bleeds. The number arrives as the residue of something they did, not a stat they read."
+   },
+   {
+    "content": "White $285,010 vs Black $44,890 median family wealth, 2022 (chapter 13)",
+    "treatment": "Rendered at true vertical scale so the gap is measured by the visitor's scrolling effort. Six screens of thumb work is the chart."
+   },
+   {
+    "content": "Buchanan, Corrigan, Hansberry, Shelley (chapter 9)",
+    "treatment": "A vertical two-lane flow where exclusion visibly reroutes around each ruling like water around a closed valve. The visitor sees that court wins redirected the machinery rather than stopping it."
+   },
+   {
+    "content": "Restrictive covenant language (chapter 7)",
+    "treatment": "The actual scanned deed on screen; the visitor taps the clause and a transcription overlays it. The paperwork argument is made with the paper itself."
+   },
+   {
+    "content": "The ground is still moving today (chapter 13)",
+    "treatment": "The geolocation result from minute one is restated at the end over the present-day answer wall, connecting the 1940 grade to the phone GPS in the visitor's hand right now."
+   }
+  ],
+  "artDirection": "Paper and ink, because the thesis is that paperwork did this. Ground is the site's cream, text is ink, the four HOLC grade colors (desaturated archival green, blue, yellow, red) are reserved exclusively for the map so they read as evidence rather than decoration, and rust is the only interactive accent. Typography stays in the site families: font-display serif for datelines and chapter titles, body face for cards, eyebrow style for the fact chips. Texture is one tiled 4KB paper-grain PNG applied only to evidence facsimiles, never to UI chrome. Light handling is flat and even except the bombing chapter, where the stage dims; there is no dark-mode theatrics and no gradient washes. This fits a phone because it is almost entirely CSS color and system-cheap SVG, and it fits a museum because restraint under grief is the register the content demands.",
+  "mobileStrategy": "Mobile is not a strategy here; it is the design, and desktop is the adaptation. Layout: sticky stage in the top 55svh (svh, not vh, so iOS address-bar collapse cannot cause layout jump), narrative cards scrolling in the remaining space, ledger strip fixed at the bottom edge. All chapter transitions fire on discrete IntersectionObserver thresholds at card boundaries, never per-scroll-pixel, so a mid-range GPU only repaints on chapter changes. Cards are 50 words maximum, one idea each. Every evidence object (photo, sheet, citation, court holding) opens in a bottom sheet so the OS back-swipe never exits the exhibit. All tap targets are 44px minimum, no hover-dependent anything, no horizontal scroll except the deliberately scrollable stamp tray. Performance budget as hard acceptance criteria: initial route JS under 180KB gzipped, inline map SVG under 80KB gzipped, LCP under 2.0s and total blocking time under 200ms on a throttled Moto G profile in CI, archival photos via next/image as lazy AVIF capped at 800px with blur placeholders, and the 576-sheet reading room code-split behind its drawer so it costs nothing until opened. Desktop at 1024px and up simply moves the stage to a left column and the narrative to the right; nothing exists on desktop that does not exist on the phone.",
+  "interactionModel": "The thumb scrolls; that is 90 percent of the exhibit and it is the one gesture every visitor already knows. On top of scroll there is exactly one labeled tap opportunity per chapter (expand a photo, reveal a transcription, toggle before/after, open a docket source, tap a court station), arriving roughly every 60 to 90 seconds of reading so the page never becomes a lecture. There are precisely two drags in the entire exhibit: the Two Buyers year scrubber and the optional stamp-tray scroll. Every on-screen number carries a small tappable fact chip opening its registry source in a bottom sheet, so verification is a thumb gesture rather than a footnote hunt. Keyboard users get the same path (native inputs, skip links, focus-visible states) and reduced-motion users get crossfades in place of the few CSS transitions. Nothing requires pinch, hover, tilt, or two hands.",
+  "risks": [
+   "Sticky-stage scrollytelling is the highest-risk component; if the 703-polygon SVG janks on repaint the whole concept dies. Mitigation: build the stage first, simplify geometry offline to a hard vertex budget, restyle via class swaps on a single <g>, and gate week-one continuation on a real mid-range Android test, not desktop devtools throttling.",
+   "iOS Safari viewport churn (address bar collapse, rubber-banding) can make a sticky stage stutter or jump. Mitigation: svh units, no position:fixed inside the scroller, test on real hardware early, and keep a no-sticky fallback layout (stage renders inline per chapter) behind a media/feature check.",
+   "The geolocation prompt will be declined by many visitors and is meaningless for anyone outside Chicago. Mitigation: opt-in copy that says what they get, a tap-the-map fallback, and the exhibit must lose nothing when the answer is no.",
+   "The six-screen wealth climb can read as a broken page if any stretch is unannotated. Mitigation: ledger milestones spaced so a milestone is always visible, plus a skip link.",
+   "Scope for one developer is real but tight, roughly five to six weeks: week 1 stage plus map pipeline, week 2 chapter scaffolding and bottom sheets, week 3 docket and courts and renewal toggle, week 4 slider and climb and finale, week 5 accessibility, performance CI, and copy pass, week 6 owner review buffer. The turntable, any 3D, and any audio are explicitly out to protect this.",
+   "The bombing chapter carries dignity risk regardless of execution. Mitigation: static-only treatment, no imagery of victims, and a mandatory owner read-through with the descendant test applied before ship.",
+   "House-style drift (em-dashes, sentence colons, trailer voice) across 13 chapters of new microcopy. Mitigation: run the existing copy checklist as a build gate, not a post-hoc pass."
+  ],
+  "reuse": [
+   "Rebuild the SVG relief map as flat 2D: keep the 703-polygon geometry and grade join, kill the 2.5D turntable and its 7 stops outright; a turntable is a desktop demo and a thumb has no reason to orbit anything. The flattened, simplified SVG becomes the persistent stage.",
+   "Keep the client-side geolocation grade lookup as-is and promote it from a buried feature to a signature moment in minute one and again in the finale.",
+   "Keep the no-motion bombing map's data model and its dignity rules; rebuild its presentation as the dimmed stage state plus the scrolling docket cards.",
+   "Keep the true-scale wealth-gap climb concept; rebuild it as the vertical scroll-measured bars, since scroll distance is the one true-scale axis a phone actually has.",
+   "Keep the files reading room (grade filters, permalinks, 576 sheets) intact but code-split behind the finale drawer so it never touches the main bundle.",
+   "Rebuild the two-lane Supreme Court diagram as a vertical flow sized for 390px; the two-lane idea is right, the horizontal orientation is not.",
+   "Keep the 126-fact registry and its sourcing wiring; surface it as the universal tappable fact chip plus bottom-sheet pattern.",
+   "Keep the moderated visitor answer wall as the finale's closing element.",
+   "Drop everything else from the current presentation, including the label-block wall-text format, per the owner's brief."
+  ]
+ },
+ {
+  "arc": [
+   {
+    "act": "Act 0. The Grade",
+    "years": "1940 / second 0",
+    "chapters": "Chapter 1 (The map)",
+    "onScreen": "No hero title, no nav chrome. The screen is the 1940 HOLC map of Hyde Park, fully colored, filling the viewport, with one line of type over it. 'Someone drew this.' A second line beneath. 'This is who, and why.' The visitor's first scroll does something unexpected. The colors drain out of the map, the year counter in the corner spins from 1940 back to 1832, and the ground goes blank. The page has just made a promise. By the time you scroll back to 1940, you will have watched this map get built."
+   },
+   {
+    "act": "Act 1. Ground",
+    "years": "1832-1893",
+    "chapters": "Chapters 2-3 (The first taking, The fair)",
+    "onScreen": "The blank ground accepts its first marks as the visitor scrolls. The Potawatomi cession boundary draws as a surveyed line. The 1853 plat grid stamps in, and the actual plat document is the first liftable paper. The 1893 fair footprint appears as a pale ghost with one archival photo pinned to it. The ledger strip at the screen edge posts its first entry (the 1833 treaty figure from the 11-entry ledger). Low-stakes content teaches the whole grammar of the page in ninety seconds. Scroll moves time, marks accumulate on the ground, papers can be picked up, the ledger keeps count."
+   },
+   {
+    "act": "Act 2. Five Instruments",
+    "years": "overture",
+    "chapters": "Chapter 4 (Five instruments)",
+    "onScreen": "The scroll pauses on a single dark interstitial. Five empty rectangular seals appear in a row, each labeled with an instrument name and a date range, all unlit. One sentence of wall text, in the historian register. 'Five instruments will be built on this ground. Watch for them.' The seal strip then docks to the top edge of the viewport and stays there for the rest of the exhibit. Every future event that brings an instrument online lights its seal; every court decision or organizing victory that breaks one stamps it. The argument now has a scoreboard."
+   },
+   {
+    "act": "Act 3. By Hand",
+    "years": "1908-1922",
+    "chapters": "Chapters 5-6 (The purge, The bombing years)",
+    "onScreen": "Before paperwork, force. The homeowners club purge appears as named addresses emptying on the map, with the club's own resolution as the liftable document. Then the page hits a hard stop. Scroll-time is suspended, the map goes fully still, and the 32 placeable bombing sites render as small fixed marks with no animation of any kind. Beside or below the map, a typeset docket lists all 40 dated incidents with addresses, the two deaths, and the line 'Convictions: 0' set in the record's own plain register. The visitor must tap 'Continue the record' to restart time. Nothing here moves, ever, including for scroll-scrubbers."
+   },
+   {
+    "act": "Act 4. By Paper",
+    "years": "1921-1948",
+    "chapters": "Chapters 7-9 (The paperwork, Washington adopts the plan, The walls crack)",
+    "onScreen": "The violence is replaced by forms, and the page shows the substitution. The realtors' rule lights seal one; its liftable paper is Article 34 itself. Covenant hatching spreads parcel by parcel across the map as the visitor scrolls, seal two lights, and the liftable deed shows the actual restrictive clause highlighted. Then the payoff of the whole cold open. The HOLC grades flood the 703 areas in front of the visitor, area by area, and the surveyor's area-description sheet for whichever area sits under the map's focus point rises alongside, its justifying sentence highlighted. The map from second 0 now exists again, but the visitor watched every hand that drew it. Hansberry and Shelley arrive as two liftable opinions, and the covenant seal takes a physical 'UNENFORCEABLE 1948' overstamp. One seal broken, four running."
+   },
+   {
+    "act": "Act 5. By Public Money",
+    "years": "1949-1971",
+    "chapters": "Chapters 10-12 (The university rebuilds, The color tax, The Contract Buyers League)",
+    "onScreen": "Urban renewal lights its seal and the map starts losing marks instead of gaining them. As the visitor scrolls 1952 to 1963, 638 building footprints dim out one by one inside the clearance boundary while a plain counter holds the running total of families displaced, sourced. Contract selling lights the last seal with the Two Buyers moment. The same house appears twice on the map, and a single draggable year slider (the one novel control on the page, 1958 to 1970) accumulates two stacks of payment stubs side by side until the gap reads $71,000, which posts to the ledger strip. The Contract Buyers League chapter overstamps that seal from a church basement, with Ruth Wells and Clyde Ross quoted from the liftable pledge card and testimony."
+   },
+   {
+    "act": "Act 6. The Ledger and the Ground",
+    "years": "1971-2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "The seal strip shows five instruments, all stamped broken, dates attached, and the page asks the only question left. 'What did the machine pay out?' The ledger strip the visitor has watched grow since 1833 unfolds into the true-scale wealth climb. The Black median bar ($44,890) fits on one screen; the visitor must physically scroll the full height of the white bar ($285,010) to reach the top. At the summit sits the ground today. The geolocation lookup offers 'What was the grade where you are standing?' (default answer pre-rendered for Hyde Park, opt-in for the visitor's own coordinates), then the moderated answer wall, then a closing card that restates the thesis in three short sentences, each phrase a link that jumps back to the mark on the map that proved it."
+   }
+  ],
+  "artDirection": "Discipline: the exhibit borrows almost its entire palette from the evidence. The ground layer is a matte near-black charcoal (site ink, darkened) so that the only saturated colors on screen are HOLC's own four (the A-green, B-blue, C-yellow, and above all the D-red), which means the historical grading system literally supplies the exhibit's color story and the red map is the brightest thing the visitor ever sees. Documents render in the site cream with real scan texture and deckled shadow, so paper always reads as paper against the dark ground. Rust is reserved exclusively for the ledger strip and the final climb, so money has one color and it is never used decoratively. Typography stays in the site's font-display for era headings and font-body for captions and docket entries, with docket text set at typewriter-adjacent spacing to signal record rather than prose. Light behaves like a case table in an archive reading room, a soft top-down pool on whatever document is lifted, everything else held at 60 percent. This fits the subject because the argument is that the machinery was administrative and documentary; the design treats every screen as evidence under a lamp, never as cinema.",
+  "interactionModel": "One gesture, one verb, one collection, one input. The gesture is scroll, which always and only means the movement of time across the ground; the visitor never scrolls text past a static page, they scroll years across a pinned map. The verb is 'pick up the paperwork': every era exposes one to three marks on the map that, when tapped, lift a real document into the light (treaty, plat, club resolution, docket card, deed clause, HOLC sheet, FHA manual excerpt, court opinion, demolition order, land contract, pledge card, 2022 Fed table) with its key line highlighted and its fact-registry source visible, then set back down. Tap opportunities occur roughly every 30 to 45 seconds of reading; zero taps are mandatory, and the full argument is legible from scroll alone. The collection is the docket drawer, a small persistent tray that keeps every paper the visitor has lifted and links onward to the full files reading room. The single novel control is the Two Buyers year slider in Act 5, and the single input is the opt-in location lookup plus the answer wall at the end. The bombing section is the one deliberate interruption of the model: time stops, nothing responds to scroll, and the visitor must explicitly choose to continue.",
+  "mobileStrategy": "Designed at 390px first and widened later, not the reverse. The map is a single pinned layer at a fixed Hyde Park extent sized so the whole neighborhood fits a portrait phone screen with marks at thumb scale (44px targets); era captions are two-to-three-sentence cards in the owner's short register that slide over the bottom third and never stack more than one deep; lifted documents open as full-screen sheets with pinch zoom and a visible close affordance; the seal strip compresses to five small squares under the year counter; the ledger strip is a right-edge sliver that expands on tap. Rendering is one SVG (or canvas for the polygon flood) with flat fills, no filters and no parallax, so a mid-range phone stays at 60fps; scanned sheets lazy-load at tap time only. Desktop is the same page with the map larger and captions moved beside it rather than over it. Reduced-motion visitors get stepped layer states instead of tweens, keyboard users get every mark as a real button in chronological DOM order plus a visible era index that steps time without scrolling, and every map state has a written equivalent so a screen reader hears the complete argument in order.",
+  "reuse": [
+   "KEEP the SVG 2.5D relief rendering of the 1940 map as the base ground geometry and the 703-polygon dataset, but REBUILD its interaction completely, from a 7-stop turntable into a single pinned time-accumulation surface where layers of marks build up and never reset. The turntable framing treats the map as an object to orbit; this concept treats it as the ground everything happens on.",
+   "KEEP the files reading room (grade filters, permalinks) unchanged as the destination the docket drawer links to; it is the exhibit's archive annex and needs no redesign.",
+   "KEEP the no-motion bombing map and docket nearly as-is; it already satisfies the dignity constraint. Re-house it inside the Act 3 hard pause rather than as a mid-scroll station.",
+   "KEEP the true-scale wealth-gap climb as the ending, re-skinned so it visibly unfolds out of the ledger strip the visitor has watched since 1833; the climb lands harder when it is the opening of a running tally rather than a standalone chart.",
+   "KEEP the geolocation grade lookup, moved to the summit of the climb with a pre-rendered Hyde Park default so it works without a permission prompt.",
+   "DROP the two-lane Supreme Court current diagram as a standalone component; the four cases become liftable opinions and physical seal overstamps, which keeps the machine metaphor unbroken instead of switching visual languages for one chapter.",
+   "DROP all wall-text label blocks and framed evidence stations; captions are two-to-three-sentence cards and every longer text lives inside a liftable document where the visitor chose to look."
+  ],
+  "risks": [
+   "Performance of a pinned full-viewport map with 703 polygons plus accumulating marks on a mid-range phone. Mitigation: one canvas or flattened SVG layer, flat fills only, marks as cheap primitives, scanned sheets loaded on tap, and a hard budget of no filters, no shadows on the map layer, and no per-frame React re-renders (drive layer opacity from a scroll-progress ref).",
+   "Monotony risk. One visual grammar sustained across six acts could flatten. Mitigation: the full-screen document lifts and the two designed interruptions (the five-seals interstitial and the bombing pause) are the pacing valves; if testing shows fatigue, add nothing new, tighten act lengths instead.",
+   "Scroll-scrubbers blowing past the bombing record. Mitigation is structural, not stylistic: time is suspended there and only an explicit tap restarts it, and this must survive fast flick gestures and keyboard paging.",
+   "The cold-open promise ('you will watch this map get built') creates an obligation; if the Act 4 flood underdelivers technically, the whole spine sags. Prototype the polygon flood plus paired surveyor sheet first, before anything else is built.",
+   "Geolocation permission friction and out-of-Chicago visitors. Mitigation: never prompt unasked, always show the Hyde Park default answer first, and phrase the opt-in as a question worth answering.",
+   "Accessibility of a map-first narrative. Mitigation: parallel text spine in DOM order, marks as buttons, stepped era index, and treating the reduced-motion stepped version as a first-class design, reviewed on its own.",
+   "House-style drift. Every caption is two to three sentences in the adult historian register, and the fact-registry source line must be visible on every lifted document, not buried behind a second tap."
+  ],
+  "showDontTell": [
+   {
+    "content": "Restrictive covenants spread across Hyde Park 1927-1948",
+    "treatment": "No prose about coverage percentages. Hatching spreads parcel by parcel across the pinned map under the visitor's own scroll, and the one liftable deed shows the actual clause with the operative words highlighted. The visitor's thumb does the spreading, which is the point about ordinary people signing ordinary forms."
+   },
+   {
+    "content": "HOLC redlining and the 1940 map (chapter 1 plus chapter 8)",
+    "treatment": "The map is shown finished at second 0, erased, and then re-derived in front of the visitor in Act 4, grade flood plus the paired surveyor sheet with its justifying sentence highlighted. The exhibit never says 'the map was constructed'; it makes the visitor watch the construction and recognize the object from the opening."
+   },
+   {
+    "content": "638 buildings cleared, about 4,000 families displaced (1949-1963)",
+    "treatment": "Building footprints dim out of the map one by one as scroll passes through the years, with a plain sourced counter. Subtraction rendered as subtraction, on the same ground where the visitor watched everything get built."
+   },
+   {
+    "content": "Contract selling's $71,000 average overpayment",
+    "treatment": "The Two Buyers model as one house drawn twice and a single year slider; two stacks of payment stubs accumulate side by side as the visitor drags 1958 toward 1970, and the difference posts to the running ledger. The number is earned by the visitor's own hand, not asserted."
+   },
+   {
+    "content": "58 bombings, 2 dead, 0 convictions (1917-1922)",
+    "treatment": "Shown by refusal. The one place the page stops moving entirely. Static marks, a full typeset docket, and the conviction count set plainly in the record's own register. The absence of technique is the treatment."
+   },
+   {
+    "content": "The five instruments and their dismantling (Buchanan, Corrigan, Hansberry, Shelley, the CBL)",
+    "treatment": "A persistent five-seal strip that lights and gets physically overstamped ('UNENFORCEABLE 1948') as courts and organizers break each instrument, with the opinions and pledge card as liftable documents. Legal history becomes visible state change on a scoreboard the visitor has watched since the overture."
+   },
+   {
+    "content": "The 2026 wealth gap, white $285,010 vs Black $44,890",
+    "treatment": "True scale, enforced by the body. The Black bar fits one screen; reaching the top of the white bar costs the visitor six-plus screens of scrolling. The gap is felt in the thumb before it is read in the caption."
+   }
+  ],
+  "signatureMoments": [
+   {
+    "name": "The Erasure",
+    "where": "Act 0, the first scroll of the page",
+    "description": "The finished 1940 HOLC map fills the viewport at load. On the visitor's first scroll, the grade colors drain out area by area (reverse of the Act 4 flood, same layer, opacity driven by scroll progress), the corner year counter spins 1940 back to 1832, and the ground goes blank charcoal with only the lakefront line remaining. Reduced-motion variant: a three-step crossfade. This is the page's contract, stated in ten seconds without a word of instruction."
+   },
+   {
+    "name": "The Map Draws Itself",
+    "where": "Act 4 climax, 1934-1940",
+    "description": "As the visitor scrolls, the 703 areas flood with their grades in survey order, in the historical HOLC colors, on the same pinned ground that has been accumulating marks since 1832. Simultaneously a cream panel lifts the digitized surveyor area-description sheet for the area at the map's focus point, with the sentence that justified the grade highlighted and its registry source line beneath. The visitor recognizes the object from second 0 and now knows every hand that drew it. Build this prototype first; it is the spine's load test."
+   },
+   {
+    "name": "The Seals",
+    "where": "Docked to the top edge from the Act 2 overture onward",
+    "description": "Five rectangular seals, each named and dated (realtors' rule, covenants, HOLC/FHA, urban renewal, contract selling). Each lights when its instrument comes online in the timeline and receives a dated overstamp when a court or the CBL breaks it. On tap, a seal shows its instrument's one-sentence definition, active dates, and the documents that built and broke it. It is the argument's scoreboard; a visitor who ignores every other interaction still watches five instruments switch on and get fought off."
+   },
+   {
+    "name": "The Record Stops",
+    "where": "Act 3, 1917-1922",
+    "description": "Scroll-time suspends. The map freezes with 32 unanimated address marks; a typeset docket lists all 40 dated incidents, addresses, the two deaths, and 'Convictions: 0'. Tapping a mark reveals only the sourced record card. A single 'Continue the record' button restarts time. The interruption of the page's own core mechanic is the memorial gesture, and it must survive flick-scrolling and keyboard paging."
+   },
+   {
+    "name": "Two Buyers, One House",
+    "where": "Act 5, 1958-1970",
+    "description": "The same house footprint duplicated on the map, one bought on mortgage, one on contract. A single horizontal year slider (the page's only slider) accumulates two columns of monthly payment stubs as it is dragged; at any position the delta is shown, and at 1970 it reads $71,000 and posts audibly-quietly to the ledger strip. Keyboard operable with arrow keys, and the final figure and its source line render even if the slider is never touched."
+   },
+   {
+    "name": "The Ledger Opens",
+    "where": "Act 6 finale",
+    "description": "The right-edge ledger strip, which has posted 11 sourced entries since 1833, unfolds to full width and becomes the true-scale wealth climb. $44,890 fits the first screen; the visitor scrolls roughly six more screens of rust-colored bar to reach $285,010, with the seal strip visible the whole way. At the summit: the location lookup ('the grade where you are standing'), the moderated answer wall, and the three-sentence thesis card whose phrases link back to the marks that proved them."
+   }
+  ],
+  "thesis": "Strip the exhibit to its base and one object survives every chapter, the ground itself, so the display is one pinned map of Hyde Park on which a century of marks accumulate and never reset, with scroll meaning time and nothing else. The 13 chapters collapse into six acts organized by the machine's own logic (by hand, by paper, by public money, the payout), and the visitor's single repeated verb is lifting the actual paperwork off the map, because the argument is that paperwork did this. The page opens on the finished 1940 map, erases it, and spends the whole exhibit rebuilding it in front of the visitor, so that by the end 'engineered, not accidental' is not a claim they read but a construction they watched.",
+  "throughLine": "Three persistent elements, layered by importance. First, the pinned ground map, on screen from second 0 to the final card, accumulating every mark (plat lines, purge addresses, bombing sites, covenant hatching, HOLC grades, clearance erasures, contract-sale houses) and never resetting, so the present-day map visibly contains its whole past. Second, the ledger strip on the screen edge, posting the 11 sourced dollars-and-people entries from 1833 onward and finally unfolding into the true-scale wealth climb, so money has a single continuous thread from treaty to 2022 survey. Third, the five-seal instrument strip docked from the overture on, lighting and breaking on schedule, so the machine argument is scored in real time. All three survive into the present-day act, which is what carries the timeline into 2026 instead of ending in 1971.",
+  "title": "The Map Is the Machine",
+  "visitorTakeaway": "A week later the visitor remembers watching one red map get built, piece by piece, by named hands, over a century, and remembers that the last thing the exhibit showed them was the bill, a rust-colored bar they had to scroll six screens to climb. If they gave their location, they also remember the grade that was assigned to the ground under their own feet. The residue is one sentence they can say to someone else. It was engineered, five instruments did it, and the wealth gap is the receipt."
+ },
+ {
+  "title": "The Overprint. A standing exhibit that never moves unless you touch it.",
+  "thesis": "Every failure mode of this genre comes from letting the display perform instead of letting the evidence accumulate, so this concept bans scroll-driven behavior outright and builds the whole argument on two accumulating graphics. A thin instrument timeline (the ground line) heads every chapter and gains one bar per instrument, and the 1940 map is re-printed at the close of each instrument chapter with that instrument literally overprinted on it, five stamps deep by the end. The page reads complete in nine minutes with zero interactions; every tap opens real paper, and nothing anywhere animates on scroll, so it cannot fail the way scrollytelling fails, cannot feel like the AI-demo game the owner already killed, and cannot decay into gimmick because the only trick is accumulation, which gets stronger with repetition instead of weaker.",
+  "visitorTakeaway": "Two burned-in images. Five overlapping bars on one axis with no gap between 1921 and 1970, meaning there was never a year the machinery was off. And the same 1940 map wearing five overprints, ending next to two wealth bars where the Black bar is one sixth the height of the white one. A week later the visitor cannot tell you a single animation, because there were none. They can tell you the argument.",
+  "arc": [
+   {
+    "act": "Act I. The map, cold",
+    "years": "1940 / 2026",
+    "chapters": "Chapter 1 (The map)",
+    "onScreen": "Full-bleed static print of the 1940 HOLC map, rendered as a flat archival plate, no turntable, no camera move. One sentence of wall text beneath it. Below that, a single opt-in button reading 'What grade is the ground under you?' Tapping it runs the geolocation lookup and prints the answer as a typeset line ('The ground you are standing on was graded C in 1940'), with a neighborhood picker fallback if permission is refused. Nothing autoplays. Nothing moves. The visitor's first act on the page is voluntary."
+   },
+   {
+    "act": "Act II. Before the paper",
+    "years": "1832-1917",
+    "chapters": "Chapters 2, 3, 5 (first taking, the fair, the purge)",
+    "onScreen": "Three plates in sequence, each one archival image plus a 40-to-80 word label set like museum wall text. The 1853 plat, the 1893 fair photograph, the homeowners club purge documents. The ground line strip appears at the head of each chapter, a static 44px SVG timeline from 1832 to 2026 with the covered span inked in. Tapping any figure opens its fact-registry citation in a bottom sheet. That is the entire interaction vocabulary, established early and never changed."
+   },
+   {
+    "act": "Act III. The instruments",
+    "years": "1917-1948",
+    "chapters": "Chapters 4, 6, 7, 8 (overture, bombing years, paperwork, Washington)",
+    "onScreen": "Chapter 4 is the overture plate, the five-bar overlap chart, hand-set static SVG, tappable bars that jump to chapters. Chapter 6, the bombing years, is pure print by hard constraint and by design register. Static dot map, 32 placed incidents, a numbered docket table; tapping a dot highlights its docket row and nothing else happens; 58, 2, and 0 stand as three plain printed figures. Chapters 7 and 8 show the actual paper. A real deed covenant and a real HOLC area sheet at full scan resolution, operative sentence highlighted on tap. Each instrument chapter closes with the stamp, the small map plate re-printed with that instrument's mark overprinted."
+   },
+   {
+    "act": "Act IV. The walls crack, the machine adapts",
+    "years": "1937-1968",
+    "chapters": "Chapters 9, 10, 11 (Hansberry and Shelley, university renewal, the color tax)",
+    "onScreen": "The two-lane Supreme Court current diagram, kept, static. Immediately below each legal victory, the ground line shows the next instrument's bar already begun, which is the whole argument made without a word. The renewal chapter draws the 1953 clearance footprint on the map plate as white erasure, tap for the before photograph, with 638 buildings and roughly 4,000 families as printed figures. The color tax chapter is the Two Buyers ledger, tap-advanced, described under signature moments."
+   },
+   {
+    "act": "Act V. The fight and the ledger",
+    "years": "1968-2026",
+    "chapters": "Chapters 12, 13 (Contract Buyers League, the ledger and the ground today)",
+    "onScreen": "CBL as photographs and Ruth Wells and Clyde Ross verbatim, printed. Then the final wall. The 11-entry ledger printed as rows down the page, the ground line now running fully to 2026, the map plate carrying all five overprints with checkbox toggles to isolate each layer, and the wealth gap at true scale using native page height as the measuring stick, $44,890 versus $285,010, with the visitor's own grade lookup offered once more beside the moderated answer wall."
+   }
+  ],
+  "throughLine": "Two elements, both accumulative, both static. First, the ground line, a thin timeline strip from 1832 to 2026 printed at the head of every chapter, gaining one labeled instrument bar per instrument chapter until five bars overlap with no gap; the final strip extends to 2026 and the ledger hangs off it. Second, the overprint, the same small 1940 map plate re-printed at the close of each instrument chapter with that instrument's mark added (covenant hatching, HOLC red wash, clearance erasure, contract-sale dots), so the last plate wears all five marks at once. Both are pre-rendered layered SVG, both legible at 390px, both meaningful to a screen reader as ordered lists. They carry the timeline into the present because the visitor watches the same two objects thicken across 194 years and arrive at 2026 still marked.",
+  "signatureMoments": [
+   {
+    "name": "The grade under your feet",
+    "where": "Chapter 1 cold open, reprised at the end of chapter 13",
+    "description": "A single rust button under the opening map plate. On tap, request geolocation, resolve against the 703 HOLC polygons client-side, and print one typeset sentence in-line with the grade as a colored chip and a fact-registry citation. Permission refused or outside the graded area falls back to a neighborhood select. The reprise at chapter 13 re-prints the same sentence next to the 2022 wealth figures. No modal, no map zoom, no animation beyond a 120ms opacity reveal that reduced-motion disables."
+   },
+   {
+    "name": "The overlap chart",
+    "where": "Chapter 4, the overture",
+    "description": "One static SVG, five horizontal bars on a shared 1900-1980 axis. Realtors' rule 1921-1950, covenants 1927-1948, HOLC redlining 1934-1968, urban renewal 1952 onward, contract selling 1952-1970. Hand-set labels, tabular figures, each bar a link that scrolls (native anchor scroll) to its chapter. The caption is one sentence about there being no gap. This chart is the thesis and must be built and tested at 390px before anything else on the page."
+   },
+   {
+    "name": "The stamp",
+    "where": "Close of chapters 7, 8, 10, 11, assembled fully in chapter 13",
+    "description": "A 320px-tall reproduction of the map plate re-printed with the just-introduced instrument overlaid as a distinct print mark, pre-rendered as one layered SVG with per-layer groups. In chapter 13 the full plate appears with five labeled checkboxes; toggling a checkbox sets a layer's visibility, instant, no transition. Keyboard reachable, each layer announced by name and span."
+   },
+   {
+    "name": "Two buyers, one house",
+    "where": "Chapter 11, the color tax",
+    "description": "Two columns, contract buyer and mortgage buyer, same house, same street. One button, 'Add a year.' Each tap prints one new row per column with that year's payments and equity in tabular figures, running totals at the foot. A second button, 'Show all years,' prints the complete table at once with no animation. Ends at the $71,000 average overpayment with its registry citation. Tap-paced, never time-paced, fully usable as a plain table by screen readers."
+   },
+   {
+    "name": "The docket",
+    "where": "Chapter 6, the bombing years",
+    "description": "A static map with 32 placed dots and a numbered docket list of all 40 dated incidents with addresses. Tapping a dot moves focus to its docket entry and applies a border highlight; tapping an entry highlights its dot. The figures 58 bombings, 2 dead, 0 convictions are set as three printed lines of the same wall-label type as everything else, deliberately not a stat-tile module. No motion of any kind, and because the whole page shares this register, the chapter does not read as a tonal island."
+   },
+   {
+    "name": "The true-scale ledger wall",
+    "where": "Chapter 13, the close",
+    "description": "The 11 ledger entries printed as rows, then two vertical bars drawn at true relative scale where the page's own height is the axis. The visitor scrolls past the white bar at native speed, tick marks every $50,000, ledger events pinned as marginal labels at their dollar heights. Native scroll is the only mechanic; there is no pinning, no scroll-linked animation, and the bars are fully drawn before the visitor reaches them."
+   }
+  ],
+  "showDontTell": [
+   {
+    "content": "Exclusion was engineered and continuous, 1921-1970",
+    "treatment": "The overlap chart shows five bars with no gap on one axis. The continuity is visible before the caption is read. No prose asserts 'systematic'; the axis does."
+   },
+   {
+    "content": "It ran on paperwork",
+    "treatment": "The actual scanned deed covenant and HOLC area sheet appear at full resolution as the chapter plates, with the operative clause highlighted on tap. The visitor reads the machinery's own sentences rather than a paraphrase, backed by the 576 digitized sheets in the files room one link away."
+   },
+   {
+    "content": "Each legal victory was answered by a new instrument (Hansberry 1940, Shelley 1948)",
+    "treatment": "The two-lane court diagram sits directly above the chapter's ground line, where the renewal and contract-selling bars visibly begin as the covenant bar ends. Adjacency makes the adaptation argument; the label stays under 60 words."
+   },
+   {
+    "content": "Urban renewal cleared 638 buildings and displaced about 4,000 families",
+    "treatment": "The clearance footprint is drawn onto the map plate as literal white erasure over the previous overprints, with the before photograph one tap away. Erasure is shown as erasure."
+   },
+   {
+    "content": "The color tax cost roughly $71,000 per contract buyer",
+    "treatment": "The visitor builds the number themselves, one tapped year at a time, in the Two Buyers ledger. The total is arrived at, not announced."
+   },
+   {
+    "content": "The 2026 wealth gap is the machinery's ledger, $285,010 vs $44,890",
+    "treatment": "True-scale bars measured by the visitor's own native scrolling, with ledger events pinned at their dollar heights. The gap is a distance traveled, not a chart glanced at."
+   },
+   {
+    "content": "The ground is still moving today",
+    "treatment": "The geolocation grade sentence reprised beside the 2022 figures, printing the visitor's own address into the exhibit's last paragraph."
+   }
+  ],
+  "artDirection": "Archival print register, executed entirely in the existing site palette (cream, cream-dark, forest, rust, ink, warm-gray) and the existing font-display and font-body families, because the owner already rejected a new design system once and will smell another. The look is a letterpress catalog. Cream paper ground, ink body text at wall-label measure (60 to 70 characters), oversized folio numbers and chapter titles set like museum didactics, rust reserved exclusively for the instrument bars and the HOLC D-grade so the color itself becomes an index of the machinery. Texture comes from the real scans, never CSS grain or fake aging. Light is flat and even, no vignettes, no parallax depth. The craft budget goes where a museum's goes, into typography, plate margins, caption alignment, and consistent hairline rules, because at 390px with motion banned, typographic quality is the only thing separating this from a Word document, and it must be relentless.",
+  "mobileStrategy": "Designed at 390px first and promoted to desktop, not the reverse. The ground line is a fixed-height 44px horizontal SVG that never wraps. Plates run full-bleed. All detail interactions open a bottom sheet, never a hover card, so there is no hover-dependent information anywhere. The overlap chart and the overprint plate get their 390px legibility test before any other build work starts; if the five bars cannot be read on a phone held in one hand, the concept has failed and we find out in week one, not week six. Performance budget is explicit. Under 300KB of JS, zero canvas and zero WebGL, all SVG pre-rendered and inlined or fetched as static assets, images lazy-loaded with dimensions reserved, and the only observers on the page are IntersectionObservers for lazy loading. The page must scroll at 60fps on a mid-range Android because there is literally nothing attached to scroll.",
+  "interactionModel": "Tap to open, never scroll to trigger. One optional interaction per chapter, thirteen total, each under ten seconds, each using the same vocabulary established in chapter 1 (tap a figure for its citation, tap a dot for its record, tap a button to advance a ledger, toggle a layer). Zero interactions still delivers the complete argument in roughly nine minutes and 1,300 words of visitor text; interactions deepen, never gate. There is no progress indicator, no 'continue' button, no guided path, no completion state, nothing that remembers the killed game. The visitor's hands do exactly what a museum visitor's hands do, lift a flap, press a button, read a label, and the exhibit never does anything they did not ask for.",
+  "risks": [
+   "Restraint can read as underwhelming to an owner who asked for 'perfect, interesting, ultra-high-quality.' The mitigation is that quality lives in print craft and the two accumulating payoffs, and this must be argued up front, because the failure mode of THIS concept is a developer or reviewer adding 'just one' scroll-linked fade to jazz it up, which breaks the register and reopens every scrollytelling failure. Enforce a written motion budget of zero scroll-linked animation in code review.",
+   "The overlap chart carries the entire thesis on one static graphic. If it is not instantly legible at 390px the concept has no spine. Build and phone-test it first, before any chapter.",
+   "Geolocation refusal rates on mobile are high. The grade lookup must treat the neighborhood-picker fallback as the primary design, not an apology, or the signature moment fails for half of visitors.",
+   "Accumulation only lands if the visitor notices the ground line thickening. If the strip is too subtle it becomes decoration. Each new bar needs a one-line printed annotation the first time it appears ('A third instrument is now running').",
+   "Everyone else on this council will propose pinned map takeovers, scroll-driven eras, ambient motion, or a cinematic open. Every one of those judders on mid-range Android, enrages readers who want to scan, decays into gimmick by chapter 5, upstages the bombing chapter's dignity, and resurrects the feel of the two things the owner already killed. The defensible position in front of a museum board is the exhibit that still works with the projector off.",
+   "Thirteen chapters of the same vocabulary risks monotony. The answer is variation in plate composition and scale (full-bleed map, paired documents, dot map, tap ledger, true-scale wall), never variation in mechanic."
+  ],
+  "reuse": [
+   "KEEP, flattened: the 703-polygon HOLC SVG map from src/components/exhibit/map. The polygons, grades, and joined area descriptions are the crown jewel. DROP the 2.5D relief treatment and the 7-stop turntable entirely; a guided camera tour is the exact grammar of the game the owner killed, and the relief costs render weight for theater. Re-render as a flat archival plate with tap-to-inspect polygons and it becomes the overprint base.",
+   "KEEP as-is: the two-lane Supreme Court current diagram. It is already static, already legible, already in register.",
+   "KEEP with an audit: the no-motion bombing map and docket. It already satisfies the dignity constraint; verify the dot-to-docket linking is bidirectional and keyboard-complete, then leave it alone.",
+   "KEEP behind a link: the files reading room (src/lib/exhibit/files-room.ts and the 576 digitized sheets). It is the exhibit's archive annex, linked from the paperwork chapter and the footer, never embedded in the read path.",
+   "KEEP only if it is native scroll: the true-scale wealth-gap climb. Strip any scroll-linked animation or pinning; the page height as axis is the whole idea and needs no motion.",
+   "REBUILD: the Two Buyers model as the tap-advance ledger described above; the financial model and fact registry (src/lib/exhibit/facts.ts) carry over unchanged.",
+   "DROP: the wall-text StationBlock/AdvisoryPlate document-flow framing, the hud directory, and anything from the rigged/rooms experiments. The owner rejected the label-block wall; do not re-skin it.",
+   "KEEP untouched: the fact registry, moderation, and voices data in src/lib/exhibit. The registry's visible sourcing is what lets a static page survive scrutiny in front of descendants and a museum board."
+  ]
+ },
+ {
+  "arc": [
+   {
+    "act": "Act I. Raking Light (the cold open and the deep past)",
+    "years": "1940, then 1832-1893",
+    "chapters": "Chapters 1-3 (The map / The first taking / The fair builds a neighborhood)",
+    "onScreen": "Full-viewport darkness. The 1940 HOLC relief map lies flat in 3D space, lit by one low raking light from the lake side, so grade-D depressions read as shadowed gouges before any color appears. The camera starts 15 degrees off the surface, skimming the relief like a helicopter at dawn. First scroll: the camera rises and the grades tint in, D-red last. Title card sets over the map. Then the camera keeps rising and the map DELAMINATES. Its layers peel upward and hang in space like sheets of paper in a stack, and the camera descends past them into the bottom layer, which is the bare 1853 plat on prairie. Chapter 2 plays on that bottom sheet, the Potawatomi cession boundary drawn as the first line ever inked on this ground. Chapter 3 lights the fairgrounds footprint on the same sheet, the one archival photo of the 1893 fair standing upright on the plane like a placed exhibit card at its true location. Everything after this scrolls back UP through the stack, depositing layers as it goes."
+   },
+   {
+    "act": "Act II. The Instrument Table",
+    "years": "the overture (1921-1970 preview)",
+    "chapters": "Chapter 4 (Five instruments)",
+    "onScreen": "The camera pulls back until the map becomes a drafting table seen from above, and five physical documents are laid onto it one per scroll beat, each casting a real drop shadow: a realtors rule book, a deed with covenant rider, the HOLC grading sheet, a clearance blueprint, an installment contract. Each lands on the year-ruler etched along the table's front edge, and its date range extrudes as a raised bar so the five bars visibly OVERLAP (the visitor sees that 1934-1948 runs four instruments at once). These five objects then shrink into a persistent instrument spine, a slim strip docked at the viewport edge for the rest of the page. Each icon is dark until its chapter arrives, burns to rust while active, and stays lit afterward. By the end all five are lit and none has gone out."
+   },
+   {
+    "act": "Act III. By Hand (and the still chapter)",
+    "years": "1908-1922",
+    "chapters": "Chapters 5-6 (The purge / The bombing years)",
+    "onScreen": "Chapter 5: the camera settles into a three-quarter view of the Hyde Park and Kenwood blocks; the homeowners club's removal campaign is shown as individual parcels going dark one by one along real streets, each darkening tied to a registry fact, with the Fannie Barrier Williams and Ida B. Wells quotes standing as upright cards at their addresses. Then the page performs a full stop. A plain horizontal rule, one line of text stating that the next chapter is presented without motion, and the camera CUTS (no tween) to a locked, top-down, orthographic, completely still map. Chapter 6 is a flat printed sheet: 32 placed incident marks, a typeset docket of all 40 dated incidents beside or below it, three fixed columns (date, address, outcome), and the outcome column runs 40 rows of 'no conviction' with the two deaths set in their own weight. Nothing animates, nothing hovers, nothing counts up. The visitor scrolls a document, as if reading it in an archive. Exit is another hard cut to black with the Jesse Binga quote alone on screen, and only after that does the camera gently resume."
+   },
+   {
+    "act": "Act IV. By Paper",
+    "years": "1921-1948",
+    "chapters": "Chapters 7-9 (The paperwork / Washington adopts the plan / The walls crack)",
+    "onScreen": "The camera returns oblique and low. Chapter 7: a covenant document scales down out of the foreground and PRESSES onto a block; where paper touches ground, the block takes a parchment stain. Then dozens more, stamped in recorded-date order across 1927-1948, until whole square miles carry the stain, driven by scroll position against the real adoption timeline. The realtors rule renders as a hairline fence extruded along neighborhood boundaries. Chapter 8: the HOLC surveyor sheets fall from above like a card catalog emptying, and each sheet lands on its area and dyes it its grade color; tapping any of the 703 areas lifts its actual scanned area-description sheet off the ground into reading position (this is the reading room, relocated onto the map itself). The FHA moment is one gesture, the Washington seal pressing the whole map at once. Chapter 9: the Hansberry then Shelley decisions arrive as light. Two dated cracks run through the parchment stain layer and it loses opacity but does NOT disappear, and a caption states plainly that the paper stopped being enforceable, not that it stopped working. The four Supreme Court cases sit as a fixed two-lane inset here, rebuilt flat, no motion needed."
+   },
+   {
+    "act": "Act V. By Bulldozer and By Contract",
+    "years": "1949-1971",
+    "chapters": "Chapters 10-12 (The university rebuilds / The color tax / The Contract Buyers League)",
+    "onScreen": "Chapter 10, the Subsidence: 638 building footprints stand as low extrusions in the renewal area; as the visitor scrolls, they sink flush into the ground in demolition-contract order, and the cleared area stays behind as a flat pale scar that persists through every later view. One static registry line holds the human total, about 4,000 families, set beside a clearance photograph standing on the scar. No debris, no crumble effects, subtraction only. Chapter 11, Two Stacks: the camera moves to a single frame with two identical extruded houses from the same block. Scroll advances the calendar month by month and a payment stub slides onto each stack, mortgage left, contract right; the stacks grow at their true relative rates until the contract stack towers, and the height difference is dimensioned like an architect's drawing at $71,000 average overpayment, with Clyde Ross's words beside his side of the frame. Chapter 12: a cut to a photographed church basement register; the CBL chapter runs on paper again, but this time the paper pushes BACK, contract pages sliding off the tall stack as renegotiations land, with Ruth Wells's verbatim quote carrying the chapter."
+   },
+   {
+    "act": "Act VI. The Ledger and the Ground Under You",
+    "years": "1972-2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "The finale gesture: the camera plunges to ground level and the accumulated page EXTRUDES DOWNWARD, revealing everything deposited since Act I as a geological core sample, a single vertical column with labeled strata (treaty line, fair, purge, bombs, covenant parchment, HOLC dye, clearance scar, contract stubs), each stratum dated and registry-linked. The camera rotates the core upright beside the true-scale wealth bars, $285,010 white median family wealth against $44,890 Black, and the core sample and the gap bar are drawn at reconciled vertical scale so the sediment column visibly IS the gap. Below it, the ground-under-you module: a single button offers to check the visitor's location (or a typed address) against the 703 polygons, and the map plane slides to their block and states its 1940 grade in one sentence. The page ends on the moderated answer wall, set like visitor cards pinned at the exhibit exit, and the eleven-entry dollars-and-people ledger as the printed colophon."
+   }
+  ],
+  "title": "Sediment",
+  "thesis": "The entire exhibit is one continuous 3D scene, the ground of Hyde Park itself, held on screen for all thirteen chapters while a scroll-driven camera moves over it and each instrument physically deposits a layer that never leaves. Paper is the antagonist made material, documents press onto the ground and stain it, stack on it, dye it, and scar it, so that by the finale the page can extrude the accumulated sediment as a core sample and stand it next to the 2026 wealth gap at true scale. Engineering, not accident, is the argument, and accumulation on a single persistent surface is how a browser can make that argument without a single paragraph of wall text doing the work.",
+  "visitorTakeaway": "A week later the visitor remembers that the map never left the screen and kept collecting marks that would not wash off, that one chapter went completely still out of respect and the stillness hit harder than any animation, and that two stacks of payment stubs and a striped core of a century's paperwork stood exactly as tall as a $240,000 gap between two families in 2022.",
+  "throughLine": "Two elements persist from first pixel to last. First, the ground plane, one 2.5D map surface of Hyde Park that every chapter marks and no chapter erases (treaty line, fairground footprint, darkened purge parcels, parchment covenant stains, HOLC grade dye, the clearance scar, contract stubs), so scrolling forward is literally watching sediment build, and the finale core sample is nothing but a cross-section of what the visitor already watched accumulate. Second, the instrument spine, a slim five-icon strip docked at the viewport edge from the overture onward; each instrument ignites in its era, stays lit forever after, and doubles as chapter navigation, so at any scroll position the visitor can see which machinery is running and that the machines overlap. Both carry into the present, the last state of the ground plane is the surface under the geolocation module, and the spine's five lit icons sit above the 2022 wealth figures as their explicit causes.",
+  "signatureMoments": [
+   {
+    "name": "Raking Light",
+    "where": "Cold open, chapter 1",
+    "description": "The HOLC relief map fills the viewport in near darkness, camera 15 degrees off the surface, one warm directional light raking from the east so grade-D areas (modeled as depressions, grade equals literal elevation) read as shadow before color. Scroll interpolates the camera from skim to overhead across roughly 1.5 viewport heights while grade tints fade in D-red last. Implementation: prerender the relief at 24 camera keyframes as WebP plates (~40KB each), crossfade-plus-transform between adjacent plates on scroll progress, swap to the live SVG layer only once the camera locks overhead. Reduced motion: three static plates with dissolves."
+   },
+   {
+    "name": "The Delamination",
+    "where": "Transition from chapter 1 into chapter 2",
+    "description": "The map splits into its historical layers, which rise and hang as separate sheets in perspective (translateZ-spaced divs under a CSS perspective container, six sheets maximum), and the camera descends through them to the bare 1853 plat. This single move teaches the whole page's grammar, the ground is a stack of paper, and the rest of the exhibit climbs back up the stack. Each sheet is a flat prerendered texture, so the effect is six composited layers, cheap on mobile."
+   },
+   {
+    "name": "The Instrument Table",
+    "where": "Chapter 4 overture",
+    "description": "Five documents drop onto the map-as-table one per scroll beat, each a real photographed or facsimile object with a soft contact shadow, landing on an etched year ruler where their active ranges extrude as overlapping bars (1921-1950, 1927-1948, 1934-1968, 1952 onward, 1952-1970). On completion they shrink along a motion path into the docked instrument spine. The overlap bars are the argument's thesis diagram, four instruments running simultaneously through the 1930s and 40s, and the visitor watches it get built rather than reading it."
+   },
+   {
+    "name": "The Still Chapter",
+    "where": "Chapter 6, the bombing years",
+    "description": "A hard cut, deliberately not a tween, to a locked top-down orthographic map, then a typeset docket, 40 rows, columns for date, address, outcome. Zero animation, zero hover states, zero counters; the scroll listener that drives the rest of the page is unbound for this section's DOM range. The outcome column repeating 'no conviction' forty times, with the two deaths set in heavier type, is the entire design. The stillness is legible as intent because the visitor has felt continuous motion for three acts; the flat cut is the loudest thing on the page."
+   },
+   {
+    "name": "The Subsidence",
+    "where": "Chapter 10, urban renewal",
+    "description": "638 building footprints stand as 4-to-8px extrusions in the renewal tract; scroll drives them flush into the ground in demolition order (batched, roughly 30 per scroll tick, single SVG transform group per batch, no per-building physics), leaving a pale flat scar that persists in every subsequent camera view including the finale. A fixed caption holds the registry figure of about 4,000 families displaced. Subtraction as the only motion; nothing falls, nothing shatters."
+   },
+   {
+    "name": "Two Stacks",
+    "where": "Chapter 11, the color tax",
+    "description": "Two identical extruded houses, one frame, a shared month ticker driven by scroll. Payment stubs slide onto two stacks at true relative rates from the Two Buyers model until the contract stack towers over the mortgage stack, then architectural dimension lines measure the height delta and label it $71,000 average overpayment, source visible. Stubs are one repeated 2KB SVG stamped by transform; the stack height is data, computed from the registry model, never eyeballed."
+   },
+   {
+    "name": "The Core Sample",
+    "where": "Chapter 13 finale",
+    "description": "The camera drops to ground level and the plane extrudes downward into a striped vertical core, each stratum one deposited layer from the preceding twelve chapters, labeled and dated on hover or tap with its registry citation. The core rotates upright (one transform, 900ms, skipped under reduced motion) and locks beside the true-scale wealth bars, $285,010 against $44,890, drawn on a shared pixel-per-dollar scale so the column of paperwork and the gap read as the same object. This is the ledger chapter rendered as a single picture."
+   },
+   {
+    "name": "The Ground Under You",
+    "where": "Chapter 13, after the core",
+    "description": "One quiet button, 'check the ground under you'. On consent (or a typed address), the plane slides and settles on the visitor's block and a single sentence states its 1940 grade, sourced. If outside the graded area, it says so honestly. This is the only moment the camera obeys the visitor instead of the scroll, which is the point, the machinery reaches them."
+   }
+  ],
+  "showDontTell": [
+   {
+    "content": "58 bombings, 2 dead, 0 convictions (1917-1922)",
+    "treatment": "A motionless typeset docket whose outcome column repeats 'no conviction' 40 times down the page; the zero is never stated as a statistic, it is experienced as a column of identical words the visitor scrolls past at reading speed."
+   },
+   {
+    "content": "Restrictive covenants spreading 1927-1948",
+    "treatment": "Facsimile deed documents physically press onto blocks and leave a parchment stain, stamped in recorded-date order as the visitor scrolls the real timeline; coverage is watched growing, not quoted as a percentage."
+   },
+   {
+    "content": "HOLC grades and the 576 surveyor sheets",
+    "treatment": "Grade is literal elevation, D areas are carved depressions revealed by raking light before any color exists; the sheets fall onto their areas and dye them, and tapping any of the 703 polygons lifts the actual scan into reading position on the map itself."
+   },
+   {
+    "content": "638 buildings cleared, about 4,000 families displaced (1949-1963)",
+    "treatment": "Extruded footprints sink flush into the ground in demolition order and leave a permanent pale scar visible in every later chapter including the finale; erasure is shown as subtraction from the relief, not narrated."
+   },
+   {
+    "content": "Contract selling at nearly double price, $71,000 average overpayment",
+    "treatment": "Two identical houses accumulate payment-stub stacks month by month at true relative rates; the difference becomes literal measured height with architect's dimension lines, and the overpayment number appears only as the label on that measurement."
+   },
+   {
+    "content": "Hansberry 1940 and Shelley 1948",
+    "treatment": "The parchment covenant layer cracks with light and drops opacity but stays visibly on the ground, showing enforceability ended while the pattern persisted; the two-lane court diagram sits flat beside it as the procedural record."
+   },
+   {
+    "content": "2022 wealth gap, $285,010 vs $44,890",
+    "treatment": "The finale extrudes twelve chapters of deposited layers into a core sample drawn at the same pixel-per-dollar scale as the true-scale wealth bars, so a century of paperwork and the gap are one aligned picture; causation is the composition."
+   },
+   {
+    "content": "Five instruments as coordinated machinery, not episodes",
+    "treatment": "The overture builds an overlapping-bars date ruler out of physical documents, and the persistent instrument spine keeps every ignited instrument lit for the rest of the page, so simultaneity and continuity are permanently visible in the chrome."
+   },
+   {
+    "content": "The nine voices",
+    "treatment": "Quotes stand as upright cards at their real addresses on the plane and are encountered spatially as the camera passes, people situated on the ground, not pull-quotes floating in wall text."
+   }
+  ],
+  "artDirection": "Near-black ink field for the void around the plane, the site's cream and cream-dark for paper and parchment, forest for the surveyor apparatus, rust reserved exclusively for the D grade, active instruments, and the wealth-gap figure so its meaning stays fixed page-wide. HOLC's own grade colors desaturated toward the site palette. One consistent warm directional light source across every 3D view (baked into the prerendered plates), because a single light reading as morning-archive lamplight makes thirteen chapters feel like one room; shadow depth, not color saturation, carries drama. Texture comes only from real scans, the actual sheets, deeds, and photographs, never synthetic grunge overlays. Typography is the existing font-display serif for chapter titles set small and confident, font-body for captions, and documents always appear as themselves, facsimiles, not restyled. The register is a natural-history museum's geology hall applied to paperwork, which is exactly the subject, strata of documents in the ground, and it keeps the page adult, quiet, and unmistakably serious rather than demo-reel.\"",
+  "mobileStrategy": "Phones are the primary target, so the 3D system is built as compositor-only work. The ground plane is prerendered camera plates (WebP, ~24 keyframes at two resolutions, lazy-loaded per act) crossfaded and nudged with transform, with the live SVG polygon layer mounted only in the two interactive states (overhead reading-room mode and the geolocation module); nothing runs per-frame JavaScript layout. On 390px the camera framing is re-keyed portrait (tighter dollies, less lateral travel), chapter text rides in a bottom-sheet card over the sticky scene instead of a side column, the instrument spine docks as a 44px-tall bottom strip, and the delamination uses three sheets instead of six. Scroll driving uses sticky sections with a scroll-progress interpolator (CSS scroll-driven animations where supported, rAF fallback), text always in normal document flow so reading speed is never hijacked. Reduced-motion replaces every camera move with a straight dissolve between locked plates and every deposition with an instant opacity change, and the still chapter is identical in both modes by design. Budget: plates plus SVG plus stub sprites hold the route under 2.5MB on first act, under 6MB fully scrolled, no three.js, no video.",
+  "interactionModel": "Scroll is the only required gesture; the full argument plays start to finish with one thumb and no taps, which is what makes it museum-grade rather than app-grade. On top of that, optional touch is offered about once per act, always on the evidence rather than the chrome: tap any of the 703 areas in overhead mode to lift its scanned surveyor sheet (the reading room lives inside the map), tap a voice card to expand the full verbatim quote and source, tap a docket row in the still chapter to see the incident's registry entry (navigation, not animation), tap a core stratum in the finale for its dated citation, press the single geolocation button, and write on the answer wall at the exit. The instrument spine is tappable chapter navigation throughout. Keyboard mirrors everything, arrow keys step camera keyframes, every polygon and card is focusable in a sane DOM order, and the whole scene carries a parallel text transcript for screen readers so the SVG theater is decoration over a complete document, not a replacement for one.",
+  "risks": [
+   "Per-frame transforms on 703 live SVG polygons will melt a mid-range phone; the mitigation is structural (prerendered raster plates for all camera motion, live SVG only in the two locked interactive states) and must be held as a hard rule during build, not an optimization pass.",
+   "Scroll-driven camera pages drift into scroll-jacking; text must stay in normal document flow with the scene behind it, and every chapter needs a tuned scroll-length-to-content ratio or visitors will feel pushed through a ride instead of walking a gallery.",
+   "The still chapter's hard cut can read as a bug if the deceleration into it is sloppy; the two chapters flanking it need deliberately calm, slowing motion so the stop reads as intent, and this transition deserves its own design review with descendant-audience dignity as the test.",
+   "iOS Safari has known quirks with position sticky combined with 3D transforms and viewport-height units; the sticky-scene scaffold must be proven on a real iPhone in week one, before any chapter content is built on top of it.",
+   "The core-sample-to-wealth-bar shared scale is the exhibit's strongest claim and its biggest honesty trap; the strata are qualitative history while the bars are dollars, so the visual must present juxtaposition at reconciled scale without implying the strata heights are themselves dollar quantities, and the caption must say exactly what the alignment means.",
+   "Prerendered plate generation adds a build-time asset pipeline (render script, plate manifest, two resolutions); it needs to be scripted and committed like the existing test-media generator or the page becomes unmaintainable the first time the map layer changes."
+  ],
+  "reuse": [
+   "KEEP the SVG 2.5D relief of the 1940 map (703 clickable areas) as the single most valuable existing asset, but REBUILD its presentation, retire the 7-stop turntable and promote the relief to the persistent ground plane, adding the plate prerender pipeline for camera motion while keeping its polygon layer as the interactive overhead mode.",
+   "KEEP the no-motion bombing map and docket nearly as-is; it already honors the dignity constraint, and it only needs restyling into the still chapter's typeset-document treatment and the unbinding of the global scroll system across its range.",
+   "KEEP the true-scale wealth-gap climb's data and scale discipline but REBUILD it as the finale composition, merged with the new core sample on a shared pixel-per-dollar axis rather than standing as a separate station.",
+   "REBUILD the files reading room as the in-map sheet viewer (tap an area, the scan lifts into reading position), keeping its grade filters and permalinks behind a quiet 'browse all 576 sheets' link for researchers; it stops being an inline station the narrative has to route around.",
+   "KEEP the two-lane Supreme Court current diagram as a flat inset inside chapter 9; it is procedural evidence and works best motionless next to the cracking-parchment moment, which carries the emotion.",
+   "KEEP the geolocation grade lookup untouched at the data layer and REBUILD only its stagecraft, the map slides to the visitor's block instead of returning a text result.",
+   "DROP the document-flow page structure, the wall-text label blocks, and the framed evidence stations entirely; they are the presentation the owner rejected, and nothing in this concept needs them."
+  ]
+ },
+ {
+  "arc": [
+   {
+    "act": "Act I. The Map, Then the Taking",
+    "years": "1940 cold open, then 1832-1889",
+    "chapters": "Chapters 1-2 (The map, The first taking)",
+    "onScreen": "The page opens full-bleed on the 1940 HOLC map of Hyde Park and Kenwood, silent, no headline, just the archival caption and a down cue. The first scroll sets the title over it. Continued scrolling drains the map in steps. Grades desaturate, the street grid thins, and a small date counter in the corner runs 1940 back to 1832 until only the lakeshore remains. A text card states the Potawatomi treaty facts. Then the 1853 plat scan slides in as the first piece of paper, registers itself over the blank ground, and its survey lines print onto the ground plane in ink. The ledger strip appears at the bottom edge with its first entry. The lesson of the whole page is planted in ninety seconds. This map is not an illustration. It is an instrument, and we are going to watch it get built."
+   },
+   {
+    "act": "Act II. A Neighborhood Appears",
+    "years": "1893",
+    "chapters": "Chapter 3 (The fair builds a neighborhood)",
+    "onScreen": "A single sticky scene. The fairgrounds footprint warms on the southern edge of the ground plane while the 1893 archival photograph sits in a cutaway card beside it. Block fill stipple spreads across the plane as the neighborhood urbanizes. Two ledger entries print. Deliberately short, one to two viewport heights, so the visitor feels the pace of the page before the machinery starts."
+   },
+   {
+    "act": "Act III. Naming the Machinery",
+    "years": "overture, 1908-1970 span",
+    "chapters": "Chapter 4 (Five instruments)",
+    "onScreen": "The ground plane dims to background. Five brass document stamps descend and dock on the right rail (bottom strip on mobile), each engraved with an instrument name and its active years. One sentence in the argument voice states the thesis plainly. Below it, a horizontal span chart runs 1908 to 1970 with the five bars overlapping; scrolling sweeps a now-line across it so the visitor sees with their thumb that for fourteen years, four instruments ran at once. The dock persists on screen for the rest of the exhibit. Each stamp lights when its chapter arrives and never goes dark again."
+   },
+   {
+    "act": "Act IV. Violence First",
+    "years": "1908-1922",
+    "chapters": "Chapters 5-6 (The purge, The bombing years)",
+    "onScreen": "The purge chapter shows the homeowners club's own printed materials as scanned artifacts with their registry-sourced language, while the club's target blocks are outlined on the ground plane. Then the register breaks on purpose. All ambient motion stops, the dock recedes, the palette goes near monochrome. The bombing years are a memorial roll, a single column of 40 dated entries with addresses, the two dead named in larger type, and the line 0 convictions set alone at the end. Beside the roll sits one static map plate with the 32 placeable points. Tapping a roll entry strokes the matching point once, no loops, no hover behavior, no parallax. The absence of the page's own motion grammar IS the design of this act."
+   },
+   {
+    "act": "Act V. The Paperwork",
+    "years": "1921-1948",
+    "chapters": "Chapters 7-9 (The paperwork, Washington adopts the plan, The walls crack)",
+    "onScreen": "Motion returns deliberately, because the violence has become procedure. Article 34 of the realtors' code appears typeset with the operative sentence underlined, and the first stamp presses into the dock. A real covenant deed scan follows; scrolling advances covenant hatching across the ground plane through dated, sourced snapshot states with the running coverage figure printed beside each date. Then Washington. The HOLC area-description sheet for the polygon currently centered on screen slides up, and the grades flood back onto the map in the archival green, blue, yellow, and red, each grade paired with the surveyor's verbatim language from the digitized sheets. The FHA underwriting sentence prints beneath. The visitor now re-reads the cold-open map as a weapon. The act closes with the Supreme Court current rebuilt as a stepped sticky scene, two lanes and four gates (Buchanan, Corrigan, Hansberry, Shelley); the gates open while the hatching on the ground stays put, showing law voided on paper and intact in practice."
+   },
+   {
+    "act": "Act VI. Public Money Moves the Ground",
+    "years": "1949-1971",
+    "chapters": "Chapters 10-12 (The university rebuilds, The color tax, The Contract Buyers League)",
+    "onScreen": "Urban renewal is rendered as erasure. An aerial archival photograph crossfades with the ground plane, and as the visitor scrolls, cleared parcels blank out zone by zone while a counter fills toward 638 buildings and about 4,000 families, each figure sourced on screen. The blanked parcels stay blank for the rest of the page. Then the Two Buyers scene, sticky and split. Two identical house elevations side by side; each scrolled year from 1948 to 1968 drops a payment stub under both. The mortgage side accrues equity shading, the contract side stacks stubs at nearly double the price with the forfeiture clause visible, and the scene resolves on the $71,000 average overpayment with its source line. The CBL chapter answers it with the church-basement photograph, Ruth Wells and Clyde Ross verbatim, the payment strike shown as withheld stubs, and the first reversal entry printing into the ledger strip."
+   },
+   {
+    "act": "Act VII. The Ledger and Your Feet",
+    "years": "1971-2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "The ledger strip that has accumulated along the bottom since 1833 expands to fill the screen as one readable account of dollars and people across eleven entries. Then the true-scale climb. The Black median family wealth column, $44,890, passes in one short scroll. The white column, $285,010, takes 6.35 times the scroll distance, with era milestones marked along the way. The visitor's own thumb performs the measurement. Then the ground plane returns in present-day form with an opt-in prompt to ask what the 1940 map said about the ground under your feet, with a typed address fallback for visitors outside Chicago; the answer returns the grade, the surveyor's sheet, and one sourced sentence tying grade to present outcome. The page closes with the moderated answer wall, full credits and sources, and the files reading room as an annex below the fold."
+   }
+  ],
+  "artDirection": "The site's existing cream, ink, forest, and rust palette stays, but with a strict pigment law. The archival HOLC green, blue, yellow, and red are reserved exclusively for grade data and never used decoratively, so red on this page always means the thing the map meant by it. The argument voice runs in the display serif in rust; evidence runs in ink on cream; surveyor and covenant language is set in a document face that reads as typescript without cosplaying as a typewriter font. The material logic is paper throughout. Every instrument enters as a document, presses like a stamp, prints its effect onto the ground, and the ink never lifts. Texture is restrained, flat archival-scan lighting, a one-pixel press shadow at most, no skeuomorphic grain. Motion has one verb, settle. Everything eases out and comes to rest like ink drying; nothing bounces, loops, or pulses. This fits the subject because the argument is that the harm was administrative, patient, and permanent, and the page should feel administrative, patient, and permanent.",
+  "interactionModel": "Scroll is the only mandatory input, and it drives stepped sticky scenes, never pixel-scrubbed hijacked ones. Roughly once per chapter there is a single tap invitation with obvious affordance, such as opening the covenant deed, reading the surveyor sheet under the centered polygon, expanding a ledger entry, or touching a memorial roll entry to locate its point. There are exactly two deliberate acts of input, both near the end, granting location or typing an address, and writing on the answer wall. Every scene is step-indexed, so keyboard users move through the identical sequence of resolved states with arrow keys and skip links, and screen readers get a prose equivalent per step. The bombing act intentionally strips interaction down to plain reading plus one respectful tap.",
+  "mobileStrategy": "On a 390px phone the ground plane lives as a sticky top panel of about 44vh with text cards scrolling beneath it, so the map is always visible while reading, and the instrument dock collapses to a five-glyph strip pinned above the ledger line, expanding on tap. All scrubbed scenes degrade to discrete steps fired by IntersectionObserver, each a fully resolved state, which is also the reduced-motion behavior, so the phone build and the accessibility build are the same build. The 703 polygons render as pre-baked canvas raster layers per map state with a lightweight SVG hit layer mounted only in chapters that invite tapping. Images ship as AVIF with reserved dimensions, the JS budget stays under roughly 250KB gzipped, and the Two Buyers and true-scale climb scenes are pure DOM and CSS transforms. A thin progress rail with the 13 chapter marks doubles as a jump map and a resume marker for the visitor who returns.",
+  "reuse": [
+   "Keep the 703-polygon HOLC dataset and the 576 digitized surveyor sheets wholesale; they are the spine of the ground plane and the Grade Flood moment.",
+   "Rebuild the 2.5D relief turntable into the flat persistent ground plane. The turntable is a beautiful set piece, but it competes with the through-line by making the map a destination instead of the stage. Its relief rendering can survive as the cold-open hero frame only; the 7-stop turntable interaction goes.",
+   "Keep the no-motion bombing map and docket nearly as-is and re-typeset them into the memorial roll; that component already honors the dignity constraint.",
+   "Rebuild the two-lane Supreme Court current diagram as a stepped sticky scene with four gates; the metaphor is correct, the presentation becomes scroll-driven.",
+   "Rebuild the true-scale wealth-gap climb as the finale with era milestones along the tall column; keep its true-scale principle exactly, it becomes the page's closing signature.",
+   "Keep the files reading room with grade filters and permalinks, moved to the annex after the credits so the narrative flow never dumps the visitor into a database mid-story.",
+   "Keep the geolocation grade lookup and the moderated answer wall; both move to Act VII where they land as consequence rather than novelty.",
+   "Drop the framed evidence-station layout and the wall-text label blocks entirely; nothing of the document-flow presentation carries over."
+  ],
+  "risks": [
+   "Performance of 703 animating polygons on mid-range phones. Mitigate with pre-baked canvas raster states plus an SVG hit layer mounted only when tapping is invited, and cap simultaneous layers at two.",
+   "Scrolljack temptation. Every scene must use position sticky plus stepped states; the moment the wheel is locked or remapped, keyboard and reduced-motion parity die and the museum feel dies with them. This is a hard implementation rule, not a preference.",
+   "Animated interpolation implying invented data. The covenant spread and clearance erasure may only move between dated, registry-sourced snapshot states, with the date and figure printed at each state; no tween may show a coverage value that does not resolve to a fact ID.",
+   "The bombing act's register break being read as a design flourish. Review that act against a single test, would a descendant of the two dead find every pixel respectful; if any element fails, cut it to plain text.",
+   "Page fatigue across 13 chapters. The progress rail, the short Act II palate cleanser, and hard caps on per-chapter card word counts (owner has rejected wall text once already) are the defense; if a chapter needs 400 words, the words are wrong.",
+   "The cold-open rewind confusing reduced-motion visitors. Provide the rewind as four labeled crossfade frames, 1940, 1908, 1853, 1832, so the sequence still reads as time moving backward.",
+   "Geolocation privacy and out-of-Chicago visitors. Lookup stays client-side and opt-in with a typed address or landmark fallback, and the copy never implies the site stored anything.",
+   "Dock crowding at 390px. The five-glyph collapsed strip must be tested with all five lit; if it reads as clutter, the strip shows only the currently active stamp with a tap to expand the set."
+  ],
+  "showDontTell": [
+   {
+    "content": "The 1940 HOLC map is an instrument of exclusion, not a historical illustration",
+    "treatment": "The visitor meets the map cold, before any argument, then watches it get built piece by piece across five acts, and only in Act V does it recolor into the grades while the surveyors' own sentences sit beside each color. The page never says the map was a weapon. The visitor watches it become one."
+   },
+   {
+    "content": "Five instruments overlapped rather than succeeded each other",
+    "treatment": "The persistent stamp dock lights one stamp per chapter and never dims any, and the overture's span chart lets the visitor sweep a now-line across 1908-1970 and see four bars lit at once. Overlap is a picture the thumb produces, not a sentence."
+   },
+   {
+    "content": "58 bombings, 2 dead, 0 convictions",
+    "treatment": "A memorial roll of 40 dated entries in plain type, the dead named large, and 0 convictions set alone as the final line of the act, with every page motion convention suspended. The silence of the layout carries the number."
+   },
+   {
+    "content": "Shelley and Hansberry voided the paper but not the practice",
+    "treatment": "The Supreme Court gates open on screen while the covenant hatching already printed on the ground plane visibly stays. The visitor sees the law change and the ground not change."
+   },
+   {
+    "content": "Contract selling charged nearly double for the same house, $71,000 average overpayment",
+    "treatment": "Two identical house elevations, twenty scrolled years, payment stubs stacking in real proportion under each. The contract pile physically outgrows the mortgage pile before any number is stated."
+   },
+   {
+    "content": "White median family wealth $285,010 versus Black $44,890 in 2022",
+    "treatment": "A true-scale scroll. Passing the Black column takes one flick, passing the white column takes 6.35 times the distance with era milestones en route. The visitor's own scrolling effort is the chart."
+   },
+   {
+    "content": "The ground is still moving today",
+    "treatment": "The ground plane, now carrying every mark from 1853 forward including the still-blank renewal parcels, zooms to the grade under the visitor's own feet. The past arrives at their location instead of being described to them."
+   }
+  ],
+  "signatureMoments": [
+   {
+    "name": "The Rewind",
+    "where": "Cold open, Act I",
+    "description": "Full-bleed 1940 HOLC map with only an archival caption. On scroll, a corner date counter runs 1940 back to 1832 while the map drains in four stepped states (grades out, grid thins, shoreline only, blank ground). Implemented as pre-baked raster crossfades under a sticky container, roughly 300vh of scroll. Reduced motion gets the same four frames as labeled crossfades. This is the shareable opening frame and it teaches the page's grammar in one gesture."
+   },
+   {
+    "name": "The Stamp Dock",
+    "where": "Act III overture, persistent thereafter",
+    "description": "Five engraved stamps with instrument names and year spans dock on the right rail (bottom strip on mobile). Each presses and lights at its chapter with a short settle transform and stays lit permanently. Tapping any stamp at any time opens a one-card definition with active years and the registry fact it rests on. State is a single integer per stamp, trivially keyboard focusable."
+   },
+   {
+    "name": "The Grade Flood",
+    "where": "Act V, Washington adopts the plan",
+    "description": "The grades wash back onto the ground plane in archival pigment, area by area over four stepped states, while the digitized surveyor sheet for the polygon nearest screen center slides up with its verbatim description highlighted. Tap any polygon to swap the sheet. Canvas raster for fills, SVG hit layer for taps, sheet content from the existing 576-sheet dataset. The cold-open map is re-met as a document with an author."
+   },
+   {
+    "name": "The Memorial Roll",
+    "where": "Act IV, the bombing years",
+    "description": "Single column, near-monochrome, 40 dated entries with addresses from the incident dataset, the two dead named in larger type, 0 convictions alone on the closing line. One static map plate with 32 points sits alongside. Tapping an entry strokes its point once. No sticky scenes, no counters, no parallax anywhere in the act. The register break is the moment; it must be felt as the page lowering its voice."
+   },
+   {
+    "name": "The Two Buyers Stubs",
+    "where": "Act VI, the color tax",
+    "description": "Sticky split scene, two identical line-drawn house elevations. Each scrolled year 1948-1968 drops a payment stub under both sides at true relative height from the financial model, mortgage side gaining equity shading, contract side showing the forfeiture clause on its stubs. Resolves on the $71,000 figure with source line. Pure DOM stubs, stepped per year, exactly 20 steps, identical for keyboard users."
+   },
+   {
+    "name": "The True-Scale Climb",
+    "where": "Act VII finale",
+    "description": "Two columns rendered at true scale to scroll distance. $44,890 passes in about one viewport, $285,010 requires 6.35 viewports with milestone captions at proportional heights. A persistent small indicator shows how far up the white column the visitor has traveled. Ends level with a single sourced sentence. This is the screenshot moment and the argument's QED."
+   },
+   {
+    "name": "The Grade Under Your Feet",
+    "where": "Act VII close",
+    "description": "The ground plane returns bearing every accumulated mark. An opt-in prompt offers geolocation or a typed address. The answer zooms the plane, names the 1940 grade in its archival pigment, opens the surveyor sheet for that polygon, and prints one sourced sentence linking grade to present outcome. Client-side only, with a graceful out-of-area response offering a landmark picker."
+   }
+  ],
+  "thesis": "The entire exhibit happens on one piece of ground that never leaves the screen. Five instruments enter as real documents, press like stamps, and print their marks onto that ground in sequence, and no mark is ever erased. By the time the 2026 wealth figures arrive, they read as the sum of everything the visitor watched accumulate, not as a claim they are asked to believe.",
+  "throughLine": "Three persistent elements, layered. First, the Ground, a single sticky map plane of Hyde Park that is on screen from the cold open to the final scene and accumulates every mark (plat lines, purge outlines, covenant hatching, grade pigment, renewal blanks) without ever erasing one, so the 2026 map is visibly the 1853 map plus everything done to it. Second, the Instrument Dock, five document stamps that light as each instrument activates and never go dark, making overlap and persistence visible at all times. Third, the Ledger Strip along the bottom edge, which prints its 11 dated entries of dollars and people as the story reaches them and expands into the full account in the finale. Together they carry the timeline into the present because all three are still on screen, still marked, when the visitor's own location is looked up.",
+  "title": "The Same Ground",
+  "visitorTakeaway": "A week later the visitor remembers scrolling one map for two hundred years and watching it get taken, papered, graded, cleared, and priced twice, remembers their thumb taking six times longer to climb the white wealth column, and remembers that the red line they saw drawn in 1940 came back at the end under their own address. The sentence they repeat is that none of it was an accident, it was filed."
+ },
+ {
+  "arc": [
+   {
+    "act": "Act 0. The Plate",
+    "years": "1940 (cold open)",
+    "chapters": "Chapter 1 (The map)",
+    "onScreen": "Full-bleed flat 1940 HOLC map of Hyde Park and environs, ink linework on cream, initially UNGRADED, just the street grid and the lake. One caption line at the bottom edge, max 25 words. The visitor's first tap anywhere on the map inks the grades in, all 703 polygons at once, in the four true HOLC colors. A second caption appears with the source card for the map itself (fact id visible). Below the plate, a thin horizontal strip appears for the first time, five empty gray bars with a 1900 to 2026 axis. This is the Instrument Register and it never leaves the screen again. The map plate is now the fixed top pane of the page; everything for the next 12 chapters is a layer drawn onto or peeled off of this one plate."
+   },
+   {
+    "act": "Act 1. Ground",
+    "years": "1832 to 1893",
+    "chapters": "Chapters 2 and 3 (The first taking, The fair)",
+    "onScreen": "The grades fade to 10% and the plate rewinds. The 1853 plat lines overlay the same geography (the visitor sees that the modern grid IS the plat, same viewport, same scale, layering not slideshow). The Potawatomi cession is drawn as the boundary it was, with the 1833 treaty entry opening the Ledger Rail, a narrow right-margin running account (dollars and people, tabular figures, 11 entries total by page end). The 1893 fair appears as a footprint layer plus one credited archival photograph in a caption drawer. Total visitor text in this act is under 120 words."
+   },
+   {
+    "act": "Act 2. The Instruments Named",
+    "years": "overture",
+    "chapters": "Chapter 4 (Five instruments)",
+    "onScreen": "The map dims to a ghost and the Instrument Register expands to fill the pane. Five horizontal bars on one shared time axis, realtors' rule 1921-1950, covenants 1927-1948, HOLC/FHA 1934-1968, urban renewal 1952 onward, contract selling 1952-1970. The bars overlap. A single annotation line reads the thesis off the graphic itself. From 1921 to 1970 at least one instrument is always running; when a court kills one, the next is already in place. Handoff points (Shelley 1948, for example) get small tick annotations. This graphic then shrinks back to its permanent strip position, where a date cursor will ride it for the rest of the page showing which instruments are live in the current chapter. The relay IS the argument, seen before it is read."
+   },
+   {
+    "act": "Act 3. Force Before Paperwork",
+    "years": "1908 to 1922",
+    "chapters": "Chapters 5 and 6 (The purge, The bombing years)",
+    "onScreen": "The purge chapter draws the homeowners club's target blocks on the plate with the club's own printed language available on tap. Then the bombing chapter. The plate goes nearly monochrome. 32 fixed black dots appear at their addresses, no motion, no sequencing animation. Below the plate, the Docket, a formally typeset table, one row per dated incident (40 rows), columns for date, address, outcome. The outcome column is typographically present and blank in every row. A closing totals row in tabular figures reads bombings 58, killed 2, convictions 0. Ida B. Wells's quote is pinned in the margin at its date. The emptiness of the column is the entire graphic. Nothing here moves, ever."
+   },
+   {
+    "act": "Act 4. Paperwork",
+    "years": "1921 to 1947",
+    "chapters": "Chapter 7 (The paperwork)",
+    "onScreen": "Article 34 of the realtors' code appears alone on cream at display size, one sentence, its own source card. The Register strip lights the first bar. Then the covenant layer. Parcels on the plate fill with a fine diagonal signature hatch (a pattern sampled from an actual scanned covenant page) as the visitor drags a year slider from 1927 to 1948. If recorded dates per tract are not in the fact registry, the slider degrades honestly to two states, before and at peak. Tapping any hatched parcel opens the actual deed clause scan with the restrictive language highlighted. A covenant is thus SHOWN as what it was, a paragraph of paperwork multiplied across land."
+   },
+   {
+    "act": "Act 5. Public Money",
+    "years": "1933 to 1940",
+    "chapters": "Chapter 8 (Washington adopts the plan)",
+    "onScreen": "The grades ink back in at full strength, and this time every one of the 703 polygons is tappable. Tap a polygon, get its actual surveyor area-description sheet, the scan on one side, the transcribed remarks line pulled out beside it. The 576-sheet reading room lives entirely behind this gesture (detail on demand, not a separate station). One D-grade sheet and one A-grade sheet are pre-opened as a side-by-side pair so the visitor sees the language difference before choosing their own. The Ledger Rail posts the federal dollar entries. The caption states plainly that the private map became federal underwriting policy, under 40 words."
+   },
+   {
+    "act": "Act 6. The Courts",
+    "years": "1937 to 1948",
+    "chapters": "Chapter 9 (The walls crack)",
+    "onScreen": "A 2x2 small multiple of the four Supreme Court cases, Buchanan 1917, Corrigan 1926, Hansberry 1940, Shelley 1948, each rendered in the identical two-lane diagram (claim lane, ruling lane) so the eye compares outcomes structurally. Hansberry's own words are pinned to the Washington Park subdivision on the plate. The Register strip shows the covenant bar terminating at 1948 while the FHA bar runs on and two new bars are about to start. The annotation points at that continuity, not at the victory."
+   },
+   {
+    "act": "Act 7. The Bulldozer and the Contract",
+    "years": "1949 to 1970",
+    "chapters": "Chapters 10 and 11 (The university rebuilds, The color tax)",
+    "onScreen": "Renewal first. 638 building footprints on the plate turn from solid to outline (cleared to void), stepped by project phase with a scrub control, honoring reduced motion. Beneath it, the family grid, one small square per family, about 4,000 marks in a canvas grid roughly 80 wide by 50 tall, labeled 'about 4,000 families, each mark is one, the count is the source's estimate.' The visitor must scroll past all of them. Then the color tax. Two Buyers, one house, side by side, month-by-month payment columns on a shared money axis over the full term. The contract buyer's line runs above the mortgage buyer's; the area between them is shaded and its integral labeled at true scale, $71,000, with the era's median income drawn on the same axis for reference. Dempsey Travis and Clyde Ross are pinned in the margin. A slider scrubs the months."
+   },
+   {
+    "act": "Act 8. The Counterledger",
+    "years": "1968 to 1971",
+    "chapters": "Chapter 12 (The Contract Buyers League)",
+    "onScreen": "The identical Two Buyers chart returns, an encoding the visitor has already learned, now annotated with the CBL payment strike and renegotiations, the gap visibly narrowing where the registry supports it. The win is legible as a change in a chart, not as prose. Ruth Wells speaks from a church basement photograph in the caption drawer. This is the only act whose ledger entry runs in the visitor's favor, and the Ledger Rail marks it."
+   },
+   {
+    "act": "Act 9. The Ledger and the Ground",
+    "years": "2022 to 2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "First, the full plate with every layer toggled on at once, plat, dots, hatch, grades, voids, one dense supergraphic with a layer legend the visitor can flip themselves. Then the plate slides up and off, revealing the wealth climb at true pixel scale, $285,010 white median beside $44,890 Black median, same scale, no truncation; on a phone the visitor scrolls the full height of the white bar to reach its label, and the scroll distance is the encoding. Then the geolocation moment. 'The grade under your feet,' a one-tap lookup printed as a plain receipt card, polygon id, 1940 grade, the surveyor's remark verbatim, source line. Baldwin and King close the margin quotes. The moderated answer wall sits last, after the argument, never interrupting it."
+   }
+  ],
+  "artDirection": "Archival print, not app chrome. Base is the site cream, linework in ink, hairline rules, flat light, zero drop shadows and zero gradients, so the page reads like a museum table case holding a period document. The four HOLC colors (green, blue, yellow, red) are reserved EXCLUSIVELY for grades A through D and appear nowhere else on the page, not in buttons, not in accents, so color is always an honest encoding. Rust (the site accent) is reserved for exactly one meaning, present-day consequence, so when rust appears in the Ledger Rail and the wealth climb the visitor has been trained to read it as 'this is now.' Typography per house style, display serif for the few large statements (Article 34, chapter titles), body face elsewhere, tabular lining figures mandatory in the Docket, the Ledger Rail, and every axis. The Docket is set like a court record, small caps column heads, generous leading, because dignity here is typographic. Data-ink discipline throughout, no icons where a number can stand, no illustration where a scanned document exists. The 15 archival photographs are the only halftone texture on the page and therefore carry enormous weight; they get full-column width, a credit line, and nothing overlaid on them.",
+  "interactionModel": "Two gestures, learned once in chapter 1 and never changed. ADVANCE (tap the next control or step-scroll) moves between the 13 chapters; the map plate persists and only its layers change, so advancing feels like turning acetate overlays on a light table, not loading pages. INSPECT (tap any mark, polygon, dot, hatched parcel, unit square region, or any on-screen number) opens a source card from the 126-fact registry with the figure, the citation, and where applicable the scanned primary document. Detail on demand is literally the fact registry made touchable; the 576 surveyor sheets, the deed clauses, and the docket rows are all behind this one gesture. Two scrub sliders exist (covenant years, Two Buyers months) and one layer-legend toggle set in the finale; nothing on the page ever autoplays. Expected rhythm is one deliberate touch every 20 to 40 seconds for roughly 8 to 12 minutes, with the reading room and files available for visitors who want an hour.",
+  "mobileStrategy": "The plate architecture is designed phone-first. On 390px the map plate is a fixed top pane of 45vh with pinch-zoom and an inset locator; the caption drawer and evidence graphics occupy the bottom 55vh and advance with a persistent prev/next bar (also full keyboard path and step-scroll). The Instrument Register collapses to a five-tick strip 24px tall that expands full-screen on tap. The 703 polygons ship as one simplified-geometry JSON rendered to a single SVG (one path per grade for fills, per-polygon hit layer), well under 300KB; the 4,000-mark family grid renders in canvas, not DOM. The Docket becomes stacked rows that preserve the blank outcome cell per row and the totals row. The wealth climb keeps true scale by using scroll length as the axis, which is native and free on a phone. Surveyor sheet scans and archival photographs lazy-load at tap time only. Reduced-motion visitors lose nothing because nothing essential moves; sliders step discretely instead of tweening. Screen readers get the Docket and Ledger Rail as real HTML tables, every polygon as a named button, and a prose equivalent of each act's graphic in an aria-described summary.",
+  "reuse": [
+   "KEEP the 703-polygon geometry, grade join, and surveyor-sheet linkage from the existing SVG map, but RE-PLATFORM it from the 2.5D relief turntable to a flat orthographic plate. The third dimension and the seven-stop rotation encode nothing; relief here is chartjunk and it costs mobile performance. Flat plate, honest projection, persistent position.",
+   "KEEP the no-motion bombing map and docket nearly intact; it already meets the dignity constraint. Rework only the typography (court-record setting, blank outcome column made structurally visible, totals row) and dock it beneath the persistent plate instead of standing alone.",
+   "KEEP the true-scale wealth climb concept and its pixel-honest ratio; rebind it to scroll length on mobile and move it to the finale position after the all-layers supergraphic.",
+   "KEEP the files reading room (grade filters, permalinks, 576 searchable sheets) as the destination behind polygon taps, demoted from a standalone station to the detail-on-demand layer; its permalink URLs stay for citation.",
+   "REBUILD the two-lane Supreme Court current diagram as a 2x2 small multiple with identical axes so the four cases compare structurally at a glance; the existing single-case version buries the comparison.",
+   "KEEP the geolocation grade lookup and reframe its output as a printed receipt card with polygon id, grade, verbatim remark, and source line.",
+   "DROP the document-flow label blocks and framed evidence stations entirely. The wall of prose is the enemy; every retired paragraph either becomes a caption under 40 words, a pinned marginal quote, or a source card behind a tap.",
+   "BUILD NEW: the Instrument Register (persistent five-bar relay strip), the Ledger Rail (11-entry running account), the covenant hatch layer with deed-clause taps, the Two Buyers paired payment chart with shaded gap, and the 4,000-mark family grid."
+  ],
+  "risks": [
+   "The relay thesis lives or dies on the Instrument Register being readable at 24px collapsed height on a phone; if the five bars are illegible there, the through-line breaks. Mitigate with a one-tap full-screen expansion and a current-date cursor that is legible even in the strip.",
+   "Covenant recording dates per tract may not exist in the fact registry at year granularity; the year slider must be built to degrade to two honest states (pre-1927, peak coverage) rather than interpolating an invented spread. Real data only means the interaction design cannot assume data density.",
+   "703 polygons plus pattern hatches plus a persistent fixed pane is a real mid-range-phone rendering budget; if the plate janks, the whole light-table metaphor collapses. Budget it early, one merged path per grade, canvas for unit grids, no re-mounting the SVG between chapters, and test on an actual mid-range device before polish.",
+   "A persistent fixed pane plus step-advance flirts with scroll-jacking; if native scroll is fought rather than used, mobile visitors will bounce. Use CSS scroll-snap on discrete act sections with the plate position:sticky, never JS-hijacked wheel events.",
+   "The 'about 4,000 families' unit grid must carry its approximation notice visibly or it becomes a false-precision graphic; the label is part of the encoding, not a footnote.",
+   "The finale supergraphic (all layers on) risks illegibility, which would read as chaos rather than accumulation; it needs a designed default layer order and opacity plan, verified in both themes, with the legend toggles as the escape hatch.",
+   "Two scrub sliders and hundreds of tappable marks create a large keyboard-path surface; the accessibility pass must be scheduled as build work, not audit work, especially the polygon hit layer as named buttons."
+  ],
+  "showDontTell": [
+   {
+    "content": "Exclusion was engineered, not accidental (the central argument)",
+    "treatment": "The Instrument Register. Five bars on one shared time axis, permanently on screen, showing that from 1921 to 1970 at least one instrument is always running and every court defeat is followed by a handoff already in progress. Continuity of coverage is visible as overlapping ink before a single sentence claims it. The date cursor riding the strip through all 13 chapters makes the visitor watch the relay happen."
+   },
+   {
+    "content": "58 bombings, 2 dead, 0 convictions (1917-1922)",
+    "treatment": "The Docket. Forty typeset rows with a structurally present, entirely blank outcome column, closed by a totals row in tabular figures. The zero is not stated in prose; it is the white space the visitor scrolls past forty times. Thirty-two fixed dots on the monochrome plate, no motion of any kind."
+   },
+   {
+    "content": "What a covenant is",
+    "treatment": "Not a definition. A fine signature hatch spreading across real parcels on the plate as the visitor drags the year slider, and behind any tap, the actual scanned deed paragraph with the restrictive clause highlighted. A covenant is shown as one paragraph of paperwork multiplied across land."
+   },
+   {
+    "content": "$71,000 average contract overpayment",
+    "treatment": "Two Buyers, one house. Paired month-by-month payment columns on a shared money axis; the shaded area between the two series IS the $71,000, labeled at true scale with the era's median income on the same axis for size reference. The visitor scrubs the months and watches the gap accumulate payment by payment."
+   },
+   {
+    "content": "About 4,000 families displaced by university-era renewal",
+    "treatment": "One mark, one family. A canvas grid of roughly 4,000 small squares the visitor must physically scroll past, labeled as an estimate, paired with 638 building footprints turning from solid to void on the plate. The magnitude is experienced as scroll distance and mark count before the number is read."
+   },
+   {
+    "content": "The 2022 wealth gap, white $285,010 vs Black $44,890",
+    "treatment": "True scale or nothing. Both bars on one pixel scale with no axis break; on a phone the visitor scrolls the full height of the white bar to reach its label. The 6-to-1 ratio is felt in the thumb."
+   },
+   {
+    "content": "The realtors' rule (1921-1950)",
+    "treatment": "Article 34 set alone at display size on an otherwise empty cream screen, one sentence, one source card. The smallness of the instrument against the size of its consequence is the graphic."
+   },
+   {
+    "content": "The private map became federal policy (1933-1940)",
+    "treatment": "The same 703 polygons the visitor already knows become tappable doors to their actual surveyor sheets, with a pre-opened A-grade and D-grade pair side by side so the difference in official language is read off primary paper, not paraphrase."
+   },
+   {
+    "content": "The Contract Buyers League win (1968-1971)",
+    "treatment": "The identical Two Buyers chart returns with the strike and renegotiations annotated and the shaded gap visibly narrowing. Because the visitor already learned this encoding two chapters earlier, the victory is legible as a change in a picture they know."
+   },
+   {
+    "content": "The ground is still moving (2026)",
+    "treatment": "The grade under your feet. A geolocation tap returns a plain receipt card with the visitor's 1940 polygon, grade, and the surveyor's verbatim remark. The 86-year-old paperwork addresses the visitor personally, in the present tense of their own location."
+   }
+  ],
+  "signatureMoments": [
+   {
+    "name": "The Relay (Instrument Register)",
+    "where": "Introduced full-screen in Act 2, then persistent as a strip beneath the plate through every subsequent chapter",
+    "description": "Five horizontal bars on one 1900-2026 axis, one per instrument, with true start and end dates. Full-screen version carries handoff annotations at the joints (for example, covenant enforcement ends 1948 while the FHA bar runs on and contract selling begins 1952). Collapsed version is a 24px strip with a moving date cursor showing which bars are live at the current chapter's date; tapping expands it. Built as one small SVG, dates bound to registry fact ids, cursor position derived from the active act. This is the page's thesis rendered as a single honest Gantt, and it must be the most carefully typeset object on the page."
+   },
+   {
+    "name": "The Empty Column (Docket)",
+    "where": "Act 3, beneath the monochrome plate with its 32 static dots",
+    "description": "An HTML table, real semantics, one row per dated incident (40 rows), columns Date, Address, Outcome, set in court-record style with small caps heads and tabular figures. Outcome cells are rendered, bordered, and empty for every row. Final totals row, bombings 58, killed 2, convictions 0, each figure tapping through to its source card. No animation, no hover effects, no color. Screen readers announce each empty cell as 'no conviction recorded' via an accessible label agreed with the registry wording."
+   },
+   {
+    "name": "Two Buyers, One House",
+    "where": "Act 7 (color tax) and reprised with strike annotations in Act 8 (CBL)",
+    "description": "A paired column chart, months on the x axis across the full purchase term, dollars on a shared y axis, mortgage buyer and contract buyer as two series from the same registry-backed financial model. The area between the series is shaded and labeled with its integral, $71,000, at true scale, with period median household income drawn as a reference line on the same axis. A discrete month scrub (slider plus keyboard arrows) reveals the accumulation; reduced motion gets the final state by default. The Act 8 reprise overlays the payment strike period and the renegotiated terms where the registry supports them, and nowhere else."
+   },
+   {
+    "name": "One Mark, One Family",
+    "where": "Act 7, immediately after the 638 footprints void out on the plate",
+    "description": "A canvas-rendered unit grid, approximately 4,000 squares at 3 to 4px with 2px gutters, about 80 per row on desktop and reflowing on mobile, in a single ink tone. Header label reads 'about 4,000 families, each mark is one; the count is the source's estimate' with the estimate's fact id tappable. The grid is tall enough that the visitor scrolls through it; no interaction per mark is claimed (the marks are anonymous and the design says so), one tap anywhere opens the source card for the displacement estimate."
+   },
+   {
+    "name": "The Climb at True Scale",
+    "where": "Act 9, after the all-layers supergraphic, before the geolocation receipt",
+    "description": "Two vertical bars, white median family wealth $285,010 and Black median family wealth $44,890 (2022), drawn on one shared pixel scale with zero baseline and no break. On mobile the bars exceed the viewport by design and the page scrolls along them; gridlines every $25,000 tick past as the visitor climbs, in rust because this is the present day. Labels sit at each bar's true top. Both figures tap to source cards. No percentage framing, no ratio callout until the visitor has traversed the height; the ratio sentence appears only at the summit."
+   },
+   {
+    "name": "The Grade Under Your Feet",
+    "where": "Final beat of Act 9, above the answer wall",
+    "description": "A single button requesting geolocation (with a typed-address fallback for denial or out-of-area). The result is a receipt-styled card, monospace-adjacent tabular setting: polygon id, 1940 grade with its true HOLC color swatch, the surveyor's remark quoted verbatim from the joined sheet, and the source line. If the visitor is outside graded Chicago, the card says so plainly and offers the Hyde Park polygon the page has been standing on instead. The card has a copy-link permalink into the reading room."
+   }
+  ],
+  "thesis": "One map, held on screen for the entire visit, accumulates the evidence layer by layer the way the exclusion itself accumulated, plat, dots, hatch, grades, voids, until the visitor has personally assembled the machine. A persistent five-bar Instrument Register beneath it shows the relay at true scale, no gap in coverage from 1921 to 1970, so the claim 'engineered, not accidental' is seen as continuous ink before it is ever read as a sentence. Every number is an encoding first (a blank column, a shaded gap, a scroll-length bar, one mark per family) and a tappable source card second, with prose demoted to captions under 40 words.",
+  "throughLine": "Two persistent objects carry the whole page. First, the Plate, the flat 1940 map that never leaves the screen; every chapter draws a layer onto it or peels one off (1853 plat, bombing dots, covenant hatch, HOLC grades, renewal voids), so by the finale the visitor watches all layers stack into one supergraphic they built themselves, and then the plate physically yields to the present-day wealth climb and the grade-under-your-feet receipt. Second, the Instrument Register, the five-bar relay strip introduced in the overture and docked beneath the plate ever after, its date cursor riding forward chapter by chapter until the bars end and only the 2026 ledger remains. The Ledger Rail (11 entries, 1833 to 2026, rust for the present) runs in the margin as the quiet third thread connecting every dollar to the final wealth figures.",
+  "title": "The Plate and the Register",
+  "visitorTakeaway": "A week later the visitor remembers three pictures, not paragraphs. Five overlapping bars with no gap for fifty years, which is what 'engineered' looks like. A court docket with forty entries and an outcome column that is entirely blank. And the length of their own thumb-scroll up a $285,010 bar after standing, via their phone's location, on a block that federal paperwork graded in 1940. The argument survives as retinal memory, exclusion ran continuously, on paper, with public money, and the receipt is dated 2022."
+ },
+ {
+  "arc": [
+   {
+    "act": "Act 1. The Map Room",
+    "years": "1940 (cold open)",
+    "chapters": "Chapter 1 (The map)",
+    "onScreen": "The page opens as a darkened room. No site header, no title, no navigation. The 1940 HOLC map of Chicago's South Side fills the viewport under a soft spotlight vignette, rendered flat and still, its 703 areas in their true grade colors against near-black. One line of wall text sits beneath it, small serif, museum-label size. The visitor taps or keys to any area and a flat-file drawer slides up from the bottom edge carrying the actual scanned surveyor sheet for that polygon, the grade chip, and a button reading 'show what the surveyor wrote' that raises the typed sentence in highlight. Close the drawer, the room is silent again. Only after the visitor scrolls past the map does the exhibit title appear, alone on a dark wall, with one sentence stating the argument. A thin black surveyor's ink line begins at the title and runs down the left margin. It will not stop until 2026."
+   },
+   {
+    "act": "Act 2. Ground Before Paper",
+    "years": "1832 to 1893",
+    "chapters": "Chapters 2 and 3 (The first taking, The fair)",
+    "onScreen": "The walls lighten slightly, the first and brightest room. A single vitrine holds the 1853 plat, presented large on a cream mat with a hairline rule, the Potawatomi treaty stated in two label sentences with its registry mark. Then one full-bleed plate, the 1893 fair photograph, captioned with what the fair built and who it was built without. Two artifacts, four sentences of wall text, nothing else. The ink line runs quietly through the room. This act exists so the visitor knows the ground had a history before the paperwork arrived, and so the compression ahead has something to compress from."
+   },
+   {
+    "act": "Act 3. The Instruments",
+    "years": "1921 to 1970 (stated as a key)",
+    "chapters": "Chapter 4 (Five instruments overture)",
+    "onScreen": "Five plinths in a row, stacked vertically on a phone. Each plinth carries a facsimile fragment of an actual document under glass. Article 34 of the realtors' code. A deed page with its covenant clause. A HOLC area description sheet. An urban renewal ordinance page. A land installment contract. Above each, a brass roman numeral, I through V, with the instrument's name and working dates. The wall text is three plain sentences making the argument explicit, that exclusion was engineered, that these five documents did it, that it ran on paperwork and public money. Each numeral becomes gallery signage. From here on, every room downstream carries the small brass numeral of whichever instrument is operating in it, so the visitor always knows which part of the machine they are watching."
+   },
+   {
+    "act": "Act 4. Removal by Committee, Removal by Dynamite",
+    "years": "1908 to 1922",
+    "chapters": "Chapters 5 and 6 (The purge, The bombing years)",
+    "onScreen": "The corridor compresses. Margins narrow, the wall value drops to the darkest in the exhibit. The purge is told through typeset minutes of the homeowners club, an excerpt in period type inside a plain frame, with a two-sentence label. Then the Docket Wall. Forty dated entries set in a court-record face, one per row, address, date, damage, all sourced. No motion of any kind, no counters, no map animation. The two people killed are named mid-wall in larger type at eye level, with their names given more space than anything else in the room. The final line stands alone with air above and below it, zero convictions. A single static map plate with the 32 placeable incidents sits after the docket as evidence, captioned, not interactive. The visitor exits through a bench, one Ida B. Wells quotation alone on the dark wall, then empty space before the next room. This is the one room where interaction is deliberately withdrawn. The visitor's only act here is to walk past every name at their own pace."
+   },
+   {
+    "act": "Act 5. Paper Does the Work",
+    "years": "1921 to 1948",
+    "chapters": "Chapters 7 and 8 (The paperwork, Washington adopts the plan)",
+    "onScreen": "Numerals I, II, and III hang at the room entrance. The visitor pulls a document sleeve and a facsimile deed opens; a button reading 'read the clause' raises the racial restriction in the deed's own typeface, with the signature and recording stamp visible, because a covenant was signed by a neighbor and filed by a clerk. Then three HOLC drawers, each yielding a real scanned area sheet with the D-grade language highlighted on request. Washington's adoption is shown, not narrated, by two letterheads side by side in one vitrine, the Chicago realtors' rule and the federal underwriting language that repeats it, with the years between them stated in the label. At the moment the federal page appears, the ink line running down the margin turns HOLC D-grade red. It stays red for the rest of the exhibit."
+   },
+   {
+    "act": "Act 6. The Walls Crack",
+    "years": "1937 to 1948",
+    "chapters": "Chapter 9 (Hansberry, Shelley)",
+    "onScreen": "A release room, the wall value rises. Four case folders in a row, Buchanan 1917, Corrigan 1926, Hansberry 1940, Shelley 1948. Opening a folder gives the holding in two sentences and, crucially, a line stating what the ruling did not stop, drawn from the rebuilt two-lane current diagram, restaged here as two labeled channels showing which instruments each decision closed and which kept flowing. Hansberry's folder carries the address on South Rhodes and Lorraine Hansberry's verbatim words as the voice of the room. The label makes the curatorial point without swagger, that the courts cracked the covenant and the money simply changed instruments."
+   },
+   {
+    "act": "Act 7. Clearance",
+    "years": "1949 to 1963",
+    "chapters": "Chapter 10 (The university rebuilds the neighborhood)",
+    "onScreen": "Numeral IV. A figure-ground plate of Hyde Park block footprints fills the frame, every demolished building hairline-outlined. The visitor drags a pull-tab slider between the pre-clearance plate and the post-clearance plate, at their own hand speed, no autoplay. The label states 638 buildings and about 4,000 families with their registry marks, and nothing more, because the plates carry the room. One large archival clearance photograph follows, captioned with street and year. A short bench after, one Dempsey Travis or James Baldwin quotation alone on the wall."
+   },
+   {
+    "act": "Act 8. The Color Tax and the Basement",
+    "years": "1948 to 1971",
+    "chapters": "Chapters 11 and 12 (Contract selling, Contract Buyers League)",
+    "onScreen": "Numeral V. Two receipts hang side by side for the same house, one headed Mortgage Buyer, one headed Contract Buyer. As the visitor scrolls, the line items pay out in step on both receipts, down payment, monthly payment, equity held, eviction exposure, every figure from the Two Buyers model. The totals close $71,000 apart. The difference detaches as a small paper stub that the visitor will meet again in the final room. Then the light warms, the single warmest room in the exhibit. The church basement photograph, large. Ruth Wells and Clyde Ross in their own verbatim words. The payment strike and the win stated in three plain sentences. Martin Luther King Jr.'s words close the room. The exhibit's only victory is staged as its most human room."
+   },
+   {
+    "act": "Act 9. The Ledger and the Ground",
+    "years": "1833 to 2026",
+    "chapters": "Chapter 13 (The ledger and the ground today)",
+    "onScreen": "The final room, and the longest wall. First the 11-entry ledger, 1833 to 2026, set as a single tall account column in the court-record face, each entry dated, dollared, and peopled, the $71,000 stub from Act 8 slotting into its row. Then the True-Scale Climb. The Black median family wealth bar, $44,890, fits inside one viewport. The white median bar, $285,010, requires roughly six more viewports of the visitor's own scrolling to pass, with quiet margin markers noting when the Black median was passed. The scroll itself is the exhibit. Then the personal station, opt-in only. The visitor grants location and receives a small printed archival card, styled as a catalog card, giving the 1940 grade under their feet, the area number, the grade color as the card's edge, and one sourced line from that area's surveyor sheet. The exit holds the visitor book, the moderated answer wall with a single question above it, then the colophon crediting every one of the 126 registry facts, and a plain door labeled Study Room leading to the files reading room annex for those who want the full 576 sheets."
+   }
+  ],
+  "artDirection": "The exhibit abandons the site's cream daylight at a marked threshold and becomes a dark gallery, walls in a near-black warm ink, because the subject is an archive and archives are best read under a lamp. Artifacts sit on cream paper cards with hairline mats, the only surfaces carrying texture, so paper reads as paper against matte walls. Color is rationed with evidentiary discipline. The four HOLC grade colors appear only when they mean a grade, never as decoration, and the sole saturated accent in the entire exhibit is D-grade red, spent almost entirely on the spine line. Typography is two voices, a text serif for wall labels at true museum-didactic scale (short, wide-margined, never more than about sixty words per label) and a typewriter monospace for everything the machine produced, deeds, dockets, receipts, ledgers, catalog cards. Brass hairline rules and roman numerals do the signage. Light is the pacing instrument, exactly as in a physical gallery. Each room shifts the background value a step, brightest for 1832 and 1893, darkest for the bombing years, warm for the church basement, and the visitor feels the rooms change without being told. Photography runs full-bleed as plates with one-line credits. All contrast ratios hold WCAG AA on the dark walls. This direction fits the subject because the machinery was clerical and quiet, and a quiet, dark, precise room makes a typed sentence feel like what it was, a weapon.",
+  "interactionModel": "One gesture family governs the whole exhibit. The visitor pulls things out of the archive. Drawers yield surveyor sheets, sleeves yield deeds, folders yield case files, a pull-tab compares clearance plates, a scroll pays out two receipts, an opt-in tap prints one catalog card. Every station is a labeled button or draggable handle, fully keyboard operable, reversible, and nothing anywhere autoplays. Density is one hands-on station per room, never two demands in the same viewport, so scrolling is the walk and touching is the choice. The bombing room deliberately offers no station at all; withdrawal of interaction is itself the design there. Between stations the visitor simply reads short labels and passes plates, which keeps hands busy roughly once per minute without turning history into a toy.",
+  "mobileStrategy": "The 390px phone is the design master, not an adaptation. The flat-file drawer is natively a bottom sheet on a phone, so the exhibit's core gesture is a standard mobile pattern. Plinths, folders, and receipts stack single-column, and the docket wall is already a single column by nature. The red spine line becomes a 3px rule at the left screen edge doubling as scroll progress, which means the through-line costs no width. The True-Scale Climb is strongest on a phone because the scroll distance is longer and more physical. Engineering budget is strict for mid-range hardware, transform and opacity animation only, IntersectionObserver for room transitions, the map SVG code-split and loaded at the threshold, all 576 sheet scans lazy-loaded per tap with low-quality placeholders, pinned scroll scenes capped at two (map room and receipts) each with a static reduced-motion fallback, and no canvas or WebGL anywhere. Tap targets 44px minimum, and every drawer, folder, and slider is a real button or input reachable by keyboard and named for screen readers.",
+  "reuse": [
+   "SVG 2.5D relief map (703 areas). Keep the geometry, grade data, and hit areas, which are the expensive part, but rebuild the presentation as the still, dark Map Room and drop the 7-stop turntable entirely. A turntable is spectacle; a map under a lamp is evidence.",
+   "Files reading room with grade filters and permalinks. Keep intact but relocate. It leaves the main visitor path and becomes the Study Room annex behind a labeled door at the exit, exactly as a museum keeps its study collection off the gallery floor. Its permalinks are reused by the drawer component.",
+   "True-scale wealth-gap climb. Keep the concept unchanged, since it is already the correct museum move, and restyle it to the gallery palette with margin markers and registry marks.",
+   "No-motion bombing map with docket. Keep the docket data and its restraint, but promote the docket to the wall itself with the memorial typography described above, and demote the map to one static captioned plate. The docket, not the map, is the artifact.",
+   "Two-lane Supreme Court current diagram. Keep, lightly reworked, folded inside the four case folders in Act 6 so it answers the specific question each ruling raises, what kept flowing.",
+   "Client-side geolocation grade lookup. Keep the lookup, restage the output as the printed catalog card in the final room, opt-in, on-device, never stored.",
+   "Moderated visitor answer wall. Keep, restaged as the visitor book at the exit with one question posted above it.",
+   "The current page's label-block and evidence-station layout system. Drop. It is the thing the owner scrolls past, and none of its framing carries into the gallery."
+  ],
+  "risks": [
+   "The dark gallery palette breaks with the site's cream identity. Mitigated by a marked entry threshold (the visitor visibly walks into a room) and by returning to site chrome at the exit, but the owner must approve the divergence explicitly before build.",
+   "Two pinned scroll scenes plus a 703-polygon SVG can stutter on mid-range phones. Mitigated by code-splitting the map, transform-only animation, and static reduced-motion fallbacks, but the map room needs a performance budget test on a real $200 Android before anything else is built.",
+   "Nine rooms is a long walk and fatigue is the failure mode the owner already named. Mitigated by two benches, room-value light changes that make progress feel spatial, and a persistent gallery map (a small tap-to-open floor plan listing the nine rooms with jump links), but Acts 2 and 6 must stay ruthlessly short or the middle sags.",
+   "The drawer metaphor turns cute if overused. Discipline is one gesture family, one station per room, and zero novelty interactions outside it; any reviewer who finds a second gesture family should strike it.",
+   "576 lazy-loaded scans and 15 archival plates are a bandwidth cliff. Every image needs sized variants and low-quality placeholders, and the drawer must render its label text before its scan arrives.",
+   "Geolocation is a privacy risk and a trust risk on this subject. Opt-in only, computed on-device, never transmitted or stored, and the card must say so in its own footer line.",
+   "The bombing room will be judged by descendants. Its docket typography, naming hierarchy, and total absence of interaction must be reviewed by the owner as a standalone sign-off before launch, separate from the rest of the page."
+  ],
+  "showDontTell": [
+   {
+    "content": "58 bombings, 2 dead, 0 convictions (1917-1922)",
+    "treatment": "Not a chart and not a counter. A typeset docket wall the visitor walks past at their own pace, forty sourced rows in a court-record face, the two names given the most space in the room, and the line zero convictions set alone with air around it. The visitor's own slow scroll past every row is the experience of the count."
+   },
+   {
+    "content": "Restrictive covenants (1927-1948)",
+    "treatment": "A facsimile deed the visitor opens by hand, with the racial clause raised in the deed's own typeface beside a visible signature line and recording stamp. The visitor sees that a neighbor signed it and a clerk filed it, which is the entire argument about paperwork made physical."
+   },
+   {
+    "content": "Washington adopts the realtors' plan (1933-1940)",
+    "treatment": "Two letterheads in one vitrine, the Chicago realtors' rule and the federal underwriting language that repeats it, with the gap in years stated in a two-sentence label. The rhyme between the two documents is shown, and at that exact scroll position the margin spine turns from surveyor's ink to D-grade red."
+   },
+   {
+    "content": "638 buildings cleared, about 4,000 families displaced (1949-1963)",
+    "treatment": "A visitor-controlled pull-tab slider between two figure-ground plates, before and after clearance, every demolished footprint hairline-outlined. The visitor erases the blocks with their own hand, at their own speed, and the numbers appear only as a small sourced label."
+   },
+   {
+    "content": "Contract selling and the $71,000 average overpayment (1948-1970)",
+    "treatment": "Two receipts for the same house paying out line by line under the visitor's scroll, mortgage buyer and contract buyer, until the totals close $71,000 apart and the difference tears off as a stub that reappears as a row in the final ledger."
+   },
+   {
+    "content": "The 2026 racial wealth gap, $44,890 vs $285,010",
+    "treatment": "True scale, no chart compression. The Black median bar fits one phone screen; passing the white median bar costs the visitor about six more screens of their own scrolling, with a quiet margin marker where the Black median was left behind. The visitor's thumb does the arithmetic."
+   },
+   {
+    "content": "The five instruments as a deliberate machine",
+    "treatment": "Five real document fragments on five plinths with brass numerals, seen together before any of them is explained, then each numeral recurring as room signage downstream. The visitor learns the machine as a museum key and then watches each part operate in sequence."
+   },
+   {
+    "content": "The 1940 HOLC grades and their surveyor reasoning",
+    "treatment": "The map alone in a dark room as the exhibit's single opening object, and the scanned sheets pulled from drawers area by area, with the typed sentence about race highlighted only when the visitor asks to see it. The grade colors appear nowhere else in the exhibit, so they never dilute into decoration."
+   },
+   {
+    "content": "The ground still moving today",
+    "treatment": "An opt-in catalog card printing the 1940 grade under the visitor's own feet, edge-colored in that grade, quoting one sourced line from that area's sheet. Eighty-six-year-old paperwork addresses the visitor personally, in the present tense of their location."
+   }
+  ],
+  "signatureMoments": [
+   {
+    "name": "The Drawer of Sheets",
+    "where": "Act 1, the Map Room (and reused wherever a HOLC sheet appears)",
+    "description": "Tapping or keying to any of the 703 map areas slides a flat-file drawer up from the bottom edge (a bottom sheet on phones, a side drawer on desktop). The drawer contains the area number, the grade chip in true grade color, the lazily loaded scan of the actual surveyor sheet, and one button labeled 'show what the surveyor wrote' that raises the racially explicit typed line in a highlight the visitor chose to see. Each drawer state is permalinkable, reusing the existing reading-room permalink scheme. Drawer text renders before the scan arrives so the interaction never feels broken on slow networks."
+   },
+   {
+    "name": "The Five Plinths",
+    "where": "Act 3, the Instruments room",
+    "description": "Five document fragments under glass, each on a cream card with a hairline mat, each headed by a brass roman numeral, instrument name, and working dates. Built as one component with five data entries from the fact registry. Each numeral is minted once here and then reused as a small fixed badge at the entrance of every downstream room where that instrument operates, giving the whole page a signage system a developer can implement as a single RoomMark component."
+   },
+   {
+    "name": "The Docket Wall",
+    "where": "Act 4, the bombing years",
+    "description": "Forty rows in a monospace court-record face, each row carrying date, address, damage, and source mark, generated from the 40-incident dataset. Row height, rhythm, and rule weights are fixed; no entrance animation, no counters, no hover states beyond focus outlines. The two victims' names are set in the serif at roughly three times body size mid-wall. The final standalone line reads zero convictions with a full viewport-height of dark wall above and below it. Screen readers receive the wall as a properly headed table with a caption."
+   },
+   {
+    "name": "The Two Receipts",
+    "where": "Act 8, the color tax",
+    "description": "Two receipt columns headed Mortgage Buyer and Contract Buyer for the same house, line items from the Two Buyers model paying out in step as the visitor scrolls (scroll-linked, transform-only, with a static full-length fallback under reduced motion). Totals land $71,000 apart. The difference then renders as a small perforated stub element that reappears, same component, as the matching row in the Act 9 ledger, giving the developer a literal shared component carrying the number forward."
+   },
+   {
+    "name": "The Six-Screen Climb",
+    "where": "Act 9, the ledger room",
+    "description": "A true-scale vertical comparison where one pixel-per-dollar ratio is fixed for both bars. The $44,890 bar completes within the first viewport. The $285,010 bar continues for roughly six more viewports of ordinary scrolling, with small margin markers at the moment the Black median is passed and at each $50,000 rule. No easing, no parallax, nothing to make the distance shorter or prettier. The distance is the exhibit."
+   },
+   {
+    "name": "The Card for Your Ground",
+    "where": "Act 9, exit sequence",
+    "description": "An opt-in button labeled plainly asks for location, computes the containing 1940 polygon on-device with the existing lookup, and renders a catalog card, area number, grade letter, grade color on the card edge, one sourced line from that area's sheet, and a footer line stating the location never left the device. Visitors outside graded Chicago receive a card explaining that their ground was never graded and what that fact itself means, so the moment fails gracefully everywhere on earth."
+   }
+  ],
+  "thesis": "Stage the page as one dark gallery corridor built around a single opening artifact, the 1940 map, and five instruments displayed as real paperwork the visitor pulls from drawers, sleeves, and folders with their own hands. Scroll is the walk through nine rooms whose light levels, compression, and benches are paced like a physical museum, and a single red line drawn down the margin is the handrail that starts as surveyor's ink in 1832, turns HOLC red when Washington adopts the plan, and ends under the visitor's own feet in 2026. The argument is made by artifact hierarchy rather than prose, because the machinery was clerical, and clerical evidence shown at nameplate scale in a quiet room is more damning than any chart.",
+  "throughLine": "The red line, a literal drawn line running down the page margin for the entire exhibit. It begins at the title as a thin black surveyor's ink line (1832, the plat), runs through every room as both timeline spine and scroll progress, turns permanently to HOLC D-grade red at the exact moment the federal letterhead appears in Act 5, thickens past the ledger entries it passes, and terminates in the final room at the visitor's own catalog card, under their own feet, in 2026. It is paired with a second, quieter system, the brass roman numerals I through V minted on the plinths in Act 3 and posted as signage at each downstream room, so the visitor always knows which instrument of the machine is operating. Together the line and the numerals make the owner's demand physical, elements that build off each other and carry the timeline into the present day.",
+  "title": "The Paper Machine",
+  "visitorTakeaway": "A week later the visitor remembers two physical sensations and one sentence. The drawer, that they pulled a real scanned sheet out of the dark and chose to see the typed line about their block. The climb, that their own thumb had to scroll six screens to get from the Black median to the white one. And the sentence the whole room was built to leave behind, that none of this was weather. Five documents did it, clerks filed them, public money paid for them, and the grade typed in 1940 is still under somebody's feet, possibly theirs."
+ }
+]

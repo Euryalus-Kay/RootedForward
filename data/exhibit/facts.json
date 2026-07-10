@@ -19,6 +19,7 @@
       "secondarySources": [],
       "factcheckId": "fc-land-01",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "timeline",
         "walltext"
@@ -64,6 +65,7 @@
       "secondarySources": [],
       "factcheckId": "fc-land-03",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "The treaty gave the Potawatomi three years to leave. The last annuity gathering and farewell dance came in August 1835, and removals continued through the 1838 Trail of Death."
@@ -87,6 +89,7 @@
       ],
       "factcheckId": "fc-land-04",
       "usedBy": [
+        "ground-copy",
         "timeline",
         "walltext"
       ],
@@ -109,6 +112,7 @@
       "secondarySources": [],
       "factcheckId": "fc-land-07",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "Chief Leopold Pokagon's band stayed in southwestern Michigan, buying 874 acres of its own land by 1838. The people who held this lakefront are still here."
@@ -221,6 +225,7 @@
       "secondarySources": [],
       "factcheckId": "fc-fair-02",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "The gates shut for good on October 30, 1893, two days after Mayor Carter Harrison's assassination canceled the closing ceremony. This fact carries no non-Wikipedia source for the closing date, so the Wikipedia citation stays rather than leaving the fact unsourced; its year is the access year."
@@ -243,6 +248,7 @@
       "secondarySources": [],
       "factcheckId": "fc-fair-03",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "Roughly 27 million total admissions is the commonly cited figure, with about 21.5 million paid; period totals are reported between 25.8 and 28 million and the higher totals double-count staff and exhibitors, so the paid figure is the safest precise voicing."
@@ -266,6 +272,7 @@
       ],
       "factcheckId": "fc-fair-04",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "To carry fair crowds the city ordered the Illinois Central to lift its lakefront tracks onto a solid embankment, first ordinance May 1892. The wall of earth and stone split the blocks by the lake into a place apart that people came to call Hyde Park East."
@@ -289,6 +296,7 @@
       ],
       "factcheckId": "fc-fair-09",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "Wells's pamphlet, written with Douglass, Penn, and Barnett, answered Black exclusion from the fair; its chapters document convict leasing, disenfranchisement, and lynching. The fair's organizers had refused Black Americans any part in planning the exposition. The ten thousand copy count follows the Tennessee Historical Society account."
@@ -310,6 +318,7 @@
       "secondarySources": [],
       "factcheckId": "fc-colorline-01",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "timeline",
         "walltext"
@@ -748,6 +757,7 @@
       ],
       "factcheckId": "fc-covenants-03",
       "usedBy": [
+        "ground-copy",
         "machines",
         "walltext"
       ],
@@ -770,6 +780,7 @@
       "secondarySources": [],
       "factcheckId": "fc-covenants-04",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "walltext"
       ],
@@ -983,6 +994,7 @@
       ],
       "factcheckId": "fc-redlining-03",
       "usedBy": [
+        "ground-copy",
         "machines",
         "walltext"
       ],
@@ -1074,6 +1086,7 @@
       "secondarySources": [],
       "factcheckId": "fc-redlining-07",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "Hanchett's sentence reads, Between 1945 and 1959, less than 2 percent of all federally insured home loans went to African Americans. The date range and the base (all federally insured home loans) are the source's own. The subsidy that built the postwar white middle class flowed one way."
@@ -1213,6 +1226,7 @@
       "secondarySources": [],
       "factcheckId": "fc-renewal-01",
       "usedBy": [
+        "ground-copy",
         "machines",
         "timeline",
         "walltext"
@@ -1261,6 +1275,7 @@
       ],
       "factcheckId": "fc-renewal-03",
       "usedBy": [
+        "ground-copy",
         "machines",
         "walltext"
       ],
@@ -1333,6 +1348,7 @@
       "secondarySources": [],
       "factcheckId": "fc-renewal-06",
       "usedBy": [
+        "ground-copy",
         "timeline",
         "walltext"
       ],
@@ -1357,6 +1373,7 @@
       ],
       "factcheckId": "fc-renewal-07",
       "usedBy": [
+        "ground-copy",
         "timeline",
         "walltext"
       ],
@@ -1402,6 +1419,7 @@
       ],
       "factcheckId": "fc-renewal-09",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "46.1 percent of displaced white families relocated within Hyde Park-Kenwood. The figure covers the Hyde Park A and B projects only, not the full 856 acre plan."
@@ -1425,6 +1443,7 @@
       ],
       "factcheckId": "fc-renewal-10",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "16.6 percent of displaced Black families relocated within Hyde Park-Kenwood, against 46.1 percent of white families, in the first projects."
@@ -1447,6 +1466,7 @@
       ],
       "factcheckId": "fc-renewal-11",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "walltext"
       ],
@@ -1532,6 +1552,7 @@
       "secondarySources": [],
       "factcheckId": "fc-contracts-01",
       "usedBy": [
+        "ground-copy",
         "machines",
         "voices",
         "walltext"
@@ -1623,6 +1644,7 @@
       ],
       "factcheckId": "fc-contracts-05",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "machines",
         "walltext"
@@ -1919,6 +1941,7 @@
       "secondarySources": [],
       "factcheckId": "fc-present-05",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "walltext"
       ],
@@ -1941,6 +1964,7 @@
       "secondarySources": [],
       "factcheckId": "fc-present-06",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "walltext"
       ],
@@ -1963,6 +1987,7 @@
       "secondarySources": [],
       "factcheckId": "fc-present-07",
       "usedBy": [
+        "ground-copy",
         "walltext"
       ],
       "notes": "$285,010 against $44,890 is a ratio of about 6.3 to 1. The film states it as more than six to one."
@@ -2135,6 +2160,7 @@
       "secondarySources": [],
       "factcheckId": "fc-people-02",
       "usedBy": [
+        "ground-copy",
         "voices",
         "walltext"
       ],
@@ -2243,6 +2269,7 @@
       "secondarySources": [],
       "factcheckId": "fc-fair-11",
       "usedBy": [
+        "ground-copy",
         "ledger",
         "walltext"
       ],

@@ -1,0 +1,249 @@
+[
+ {
+  "strongest": {
+   "letter": "A",
+   "why": "A is the only concept engineered from the 390px phone outward instead of adapted to it. The argument is present at second two (inline gzipped SVG map in the initial HTML, no JS for first paint, LCP under 2.0s as a CI gate, not a hope), the interaction vocabulary is the two gestures every phone user already owns (scroll plus one labeled tap per chapter), the sole slider is a native range input so keyboard and screen-reader support are free, chapter transitions fire on discrete IntersectionObserver thresholds so a mediocre GPU repaints only at card boundaries, and svh units plus a no-sticky fallback show someone has actually been burned by iOS Safari before. The six-screen wealth climb is the smartest single move in the whole council because scroll distance is the one true-scale axis a phone has and it costs zero rendering. And it is the only concept with an honest single-developer schedule (5-6 weeks, riskiest component built first, week-one continuation gated on a real mid-range Android, turntable and 3D and audio explicitly cut to protect scope). Its stated kill condition (if the 703-polygon sticky stage janks, the concept dies) is real, but it is the only concept that names its own kill condition and sequences the build to hit it in week one."
+  },
+  "biggestBlindSpot": {
+   "letter": "G",
+   "what": "G is the desktop demo my lens exists to kill. It budgets 2.5MB for the first act and up to 6MB fully scrolled on a page whose median visitor is on 4G with 45 seconds of patience; the raking-light cold open means the first two seconds deliver a dark loading frame instead of the argument. Twenty-four prerendered camera plates at two resolutions is a build-time asset pipeline one developer must script, maintain, and re-render every time the map layer changes, which G itself admits is an unmaintainability trap. The delamination, camera dollies, and core-sample rotation are compositor tricks that look gorgeous in a MacBook demo and stutter or read as broken on a $200 Android, and iOS sticky-plus-3D-transform quirks are acknowledged but bet on rather than avoided. Worst of all, the payoff (the core sample beside the wealth bars) requires surviving twelve chapters of scroll-driven cinema that most phone visitors will never finish, and the reduced-motion version (dissolves between locked plates) is a different, flatter exhibit, meaning the accessible build and the flagship build diverge. Every hour spent on plate pipelines is an hour not spent on the docket, the climb, and the fact chips that actually carry the argument."
+  },
+  "missedByAll": "Every concept back-loads the payoff and assumes a linear, top-to-bottom, single-session visitor, which is not who arrives on a phone. The wealth-gap figures, the geolocation reprise, and the answer wall all sit at the bottom of a 10-to-15-minute scroll in all seven concepts; on mobile a large share of visitors leave inside the first two minutes, and in every concept those visitors exit with the treaty and the fair but without the argument. The council should demand a 90-second version of the thesis embedded near the top (the 2026 gap foreshadowed in the cold open or the overture, so an early exit still leaves with 'engineered, five instruments, here is the bill') with the long scroll as deepening rather than the only path to the point. Relatedly, no concept designs for non-linear entry: shared links, the stamp-tray jump links, F's permalinks, and plain browser refresh all land a visitor mid-page in an exhibit whose meaning depends on accumulated state (lit stamps, accrued ledger entries, stacked map layers). Nobody specifies that state must be a pure function of scroll offset so a deep link, a back-button return, or a mid-page refresh renders a coherent scene instead of a blank ledger and unlit seals. One developer will discover this in week four unless it is a requirement in week one.",
+  "stealWorthy": [
+   {
+    "letter": "F",
+    "idea": "The Empty Column docket. A real HTML table of 40 incident rows where the Outcome column is rendered, bordered, and blank in every row, closed by a totals row (58, 2, 0), with screen readers announcing each empty cell as 'no conviction recorded'. It is the cheapest component in the entire council (semantic HTML, zero JS, zero motion), it is phone-perfect by nature, and it is the most dignified and most damning treatment of the bombing chapter anyone proposed. Steal it verbatim."
+   },
+   {
+    "letter": "B",
+    "idea": "Build and phone-test the thesis graphic first. B's rule that the five-bar overlap chart must be proven legible at 390px in week one, before any other build work, or the concept is declared dead, is the correct executor discipline for whichever concept wins. Also steal B's zero-interaction completeness bar: the full argument must read start to finish with no taps at all, so interactions deepen and never gate."
+   },
+   {
+    "letter": "D",
+    "idea": "The graceful out-of-area geolocation card. D is the only concept that designs the geolocation moment for the visitor in Ohio or Lagos: a card stating plainly that their ground was never graded and what that fact itself means, plus an on-device-only footer line. Since most visitors will decline the prompt or be outside graded Chicago, this fallback is the primary path, not the edge case."
+   },
+   {
+    "letter": "E",
+    "idea": "The phone build, the reduced-motion build, and the accessibility build are the same build. E's rule that every scrubbed scene degrades to discrete IntersectionObserver-fired steps, each a fully resolved state, collapses three requirements into one implementation and is the single best engineering economy proposed for a solo developer."
+   },
+   {
+    "letter": "C",
+    "idea": "Pre-render the Hyde Park default answer for the grade lookup so the signature moment works with zero permission prompt, and only offer the visitor's own coordinates as an opt-in question worth answering. This converts the concept's riskiest interaction (a permission dialog) into content that always renders."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "A",
+   "why": "A is the only concept that designs the encodings before the theater. Every number in the brief gets a specific visual form at true scale: the covenant is a signature hatch sampled from a real deed and multiplied across parcels; a displaced family is one anonymous mark in a 4,000-square canvas grid with the estimate label built into the encoding; $71,000 is the shaded integral between two payment series with median income on the same axis for size reference; zero convictions is a structurally present, bordered, empty table column repeated 40 times; the wealth gap is scroll length on a zero-baseline shared pixel scale. It practices layering and separation honestly (the acetate plate accumulates, the four HOLC colors are reserved exclusively for grades, rust means only 'now'), small multiples where comparison matters (the 2x2 court cases fix the existing diagram's buried comparison), and detail on demand as a single learned gesture (every mark opens its fact-registry card, the 576 sheets live behind polygon taps instead of a separate station). Critically, it is the only concept that designs for data absence: the covenant slider degrades to two honest states if per-tract dates do not exist, and the family grid carries its approximation notice as part of the graphic. Its risks are real (the 24px collapsed Register, the finale supergraphic legibility, the fixed-pane rendering budget) but they are engineering risks, not honesty risks, and it names its own mitigations. B, E, and G spend their budget making paper fall and cameras move; A spends it making magnitudes visible at true scale, which is what this argument needs."
+  },
+  "biggestBlindSpot": {
+   "letter": "B",
+   "what": "The core sample, B's climactic image, is a dishonest encoding and the whole concept funnels into it. It draws twelve qualitative strata (a treaty line, a fair footprint, parchment stains) as a vertical column and locks it beside the wealth bars 'at reconciled vertical scale so the sediment column visibly IS the gap.' Strata thicknesses encode nothing; standing them on a shared pixel-per-dollar axis asserts a quantitative equivalence the data does not contain. B even names this as its 'biggest honesty trap' and then keeps it as the finale anyway, promising a caption will explain what the alignment means, which is the definition of a graphic that lies and a label that apologizes. The same instinct runs through the piece: grade-as-literal-elevation makes D areas 'shadowed gouges' (elevation encodes a surveyor's letter grade, a decorative double-encoding), the delamination and raking light are pure theater ink, and the 6MB fully-scrolled budget plus a prerendered 24-keyframe plate pipeline is a maintenance liability the brief's mid-range-phone constraint cannot absorb. B has the strongest single restraint move on the council (the hard-cut still chapter) wrapped in the least honest quantitative frame."
+  },
+  "missedByAll": "All seven concepts converge on the same wealth-gap treatment, scroll distance as the axis, six screens of thumb travel up the white bar, and none of them notices that a traversed length is felt but never seen. The visitor experiences the $285,010 bar serially and at no point holds both bars in one view at true scale, so the single most important comparison in the exhibit is never actually available to the eye as a comparison. The fix is cheap: a persistent true-scale minimap during the climb (both bars complete, a you-are-here cursor), or a summit view that pulls back to show the full pair in one frame, so the felt distance gets confirmed by a seen ratio. Related and also universal: every concept runs an 11-entry dollars-and-people ledger from 1833 to 2026 as a continuous account, and not one addresses nominal versus real dollars. A running strip that lets an 1833 treaty figure sit in the same visual column as a 2022 Fed survey figure implies a summable series across two centuries; without a stated deflator convention (or an explicit 'amounts shown in dollars of their year, not comparable' rule rendered into the design), the exhibit's quiet third thread fails the same sourcing standard the 126-fact registry exists to enforce.",
+  "stealWorthy": [
+   {
+    "letter": "D",
+    "idea": "Build and phone-test the five-bar overlap chart at 390px before any other work, and enforce a written motion budget in code review. D correctly identifies that the overlap chart is the thesis and that the concept is dead if it is illegible one-handed; sequencing the riskiest encoding first is the right build order for whichever concept wins. Its 'exhibit that still works with the projector off' standard is the correct acceptance test for the zero-interaction path."
+   },
+   {
+    "letter": "F",
+    "idea": "The perforated stub. The $71,000 difference physically detaches from the Two Buyers receipts and reappears as the same component slotted into its row of the final ledger. That is a linking mark carrying one number across chapters, exactly how elements should build on each other, and it costs one shared component. Also steal F's graceful out-of-area geolocation failure, a card stating the visitor's ground was never graded and what that fact itself means."
+   },
+   {
+    "letter": "E",
+    "idea": "The cold-open contract: show the finished 1940 map, drain it, then spend the exhibit rebuilding it so the Act 4 grade flood pays off an explicit promise. This is the strongest narrative use of the map asset on the council, and it grafts cleanly onto A's plate architecture as the opening and the chapter-8 beat without importing E's seals theater."
+   },
+   {
+    "letter": "G",
+    "idea": "The rule that no tween may display a value that does not resolve to a fact id, so the covenant spread and clearance erasure only move between dated, registry-sourced snapshot states with the date and figure printed at each state. This turns 'real data only' from a content policy into an animation policy, and every concept with a slider or scrub needs it."
+   },
+   {
+    "letter": "C",
+    "idea": "Performance as CI acceptance criteria, not intent: LCP under 2.0s and TBT under 200ms on a throttled Moto G profile, inline-SVG map under a hard gzipped byte budget, measured on every push. Also steal the sessionStorage replay of the minute-one geolocation result in the finale, which closes the personal loop without a second permission prompt."
+   },
+   {
+    "letter": "B",
+    "idea": "The hard cut into the bombing chapter, deliberately not a tween, with the global scroll system unbound across that DOM range. Using the surrounding motion as the contrast that makes stillness legible is layering and separation applied to time, and it strengthens the dignity constraint in any winning concept."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "D",
+   "why": "Judged from the visitor outward, D is the only concept where every persistent object IS the argument rather than chrome around it. The Instrument Register (five bars, one axis, no gap 1921-1970, date cursor riding it) renders 'engineered, not accidental' as a picture that is on screen the entire visit and legible even to the visitor who taps nothing. Its show-don't-tell inventory is the strongest in the set and the cheapest to build: the structurally blank outcome column in the bombing docket (the zero as white space scrolled past forty times), the shaded integral between two payment series that literally is the $71,000, one canvas mark per displaced family, and scroll-length as the only honest axis a phone has. It reuses the CBL win as a change in an encoding the visitor already learned, which is real element-building, not theming. It is the most buildable of the ambitious concepts (flat orthographic SVG, no 3D, no camera, canvas for the one dense grid, real HTML tables for screen readers) and the most honest (the covenant slider explicitly degrades to two sourced states rather than interpolating invented density). Its stated week-later residue, five overlapping bars, an empty column, a thumb-length gap, is exactly the minimum memory the brief requires, and every piece of it survives at 390px. Its real weaknesses are a fixed 45vh plate flirting with scroll-jack and a drier emotional register than A or B, but both are fixable inside the concept; A's and E's core promises are not fixable if their signature scenes underdeliver."
+  },
+  "biggestBlindSpot": {
+   "letter": "E",
+   "what": "E rebuilds the exact grammar of the thing the owner already killed: a guided camera flying a visitor through a 3D scene on scroll rails. Strip it to base and nothing in the required week-later memory (engineered, five instruments, the receipt) needs a delamination, a raking-light reveal, or a rotating core sample; the 3D is spectacle that encodes nothing the flat layering in C, D, and F doesn't encode cheaper. Its own risks list confesses the two fatal problems: a prerendered 24-keyframe plate pipeline that makes the page unmaintainable the first time the map changes, and the core-sample-beside-wealth-bars finale, which draws qualitative strata at a 'reconciled scale' with dollars, a data-honesty violation on a page whose entire credibility rests on nothing being implied that isn't sourced. It optimizes for the demo reel and the design council, not for the phone visitor, and it puts its most fragile engineering (iOS sticky plus 3D transforms) under its most sacred content. G names this failure mode precisely; E walks into it."
+  },
+  "missedByAll": "All seven inherit three assumptions no one questioned. First, chronology-as-order: every concept banks the receipt (the 2026 wealth gap, the whole point of the exhibit) at the bottom of a 10-to-15-minute chronological scroll, yet the median phone visitor abandons long-scroll pages early; not one concept designs the exit for the visitor who leaves at chapter 3. A prosecutor states the charge and the damages first, then proves them; a structure that shows the 2026 ledger and the finished red map together at second 0 and treats the chronology as the proof would make every abandonment point still deliver the argument. F's two-second inline map comes closest but still defers the money to the finale. Second, one continuous scroll: nobody tested whether five short self-contained instrument sections with a persistent scoreboard would outperform one long walk, even though the council's own fatigue-risk entries all point there. Third, return and share behavior: only C mentions a resume marker and only F mentions sessionStorage; nothing is designed as the shareable unit (the grade-under-your-feet card is begging to be a share object that recruits the next visitor). The council should also notice that A, C, D, F, and G independently converged on the same four primitives (persistent map, five-instrument strip, running ledger, true-scale climb), which is strong evidence those four ARE the design; the real decision is packaging and order, not invention.",
+  "stealWorthy": [
+   {
+    "letter": "A",
+    "idea": "The erase-and-rebuild contract: open on the finished 1940 map, drain it, and spend the exhibit reconstructing it so the visitor recognizes the object at the Act 4 grade flood. It converts 'the map was constructed' from a claim into a witnessed event, and it works grafted onto any of the flat-plate concepts."
+   },
+   {
+    "letter": "B",
+    "idea": "The spine line that turns permanently from surveyor's ink to HOLC D-red at the exact scroll position where the federal letterhead appears. One 3px rule carries the single most important pivot in the argument (private rule becomes public policy) at near-zero rendering cost, plus B's graceful out-of-area geolocation card ('your ground was never graded, and here is what that fact means')."
+   },
+   {
+    "letter": "F",
+    "idea": "Performance as acceptance criteria, not aspiration: the map as inline SVG in initial HTML with the argument in the first caption line, LCP under 2.0s on a throttled Moto G enforced in CI, and the explicit rule that nothing exists on desktop that does not exist on the phone."
+   },
+   {
+    "letter": "G",
+    "idea": "The written zero-motion budget enforced in code review for the bombing chapter, the 'works with the projector off' test as the museum-board defense, and the tap-advance Two Buyers ledger where the visitor prints one year per tap and arrives at $71,000 themselves."
+   },
+   {
+    "letter": "C",
+    "idea": "The discipline that the reduced-motion build, the keyboard build, and the phone build are the same build: every scene is stepped, fully resolved states fired by IntersectionObserver, with a hard rule that no tween may display a value that does not resolve to a fact ID."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "A",
+   "why": "A is the only concept where scroll grammar, evidentiary honesty, and buildability hold simultaneously. Its choreography is specified the way award-tier pieces actually get built: stepped sticky scenes driven by IntersectionObserver, never wheel-hijacked, with the explicit rule that the reduced-motion build, the keyboard build, and the phone build are the same build. That single decision de-risks the whole page. Its persistent graphic is the correct one, a single ground plane that accumulates marks and never erases them, so the 2026 map is visibly the 1853 map plus everything done to it; that is the argument rendered as state, not as copy. The signature moments are genuinely screenshotable and sequenced as a rising line (Rewind teaches the grammar in one gesture, Grade Flood pays off the cold open by re-meeting the same map as a weapon, True-Scale Climb makes the reader's thumb perform the QED). The bombing act is the best-designed silence on the table: the register break only lands because A has established a consistent motion grammar to break, and A is the concept most disciplined about that grammar. Its risk register reads like someone who has shipped this genre (no tween may show a value that does not resolve to a fact ID; the descendant test as a per-pixel review gate). F is the nearest rival with a better cold-open promise, but F suspends scroll at the bombing chapter (a hard accessibility and bounce hazard) and its all-five-seals-stamped-broken finale visually declares the machine defeated, which quietly contradicts the thesis that the ground is still moving. A wins on execution truth, not just concept."
+  },
+  "biggestBlindSpot": {
+   "letter": "C",
+   "what": "C mistakes cinematography for journalism and never notices. The scroll-driven camera (skim, rise, delaminate, descend, plunge, rotate) makes the reader a passenger on a ride, which is precisely the grammar of the game and the demo-reel the owner already killed; the concept even names scroll-jacking as a risk and then builds its entire spine out of camera moves anyway. The prerendered-plate pipeline (24 keyframes, two resolutions, per-act lazy loads, a build-time render script) is a maintenance cliff that dies the first time the map layer changes, and the 6MB fully-scrolled budget is triple everyone else's. Worst, its climax is an honesty violation it flags and then ships regardless: standing a qualitative sediment core beside dollar-denominated wealth bars at a 'reconciled vertical scale' visually asserts that strata heights are dollar quantities. A caption cannot rescue a false visual equation, and on this subject, in front of a museum board and descendants, a beautiful lie at the finale poisons every honest number before it."
+  },
+  "missedByAll": "All seven concepts make the map the protagonist and paperwork the antagonist, and in doing so they reduce every human being in the story to a mark: a dot on a docket plate, a payment stub, one of 4,000 anonymous canvas squares. Not one concept builds a persistent human through-line to parallel the instrument dock/register/seals. The material is sitting right there: nine named voices spanning 1893 to 1968, a Hansberry house with an address, Clyde Ross who appears in both the color-tax and CBL chapters. The council should consider a third persistent strip, a witness thread, where named people enter at their real dates, speak verbatim at their real addresses, and visibly outlive the instruments into the present, so the finale wealth figure lands on a face and a name rather than only on a bar. The Greenwood reconstruction worked because you followed people through the machinery, not just the machinery. Secondarily, no concept designs the shareable unit: per-moment deep links and OG images so that when someone screenshots the True-Scale Climb or the empty outcome column, the sourcing and the URL travel with it. A museum exhibit on the open web spreads by fragment, and every concept leaves that to chance.",
+  "stealWorthy": [
+   {
+    "letter": "B",
+    "idea": "The empty outcome column. Forty docket rows with a structurally present, bordered, entirely blank Outcome cell, closed by a totals row reading convictions 0. The zero as white space the reader scrolls past forty times is the single best editorial-design idea on the table, and it costs nothing to build. Steal it verbatim into A's memorial roll."
+   },
+   {
+    "letter": "B",
+    "idea": "The color law: rust reserved exclusively for present-day consequence, so by the finale the reader has been trained to read rust as 'this is now.' A one-line art-direction rule that makes the wealth climb land as the payoff of a color the page has been teaching for twelve chapters."
+   },
+   {
+    "letter": "F",
+    "idea": "The cold-open contract and the overstamp. Opening on the finished map, draining it, and implicitly promising 'you will watch this get built' gives the whole scroll a narrative debt the Grade Flood repays. And the dated 'UNENFORCEABLE 1948' physically overstamped on a seal renders legal history as visible state change; graft it onto A's stamp dock, but never stamp all five broken, because the ground is still moving."
+   },
+   {
+    "letter": "G",
+    "idea": "The red line. A thin margin spine that begins as black surveyor's ink in 1832 and turns permanently D-grade red at the exact scroll position where the federal letterhead appears, then runs to the visitor's own catalog card in 2026. It is the thesis as a single continuous stroke, doubles as scroll progress, and costs 3px of width on a phone."
+   },
+   {
+    "letter": "E",
+    "idea": "The projector-off test. E's acceptance criterion that the complete argument must read start to finish with zero interactions and zero scroll-linked behavior is the right floor for every concept: build the static, fully legible page first, then let choreography be enhancement. Also steal its written motion budget enforced in code review."
+   },
+   {
+    "letter": "D",
+    "idea": "The performance contract as CI. Inline the simplified 703-polygon SVG in initial HTML so the argument is present at first paint, and gate the build on Lighthouse budgets against a throttled Moto G profile (LCP under 2.0s, route JS under 180KB). D treats phone performance as an acceptance test rather than an aspiration, which is what actually keeps a museum piece alive on mid-range hardware."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "A",
+   "why": "A is the only concept written by someone who thinks in rooms rather than in scenes. It has every discipline a physical gallery lives by and every other concept lacks at least one of. Pacing by light value (brightest for 1832, darkest for the bombings, warm for the church basement) so progress is felt spatially without a progress bar. Compression and release (margins narrow into the bombing corridor, a bench and empty wall after). One gesture family, one station per room, so interaction stays a choice rather than a demand. Artifact hierarchy done correctly: the map is the single opening object, grade colors are never spent on decoration, and the study collection (576 sheets) is moved off the gallery floor behind a labeled door instead of clogging the visitor path. Its bombing room is the best in the council and the only one that understands memorial craft as WITHDRAWAL: interaction is removed, the two names get the most space in the room, and 'zero convictions' gets a full viewport of dark wall as air. The Legacy Museum works this way; no chart in Montgomery is louder than a name. A also survives the phone test (the drawer is natively a bottom sheet, the docket is natively a column, the climb is natively a scroll) and the buildability test (two pinned scenes max, no canvas, no WebGL, one shared RoomMark and stub component carrying numbers forward). Its real weaknesses are the dark-palette divergence from the site, which it at least names and gates on owner approval, and a nine-room walk that will sag if Acts 2 and 6 run long. Those are punch-list risks, not concept risks."
+  },
+  "biggestBlindSpot": {
+   "letter": "D",
+   "what": "D confuses cinema with museum. A gallery's entire ethic is that the visitor moves and the objects hold still; D inverts it with a scroll-driven camera that dollies, skims, delaminates, plunges, and rotates, which makes the visitor a passenger on a ride, and a ride is precisely the grammar of the game and the demo this owner already killed. Three specific failures follow. First, the bombing chapter's 'hard cut' stages the memorial as a beat in the ride's rhythm, a cinematic effect whose power depends on the surrounding spectacle, which means the dead are being used as contrast; a memorial must not need the rest of the show to land. Second, the core sample is an honesty trap D itself admits: drawing qualitative strata of history at 'reconciled scale' beside dollar bars visually asserts an equivalence the fact registry cannot source, and on this site invented visual quantities are a hard-rule violation dressed as a finale. Third, the prerendered 24-keyframe plate pipeline at two resolutions is a build-time asset factory (up to 6MB scrolled) that makes the exhibit unmaintainable the first time the map layer changes, and it spends the whole engineering budget on camera moves rather than on the evidence. Strip the camera from D and what remains is B; the camera is the concept, and the camera is the blind spot."
+  },
+  "missedByAll": "All seven concepts make paperwork the protagonist and demote the nine human beings to marginalia. Wells, Hansberry, Baldwin, Travis, Ross, and Ruth Wells appear as pinned quote cards, bench moments, and caption drawers, always adjacent to a document, never carrying a room themselves. The best physical exhibits on this subject (the Legacy Museum above all) put one face or one voice at the center of at least one room and let the machinery orbit the person; here every concept lets the person orbit the machinery, which quietly repeats the archive's own erasure. The council should require one room where a single human being is the artifact, most naturally Clyde Ross or Ruth Wells in the contract-selling arc, with the paperwork demoted to their evidence. Related and equally missed: every concept designs for the visitor who finishes, and museums know most visitors leave mid-way. Only the cold opens are designed as complete arguments; nobody has answered what the six-minute visitor who exits at chapter 6 carries out the door. Each act needs its own takeaway sentence, the way each gallery room must survive being someone's last room.",
+  "stealWorthy": [
+   {
+    "letter": "C",
+    "idea": "The Empty Column. Rendering the bombing docket as a real table whose Outcome column is structurally present, bordered, and blank in all forty rows, closed by a totals row reading convictions 0. The zero is experienced as white space the visitor passes forty times before it is ever stated. This is the single best show-don't-tell move in the council and should be grafted into whichever docket wall ships."
+   },
+   {
+    "letter": "C",
+    "idea": "The Instrument Register with a riding date cursor. The five-bar overlap Gantt introduced full-screen in the overture, then docked as a persistent strip whose cursor moves chapter by chapter so the visitor watches the relay (no gap 1921 to 1970, handoffs at each court defeat) happen in the chrome. It is the thesis rendered as one honest graphic and it converts 'engineered' from a claim into a picture."
+   },
+   {
+    "letter": "F",
+    "idea": "The Overprint. Reprinting the same small 1940 map plate at the close of each instrument chapter with that instrument's mark added, five stamps deep by the finale with per-layer toggles. Accumulation with zero motion, cheap on any phone, legible to a screen reader as an ordered list, and it gets stronger with repetition instead of decaying like an animation would."
+   },
+   {
+    "letter": "E",
+    "idea": "Performance as curation. The map ships as simplified inline SVG in the initial HTML, no blocking font, no JS for first paint, LCP under 2.0s on a throttled Moto G enforced in CI as an acceptance test. The two seconds after load already contain the argument. Whatever concept ships, this discipline is the difference between a museum and a loading spinner."
+   },
+   {
+    "letter": "G",
+    "idea": "The opening contract. Show the finished 1940 map at second zero, drain it, and promise the visitor they will watch it get rebuilt in front of them, so the Act 4 grade flood pays off an object they already recognize. It is the strongest dramaturgical spine in the council, worth stealing even though G's seals-scoreboard chrome around it (all five instruments stamped 'broken' at the end) should be left behind, since it contradicts the exhibit's own closing claim that the ground is still moving."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "A",
+   "why": "A is the only concept where depth itself carries the argument instead of decorating it. Strata equals accumulation equals the wealth gap; the core sample finale converts twelve chapters of deposited marks into a single vertical object standing at reconciled scale beside the 2022 bars, which is the closest any concept gets to making 'engineered, not accidental' a picture rather than a caption. Its motion discipline is real, not aspirational. One baked light source, subtraction-only demolition, a hard cut (not a tween) into the still bombing chapter with the scroll system literally unbound across that DOM range, and reduced-motion falling back to dissolves between locked plates. Critically, its engineering answer is correct for 2026 phones. Prerendered WebP camera plates crossfaded with transforms, live SVG mounted only in two locked interactive states, no three.js, no per-frame layout. That is exactly how you get cinematic camera language at 60fps on a Moto G, and A is the only concept that both wants the camera and knows how to afford it. D and F share the persistent-ground idea but D risks scroll-jacking with its suspended-time gate and F retreats to flat stepped states; B, C, and G are honest but spatially timid, and E is the rejected document flow wearing gallery lighting. A's stated risks (plate pipeline maintenance, the core-sample dollar-scale honesty trap, iOS sticky+3D quirks) are the right risks, named with mitigations, which is what a buildable bold concept looks like."
+  },
+  "biggestBlindSpot": {
+   "letter": "C",
+   "what": "C mistakes restraint for rigor and, at 390px, quietly rebuilds the exact artifact the owner rejected. Strip the letterpress typography and C is a long single-column document of plates, labels, and static charts that a thumb can flick past in ninety seconds, which is the failure mode the owner named in his own words. Its zero-motion absolutism throws away the one thing this content begs the medium for, witnessing change over time. Covenants spreading parcel by parcel, grades flooding in survey order, footprints subtracting in demolition order are not gimmicks, they are the argument performed, and C reduces every one of them to before/after states the visitor must reconstruct mentally. Its risks section spends more energy prosecuting the rest of the council ('the exhibit that still works with the projector off') than solving its own admitted problem, that the owner asked for dynamic, interactive, graphically focused work and C's answer is to argue him out of his brief. A concept whose primary mitigation is 'this must be argued up front' is a concept that expects to lose the client meeting. The overlap chart and the overprint plates are genuinely strong and worth stealing, but as a whole C is a defensive crouch, designed to be defensible rather than to be seen."
+  },
+  "missedByAll": "Every concept designs for a visitor who arrives at the top and finishes, and that visitor is a minority on mobile. Not one concept designs the abandonment path. Thirteen chapters is a 10 to 15 minute committed scroll, and none of the seven offers chapter-level deep links you could share or cite, a resume state for the returning visitor (F mentions a resume marker in one clause and never designs it), or a legitimate side entrance the way a physical museum lets you walk into any room. Related and equally missed, the 70-second visitor. Most phone sessions will end inside the first two chapters, yet only the cold opens are designed as openings, not as complete miniature arguments; a visitor who bounces after the title card leaves with an image but not the thesis, the five instruments, or the number. The fix is cheap in every concept: make the overture/instrument-spine moment arrive inside the first 60 seconds and make every chapter a stable URL with the persistent chrome (spine, ledger, ground state) reconstructable from the anchor, so a shared link to chapter 11 still carries the accumulated argument. Also missed by all: the ground 'still moving today' is asserted by every finale but shown by none; each ends on the 2022 wealth bars plus a 1940 grade lookup, and nobody designs a present-tense instrument (assessment gaps, current displacement pressure from the ledger's post-1971 entries) so the timeline visibly runs THROUGH 2026 rather than stopping at a receipt dated 2022.",
+  "stealWorthy": [
+   {
+    "letter": "G",
+    "idea": "The empty outcome column. Forty docket rows with the outcome cell rendered, bordered, and blank, closed by a totals row, with screen readers announcing 'no conviction recorded'. It is the single best show-don't-tell move in the council, it costs zero motion, and it belongs inside whichever bombing-chapter treatment ships."
+   },
+   {
+    "letter": "D",
+    "idea": "The promise/payoff spine. Open on the finished 1940 map, drain it on the first scroll while the year counter rewinds, then make the visitor watch the map get re-drawn area by area in chapter 8 with the surveyor's justifying sentence alongside. That contract, stated in ten seconds without instruction, gives the whole exhibit narrative tension no other concept has."
+   },
+   {
+    "letter": "F",
+    "idea": "The data-honesty rule for motion. Tweens may only interpolate between dated, registry-sourced snapshot states, with the date and figure printed at each state, so no animation ever displays a coverage value that does not resolve to a fact ID. This should be adopted as a hard build rule for any animated concept, including A."
+   },
+   {
+    "letter": "E",
+    "idea": "The spine line that turns HOLC D-red at the exact scroll position where the federal letterhead appears, plus room light-value as pacing (darkest for the bombing years, warm for the church basement). Light and a single continuous line doing narrative work is museum craft worth folding into A's one-light world, as is E's perforated $71,000 stub reappearing as a row in the final ledger."
+   },
+   {
+    "letter": "B",
+    "idea": "Performance as acceptance criteria, not aspiration. LCP under 2.0s and TBT under 200ms on a throttled Moto G profile enforced in CI, the map shipped as sub-80KB inline SVG for first paint, and the week-one gate on real mid-range Android hardware. Whatever concept wins, ship it under B's contract."
+   },
+   {
+    "letter": "C",
+    "idea": "Build and phone-test the five-bar overlap chart first, before any chapter, because it is the thesis in one graphic, and annotate each new instrument's arrival in one printed line ('A third instrument is now running') so accumulation is noticed, not hoped for."
+   }
+  ]
+ },
+ {
+  "strongest": {
+   "letter": "G",
+   "why": "G is the only concept that satisfies the owner's demand for a dynamic, connected, interactive exhibit while surviving every historical failure mode this project has already demonstrated. It has the defensive discipline of the static camps (one gesture, discrete IntersectionObserver steps, no pixel-scrubbed scroll, no 3D, no audio, bombing chapter fully static) but does not commit A's error of shipping what is functionally the rejected document-flow page with better typography. Its persistent trio (sticky map stage, stamp tray, ledger strip) genuinely builds along the timeline into the present, and the geolocation result from minute one replayed at the finale is the cheapest, strongest 'ground is still moving' move on the council. Critically, G is the only concept whose risks come with acceptance criteria instead of adjectives: LCP under 2.0s on a throttled Moto G measured in CI, initial JS under 180KB, inline map SVG under 80KB, a no-sticky fallback layout behind a feature check, a week-one real-Android gate on the stage, and a realistic 5-6 week single-developer schedule with the turntable, 3D, and audio explicitly cut to protect it. Every other concept asks the owner to trust the vibe; G asks him to trust a test that runs on every push. When the owner has killed two builds already, the concept that can prove itself in week one is the concept that ships."
+  },
+  "biggestBlindSpot": {
+   "letter": "F",
+   "what": "F is the killed AI-demo game reincarnated with better vocabulary. A scroll-driven camera that skims a relief map 'like a helicopter at dawn', a delamination effect, documents that fly in and press onto the ground, a rotating core sample: this is a demo reel, and the owner has already told us twice what he does to demo reels. Its blind spots compound. First, the 24-plate prerender pipeline at two resolutions is a permanent build-system tax that F itself admits makes the page unmaintainable the moment the map layer changes; that cost is paid forever for motion that decays into gimmick by Act III. Second, the 6MB fully-scrolled asset budget torches the mid-range-phone constraint that every other concept treats as law. Third, and worst, 'grade equals literal elevation' renders D-graded Black neighborhoods as carved depressions revealed by dramatic raking light before the visitor knows anything; that is aestheticizing the harm, exactly the trailer-voice register the house style bans, in the opening ten seconds. Fourth, F concedes in its own risks that the core-sample-beside-wealth-bars finale, its central image, is an honesty trap that implies qualitative strata are dollar quantities. A concept whose signature moment requires a disclaimer explaining what the picture does not mean has failed the 'unmistakable argument' test before build starts. The still bombing chapter inside it is genuinely good, which makes the frame around it more damning, not less: dignity as a pacing valve between camera moves."
+  },
+  "missedByAll": "Every concept spends its entire craft budget on 1832-1970 and then vaults fifty years to a 2022 wealth figure, and that fifty-year jump is exactly where a skeptical visitor, a professor, or a museum board will attack the thesis. The argument is 'the 2026 gap is that machinery's ledger', but no concept designs the causal bridge from 1971 to 2022; the CBL chapter ends, and the next thing on screen is a six-screen scroll up a bar. A hostile reader can concede everything through 1970 and still say 'that was two generations ago', and not one of the seven displays gives the visitor anything to answer with (compounding of denied equity, appraisal gaps, subprime targeting of the same map, the ledger's own post-1971 entries staged as evidence rather than milestones decorating a scroll). The true-scale climb everyone converged on is an assertion of magnitude, not a demonstration of causation, and magnitude without causation is where 'engineered, not accidental' quietly becomes 'a big number happened'. Relatedly, and given that this owner has killed two finished builds, no concept schedules an owner kill-check on the felt register of one finished chapter before the remaining twelve are built; several gate on technical prototypes, none gates on the thing that actually killed the last two versions, which was how it felt.",
+  "stealWorthy": [
+   {
+    "letter": "E",
+    "idea": "The Empty Column. Render the bombing docket as a real HTML table whose Outcome column is structurally present, bordered, and blank in all 40 rows, closed by a totals row. The zero convictions figure is experienced as white space the visitor scrolls past forty times, with dignified screen-reader labeling agreed against registry wording. This is the most powerful no-motion move on the council and should be stolen regardless of which frame wins."
+   },
+   {
+    "letter": "B",
+    "idea": "The Record Stops. Structurally suspend the page's core mechanic at the bombing chapter so that time does not resume until the visitor explicitly taps 'Continue the record'. Making the memorial gesture an interruption of the page's own grammar, one that survives flick-scrolling and keyboard paging, is the only proposal that protects the chapter from scroll-scrubbers rather than merely styling it respectfully."
+   },
+   {
+    "letter": "D",
+    "idea": "Two engineering laws worth adopting verbatim. First, the reduced-motion build, the keyboard build, and the phone build are the same build of discrete resolved states, so accessibility is never a degraded fork. Second, no tween may display a value that does not resolve to a dated registry fact; the covenant spread and clearance erasure may only step between sourced snapshot states. That second rule is the real-data policy extended into motion design, and nobody else wrote it down."
+   },
+   {
+    "letter": "A",
+    "idea": "Build and phone-test the single thesis graphic (the five-instrument overlap chart) at 390px before any other work, with a written motion budget enforced in code review. A's insight that the concept has no spine if that one graphic fails on a phone held in one hand, and that the deadliest contributor is the teammate adding 'just one' scroll-linked fade, is the correct week-one gate for whichever concept wins."
+   },
+   {
+    "letter": "C",
+    "idea": "The descendant sign-off and the graceful nowhere card. The bombing chapter gets a standalone owner review with a single test, would a descendant of the two dead find every pixel respectful, separate from the rest of the launch. And the geolocation lookup fails gracefully everywhere on earth by telling out-of-area visitors their ground was never graded and what that fact itself means, which turns the feature's most common failure state into an argument."
+   },
+   {
+    "letter": "G",
+    "idea": "Performance and voice as CI gates, not intentions. Lighthouse against a throttled Moto G profile blocking merge, sessionStorage replay of the minute-one geolocation result in the finale so the exhibit's first and last beats are the same personal fact, svh units so iOS address-bar collapse cannot jump the stage, and the house copy checklist run as a build gate across all thirteen chapters of new microcopy."
+   }
+  ]
+ }
+]

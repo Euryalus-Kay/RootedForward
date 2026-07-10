@@ -7,6 +7,7 @@ import CommentsSection from "@/components/tours/CommentsSection";
 import RelatedStops from "@/components/tours/RelatedStops";
 import ImmersiveTourExperience from "@/components/immersive/ImmersiveTourExperience";
 import ExhibitShell, { EXHIBIT_DEK, EXHIBIT_TITLE } from "@/components/exhibit/ExhibitShell";
+import GroundShell from "@/components/exhibit/ground/GroundShell";
 import { CITIES, PLACEHOLDER_STOPS } from "@/lib/constants";
 import { getImmersiveTour } from "@/lib/immersive/data";
 import type { TourStop } from "@/lib/types/database";
@@ -181,16 +182,12 @@ export default async function StopDetailPage({ params, searchParams }: PageProps
   if (citySlug === "chicago" && slug === "hyde-park") {
     return <ExhibitShell />;
   }
+  // R9 construction slug: the ground-up redesign builds here, unlinked,
+  // and swaps onto /tours/chicago/hyde-park when the audit loop is clean.
+  // (Before R9 this slug redirected to the live page; the redirect returns
+  // at the swap commit.)
   if (citySlug === "chicago" && slug === "hyde-park-exhibit") {
-    // preserve the query string so shared deep links (?ch=, ?debug=) survive
-    const sp = (await searchParams) ?? {};
-    const qs = new URLSearchParams();
-    for (const [k, v] of Object.entries(sp)) {
-      if (typeof v === "string") qs.set(k, v);
-      else if (Array.isArray(v)) for (const item of v) qs.append(k, item);
-    }
-    const suffix = qs.size > 0 ? `?${qs.toString()}` : "";
-    redirect(`/tours/chicago/hyde-park${suffix}`);
+    return <GroundShell />;
   }
 
   // Immersive tours (2D/3D hybrid routes) share this URL space. They are
