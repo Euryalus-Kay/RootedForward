@@ -872,7 +872,7 @@ body.exhibit-immersive > footer { display: none; }
   color: var(--color-exh-ink-soft);
   max-width: 32rem;
 }
-.ground-scene-slot { margin: 16vh 0; }
+.ground-scene-slot { margin: 16vh 0; min-height: 8vh; }
 
 /* --- the locate card ------------------------------------------------ */
 .ground-locate { max-width: 34rem; }

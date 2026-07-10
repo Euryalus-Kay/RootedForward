@@ -153,7 +153,8 @@
         {
           "id": "a2-docket",
           "role": "scene",
-          "scene": "docket"
+          "scene": "docket",
+          "post": ["red-summer"]
         },
         {
           "id": "a2-wells",
@@ -361,7 +362,8 @@
         {
           "id": "a6-ledger",
           "role": "scene",
-          "scene": "ledgerColumn"
+          "scene": "ledgerColumn",
+          "post": ["closing-totals"]
         },
         {
           "id": "a6-climb",

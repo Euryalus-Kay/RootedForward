@@ -12,6 +12,8 @@ import { readFileSync } from "node:fs";
 import { dispatchClick, exhibitGoto, exhibitState, waitReady } from "./exhibit-lib.mjs";
 
 const EX = "/tours/chicago/hyde-park";
+// R9 construction slug; the swap commit points this at EX and retires the pre-R9 scenarios
+const GROUND = "/tours/chicago/hyde-park-exhibit";
 const DEBUG = `${EX}?debug=1`;
 
 const WALLTEXT = JSON.parse(readFileSync("data/exhibit/walltext.json", "utf8"));
@@ -592,6 +594,154 @@ export const scenarios = [
         state === "held" || state === "migrationPending",
         String(state)
       );
+    },
+  },
+
+  // ================================================================
+  // R9 ground scenarios (The Same Map). These run against the
+  // construction slug until the swap commit flips GROUND to the live
+  // path and retires the pre-R9 scenarios above.
+  // ================================================================
+  {
+    id: "ground-boot",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t, { consoleErrors }) {
+      await page.waitForSelector('[data-testid="ground-root"]', { timeout: 30000 });
+      t.assert("ground root renders", await page.$('[data-testid="ground-root"]'));
+      t.assert("map svg in the document", await page.$("[data-ground-svg]"));
+      const areas = await page.$$eval("[data-aid]", (els) => els.length);
+      t.assert("all areas server-rendered", areas >= 690, `areas=${areas}`);
+      const heads = await page.$$eval(".ground-chapterhead", (els) => els.length);
+      t.assert("thirteen chapter heads", heads === 13, `heads=${heads}`);
+      const title = await page.$eval('[data-testid="ground-intro"] h1', (el) => el.textContent);
+      t.assert("title on the intro", title === "The Ground Keeps Moving", String(title));
+      t.assert("the charge card", await page.$("#a0-charge"));
+      t.assert("register docked", await page.$('[data-testid="ground-register"]'));
+      t.assert("ledger rail", await page.$('[data-testid="ground-ledger-rail"]'));
+      t.assert("spine", await page.$('[data-testid="ground-spine"]'));
+      t.assert("locate anchor", await page.$("#find-your-ground"));
+      t.assert("zero console errors", consoleErrors.length === 0, consoleErrors.join(" | ").slice(0, 300));
+    },
+  },
+  {
+    id: "ground-states",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-stage"]', { timeout: 30000 });
+      const stageAt = async (sel) => {
+        await page.evaluate((s) => document.querySelector(s)?.scrollIntoView({ block: "center", behavior: "instant" }), sel);
+        await new Promise((r) => setTimeout(r, 650));
+        return page.evaluate(() => {
+          const st = document.querySelector('[data-testid="ground-stage"]');
+          return {
+            frame: st?.dataset.frame,
+            grades: st?.dataset.grades,
+            dim: st?.dataset.dim,
+            marks: st?.dataset.marks,
+            era: document.querySelector('[data-testid="ground-era"]')?.textContent ?? "",
+            inked: document.querySelectorAll(".ga.inked").length,
+          };
+        });
+      };
+      const top = await stageAt("#ch0");
+      t.assert("opens on the full 1940 map", top.frame === "citywide" && top.grades === "full" && top.era === "1940", JSON.stringify(top));
+      const r1 = await stageAt("#a0-r1");
+      t.assert("first rewind drains the grades", r1.grades === "none", JSON.stringify(r1));
+      const r3 = await stageAt("#a0-r3");
+      t.assert("rewind lands on 1832", r3.era === "1832", JSON.stringify(r3));
+      const act1 = await stageAt("#ch1");
+      t.assert("act 1 cuts to the township", act1.frame === "hydePark", JSON.stringify(act1));
+      const ch4 = await stageAt("#ch4");
+      t.assert("bombing chapter crops, dims, marks", ch4.frame === "blackBelt" && ch4.dim === "on" && ch4.marks === "on", JSON.stringify(ch4));
+      const f2 = await stageAt("#a3-f2");
+      t.assert("flood inks part of the map in filing order", f2.grades === "flood" && f2.inked > 100 && f2.inked < 694, JSON.stringify(f2));
+      const s2 = await stageAt("#a3-s2");
+      t.assert("the map returns whole", s2.grades === "full", JSON.stringify(s2));
+      const today = await stageAt("#ch11");
+      t.assert("the finale holds the marked map in 2026", today.era === "2026" && today.marks === "on", JSON.stringify(today));
+    },
+  },
+  {
+    id: "ground-ledger",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-ledger-rail"]', { timeout: 30000 });
+      const railAt = async (sel) => {
+        await page.evaluate((s) => document.querySelector(s)?.scrollIntoView({ block: "center", behavior: "instant" }), sel);
+        await new Promise((r) => setTimeout(r, 650));
+        return page.$eval('[data-testid="ground-ledger-rail"]', (el) => el.textContent ?? "");
+      };
+      const top = await railAt("#ch0");
+      t.assert("rail starts unposted", top.includes("Entries post as the story reaches them"), top.slice(0, 60));
+      const act1 = await railAt("#a1-s1");
+      t.assert("the treaty posts first", act1.includes("1833"), act1.slice(0, 60));
+      const fin = await railAt("#a6-ledger");
+      t.assert("all eleven entries posted by the ledger wall", fin.includes("11 of 11"), fin.slice(0, 80));
+    },
+  },
+  {
+    id: "ground-locate",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-locate-button"]', { timeout: 30000 });
+      await page.evaluate(() => document.querySelector("#a0-locate")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 400));
+      const privacy = await page.$eval(".gl-privacy", (el) => el.textContent ?? "");
+      t.assert(
+        "privacy line verbatim",
+        privacy.includes("Uses your device location once, with your permission. Nothing leaves this page."),
+        privacy
+      );
+      await dispatchClick(page, '[data-testid="ground-locate-button"]');
+      await new Promise((r) => setTimeout(r, 2500));
+      const result = await page.$eval('[data-testid="ground-locate-result"]', (el) => el.textContent ?? "");
+      t.assert("headless denial lands the graceful card", result.includes("No position was shared"), result.slice(0, 60));
+    },
+  },
+  {
+    id: "ground-mobile",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    viewport: { width: 390, height: 844 },
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-root"]', { timeout: 30000 });
+      const anchors = ["#ch0", "#a0-charge", "#ch4", "#a3-f2", "#ch11"];
+      for (const a of anchors) {
+        await page.evaluate((s) => document.querySelector(s)?.scrollIntoView({ block: "center", behavior: "instant" }), a);
+        await new Promise((r) => setTimeout(r, 500));
+        const overflow = await page.evaluate(
+          () => document.scrollingElement.scrollWidth - document.scrollingElement.clientWidth
+        );
+        t.assert(`no horizontal overflow at ${a}`, overflow <= 1, `overflow=${overflow}px`);
+      }
+      const pane = await page.$eval('[data-testid="ground-stage-pane"]', (el) => getComputedStyle(el).position);
+      t.assert("stage pane is sticky on phones", pane === "sticky", pane);
+    },
+  },
+  {
+    id: "ground-motion",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+      await page.reload({ waitUntil: "networkidle0" });
+      await page.waitForSelector('[data-testid="ground-root"]', { timeout: 30000 });
+      const off = await page.$('[data-motion="off"]');
+      t.assert("reduced motion flips the page to resolved states", off);
+      await page.evaluate(() => document.querySelector("#a3-f2")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 500));
+      const inked = await page.evaluate(() => document.querySelectorAll(".ga.inked").length);
+      t.assert("flood states resolve identically without motion", inked > 100, `inked=${inked}`);
     },
   },
 ];
