@@ -744,4 +744,161 @@ export const scenarios = [
       t.assert("flood states resolve identically without motion", inked > 100, `inked=${inked}`);
     },
   },
+
+  {
+    id: "ground-docket",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-docket"]', { timeout: 30000 });
+      const rows = await page.$$eval('[data-testid="scene-docket"] tbody tr', (els) => els.length);
+      t.assert("all forty appendix incidents listed", rows === 40, `rows=${rows}`);
+      const srs = await page.$$eval('[data-testid="scene-docket"] tbody .sr-only', (els) =>
+        els.filter((e) => (e.textContent ?? "").includes("No conviction recorded")).length
+      );
+      t.assert("every outcome cell announces no conviction recorded", srs === 40, `srs=${srs}`);
+      const foot = await page.$eval('[data-testid="scene-docket"] tfoot', (el) => el.textContent ?? "");
+      t.assert("totals row carries the three counts", foot.includes("58") && foot.includes("2") && foot.includes("0"), foot.slice(0, 120));
+      const factChips = await page.$$eval('[data-testid="scene-docket"] tfoot [data-fact-id]', (els) => els.length);
+      t.assert("totals resolve through the registry", factChips >= 3, `chips=${factChips}`);
+      const truncated = await page.$$eval('[data-testid="scene-docket"] td', (els) =>
+        els.filter((e) => e.className.includes("truncate")).length
+      );
+      t.assert("addresses never truncate", truncated === 0, `truncate=${truncated}`);
+      t.assert("Wells closes the act in her own words", await page.$('[data-testid="scene-wellsClose"]'));
+    },
+  },
+  {
+    id: "ground-paper",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-article34"]', { timeout: 30000 });
+      const art = await page.$eval('[data-testid="scene-article34"]', (el) => el.textContent ?? "");
+      t.assert("article 34 speaks of a character of property or occupancy", /character of property|occupancy/i.test(art), art.slice(0, 120));
+      await page.evaluate(() => document.querySelector('[data-testid="scene-deedFacsimile"]')?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 500));
+      const before = await page.$eval('[data-testid="deed-plain-toggle"]', (el) => el.getAttribute("aria-expanded"));
+      await dispatchClick(page, '[data-testid="deed-plain-toggle"]');
+      await new Promise((r) => setTimeout(r, 300));
+      const after = await page.$eval('[data-testid="deed-plain-toggle"]', (el) => el.getAttribute("aria-expanded"));
+      t.assert("plain-terms toggle flips aria-expanded", before === "false" && after === "true", `${before}->${after}`);
+      const described = await page.$eval('[data-testid="scene-deedFacsimile"]', (el) => el.textContent ?? "");
+      t.assert("deed panel admits it describes, not quotes", /described, not quoted/i.test(described), described.slice(0, 160));
+    },
+  },
+  {
+    id: "ground-cases",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-casesReroute"]', { timeout: 30000 });
+      await page.evaluate(() => document.querySelector('[data-testid="scene-casesReroute"]')?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 500));
+      for (const id of ["buchanan", "corrigan", "hansberry", "shelley"]) {
+        t.assert(`case node ${id}`, await page.$(`[data-testid="case-${id}"]`));
+      }
+      const detail = await page.$eval('[data-testid="case-detail"]', (el) => el.textContent ?? "");
+      t.assert("detail card never empty", detail.length > 80, `len=${detail.length}`);
+      await dispatchClick(page, '[data-testid="case-buchanan"]');
+      await new Promise((r) => setTimeout(r, 300));
+      const swapped = await page.$eval('[data-testid="case-detail"]', (el) => el.textContent ?? "");
+      t.assert("selecting a case swaps the card", swapped.includes("Buchanan"), swapped.slice(0, 80));
+    },
+  },
+  {
+    id: "ground-clearance",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-clearance"]', { timeout: 30000 });
+      await page.evaluate(() => document.querySelector('[data-testid="scene-clearance"]')?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 600));
+      const pressed = await page.$$eval('[data-testid="scene-clearance"] [aria-pressed]', (els) =>
+        els.map((e) => e.getAttribute("aria-pressed"))
+      );
+      t.assert("before/after control is a real toggle pair", pressed.length === 2 && pressed.includes("true") && pressed.includes("false"), JSON.stringify(pressed));
+      const firstCaption = await page.$eval('[data-testid="scene-clearance"] figcaption', (el) => el.textContent ?? "");
+      const off = await page.$('[data-testid="scene-clearance"] [aria-pressed="false"]');
+      await off.click();
+      await new Promise((r) => setTimeout(r, 500));
+      const secondCaption = await page.$eval('[data-testid="scene-clearance"] figcaption', (el) => el.textContent ?? "");
+      t.assert("toggling swaps the dated state", firstCaption !== secondCaption, secondCaption.slice(0, 80));
+      t.assert("one mark one family canvas with a text equivalent", await page.$('[data-testid="scene-clearance"] canvas[role="img"]'));
+    },
+  },
+  {
+    id: "ground-twobuyers",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-twoBuyers"]', { timeout: 30000 });
+      await page.evaluate(() => document.querySelector('[data-testid="scene-twoBuyers"]')?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 600));
+      const slider = await page.$('[data-testid="gtb-slider"]');
+      t.assert("the page's one slider is a native range input", slider && (await page.$eval('[data-testid="gtb-slider"]', (el) => el.tagName === "INPUT" && el.type === "range")));
+      const restExtra = await page.$eval('[data-testid="gtb-extra"]', (el) => el.textContent ?? "");
+      t.assert("rest state already shows the full color tax", /71,0\d\d/.test(restExtra), restExtra);
+      const verdictChip = await page.$eval('[data-testid="scene-twoBuyers"]', (el) => !!el.querySelector('[data-fact-id="contracts.avg_overpayment_71000"]'));
+      t.assert("the study's average carries its source", verdictChip);
+      await page.$eval('[data-testid="gtb-slider"]', (el) => {
+        const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        setter.call(el, "36");
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await new Promise((r) => setTimeout(r, 400));
+      const scrubbed = await page.$eval('[data-testid="gtb-extra"]', (el) => el.textContent ?? "");
+      t.assert("scrubbing replays the years", scrubbed !== restExtra, scrubbed);
+    },
+  },
+  {
+    id: "ground-finale",
+    milestone: "R9",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="scene-bridge"]', { timeout: 30000 });
+      for (const row of ["instrument", "grades", "moving"]) {
+        t.assert(`bridge row ${row}`, await page.$(`[data-testid="bridge-row-${row}"]`));
+      }
+      const ledgerRows = await page.$$eval('[data-testid="scene-ledgerColumn"] [data-testid^="ledger-row-"]', (els) => els.length);
+      t.assert("eleven entries in the account column", ledgerRows === 11, `rows=${ledgerRows}`);
+      const convention = await page.$eval('[data-testid="scene-ledgerColumn"]', (el) => el.textContent ?? "");
+      t.assert("dollar convention stated", convention.includes("Dollars of their year"), convention.slice(0, 120));
+      const skipHref = await page.$eval('[data-testid="climb-skip"]', (el) => el.getAttribute("href"));
+      t.assert("the climb offers a skip", skipHref === "#a6-receipt", String(skipHref));
+      const summit = await page.$eval('[data-testid="climb-summit"]', (el) => el.textContent ?? "");
+      t.assert("summit holds both figures", summit.includes("285,010") && summit.includes("44,890"), summit.slice(0, 140));
+      await page.evaluate(() => document.querySelector('[data-testid="scene-receipt"]')?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 500));
+      const receipt = await page.$eval('[data-testid="scene-receipt"]', (el) => el.textContent ?? "");
+      t.assert(
+        "receipt re-offers the lookup with the privacy line when nothing is stored",
+        receipt.includes("Uses your device location once, with your permission. Nothing leaves this page."),
+        receipt.slice(0, 160)
+      );
+      t.assert("study room door", await page.$('[data-testid="ground-study-door"]'));
+      const attribution = await page.$eval('[data-testid="colophon-attribution"]', (el) => el.textContent ?? "");
+      t.assert("Mapping Inequality attribution verbatim", attribution.includes("Mapping Inequality") && attribution.includes("CC BY-NC 4.0"), attribution.slice(0, 120));
+    },
+  },
+  {
+    id: "ground-files-room",
+    milestone: "R9",
+    tags: ["ground"],
+    route: `${GROUND}#room-files:1595`,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-files-room"]', { timeout: 45000 });
+      const room = await page.$eval('[data-testid="ground-files-room"]', (el) => el.textContent ?? "");
+      t.assert("permalink opens the reading room on the sheet", room.includes("A-35"), room.slice(0, 120));
+      await dispatchClick(page, '[data-testid="ground-files-close"]');
+      await new Promise((r) => setTimeout(r, 500));
+      t.assert("back button closes the room", !(await page.$('[data-testid="ground-files-room"]')));
+    },
+  },
 ];

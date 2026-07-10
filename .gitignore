@@ -63,3 +63,4 @@ public/media/hyde-park/video/hyde-park-museum.mp4
 # OSM/CARTO tile cache for the locator basemap (regenerable)
 data/tiles/
 public/media/hyde-park/video/deepdive-*.mp4
+.r9shots/
