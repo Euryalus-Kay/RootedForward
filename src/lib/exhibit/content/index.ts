@@ -169,6 +169,16 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
   },
   ch1: {
     afterSection: {
+      1: [
+        {
+          kind: "figure",
+          src: "/media/hyde-park/img/land-cook-county-1853-plat.jpg",
+          alt: "Hand-colored 1851 survey map of Cook and DuPage counties, gridded into townships, with the young city of Chicago on the lakeshore.",
+          creditKey: "land-cook-county-1853-plat",
+          caption:
+            "An 1851 map of Cook County by the land agent James H. Rees. The grid that turned treaty land into salable lots had reached this shore.",
+        },
+      ],
       2: [{ kind: "station", station: "layer-slider" }],
     },
   },
@@ -289,6 +299,28 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
     ],
   },
   ch8: {
+    afterSection: {
+      3: [
+        {
+          kind: "figure",
+          src: "/media/hyde-park/img/urban-renewal-3.jpg",
+          alt: "The twin modernist slabs of University Apartments standing in the median of 55th Street in Hyde Park.",
+          creditKey: "urban-renewal-3",
+          caption:
+            "What replaced the demolished blocks. University Apartments, raised in the early 1960s in the cleared center of 55th Street.",
+        },
+      ],
+      4: [
+        {
+          kind: "figure",
+          src: "/media/hyde-park/img/dd-urban-renewal-2.jpg",
+          alt: "Shoppers and traffic under the elevated tracks on 63rd Street in Woodlawn in 1973.",
+          creditKey: "dd-urban-renewal-2",
+          caption:
+            "63rd Street in Woodlawn, one neighborhood south, in July 1973. The National Archives caption reads, “Once one of Chicago’s busy thoroughfares, 63rd Street has changed with the character of the city.”",
+        },
+      ],
+    },
     tail: [{ kind: "door", roomId: "bulldozer", label: "The Bulldozer" }],
   },
   ch9: {
@@ -300,7 +332,17 @@ export const CHAPTER_LAYOUTS: Partial<Record<ChapterId, ChapterLayout>> = {
   },
   ch10: {
     afterSection: {
-      2: [{ kind: "quote", voiceId: "martin-luther-king" }],
+      2: [
+        { kind: "quote", voiceId: "martin-luther-king" },
+        {
+          kind: "figure",
+          src: "/media/hyde-park/img/dd-urban-renewal-3.jpg",
+          alt: "A man at his newsstand at 22nd and South State Streets in 1973, round public housing towers rising behind him.",
+          creditKey: "dd-urban-renewal-3",
+          caption:
+            "A newsstand at 22nd and South State Streets, July 1973. John H. White photographed Black Chicago for the federal DOCUMERICA project in the years the League's trials ended.",
+        },
+      ],
     },
     tail: [{ kind: "door", roomId: "counter", label: "The Counter-Machine" }],
   },

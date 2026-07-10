@@ -36,6 +36,9 @@ export const scenarios = [
       t.assert("how-to-read line", await page.$('[data-testid="how-to-read"]'));
       const begin = await page.$eval('[data-testid="begin-link"]', (el) => el.getAttribute("href"));
       t.assert("begin anchor points at ch0", begin === "#ch0", begin);
+      const ground = await page.$eval('[data-testid="find-ground-link"]', (el) => el.getAttribute("href"));
+      t.assert("find-ground link points at the locate control", ground === "#find-your-ground", String(ground));
+      t.assert("locate anchor exists on the page", await page.$("#find-your-ground"));
       t.assert("no mode gate", !(await page.$('[data-testid="mode-guided"]')));
       t.assert("debug api mounted", await page.evaluate(() => !!window.__exhibit));
       t.assert("stations() lists the flow's stations", await page.evaluate(() => {
@@ -185,9 +188,17 @@ export const scenarios = [
       );
       t.assert("four case documents in ch7", cases === 4, `cases=${cases}`);
       t.assert("no case stamping controls", !(await page.$('[data-testid="case-stamp-button"]')));
-      // ch11 renders the full table before the gap station
-      const rows = await page.$$eval('[data-testid="ledger-table"] tbody tr', (els) => els.length);
-      t.assert("full record table renders all entries", rows === 11, `rows=${rows}`);
+      // ch11 renders the full record timeline before the gap station
+      const rows = await page.$$eval('[data-testid="ledger-table"] [data-entry-year]', (els) => els.length);
+      t.assert("full record timeline renders all entries", rows === 11, `rows=${rows}`);
+      const yearsInOrder = await page.$$eval('[data-testid="ledger-table"] [data-entry-year]', (els) =>
+        els.map((el) => Number(el.getAttribute("data-entry-year")))
+      );
+      t.assert(
+        "record timeline runs oldest to newest",
+        yearsInOrder.every((y, i) => i === 0 || y >= yearsInOrder[i - 1]),
+        yearsInOrder.join(",")
+      );
       const order = await page.evaluate(() => {
         const tail = document.querySelector("#ch11");
         if (!tail) return null;

@@ -48,14 +48,23 @@ export default function ExhibitHeader() {
         {WALL_OPENING.howToRead}
       </p>
 
-      <a
-        href="#ch0"
-        data-testid="begin-link"
-        className="exh-plat mt-10 inline-flex min-h-12 items-center gap-3 border border-exh-ink bg-exh-linen px-6 text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink transition-colors duration-200 hover:bg-exh-ink hover:text-exh-linen"
-      >
-        Begin
-        <span aria-hidden="true">&darr;</span>
-      </a>
+      <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a
+          href="#ch0"
+          data-testid="begin-link"
+          className="exh-plat inline-flex min-h-12 items-center gap-3 border border-exh-ink bg-exh-linen px-6 text-xs font-semibold uppercase tracking-[0.25em] text-exh-ink transition-colors duration-200 hover:bg-exh-ink hover:text-exh-linen"
+        >
+          Begin
+          <span aria-hidden="true">&darr;</span>
+        </a>
+        <a
+          href="#find-your-ground"
+          data-testid="find-ground-link"
+          className="exh-plat inline-flex min-h-12 items-center text-xs font-semibold uppercase tracking-[0.2em] text-exh-ink-soft underline decoration-exh-ink/30 underline-offset-4 transition-colors hover:text-exh-ink"
+        >
+          Find the ground under you
+        </a>
+      </div>
     </header>
   );
 }

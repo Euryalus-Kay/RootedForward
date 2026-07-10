@@ -543,7 +543,7 @@ export default function HolcMapStation({ framing = "ch0" }: HolcMapStationProps)
         )}
 
       {/* ---------------- the ground under you ---------------- */}
-      <div className="mt-3 flex flex-wrap items-center gap-3">
+      <div id="find-your-ground" className="mt-3 flex scroll-mt-24 flex-wrap items-center gap-3">
         <button
           type="button"
           data-testid="holc-map-locate"

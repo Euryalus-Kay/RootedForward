@@ -15,7 +15,7 @@ import AdvisoryPlate from "./AdvisoryPlate";
 import FigureBlock from "./FigureBlock";
 import StationBlock, { StationIntro } from "./StationBlock";
 import { LedgerTable, RecordLines } from "./RecordBlock";
-import CasesPanel from "./stations/CasesPanel";
+import CasesFlow from "./stations/CasesFlow";
 import MachinesPanel from "./stations/MachinesPanel";
 import DoorCard from "./rooms/DoorCard";
 import VoiceCard from "./shared/VoiceCard";
@@ -99,7 +99,7 @@ function ExtraBlock({
       return (
         <div data-testid="case-documents">
           {intro && <StationIntro id="case-documents" intro={intro} />}
-          <CasesPanel />
+          <CasesFlow />
         </div>
       );
     }

@@ -205,9 +205,14 @@ export function TimelineSpine() {
               type="button"
               data-testid="spine-era-chip"
               aria-label="Choose a chapter"
-              className="absolute right-1.5 top-1/2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 rounded-sm border border-exh-ink/20 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:-inset-1 after:content-[''] md:hidden"
+              className="absolute right-1.5 top-1/2 flex min-h-10 -translate-y-1/2 items-center gap-2 rounded-sm border border-exh-ink/20 bg-exh-linen px-2.5 shadow-[0_1px_3px_rgba(28,26,23,0.12)] after:absolute after:-inset-1 after:content-[''] md:hidden"
             >
-              <span className="exh-mono text-[11px] text-exh-ink">{displayEraOf(activeId)}</span>
+              <span className="flex flex-col items-start leading-tight">
+                <span className="exh-plat text-[8px] font-semibold uppercase tracking-[0.14em] text-exh-ink-soft">
+                  {EXHIBIT_FLOW.indexOf(activeId) + 1} of {EXHIBIT_FLOW.length}
+                </span>
+                <span className="exh-mono text-[11px] text-exh-ink">{displayEraOf(activeId)}</span>
+              </span>
               <span aria-hidden="true" className="text-[8px] text-exh-ink-soft">
                 &#9650;
               </span>

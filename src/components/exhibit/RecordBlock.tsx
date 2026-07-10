@@ -58,6 +58,9 @@ export function RecordLines({ chapterId }: { chapterId: ChapterId }) {
   );
 }
 
+/* the span the bottom rail prints as "the machinery at full power" */
+const MACHINE_SPAN = { start: 1921, end: 1968 };
+
 export function LedgerTable() {
   const entries = [...LEDGER].sort((a, b) => a.year - b.year);
   return (
@@ -66,68 +69,50 @@ export function LedgerTable() {
         The record, in full
       </p>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-exh-ink-soft">
-        Every entry the chapters above posted, in one place. Each figure carries its citation.
+        Every entry the chapters above posted, in one line from the treaty to today. Each figure
+        carries its citation. <span className="text-exh-red">Red years</span> fall inside 1921 to
+        1968, when the machinery ran at full power.
       </p>
 
-      {/* below md, the record reads as stacked entries, no side scroll */}
-      <ul className="mt-4 space-y-3 md:hidden">
-        {entries.map((e) => (
-          <li
-            key={e.entryId}
-            data-testid={`ledger-card-${e.entryId}`}
-            className="border border-exh-ink/25 bg-exh-linen-deep/30 p-3"
-          >
-            <p className="text-sm leading-snug text-exh-ink">
-              <span className="exh-mono text-exh-ink-soft">{e.year}</span>
-              <span aria-hidden="true"> &middot; </span>
-              {e.label}
-            </p>
-            <div className="mt-1.5 flex flex-col gap-1">
-              {refsOf(e).map((ref) => (
-                <FactValue key={ref} id={ref} size="sm" />
-              ))}
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      {/* md and up, the full table */}
-      <div className="mt-4 hidden overflow-x-auto border border-exh-ink/25 md:block">
-        <table className="w-full min-w-[36rem] border-collapse text-left">
-          <thead>
-            <tr className="border-b border-exh-ink/25 bg-exh-linen-deep/50">
-              <th className="exh-plat px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-                Year
-              </th>
-              <th className="exh-plat px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-                Entry
-              </th>
-              <th className="exh-plat px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
-                Values
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((e) => (
-              <tr
-                key={e.entryId}
-                data-testid={`ledger-row-${e.entryId}`}
-                className="border-b border-exh-ink/15 last:border-b-0 align-top"
+      <ol className="mt-6 border-l-2 border-exh-ink/25 pl-0">
+        {entries.map((e, i) => {
+          const hot = e.year >= MACHINE_SPAN.start && e.year <= MACHINE_SPAN.end;
+          return (
+            <li
+              key={e.entryId}
+              data-entry-year={e.year}
+              data-testid={`ledger-entry-${e.entryId}`}
+              className={i === entries.length - 1 ? "relative pb-1 pl-6 sm:pl-8" : "relative pb-8 pl-6 sm:pl-8"}
+            >
+              <span
+                aria-hidden="true"
+                className={
+                  hot
+                    ? "absolute -left-[7px] top-[7px] h-3 w-3 rounded-full border-2 border-exh-red bg-exh-linen"
+                    : "absolute -left-[7px] top-[7px] h-3 w-3 rounded-full border-2 border-exh-ink/70 bg-exh-linen"
+                }
+              />
+              <p
+                className={
+                  hot
+                    ? "exh-mono text-lg font-semibold leading-none text-exh-red"
+                    : "exh-mono text-lg font-semibold leading-none text-exh-ink"
+                }
               >
-                <td className="exh-mono px-3 py-2.5 text-sm text-exh-ink">{e.year}</td>
-                <td className="px-3 py-2.5 text-sm leading-snug text-exh-ink">{e.label}</td>
-                <td className="px-3 py-2.5">
-                  <div className="flex flex-col gap-1">
-                    {refsOf(e).map((ref) => (
-                      <FactValue key={ref} id={ref} size="sm" />
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                {e.year}
+              </p>
+              <p className="mt-1.5 max-w-[52ch] font-display text-base leading-snug text-exh-ink md:text-lg">
+                {e.label}
+              </p>
+              <p className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
+                {refsOf(e).map((ref) => (
+                  <FactValue key={ref} id={ref} size="sm" />
+                ))}
+              </p>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
