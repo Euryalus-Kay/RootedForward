@@ -2,10 +2,11 @@
 /* ------------------------------------------------------------------ */
 /*  The Ledger Rail, a thin fixed band at the bottom edge posting the  */
 /*  11 dated dollars-and-people entries as the story reaches them.     */
-/*  Rust because rust means now; tabular figures; the finale scene     */
-/*  renders the full account column in the flow, this rail only ever   */
-/*  shows the latest posted line and the running count. Below 480px    */
-/*  the entry's shortLabel carries the line; nothing ever truncates.   */
+/*  Historical year stamps print in ink; only a present-day entry      */
+/*  goes rust, because rust means now. Tabular figures; the finale     */
+/*  scene renders the full account column in the flow, this rail only  */
+/*  ever shows the latest posted line and the running count. Below     */
+/*  480px the entry's shortLabel carries the line; nothing truncates.  */
 /* ------------------------------------------------------------------ */
 import ledgerData from "../../../../../data/exhibit/ledger.json";
 import { useGround } from "../engine/GroundProvider";
@@ -39,8 +40,15 @@ export default function LedgerRail() {
         <>
           {/* keyed by entryId so a new posting remounts the spans and the
               one-shot wet-ink settle plays (R10, the one arrival grammar);
-              disabled under data-motion="off" in the CSS */}
-          <span key={`y-${latest.entryId}`} className="glr-year exh-mono">
+              disabled under data-motion="off" in the CSS. Historical
+              years print in ink; the stamp goes rust only when the
+              posted entry is the present day, because rust means now
+              (R10 audit, rust-ledger-years). */}
+          <span
+            key={`y-${latest.entryId}`}
+            className="glr-year exh-mono"
+            data-now={latest.year >= 2026 ? "on" : "off"}
+          >
             {latest.year}
           </span>
           <span key={`l-${latest.entryId}`} className="glr-label" data-sign={latest.sign}>

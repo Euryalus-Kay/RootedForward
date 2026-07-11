@@ -6,11 +6,13 @@
 /*  Docked mode (R10 rebuild) is a legible strip riding under the      */
 /*  Stage: a year rail with decade hairlines and labeled ticks, five   */
 /*  full-span ink lanes with boxed initials, THE UNION BAND (the       */
-/*  computed boolean union of the five true intervals, one darker bar  */
-/*  carrying the no-year-off label), and an ink caret riding the       */
-/*  story's year that turns rust only at 2026, because rust means      */
-/*  present day. The whole strip is a link to the register wall.       */
-/*  Below 480px the lanes hide and the union band carries the read.    */
+/*  computed boolean union of the five true intervals, split at the    */
+/*  last closure year into a solid bar carrying the no-year-off label  */
+/*  and a hatched open continuation for whatever still runs), and an   */
+/*  ink caret riding the story's year that turns rust only at 2026,    */
+/*  because rust means present day. The whole strip is a link to the   */
+/*  register wall. Below 480px the lanes hide, the union band carries  */
+/*  the read, and a chevron at the right end marks the strip as a tap. */
 /*                                                                     */
 /*  Wall mode keeps the studied five-row layout and adds the baton-    */
 /*  pass verticals (each closure drops a hairline to a bar actually    */
@@ -20,7 +22,7 @@
 /*  with dated annotations; the axis runs to 2026 because the ground   */
 /*  is still moving.                                                   */
 /* ------------------------------------------------------------------ */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { allMachines } from "@/lib/exhibit/machines";
 import type { MachineDef } from "@/lib/exhibit/types";
 import { machineTitle } from "../legacy";
@@ -97,6 +99,60 @@ function unionSpans(machines: MachineDef[]): Array<[number, number]> {
   return merged;
 }
 
+/*  The drawn union splits at the last closure year (the largest
+    offYear among the ended instruments, computed from machines.json,
+    never hardcoded). Solid ink carries the no-year-off claim only up
+    to that year; whatever runs past it is drawn as an open, hatched
+    continuation, so the drawn mass ends exactly where the label says
+    it does (R10 audit, wall-bar-overrun). The continuation exists only
+    while some machine's offYear is null or reaches the axis end. */
+interface UnionDrawing {
+  solid: Array<[number, number]>;
+  open: Array<[number, number]>;
+  splitYear: number;
+  running: MachineDef[];
+}
+function splitUnion(machines: MachineDef[]): UnionDrawing {
+  const union = unionSpans(machines);
+  const ended = machines.filter((m) => m.offYear != null && m.offYear < AXIS_END);
+  const running = machines.filter((m) => m.offYear == null || m.offYear >= AXIS_END);
+  const splitYear = ended.length
+    ? Math.max(...ended.map((m) => m.offYear as number))
+    : AXIS_END;
+  const solid: Array<[number, number]> = [];
+  const open: Array<[number, number]> = [];
+  for (const [on, off] of union) {
+    if (running.length > 0 && off > splitYear) {
+      if (on < splitYear) solid.push([on, splitYear]);
+      open.push([Math.max(on, splitYear), off]);
+    } else {
+      solid.push([on, off]);
+    }
+  }
+  return { solid, open, splitYear, running };
+}
+
+function solidLabelText(solid: Array<[number, number]>): string {
+  const first = solid[0];
+  const last = solid[solid.length - 1];
+  return first && last ? `NO YEAR OFF, ${first[0]} TO ${last[1]}` : "";
+}
+
+/* plat-caps count words for the open continuation's label */
+const COUNT_WORDS = ["ONE", "TWO", "THREE", "FOUR", "FIVE"];
+function countWord(n: number): string {
+  return COUNT_WORDS[n - 1] ?? String(n);
+}
+
+/*  Instruments whose residue is the instrument itself returning to the
+    market, drawn on the wall as an open segment from residueSince to
+    the axis end. The year is structured data (residueSince on the
+    contract entry in machines.json, which also carries the sourcing
+    evidence ref, contracts.post_2008_return). This set only names
+    which residue means a return, because the deed's dead language and
+    the map's grade lines linger without the instrument running. */
+const RETURN_OF = new Set(["contract"]);
+
 /* module-memoized so the array identity is stable across renders
    (the wall's measurement effect depends on it) */
 let ORDERED_CACHE: MachineDef[] | null = null;
@@ -120,9 +176,19 @@ export function useOrderedMachines() {
 function DockedStrip() {
   const { cursorYear } = useGround();
   const machines = useOrderedMachines();
-  const union = unionSpans(machines);
+  const { solid, open, splitYear, running } = splitUnion(machines);
   const cursorAt = pct(Math.max(AXIS_START, Math.min(AXIS_END, cursorYear)));
   const atNow = cursorYear >= AXIS_END;
+  /* years before the rail's start get no caret; the year chip stands
+     alone, flush left, instead of clamping three different years onto
+     the 1900 tick (R10 audit, mobile-caret-clamp) */
+  const preRail = cursorYear < AXIS_START;
+  const runNames = running.map((m) => m.plainName.toLowerCase()).join(" and ");
+  const runningSentence = running.length
+    ? ` ${running.length === 1 ? "One instrument" : "Instruments"}, ${runNames}, ${
+        running.length === 1 ? "has" : "have"
+      } never switched off and still ${running.length === 1 ? "runs" : "run"} today.`
+    : "";
 
   /* only label a machine date while the data still carries it */
   const machineYears = new Set(machines.flatMap((m) => [m.onYear, m.offYear ?? AXIS_END]));
@@ -152,7 +218,10 @@ function DockedStrip() {
       className="ground-register-docked"
       data-testid="ground-register"
       data-now={atNow ? "on" : "off"}
-      aria-label={`Instrument register, five instruments on one timeline, ${AXIS_START} to ${AXIS_END}. From 1921 to 1970 no year passed with every instrument off. The story is at ${cursorYear}. Jump to the full register.`}
+      data-prerail={preRail ? "on" : "off"}
+      aria-label={`Instrument register, five instruments on one timeline, ${AXIS_START} to ${AXIS_END}. From ${
+        solid[0]?.[0] ?? AXIS_START
+      } to ${splitYear} no year passed with every instrument off.${runningSentence} The story is at ${cursorYear}. Jump to the full register.`}
     >
       <span className="gr-track" aria-hidden="true">
         {machines.map((m, i) => (
@@ -183,21 +252,41 @@ function DockedStrip() {
           </span>
         ))}
         <span className="gr-uband">
-          {union.map(([on, off]) => (
+          {solid.map(([on, off]) => (
             <span
-              key={on}
+              key={`s${on}`}
               className="gr-ubseg"
               style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
             />
           ))}
-          {/* the plate rides inside the band at its right end, clear of
-              the 1952 initials and of the caret through the story years */}
-          <span
-            className="gr-ublabel exh-plat"
-            style={{ right: `calc(${100 - pct(union[union.length - 1]?.[1] ?? AXIS_END)}% + 8px)` }}
-          >
-            NO YEAR OFF, 1921 TO 1970
-          </span>
+          {open.map(([on, off]) => (
+            <span
+              key={`o${on}`}
+              className="gr-ubseg"
+              data-open="on"
+              style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
+            />
+          ))}
+          {/* each plate rides inside its own segment at the right end,
+              clear of the 1952 initials and of the caret through the
+              story years; the solid plate anchors on the solid ink only */}
+          {solid.length ? (
+            <span
+              className="gr-ublabel exh-plat"
+              style={{ right: `calc(${100 - pct(solid[solid.length - 1][1])}% + 8px)` }}
+            >
+              {solidLabelText(solid)}
+            </span>
+          ) : null}
+          {open.length ? (
+            <span
+              className="gr-ublabel exh-plat"
+              data-open="on"
+              style={{ right: `calc(${100 - pct(open[open.length - 1][1])}% + 8px)` }}
+            >
+              {countWord(running.length)} STILL RUNNING
+            </span>
+          ) : null}
         </span>
         <span className="gr-baseline" />
         {minorDecades.map((y) => (
@@ -214,9 +303,15 @@ function DockedStrip() {
         <span className="gr-cursor" style={{ left: `${cursorAt}%` }} />
         <span
           className="gr-yearfig exh-mono"
-          style={{ left: `clamp(16px, ${cursorAt}%, calc(100% - 16px))` }}
+          style={{ left: preRail ? "0%" : `clamp(16px, ${cursorAt}%, calc(100% - 16px))` }}
         >
           {cursorYear}
+        </span>
+        {/* phone-only affordance so the strip reads as a tap, not a
+            static graphic (R10 audit, dock-tap-hint); sits in the
+            right margin where the year chip can never reach */}
+        <span className="gr-taphint" aria-hidden="true">
+          {"›"}
         </span>
       </span>
     </a>
@@ -235,6 +330,7 @@ interface BatonLine {
 function RegisterWall() {
   const machines = useOrderedMachines();
   const union = unionSpans(machines);
+  const { solid, open, splitYear, running } = splitUnion(machines);
   const relayRef = useRef<HTMLDivElement | null>(null);
   const bandRef = useRef<HTMLDivElement | null>(null);
   const [batons, setBatons] = useState<BatonLine[]>([]);
@@ -259,7 +355,10 @@ function RegisterWall() {
         if (!fromEl || !toEl) continue;
         const a = fromEl.getBoundingClientRect();
         const b = toEl.getBoundingClientRect();
-        const x = a.right - rect.left;
+        /* nudged a few pixels into the bar's own ink so the vertical
+           drops in clear space, not through the end-anchored court
+           annotations (R10 audit, wall-annotation-collisions) */
+        const x = a.right - rect.left - 4;
         if (b.top >= a.bottom) {
           next.push({ x, top: a.bottom - rect.top, height: b.top - a.bottom, dir: "down" });
         } else if (a.top >= b.bottom) {
@@ -343,16 +442,45 @@ function RegisterWall() {
                     width: `${pct(m.offYear ?? AXIS_END) - pct(m.onYear)}%`,
                   }}
                 />
+                {/* the return of the trade, drawn: an open segment from
+                    residueSince to the axis end, same hatch language as
+                    the union continuation, so "returned after 2008" no
+                    longer floats with nothing drawn (R10 audit,
+                    s-row-2008-undrawn); the year and its sourcing live
+                    in machines.json */}
+                {RETURN_OF.has(m.machineId) && m.residueSince != null ? (
+                  <span
+                    className="gr-wall-return"
+                    data-testid="gr-wall-return"
+                    aria-hidden="true"
+                    style={{
+                      left: `${pct(m.residueSince)}%`,
+                      width: `${pct(AXIS_END) - pct(m.residueSince)}%`,
+                    }}
+                  />
+                ) : null}
                 <span className="gr-wall-years exh-mono" style={{ left: `${pct(m.onYear)}%` }}>
                   {m.onYear} to {m.offYear ?? "now"}
                 </span>
                 {END_NOTES[m.machineId] ? (
                   <span
                     className="gr-wall-endnote exh-mono"
+                    data-side={END_NOTES[m.machineId].at >= 1985 ? "right" : "left"}
                     style={
-                      END_NOTES[m.machineId].at >= 1985
-                        ? { right: `${100 - pct(END_NOTES[m.machineId].at)}%` }
-                        : { left: `${pct(END_NOTES[m.machineId].at)}%` }
+                      {
+                        "--gr-note-x": `${pct(END_NOTES[m.machineId].at)}%`,
+                        /* the phone layout right-aligns each phrase under
+                           the end of the ink it annotates (the return
+                           segment's end when one is drawn) */
+                        "--gr-note-right": `${
+                          100 -
+                          pct(
+                            RETURN_OF.has(m.machineId) && m.residueSince != null
+                              ? AXIS_END
+                              : (m.offYear ?? AXIS_END)
+                          )
+                        }%`,
+                      } as CSSProperties
                     }
                   >
                     {END_NOTES[m.machineId].text}
@@ -379,27 +507,57 @@ function RegisterWall() {
         ref={bandRef}
         aria-hidden="true"
       >
-        {union.map(([on, off]) => (
+        {solid.map(([on, off]) => (
           <span
-            key={on}
+            key={`s${on}`}
             className="gr-wall-ubseg"
+            style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
+          />
+        ))}
+        {open.map(([on, off]) => (
+          <span
+            key={`o${on}`}
+            className="gr-wall-ubseg"
+            data-open="on"
             style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
           />
         ))}
         <span
           className="gr-wall-ublabel exh-plat"
-          style={{ left: `calc(${pct(union[0]?.[0] ?? AXIS_START)}% + 10px)` }}
+          data-open="off"
+          style={
+            {
+              "--gr-lx": `calc(${pct(solid[0]?.[0] ?? AXIS_START)}% + 10px)`,
+              "--gr-sx": `${pct(solid[0]?.[0] ?? AXIS_START)}%`,
+            } as CSSProperties
+          }
         >
-          NO YEAR OFF, 1921 TO 1970
+          {solidLabelText(solid)}
         </span>
+        {open.length ? (
+          <span
+            className="gr-wall-ublabel exh-plat"
+            data-open="on"
+            style={{ "--gr-lx": `calc(${pct(splitYear)}% + 10px)` } as CSSProperties}
+          >
+            {countWord(running.length)} INSTRUMENT{running.length === 1 ? "" : "S"} STILL RUNNING
+          </span>
+        ) : null}
       </div>
       <p className="sr-only">
-        Taken together the five spans cover {unionWords} with no year uncovered. From 1921 to 1970
-        no year passed with every instrument off.
+        Taken together the five spans cover {unionWords} with no year uncovered. The solid band
+        marks {solid[0]?.[0] ?? AXIS_START} to {splitYear}, when no year passed with every
+        instrument off.
+        {running.length > 0
+          ? ` An open band continues from ${splitYear} to now, because ${running
+              .map((m) => m.plainName.toLowerCase())
+              .join(" and ")} never switched off.`
+          : ""}
       </p>
       <p className="gr-wall-note">
-        From 1921 to 1970 there was <strong>no year the machinery was off</strong>. When a court
-        closed one instrument, another was already running.
+        From {solid[0]?.[0] ?? AXIS_START} to {splitYear} there was{" "}
+        <strong>no year the machinery was off</strong>. When a court closed one instrument, another
+        was already running.
       </p>
     </figure>
   );

@@ -524,11 +524,27 @@ const jacksonParkHole = (() => {
     });
   return rings.length ? ringsToD([rings[0]], 1.2) : "";
 })();
+// Binga's block: a small round hole at the recorded coordinate of the
+// five bombings of Jesse Binga's home at 5922 South Park Ave (block
+// precision per the geocoding notes); derived from the incident rows,
+// not drawn by hand
+const bingaMark = bombings.incidents.find(
+  (i) => i.geo && i.geo.frame && /5922/.test(String(i.address ?? ""))
+);
+const bingaBlock = bingaMark
+  ? (() => {
+      const { x, y } = bingaMark.geo.frame;
+      const r = 12;
+      return `M${(x - r).toFixed(1)} ${y.toFixed(1)}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0Z`;
+    })()
+  : "";
+
 const veilHoles = {
   lawndale: caHole(["NORTH LAWNDALE"]),
   woodlawn: caHole(["WOODLAWN"]),
   jacksonPark: jacksonParkHole,
   township: cityBoundary,
+  bingaBlock,
   // the same hole in the Hyde Park frame's own coordinates (the veil
   // works on both sheets; a1-fair lifts the fairgrounds)
   jacksonParkHp: (hpLayers.parks ?? [])
@@ -622,6 +638,23 @@ const focus = {
   const x1 = Math.max(...parts.map((b) => b.x + b.w)) + 60;
   const y1 = Math.max(...parts.map((b) => b.y + b.h)) + 60;
   focus.southSide = { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+// the flood's three camera stations (audit flood-stations): f1 frames
+// the September 1939 batch's true extent, f2 pulls to the crop's
+// south-east half, f3 lands wide; each derives from the data
+{
+  const firstIds = new Set(dated.filter(([, ym]) => ym === 193909).map(([id]) => id));
+  const rings = frames.areas
+    .filter((a) => firstIds.has(a.id))
+    .flatMap((a) => a.rings.citywide ?? [])
+    .filter(ringInFrame);
+  focus.floodFirst = ringsBBox(rings);
+  focus.southHalf = {
+    x: Math.round(cityCrop.x + cityCrop.w * 0.24),
+    y: Math.round(cityCrop.y + cityCrop.h * 0.34),
+    w: Math.round(cityCrop.w * 0.76),
+    h: Math.round(cityCrop.h * 0.66),
+  };
 }
 
 const out = {

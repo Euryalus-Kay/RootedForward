@@ -46,9 +46,16 @@ const MULTIPLE_WORD: Record<number, string> = {
 };
 const MULTIPLES = [2, 3, 4, 5, 6].filter((n) => n * BLACK_USD < WHITE_USD);
 
-/* the white column's warm paper tone; the page's linen never reads
-   as a blank gutter the way pure white did */
-const PAPER_BAR: CSSProperties = { backgroundColor: "#F7F1E3" };
+/* the white-median column is built of the same countable paper
+   slivers the act-6 towers stack ($10,000 a sliver over there; here
+   the material simply fills the height), so every mid-climb viewport
+   frames material instead of near-invisible whitespace (audit
+   climb-empty) */
+const PAPER_BAR: CSSProperties = {
+  backgroundColor: "#F7F1E3",
+  backgroundImage:
+    "repeating-linear-gradient(to top, transparent 0px 2.2px, color-mix(in srgb, var(--color-exh-ink) 42%, transparent) 2.2px 3px)",
+};
 
 /* you-are-here resolution for the minimap, discrete steps only */
 const SEGMENTS = 12;

@@ -72,6 +72,30 @@ function labelFromFactAsOf(asOf?: string): string | null {
   return m ? `Sheet ${m[1].toUpperCase()}` : null;
 }
 
+
+/** the sheets abbreviate filing dates three ways ("Jan'40",
+ *  "9-14-39", "November 1, 1939"); the cards print one long form so
+ *  paired evidence never mixes registers (audit plate-caption-camera) */
+const FILED_MONTHS: Record<string, string> = {
+  jan: "January", feb: "February", mar: "March", apr: "April", may: "May",
+  jun: "June", jul: "July", aug: "August", sep: "September", oct: "October",
+  nov: "November", dec: "December",
+};
+function filedLong(raw: string): string {
+  const s = raw.trim();
+  const abbrev = s.match(/^([A-Za-z]{3,9})\.?\s*'?(\d\d)$/);
+  if (abbrev) {
+    const m = FILED_MONTHS[abbrev[1].slice(0, 3).toLowerCase()];
+    if (m) return `${m} 19${abbrev[2]}`;
+  }
+  const numeric = s.match(/^(\d{1,2})-(\d{1,2})-(\d\d)$/);
+  if (numeric) {
+    const m = Object.values(FILED_MONTHS)[Number(numeric[1]) - 1];
+    if (m) return `${m} ${Number(numeric[2])}, 19${numeric[3]}`;
+  }
+  return s;
+}
+
 function areaLabel(a: DescArea): string {
   const des = sheetDesignation(a);
   if (des) return `Area ${des}`;
@@ -213,7 +237,7 @@ export default function GradeFlood(_props: SceneProps) {
                 {date ? (
                   <>
                     {" "}
-                    &middot; <span className="exh-mono normal-case tracking-normal">Filed {date}</span>
+                    &middot; <span className="exh-mono normal-case tracking-normal">Filed {filedLong(date)}</span>
                   </>
                 ) : null}
               </p>
@@ -343,7 +367,7 @@ export default function GradeFlood(_props: SceneProps) {
                         {" "}
                         &middot;{" "}
                         <span className="exh-mono normal-case tracking-normal">
-                          Filed {area.security_grade_fields.date}
+                          Filed {filedLong(area.security_grade_fields.date)}
                         </span>
                       </>
                     ) : null}

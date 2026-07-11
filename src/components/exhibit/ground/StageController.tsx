@@ -49,10 +49,13 @@ function strataFor(era: string): { grid: boolean; fabric: boolean; parks: boolea
   };
 }
 
+/* the hydePark sheet is labeled by the place, not "township"; the
+   drawn boundary is the modern community-area record (the colophon
+   says so) and the historic township was far larger (audit) */
 const FRAME_LABEL: Record<string, string> = {
   citywide: "CHICAGO, THE SURVEYED CITY",
   blackBelt: "THE BLACK BELT",
-  hydePark: "HYDE PARK TOWNSHIP",
+  hydePark: "HYDE PARK",
 };
 
 export default function StageController({
@@ -93,8 +96,9 @@ export default function StageController({
   useEffect(() => {
     const root = wrapRef.current;
     const svg = root?.querySelector<SVGSVGElement>("[data-ground-svg]");
-    if (!root || !svg) return;
-    const cam = createCamera(svg, (flying) => {
+    const group = svg?.querySelector<SVGGElement>("[data-camera]");
+    if (!root || !svg || !group) return;
+    const cam = createCamera(svg, group, (flying) => {
       root.setAttribute("data-tween", flying ? "on" : "off");
     });
     cameraRef.current = cam;
@@ -124,8 +128,35 @@ export default function StageController({
       );
       const rScreen = Math.min(Math.max(3.2 * kx, 4.5), 9);
       root.style.setProperty("--gmark-r", `${Math.round((rScreen / kx) * 10) / 10}px`);
+      /* counter-scale from the MEET scales, not raw widths; the home
+         crop is height-constrained in the pane, so a width ratio
+         oversized close-crop type by up to 44 percent (audit) */
       const home = homeBox(stage.frame);
-      root.style.setProperty("--gtext-k", `${Math.round((to.w / home.w) * 1000) / 1000}`);
+      const kHome = Math.min(
+        (svg.clientWidth || 1) / home.w,
+        (svg.clientHeight || 1) / home.h
+      );
+      const gtextK = Math.round((kHome / kx) * 1000) / 1000;
+      root.style.setProperty("--gtext-k", `${gtextK}`);
+      /* a label whose text would cross the crop edge hides for this
+         camera (clipped type reads as an unfinished map); width is
+         estimated from the plat face's ~0.66em advance */
+      const pad = 8;
+      for (const label of Array.from(
+        root.querySelectorAll<SVGTextElement>("[data-city-labels] text")
+      )) {
+        const name = label.getAttribute("data-name") ?? "";
+        const base = label.dataset.role === "hero" ? 34 : label.dataset.role === "water" ? 26 : 30;
+        const estW = name.length * base * 0.66 * gtextK;
+        const lx = Number(label.getAttribute("x"));
+        const ly = Number(label.getAttribute("y"));
+        const out =
+          lx < to.x + pad ||
+          lx + estW > to.x + to.w - pad ||
+          ly < to.y + base * gtextK + pad ||
+          ly > to.y + to.h - pad;
+        label.setAttribute("data-camclip", out ? "out" : "in");
+      }
       /* the drawn content's box inside the svg element (meet
          centering), so HTML pinned to true geography lands on the
          drawing, not the pane; --gsv-* are svg-relative */
@@ -138,14 +169,18 @@ export default function StageController({
     };
 
     const to = resolveBox(svg);
+    let cutTimer = 0;
     if (stage.frame !== lastFrame.current) {
       /* a different document laid on the desk; always a cut, staged
-         by CSS as a brief paper settle (none under reduced motion) */
+         by CSS as a brief paper settle (none under reduced motion).
+         The attribute clears after the settle so its transition
+         suppression never leaks into a later tilt. */
       lastFrame.current = stage.frame;
       cam.go(to, { instant: true });
       root.removeAttribute("data-sheetcut");
       void root.offsetWidth;
       root.setAttribute("data-sheetcut", "on");
+      cutTimer = window.setTimeout(() => root.removeAttribute("data-sheetcut"), 340);
     } else {
       cam.go(to, { instant: reducedMotion });
     }
@@ -166,7 +201,10 @@ export default function StageController({
       applyDerived(next);
     });
     ro.observe(svg);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      if (cutTimer) window.clearTimeout(cutTimer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage.frame, stage.cam, stage.marksMode, reducedMotion]);
 
@@ -179,8 +217,10 @@ export default function StageController({
     if (!veil) return;
     const target = stage.veil ?? "none";
     if (target === "none") {
-      veil.setAttribute("d", "");
-      return;
+      /* fade first, clear the geometry after the 450ms opacity ride
+         (clearing d immediately made the veil-off a hard pop) */
+      const t = window.setTimeout(() => veil.setAttribute("d", ""), 500);
+      return () => window.clearTimeout(t);
     }
     let hole = "";
     if (target === "located") {
@@ -334,13 +374,15 @@ export default function StageController({
         <span className="gtb-frame">{FRAME_LABEL[stage.frame] ?? ""}</span>
         {floodIdx >= 0 ? (
           <span className="gtb-filing exh-mono" data-testid="ground-filing">
-            sheets filed through {filedLabel}. {filedThrough} of 703
+            areas graded through {filedLabel}. {filedThrough} of 703
           </span>
         ) : null}
-        {stage.press ? (
+        {/* the rank disclosure prints only while depth is drawn (press
+            on AND grades shown); "equal" was false to the drawn ladder */}
+        {stage.press && stage.grades === "full" ? (
           <span className="gtb-disclosure">
-            Depth shows grade rank in four equal steps, not a measured quantity. Ungraded areas
-            carry none.
+            Depth shows grade rank in four steps, not a measured quantity. Ungraded areas carry
+            none.
           </span>
         ) : null}
       </div>

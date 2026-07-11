@@ -107,7 +107,7 @@
       "boundary": false,
       "labels": true,
       "tilt": 10,
-      "sr": "The township plat of 1833 leans up for examination, with the survey’s section lines, the shoreline, and the township boundary."
+      "sr": "The township plat of 1833 leans up for examination, with the survey’s section lines and the shoreline."
      }
     },
     {
@@ -271,7 +271,16 @@
      ],
      "post": [
       "club-organizes"
-     ]
+     ],
+     "stage": {
+      "frame": "blackBelt",
+      "era": "1908",
+      "grades": "none",
+      "linework": false,
+      "labels": false,
+      "dim": true,
+      "boundary": false
+     }
     },
     {
      "id": "ch4",
@@ -339,7 +348,8 @@
       "boundary": false,
       "cam": "bombingField",
       "marksMode": "dots",
-      "sr": "The camera moves close to the South Side. Each bombing mark is now a readable dot."
+      "sr": "The camera moves close to the South Side. Each bombing mark is now a readable dot, and the veil rests on Jesse Binga’s block.",
+      "veil": "bingaBlock"
      }
     },
     {
@@ -369,7 +379,8 @@
       "grades": "none",
       "linework": false,
       "labels": true,
-      "marks": true
+      "marks": true,
+      "cam": "wide"
      }
     },
     {
@@ -403,8 +414,8 @@
       "linework": true,
       "labels": true,
       "marks": true,
-      "cam": "southSide",
-      "sr": "The first filed sheets ink the South Side while the camera sits close."
+      "cam": "floodFirst",
+      "sr": "The first month’s sheets ink the map while the camera sits close."
      }
     },
     {
@@ -419,7 +430,7 @@
       "linework": true,
       "labels": true,
       "marks": true,
-      "cam": "wide"
+      "cam": "southHalf"
      }
     },
     {
@@ -436,7 +447,8 @@
       "floodStep": 8,
       "linework": true,
       "labels": true,
-      "marks": true
+      "marks": true,
+      "cam": "wide"
      }
     },
     {
@@ -515,11 +527,7 @@
       "grades": "none",
       "linework": false,
       "boundary": true,
-      "labels": false,
-      "note": {
-       "text": "The renewal plan lay inside this township",
-       "anchor": "hydePark"
-      }
+      "labels": false
      }
     },
     {
@@ -545,11 +553,7 @@
       "boundary": true,
       "labels": false,
       "tilt": 10,
-      "note": {
-       "text": "The renewal plan lay inside this township",
-       "anchor": "hydePark"
-      },
-      "sr": "The township sheet leans up while the clearance is read."
+      "sr": "The Hyde Park sheet leans up while the clearance is read."
      }
     },
     {
@@ -571,11 +575,7 @@
       "linework": false,
       "boundary": true,
       "labels": false,
-      "marks": true,
-      "note": {
-       "text": "The renewal plan lay inside this township",
-       "anchor": "hydePark"
-      }
+      "marks": true
      }
     },
     {
@@ -755,7 +755,7 @@
     {
      "id": "a6-sum",
      "role": "step",
-     "text": "**The grades, the bombings, and the ground moving again, on the one map.** The township line marks where the walk began; the rust ring at East Woodlawn is 2026.",
+     "text": "**The grades, the bombings, and the ground moving again, on the one map.** The Hyde Park line marks where the walk began; the rust ring at East Woodlawn is 2026.",
      "stage": {
       "frame": "citywide",
       "era": "2026",

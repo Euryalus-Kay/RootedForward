@@ -1239,8 +1239,8 @@ body.exhibit-immersive > footer { display: none; }
   color: var(--color-exh-ink-soft);
 }
 @media (max-width: 1023px) {
-  .ground-titleblock { left: 20px; bottom: 12px; max-width: 210px; }
-  .ground-titleblock .gtb-disclosure { display: none; }
+  .ground-titleblock { left: 20px; bottom: 12px; max-width: 200px; }
+  .ground-titleblock .gtb-disclosure { font-size: 8px; line-height: 1.45; }
 }
 
 /* --- reduced motion strips every R10 tween to the resolved state ---- */
@@ -1262,13 +1262,17 @@ body.exhibit-immersive > footer { display: none; }
   pointer-events: none;
   transform-style: preserve-3d;
 }
+.ground-towers { transition: opacity 300ms ease; }
 .ground-towers .gtower {
   position: absolute;
   transform: translate(-50%, -100%) rotateX(calc(-1 * var(--gtilt, 0deg)));
   transform-origin: 50% 100%;
-  transition: opacity 300ms ease;
+  /* the counter-rotation rides the sheet's own lean transition so the
+     towers never shear mid-tilt (audit tower-shear) */
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .ground-stage[data-tween="on"] .ground-towers { opacity: 0; }
+[data-motion="off"] .ground-towers,
 [data-motion="off"] .ground-towers .gtower { transition: none; }
 
 /* --- the marks' counted badge --------------------------------------
@@ -1576,3 +1580,202 @@ body.exhibit-immersive > footer { display: none; }
   filter: url(#ground-lift);
   fill-opacity: 0.85;
 }
+
+/* ==================================================================
+   R10 audit round-1 fixes (reviews/R10-round1-verdict.md)
+   ================================================================== */
+
+/* labels whose text would cross the crop edge hide for that camera */
+.ground-stage [data-city-labels] text[data-camclip="out"] { opacity: 0; }
+
+/* while the bill stands (the 22deg money beats) the base labels rest;
+   the towers are the figure and severed label fragments read as noise */
+.ground-stage[data-tilt="22"] [data-city-labels] { opacity: 0; }
+
+/* the drawing respects the plate mark; fills never bleed into the
+   sheet's paper margin */
+.ground-sheet .ground-svg { clip-path: inset(8.5px); }
+
+/* the era stamp reads on the memorial's dark field, and sits fully
+   inside the sheet corner */
+.ground-era { right: 22px; top: 10px; }
+.ground-stage[data-dim="on"] .ground-era { color: var(--color-exh-linen); }
+
+/* the finale's rust tag wears a stronger paper halo (rust-on-red was
+   the palette's weakest pairing) */
+.ground-stage [data-today-tag] {
+  paint-order: stroke;
+  stroke: var(--color-exh-linen);
+  stroke-width: calc(6px * var(--gtext-k, 1));
+}
+
+/* the closing sum's boundary ghost gets legible ink */
+.ground-stage [data-city-boundary] {
+  stroke-opacity: 0.75;
+  stroke-width: 1.6;
+  stroke-dasharray: 7 4;
+}
+
+/* era-gated names: the Midway is laid out for 1893, the Loop's name
+   belongs to the century's turn; neither may sit on the 1830s plats */
+.ground-stage[data-g-parks="off"] [data-hp-labels] text[data-name="THE MIDWAY"] { opacity: 0; }
+.ground-stage[data-g-grid="on"] [data-city-labels] text[data-name="THE LOOP"] { opacity: 0; }
+
+/* the veil-off ride: opacity fades before the geometry clears */
+.ground-stage[data-veil="off"] [data-veil] { transition: fill-opacity 450ms ease; }
+
+/* mobile chapter heads resolve with air beneath the sticky pane */
+@media (max-width: 1023px) {
+  .ground-chapterhead { padding-top: 9vh; }
+}
+
+/* R10-W1A round 3, audit fixes */
+/* wall-bar-overrun: the union ink splits at the last closure year
+   (computed in InstrumentRegister.tsx from machines.json). Solid ink
+   carries the no-year-off claim and ends at its own label's year; the
+   open continuation is hatched over a hollow outline, on the dock and
+   on the wall alike, with its own plate. */
+.ground-register-docked .gr-ubseg[data-open="on"] {
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-exh-ink) 78%, transparent) 0 1.5px,
+    transparent 1.5px 4.5px
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-exh-ink) 50%, transparent);
+}
+.ground-register-wall .gr-wall-ubseg[data-open="on"] {
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-exh-ink) 60%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+}
+.ground-register-wall .gr-wall-ublabel { left: var(--gr-lx); }
+.ground-register-wall .gr-wall-ublabel[data-open="on"] {
+  color: var(--color-exh-ink);
+  background: var(--gr-paper, var(--color-exh-linen));
+  padding: 1px 5px;
+  font-size: 8px;
+  line-height: 9px;
+  letter-spacing: 0.18em;
+}
+/* the open continuation prints after the solid claim has landed */
+.ground-register-wall .gr-wall-union[data-printed="on"] .gr-wall-ubseg[data-open="on"] {
+  animation-delay: 450ms;
+}
+.ground-register-wall .gr-wall-union[data-printed="on"] .gr-wall-ublabel[data-open="on"] {
+  animation-delay: 1050ms;
+}
+
+/* s-row-2008-undrawn: the trade's return is drawn in the same open
+   hatch as the union continuation, from residueSince to the axis end */
+.ground-register-wall .gr-wall-return {
+  position: absolute;
+  top: 4px;
+  height: 10px;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-exh-ink) 60%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+  opacity: 0.82;
+}
+
+/* wall-annotation-collisions: every annotation stands on its own paper
+   so the baton verticals pass behind it, the endnotes get their own
+   lane clear of the alias baseline, and the paper color follows the
+   warm state so the plates never read as pasted-on rectangles */
+.ground-register-wall { --gr-paper: var(--color-exh-linen); }
+[data-ground-warm="on"] .ground-register-wall { --gr-paper: var(--exh-warm-linen); }
+.ground-register-wall .gr-wall-track { margin-top: 9px; }
+.ground-register-wall .gr-wall-years,
+.ground-register-wall .gr-wall-endnote {
+  background: var(--gr-paper, var(--color-exh-linen));
+  padding: 0 3px;
+  margin-left: -3px;
+}
+.ground-register-wall .gr-wall-alias {
+  background: var(--gr-paper, var(--color-exh-linen));
+  padding: 0 3px;
+}
+.ground-register-wall .gr-wall-name {
+  text-shadow:
+    -1px 0 var(--gr-paper, var(--color-exh-linen)), 1px 0 var(--gr-paper, var(--color-exh-linen)),
+    0 -1px var(--gr-paper, var(--color-exh-linen)), 0 1px var(--gr-paper, var(--color-exh-linen));
+}
+.ground-register-wall .gr-wall-endnote[data-side="left"] { left: var(--gr-note-x); }
+.ground-register-wall .gr-wall-endnote[data-side="right"] {
+  left: auto;
+  right: calc(100% - var(--gr-note-x));
+}
+/* at phone widths each court phrase takes its own right-aligned line
+   under the end of the ink it annotates, and the union labels move to
+   their own lines under the band, so nothing wraps into orphans */
+@media (max-width: 479px) {
+  .ground-register-wall .gr-wall-track { height: 40px; }
+  .ground-register-wall .gr-wall-endnote,
+  .ground-register-wall .gr-wall-endnote[data-side="left"],
+  .ground-register-wall .gr-wall-endnote[data-side="right"] {
+    top: 27px;
+    left: auto;
+    right: var(--gr-note-right);
+    transform: none;
+    text-align: right;
+  }
+  .ground-register-wall .gr-wall-union { height: 38px; }
+  .ground-register-wall .gr-wall-ubseg { height: 10px; }
+  .ground-register-wall .gr-wall-ublabel {
+    top: auto;
+    transform: none;
+    color: var(--color-exh-ink);
+    font-size: 8px;
+    line-height: 9px;
+    letter-spacing: 0.16em;
+  }
+  .ground-register-wall .gr-wall-ublabel[data-open="off"] { top: 15px; left: var(--gr-sx); }
+  .ground-register-wall .gr-wall-ublabel[data-open="on"] {
+    top: 27px;
+    left: auto;
+    right: 0;
+    background: transparent;
+    padding: 0;
+  }
+}
+
+/* rust-ledger-years: historical year stamps are ink; the stamp goes
+   rust only when the posted entry is the present day (data-now set in
+   LedgerRail.tsx), because rust means now */
+.ground-ledger-rail .glr-year { color: var(--color-exh-ink); }
+.ground-ledger-rail .glr-year[data-now="on"] { color: var(--exh-rust, #A8502F); }
+
+/* mobile-caret-clamp: story years before the rail's start drop the
+   caret instead of clamping onto the 1900 tick; the year chip stands
+   alone, flush left */
+.ground-register-docked[data-prerail="on"] .gr-cursor { display: none; }
+.ground-register-docked[data-prerail="on"] .gr-yearfig { transform: none; }
+
+/* dock-tap-hint: under 480px a chevron in the right margin marks the
+   docked strip as a tap into the register wall; it lives outside the
+   rail so the year chip can never collide with it */
+.ground-register-docked .gr-taphint { display: none; }
+@media (max-width: 479px) {
+  .ground-register-docked .gr-taphint {
+    display: block;
+    position: absolute;
+    right: -12px;
+    top: calc(var(--grd-band-top) + var(--grd-band-h) / 2);
+    transform: translateY(-52%);
+    font-size: 15px;
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-exh-ink) 65%, transparent);
+  }
+}
+
+/* the citywide boundary ghost obeys the boundary flag like its
+   township sibling (it leaked into every citywide state once it
+   gained legible ink; the audit's orphan square) */
+.ground-stage[data-boundary="off"] [data-city-boundary] { opacity: 0; }
+.ground-stage [data-city-boundary] { transition: opacity 450ms ease; }
+[data-motion="off"] .ground-stage [data-city-boundary] { transition: none; }

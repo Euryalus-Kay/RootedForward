@@ -162,6 +162,43 @@ if (process.argv.includes("--src")) {
   srcDirs.forEach(walkSrc);
 }
 
+// ------------------------------------------------------------------
+// R10 arrive-early gate (design/R10/design.md): no camera, frame, or
+// dim change may land ON a solemn beat. The memorial (ch4) and the
+// press beat (a3-s2) must inherit those fields from their predecessor.
+// ------------------------------------------------------------------
+{
+  const groundCopy = JSON.parse(readFileSync(path.join(ROOT, "data/exhibit/ground-copy.json"), "utf8"));
+  const steps = [];
+  for (const act of groundCopy.acts) for (const s of act.steps) steps.push(s);
+  let stage = { frame: "citywide", cam: "wide", dim: false };
+  const resolved = steps.map((s) => {
+    if (s.stage) {
+      stage = {
+        frame: s.stage.frame ?? stage.frame,
+        cam: s.stage.cam ?? stage.cam,
+        dim: s.stage.dim ?? false,
+      };
+    }
+    return { id: s.id, ...stage };
+  });
+  const SOLEMN = ["ch4", "a3-s2"];
+  for (const id of SOLEMN) {
+    const i = resolved.findIndex((r) => r.id === id);
+    if (i <= 0) continue;
+    const here = resolved[i];
+    const before = resolved[i - 1];
+    for (const field of ["frame", "cam"]) {
+      if (here[field] !== before[field]) {
+        problems.push({ where: `ground-copy.json:${id}`, rule: "arrive-early", sample: `${field} changes ${before[field]} -> ${here[field]} ON the solemn beat` });
+      }
+    }
+    if (id === "ch4" && here.dim !== before.dim) {
+      problems.push({ where: "ground-copy.json:ch4", rule: "arrive-early", sample: "the dim cut lands ON the memorial" });
+    }
+  }
+}
+
 if (warnings.length) {
   console.log(`exhibit-lint-copy: ${warnings.length} warning(s) (tell patterns, non-blocking)`);
   for (const w of warnings) console.log(`  warn [${w.rule}] ${w.where}\n      ${JSON.stringify(w.sample)}`);

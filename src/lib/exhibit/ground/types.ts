@@ -17,6 +17,8 @@ export type CameraTarget =
   | "hydeParkKenwood"
   | "bombingField"
   | "southSide"
+  | "floodFirst"
+  | "southHalf"
   | "today"
   | "township";
 
@@ -28,6 +30,7 @@ export type VeilTarget =
   | "woodlawn"
   | "jacksonPark"
   | "township"
+  | "bingaBlock"
   | "located";
 
 export interface StageState {

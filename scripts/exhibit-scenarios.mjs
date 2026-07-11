@@ -158,6 +158,28 @@ export const scenarios = [
       }
       const pane = await page.$eval('[data-testid="ground-stage-pane"]', (el) => getComputedStyle(el).position);
       t.assert("stage pane is sticky on phones", pane === "sticky", pane);
+      /* phones get the R7 rank disclosure too (audit: an entire device
+         class was shipped the depth encoding with no disclosure) */
+      await page.evaluate(() => document.querySelector("#a3-s2")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 1200));
+      const tb = await page.$eval('[data-testid="ground-titleblock"]', (el) => ({
+        text: el.textContent ?? "",
+        disclosureShown: !!el.querySelector(".gtb-disclosure") && getComputedStyle(el.querySelector(".gtb-disclosure")).display !== "none",
+      }));
+      t.assert("the rank disclosure prints on phones", tb.disclosureShown && tb.text.includes("Depth shows grade rank"), JSON.stringify(tb).slice(0, 120));
+      /* the finale's headline figure must resolve inside the phone
+         stage frame (audit mobile-finale-clip) */
+      await page.evaluate(() => document.querySelector("#a6-ledger")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 1800));
+      const cap = await page.evaluate(() => {
+        const tower = document.querySelector('[data-testid="gtower-woodlawn"]');
+        const pane = document.querySelector('[data-testid="ground-stage-pane"]');
+        if (!tower || !pane) return null;
+        const tr = tower.getBoundingClientRect();
+        const pr = pane.getBoundingClientRect();
+        return { top: tr.top - pr.top, ok: tr.top >= pr.top - 1 };
+      });
+      t.assert("the Woodlawn plate resolves inside the phone stage frame", !!cap && cap.ok, JSON.stringify(cap));
     },
   },
   {
@@ -406,6 +428,93 @@ export const scenarios = [
       const memorial = await at("#ch4", 1500);
       t.assert("the memorial is plumb, unveiled, unpressed in its own moment", memorial.tilt === "0" && memorial.veil === "off", JSON.stringify({ tilt: memorial.tilt, veil: memorial.veil }));
       t.assert("the memorial's stillness is stated for screen readers", memorial.sr.includes("Nothing on the map moves"), memorial.sr.slice(0, 100));
+    },
+  },
+  {
+    id: "ground-hardening",
+    milestone: "R10",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-stage"]', { timeout: 30000 });
+      /* the intaglio must be a true inner shadow: shape minus its own
+         offset blur (the audit caught the raised-plate inversion) */
+      const composite = await page.$eval("#ground-press-d feComposite", (el) => ({
+        in: el.getAttribute("in"),
+        in2: el.getAttribute("in2"),
+        op: el.getAttribute("operator"),
+      }));
+      t.assert(
+        "the press filter is an inner shadow, not a raised plate",
+        composite.in === "SourceAlpha" && composite.in2 === "blur" && composite.op === "out",
+        JSON.stringify(composite)
+      );
+      /* a camera move must actually fly: the tween flag rises after a
+         cam change and settles off, and mid-flight the camera group
+         carries a real transform (the whole drawing stays mounted) */
+      await page.evaluate(() => document.querySelector("#ch6")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 1200));
+      const flight = await page.evaluate(
+        () =>
+          new Promise((res) => {
+            document.querySelector("#ch5")?.scrollIntoView({ block: "center", behavior: "instant" });
+            const started = Date.now();
+            const sample = () => {
+              const stage = document.querySelector('[data-testid="ground-stage"]');
+              const g = document.querySelector("[data-camera]");
+              if (stage?.dataset.tween === "on") {
+                return res({
+                  sawTween: true,
+                  transform: g ? getComputedStyle(g).transform : "",
+                  areasMounted: document.querySelectorAll("[data-aid]").length,
+                });
+              }
+              if (Date.now() - started > 2500) return res({ sawTween: false });
+              setTimeout(sample, 40);
+            };
+            sample();
+          })
+      );
+      t.assert("a cam change takes flight (data-tween rises)", flight.sawTween, JSON.stringify(flight));
+      t.assert(
+        "mid-flight the camera group is transformed, the city stays mounted",
+        flight.sawTween && flight.transform !== "none" && flight.areasMounted >= 690,
+        JSON.stringify(flight)
+      );
+      await new Promise((r) => setTimeout(r, 1400));
+      const settled = await page.$eval('[data-testid="ground-stage"]', (el) => el.dataset.tween);
+      t.assert("the flight settles", settled === "off", String(settled));
+      /* the money beats stand exactly two towers at true anchors with
+         the one sanctioned rust cap and the disclosed scale */
+      await page.evaluate(() => document.querySelector("#a6-ledger")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 1800));
+      t.assert("the Lawndale tower stands", await page.$('[data-testid="gtower-north-lawndale"]'));
+      t.assert("the Woodlawn tower stands", await page.$('[data-testid="gtower-woodlawn"]'));
+      const towers = await page.$$eval(".gtower", (els) => els.length);
+      t.assert("exactly two dollar columns", towers === 2, `towers=${towers}`);
+      t.assert("the sliver scale is disclosed", await page.$('[data-testid="ground-towers-legend"]'));
+      const plates = await page.$$eval(".gtower [data-fact-id]", (els) => els.map((e) => e.getAttribute("data-fact-id")));
+      t.assert(
+        "both plates resolve through the registry",
+        plates.includes("contracts.avg_overpayment_71000") && plates.includes("present.woodlawn_prices"),
+        JSON.stringify(plates)
+      );
+      /* historical ledger years are ink; rust is the present's alone */
+      await page.evaluate(() => document.querySelector("#ch2")?.scrollIntoView({ block: "center", behavior: "instant" }));
+      await new Promise((r) => setTimeout(r, 900));
+      const yearColor = await page.$eval('[data-testid="ground-ledger-rail"] .glr-year', (el) => getComputedStyle(el).color);
+      t.assert(
+        "a historical ledger year is not rust",
+        !/168,\s*80,\s*47/.test(yearColor),
+        yearColor
+      );
+      /* a pane resize re-derives the content-box vars */
+      const before = await page.$eval('[data-testid="ground-stage"]', (el) => el.style.getPropertyValue("--gsv-w"));
+      await page.setViewport({ width: 1100, height: 800 });
+      await new Promise((r) => setTimeout(r, 700));
+      const after = await page.$eval('[data-testid="ground-stage"]', (el) => el.style.getPropertyValue("--gsv-w"));
+      t.assert("resize re-derives the drawn content box", before !== after && after !== "", `${before} -> ${after}`);
+      await page.setViewport({ width: 1280, height: 800 });
     },
   },
   {

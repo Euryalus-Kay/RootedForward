@@ -1,13 +1,15 @@
 /* ------------------------------------------------------------------ */
-/*  R10 camera, the FLIP hybrid the council verdict specifies. The     */
-/*  target viewBox is set immediately (the sheet re-rasterizes at      */
-/*  destination resolution), an inverse CSS transform makes it look    */
-/*  like the old frame, and the transform transitions to identity on   */
-/*  the compositor, so the 694 area paths never repaint per frame.     */
-/*  transitionend AND transitioncancel plus a watchdog clean up;       */
-/*  retargeting mid-flight composes against the computed matrix, so    */
-/*  the picture never jumps. Under reduced motion every move is an     */
-/*  instant cut to the same resolved frame.                            */
+/*  R10 camera, the FLIP hybrid, round-2 form. The tween rides an      */
+/*  INNER group (data-camera), never the svg element: the target       */
+/*  viewBox is set immediately, the group takes the inverse transform  */
+/*  in user units, and the transform transitions to identity on the    */
+/*  compositor. Because the whole drawing stays inside the svg         */
+/*  viewport, a zoom-in keeps the surrounding city on screen through   */
+/*  the flight (the audit's flip-camera-cut p1) and a zoom-out never   */
+/*  paints over the desk. transitionend AND transitioncancel plus a    */
+/*  watchdog clean up; retargeting mid-flight composes against the     */
+/*  computed matrix so the picture never jumps. Under reduced motion   */
+/*  every move is an instant cut to the same resolved frame.           */
 /* ------------------------------------------------------------------ */
 
 export interface Box {
@@ -59,7 +61,7 @@ function compose(a: Affine, b: Affine): Affine {
 function invert(m: Affine): Affine {
   return { s: 1 / m.s, dx: -m.dx / m.s, dy: -m.dy / m.s };
 }
-/** content -> screen map for a viewBox under xMidYMid meet in a pane */
+/** content -> pane map for a viewBox under xMidYMid meet */
 function meetMap(b: Box, paneW: number, paneH: number): Affine {
   const k = Math.min(paneW / b.w, paneH / b.h);
   const ox = (paneW - b.w * k) / 2;
@@ -87,6 +89,7 @@ export interface Camera {
 
 export function createCamera(
   svg: SVGSVGElement,
+  group: SVGGElement,
   onFlight?: (flying: boolean) => void
 ): Camera {
   let flying = false;
@@ -101,16 +104,16 @@ export function createCamera(
 
   const cleanup = () => {
     if (settleHandler) {
-      svg.removeEventListener("transitionend", settleHandler);
-      svg.removeEventListener("transitioncancel", settleHandler);
+      group.removeEventListener("transitionend", settleHandler);
+      group.removeEventListener("transitioncancel", settleHandler);
       settleHandler = null;
     }
     if (watchdog) {
       window.clearTimeout(watchdog);
       watchdog = 0;
     }
-    svg.style.transition = "";
-    svg.style.transform = "";
+    group.style.transition = "";
+    group.style.transform = "";
     if (flying) {
       flying = false;
       onFlight?.(false);
@@ -132,31 +135,33 @@ export function createCamera(
         return;
       }
       const [paneW, paneH] = paneSize();
-      /* current appearance = F_prev o M(prevBox); after the swap the
-         appearance must not change, so F_new = F_prev o M_prev o M_new^-1 */
-      const fPrev = readComputed(svg);
+      /* current appearance = meet(B_prev) o G_read on the group; after
+         the viewBox swap it must not change, so
+         G_new = meet(B_new)^-1 o meet(B_prev) o G_read, an affine in
+         user units (CSS transforms on SVG elements act in user space) */
+      const gRead = readComputed(group);
       const mPrev = meetMap(prevBox, paneW, paneH);
       const mNew = meetMap(to, paneW, paneH);
-      const fNew = compose(compose(fPrev, mPrev), invert(mNew));
+      const gNew = compose(compose(invert(mNew), mPrev), gRead);
 
       cleanup();
       flying = true;
       onFlight?.(true);
 
       svg.setAttribute("viewBox", boxToViewBox(to));
-      svg.style.transformOrigin = "0 0";
-      svg.style.transition = "none";
-      svg.style.transform = `translate(${fNew.dx}px, ${fNew.dy}px) scale(${fNew.s})`;
+      group.style.transformOrigin = "0 0";
+      group.style.transition = "none";
+      group.style.transform = `translate(${gNew.dx}px, ${gNew.dy}px) scale(${gNew.s})`;
       /* commit the jump frame before enabling the transition */
       void svg.getBoundingClientRect();
-      svg.style.transition = `transform ${duration}ms ${EASE}`;
-      svg.style.transform = "translate(0px, 0px) scale(1)";
+      group.style.transition = `transform ${duration}ms ${EASE}`;
+      group.style.transform = "translate(0px, 0px) scale(1)";
 
       settleHandler = (e: TransitionEvent) => {
-        if (e.target === svg && e.propertyName === "transform") cleanup();
+        if (e.target === group && e.propertyName === "transform") cleanup();
       };
-      svg.addEventListener("transitionend", settleHandler);
-      svg.addEventListener("transitioncancel", settleHandler);
+      group.addEventListener("transitionend", settleHandler);
+      group.addEventListener("transitioncancel", settleHandler);
       watchdog = window.setTimeout(cleanup, duration + 120);
     },
     inFlight: () => flying,

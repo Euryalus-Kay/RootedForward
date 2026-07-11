@@ -1,0 +1,73 @@
+{
+ "round": "R10-round1",
+ "date": "2026-07-11",
+ "fixed": {
+  "p1": [
+   "flip-camera-cut: FLIP moved to the inner data-camera group in user-unit space; the whole drawing stays mounted through flights (mid-flight capture on record)",
+   "press-inverted: feComposite operands corrected to SourceAlpha out blur, a true inner shadow; suite asserts the operands",
+   "rust-ledger-years: rail years ink, rust only via data-now at 2026 (register-fixer agent); suite asserts a historical year is not rust",
+   "wall-bar-overrun: the drawn union splits at the last ended instrument; solid 1921-1970 carries the label, a hatched ONE INSTRUMENT STILL RUNNING segment carries the rest (dock and wall)",
+   "flood-stations: three real camera stations (floodFirst from the Sep 1939 batch extent, southHalf, wide), sr reworded to what is drawn",
+   "mobile-finale-clip: towers scale 0.5 on phones; suite asserts the Woodlawn plate resolves inside the stage frame"
+  ],
+  "p2": [
+   "suite-blind: press-operand assert, flight observation (tween rises, group transformed, city mounted), money-beat block, resize re-derivation, rust-year, mobile disclosure, arrive-early gate in exhibit-lint-copy, shot list enumerated from ground-copy.json (60 anchors, the hand list had 54)",
+   "counter-703-sheets: counter says areas graded, final batch labeled 'Apr 1940, plus undated'",
+   "township-mislabel: plate label HYDE PARK, a6-sum caption names the Hyde Park line, ghost has legible ink and now obeys the boundary flag",
+   "ch4-arrive-early: the blackBelt cut and dim land on a2-s1; ch4 entry is only the marks reveal; lint gate enforces it",
+   "a3s1-carry-zoom: cam wide on a3-s1",
+   "binga-veil-missing: bingaBlock hole emitted from the recorded 5922 South Park Ave coordinate; ch5 veil wired; sr updated",
+   "tower-shear + small-pops: towers ride the sheet's transition; sheetcut attribute self-clears; veil fades before clearing geometry",
+   "climb-empty: the white-median column carries the sliver material",
+   "mobile-disclosure-hidden: the rank disclosure prints on phones (suite-asserted)",
+   "equal-steps-false: disclosure says four steps",
+   "ch1-sr-boundary: the boundary claim struck from the ch1 sr",
+   "wall-annotation-collisions, s-row-2008-undrawn, mobile-caret-clamp, dock-tap-hint: register-fixer agent",
+   "finale-label-collisions: base city labels rest at tilt 22",
+   "hyde-p-clip: per-camera label gating (data-camclip) hides labels whose text would cross the crop edge",
+   "ch8-renewal-undrawn: floating notes removed from ch8/a4 states; disclosure gated to pressed full-grade states",
+   "plss-grid-water: the grid clips to dry land in both frames",
+   "safari-pass: real WebKit walk of ch1/ch5/a3-s2/a6-ledger recorded, zero page errors, tilt matrix3d + press filters + towers verified",
+   "mobile-chapter-anchors: mobile chapter heads gain resolve air"
+  ],
+  "p3": [
+   "rust-on-red-tag: stronger paper halo on the 2026 tag",
+   "anachronistic-labels: THE MIDWAY and THE LOOP era-gated",
+   "ch0-neatline-bleed: the drawing clips to the plate mark (clip-path inset)",
+   "ch4-stamp-legibility: the era stamp turns linen on the dim field and sits inside the corner",
+   "orphan-square: the citywide boundary ghost obeys the boundary flag",
+   "plate-caption-camera: filed dates normalized to one long form",
+   "gtext-k-letterbox: counter-scale computed from meet ratios",
+   "north-lawndale-plate: the plate names North Lawndale",
+   "legend-label-overlap: the legend stacks clear at narrow widths",
+   "mobile-caret-clamp: chip flush left before 1900 (agent)"
+  ]
+ },
+ "declined": [
+  {
+   "id": "ssr-double-payload",
+   "reason": "SVG use-clones inherit the original's matched CSS (the fills), so deduping restyles the page; the gz saving is small against the risk. Noted in StageBase. The RSC double-serialization is a framework-level follow-up."
+  },
+  {
+   "id": "reported-chip-occluded",
+   "reason": "the occluding N button is the Next.js dev-mode badge, absent in production; the chairman's own dev-artifact rule applies."
+  },
+  {
+   "id": "entry11-parity",
+   "reason": "the rail's shortLabel mechanism is the R9-documented design for narrow widths; both strings state the same fact."
+  },
+  {
+   "id": "act1-push-unrecorded",
+   "reason": "recorded as a cut in design.md rather than built; the hydePark frame has no camera capability this round."
+  },
+  {
+   "id": "small-pops towersSlot render-read",
+   "reason": "the slot ref is set at mount, money beats activate far later; benign in practice, noted in code."
+  },
+  {
+   "id": "plate-caption-camera (camera-bound plate title)",
+   "reason": "the title block names the sheet, which does not change with the camera; the era readout and filing counter carry the state."
+  }
+ ],
+ "verdictResponse": "All six p1s and every accepted p2/p3 fixed; round-2 verification panel to run on fresh full-corpus shots before ship, per the chairman's ruling."
+}

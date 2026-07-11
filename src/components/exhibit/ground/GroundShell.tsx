@@ -36,7 +36,9 @@ function buildClientProps(): StageClientProps {
     const m = ym % 100;
     return `${MONTHS[m - 1] ?? ""} ${y}`;
   });
-  floodBatchLabels.push("undated sheets");
+  /* the remainder batch keeps the last true month in the counter and
+     names the undated tail honestly */
+  floodBatchLabels.push(`${floodBatchLabels[floodBatchLabels.length - 1] ?? ""}, plus undated`);
 
   const anchors: StageClientProps["anchors"] = {};
   for (const l of geometry.citywide.labels as Array<{ t: string; x: number; y: number }>) {

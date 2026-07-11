@@ -16,6 +16,7 @@
 /*  stay inside the climb chart by council ruling (R10 verdict,        */
 /*  killed list, the Loop-anchored citywide-gap tower).                */
 /* ------------------------------------------------------------------ */
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { SceneProps } from "./registry";
 import ledgerJson from "../../../../../data/exhibit/ledger.json";
@@ -131,7 +132,7 @@ function DeedTower({
   return (
     <div
       className="gtower"
-      data-testid={`gtower-${place.toLowerCase()}`}
+      data-testid={`gtower-${place.toLowerCase().replace(/ /g, "-")}`}
       style={{
         left: `calc(var(--gsv-left, 0px) + var(--gsv-w, 100%) * ${pos.left / 100})`,
         top: `calc(var(--gsv-top, 0px) + var(--gsv-h, 100%) * ${pos.top / 100})`,
@@ -189,6 +190,19 @@ function DeedTower({
 export function DollarTowers() {
   const { activeStep, towersSlot, anchorsPct, reducedMotion } = useGround();
   const show = MONEY_STEPS.has(activeStep.id);
+  /* phones get the same towers at reduced height so the Woodlawn cap
+     plate resolves inside the shorter stage frame (audit
+     mobile-finale-clip); the sliver VALUE never changes, only its
+     drawn height */
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const apply = () => setNarrow(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  const hScale = narrow ? 0.5 : 1;
 
   const slot = towersSlot.current;
   const lawndale = anchorsPct.lawndale;
@@ -199,11 +213,11 @@ export function DollarTowers() {
     <>
       <DeedTower
         factId={LAWNDALE_ID}
-        place="Lawndale"
+        place="North Lawndale"
         qualifier="more paid per home"
         yearTag="2019 dollars"
         pos={lawndale}
-        height={towerPx(LAWNDALE_USD)}
+        height={towerPx(LAWNDALE_USD) * hScale}
         reducedMotion={reducedMotion}
         plateShift="-44%"
       />
@@ -213,14 +227,14 @@ export function DollarTowers() {
         qualifier="median price now"
         yearTag="2025 dollars"
         pos={today}
-        height={towerPx(WOODLAWN_USD)}
+        height={towerPx(WOODLAWN_USD) * hScale}
         reducedMotion={reducedMotion}
         presentCap
       />
       {/* the disclosed scale, sheet furniture at the lower right */}
       <p
         data-testid="ground-towers-legend"
-        className="exh-plat absolute bottom-3 right-3.5 m-0 border border-exh-ink/40 bg-exh-linen/95 px-2 py-1 text-[9px] tracking-[0.06em] text-exh-ink-soft"
+        className="exh-plat absolute bottom-3 right-3.5 m-0 border border-exh-ink/40 bg-exh-linen/95 px-2 py-1 text-[9px] tracking-[0.06em] text-exh-ink-soft max-lg:bottom-12 max-lg:right-2"
         style={{
           transform: "rotateX(calc(-1 * var(--gtilt, 0deg)))",
           transformOrigin: "50% 100%",
