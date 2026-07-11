@@ -15,9 +15,9 @@ import SurveyRule from "@/components/ui/SurveyRule";
 import type { Podcast } from "@/lib/types/database";
 
 export const metadata: Metadata = {
-  title: "Podcast | Rooted Forward",
+  title: "Roots in Rogers Park | Rooted Forward",
   description:
-    "The Rooted Forward podcast. Conversations about the policies and decisions that shaped Chicago neighborhoods along racial lines.",
+    "Roots in Rogers Park, the Rooted Forward podcast. Conversations about Chicago's neighborhoods and the policies that shaped them.",
 };
 
 export const revalidate = 600;
@@ -67,12 +67,12 @@ export default async function PodcastsPage() {
             Podcast
           </p>
           <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-            The podcast
+            Roots in Rogers Park
           </h1>
           <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75">
-            Conversations about Chicago&rsquo;s neighborhoods and the
-            policies that shaped them. Listen right here or wherever you
-            get your podcasts.
+            Our podcast. Conversations about Chicago&rsquo;s neighborhoods
+            and the policies that shaped them. Listen right here or wherever
+            you get your podcasts.
           </p>
           <SurveyRule className="mt-10 text-rust" />
         </div>
@@ -131,7 +131,7 @@ export default async function PodcastsPage() {
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
               className="rounded-lg"
-              title="Rooted Forward Podcast on Spotify"
+              title="Roots in Rogers Park on Spotify"
             />
             <p className="mt-6 font-body text-sm text-ink/60">
               Listen on{" "}
