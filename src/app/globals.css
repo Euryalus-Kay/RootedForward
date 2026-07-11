@@ -1309,3 +1309,265 @@ body.exhibit-immersive > footer { display: none; }
 .ground-stage[data-frame="blackBelt"] [data-square] { stroke-width: 1; stroke-dasharray: 3 2; }
 .ground-stage [data-gline] { vector-effect: non-scaling-stroke; stroke-width: 0.65; }
 .ground-stage [data-city-boundary] { vector-effect: non-scaling-stroke; }
+
+/* --- wet ink: a filed sheet flashes dark and settles to rest --------
+   One arrival grammar for the flood's batches; the animation rides
+   the class the controller toggles in filing order. */
+@keyframes ground-wet-ink {
+  0% { fill-opacity: 0; }
+  35% { fill-opacity: 0.92; }
+  100% { fill-opacity: 0.62; }
+}
+@keyframes ground-wet-ink-d {
+  0% { fill-opacity: 0; }
+  35% { fill-opacity: 0.95; }
+  100% { fill-opacity: 0.7; }
+}
+.ground-stage[data-grades="flood"] .ga.inked { animation: ground-wet-ink 600ms ease-out; }
+.ground-stage[data-grades="flood"] .ga.inked[data-g="D"] { animation: ground-wet-ink-d 600ms ease-out; }
+[data-motion="off"] .ground-stage .ga.inked { animation: none !important; }
+
+/* R10-W1A register rebuild */
+/* The docked strip regrown from cryptic hairlines into a legible
+   instrument (verdict section 5): a labeled year rail with decade
+   hairlines, five full-span ink lanes with boxed initials, THE UNION
+   BAND beneath them, and an ink caret that turns rust only at 2026
+   (rust means present day). Vertical geometry rides custom properties
+   so the breakpoints move one ruler, not twelve rules. These rules
+   override the older docked/wall blocks above by cascade order only;
+   nothing earlier in this file was edited. */
+.ground-register-docked {
+  --grd-lane0: 14px;
+  --grd-lane-pitch: 5px;
+  --grd-bar-h: 4px;
+  --grd-band-top: 40px;
+  --grd-band-h: 6px;
+  --grd-base-top: 48px;
+  --grd-label-top: 51px;
+  --grd-caret-top: 13px;
+  height: 58px;
+}
+.ground-register-docked .gr-lane { height: var(--grd-bar-h); }
+.ground-register-docked .gr-bar {
+  height: var(--grd-bar-h);
+  opacity: 0.75;
+  transition: opacity 300ms ease;
+}
+/* the full true span always reads; live years get emphasis, never a reveal */
+.ground-register-docked .gr-bar[data-live="on"] { opacity: 1; }
+.ground-register-docked .gr-init {
+  top: calc((var(--grd-bar-h) - 11px) / 2);
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 45%, transparent);
+  background: var(--color-exh-linen);
+  font-size: 8px;
+  line-height: 9px;
+  text-align: center;
+  color: var(--color-exh-ink-soft);
+}
+.ground-register-docked .gr-uband {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--grd-band-top);
+  height: var(--grd-band-h);
+  display: block;
+}
+.ground-register-docked .gr-ubseg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: color-mix(in srgb, var(--color-exh-ink) 94%, transparent);
+}
+.ground-register-docked .gr-ublabel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px 6px;
+  background: color-mix(in srgb, var(--color-exh-ink) 94%, transparent);
+  color: var(--color-exh-linen);
+  font-size: 7px;
+  line-height: 8px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+.ground-register-docked .gr-baseline { top: var(--grd-base-top); }
+.ground-register-docked .gr-tickline {
+  position: absolute;
+  top: var(--grd-base-top);
+  width: 1px;
+  height: 3px;
+  background: color-mix(in srgb, var(--color-exh-ink) 30%, transparent);
+}
+.ground-register-docked .gr-tickline[data-major="on"] {
+  height: 4px;
+  background: color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+}
+.ground-register-docked .gr-tick {
+  top: var(--grd-label-top);
+  font-size: 7px;
+  line-height: 7px;
+  letter-spacing: 0.1em;
+}
+/* the caret and its chip are ink; rust is reserved for the present day */
+.ground-register-docked .gr-cursor {
+  top: var(--grd-caret-top);
+  height: calc(var(--grd-base-top) - var(--grd-caret-top) + 1px);
+  width: 1.5px;
+  background: var(--color-exh-ink);
+}
+.ground-register-docked[data-now="on"] .gr-cursor { background: var(--exh-rust); }
+.ground-register-docked .gr-yearfig {
+  top: 0;
+  font-size: 9px;
+  line-height: 11px;
+  padding: 1px 5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  background: var(--color-exh-ink);
+  color: var(--color-exh-linen);
+  text-shadow: none;
+}
+.ground-register-docked[data-now="on"] .gr-yearfig { background: var(--exh-rust); }
+@media (max-width: 1023px) {
+  .ground-register-docked {
+    --grd-lane0: 10px;
+    --grd-lane-pitch: 4.5px;
+    --grd-band-top: 34px;
+    --grd-base-top: 42px;
+    --grd-label-top: 45px;
+    --grd-caret-top: 10px;
+    height: 52px;
+  }
+  .ground-register-docked .gr-yearfig {
+    font-size: 8px;
+    line-height: 9px;
+    padding: 0 4px;
+  }
+}
+/* under 480px the union band carries the read; the five lanes yield */
+@media (max-width: 479px) {
+  .ground-register-docked {
+    --grd-band-top: 17px;
+    --grd-base-top: 29px;
+    --grd-label-top: 32px;
+    --grd-caret-top: 12px;
+    height: 42px;
+  }
+  .ground-register-docked .gr-lane { display: none; }
+}
+
+/* -- the wall additions: baton passes and the union band -------------- */
+.ground-register-wall .gr-wall-relay { position: relative; }
+.ground-register-wall .gr-wall-baton {
+  position: absolute;
+  z-index: -1;
+  width: 1.5px;
+  margin-left: -0.75px;
+  background: color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+}
+.ground-register-wall .gr-wall-baton::after {
+  content: "";
+  position: absolute;
+  left: -2.25px;
+  width: 6px;
+  height: 1.5px;
+  background: color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+}
+.ground-register-wall .gr-wall-baton[data-dir="down"]::after { bottom: 0; }
+.ground-register-wall .gr-wall-baton[data-dir="up"]::after { top: 0; }
+.ground-register-wall .gr-wall-union {
+  position: relative;
+  height: 12px;
+  margin-top: 26px;
+}
+.ground-register-wall .gr-wall-ubseg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: color-mix(in srgb, var(--color-exh-ink) 94%, transparent);
+  transform-origin: left center;
+}
+.ground-register-wall .gr-wall-ublabel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  line-height: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--color-exh-linen);
+  white-space: nowrap;
+}
+/* the band prints itself left to right once, on first arrival */
+.ground-register-wall .gr-wall-union[data-printed="off"] .gr-wall-ubseg { transform: scaleX(0); }
+.ground-register-wall .gr-wall-union[data-printed="off"] .gr-wall-ublabel { opacity: 0; }
+.ground-register-wall .gr-wall-union[data-printed="on"] .gr-wall-ubseg {
+  animation: gr-uband-print 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ground-register-wall .gr-wall-union[data-printed="on"] .gr-wall-ublabel {
+  animation: gr-ublabel-fade 400ms ease 650ms both;
+}
+@keyframes gr-uband-print {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes gr-ublabel-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* the bold sentence sits with the band it restates */
+.ground-register-wall .gr-wall-note { margin-top: 10px; }
+
+/* -- the ledger rail's wet-ink arrival (one page-wide grammar) -------- */
+.ground-ledger-rail[data-populated="on"] .glr-year,
+.ground-ledger-rail[data-populated="on"] .glr-label {
+  animation: glr-wet-ink 900ms ease-out;
+}
+@keyframes glr-wet-ink {
+  0% {
+    color: #0B0906;
+    background: color-mix(in srgb, var(--color-exh-ink) 12%, transparent);
+  }
+  60% { background: transparent; }
+}
+
+/* every new transition and animation resolves instantly without motion */
+[data-motion="off"] .ground-register-docked .gr-bar,
+[data-motion="off"] .ground-register-docked .gr-cursor,
+[data-motion="off"] .ground-register-docked .gr-yearfig { transition: none; }
+[data-motion="off"] .ground-register-wall .gr-wall-union .gr-wall-ubseg {
+  animation: none;
+  transform: none;
+}
+[data-motion="off"] .ground-register-wall .gr-wall-union .gr-wall-ublabel {
+  animation: none;
+  opacity: 1;
+}
+[data-motion="off"] .ground-ledger-rail .glr-year,
+[data-motion="off"] .ground-ledger-rail .glr-label { animation: none; }
+
+/* R10-W1A round 2: the band plate sits above the caret (the chip still
+   marks the year), and the decade hairlines earn a shade more ink */
+.ground-register-docked .gr-ublabel { z-index: 1; }
+.ground-register-docked .gr-yearfig { z-index: 2; }
+.ground-register-docked .gr-tickline { background: color-mix(in srgb, var(--color-exh-ink) 38%, transparent); }
+.ground-register-docked .gr-tickline[data-major="on"] { background: color-mix(in srgb, var(--color-exh-ink) 55%, transparent); }
+
+/* --- the deed-stack rise (act6 towers) ------------------------------ */
+@keyframes gtower-rise { from { height: 0; } }
+[data-motion="off"] .ground-towers * { animation: none !important; }
+
+/* --- the memorial admits no arrival theater: entering ch4's dim
+       state suppresses the second-sheet settle (a cut is the only
+       permitted event there) --- */
+.ground-stage[data-dim="on"][data-sheetcut="on"] .ground-sheet { animation: none; }
+
+/* --- tap-to-raise: the one open sheet lifts a step off the plate --- */
+.ground-stage .ga.lifted {
+  filter: url(#ground-lift);
+  fill-opacity: 0.85;
+}

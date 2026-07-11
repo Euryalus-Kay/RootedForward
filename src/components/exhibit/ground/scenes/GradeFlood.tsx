@@ -159,6 +159,17 @@ export default function GradeFlood(_props: SceneProps) {
     cardRef.current?.focus({ preventScroll: true });
   }, [openId]);
 
+  /* tap-to-raise: the open sheet's area lifts one step off the map
+     while its record is being read (dollars rise, grades press; the
+     lift is the reader's hand, not a data claim, and it clears on
+     close) */
+  useEffect(() => {
+    if (openId === null) return;
+    const el = document.querySelector(`[data-aid="${openId}"]`);
+    el?.classList.add("lifted");
+    return () => el?.classList.remove("lifted");
+  }, [openId]);
+
   const area = openId !== null ? byId.get(openId) : undefined;
   const areaGradeWord = area ? GRADE_WORD[area.grade] : undefined;
 

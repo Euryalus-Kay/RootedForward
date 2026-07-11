@@ -7,6 +7,7 @@
 /* ------------------------------------------------------------------ */
 import { useState } from "react";
 import { locateGround, type LocateResult } from "@/lib/exhibit/ground/locate";
+import { useGround } from "../engine/GroundProvider";
 import { SourceSupGroup } from "../../shared/SourceSup";
 
 const GRADE_WORD: Record<string, string> = {
@@ -20,11 +21,18 @@ type State = { s: "idle" } | { s: "working" } | { s: "done"; r: LocateResult };
 
 export default function LocateScene() {
   const [state, setState] = useState<State>({ s: "idle" });
+  const { setLocatedArea } = useGround();
 
   const run = async () => {
     setState({ s: "working" });
     const r = await locateGround();
     setState({ s: "done", r });
+    /* the stage's veil lifts the visitor's own area (the id maps to
+       the map's tap targets; nothing leaves the page) */
+    if (r.state === "hit") {
+      const aid = Number(r.hit.areaId);
+      if (!Number.isNaN(aid)) setLocatedArea(aid);
+    }
   };
 
   return (

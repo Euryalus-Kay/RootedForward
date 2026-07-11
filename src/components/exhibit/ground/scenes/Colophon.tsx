@@ -174,6 +174,18 @@ export default function Colophon(_props: SceneProps) {
       >
         {MAPPING_INEQUALITY_ATTRIBUTION}
       </p>
+      {/* the R10 ground plane names its sources; the lake's shoreline
+          is derived, not drawn (design/R10/design.md) */}
+      <p
+        data-testid="colophon-ground-sources"
+        className="mt-3 max-w-prose text-xs leading-relaxed text-exh-ink-soft"
+      >
+        The map&rsquo;s ground layers are drawn from the City of Chicago community area
+        boundaries and the Chicago Park District park boundaries, both from the City of
+        Chicago Data Portal. The Lake Michigan shoreline is derived from the eastern edge
+        of those same recorded polygons. The mile section grid follows the street-grid
+        arithmetic documented in this exhibit&rsquo;s bombing geocoding notes.
+      </p>
 
       {/* ---------------- the Study Room door ---------------- */}
       <Dialog.Root

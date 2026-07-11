@@ -156,13 +156,15 @@ export default function Climb(_props: SceneProps) {
 
         {/* column names and figures at the zero line, so every
             mid-climb viewport identifies both bars */}
+        {/* big number first; the two figures lead the chart at a step
+            up from their plat-caps names */}
         <p className="exh-plat absolute left-[4%] top-1.5 w-[16%] text-center text-[10px] uppercase leading-tight tracking-[0.12em] text-exh-linen">
           Black median
-          <span className="exh-mono mt-0.5 block normal-case tracking-normal">$44,890</span>
+          <span className="exh-mono mt-0.5 block text-sm font-semibold normal-case tracking-normal">$44,890</span>
         </p>
         <p className="exh-plat absolute left-[26%] top-1.5 w-[16%] text-center text-[10px] uppercase leading-tight tracking-[0.12em] text-exh-ink">
           white median
-          <span className="exh-mono mt-0.5 block normal-case tracking-normal">$285,010</span>
+          <span className="exh-mono mt-0.5 block text-sm font-semibold normal-case tracking-normal">$285,010</span>
         </p>
         <span className="absolute left-[4%] top-14 w-[16%] text-center">
           <SourceSup factId={BLACK_ID} />
@@ -179,6 +181,16 @@ export default function Climb(_props: SceneProps) {
             <FactValue id={BLACK_ID} size="sm" />
           </span>
         </div>
+
+        {/* the physical bracket, the cross-section's measured rule; it
+            spans zero to three Black medians beside the rising column
+            and lands on the existing waypoint that names it */}
+        <div
+          aria-hidden="true"
+          data-testid="climb-bracket"
+          className="absolute left-[43.5%] top-0 w-[1.75%] border-y border-r border-exh-ink/50"
+          style={{ height: pct(3 * BLACK_USD) }}
+        />
 
         {/* waypoints, whole multiples of the Black median */}
         {MULTIPLES.map((n) => (

@@ -70,6 +70,11 @@ export default function StageBase() {
         <pattern id="ground-waterlines" width="10" height="7" patternUnits="userSpaceOnUse">
           <line x1="0" y1="3.5" x2="10" y2="3.5" stroke="#262019" strokeOpacity="0.10" strokeWidth="0.7" />
         </pattern>
+        {/* tap-to-raise: the one open sheet lifts off the plate while
+            its record is read (applied per tapped area path only) */}
+        <filter id="ground-lift" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="1.2" dy="1.8" stdDeviation="1.1" floodColor="#262019" floodOpacity="0.4" />
+        </filter>
       </defs>
 
       {/* the paper itself, so value shifts (the bombing chapter's dim)

@@ -233,6 +233,12 @@
    "milestone": "R9",
    "decision": "Ground-up presentation redesign adopted per the R9 council verdict (The Same Map chassis, Plate-and-Register encodings, erase-and-rebuild open, curator pacing, art-director laws, contrarian gates). One persistent accumulating map, a five-bar Instrument Register, a Ledger Rail, and a Spine carry seven acts; the charge is stated inside ninety seconds; the bombing chapter is protected by register not mechanics; the relief turntable, rigged instruments, machine rooms, and the document-flow shell are deleted at swap. Full text in data/exhibit/design/R9/design.md with council-1-verdict.md, council-1-concepts.json, council-1-reviews.json, research-memo.md.",
    "by": "standing authorization D-A2-04 (owner brief 2026-07-10 ordered the blank-slate redesign, council process, and audit loop)"
+  },
+  {
+   "id": "D-R10-01",
+   "date": "2026-07-10",
+   "decision": "Adopt THE PRESSED SHEET as R10's binding design (council chairman verdict, six-concept convergence). Key rulings recorded: frame reprojection REJECTED in favor of second-sheet cuts (the one-plane detail experiment stays in the prep script, unemitted); the citywide street layer and the renewal-area footprint are OMITTED until sourced (Major Streets export endpoint refuses; no renewal geometry in verified materials); the national SCF gap figures may never be pinned to map geography (towers carry only geographically-true figures, Lawndale contract extraction and Woodlawn present-day prices); U-grade areas carry zero press depth with the disclosure covering them; the docked register keeps its link-to-wall behavior instead of a mobile bottom sheet (simplification, open to audit challenge); rust appears on the register caret only at 2026.",
+   "by": "lead, under standing authorization D-A2-04"
   }
  ]
 }

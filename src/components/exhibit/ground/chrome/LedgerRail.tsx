@@ -37,8 +37,13 @@ export default function LedgerRail() {
     >
       {latest ? (
         <>
-          <span className="glr-year exh-mono">{latest.year}</span>
-          <span className="glr-label" data-sign={latest.sign}>
+          {/* keyed by entryId so a new posting remounts the spans and the
+              one-shot wet-ink settle plays (R10, the one arrival grammar);
+              disabled under data-motion="off" in the CSS */}
+          <span key={`y-${latest.entryId}`} className="glr-year exh-mono">
+            {latest.year}
+          </span>
+          <span key={`l-${latest.entryId}`} className="glr-label" data-sign={latest.sign}>
             <span className="glr-label-full">{latest.label}</span>
             <span className="glr-label-short">{latest.shortLabel ?? latest.label}</span>
           </span>

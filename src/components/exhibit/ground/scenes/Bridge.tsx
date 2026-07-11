@@ -57,11 +57,13 @@ export default function Bridge(_props: SceneProps) {
             In Woodlawn, on the blocks around the new presidential center.
           </div>
           <ul className="mt-3 flex flex-col gap-2">
+            {/* big number first; the price figure leads the row and
+                the supporting record follows */}
             <li>
-              <FactValue id="present.obama_center_opened" size="sm" />
+              <FactValue id="present.woodlawn_prices" size="md" />
             </li>
             <li>
-              <FactValue id="present.woodlawn_prices" size="sm" />
+              <FactValue id="present.obama_center_opened" size="sm" />
             </li>
             <li>
               <FactValue id="present.woodlawn_affordable" size="sm" />

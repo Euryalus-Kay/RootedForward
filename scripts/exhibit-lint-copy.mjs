@@ -34,6 +34,8 @@ const VISIBLE_KEYS = new Set([
   "excerptShown", "shortLabel", "buttonLabel", "aria", "era", "name",
   // R9 ground-copy.json fields
   "years", "mapCaption", "howTo", "colophonLine",
+  // R10: screen-reader resolved-state sentences are visitor copy too
+  "sr",
 ]);
 // Keys that hold verbatim historical material (allowed to violate, they
 // are quotes of period documents) when a sibling `historical: true` exists.

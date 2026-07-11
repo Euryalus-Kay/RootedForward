@@ -126,10 +126,17 @@
    "started": "2026-07-10",
    "notes": "SHIPPED. The Same Map, the ground-up presentation rebuild, live on /tours/chicago/hyde-park (swap commit 9ce9241). One server-rendered accumulating map (52KB gz geometry, 694 area paths in initial HTML), IO-stepped discrete states, docked five-bar Instrument Register with riding rust year, Ledger Rail with short labels, D-red Spine, seven acts over the thirteen chapter anchors. Process: 7-concept council + peer review + chairman (design/R9/), lead research memo (ten laws), 8-agent scene wave under strict file ownership, two full 8-lens audit rounds (reviews/R9-round1.json, R9-round2.json, both resolved), inline round-2 surgery by the lead, throttled Fast-3G production smoke, three-lens closing walk. Suite rebuilt: 14 ground scenarios / 80 checks, green locally AND against production. Fact registry at 127 (new: bombings.families_stayed, the record line of refusal, factchecked); audit-facts now scans component-level consumers (5 truthful warnings). 50 old presentation files deleted at swap; survivors: shared registry components, SurveyorsFiles reading room behind the colophon door, AnswerWall, moderation lib. Deep-link contract (#room-files:<areaId>, #ch anchors) verified end to end; NOTE headless Chrome drops URL fragments across the construction-slug redirect, so hash links must target the live slug.",
    "completed": "2026-07-10"
+  },
+  {
+   "id": "R10",
+   "title": "The Pressed Sheet, the graphics overhaul",
+   "status": "in_progress",
+   "started": "2026-07-10",
+   "notes": "Owner kept the Same Map concept but rejected the graphics (boring, wants 3D integrated with the 2D maps, camera zooms, faster charts, a rethought bottom timeline, every map checked). Council of six lenses converged on one chassis, THE PRESSED SHEET (design/R10/council-verdict.md, binding): the map is a printed survey sheet on a cream-dark desk; grades press DOWN in four quantized rank steps (the press stamps at a3-s2 with an on-page disclosure), only true dollars rise UP (act6 towers at Lawndale and East Woodlawn); FLIP hybrid camera with named real-geometry focus targets, counter-scaled type, veil spotlights, quantized tilt (0/10/22, mobile 8) at exactly three events; ground plane rebuilt from real layers (community-areas land and fabric, derived shoreline lake with water-lining, parks, PLSS mile grid). Wave 0 (commit 0fccc88) landed the core; Wave 1 agents rebuilt the register (union band, corrected batons, rust-only-2026 caret) and the act6 towers."
   }
  ],
  "updated": "2026-07-10",
- "milestone": "R9",
+ "milestone": "R10",
  "lastUpdated": "2026-07-10",
- "notes": "R9 live: The Same Map. Suite 80 checks / 14 scenarios against production."
+ "notes": "R10 in progress: The Pressed Sheet graphics overhaul on top of the live R9 Same Map."
 }

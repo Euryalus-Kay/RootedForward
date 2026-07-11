@@ -343,6 +343,72 @@ export const scenarios = [
   },
 
   {
+    id: "ground-pressed-sheet",
+    milestone: "R10",
+    tags: ["ground"],
+    route: GROUND,
+    async run(page, t) {
+      await page.waitForSelector('[data-testid="ground-stage"]', { timeout: 30000 });
+      const at = async (sel, settle = 1300) => {
+        await page.evaluate((s) => document.querySelector(s)?.scrollIntoView({ block: "center", behavior: "instant" }), sel);
+        await new Promise((r) => setTimeout(r, settle));
+        return page.evaluate(() => {
+          const st = document.querySelector('[data-testid="ground-stage"]');
+          const svg = document.querySelector("[data-ground-svg]");
+          const sheet = document.querySelector('[data-testid="ground-sheet"]');
+          return {
+            tilt: st?.dataset.tilt,
+            press: st?.dataset.press,
+            veil: st?.dataset.veil,
+            marksmode: st?.dataset.marksmode,
+            grid: st?.dataset.gGrid,
+            fabric: st?.dataset.gFabric,
+            viewW: Number((svg?.getAttribute("viewBox") ?? "0 0 0 0").split(" ")[2]),
+            sheetTransform: sheet ? getComputedStyle(sheet).transform : "",
+            veilD: (document.querySelector("svg [data-veil]")?.getAttribute("d") ?? "").length,
+            title: document.querySelector('[data-testid="ground-titleblock"]')?.textContent ?? "",
+            sr: document.querySelector('[data-testid="ground-sr"]')?.textContent ?? "",
+            lakeD: (document.querySelector("[data-lake]")?.getAttribute("d") ?? "").length,
+            landD: (document.querySelector("[data-land]")?.getAttribute("d") ?? "").length,
+          };
+        });
+      };
+      const top = await at("#ch0");
+      t.assert("the ground plane ships in the SSR sheet", top.lakeD > 100 && top.landD > 1000, `lake=${top.lakeD} land=${top.landD}`);
+      t.assert("first paint is plumb and unpressed", top.tilt === "0" && top.press === "off", JSON.stringify({ tilt: top.tilt, press: top.press }));
+      t.assert("the title block names the sheet", top.title.includes("CHICAGO"), top.title.slice(0, 60));
+      const plat = await at("#ch1");
+      t.assert("the 1833 plat leans and carries the survey grid", plat.tilt === "10" && plat.grid === "on", JSON.stringify({ tilt: plat.tilt, grid: plat.grid }));
+      t.assert("the lean is a real transform", plat.sheetTransform !== "none" && plat.sheetTransform !== "", plat.sheetTransform.slice(0, 40));
+      const fair = await at("#a1-fair");
+      t.assert("the fair's veil lifts Jackson Park", fair.veil === "on" && fair.veilD > 200, `veil=${fair.veil} d=${fair.veilD}`);
+      const close = await at("#ch5", 1700);
+      t.assert("the paperwork chapter pushes the camera close", close.viewW < 400, `viewW=${close.viewW}`);
+      t.assert("marks resolve to readable dots up close", close.marksmode === "dots", close.marksmode);
+      const flood = await at("#a3-f1", 1700);
+      t.assert("the filing counter reads the first month", flood.title.includes("Sep 1939") && flood.title.includes("of 703"), flood.title.slice(0, 120));
+      const press = await at("#a3-s2", 1700);
+      t.assert("the press stamps at the underwriting sentence", press.press === "on", press.press);
+      t.assert("the rank disclosure prints with the press", press.title.includes("Depth shows grade rank"), press.title.slice(0, 160));
+      const pressedFilter = await page.$eval('[data-gfill="D"]', (el) => getComputedStyle(el).filter);
+      t.assert("the D fill carries its intaglio filter", pressedFilter.includes("url"), pressedFilter.slice(0, 60));
+      const badge = await page.evaluate(() => {
+        document.querySelector("#ch6")?.scrollIntoView({ block: "center", behavior: "instant" });
+        return new Promise((res) =>
+          setTimeout(() => res(document.querySelector('[data-testid="ground-marks-badge"]')?.textContent ?? ""), 1500)
+        );
+      });
+      t.assert("the marks' badge counts the sites at the survey's arrival", badge.includes("32"), badge.slice(0, 60));
+      const lawndale = await at("#ch9", 1500);
+      t.assert("act five veils to North Lawndale", lawndale.veil === "on" && lawndale.veilD > 100, `veil=${lawndale.veil}`);
+      const money = await at("#a6-ledger", 1700);
+      t.assert("the finale leans the sheet for the bill", money.tilt === "22", money.tilt);
+      const memorial = await at("#ch4", 1500);
+      t.assert("the memorial is plumb, unveiled, unpressed in its own moment", memorial.tilt === "0" && memorial.veil === "off", JSON.stringify({ tilt: memorial.tilt, veil: memorial.veil }));
+      t.assert("the memorial's stillness is stated for screen readers", memorial.sr.includes("Nothing on the map moves"), memorial.sr.slice(0, 100));
+    },
+  },
+  {
     id: "ground-deeplink",
     milestone: "R9",
     tags: ["ground"],
