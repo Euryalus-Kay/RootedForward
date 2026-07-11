@@ -1386,8 +1386,13 @@ body.exhibit-immersive > footer { display: none; }
   top: 50%;
   transform: translateY(-50%);
   padding: 2px 6px;
-  background: color-mix(in srgb, var(--color-exh-ink) 94%, transparent);
-  color: var(--color-exh-linen);
+  /* linen plate with an ink border, NOT solid ink: a dark chip to the
+     band's right read as the band running past 1970, extending the
+     claim (R10 audit); the drawn dark mass must end where the union
+     ends */
+  background: color-mix(in srgb, var(--color-exh-linen) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 55%, transparent);
+  color: var(--color-exh-ink);
   font-size: 7px;
   line-height: 8px;
   font-weight: 600;

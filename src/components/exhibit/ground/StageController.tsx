@@ -110,6 +110,33 @@ export default function StageController({
     const svg = root?.querySelector<SVGSVGElement>("[data-ground-svg]");
     const cam = cameraRef.current;
     if (!root || !svg || !cam) return;
+
+    /* everything derived from the camera and the pane in one place,
+       so a resize can re-derive it against the same resolved state */
+    const applyDerived = (to: Box) => {
+      /* marks stay readable at every camera: their natural size is
+         3.2 viewBox units, clamped to a 4.5..9 screen-px radius;
+         labels counter-scale so type keeps its apparent size when
+         the camera is close (--gtext-k multiplies CSS font sizes) */
+      const kx = Math.min(
+        (svg.clientWidth || 1) / to.w,
+        (svg.clientHeight || 1) / to.h
+      );
+      const rScreen = Math.min(Math.max(3.2 * kx, 4.5), 9);
+      root.style.setProperty("--gmark-r", `${Math.round((rScreen / kx) * 10) / 10}px`);
+      const home = homeBox(stage.frame);
+      root.style.setProperty("--gtext-k", `${Math.round((to.w / home.w) * 1000) / 1000}`);
+      /* the drawn content's box inside the svg element (meet
+         centering), so HTML pinned to true geography lands on the
+         drawing, not the pane; --gsv-* are svg-relative */
+      const contentW = to.w * kx;
+      const contentH = to.h * kx;
+      root.style.setProperty("--gsv-left", `${Math.round(((svg.clientWidth || 1) - contentW) / 2)}px`);
+      root.style.setProperty("--gsv-top", `${Math.round(((svg.clientHeight || 1) - contentH) / 2)}px`);
+      root.style.setProperty("--gsv-w", `${Math.round(contentW)}px`);
+      root.style.setProperty("--gsv-h", `${Math.round(contentH)}px`);
+    };
+
     const to = resolveBox(svg);
     if (stage.frame !== lastFrame.current) {
       /* a different document laid on the desk; always a cut, staged
@@ -122,27 +149,24 @@ export default function StageController({
     } else {
       cam.go(to, { instant: reducedMotion });
     }
-    /* marks stay readable at every camera: their natural size is 3.2
-       viewBox units, clamped to a 4.5..9 screen-px radius; labels
-       counter-scale so type keeps its apparent size when the camera
-       is close (--gtext-k multiplies the CSS font sizes) */
-    const kx = Math.min(
-      (svg.clientWidth || 1) / to.w,
-      (svg.clientHeight || 1) / to.h
-    );
-    const rScreen = Math.min(Math.max(3.2 * kx, 4.5), 9);
-    root.style.setProperty("--gmark-r", `${Math.round((rScreen / kx) * 10) / 10}px`);
-    const home = homeBox(stage.frame);
-    root.style.setProperty("--gtext-k", `${Math.round((to.w / home.w) * 1000) / 1000}`);
-    /* the drawn content's box inside the svg element (meet centering),
-       so HTML pinned to true geography lands on the drawing, not the
-       pane; --gsv-* are svg-relative, for children of the sheet */
-    const contentW = to.w * kx;
-    const contentH = to.h * kx;
-    root.style.setProperty("--gsv-left", `${Math.round(((svg.clientWidth || 1) - contentW) / 2)}px`);
-    root.style.setProperty("--gsv-top", `${Math.round(((svg.clientHeight || 1) - contentH) / 2)}px`);
-    root.style.setProperty("--gsv-w", `${Math.round(contentW)}px`);
-    root.style.setProperty("--gsv-h", `${Math.round(contentH)}px`);
+    applyDerived(to);
+
+    /* a resized pane changes the meet-fit; re-derive against the
+       recomputed camera box (instant, it is the same resolved state).
+       ResizeObserver reports once on observe; that first report is
+       the size we just derived from, so it must not cut a tween. */
+    let firstReport = true;
+    const ro = new ResizeObserver(() => {
+      if (firstReport) {
+        firstReport = false;
+        return;
+      }
+      const next = resolveBox(svg);
+      cam.go(next, { instant: true });
+      applyDerived(next);
+    });
+    ro.observe(svg);
+    return () => ro.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage.frame, stage.cam, stage.marksMode, reducedMotion]);
 
