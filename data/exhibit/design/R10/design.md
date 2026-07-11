@@ -16,13 +16,16 @@ underwriting sentence lands at a3-s2, where it arrives as one stamp.
 
 ## Engineering decisions by the lead (where the verdict left room)
 
-1. **FLIP camera on the svg element, destination-first.** The tween sets the
-   real target viewBox immediately, applies the inverse transform, and
-   transitions to identity, so the sheet rasterizes at destination
-   resolution and arrives crisp without a snap frame. transitionend AND
-   transitioncancel plus an rAF watchdog handle interruption; retargeting
-   mid-flight reads the computed transform as the new origin. Micro-layers
-   (fabric, grid, parks) hide behind data-tween during flight.
+1. **FLIP camera on the inner data-camera group, destination-first**
+   (corrected in audit round 1; the first cut ran the transform on the
+   svg element, which clipped the rest of the city out of every flight).
+   The tween sets the real target viewBox immediately, applies the
+   inverse affine to the group in user units (transform-box view-box,
+   origin 0 0), and transitions to identity. transitionend AND
+   transitioncancel plus a watchdog handle interruption; retargeting
+   mid-flight composes against the computed matrix. Micro-layers
+   (fabric, grid, parks) and the city labels rest behind data-tween
+   during flight.
 2. **No frame reprojection.** The one-plane detail experiment is removed
    from geometry.json (the code stays in the prep script behind the
    second-sheet ruling). Cross-frame changes are the second-sheet cut, a
@@ -35,6 +38,12 @@ underwriting sentence lands at a3-s2, where it arrives as one stamp.
    (blobby view). Per the verdict's own gating rule the street layer is
    omitted, not faked; the fabric, parks, grid, and lake carry the ground.
    Same for the renewal footprint (unsourced, omitted).
+   Also cut, recorded here per the same rule: the verdict's act-1 "1893
+   camera push 20 percent tighter" (the hydePark sheet has no camera
+   capability this round; the parks' arrival carries the beat), and the
+   mobile chapter-anchor retune deliberately exempts ch4 (the memorial's
+   resolved position is law-sealed; adjusting its anchor risks motion on
+   entry).
 5. **The docked register keeps initials plus adds the union band.** Full
    lane names at 44px need more height than the pane lane allows on
    desktop; lanes carry the boxed initials taught by the wall, with the

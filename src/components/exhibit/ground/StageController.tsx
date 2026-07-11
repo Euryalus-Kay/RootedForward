@@ -203,7 +203,12 @@ export default function StageController({
     ro.observe(svg);
     return () => {
       ro.disconnect();
-      if (cutTimer) window.clearTimeout(cutTimer);
+      if (cutTimer) {
+        window.clearTimeout(cutTimer);
+        /* never strand the settle-suppression attribute if the effect
+           re-runs inside the cut window */
+        root.removeAttribute("data-sheetcut");
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage.frame, stage.cam, stage.marksMode, reducedMotion]);
@@ -374,7 +379,8 @@ export default function StageController({
         <span className="gtb-frame">{FRAME_LABEL[stage.frame] ?? ""}</span>
         {floodIdx >= 0 ? (
           <span className="gtb-filing exh-mono" data-testid="ground-filing">
-            areas graded through {filedLabel}. {filedThrough} of 703
+            areas graded through {filedLabel}.{" "}
+            <span className="whitespace-nowrap">{filedThrough} of 703</span>
           </span>
         ) : null}
         {/* the rank disclosure prints only while depth is drawn (press

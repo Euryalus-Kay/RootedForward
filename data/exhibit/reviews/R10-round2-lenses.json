@@ -1,0 +1,169 @@
+[
+ {
+  "lens": "cartographer-curator, desktop corpus (all 60 d-* shots swept, pixel zooms on assigned items)",
+  "verified": [
+   "wall-bar-overrun: d-a2-register solid summary bar now ends at the 1970 tick carrying its label, a visually distinct hatched segment labeled ONE INSTRUMENT STILL RUNNING runs 1970 to 2026 on both the wall and the dock strip of every shot",
+   "s-row-2008-undrawn: the S row draws a hatched segment starting exactly at the 2008 axis position (measured ~x1171 on a 1900-at-664/2026-at-1256 axis) running to the axis end, bound to the 'returned after 2008' phrase",
+   "wall-annotation-collisions: relay batons drop clear of type (R-row connector below the bar, C-row connector threads the halo gap at 'the deed'), annotations carry paper halos, endnote dagger sits superscript with no baseline share",
+   "hyde-p-clip: d-ch5 and the close a3/a5 cameras show zero edge-sliced labels; HYDE PARK is gated out entirely at the bombingField cam, WOODLAWN and NORTH LAWNDALE render full at every focus",
+   "plss-grid-water: no section grid over open Lake Michigan in d-a0-r3, d-a0-charge, d-a0-locate, and no grid on the ch1 plat's water (west-strip residual noted under regressions)",
+   "ch0-neatline-bleed: d-ch0 lake fill stops cleanly at the inner neatline top-right and the 1940 stamp sits fully in the margin",
+   "township-mislabel: d-ch1 big label and plate footer read HYDE PARK, d-ch8 footer reads HYDE PARK, a6-sum copy says 'The Hyde Park line marks where the walk began', colophon names City of Chicago community-area boundaries as the ground layers",
+   "finale-label-collisions: d-a6-ledger/bridge/climb show no severed base labels (no orphaned MICHIGAN/PARK/THE LO); base city labels rest during the tilt, only the sanctioned EAST WOODLAWN 2026 tag prints",
+   "rust-on-red-tag: EAST WOODLAWN, 2026 tag has a strong linen halo and reads on D-red in both d-a6-sum and d-a6-ledger, ring haloed; note the Woodlawn tower base still sits on the ring's top half in a6-ledger (bottom arc reads, halo claim holds, the offset sub-fix was not taken)",
+   "climb-empty: d-a6-climb white-median column is filled with the sliver-stack material top to bottom, THREE TIMES THE BLACK MEDIAN cap annotation and YOU ARE HERE minimap present, mid-track viewports contain countable material",
+   "flood-stations: d-a3-f1/f2/f3 are three visibly different cameras (THE LOOP anchor at y285/y241/y329 across the three), counter advances 35 of 703 to 291 of 703 to 703 of 703, f1 sr matches what is drawn",
+   "counter-703-sheets: counter reads 'areas graded through ...' at every station, final label wraps cleanly as 'areas graded through Apr 1940, plus undated. / 703 of 703', and the a3-flood panel's ACROSS ALL 576 SHEETS coexists truthfully with the 703-area count",
+   "ch4: memorial unchanged and dignified (flat dim field, 32 dots plus the commission's dashed square exactly as the sr names them, no decoration, no press); era stamp now prints linen on the dim field, legible, inside the corner save a 1-2px top graze",
+   "press-inverted: at the D areas d-a3-f3 and d-a3-s2 both show inner top-edge darkening with clean linen outside the fills, grades read pressed into the sheet (intaglio), s2 pressing deeper per rank as designed",
+   "rust-ledger-years: account-column years 1833 through 1971 print in ink on d-a6-ledger, rust appears only on the 2026 entries and the 2026 rail chip",
+   "equal-steps-false: disclosure now reads 'Depth shows grade rank in four steps, not a measured quantity' with no 'equal'",
+   "ch4-arrive-early: d-a2-s1 already sits on the dim blackBelt crop ('The purge'), so d-ch4 differs only by the marks reveal; ground-copy confirms frame+dim land on a2-s1",
+   "a3s1-carry-zoom: the 'hundreds of Cook County subdivisions' claim plays at cam wide on d-a3-s1",
+   "binga-veil-missing: d-ch5 shows the veil resting with a spotlight hole on the Binga-block cluster and the sr names it",
+   "ch8-renewal-undrawn: no floating renewal sentence on d-ch8 or the a4 states, and the grade-depth disclosure is absent from grade-free states",
+   "anachronistic-labels: no MIDWAY or LOOP on the 1832/1833 sheets; THE MIDWAY first appears on the 1893 sheets (ch2, a1-fair) and persists after",
+   "plate-caption-camera: paired cards read 'Filed January 1940' and 'Filed November 1, 1939', one long-date family with no fabricated day on the A sheet",
+   "north-lawndale-plate: the $71,000 card reads NORTH LAWNDALE on d-a6-bridge and d-a6-ledger"
+  ],
+  "failed": [
+   "orphan-square: still present and now bolder. The unlabeled dashed Hyde Park ghost floats over the Woodlawn lakefront in d-ch0_5, d-a2-overture-in, d-a2-register, and d-a2-overture-out. Mechanism confirmed in ground-copy.json: boundary:true set in act 1 (a1-s2/ch2/ch3) carries through the empty-stage citywide interstitials and nothing clears it until a2-s1; the township fix's 'legible ink' upgrade makes the stray square more prominent than in round 1. The same carry runs ch8 through ch11 (boundary never cleared after ch8), leaving faint ghost dashes visible beside the dot cluster in d-ch11. Fix: set boundary:false on ch0_5 and the a2 overture/register stages (and clear or intend it for ch9-ch11), or derive the citywide ghost only on steps that name the line (a6-sum)."
+  ],
+  "regressions": [
+   {
+    "severity": "p3",
+    "where": "d-ch6 and d-a2-takeaway, marks badge over the base label layer",
+    "what": "The camera-anchored '32 bombed sites, 1917 to 1921' card sits directly on the NORTH LAWNDALE base label and severs it to an orphaned 'NORTH' floating left of the card, the exact defect class the finale fix cured for act 6; these two wide-cam badge states were not covered.",
+    "fix": "Apply the same intersection-suppression used for the act-6 towers/cards to the marks badge (controller already has the geometry), or re-anchor the badge east over the lake."
+   },
+   {
+    "severity": "p3",
+    "where": "d-a0-r3 (and a0-charge/a0-locate) west edge of the PLSS grid, residual from round 1, not new",
+    "what": "The grid still stops at a straight unexplained vertical line roughly an eighth of the pane east of the neatline, leaving a bare west strip with no drawn boundary or note; the round-1 fix options (extend to the neatline or draw the documented surveyed extent) were not taken, only the water clip, and the resolution ledger's claim covers only 'clips to dry land'.",
+    "fix": "Extend the section grid west to the inner neatline, or clip to the documented surveyed extent and draw that extent's boundary with a one-word note so the strip reads as fact rather than defect."
+   }
+  ]
+ },
+ {
+  "lens": "phone visitor, round 2: full m-* corpus at 390px from .r9shots, cross-checked against ground-copy.json, globals.css, StageBase/StageController, copy.ts carry rules, and geometry.json",
+  "verified": [
+   "mobile-finale-clip (p1): m-a6-bridge, m-a6-ledger, m-a6-climb all show the $440,000 MEDIAN PRICE NOW WOODLAWN plate fully inside the stage frame below the 2026 readout, with the $71,000 NORTH LAWNDALE plate also whole",
+   "mobile-disclosure-hidden (p2): m-a3-s2 prints 'Depth shows grade rank in four steps, not a measured quantity. Ungraded areas carry none.' under the title block, and it repeats on every pressed full-grade mobile state",
+   "equal-steps-false (p2): the printed disclosure says 'four steps', the word 'equal' is gone",
+   "wall-bar-overrun (p1): on m-ch0/m-ch1/m-ch5 dock crops the solid NO YEAR OFF bar starts at the 1921 tick and ends exactly at 1970, the hatched ONE STILL RUNNING continuation is visually distinct and both labels are legible at 390px; the register wall (m-a2-register) splits the same way",
+   "flood-stations (p1): m-a3-f1/f2/f3 are three distinct cameras (Sept-1939 batch extent with graded color inside the f1 frame, south-half mid pull, wide), eras 1939/1939/1940",
+   "rust-ledger-years (p1, mobile evidence): historical rail years print ink (1971 ink on m-a6-bridge, 1893/1919/1927 ink elsewhere), 2026 prints rust only on entry 11; globals.css:1750-1751 confirms ink default with data-now rust override",
+   "counter-703-sheets (p2): counter reads 'areas graded through Sep 1939. 35 of 703', '...Dec 1939. 291 of 703', and the truthful final batch 'through Apr 1940, plus undated. 703 of 703'",
+   "ch4-arrive-early (p2): ground-copy shows frame blackBelt plus dim landing on a2-s1; m-a2-s1 is the dim crop with no marks, m-ch4 adds only the marks and commission square",
+   "a3s1-carry-zoom (p2): m-a3-s1 plays the hundreds-of-subdivisions claim on the wide citywide frame (cam wide in data and in the shot)",
+   "township-mislabel (p2, mobile-visible parts): every hp-frame plate reads HYDE PARK, and the a6-sum caption says 'The Hyde Park line marks where the walk began'",
+   "climb-empty (p2): m-a6-climb's mid-track column carries the sliver-stack hatch, countable material plus the YOU ARE HERE minimap",
+   "wall-annotation-collisions (p2, mobile half): m-a2-register end-cap phrases (written out 1950, unenforceable 1948, outlawed 1968, returned after 2008) each sit on their own right-aligned line under the bar end, no orphan lines floating",
+   "s-row-2008-undrawn (p2): a hatched S segment is drawn from ~2008 to the axis end on the register wall at both widths",
+   "mobile-chapter-anchors (p2, all chapters except ch4): ch0/ch1/ch2/ch3/ch5/ch6/ch7/ch8/ch9/ch10/ch11 heads resolve mid-viewport with kicker and heading fully legible and clear air below; ch0's title block is whole with its intro callout above it",
+   "mobile-caret-clamp (p3): m-ch1 and m-a0-charge show the pre-1900 chip (1832/1833) flush left with no caret tick on the rail; post-1900 chips (1921, 1940, 1962, 1971) carry carets at the correct axis positions",
+   "dock-tap-hint (p3): a chevron is present at the right end of the dock strip on every mobile shot",
+   "legend-label-overlap (p3): the 'One sliver is $10,000, dollars as noted' legend sits on its own line above the title block on m-a6-bridge/ledger/climb, clear of CHICAGO, THE SURVEYED CITY",
+   "north-lawndale-plate (p3): the ledger tower plate reads NORTH LAWNDALE on all three finale states",
+   "plate-caption-camera (p3, date half): the flood card reads 'Filed November 1, 1939', long form",
+   "anachronistic-labels (p3): no MIDWAY or LOOP on the 1832/1833 sheets (m-ch1, m-a0-charge); THE MIDWAY first appears on the 1893 sheet",
+   "plss-grid-water (p2, mobile evidence): the section grid stops at the shoreline on m-ch1/m-a0-charge, the lake is ungridded",
+   "hyde-p-clip (p2, mobile evidence): at the bombingField camera (m-a3-article34) no label is sliced by the crop edge, HYDE PARK prints whole",
+   "declines spot-checked and sound: the chip occluding REPORTED on m-a6-bridge is the Next.js dev badge (dev artifact rule applies); entry 11 'The bill still outstanding' is the documented shortLabel for narrow widths and states the same fact"
+  ],
+  "failed": [
+   "mobile-chapter-anchors, ch4 portion: m-ch4 still resolves with the kicker at ~90% viewport height and 'The bombing years' baseline pinned against the ledger rail, ~400px of blank cream above it, exactly the round-1 complaint. The code deliberately exempts it (#ch4.ground-chapterhead padding 48vh, globals.css:985, comment 'the full-viewport breath is that chapter's designed silence') but the resolution ledger claims the blanket fix and records no decline; either record the ch4 exemption as a decline or retune its mobile anchor",
+   "orphan-square: the claimed fix (boundary ghost obeys the boundary flag) suppressed nothing at the overture. m-a2-register, m-a2-overture-in, m-a2-overture-out, and d-a2-register all still show the unlabeled dashed Hyde Park boundary ghost floating beside the WOODLAWN label on the citywide sheet. Root cause is in the carry rules: ch0_5 (data/exhibit/ground-copy.json) sets frame citywide and era '' but never resets boundary, so boundary:true carries from a1-s2/ch2 into all three stage-null overture steps, and the township-mislabel fix gave that ghost more ink. One-line fix: boundary:false on ch0_5's stage",
+   "rust-on-red-tag, phone half: the accepted fix said 'scale the ring and label up at the phone breakpoint for a6-sum', the resolution only claims the stronger halo, and at 390px the EAST WOODLAWN 2026 tag is ~5px of unreadable rust mush on D-red with the ring a ~10px fleck; the a6-sum copy explicitly asks the phone reader to find it"
+  ],
+  "regressions": [
+   {
+    "severity": "p2",
+    "where": "src/components/exhibit/ground/scenes/CasesReroute.tsx:98 and :103 (m-a3-cases at both widths)",
+    "what": "The court-cases rerouting route line and arrowhead are stroked var(--exh-rust, #A8502F), sampled (168,80,47) in the shot, on a 1917-1948 historical figure, and the scene's own caption says 'The rust line is the practice of exclusion'. That breaks the hard pigment law (rust means present-day only; the two sanctioned exceptions are the 2026 caret and the Woodlawn cap) and contradicts the palette's own comment that exclusion is exh-red's semantic. Uncatalogued in round 1.",
+    "fix": "Stroke the route and arrowhead with var(--color-exh-red) (the semantic exclusion ink), reword the caption's 'rust line' to 'red line', and add the rust-register assertion for this scene to the suite."
+   },
+   {
+    "severity": "p3",
+    "where": "m-a2-register resolved anchor at 390px (register wall, InstrumentRegister)",
+    "what": "The wall's first row title 'The realtors' rule' is sliced horizontally by the dock boundary at the resolved state, top ~30% of the glyphs cut; likely a side effect of the mobile pacing retune shifting anchors.",
+    "fix": "Give the register wall figure top scroll-margin (or a small spacer) at the phone breakpoint so row R clears the dock at the resolved anchor."
+   },
+   {
+    "severity": "p3",
+    "where": "m-a3-f1 filing counter (stage title block, 390px)",
+    "what": "The counter wraps mid-count: 'areas graded through Sep 1939. 35' breaks to 'of 703' on the next line, the same broken-count wrap pattern round 1 flagged on the final label.",
+    "fix": "Join the count with non-breaking spaces ('35\u00a0of\u00a0703') or force the break before the count phrase."
+   },
+   {
+    "severity": "p3",
+    "where": "scripts/exhibit-shots.mjs mobile anchors (evidence: m-ch0_5 shows hydePark 1893 instead of ch0_5's citywide era ''; m-ch9 shows a4-s2's hydePark 1962 instead of citywide 1958; m-a2-takeaway shows ch4's dim blackBelt 1917 instead of citywide 1921)",
+    "what": "Several mobile 'resolved' shots capture the previous step's stage because chapter-head and takeaway anchors sit below the activation band at capture; the audit corpus mislabels which state it evidences, which quietly blinds every screenshot-based review pass including this one.",
+    "fix": "After scrolling to the anchor, have the harness poll the engine's active-step attribute and nudge scroll until the target step is active before shooting; assert shot id equals active step id."
+   }
+  ]
+ },
+ {
+  "lens": "technologist",
+  "verified": [
+   "flip-camera-cut (core group FLIP): camera.ts tweens only the inner [data-camera] g in user units (meet-map affines, compose(invert(mNew), mPrev, gRead)), retargets compose against the mid-flight computed matrix read BEFORE cleanup, transitionend+transitioncancel+watchdog all funnel to one cleanup, destroy() releases listeners and the timer; StageBase.tsx wraps every drawn layer after <defs> in that group (defs + g are the svg's only children); suite ground-hardening samples a real mid-flight frame (data-tween on, computed transform != none, 690+ areas still mounted, then settles off)",
+   "press-inverted: StageBase.tsx:67 is now <feComposite in=\"SourceAlpha\" in2=\"blur\" operator=\"out\"/> (shape minus its own offset blur = true inner-shadow crescent), and ground-hardening asserts those exact operands on #ground-press-d in the live DOM",
+   "rust-ledger-years: globals.css:1750-1751 sets .glr-year to ink and rust only via [data-now=\"on\"], overriding the old :847 rust rule by cascade; suite asserts a historical year's computed color is not rgb(168,80,47); d/m-a6 shots show 2026 rust only, 1833-1971 ink",
+   "wall-bar-overrun + s-row-2008-undrawn: solid union ink ends at 1970 with a hatched data-open continuation and its own plate on dock and wall (globals.css:1638-1669), and row S gains the hatched .gr-wall-return from 2008 to the axis end; confirmed in d-a3-f1 dock and d-a2-register",
+   "flood-stations: geometry.citywide.focus contains real floodFirst {1063,385,314,875} and southHalf {802,437,860,1218} boxes; a3-f1/f2/f3 set floodFirst/southHalf/wide; d-a3-f1/f2/f3 are three visibly distinct framings and the f1 card no longer claims the South Side",
+   "mobile-finale-clip: DollarTowers hScale = 0.5 under 1024px (LedgerColumn.tsx:205); m-a6-ledger shows the $440,000 Woodlawn cap plate fully inside the stage frame; ground-mobile asserts tower.top >= pane.top",
+   "suite-blind: ground-hardening adds operand, flight, money-beat, rust-year, and resize checks; ground-mobile adds the disclosure and Woodlawn-cap asserts; .r9shots/shoot.mjs enumerates anchors from ground-copy.json acts (60 per width) and sets exitCode 1 on any missing anchor",
+   "counter-703-sheets: StageController.tsx:377 renders \"areas graded through {label}. {n} of 703\"; GroundShell labels the remainder batch \"Apr 1940, plus undated\"; floodOrder reconciles 532 dated + 44 undated + 127 sheetless = 703; d-a3-f3 shows the final label reading cleanly",
+   "township-mislabel: FRAME_LABEL is HYDE PARK (StageController.tsx:58, d-ch1 plate), the citywide boundary ghost has legible ink (globals.css:1613-1617) and obeys data-boundary (:1779), suite asserts boundary off on ch4 and on at a6-sum",
+   "ch4-arrive-early: a2-s1 carries frame=blackBelt + dim, ch4 adds only marks (ground-copy.json); d-a2-s1 confirms the crop and dim land early; the lint gate blocks frame/cam changes on ch4 and a3-s2 and a dim cut on ch4",
+   "a3s1-carry-zoom: a3-s1 stage sets cam \"wide\"",
+   "binga-veil-missing: geometry.json veilHoles.bingaBlock exists, ch5 stage sets veil=bingaBlock, and the spotlight is visible around the 5922 South Park cluster in d-ch5; design.md's veil-hole list now truthfully includes the binga block",
+   "tower-shear + small-pops: .gtower carries transition transform 700ms cubic-bezier matching .ground-sheet (globals.css:1266-1273); the opacity transition and the data-tween opacity:0 rule now live on the same .ground-towers element (:1265/:1274); the sheet-arrive keyframes bake in var(--gtilt) so no backward jump; data-sheetcut self-clears at 340ms (StageController:180-183); the veil clears d 500ms after the 450ms fill-opacity fade (StageController:219-224, globals.css:1625)",
+   "mobile-disclosure-hidden + equal-steps-false: the display:none is gone (only an 8px resize at :1243), the disclosure prints in m-a6-ledger, and the copy reads \"four steps, not a measured quantity\" with no \"equal\" (StageController:383-386); suite asserts it on phones",
+   "ch8-renewal-undrawn (disclosure half): the disclosure renders only when stage.press && stage.grades === \"full\" (StageController:382), so ch8's grade-free hydePark state drops it",
+   "plss-grid-water: ground-dryland / ground-dryland-hp evenodd clipPaths (StageBase:88-93) clip both grids; d-a0-r3 shows the grid stopping at the shoreline and running to the west neatline",
+   "gtext-k-letterbox: counter-scale is kHome/kx with both k = min(paneW/w, paneH/h) meet ratios (StageController:125-140)",
+   "hyde-p-clip: per-camera data-camclip gate written in applyDerived (StageController:143-159) with globals.css:1589 hiding flagged labels; d-ch5 and both flood crops show zero clipped labels",
+   "resize re-derivation without cutting live tweens: each effect run creates a fresh ResizeObserver whose mandatory first report is skipped by the firstReport guard (StageController:193-203), so starting a flight never self-cuts; real resizes recompute resolveBox, go instant, and re-derive; suite asserts --gsv-w changes across a viewport resize and restores 1280x800 after",
+   "reduced-motion parity of every NEW animation/transition in the R10 audit-fix CSS blocks: the veil-off transition (:1625) is overridden by the earlier !important none (:1252); the new [data-city-boundary] transition (:1780) has its own motion-off override at :1781; the open-hatch animation-delays (:1664-1668) are moot because the tie-specificity, later-in-file motion-off rules (:1551-1558) null the animation and force the resolved transform/opacity; camclip/tilt-22/era-gate opacity flips ride the label-group transition that :586-592 disables; taphint, return hatch, halo, and prerail rules are static",
+   "p3 sweep (register-fixer items): rust-on-red-tag paint-order stroke halo (:1606-1610, legible in d-a6-sum), anachronistic labels era-gated (:1621-1622, absent in d-a0-r3/d-ch1), ch0 neatline clip-path inset 8.5px (:1597, clean in d-ch0), memorial stamp linen and inside the corner (:1601-1602, d-ch4), finale base labels rest at tilt 22 (:1593, d-a6-ledger clean), mobile caret clamp (:1756, m-a0-charge chip flush left with no caret), dock tap-hint chevron under 480px (:1762-1774), wall annotation paper halos and phone right-aligned endnote lines (:1686-1745, m-a2-register), legend stacked clear of the stage label (m-a6-ledger), NORTH LAWNDALE plate wording (d-a6-ledger card)"
+  ],
+  "failed": [
+   "safari-pass: the resolution claims a real WebKit walk was recorded, but no record exists anywhere in the repo. build-state.json contains no safari/webkit string, the R10 milestone note does not mention it, and the round-1 fix explicitly required recording the pass in build state. The walk may have happened; as evidence it does not exist.",
+   "flip-camera-cut (deferral clause): the round-1 fix said to defer the --gtext-k/--gsv writes and badge/note visibility to settle, hidden behind data-tween. Not implemented. applyDerived(to) runs synchronously at flight start (StageController.tsx:187) writing destination --gtext-k and data-camclip, and no data-tween rule rests [data-city-labels] (only fabric, grid, towers). So in-crop labels still snap to destination counter-scale at t=0 with labels on: they pop small entering ch5 and a3-f1, and pop oversized (up to the full zoom ratio) at the start of the ch5-to-a3-s1 and a3-f2-to-a3-f3 pull-outs, then ride back to apparent size over the 900ms flight. The badge/note clauses are moot in shipped data (no step keeps them visible through a flight), which is why the resolved-state shot corpus cannot show this. Cheapest honest fix: rest [data-city-labels] behind data-tween like the other micro-layers, or defer the --gtext-k write to settle.",
+   "act1-push-unrecorded (decline reason factually wrong): the decline says the 1893 act-1 push was recorded as a cut in design/R10/design.md, but the file contains no such record (no push, hpFocus, or act-1 cut entry; the streets and renewal omissions ARE recorded at lines 34-37, this one never was). Also stale in the same file: section \"Engineering decisions\" item 1 still describes the FLIP living on the svg element, which round 2 replaced with the inner group. One paragraph fixes both."
+  ],
+  "regressions": [
+   {
+    "severity": "p2",
+    "where": "src/components/exhibit/ground/engine/camera.ts:152-154 (transformOrigin \"0 0\" on the inner SVG g)",
+    "what": "The round-2 move from the svg element to an inner g makes the FLIP math newly dependent on transform-box: view-box resolving transform-origin \"0 0\" to user point (0,0). All three frames have nonzero viewBox mins (citywide \"530 -190 ...\", blackBelt \"1199 662 ...\", hp \"580 230 ...\"), so any engine that positions the reference box at (min-x, min-y) instead of the user-space origin renders every flight with a large offset jump at t=0. Chrome is per-spec (shots and the suite's mid-flight probe pass); WebKit is a historic interop soft spot for transform-box on SVG, and the Safari walk that would clear it is unrecorded (see failed safari-pass).",
+    "fix": "Fold one watched within-frame flight (ch6 to ch5) into the recorded Safari/iOS pass; belt-and-suspenders, make the math origin-proof: set transform-box: view-box explicitly on [data-camera] and, if the walk shows an offset, pre-compose the origin into the affine or normalize geometry.json viewBoxes to 0 0 mins in the prep script."
+   },
+   {
+    "severity": "p3",
+    "where": "src/components/exhibit/ground/StageController.tsx:172-207 (cutTimer vs effect cleanup)",
+    "what": "A frame cut sets data-sheetcut=\"on\" with a 340ms removal timer, but the effect cleanup clears the timer without removing the attribute. A same-frame step arriving within 340ms of a frame cut (fast flick through a2-s1 into ch4, or ch4 out to a2-takeaway then onward) leaves data-sheetcut stuck on until the next frame cut. Visually benign today because the arrive animation has already finished and its keyframes bake in --gtilt, but it is a stale-state leak: any future rule keyed on data-sheetcut (like the existing dim+sheetcut suppressor at globals.css:1576) inherits a lying attribute.",
+    "fix": "In the effect cleanup, alongside clearTimeout, also root.removeAttribute(\"data-sheetcut\")."
+   },
+   {
+    "severity": "p3",
+    "where": "src/components/exhibit/ground/StageController.tsx:148-158 (camclip width estimate) vs globals.css:1013 (.ground-stage text { text-anchor: middle })",
+    "what": "The new label gate estimates the label as running from lx to lx+estW, but stage text is middle-anchored, so the true span is lx\u00b1estW/2. Right edge over-hides (labels vanish at twice their real extent from the crop edge); left edge under-hides: a label whose anchor sits just inside the 8px pad can keep data-camclip=\"in\" while its left half crosses the crop and clips mid-word, the exact defect class hyde-p-clip was fixing. No instance exists in the 60-shot corpus at either width with the shipped focus boxes, so this is latent, but any new focus box, label, or odd pane aspect can surface it.",
+    "fix": "Test lx - estW/2 against the left bound and lx + estW/2 against the right bound."
+   },
+   {
+    "severity": "p3",
+    "where": "scripts/exhibit-lint-copy.mjs:180 (arrive-early resolver) vs src/lib/exhibit/ground/copy.ts:39-47 (engine carry rules)",
+    "what": "The lint resolves dim as `s.stage.dim ?? false` (reset on any stage that omits it) while the engine carries dim forward through {...stage, ...step.stage}. Correct on today's data (a2-s1 and ch4 both set dim explicitly), but the gate diverges from the machine it guards: a future compliant edit that relies on dim carry will false-fail the gate, and the narrow inverse (dim set steps earlier, carried through a dim-less predecessor, then explicitly cleared ON ch4) passes the lint while the engine performs a dim cut on the memorial.",
+    "fix": "Carry dim exactly like frame and cam in the lint's resolver (dim: s.stage.dim ?? stage.dim), mirroring copy.ts."
+   },
+   {
+    "severity": "p3",
+    "where": "scripts/exhibit-scenarios.mjs:487-501 (ground-hardening money-beat block)",
+    "what": "The verdict's suite-blind fix specified the money-beat block assert tower presence, ring alignment, one rust cap, and legend. The shipped block checks presence, legend, tower count, and fact-registry plates, but never asserts the single rust cap (rust-means-now law on the exhibit's most photographed state) nor ring/tower alignment at the true anchors, so a future regression in either would pass the suite again.",
+    "fix": "Add two asserts at a6-ledger: exactly one .gtower cap resolves to the rust color, and the Woodlawn tower base's left/top percentages match anchorsPct.today within tolerance."
+   }
+  ]
+ }
+]

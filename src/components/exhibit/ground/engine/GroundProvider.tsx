@@ -192,6 +192,7 @@ export default function GroundProvider({
       <div
         data-motion={reducedMotion ? "off" : "on"}
         data-ground-warm={activeStep.resolvedStage.warm ? "on" : "off"}
+        data-ground-active={activeStep.id}
       >
         {children}
       </div>

@@ -1779,3 +1779,22 @@ body.exhibit-immersive > footer { display: none; }
 .ground-stage[data-boundary="off"] [data-city-boundary] { opacity: 0; }
 .ground-stage [data-city-boundary] { transition: opacity 450ms ease; }
 [data-motion="off"] .ground-stage [data-city-boundary] { transition: none; }
+
+/* ==================================================================
+   R10 audit round-2 fixes (reviews/R10-round2-ruling.md)
+   ================================================================== */
+
+/* labels rest during camera flight like the other micro-layers, so
+   the counter-scale write never pops them mid-air */
+.ground-stage[data-tween="on"] [data-city-labels] { opacity: 0; }
+
+/* the badge hangs east of the field, over the water, left-aligned */
+.ground-marks-badge { transform: translate(0, -50%); }
+
+/* the finale's one present-day mark reads at phone scale too; the
+   copy sends the reader to it by name */
+@media (max-width: 1023px) {
+  .ground-stage [data-today-mark] { r: 44px; stroke-width: 9; }
+  .ground-stage [data-today-halo] { r: 49px; stroke-width: 14; }
+  .ground-stage [data-today-tag] { font-size: calc(40px * var(--gtext-k, 1)); }
+}

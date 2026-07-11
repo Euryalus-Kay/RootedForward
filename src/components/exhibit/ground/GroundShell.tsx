@@ -72,9 +72,10 @@ function buildClientProps(): StageClientProps {
   const today = geometry.citywide.todayAnchor as { x: number; y: number };
   const anchorsPct: StageClientProps["anchorsPct"] = { today: pct(today) };
   if (anchors.lawndale) anchorsPct.lawndale = pct(anchors.lawndale);
-  /* the marks' counted badge anchors above the bombing field */
+  /* the marks' counted badge anchors east of the bombing field, over
+     the lake, so it never severs a neighborhood label (audit round 2) */
   const bf = (geometry.citywide.focus as Record<string, { x: number; y: number; w: number; h: number }>).bombingField;
-  anchorsPct.marks = pct({ x: bf.x + bf.w / 2, y: bf.y });
+  anchorsPct.marks = pct({ x: bf.x + bf.w + 30, y: bf.y + bf.h * 0.3 });
 
   return {
     viewBox: geometry.citywide.viewBox as string,

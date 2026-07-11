@@ -69,5 +69,18 @@
    "reason": "the title block names the sheet, which does not change with the camera; the era readout and filing counter carry the state."
   }
  ],
- "verdictResponse": "All six p1s and every accepted p2/p3 fixed; round-2 verification panel to run on fresh full-corpus shots before ship, per the chairman's ruling."
+ "verdictResponse": "All six p1s and every accepted p2/p3 fixed; round-2 verification panel to run on fresh full-corpus shots before ship, per the chairman's ruling.",
+ "corrections": {
+  "date": "2026-07-11",
+  "by": "round-2 chairman ruling, items 1-7 executed",
+  "notes": [
+   "orphan-square round-1 fix was insufficient (boundary carried true from act 1 through the overture, and from ch8 through ch11); fixed in data, boundary false on ch0_5 and ch9",
+   "CasesReroute stroked a historical route in rust; repigmented to the page's D-red ink and the caption reworded to red line",
+   "the round-1 'safari-pass' claim preceded its own record; the real WebKit walk (ch1/ch5/a3-s2/a6-ledger plus the ch6-to-ch5 within-frame flight, transform-box view-box asserted, zero page errors) is now recorded in build-state R10 notes",
+   "the flight label pop (deferral clause) is fixed by resting city labels behind data-tween",
+   "the a6-sum phone ring/tag scale-up shipped this round (the halo alone had shipped in round 1)",
+   "the shot harness now asserts the engine's active step id before every capture",
+   "design.md corrected: FLIP lives on the inner group; the act-1 1893 push and the ch4 anchor exemption are recorded cuts"
+  ]
+ }
 }

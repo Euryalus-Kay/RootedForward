@@ -59,7 +59,7 @@ export default function CasesReroute(_props: SceneProps) {
         <span className="h-px min-w-4 flex-1 bg-exh-ink/25" aria-hidden="true" />
       </div>
       <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-exh-ink-soft">
-        The rust line is the practice of exclusion. Where a ruling barred one lane, the
+        The red line is the practice of exclusion. Where a ruling barred one lane, the
         practice turned into the next.
       </p>
       <p className="exh-plat mx-auto mt-2 max-w-xl text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-exh-ink-soft">
@@ -95,12 +95,12 @@ export default function CasesReroute(_props: SceneProps) {
           <path
             d="M96 44 V88 C96 122 120 142 160 146 L188 149 C226 153 252 174 252 208 V424 C252 448 234 462 206 468 L196 470 C168 476 148 492 148 518 V548"
             fill="none"
-            stroke="var(--exh-rust, #A8502F)"
+            stroke="var(--color-exh-red, #B0322B)"
             strokeWidth={4}
             strokeLinecap="round"
           />
           {/* arrowhead out */}
-          <path d="M148 556 l-7 -12 h14 Z" fill="var(--exh-rust, #A8502F)" />
+          <path d="M148 556 l-7 -12 h14 Z" fill="var(--color-exh-red, #B0322B)" />
 
           {/* Buchanan bars the public lane */}
           <rect x={60} y={112} width={72} height={7} rx={2} fill="#1C1A17" />

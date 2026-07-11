@@ -149,6 +149,10 @@ export function createCamera(
       onFlight?.(true);
 
       svg.setAttribute("viewBox", boxToViewBox(to));
+      /* explicit reference box: the affine is computed in user units
+         about the user-space origin, and WebKit's transform-box
+         default has interop wobble (audit round 2) */
+      group.style.setProperty("transform-box", "view-box");
       group.style.transformOrigin = "0 0";
       group.style.transition = "none";
       group.style.transform = `translate(${gNew.dx}px, ${gNew.dy}px) scale(${gNew.s})`;

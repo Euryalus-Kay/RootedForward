@@ -229,7 +229,8 @@
       "era": "",
       "grades": "none",
       "linework": false,
-      "labels": true
+      "labels": true,
+      "boundary": false
      }
     },
     {
@@ -611,7 +612,8 @@
        "anchor": "lawndale"
       },
       "veil": "lawndale",
-      "sr": "The veil lifts North Lawndale on the full map of 1958."
+      "sr": "The veil lifts North Lawndale on the full map of 1958.",
+      "boundary": false
      }
     },
     {
