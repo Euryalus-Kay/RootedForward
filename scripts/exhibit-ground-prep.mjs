@@ -16,6 +16,10 @@ const frames = JSON.parse(readFileSync("public/exhibit-data/holc-frames.json", "
 const hpLayers = JSON.parse(readFileSync("public/exhibit-data/hp-frame-layers.json", "utf8"));
 const bombings = JSON.parse(readFileSync("public/exhibit-data/bombings.json", "utf8"));
 const descriptions = JSON.parse(readFileSync("public/exhibit-data/holc-descriptions.json", "utf8"));
+// R10 ground plane sources (both City of Chicago Data Portal exports,
+// cached under data/exhibit-src; see the attribution block in `out`)
+const communityAreas = JSON.parse(readFileSync("data/exhibit-src/community-areas.geojson", "utf8"));
+const parksCpd = JSON.parse(readFileSync("data/exhibit-src/parks-cpd.geojson", "utf8"));
 
 const VIEW_W = 2560;
 const VIEW_H = 1440;
@@ -160,6 +164,100 @@ const cityCrop = {
 };
 const cityViewBox = `${cityCrop.x} ${cityCrop.y} ${cityCrop.w} ${cityCrop.h}`;
 
+// ------------------------------------------------------------------
+// R10 ground plane. Real geometry only:
+//   land + neighborhood fabric  <- the 77 community areas (they tile
+//                                  the city, so their concatenated
+//                                  rings render as the landmass)
+//   lake                        <- everything east of the landmass's
+//                                  own eastern edge (scanline hull of
+//                                  the same polygons; the shoreline is
+//                                  the city's own recorded boundary,
+//                                  not drawn by hand)
+//   parks                       <- Chicago Park District boundaries
+// ------------------------------------------------------------------
+function geoRings(feature) {
+  const g = feature.geometry;
+  if (!g) return [];
+  if (g.type === "Polygon") return g.coordinates;
+  if (g.type === "MultiPolygon") return g.coordinates.flat();
+  return [];
+}
+function projectRings(feature, project) {
+  return geoRings(feature).map((ring) => ring.map(([lng, lat]) => project(lat, lng)));
+}
+
+// land + fabric in the citywide frame
+const caRingsCity = communityAreas.features
+  .flatMap((f) => projectRings(f, projectCitywide))
+  .filter(ringInFrame);
+const cityLand = ringsToD(caRingsCity, 2.0);
+
+// shoreline by scanline: the easternmost land x for each row of the
+// citywide crop, walked top to bottom, closed against the frame's
+// east edge. Derived, not drawn.
+function easternHull(rings, y0, y1, step) {
+  const shore = [];
+  for (let y = y0; y <= y1; y += step) {
+    let maxX = -Infinity;
+    for (const ring of rings) {
+      for (let i = 0; i < ring.length; i++) {
+        const [ax, ay] = ring[i];
+        const [bx, by] = ring[(i + 1) % ring.length];
+        if ((ay <= y && by > y) || (by <= y && ay > y)) {
+          const t = (y - ay) / (by - ay);
+          const x = ax + t * (bx - ax);
+          if (x > maxX) maxX = x;
+        }
+      }
+    }
+    if (maxX > -Infinity) shore.push([Math.round(maxX), y]);
+  }
+  return shore;
+}
+
+// parks in the citywide frame; tiny pocket parks are sub-pixel at this
+// zoom and only cost bytes, so keep parks over ~15 acres
+const cityParkRings = parksCpd.features
+  .filter((f) => Number(f.properties?.acres ?? 0) >= 15)
+  .flatMap((f) => projectRings(f, projectCitywide))
+  .filter(ringInFrame);
+const cityParks = ringsToD(cityParkRings, 1.6);
+
+// parks in the Hyde Park frame (already projected by the hp prep)
+const hpParks = (hpLayers.parks ?? [])
+  .map((p) => ringToD(simplify(quantize(p.ring ?? p), 0)))
+  .join("");
+
+// the citywide lake fill: shoreline hull closed against a far east
+// edge, with vertical overshoot so camera moves never reveal a seam
+const LAKE_OVER = 400;
+// hull input includes the HOLC polygons so the shoreline follows the
+// surveyed suburbs (Evanston to the north) where the city limits stop
+const holcRingsCity = frames.areas
+  .flatMap((a) => a.rings.citywide ?? [])
+  .filter(ringInFrame);
+const shoreline = easternHull(
+  caRingsCity.concat(holcRingsCity),
+  cityCrop.y - LAKE_OVER,
+  cityCrop.y + cityCrop.h + LAKE_OVER,
+  6
+);
+let cityLake = "";
+if (shoreline.length > 2) {
+  const first = shoreline[0];
+  const last = shoreline[shoreline.length - 1];
+  const eastEdge = cityCrop.x + cityCrop.w + LAKE_OVER;
+  const lakeRing = [
+    [first[0], cityCrop.y - LAKE_OVER],
+    ...shoreline,
+    [last[0], cityCrop.y + cityCrop.h + LAKE_OVER],
+    [eastEdge, cityCrop.y + cityCrop.h + LAKE_OVER],
+    [eastEdge, cityCrop.y - LAKE_OVER],
+  ];
+  cityLake = ringToD(simplify(quantize(lakeRing), 1.2));
+}
+
 // --- Hyde Park base layers (already in the hydePark frame) ---
 const hpLake = ringToD(simplify(quantize(hpLayers.lake), 0));
 const hpBoundary = ringToD(simplify(quantize(hpLayers.boundary), 0));
@@ -303,10 +401,13 @@ for (const [, ym] of dated) dateSpread[ym] = (dateSpread[ym] || 0) + 1;
 //     held to the frame aspect so the viewBox swap is a pure crop ---
 const xs = marks.map((m) => m.x).concat([square.x, square.x + square.w]);
 const ys = marks.map((m) => m.y).concat([square.y, square.y + square.h]);
-const MARGIN = 60;
+// R10 recomposition: wider, with extra east reach so the shoreline
+// anchors the memorial frame and the marks sit off-center with air
+const MARGIN = 84;
+const EAST_EXTRA = 120;
 let bx = Math.min(...xs) - MARGIN;
 let by = Math.min(...ys) - MARGIN;
-let bw = Math.max(...xs) + MARGIN - bx;
+let bw = Math.max(...xs) + MARGIN + EAST_EXTRA - bx;
 let bh = Math.max(...ys) + MARGIN - by;
 const aspect = VIEW_W / VIEW_H;
 if (bw / bh > aspect) {
@@ -319,6 +420,209 @@ if (bw / bh > aspect) {
   bw = nw;
 }
 const blackBeltViewBox = `${Math.round(bx)} ${Math.round(by)} ${Math.round(bw)} ${Math.round(bh)}`;
+
+// ------------------------------------------------------------------
+// R10 one-plane detail (BUILT, then RULED OUT by the R10 council:
+// cross-frame changes stay cuts staged as a second sheet on the desk;
+// see design/R10/council-verdict.md section 1). The reprojection code
+// below is kept working but its output is no longer emitted.
+// ------------------------------------------------------------------
+function ringToD1(ring) {
+  // 0.1px precision variant of ringToD for deep-zoom geometry
+  if (!ring.length) return "";
+  const q = (v) => Math.round(v * 10) / 10;
+  let d = `M${q(ring[0][0])} ${q(ring[0][1])}`;
+  for (let i = 1; i < ring.length; i++) d += `L${q(ring[i][0])} ${q(ring[i][1])}`;
+  return d + "Z";
+}
+/** drop a closing duplicate without quantizing; simplify() degenerates
+ *  on closed rings (the chord becomes a point) */
+function openRing(ring) {
+  if (ring.length > 1) {
+    const [fx, fy] = ring[0];
+    const [lx, ly] = ring[ring.length - 1];
+    if (Math.abs(fx - lx) < 1e-6 && Math.abs(fy - ly) < 1e-6) return ring.slice(0, -1);
+  }
+  return ring;
+}
+const townBBoxRaw = (() => {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const [x, y] of hpLayers.boundary.map(hpToCity)) {
+    if (x < x0) x0 = x;
+    if (y < y0) y0 = y;
+    if (x > x1) x1 = x;
+    if (y > y1) y1 = y;
+  }
+  return { x0, y0, x1, y1 };
+})();
+const DETAIL_PAD = 30; // citywide px of air around the township
+function ringNearTownship(ring) {
+  return ring.some(
+    ([x, y]) =>
+      x >= townBBoxRaw.x0 - DETAIL_PAD &&
+      x <= townBBoxRaw.x1 + DETAIL_PAD &&
+      y >= townBBoxRaw.y0 - DETAIL_PAD &&
+      y <= townBBoxRaw.y1 + DETAIL_PAD
+  );
+}
+// fine per-grade fills near the township, from the hp frame's own
+// higher-zoom rings carried through the exact affine
+const detailFills = { A: "", B: "", C: "", D: "", U: "" };
+let detailAreas = 0;
+for (const area of frames.areas) {
+  const rings = area.rings.hydePark;
+  if (!rings || !rings.length) continue;
+  const cityRings = rings.map((r) => r.map(hpToCity)).filter(ringNearTownship);
+  if (!cityRings.length) continue;
+  const d = cityRings.map((r) => ringToD1(simplify(openRing(r), 0.15))).join("");
+  if (!d) continue;
+  const g = ["A", "B", "C", "D"].includes(area.grade) ? area.grade : "U";
+  detailFills[g] += d;
+  detailAreas++;
+}
+const detail = {
+  fills: detailFills,
+  lake: ringToD1(simplify(openRing(hpLayers.lake.map(hpToCity)), 0.15)),
+  boundary: ringToD1(simplify(openRing(hpLayers.boundary.map(hpToCity)), 0.15)),
+  parks: (hpLayers.parks ?? [])
+    .map((p) => ringToD1(simplify(openRing((p.ring ?? p).map(hpToCity)), 0.15)))
+    .join(""),
+  labels: hpLayers.labels.map((l) => {
+    const [x, y] = hpToCity(l.xy);
+    return { t: l.t, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, role: l.role };
+  }),
+};
+
+// ------------------------------------------------------------------
+// R10 veil holes: real-geometry cutouts for the spotlight veil, one
+// path string each, ready to concatenate after the veil's frame rect
+// (fill-rule evenodd punches the hole). Community-area polygons for
+// the neighborhoods, the real park footprint for the fair, the
+// township chain for the plan area.
+// ------------------------------------------------------------------
+function caHole(names) {
+  const rings = communityAreas.features
+    .filter((f) => names.includes(String(f.properties?.community ?? "").toUpperCase()))
+    .flatMap((f) => projectRings(f, projectCitywide))
+    .filter(ringInFrame);
+  return ringsToD(rings, 1.2);
+}
+const jacksonParkHole = (() => {
+  // the largest park ring whose bbox contains the fair label anchor
+  // (Jackson Park), from the citywide parks source
+  const [jx, jy] = projectCitywide(41.7827, -87.5806);
+  const rings = parksCpd.features
+    .flatMap((f) => projectRings(f, projectCitywide))
+    .filter((ring) => {
+      const b = ringsBBox([ring]);
+      return b && jx >= b.x && jx <= b.x + b.w && jy >= b.y && jy <= b.y + b.h;
+    })
+    .sort((a, b) => {
+      const ba = ringsBBox([a]);
+      const bb = ringsBBox([b]);
+      return bb.w * bb.h - ba.w * ba.h;
+    });
+  return rings.length ? ringsToD([rings[0]], 1.2) : "";
+})();
+const veilHoles = {
+  lawndale: caHole(["NORTH LAWNDALE"]),
+  woodlawn: caHole(["WOODLAWN"]),
+  jacksonPark: jacksonParkHole,
+  township: cityBoundary,
+  // the same hole in the Hyde Park frame's own coordinates (the veil
+  // works on both sheets; a1-fair lifts the fairgrounds)
+  jacksonParkHp: (hpLayers.parks ?? [])
+    .filter((p) => /jackson/i.test(p.name ?? ""))
+    .map((p) => ringToD(simplify(quantize(p.ring ?? p), 0)))
+    .join(""),
+};
+
+// ------------------------------------------------------------------
+// R10 PLSS mile section grid, 1832-1889 ground only. Chicago's grid
+// arithmetic (State/Madison origin, 800 address units to the mile) is
+// the same deterministic system exhibit-prep-bombings.mjs documents
+// and calibrates; the mile lines are the rectangular survey's own
+// instrument, drawn schematically across the frame's land.
+// ------------------------------------------------------------------
+const MADISON_LAT = 41.8819;
+const STATE_LNG = -87.6278;
+const DEG_LAT_PER_MILE = 0.014483; // the theory value the bombing prep validates against
+const DEG_LNG_PER_MILE = DEG_LAT_PER_MILE / Math.cos((41.85 * Math.PI) / 180);
+function sectionGrid(project, x0, y0, x1, y1, step = 1) {
+  let d = "";
+  for (let m = -30; m <= 30; m += step) {
+    const [vx] = project(MADISON_LAT, STATE_LNG + m * DEG_LNG_PER_MILE);
+    if (vx >= x0 && vx <= x1) d += `M${Math.round(vx)} ${Math.round(y0)}V${Math.round(y1)}`;
+    const [, hy] = project(MADISON_LAT - m * DEG_LAT_PER_MILE, STATE_LNG);
+    if (hy >= y0 && hy <= y1) d += `M${Math.round(x0)} ${Math.round(hy)}H${Math.round(x1)}`;
+  }
+  return d;
+}
+const cityGrid = sectionGrid(
+  projectCitywide,
+  cityCrop.x,
+  cityCrop.y,
+  cityCrop.x + cityCrop.w,
+  cityCrop.y + cityCrop.h
+);
+const projectHp = projector(HP_FRAME);
+const hpVb = hpViewBox.split(" ").map(Number);
+// the township plat carries section AND half-section lines (the
+// quarter-section system the half-mile streets follow)
+const hpGrid = sectionGrid(projectHp, hpVb[0], hpVb[1], hpVb[0] + hpVb[2], hpVb[1] + hpVb[3], 0.5);
+
+// ------------------------------------------------------------------
+// R10 named focus targets: real bounding boxes (citywide frame px)
+// the camera can move to. Each derives from recorded geometry, never
+// from a typographic anchor.
+// ------------------------------------------------------------------
+function ringsBBox(rings) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const ring of rings) {
+    for (const [x, y] of ring) {
+      if (x < x0) x0 = x;
+      if (y < y0) y0 = y;
+      if (x > x1) x1 = x;
+      if (y > y1) y1 = y;
+    }
+  }
+  return x0 === Infinity ? null : { x: Math.round(x0), y: Math.round(y0), w: Math.round(x1 - x0), h: Math.round(y1 - y0) };
+}
+function caBBox(names) {
+  const rings = communityAreas.features
+    .filter((f) => names.includes(String(f.properties?.community ?? "").toUpperCase()))
+    .flatMap((f) => projectRings(f, projectCitywide));
+  return ringsBBox(rings);
+}
+const marksBBox = ringsBBox([marks.map((m) => [m.x, m.y])]);
+const southSideParts = [];
+const focus = {
+  // the community the contract-selling act studies
+  lawndale: caBBox(["NORTH LAWNDALE"]),
+  // where the ground is moving in 2026
+  woodlawn: caBBox(["WOODLAWN"]),
+  // the walk's home ground
+  hydeParkKenwood: caBBox(["HYDE PARK", "KENWOOD"]),
+  // the commission's square with the marks around it
+  bombingField: ringsBBox([[
+    [Math.min(square.x, marksBBox.x), Math.min(square.y, marksBBox.y)],
+    [Math.max(square.x + square.w, marksBBox.x + marksBBox.w), Math.max(square.y + square.h, marksBBox.y + marksBBox.h)],
+  ]]),
+  // the 2026 ring at its true geography
+  today: { x: todayAnchor.x - 90, y: todayAnchor.y - 90, w: 180, h: 180 },
+  // the old township ghost on the citywide frame
+  township: ringsBBox([hpLayers.boundary.map(hpToCity)]),
+};
+// a medium south-side shot for the flood's opening beat, the union of
+// the bombing field, the township, and Woodlawn with breathing room
+{
+  const parts = [focus.bombingField, focus.township, focus.woodlawn, focus.hydeParkKenwood].filter(Boolean);
+  const x0 = Math.min(...parts.map((b) => b.x)) - 60;
+  const y0 = Math.min(...parts.map((b) => b.y)) - 60;
+  const x1 = Math.max(...parts.map((b) => b.x + b.w)) + 60;
+  const y1 = Math.max(...parts.map((b) => b.y + b.h)) + 60;
+  focus.southSide = { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
 
 const out = {
   attribution: frames.attribution,
@@ -334,6 +638,17 @@ const out = {
     square,
     boundary: cityBoundary,
     todayAnchor,
+    // R10 ground plane. `land` doubles as the neighborhood fabric when
+    // stroked. Sources: City of Chicago Data Portal community areas
+    // (igwz-8jzy) and Chicago Park District park boundaries.
+    ground: {
+      land: cityLand,
+      lake: cityLake,
+      parks: cityParks,
+      grid: cityGrid,
+    },
+    veilHoles,
+    focus,
   },
   hydePark: {
     viewBox: hpViewBox,
@@ -341,6 +656,10 @@ const out = {
     lake: hpLake,
     boundary: hpBoundary,
     labels: hpLabels,
+    ground: {
+      parks: hpParks,
+      grid: hpGrid,
+    },
   },
   floodOrder: { dated, undated, sheetless },
 };

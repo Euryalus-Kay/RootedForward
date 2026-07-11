@@ -2528,6 +2528,7 @@
       "secondarySources": [],
       "factcheckId": "fc-bombings-13",
       "usedBy": [
+        "src/components/exhibit/ground/StageController.tsx",
         "walltext"
       ],
       "notes": "The exhibit digitized 40 incidents from the report's bombing casework. 32 carry a location precise enough to pin, 24 at a street address and 8 at a block, and 8 are recorded without a mappable location. Counts verified against the exhibit's digitized record on July 8, 2026."

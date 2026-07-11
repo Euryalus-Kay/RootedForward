@@ -44,7 +44,7 @@ export default function GroundExhibit({
   }, []);
 
   return (
-    <GroundProvider>
+    <GroundProvider anchorsPct={clientProps.anchorsPct}>
       <Spine />
       <div className="ground-layout">
         <div className="ground-stage-pane" data-testid="ground-stage-pane">

@@ -15,6 +15,11 @@ const OPENING_STAGE: StageState = {
   grades: "full",
   linework: true,
   labels: true,
+  cam: "wide",
+  tilt: 0,
+  veil: "none",
+  press: false,
+  marksMode: "badge",
 };
 
 function resolve(): ResolvedStep[] {
@@ -25,8 +30,21 @@ function resolve(): ResolvedStep[] {
   GROUND_COPY.acts.forEach((act, actIndex) => {
     for (const step of act.steps) {
       if (step.stage) {
-        // carry unset flags forward so "marks stay on" needs no repetition
-        stage = { note: null, ...{ ...stage, note: null }, ...step.stage };
+        // carry unset flags forward so "marks stay on" needs no
+        // repetition. R10 carry rules: cam and marksMode persist like
+        // marks; tilt, veil, note, and sr are events that reset unless
+        // the new state restates them; press is monotonic (the stamp
+        // never lifts once a3-s2 lands it).
+        const pressed = stage.press || step.stage.press || false;
+        stage = {
+          ...stage,
+          note: null,
+          tilt: 0,
+          veil: "none",
+          sr: undefined,
+          ...step.stage,
+          press: pressed,
+        };
       }
       if (step.post && step.post.length) posted = [...posted, ...step.post];
       out.push({

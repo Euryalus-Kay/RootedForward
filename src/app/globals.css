@@ -1078,3 +1078,234 @@ body.exhibit-immersive > footer { display: none; }
   line-height: 1.5;
   color: var(--color-exh-ink-soft);
 }
+
+/* ==================================================================
+   R10, THE PRESSED SHEET (design/R10/design.md). The map becomes a
+   printed survey sheet on a cream-dark desk. Policy presses DOWN in
+   four quantized rank steps; only true dollars rise UP. The sheet is
+   plumb for testimony and leans at exactly three events. Every state
+   below is discrete and resolved; [data-motion="off"] removes every
+   transition and animation wholesale at the end of this block.
+   ================================================================== */
+
+/* --- the desk and the sheet ---------------------------------------- */
+.ground-stage {
+  perspective: 1400px;
+  background: color-mix(in srgb, var(--color-exh-ink) 7%, var(--color-exh-linen));
+}
+.ground-sheet {
+  position: relative;
+  margin: 10px 14px 8px;
+  background: var(--color-exh-linen);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-exh-ink) 22%, transparent),
+    0 7px 22px color-mix(in srgb, var(--color-exh-ink) 16%, transparent);
+  transform: rotateX(var(--gtilt, 0deg));
+  transform-origin: 50% 62%;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 700ms ease;
+}
+/* the plate mark, intaglio furniture; all depth comes from light */
+.ground-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 24%, transparent);
+}
+.ground-stage[data-tilt="10"] { --gtilt: 10deg; }
+.ground-stage[data-tilt="22"] { --gtilt: 22deg; }
+.ground-stage[data-tilt="22"] .ground-sheet {
+  box-shadow:
+    0 2px 3px color-mix(in srgb, var(--color-exh-ink) 24%, transparent),
+    0 18px 38px color-mix(in srgb, var(--color-exh-ink) 22%, transparent);
+}
+@media (max-width: 1023px) {
+  .ground-stage[data-tilt="10"] { --gtilt: 8deg; }
+  .ground-stage[data-tilt="22"] { --gtilt: 8deg; }
+}
+/* the svg keeps its pane height minus the sheet margins */
+.ground-sheet .ground-svg { height: calc(44svh - 76px); }
+@media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100svh - 146px); } }
+@supports not (height: 1svh) {
+  .ground-sheet .ground-svg { height: calc(40vh - 76px); }
+  @media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100vh - 146px); } }
+}
+
+/* a second sheet laid on the desk (frame cuts stay cuts) */
+@keyframes ground-sheet-arrive {
+  from {
+    transform: rotateX(var(--gtilt, 0deg)) translateY(12px);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-exh-ink) 10%, transparent),
+      0 16px 34px color-mix(in srgb, var(--color-exh-ink) 20%, transparent);
+  }
+  to { transform: rotateX(var(--gtilt, 0deg)) translateY(0); }
+}
+.ground-stage[data-sheetcut="on"] .ground-sheet { animation: ground-sheet-arrive 300ms ease-out; }
+
+/* --- the ground plane ---------------------------------------------- */
+.ground-stage [data-lake],
+.ground-stage [data-hp-lake] { fill: color-mix(in srgb, var(--color-exh-blue) 24%, var(--color-exh-linen)); }
+.ground-stage [data-lake-lines],
+.ground-stage [data-hp-lake-lines] { opacity: 0.8; }
+.ground-stage [data-land] { fill: color-mix(in srgb, var(--color-exh-ink) 4%, var(--color-exh-linen)); }
+.ground-stage [data-parks] { fill: color-mix(in srgb, #6b6b4a 26%, var(--color-exh-linen)); }
+.ground-stage [data-grid] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.13;
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+.ground-stage [data-fabric] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.11;
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+.ground-stage [data-parks],
+.ground-stage [data-grid],
+.ground-stage [data-fabric] { transition: opacity 450ms ease; }
+.ground-stage[data-g-grid="off"] [data-grid] { opacity: 0; }
+.ground-stage[data-g-fabric="off"] [data-fabric] { opacity: 0; }
+.ground-stage[data-g-parks="off"] [data-parks] { opacity: 0; }
+/* micro-layers rest during camera flight; the big shapes carry it */
+.ground-stage[data-tween="on"] [data-fabric],
+.ground-stage[data-tween="on"] [data-grid] { opacity: 0; }
+
+/* --- pigment deepened toward the archival sheet inks --------------- */
+.ground-stage [data-gfill="A"], .ground-stage [data-hpfill="A"] { fill-opacity: 0.62; }
+.ground-stage [data-gfill="B"], .ground-stage [data-hpfill="B"] { fill-opacity: 0.57; }
+.ground-stage [data-gfill="C"], .ground-stage [data-hpfill="C"] { fill-opacity: 0.55; }
+.ground-stage [data-gfill="D"], .ground-stage [data-hpfill="D"] { fill-opacity: 0.68; }
+.ground-stage [data-gfill="U"], .ground-stage [data-hpfill="U"] { fill-opacity: 0.5; }
+.ground-stage[data-grades="flood"] .ga.inked { fill-opacity: 0.62; }
+.ground-stage[data-grades="flood"] .ga.inked[data-g="D"] { fill-opacity: 0.7; }
+
+/* --- the press (a3-s2 stamps it; it never lifts) -------------------- */
+.ground-stage[data-press="on"] [data-gfill="A"] { filter: url(#ground-press-a); }
+.ground-stage[data-press="on"] [data-gfill="B"] { filter: url(#ground-press-b); }
+.ground-stage[data-press="on"] [data-gfill="C"] { filter: url(#ground-press-c); }
+.ground-stage[data-press="on"] [data-gfill="D"] { filter: url(#ground-press-d); }
+.ground-stage [data-paper] { transition: fill 400ms ease; }
+.ground-stage[data-press="on"] [data-paper] {
+  fill: color-mix(in srgb, var(--color-exh-ink) 4%, var(--color-exh-linen));
+}
+
+/* --- the veil (spotlight over real geometry) ------------------------ */
+.ground-stage [data-veil] {
+  fill: var(--color-exh-linen);
+  fill-opacity: 0;
+  pointer-events: none;
+  transition: fill-opacity 450ms ease;
+}
+.ground-stage[data-veil="on"] [data-veil] { fill-opacity: 0.6; }
+
+/* --- marks stay readable at every camera ---------------------------- */
+.ground-stage[data-marksmode="dots"] [data-mark] {
+  r: var(--gmark-r, 3.2px);
+  stroke: var(--color-exh-linen);
+  stroke-width: 0.6px;
+}
+
+/* --- the plat title block (screen-space sheet furniture) ------------ */
+.ground-titleblock {
+  position: absolute;
+  left: 26px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 275px;
+  pointer-events: none;
+}
+.ground-titleblock .gtb-frame {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--color-exh-ink-soft);
+}
+.ground-titleblock .gtb-filing {
+  font-size: 10px;
+  color: var(--color-exh-ink);
+}
+.ground-titleblock .gtb-disclosure {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: none;
+  color: var(--color-exh-ink-soft);
+}
+@media (max-width: 1023px) {
+  .ground-titleblock { left: 20px; bottom: 12px; max-width: 210px; }
+  .ground-titleblock .gtb-disclosure { display: none; }
+}
+
+/* --- reduced motion strips every R10 tween to the resolved state ---- */
+[data-motion="off"] .ground-sheet,
+[data-motion="off"] .ground-stage [data-parks],
+[data-motion="off"] .ground-stage [data-grid],
+[data-motion="off"] .ground-stage [data-fabric],
+[data-motion="off"] .ground-stage [data-paper],
+[data-motion="off"] .ground-stage [data-veil] { transition: none !important; }
+[data-motion="off"] .ground-stage[data-sheetcut="on"] .ground-sheet { animation: none; }
+
+/* --- the tower layer (act6 scenes portal into it) -------------------
+   Children position at true-geography percentages and counter-rotate
+   off the leaned sheet; grades may never rise, dollars may never
+   press. Towers rest during camera flight. */
+.ground-towers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+.ground-towers .gtower {
+  position: absolute;
+  transform: translate(-50%, -100%) rotateX(calc(-1 * var(--gtilt, 0deg)));
+  transform-origin: 50% 100%;
+  transition: opacity 300ms ease;
+}
+.ground-stage[data-tween="on"] .ground-towers { opacity: 0; }
+[data-motion="off"] .ground-towers .gtower { transition: none; }
+
+/* --- the marks' counted badge --------------------------------------
+   A plat-caps chip pinned above the bombing field while the camera is
+   wide; the dots carry their own read once the camera is close. */
+.ground-marks-badge {
+  position: absolute;
+  transform: translate(-50%, -160%);
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--color-exh-ink);
+  background: color-mix(in srgb, var(--color-exh-linen) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 30%, transparent);
+  padding: 2px 7px;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+@media (max-width: 1023px) { .ground-marks-badge { font-size: 8px; padding: 1px 5px; } }
+
+/* --- type and hairlines keep their apparent size under the camera ---
+   --gtext-k is the camera's zoom ratio (target width over the frame's
+   home width); font sizes multiply by it so a close camera reads at
+   the same apparent size instead of shouting. Hairline furniture
+   (square, boundary, linework) pins to screen pixels. */
+.ground-stage [data-city-labels] text { font-size: calc(30px * var(--gtext-k, 1)); }
+.ground-stage [data-city-labels] text[data-role="hero"] { font-size: calc(34px * var(--gtext-k, 1)); }
+.ground-stage [data-city-labels] text[data-role="water"] { font-size: calc(26px * var(--gtext-k, 1)); }
+.ground-stage [data-today-tag] { font-size: calc(26px * var(--gtext-k, 1)); }
+.ground-stage [data-city-labels] text,
+.ground-stage [data-hp-labels] text { stroke-width: calc(4px * var(--gtext-k, 1)); }
+.ground-stage [data-square] {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.3;
+  stroke-dasharray: 5 3.5;
+}
+.ground-stage[data-frame="blackBelt"] [data-square] { stroke-width: 1; stroke-dasharray: 3 2; }
+.ground-stage [data-gline] { vector-effect: non-scaling-stroke; stroke-width: 0.65; }
+.ground-stage [data-city-boundary] { vector-effect: non-scaling-stroke; }

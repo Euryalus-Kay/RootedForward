@@ -8,6 +8,28 @@
 export type StageFrame = "citywide" | "hydePark" | "blackBelt";
 export type GradeState = "full" | "none" | "flood";
 
+/** named within-frame camera positions (geometry.json citywide.focus)
+ *  plus "wide" for the frame's home crop */
+export type CameraTarget =
+  | "wide"
+  | "lawndale"
+  | "woodlawn"
+  | "hydeParkKenwood"
+  | "bombingField"
+  | "southSide"
+  | "today"
+  | "township";
+
+/** named veil spotlight holes (geometry.json citywide.veilHoles), plus
+ *  "located" for the visitor's own found area (path set at runtime) */
+export type VeilTarget =
+  | "none"
+  | "lawndale"
+  | "woodlawn"
+  | "jacksonPark"
+  | "township"
+  | "located";
+
 export interface StageState {
   /** which framing of the one map is shown (frame changes are cuts) */
   frame: StageFrame;
@@ -33,6 +55,23 @@ export interface StageState {
   today?: boolean;
   /** a single named annotation pinned on the stage */
   note?: { text: string; anchor: "hydePark" | "lawndale" | "woodlawn" | "square" } | null;
+  /* ---- R10 Pressed Sheet grammar (design/R10/design.md) ---------- */
+  /** within-frame camera position; "wide" is the frame's home crop.
+   *  Frame changes stay cuts (the second sheet); cam moves tween. */
+  cam?: CameraTarget;
+  /** sheet lean, quantized; 0 = plumb (testimony), 10 and 22 are the
+   *  three examination events. Mobile caps at 8. */
+  tilt?: 0 | 10 | 22;
+  /** spotlight veil hole over real geometry */
+  veil?: VeilTarget;
+  /** the intaglio relief; absent until a3-s2 stamps it on, then held */
+  press?: boolean;
+  /** how the bombing marks read at this camera: a counted badge from
+   *  afar, individually readable dots up close */
+  marksMode?: "badge" | "dots";
+  /** sr-only resolved-state sentence (non-visual parity for drawn
+   *  claims); carried forward like every other field */
+  sr?: string;
 }
 
 export interface GroundStep {

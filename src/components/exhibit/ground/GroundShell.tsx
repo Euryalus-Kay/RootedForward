@@ -26,8 +26,17 @@ function buildClientProps(): StageClientProps {
     list.push(id);
     byMonth.set(ym, list);
   }
-  const floodBatches = [...byMonth.keys()].sort((a, b) => a - b).map((k) => byMonth.get(k)!);
+  const monthKeys = [...byMonth.keys()].sort((a, b) => a - b);
+  const floodBatches = monthKeys.map((k) => byMonth.get(k)!);
   floodBatches.push([...undated, ...sheetless]);
+  // human labels per batch for the title block's filing counter
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const floodBatchLabels = monthKeys.map((ym) => {
+    const y = Math.floor(ym / 100);
+    const m = ym % 100;
+    return `${MONTHS[m - 1] ?? ""} ${y}`;
+  });
+  floodBatchLabels.push("undated sheets");
 
   const anchors: StageClientProps["anchors"] = {};
   for (const l of geometry.citywide.labels as Array<{ t: string; x: number; y: number }>) {
@@ -51,12 +60,30 @@ function buildClientProps(): StageClientProps {
   const sq = geometry.citywide.square as { x: number; y: number; w: number; h: number };
   anchors.square = { x: sq.x + sq.w / 2, y: sq.y + sq.h / 2 };
 
+  /* anchor positions as percentages of the citywide home crop, for
+     HTML that stands at true geography (the act6 dollar towers) */
+  const [cvx, cvy, cvw, cvh] = (geometry.citywide.viewBox as string).split(" ").map(Number);
+  const pct = (p: { x: number; y: number }) => ({
+    left: Math.round(((p.x - cvx) / cvw) * 1000) / 10,
+    top: Math.round(((p.y - cvy) / cvh) * 1000) / 10,
+  });
+  const today = geometry.citywide.todayAnchor as { x: number; y: number };
+  const anchorsPct: StageClientProps["anchorsPct"] = { today: pct(today) };
+  if (anchors.lawndale) anchorsPct.lawndale = pct(anchors.lawndale);
+  /* the marks' counted badge anchors above the bombing field */
+  const bf = (geometry.citywide.focus as Record<string, { x: number; y: number; w: number; h: number }>).bombingField;
+  anchorsPct.marks = pct({ x: bf.x + bf.w / 2, y: bf.y });
+
   return {
     viewBox: geometry.citywide.viewBox as string,
     blackBeltViewBox: geometry.citywide.blackBeltViewBox as string,
     hpViewBox: geometry.hydePark.viewBox as string,
     floodBatches,
+    floodBatchLabels,
     anchors,
+    anchorsPct,
+    focus: geometry.citywide.focus as StageClientProps["focus"],
+    veilHoles: geometry.citywide.veilHoles as StageClientProps["veilHoles"],
   };
 }
 

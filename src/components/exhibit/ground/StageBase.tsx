@@ -1,18 +1,26 @@
 /* ------------------------------------------------------------------ */
-/*  R9 Stage, the server-rendered map. This SVG ships in the initial   */
-/*  HTML so the 1940 map is on screen at first paint with zero client  */
-/*  JavaScript. The client StageController never re-renders this       */
-/*  subtree; it steers it through data attributes on the wrapper (CSS  */
-/*  does the rest) plus a class toggle per area during the grade       */
-/*  flood. geometry.json stays out of the client bundle by design.     */
+/*  R10 Stage, the server-rendered pressed sheet. This SVG ships in    */
+/*  the initial HTML so the 1940 map is on screen at first paint with  */
+/*  zero client JavaScript, flat and filter-free (the press and the    */
+/*  tilt are later events). The client StageController never re-       */
+/*  renders this subtree; it steers it through data attributes on the  */
+/*  wrapper plus a class toggle per area during the grade flood.       */
+/*  geometry.json stays out of the client bundle by design.            */
+/*                                                                     */
+/*  Layer order, bottom to top: paper, lake, land, parks, section      */
+/*  grid, neighborhood fabric, grade fills, linework, tap areas,       */
+/*  veil, marks, labels, boundary ghost, today ring. Ground sources:   */
+/*  City of Chicago community areas (land, fabric, and the shoreline   */
+/*  the lake fill derives from) and Chicago Park District boundaries.  */
 /* ------------------------------------------------------------------ */
 import geometry from "@/lib/exhibit/ground/geometry.json";
+import { PAPER_X, PAPER_Y, PAPER_W, PAPER_H } from "./veil";
 
 const GRADES = ["A", "B", "C", "D", "U"] as const;
-/* generous paper bounds so every viewBox (citywide crop, Black Belt
-   crop, Hyde Park frame) sits on paper */
-const VIEW_PAPER_W = 3760;
-const VIEW_PAPER_H = 2640;
+
+/* intaglio depths, the R7-approved quantized rank form: four equal
+   steps A..D, U stays flat (the surveyors never ranked those areas) */
+const PRESS_DEPTH: Record<string, number> = { A: 0.6, B: 1.1, C: 1.7, D: 2.4 };
 
 /* a label may only render inside a frame if its anchor sits at least
    this far from every viewBox edge; anything closer clips mid-word */
@@ -37,14 +45,48 @@ export default function StageBase() {
       viewBox={city.viewBox}
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label="The 1940 federal home-lending security map of Chicago, redrawn from the government's files. Grades A through D shade each surveyed area; marks accumulate on it as the exhibit moves through the century."
+      aria-label="The 1940 federal home-lending security map of Chicago, redrawn from the government's files onto its real ground, the lake, the parks, and the city's neighborhoods. Grades A through D shade each surveyed area; marks accumulate on it as the exhibit moves through the century."
       className="ground-svg"
     >
+      <defs>
+        {/* the intaglio press, one inner-shadow filter per graded rank;
+            applied by CSS only when the wrapper carries data-press="on"
+            (the a3-s2 stamp), so first paint stays filter-free */}
+        {GRADES.filter((g) => PRESS_DEPTH[g]).map((g) => (
+          <filter key={g} id={`ground-press-${g.toLowerCase()}`} x="-8%" y="-8%" width="116%" height="116%">
+            <feOffset in="SourceAlpha" dx={PRESS_DEPTH[g] * 0.6} dy={PRESS_DEPTH[g]} result="off" />
+            <feGaussianBlur in="off" stdDeviation={PRESS_DEPTH[g] * 0.55} result="blur" />
+            <feComposite in="blur" in2="SourceAlpha" operator="out" result="shadow" />
+            <feFlood floodColor="#262019" floodOpacity={0.16 + PRESS_DEPTH[g] * 0.09} result="ink" />
+            <feComposite in="ink" in2="shadow" operator="in" result="press" />
+            <feMerge>
+              <feMergeNode in="SourceGraphic" />
+              <feMergeNode in="press" />
+            </feMerge>
+          </filter>
+        ))}
+        {/* water-lining for the lake, the period engraving convention:
+            horizontal hairlines, denser near nothing, pure pattern */}
+        <pattern id="ground-waterlines" width="10" height="7" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="3.5" x2="10" y2="3.5" stroke="#262019" strokeOpacity="0.10" strokeWidth="0.7" />
+        </pattern>
+      </defs>
+
       {/* the paper itself, so value shifts (the bombing chapter's dim)
           darken the ground and not just the ink on it */}
-      <rect data-paper x={-600} y={-600} width={VIEW_PAPER_W} height={VIEW_PAPER_H} aria-hidden="true" />
+      <rect data-paper x={PAPER_X} y={PAPER_Y} width={PAPER_W} height={PAPER_H} aria-hidden="true" />
+
       {/* citywide layers (also serve the Black Belt crop framing) */}
       <g data-city-layer>
+        {/* the ground plane; every layer here is recorded geometry */}
+        <g data-ground-plane aria-hidden="true">
+          <path data-lake d={city.ground.lake} data-source="community-areas-hull" />
+          <path data-lake-lines d={city.ground.lake} fill="url(#ground-waterlines)" />
+          <path data-land d={city.ground.land} fillRule="evenodd" data-source="chicago-community-areas" />
+          <path data-parks d={city.ground.parks} data-source="chicago-park-district" />
+          <path data-grid d={city.ground.grid} data-source="plss-mile-arithmetic" />
+          <path data-fabric d={city.ground.land} fillRule="evenodd" data-source="chicago-community-areas" />
+        </g>
         <g data-grade-fills aria-hidden="true">
           {GRADES.map((g) => (
             <path key={g} data-gfill={g} d={city.gradeFills[g]} fillRule="evenodd" />
@@ -102,9 +144,14 @@ export default function StageBase() {
         </g>
       </g>
 
-      {/* Hyde Park township framing */}
+      {/* Hyde Park township framing, the second sheet on the desk */}
       <g data-hp-layer>
         <path data-hp-lake d={hp.lake} aria-hidden="true" />
+        <path data-hp-lake-lines d={hp.lake} fill="url(#ground-waterlines)" aria-hidden="true" />
+        <g data-hp-ground aria-hidden="true">
+          <path data-parks d={hp.ground.parks} data-source="chicago-park-district" />
+          <path data-grid d={hp.ground.grid} data-source="plss-mile-arithmetic" />
+        </g>
         <g data-hp-grade-fills aria-hidden="true">
           {GRADES.map((g) => (
             <path key={g} data-hpfill={g} d={hp.gradeFills[g]} fillRule="evenodd" />
@@ -124,6 +171,10 @@ export default function StageBase() {
             ))}
         </g>
       </g>
+
+      {/* the spotlight veil, above both sheets; the controller writes
+          its hole (real geometry) per step */}
+      <path data-veil d="" fillRule="evenodd" aria-hidden="true" />
     </svg>
   );
 }
