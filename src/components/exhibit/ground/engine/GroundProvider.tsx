@@ -152,7 +152,10 @@ export default function GroundProvider({
     const cap = window.setTimeout(() => {
       cancelled = true;
       ro.disconnect();
-    }, 15000);
+      /* 30s, not 15: R10's ground layers push throttled hydration past
+         the old cap and a shared permalink must land on slow networks;
+         any wheel, touch, or key still cancels instantly */
+    }, 30000);
     return () => {
       cancelled = true;
       ro.disconnect();
