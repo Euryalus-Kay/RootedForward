@@ -27,8 +27,17 @@ export default function ToursPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Opener */}
-      <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative overflow-hidden border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
+        {/* the 1893 Rand McNally bird's eye of these exact grounds,
+            washed into the paper */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/media/jackson-park-walk/birdseye-1893.jpg"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.13] mix-blend-multiply [mask-image:linear-gradient(to_left,black_55%,transparent)] md:block"
+        />
+        <div className="relative mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Self-guided audio tour
           </p>
@@ -39,8 +48,8 @@ export default function ToursPage() {
             {tour.dek}
           </p>
 
-          {/* Facts strip */}
-          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+          {/* Facts plate */}
+          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-px border border-border bg-border shadow-[6px_6px_0_rgba(27,58,45,0.07)] sm:grid-cols-4">
             {[
               { label: "Starts at", value: tour.startLabel },
               { label: "Stops", value: `${tour.stops.length}` },
@@ -48,7 +57,8 @@ export default function ToursPage() {
               { label: "Walking time", value: `About ${tour.walkMinutes} min` },
             ].map((fact) => (
               <div key={fact.label} className="bg-cream px-5 py-4">
-                <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/60">
+                <div aria-hidden="true" className="mb-2 h-0.5 w-6 bg-[#C9A227]" />
+                <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/70">
                   {fact.label}
                 </p>
                 <p className="mt-1 font-body text-sm font-semibold text-forest">
@@ -61,7 +71,7 @@ export default function ToursPage() {
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <a
               href="#tour"
-              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-[4px_4px_0_rgba(168,70,42,0.25)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
             >
               Start the tour
             </a>
@@ -99,9 +109,36 @@ export default function ToursPage() {
             Good to know
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {tour.practical.map((item) => (
-              <div key={item.title} className="rounded-sm border border-border bg-cream p-6">
-                <h3 className="font-display text-xl text-forest">{item.title}</h3>
+            {tour.practical.map((item, i) => (
+              <div
+                key={item.title}
+                className="rounded-sm border border-border bg-cream p-6 shadow-[5px_5px_0_rgba(27,58,45,0.06)]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rust/30 bg-rust/10 text-rust"
+                >
+                  {i === 0 && (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M8 4.6V8l2.4 1.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  )}
+                  {i === 1 && (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 13c2.5 0 2.5-2.4 5-2.4S9.5 13 12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M3.5 8.5 6 3.2a.9.9 0 0 1 1.6 0l1.1 2.3M10.3 8.6l1.5-3.1a.8.8 0 0 1 1.5 0l1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  )}
+                  {i === 2 && (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <rect x="2" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
+                      <rect x="11" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
+                    </svg>
+                  )}
+                </span>
+                <h3 className="mt-3 font-display text-xl text-forest">{item.title}</h3>
                 <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
                   {item.text}
                 </p>

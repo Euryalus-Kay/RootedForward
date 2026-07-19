@@ -76,12 +76,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7859,
       lng: -87.5857,
       audioSrc: `${MEDIA}/audio/stop-01.mp3`,
-      audioSeconds: 73,
+      audioSeconds: 61,
       transcript: [
         "Find a spot on the plaza where you can see the whole tower. The stone is New Hampshire granite, cut in big flat facets, and near the top the wall turns into letters. Those lines come from the speech Barack Obama gave in Selma, Alabama, in 2015.",
         "All of this is new. The museum opened on June nineteenth, 2026. Juneteenth. It took almost five years to build and cost about 850 million dollars. Fourteen proposals came in, from Hawaii to New York, and the Obamas chose this park on the South Side, where their public lives began.",
         "The land has held big plans before. Illinois set it aside in 1869, and Frederick Law Olmsted and Calvert Vaux, the designers of Central Park, drew the first plan for it two years later. They wanted a park you could move through by boat. What actually shaped the ground under your feet was the World's Fair of 1893. Everything else on this walk goes back to that summer.",
       ],
+      keyFacts: ["Opened June 19, 2026", "225-foot granite tower", "Built for about 850 million dollars"],
+      lookFor:
+        "Look up near the top of the tower. The carved letters spell out lines from Obama's 2015 Selma speech.",
       images: [
         {
           src: `${MEDIA}/opc-opening-2026.jpg`,
@@ -111,12 +114,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7865,
       lng: -87.5875,
       audioSrc: `${MEDIA}/audio/stop-02.mp3`,
-      audioSeconds: 87,
+      audioSeconds: 80,
       transcript: [
         "Stop anywhere on the grass with a clear view west. This strip of lawn is the Midway Plaisance, a mile long and about six hundred feet wide, running all the way to Washington Park. Every carnival midway in America is named after it.",
         "In the summer of 1893 this was the fair's amusement zone. The white palaces stood in the park behind you. Out here were the ticketed shows, which took in over four million dollars in six months. The shows included so-called villages, where people from Africa, Asia, and the Middle East were put on display for paying crowds under the banner of anthropology. That happened on this lawn too. About half a mile down the strip, where the skating rink sits now, rose the first Ferris wheel, built by a bridge engineer named George Ferris as America's answer to the Eiffel Tower. It stood 264 feet tall, and fifty cents bought a twenty-minute ride.",
         "The east end where you are standing was remade this spring. The playground here opened in June 2026, the first in Chicago designed so that disabled and non-disabled kids play on the same equipment, with the four million dollar cost covered by the Obama Foundation. Before you turn back, walk two minutes further west. There is a stone bench most people miss.",
       ],
+      keyFacts: ["The fair's amusement mile, 1893", "264-foot original Ferris wheel", "First fully inclusive playground, 2026"],
+      lookFor:
+        "The new playground beside you, then the unbroken mile of green running west. The skating rink halfway down marks the Ferris wheel's footprint.",
       images: [
         {
           src: `${MEDIA}/ferris-wheel-1893.jpg`,
@@ -145,12 +151,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7871,
       lng: -87.5883,
       audioSrc: `${MEDIA}/audio/stop-03.mp3`,
-      audioSeconds: 55,
+      audioSeconds: 51,
       transcript: [
         "The long limestone bench here has been in place since 1932. Katherine Goode won a seat in the Illinois legislature in the 1920s and died in office in 1928. Flora Cheney, a suffrage leader who ran the Illinois League of Women Voters, was elected to the seat that November. Within a year she was gone too.",
         "Donors raised this bench in their memory, one of the first monuments in Chicago honoring women's public work. It has not had an easy century. Its sundial was stolen, and at one point the stone was painted gray just to bury the graffiti. When the Park District rebuilt this end of the Midway, the bench was finally restored, and it was unveiled again on June eighth, 2026, days before the Center opened its doors.",
         "Sit for a minute if you like. The bench was built for exactly that. Then the walk turns back into the park.",
       ],
+      keyFacts: ["Dedicated 1932", "Two pioneering women legislators", "Restored June 2026"],
+      lookFor:
+        "The long limestone bench itself, cleaned and reset this June after decades under gray paint, with the rail embankment rising behind it.",
       images: [],
       toNext: {
         text: "Head back east the way you came and recross Stony Island Avenue at the same light. Inside Jackson Park, follow the paths northeast, keeping the big domed museum ahead on your left. When you reach water with the museum across it, you are at the Columbia Basin.",
@@ -171,12 +180,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7891,
       lng: -87.5849,
       audioSrc: `${MEDIA}/audio/stop-04.mp3`,
-      audioSeconds: 61,
+      audioSeconds: 56,
       transcript: [
         "The water in front of you is the Columbia Basin, and the building across it is the Museum of Science and Industry. It is also the last major fair building still standing on the fairgrounds.",
         "That summer it was the Palace of Fine Arts. Most of the White City was plaster over wood frames, built to last a single season. This one held a fortune in borrowed art, so it got a fireproof brick core under the plaster. The brick is why it survived when everything around it burned or came down. The Field Museum lived here until 1920, and then the building sat and rotted.",
         "Julius Rosenwald, the president of Sears, saved it. He pledged three million dollars in 1926 and ended up giving more than five. He refused to put his name on the building. His money had another project in those same years, helping to build about five thousand schoolhouses for Black children across the segregated South.",
       ],
+      keyFacts: ["Palace of Fine Arts, 1893", "Rosenwald gave over 5 million dollars", "About 5,000 Rosenwald schools"],
+      lookFor:
+        "The 1893 facade reflected in the basin. Every other building this size at the fair was gone within a few years.",
       images: [
         {
           src: `${MEDIA}/palace-fine-arts-1893.jpg`,
@@ -205,12 +217,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.78855,
       lng: -87.58425,
       audioSrc: `${MEDIA}/audio/stop-05.mp3`,
-      audioSeconds: 67,
+      audioSeconds: 58,
       transcript: [
         "The low stone bridge behind the fence is the oldest structure in Jackson Park. Burnham and Root built it in 1880, before the fair was even an idea, and the park commissioners of the day called it the most important work in the park.",
         "It is named for Clarence Darrow, the defense lawyer, who lived nearby. He liked to pace this span rehearsing his arguments, and to fish in the lagoon under it. When he died in March 1938, his ashes were scattered from the bridge into the water, exactly as he had asked. Every March thirteenth since 1961, people have gathered here to toss a wreath in after him. They still do, fence or no fence.",
         "The bridge was closed to cars in 2009, the fence against walkers went up in 2013, and the rebuild has been promised and postponed ever since. The city's latest word is fall of 2028. Darrow spent his career on causes other people had walked away from. For now, his bridge is one of them.",
       ],
+      keyFacts: ["Built 1880 by Burnham and Root", "Oldest structure in the park", "Rebuild promised for 2028"],
+      lookFor:
+        "The low stone arch behind the fence. In March, look for wreaths on the water; neighbors still toss one in for Darrow every year.",
       images: [
         {
           src: `${MEDIA}/darrow-1913.jpg`,
@@ -239,12 +254,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7869,
       lng: -87.58365,
       audioSrc: `${MEDIA}/audio/stop-06.mp3`,
-      audioSeconds: 88,
+      audioSeconds: 79,
       transcript: [
         "The gate at the island's tip leads into the Garden of the Phoenix. It is closed on Mondays, but you can see a good deal of it from the path even then. It is small, so if the gate is open, give it ten unhurried minutes.",
         "In 1893 Japan built its fair pavilion on this spot. Three linked wooden halls, laid out in the shape of a phoenix and modeled on the Phoenix Hall of a temple in Uji, near Kyoto. The choice of bird was deliberate, for a city that had just rebuilt itself after the Great Fire of 1871. Unlike nearly everything else at the fair, the Ho-o-den was a permanent gift, and it stood here for half a century.",
         "In 1946, months after the war with Japan ended, the pavilion burned in a series of arson fires that most accounts tie to the anti-Japanese feeling of those years. The garden around it was abandoned for decades, then revived piece by piece. In 2016 Yoko Ono set twelve steel lotus petals on the pavilion's footprint, her first permanent public artwork in the Americas. She called it Sky Landing. The cherry trees around you, well over a hundred of them, were planted for the gift's hundred and twentieth anniversary, and in 2019 they bloomed all at once for the first time. The path ahead runs the whole length of the island. Take it slowly.",
       ],
+      keyFacts: ["Japan's gift to the fair, 1893", "Burned 1946", "Sky Landing by Yoko Ono, 2016"],
+      lookFor:
+        "Twelve steel lotus petals rising from earth mounds, set exactly where the Ho-o-den stood. In spring, the cherry trees all around them.",
       images: [
         {
           src: `${MEDIA}/hooden-1893.jpg`,
@@ -273,12 +291,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7819,
       lng: -87.5822,
       audioSrc: `${MEDIA}/audio/stop-07.mp3`,
-      audioSeconds: 50,
+      audioSeconds: 47,
       transcript: [
         "You have just walked the length of Wooded Island, the ribbon of trees and prairie between the park's two lagoons. Olmsted kept the island itself a natural retreat while the fair rose around it, and Japan's pavilion was nearly the only building allowed on. Look at any bird's-eye print of the White City and you will see it, a dark green island in the middle of the fairgrounds.",
         "Since 1977 this has been the Paul H. Douglas Nature Sanctuary, named for the Illinois senator who championed wild places, and it has become one of the city's best birding spots, especially during the spring warbler migration.",
         "The island's bridge gates have been locked from dusk to dawn in recent years, so this is an afternoon place. What is left of the fair's front door is across the next bridge.",
       ],
+      keyFacts: ["Olmsted's natural retreat", "Paul H. Douglas Nature Sanctuary, 1977", "One of the city's best birding spots"],
+      lookFor:
+        "Birds. Migration seasons fill the island; even in summer, keep your voice low and count the calls you can pick apart.",
       images: [
         {
           src: `${MEDIA}/birdseye-1893.jpg`,
@@ -306,12 +327,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7796,
       lng: -87.5799,
       audioSrc: `${MEDIA}/audio/stop-08.mp3`,
-      audioSeconds: 92,
+      audioSeconds: 85,
       transcript: [
         "The Golden Lady has stood at this corner since 1918. Daniel Chester French made her, a one-third scale bronze of the sixty-five-foot statue he built for the fair. She marks the spot where the fair's Administration Building stood, at the head of the Court of Honor. The Grand Basin and its white palaces ran east from here toward the lake, and in six months they drew more than 27 million visits, in a country of 65 million people.",
         "Ida B. Wells spent that summer telling the world what the White City left out. Black Americans were shut out of the fair's jobs, and Black achievement was shut out of its exhibits. Wells asked for a pavilion answering that, and the fair said no. So she published a pamphlet with Frederick Douglass and two other writers. It was called The Reason Why the Colored American Is Not in the World's Columbian Exposition, and it carried prefaces in English, French, and German so that visitors from anywhere could read it. By her own count she handed out some ten thousand copies.",
         "She worked from the Haiti Pavilion, because Douglass, then in his seventies, was Haiti's commissioner to the fair, and his building became Black America's unofficial home that summer. The fair's answer was a single 'Colored American Day' in late August. Douglass gave the keynote. The Haiti Pavilion itself is gone. You can still read the whole pamphlet today.",
       ],
+      keyFacts: ["The Golden Lady, 1918", "One-third scale of the 1893 original", "27 million fair visits"],
+      lookFor:
+        "Her gilding up close, then turn east. The Grand Basin and the Court of Honor filled the ground between you and the lake.",
       images: [
         {
           src: `${MEDIA}/court-of-honor-1893.jpg`,
@@ -347,12 +371,15 @@ export const JACKSON_PARK_WALK: WalkTour = {
       lat: 41.7852,
       lng: -87.5856,
       audioSrc: `${MEDIA}/audio/stop-09.mp3`,
-      audioSeconds: 112,
+      audioSeconds: 107,
       transcript: [
         "You are back where you started, so look west this time, across Stony Island into Woodlawn. A century ago 63rd Street was one of the biggest commercial streets in Chicago outside the Loop, famous for its jazz clubs and the Tivoli theater, under an L line built to carry crowds to the fair in this park.",
         "The century since was shaped by paperwork. In 1928 a property owners' association, quietly financed by the University of Chicago, blanketed blocks about a mile west of here with covenants barring Black families. When Carl Hansberry bought a house inside that boundary in 1937, the fight went to the Supreme Court. His daughter Lorraine later turned that year into A Raisin in the Sun. The covenants died in the courts and the neighborhood became Black. Then the money left. Woodlawn held 81,000 people in 1960 and 24,000 by 2020.",
         "So when the Obama Center picked this corner, Woodlawn's first question was blunt. Who is this for? Organizers spent years pushing for a signed community benefits agreement. Obama refused. Speaking by video at a public meeting in 2017, he asked, \"I would then be signing with who? What particular organizations would end up speaking for everybody in that community?\" The city passed a Woodlawn housing ordinance instead, in 2020. This spring, reporters checked on it. One building had gone up on the 52 city lots the ordinance set aside, and the price of a typical Woodlawn house had climbed from 72,500 dollars in 2016 to 330,000 last year. And on Juneteenth the Center opened, with museum dates selling out weeks ahead. That is the park you just walked.",
       ],
+      keyFacts: ["Covenants blanketed Woodlawn, 1928", "81,000 people in 1960, 24,000 by 2020", "Woodlawn housing ordinance, 2020"],
+      lookFor:
+        "From the campus edge, look west across Stony Island into Woodlawn, and notice how wide and quiet 63rd Street runs without its L.",
       images: [
         {
           src: `${MEDIA}/woodlawn-63rd-1973.jpg`,

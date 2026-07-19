@@ -324,7 +324,14 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             {/* map column */}
             <div className="md:sticky md:top-24 md:self-start">
-              <div className="overflow-hidden rounded-sm border border-border bg-cream-dark/40">
+              <div className="overflow-hidden rounded-sm border border-border bg-cream-dark/40 shadow-[6px_6px_0_rgba(27,58,45,0.07)]">
+                {/* cartouche, like the title block of a printed map */}
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-border bg-cream px-4 py-2.5">
+                  <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
+                  <p className="font-ledger text-[10px] uppercase tracking-[0.15em] text-ink/70">
+                    Self-guided loop &middot; 2.5 mi &middot; 9 stops
+                  </p>
+                </div>
                 <WalkMap
                   stops={stops}
                   route={tour.route}
@@ -333,6 +340,35 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                   userPos={userPos}
                   onSelectStop={(i) => goTo(i)}
                 />
+                <div
+                  aria-hidden="true"
+                  className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border bg-cream px-4 py-2"
+                >
+                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                    <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
+                      <line x1="1" y1="3" x2="21" y2="3" stroke="#C45D3E" strokeWidth="2.4" strokeDasharray="1 5" strokeLinecap="round" />
+                    </svg>
+                    Route
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <circle cx="6" cy="6" r="4.5" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1.6" />
+                    </svg>
+                    Stop
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <circle cx="6" cy="6" r="4" fill="#4A6B8A" stroke="#FFFFFF" strokeWidth="1.6" />
+                    </svg>
+                    You
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="#4A6B8A" fillOpacity="0.3" stroke="#4A6B8A" strokeOpacity="0.6" />
+                    </svg>
+                    Lagoon
+                  </span>
+                </div>
               </div>
 
               <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -403,6 +439,15 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 totalStops={stops.length}
                 distanceMeters={distanceToActive}
                 headingRef={headingRef}
+                nextStop={
+                  activeIndex < stops.length - 1
+                    ? {
+                        lat: stops[activeIndex + 1].lat,
+                        lng: stops[activeIndex + 1].lng,
+                        title: stops[activeIndex + 1].title,
+                      }
+                    : undefined
+                }
                 onAudioEnded={() => markVisited(activeStop.id, activeIndex)}
                 onPrev={activeIndex > 0 ? () => goTo(activeIndex - 1) : undefined}
                 onNext={activeIndex < stops.length - 1 ? handleNext : undefined}
@@ -469,12 +514,21 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       ) : (
         <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
           <div className="space-y-16">
-            {stops.map((stop) => (
+            {stops.map((stop, i) => (
               <div key={stop.id} className="border-b border-border pb-16 last:border-b-0">
                 <StopDetail
                   stop={stop}
                   totalStops={stops.length}
                   showNav={false}
+                  nextStop={
+                    i < stops.length - 1
+                      ? {
+                          lat: stops[i + 1].lat,
+                          lng: stops[i + 1].lng,
+                          title: stops[i + 1].title,
+                        }
+                      : undefined
+                  }
                   onAudioEnded={() => markVisited(stop.id, activeIndex)}
                 />
               </div>

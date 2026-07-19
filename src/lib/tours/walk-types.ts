@@ -34,6 +34,10 @@ export interface WalkStop {
   audioSeconds: number;
   /** the narration, paragraph per entry; doubles as the transcript */
   transcript: string[];
+  /** two or three bolded facts shown as chips under the dek */
+  keyFacts: string[];
+  /** the concrete thing worth seeing at this exact spot */
+  lookFor: string;
   /** zero, one, or two images per stop */
   images: WalkImage[];
   /** directions to the following stop; absent on the last stop */
