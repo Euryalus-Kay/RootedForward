@@ -68,7 +68,11 @@ export default function Colophon(_props: SceneProps) {
      (the room reads the sheet id from the hash itself); Back and
      Forward keep working through popstate */
   useEffect(() => {
-    if (isFilesHash()) setOpen(true);
+    /* the arrival check is deferred a frame, as in the walk player, so
+       the deep-link open never sets state synchronously in the effect */
+    const raf = requestAnimationFrame(() => {
+      if (isFilesHash()) setOpen(true);
+    });
     const onPop = () => setOpen(isFilesHash());
     window.addEventListener("popstate", onPop);
     /* capture the opener for ANY route into the room (door, sheet-card
@@ -80,6 +84,7 @@ export default function Colophon(_props: SceneProps) {
     };
     window.addEventListener("hashchange", onHash);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("popstate", onPop);
       window.removeEventListener("hashchange", onHash);
     };

@@ -195,13 +195,18 @@ export default function Receipt(_props: SceneProps) {
   // sessionStorage is client-only, and a visitor who ran the Act 0
   // lookup DURING this visit stored it long after this scene mounted,
   // so re-read whenever the active step moves while the offer stands
-  // (covers reloads, deep links, and the continuous walk alike)
+  // (covers reloads, deep links, and the continuous walk alike);
+  // the re-read is deferred a frame so it never sets state
+  // synchronously inside the effect
   useEffect(() => {
-    setState((prev) => {
-      if (prev.s !== "offer") return prev;
-      const stored = storedGround();
-      return stored ? { s: "hit", hit: stored, via: "stored" } : prev;
+    const raf = requestAnimationFrame(() => {
+      setState((prev) => {
+        if (prev.s !== "offer") return prev;
+        const stored = storedGround();
+        return stored ? { s: "hit", hit: stored, via: "stored" } : prev;
+      });
     });
+    return () => cancelAnimationFrame(raf);
   }, [activeIndex]);
 
   const run = async () => {
