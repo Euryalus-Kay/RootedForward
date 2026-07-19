@@ -1798,3 +1798,78 @@ body.exhibit-immersive > footer { display: none; }
   .ground-stage [data-today-halo] { r: 49px; stroke-width: 14; }
   .ground-stage [data-today-tag] { font-size: calc(40px * var(--gtext-k, 1)); }
 }
+
+/* ------------------------------------------------------------------ */
+/* Walking tour (/tours): audio player range input and map pulses     */
+/* ------------------------------------------------------------------ */
+.walk-audio-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+.walk-audio-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--color-rust) 0%,
+    var(--color-rust) var(--walk-progress, 0%),
+    var(--color-warm-gray-light) var(--walk-progress, 0%),
+    var(--color-warm-gray-light) 100%
+  );
+}
+.walk-audio-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-warm-gray-light);
+}
+.walk-audio-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-rust);
+}
+.walk-audio-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: var(--color-rust);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 0 0 1px var(--color-rust);
+}
+.walk-audio-range::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: var(--color-rust);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 0 0 1px var(--color-rust);
+}
+.walk-audio-range:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+@keyframes walk-pulse {
+  0% { transform: scale(0.6); opacity: 0.55; }
+  70% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+.walk-stop-pulse,
+.walk-user-pulse {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: walk-pulse 2.4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .walk-stop-pulse,
+  .walk-user-pulse {
+    animation: none;
+    opacity: 0.2;
+  }
+}

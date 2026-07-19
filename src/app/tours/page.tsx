@@ -1,33 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
-import { GROUND_TITLE as EXHIBIT_TITLE } from "@/components/exhibit/ground/GroundShell";
+import WalkExperience from "@/components/tours/walk/WalkExperience";
+import { JACKSON_PARK_WALK } from "@/lib/tours/jackson-park-walk";
 
 /* ------------------------------------------------------------------ */
 /*  /tours                                                             */
 /*                                                                     */
-/*  Centered on Hyde Park, the one neighborhood with real, finished   */
-/*  work behind it. Two offers. The Ground Keeps Moving, the online   */
-/*  exhibit at /tours/chicago/hyde-park, and the in-person Hyde Park  */
-/*  walking tour bookable on Viator. The layout borrows the Chicago   */
-/*  Architecture Center's tour-page pattern (a one-line dek, then a   */
-/*  bordered facts strip) and gives every archival image a source    */
-/*  line. The old stretched-photo banner was replaced with a          */
-/*  typographic opener in July 2026.                                  */
+/*  The Jackson Park self-paced audio walking tour. Starts at the     */
+/*  Obama Presidential Center, loops the park in under an hour of     */
+/*  walking, and plays a short recorded story at each stop. The map   */
+/*  is our own SVG built from Census TIGER geometry; the audio is     */
+/*  pregenerated and served from /public. The previous /tours index   */
+/*  is preserved intact at page.hidden.tsx.                           */
 /* ------------------------------------------------------------------ */
 
-export const metadata: Metadata = {
-  title: "Tours | Rooted Forward",
-  description:
-    "Walk Hyde Park with Rooted Forward. An in-person walking tour through the neighborhood's history of redlining and urban renewal, and an online exhibit built from the original documents.",
-};
+const tour = JACKSON_PARK_WALK;
 
-const TOUR_FACTS = [
-  { label: "Duration", value: "2 hours" },
-  { label: "Neighborhood", value: "Hyde Park, Chicago" },
-  { label: "Guides", value: "Youth-led" },
-  { label: "Group size", value: "Small groups" },
-];
+export const metadata: Metadata = {
+  title: "Jackson Park Walking Tour | Rooted Forward",
+  description:
+    "A free self-guided audio tour of Jackson Park, starting at the Obama Presidential Center. Eight stops in about an hour of walking, from the 1893 World's Fair to the fights that shaped the South Side.",
+};
 
 export default function ToursPage() {
   return (
@@ -36,87 +30,23 @@ export default function ToursPage() {
       <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Tours
+            Self-guided audio tour
           </p>
           <h1 className="mt-4 max-w-[16ch] font-display text-4xl leading-[1.05] text-ink md:text-6xl">
-            Walk the streets where it happened.
+            {tour.title}
           </h1>
           <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
-            Everything starts in Hyde Park. It is the neighborhood we know
-            best, and its last century of deed restrictions, appraisal maps,
-            and urban renewal plans tells the story of how Chicago drew its
-            lines. You can walk it with us in person, or read the documents
-            online.
-          </p>
-          <SurveyRule className="mt-10 text-rust" />
-        </div>
-      </section>
-
-      {/* Online exhibit */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-14">
-            <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                Online exhibit
-              </p>
-              <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
-                Read the Hyde Park story online
-              </h2>
-              <p className="mt-5 max-w-[55ch] font-body text-base leading-relaxed text-ink/70">
-                The exhibit gathers the paperwork that built the
-                neighborhood on one long page, including deeds with the
-                racial covenants still printed in them, bank appraisal
-                forms, and the federal map from 1940. It runs from 1832 to
-                today, and you scroll through it at your own pace.
-              </p>
-              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
-                One page &middot; Free &middot; No account
-              </p>
-              <p className="mt-3 font-body text-sm text-ink/60">
-                We call it {EXHIBIT_TITLE}.
-              </p>
-              <Link
-                href="/tours/chicago/hyde-park"
-                className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Start reading
-              </Link>
-            </div>
-            <Link href="/tours/chicago/hyde-park" className="group block">
-              <div className="overflow-hidden rounded-sm border border-border">
-                <img
-                  src="/media/site/midway-1893.jpg"
-                  alt="Crowds on the Midway Plaisance beneath the first Ferris Wheel at the 1893 World's Columbian Exposition"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                />
-              </div>
-              <p className="mt-2 font-body text-[11px] text-ink/60">
-                The Midway Plaisance under the Ferris Wheel, 1893.
-                Rijksmuseum collection, CC0.
-              </p>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* In-person walking tour */}
-      <section className="border-t border-border bg-cream-dark py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            In person
-          </p>
-          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
-            Hyde Park Walking Tour
-          </h2>
-          <p className="mt-4 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
-            A guided walk through the neighborhood&rsquo;s housing history,
-            led by our student researchers.
+            {tour.dek}
           </p>
 
           {/* Facts strip */}
-          <div className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
-            {TOUR_FACTS.map((fact) => (
+          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+            {[
+              { label: "Starts at", value: tour.startLabel },
+              { label: "Stops", value: `${tour.stops.length}` },
+              { label: "Distance", value: `${tour.distanceMiles} miles` },
+              { label: "Walking time", value: `About ${tour.walkMinutes} min` },
+            ].map((fact) => (
               <div key={fact.label} className="bg-cream px-5 py-4">
                 <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/60">
                   {fact.label}
@@ -128,61 +58,118 @@ export default function ToursPage() {
             ))}
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            <div>
-              <p className="max-w-[52ch] font-body text-base leading-relaxed text-ink/70">
-                The route covers the University of Chicago&rsquo;s expansion
-                campaigns, the boundaries drawn around Bronzeville, and the
-                organizing that fought back. You stand at the corners where
-                these things happened while you hear about them.
-              </p>
-              <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/70">
-                Our guides work from the same documents the online exhibit
-                is built on, so every stop comes with the paperwork to back
-                it up.
-              </p>
-              <a
-                href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center rounded-sm bg-rust px-10 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Book on Viator
-              </a>
-            </div>
+          <div className="mt-10 flex flex-wrap items-center gap-5">
+            <a
+              href="#tour"
+              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Start the tour
+            </a>
+            <p className="font-body text-sm text-ink/60">
+              Free. No app. Every stop can also be read or listened to from
+              home.
+            </p>
+          </div>
+          <SurveyRule className="mt-10 text-rust" />
+        </div>
+      </section>
 
-            <div>
-              <img
-                src="/media/site/hyde-park-aerial-1928.jpg"
-                alt="Aerial photograph of Hyde Park and the lakefront taken by the Chicago Aerial Survey Company in 1928"
-                loading="lazy"
-                className="w-full rounded-sm border border-border object-cover"
-              />
-              <p className="mt-2 font-body text-[11px] text-ink/60">
-                Hyde Park and the lakefront from the air, 1928. Chicago
-                Aerial Survey Co. Public domain.
-              </p>
-            </div>
+      {/* The tour itself */}
+      <section id="tour" className="scroll-mt-16">
+        <WalkExperience tour={tour} />
+      </section>
+
+      {/* Before you walk */}
+      <section className="border-t border-border bg-cream-dark py-14 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+            Before you walk
+          </p>
+          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+            Good to know
+          </h2>
+          <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+            {tour.practical.map((item) => (
+              <div key={item.title} className="rounded-sm border border-border bg-cream p-6">
+                <h3 className="font-display text-xl text-forest">{item.title}</h3>
+                <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
+                  {item.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What's next */}
+      {/* Sources */}
+      <section className="border-t border-border bg-cream py-14 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+            Sources
+          </p>
+          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+            Where this history comes from
+          </h2>
+          <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/70">
+            Every stop was written from the records below. If you think we
+            got something wrong, tell us and we will check it against the
+            documents.
+          </p>
+          <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
+            {tour.stops
+              .filter((s) => s.sources && s.sources.length)
+              .map((s) => (
+                <div key={s.id}>
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
+                    Stop {s.number} &middot; {s.title}
+                  </p>
+                  <ul className="mt-2 space-y-1.5">
+                    {s.sources!.map((src) => (
+                      <li key={src.url}>
+                        <a
+                          href={src.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
+                        >
+                          {src.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related */}
       <section className="bg-forest py-14 md:py-20">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <h2 className="font-display text-2xl text-cream md:text-3xl">
-            More neighborhoods are coming
+            Prefer to stay in?
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-cream/70">
-            Hyde Park is the first route. If you want to help research the
-            next one, we want to hear from you.
+            Our online exhibit walks the same ground on one long page, built
+            from the original deeds, appraisal forms, and maps. Our in-person
+            Hyde Park tour is on Viator.
           </p>
-          <Link
-            href="/get-involved"
-            className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-          >
-            Get involved
-          </Link>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/tours/chicago/hyde-park"
+              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Read the exhibit
+            </Link>
+            <a
+              href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-sm border border-cream/40 px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+            >
+              Book the in-person tour
+            </a>
+          </div>
         </div>
       </section>
     </div>
