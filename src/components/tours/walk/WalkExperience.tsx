@@ -7,6 +7,7 @@
 // stop on the page at once, readable from anywhere).
 // ------------------------------------------------------------------
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { WalkTour } from "@/lib/tours/walk-types";
 import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
 import { subscribeAudioState, toggleAudio } from "./audio-bus";
@@ -43,6 +44,7 @@ function loadProgress(): StoredProgress {
 }
 
 export default function WalkExperience({ tour }: { tour: WalkTour }) {
+  const reduceMotion = useReducedMotion();
   const [mode, setMode] = useState<Mode>("walk");
   const [activeIndex, setActiveIndex] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<string>>(new Set());
@@ -276,28 +278,41 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           <div
             role="group"
             aria-label="Tour mode"
-            className="inline-flex rounded-sm border border-border bg-cream-dark/50 p-1"
+            className="inline-flex rounded-full border border-white/70 bg-white/50 p-1 shadow-sm backdrop-blur-md"
           >
-            <button
-              type="button"
-              aria-pressed={mode === "walk"}
-              onClick={() => setMode("walk")}
-              className={`rounded-sm px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest transition-colors ${
-                mode === "walk" ? "bg-forest text-cream" : "text-ink/70 hover:text-ink"
-              }`}
-            >
-              Walk it
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === "browse"}
-              onClick={() => setMode("browse")}
-              className={`rounded-sm px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest transition-colors ${
-                mode === "browse" ? "bg-forest text-cream" : "text-ink/70 hover:text-ink"
-              }`}
-            >
-              All stops
-            </button>
+            {(
+              [
+                { key: "walk" as const, label: "Walk it" },
+                { key: "browse" as const, label: "All stops" },
+              ]
+            ).map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                aria-pressed={mode === key}
+                onClick={() => setMode(key)}
+                className="relative rounded-full px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-widest"
+              >
+                {mode === key && (
+                  <motion.span
+                    layoutId="walk-mode-pill"
+                    className="absolute inset-0 rounded-full bg-gradient-to-br from-forest to-forest-light shadow-md shadow-forest/25"
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : { type: "spring", bounce: 0.18, duration: 0.5 }
+                    }
+                  />
+                )}
+                <span
+                  className={`relative z-10 transition-colors ${
+                    mode === key ? "text-cream" : "text-ink/70 hover:text-ink"
+                  }`}
+                >
+                  {label}
+                </span>
+              </button>
+            ))}
           </div>
 
           <div className="flex items-center gap-4">
@@ -310,7 +325,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               <button
                 type="button"
                 onClick={() => goTo(resumeIndex, false)}
-                className="rounded-sm border border-rust/40 bg-rust/10 px-4 py-2 font-body text-xs font-semibold uppercase tracking-widest text-rust transition-colors hover:bg-rust hover:text-white"
+                className="rounded-full border border-rust/40 bg-rust/10 px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-rust shadow-sm backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-rust hover:text-white motion-reduce:transition-none"
               >
                 Resume at stop {resumeIndex + 1}
               </button>
@@ -324,9 +339,9 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             {/* map column */}
             <div className="md:sticky md:top-24 md:self-start">
-              <div className="overflow-hidden rounded-sm border border-border bg-cream-dark/40 shadow-[6px_6px_0_rgba(27,58,45,0.07)]">
+              <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-xl shadow-forest/10 backdrop-blur-md">
                 {/* cartouche, like the title block of a printed map */}
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-border bg-cream px-4 py-2.5">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/60 bg-white/40 px-4 py-2.5">
                   <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
                   <p className="font-ledger text-[10px] uppercase tracking-[0.15em] text-ink/70">
                     Self-guided loop &middot; 2.5 mi &middot; 9 stops
@@ -342,7 +357,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 />
                 <div
                   aria-hidden="true"
-                  className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border bg-cream px-4 py-2"
+                  className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/60 bg-white/40 px-4 py-2"
                 >
                   <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
                     <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
@@ -375,10 +390,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 <button
                   type="button"
                   onClick={locationOn || locating ? stopWatching : startWatching}
-                  className={`inline-flex items-center gap-2 self-start whitespace-nowrap rounded-sm border px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-widest transition-colors ${
+                  className={`inline-flex items-center gap-2 self-start whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest shadow-sm backdrop-blur-md transition-all hover:-translate-y-0.5 motion-reduce:transition-none ${
                     locationOn
-                      ? "border-forest bg-forest text-cream"
-                      : "border-border bg-cream text-ink/70 hover:border-forest hover:text-forest"
+                      ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream shadow-forest/25"
+                      : "border-white/70 bg-white/50 text-ink/70 hover:text-forest"
                   }`}
                   aria-pressed={locationOn}
                 >
@@ -402,14 +417,14 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
               {/* quick-jump stop list: always open on desktop, folded
                   behind a summary on phones */}
-              <ol className="mt-5 hidden divide-y divide-border rounded-sm border border-border bg-cream md:block">
+              <ol className="mt-5 hidden divide-y divide-border/50 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md md:block">
                 {stops.map((stop, i) => renderStopRow(stop, i))}
               </ol>
-              <details className="mt-4 rounded-sm border border-border bg-cream md:hidden">
-                <summary className="cursor-pointer list-none px-4 py-3 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 [&::-webkit-details-marker]:hidden">
+              <details className="mt-4 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md md:hidden">
+                <summary className="cursor-pointer list-none px-5 py-3.5 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 [&::-webkit-details-marker]:hidden">
                   All {stops.length} stops
                 </summary>
-                <ol className="divide-y divide-border border-t border-border">
+                <ol className="divide-y divide-border/50 border-t border-white/60">
                   {stops.map((stop, i) => renderStopRow(stop, i))}
                 </ol>
               </details>
@@ -434,24 +449,38 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                   </div>
                 )}
               </div>
-              <StopDetail
-                stop={activeStop}
-                totalStops={stops.length}
-                distanceMeters={distanceToActive}
-                headingRef={headingRef}
-                nextStop={
-                  activeIndex < stops.length - 1
-                    ? {
-                        lat: stops[activeIndex + 1].lat,
-                        lng: stops[activeIndex + 1].lng,
-                        title: stops[activeIndex + 1].title,
-                      }
-                    : undefined
-                }
-                onAudioEnded={() => markVisited(activeStop.id, activeIndex)}
-                onPrev={activeIndex > 0 ? () => goTo(activeIndex - 1) : undefined}
-                onNext={activeIndex < stops.length - 1 ? handleNext : undefined}
-              />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeStop.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0 }
+                      : { duration: 0.32, ease: [0.22, 1, 0.36, 1] }
+                  }
+                >
+                  <StopDetail
+                    stop={activeStop}
+                    totalStops={stops.length}
+                    distanceMeters={distanceToActive}
+                    headingRef={headingRef}
+                    nextStop={
+                      activeIndex < stops.length - 1
+                        ? {
+                            lat: stops[activeIndex + 1].lat,
+                            lng: stops[activeIndex + 1].lng,
+                            title: stops[activeIndex + 1].title,
+                          }
+                        : undefined
+                    }
+                    onAudioEnded={() => markVisited(activeStop.id, activeIndex)}
+                    onPrev={activeIndex > 0 ? () => goTo(activeIndex - 1) : undefined}
+                    onNext={activeIndex < stops.length - 1 ? handleNext : undefined}
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
 
@@ -459,10 +488,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           <div
             inert={!tourInView}
             aria-hidden={!tourInView}
-            className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-cream/95 backdrop-blur transition-transform duration-300 motion-reduce:transition-none md:hidden ${
-              tourInView ? "translate-y-0" : "translate-y-full"
+            className={`fixed inset-x-3 bottom-3 z-40 rounded-2xl border border-white/70 bg-cream/80 shadow-2xl shadow-forest/20 backdrop-blur-xl transition-transform duration-300 motion-reduce:transition-none md:hidden ${
+              tourInView ? "translate-y-0" : "translate-y-[calc(100%+1rem)]"
             }`}
-            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+            style={{ marginBottom: "env(safe-area-inset-bottom)" }}
           >
             <div className="flex items-center gap-3 px-4 py-3">
               <button
@@ -473,7 +502,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     ? `Pause stop ${activeStop.number}`
                     : `Play stop ${activeStop.number}, ${activeStop.title}`
                 }
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rust text-white transition-colors hover:bg-rust-dark"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-white shadow-lg shadow-rust/30 transition-transform hover:scale-105 motion-reduce:transition-none"
               >
                 {miniPlaying ? (
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -503,7 +532,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="shrink-0 rounded-sm bg-forest px-4 py-2.5 font-body text-[11px] font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+                  className="shrink-0 rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2.5 font-body text-[11px] font-semibold uppercase tracking-widest text-cream shadow-md shadow-forest/25 transition-transform hover:scale-105 motion-reduce:transition-none"
                 >
                   Next
                 </button>

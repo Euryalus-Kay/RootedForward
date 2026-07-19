@@ -27,7 +27,20 @@ export default function ToursPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Opener */}
-      <section className="relative overflow-hidden border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
+      <section className="relative overflow-hidden bg-gradient-to-b from-cream via-cream to-cream-dark/60 pb-16 pt-20 md:pb-24 md:pt-28">
+        {/* drifting color fields under the glass */}
+        <div
+          aria-hidden="true"
+          className="walk-blob pointer-events-none absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-[#C9A227]/15 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="walk-blob-slow pointer-events-none absolute right-1/4 top-32 h-80 w-80 rounded-full bg-rust/10 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="walk-blob pointer-events-none absolute -bottom-24 right-8 h-[26rem] w-[26rem] rounded-full bg-forest/10 blur-3xl"
+        />
         {/* the 1893 Rand McNally bird's eye of these exact grounds,
             washed into the paper */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -35,7 +48,7 @@ export default function ToursPage() {
           src="/media/jackson-park-walk/birdseye-1893.jpg"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.13] mix-blend-multiply [mask-image:linear-gradient(to_left,black_55%,transparent)] md:block"
+          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.12] mix-blend-multiply [mask-image:radial-gradient(ellipse_75%_90%_at_70%_40%,black_45%,transparent)] md:block"
         />
         <div className="relative mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
@@ -48,16 +61,18 @@ export default function ToursPage() {
             {tour.dek}
           </p>
 
-          {/* Facts plate */}
-          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-px border border-border bg-border shadow-[6px_6px_0_rgba(27,58,45,0.07)] sm:grid-cols-4">
+          {/* Facts, frosted */}
+          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               { label: "Starts at", value: tour.startLabel },
               { label: "Stops", value: `${tour.stops.length}` },
               { label: "Distance", value: `${tour.distanceMiles} miles` },
               { label: "Walking time", value: `About ${tour.walkMinutes} min` },
             ].map((fact) => (
-              <div key={fact.label} className="bg-cream px-5 py-4">
-                <div aria-hidden="true" className="mb-2 h-0.5 w-6 bg-[#C9A227]" />
+              <div
+                key={fact.label}
+                className="rounded-2xl border border-white/70 bg-white/45 px-5 py-4 shadow-lg shadow-forest/5 backdrop-blur-md"
+              >
                 <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/70">
                   {fact.label}
                 </p>
@@ -71,7 +86,7 @@ export default function ToursPage() {
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <a
               href="#tour"
-              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-[4px_4px_0_rgba(168,70,42,0.25)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
+              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-9 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-xl shadow-rust/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-rust/30 motion-reduce:transition-none"
             >
               Start the tour
             </a>
@@ -89,6 +104,12 @@ export default function ToursPage() {
           </div>
           <SurveyRule className="mt-10 text-rust" />
         </div>
+        {/* curve into the tour */}
+        <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 52" fill="none" preserveAspectRatio="none" className="block h-[52px] w-full">
+            <path d="M0 52h1440V16C1180 40 900 48 720 44 480 38 220 18 0 30v22Z" fill="#F5F0E8" />
+          </svg>
+        </div>
       </section>
 
       {/* The tour itself */}
@@ -99,8 +120,12 @@ export default function ToursPage() {
       {/* Before you walk */}
       <section
         id="before-you-walk"
-        className="scroll-mt-16 border-t border-border bg-cream-dark py-14 md:py-20"
+        className="relative scroll-mt-16 overflow-hidden bg-gradient-to-b from-cream to-cream-dark py-14 md:py-20"
       >
+        <div
+          aria-hidden="true"
+          className="walk-blob-slow pointer-events-none absolute -right-24 top-8 h-72 w-72 rounded-full bg-[#C9A227]/10 blur-3xl"
+        />
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             Before you walk
@@ -112,11 +137,11 @@ export default function ToursPage() {
             {tour.practical.map((item, i) => (
               <div
                 key={item.title}
-                className="rounded-sm border border-border bg-cream p-6 shadow-[5px_5px_0_rgba(27,58,45,0.06)]"
+                className="rounded-2xl border border-white/70 bg-white/50 p-6 shadow-lg shadow-forest/5 backdrop-blur-md transition-transform hover:-translate-y-1 motion-reduce:transition-none"
               >
                 <span
                   aria-hidden="true"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rust/30 bg-rust/10 text-rust"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-cream shadow-md shadow-rust/25"
                 >
                   {i === 0 && (
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -204,7 +229,7 @@ export default function ToursPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/tours/chicago/hyde-park"
-              className="inline-flex items-center rounded-sm bg-rust px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-lg shadow-black/20 transition-all hover:-translate-y-0.5 motion-reduce:transition-none"
             >
               Read the exhibit
             </Link>
@@ -212,7 +237,7 @@ export default function ToursPage() {
               href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-sm border border-cream/40 px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:border-cream hover:bg-cream/10"
+              className="inline-flex items-center rounded-full border border-cream/40 bg-cream/10 px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/20 motion-reduce:transition-none"
             >
               Book the in-person tour
             </a>

@@ -1880,3 +1880,22 @@ body.exhibit-immersive > footer { display: none; }
   outline-offset: 3px;
   border-radius: 50%;
 }
+
+/* walking tour: drifting gradient blobs and glass helpers */
+@keyframes walk-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(24px, -18px) scale(1.06); }
+  100% { transform: translate(-16px, 12px) scale(0.97); }
+}
+.walk-blob {
+  animation: walk-drift 16s ease-in-out infinite alternate;
+}
+.walk-blob-slow {
+  animation: walk-drift 24s ease-in-out infinite alternate-reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .walk-blob,
+  .walk-blob-slow {
+    animation: none;
+  }
+}

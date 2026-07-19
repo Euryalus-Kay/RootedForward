@@ -81,13 +81,13 @@ export default function AudioPlayer({
   const pct = duration > 0 ? (current / duration) * 100 : 0;
 
   return (
-    <div className="rounded-sm border border-border bg-cream-dark/60 px-4 py-3">
+    <div className="rounded-2xl border border-white/60 bg-white/40 px-4 py-3.5 shadow-lg shadow-forest/5 backdrop-blur-md">
       <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={toggle}
           aria-label={playing ? `Pause. ${label}` : label}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rust text-white transition-colors hover:bg-rust-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-white shadow-lg shadow-rust/30 transition-transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-cream motion-reduce:transition-none"
         >
           {playing ? (
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -128,7 +128,7 @@ export default function AudioPlayer({
           type="button"
           onClick={cycleRate}
           aria-label={`Playback speed ${rate}x. Change speed.`}
-          className="min-h-[32px] shrink-0 rounded-sm border border-border bg-cream px-2.5 py-2 font-body text-[11px] font-semibold tabular-nums text-ink/70 transition-colors hover:border-rust hover:text-rust"
+          className="min-h-[32px] shrink-0 rounded-full border border-white/70 bg-white/50 px-3 py-2 font-body text-[11px] font-semibold tabular-nums text-ink/70 shadow-sm backdrop-blur-md transition-colors hover:text-rust"
         >
           {rate}x
         </button>

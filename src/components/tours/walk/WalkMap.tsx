@@ -7,6 +7,7 @@
 // tiles, no tokens, no external requests.
 // ------------------------------------------------------------------
 import { useMemo } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import {
   METERS_PER_UNIT,
@@ -69,6 +70,7 @@ export default function WalkMap({
   onSelectStop,
 }: WalkMapProps) {
   const geo = WALK_GEOMETRY;
+  const reduceMotion = useReducedMotion();
 
   // frame the view on the route with generous padding, clamped to the
   // prepared geometry frame
@@ -227,7 +229,7 @@ export default function WalkMap({
           const active = i === activeIndex;
           const visited = visitedIds.has(stop.id);
           return (
-            <g
+            <motion.g
               key={stop.id}
               role="button"
               tabIndex={0}
@@ -240,6 +242,19 @@ export default function WalkMap({
                 }
               }}
               className="walk-marker cursor-pointer"
+              style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              whileHover={{
+                scale: reduceMotion ? 1 : 1.14,
+                transition: { type: "spring", bounce: 0.4, duration: 0.3, delay: 0 },
+              }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : { type: "spring", bounce: 0.4, duration: 0.55, delay: 0.35 + i * 0.07 }
+              }
             >
               {/* oversized invisible hit area so markers are easy to tap */}
               <circle cx={p.x} cy={p.y} r="28" fill="transparent" />
@@ -267,7 +282,7 @@ export default function WalkMap({
               >
                 {stop.number}
               </text>
-            </g>
+            </motion.g>
           );
         })}
       </g>
