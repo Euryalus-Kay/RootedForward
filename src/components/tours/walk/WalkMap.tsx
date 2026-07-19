@@ -29,12 +29,32 @@ interface WalkMapProps {
   onSelectStop: (index: number) => void;
 }
 
+// anchored to survive the route-fitted viewBox clamp; keep every
+// label inside roughly lng -87.592..-87.577, lat 41.791..41.778
 const PLACE_LABELS: { text: string; lat: number; lng: number; size: number }[] = [
-  { text: "Lake Michigan", lat: 41.7955, lng: -87.5715, size: 19 },
-  { text: "Midway Plaisance", lat: 41.7869, lng: -87.5985, size: 13 },
-  { text: "Woodlawn", lat: 41.778, lng: -87.5985, size: 15 },
-  { text: "Hyde Park", lat: 41.7948, lng: -87.5955, size: 15 },
-  { text: "Wooded Island", lat: 41.7838, lng: -87.5827, size: 11 },
+  { text: "Lake Michigan", lat: 41.7896, lng: -87.5795, size: 13 },
+  { text: "Midway Plaisance", lat: 41.78635, lng: -87.5901, size: 11 },
+  { text: "Wooded Island", lat: 41.7839, lng: -87.5845, size: 11 },
+  { text: "Jackson Park", lat: 41.779, lng: -87.5845, size: 15 },
+];
+
+// soft green ground for the park itself; boundaries are streets, the
+// lake polygon paints over the eastern overhang
+const PARK_AREAS: [number, number][][] = [
+  // Jackson Park: 56th to 67th, Stony Island to the lake
+  [
+    [41.7936, -87.587],
+    [41.7936, -87.566],
+    [41.7737, -87.556],
+    [41.7737, -87.587],
+  ],
+  // Midway Plaisance strip: 59th to 60th, west to Cottage Grove
+  [
+    [41.7872, -87.5868],
+    [41.7872, -87.607],
+    [41.7854, -87.607],
+    [41.7854, -87.5868],
+  ],
 ];
 
 const lineD = (pts: number[][]) =>
@@ -85,9 +105,30 @@ export default function WalkMap({
     <svg
       viewBox={viewBox}
       className="block h-auto w-full"
-      role="img"
+      role="group"
       aria-label="Map of the tour route through Jackson Park with numbered stops. The same stops are listed in order below the map."
     >
+      {/* park ground */}
+      <g>
+        {PARK_AREAS.map((ring, i) => (
+          <path
+            key={i}
+            d={
+              "M" +
+              ring
+                .map(([lat, lng]) => {
+                  const p = projectPoint(lat, lng);
+                  return `${p.x},${p.y}`;
+                })
+                .join("L") +
+              "Z"
+            }
+            fill="#1B3A2D"
+            fillOpacity="0.07"
+          />
+        ))}
+      </g>
+
       {/* water */}
       <g>
         {geo.water.map((w, i) => (
@@ -95,7 +136,7 @@ export default function WalkMap({
             key={i}
             d={lineD(w.ring) + "Z"}
             fill="#4A6B8A"
-            fillOpacity="0.22"
+            fillOpacity="0.3"
             stroke="#4A6B8A"
             strokeOpacity="0.45"
             strokeWidth="1.4"
@@ -113,28 +154,6 @@ export default function WalkMap({
         {geo.roads.arterials.map((l, i) => (
           <path key={i} d={lineD(l)} />
         ))}
-      </g>
-
-      {/* place labels */}
-      <g aria-hidden="true">
-        {PLACE_LABELS.map((l) => {
-          const p = projectPoint(l.lat, l.lng);
-          return (
-            <text
-              key={l.text}
-              x={p.x}
-              y={p.y}
-              fontSize={l.size}
-              fill="#8A8578"
-              fontStyle="italic"
-              fontFamily="Georgia, 'Times New Roman', serif"
-              textAnchor="middle"
-              letterSpacing="0.08em"
-            >
-              {l.text}
-            </text>
-          );
-        })}
       </g>
 
       {/* route */}
@@ -156,6 +175,32 @@ export default function WalkMap({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+
+      {/* place labels sit above the route, with a cream halo so the
+          dotted line never cuts through a word */}
+      <g aria-hidden="true">
+        {PLACE_LABELS.map((l) => {
+          const p = projectPoint(l.lat, l.lng);
+          return (
+            <text
+              key={l.text}
+              x={p.x}
+              y={p.y}
+              fontSize={l.size}
+              fill="#8A8578"
+              fontStyle="italic"
+              fontFamily="Georgia, 'Times New Roman', serif"
+              textAnchor="middle"
+              letterSpacing="0.08em"
+              paintOrder="stroke"
+              stroke="#F5F0E8"
+              strokeWidth="3"
+            >
+              {l.text}
+            </text>
+          );
+        })}
+      </g>
 
       {/* user location */}
       {user && (
@@ -194,15 +239,17 @@ export default function WalkMap({
                   onSelectStop(i);
                 }
               }}
-              className="cursor-pointer focus:outline-none"
+              className="walk-marker cursor-pointer"
             >
+              {/* oversized invisible hit area so markers are easy to tap */}
+              <circle cx={p.x} cy={p.y} r="28" fill="transparent" />
               {active && (
                 <circle className="walk-stop-pulse" cx={p.x} cy={p.y} r="24" fill="#C45D3E" fillOpacity="0.25" />
               )}
               <circle
                 cx={p.x}
                 cy={p.y}
-                r={active ? 17 : 13}
+                r={active ? 17 : 12}
                 fill={active ? "#C45D3E" : visited ? "#1B3A2D" : "#F5F0E8"}
                 stroke={active ? "#F5F0E8" : visited ? "#1B3A2D" : "#1B3A2D"}
                 strokeWidth={active ? 2.5 : 2}
@@ -212,7 +259,7 @@ export default function WalkMap({
                 y={p.y}
                 dy="0.36em"
                 textAnchor="middle"
-                fontSize={active ? 15 : 12.5}
+                fontSize={active ? 15 : 12}
                 fontWeight="700"
                 fill={active || visited ? "#F5F0E8" : "#1B3A2D"}
                 fontFamily="var(--font-body)"

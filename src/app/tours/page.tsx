@@ -65,9 +65,16 @@ export default function ToursPage() {
             >
               Start the tour
             </a>
-            <p className="font-body text-sm text-ink/60">
+            <p className="font-body text-sm text-ink/70">
               Free. No app. Every stop can also be read or listened to from
-              home.
+              home.{" "}
+              <a
+                href="#before-you-walk"
+                className="underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
+              >
+                Hours and what to know first
+              </a>
+              .
             </p>
           </div>
           <SurveyRule className="mt-10 text-rust" />
@@ -80,7 +87,10 @@ export default function ToursPage() {
       </section>
 
       {/* Before you walk */}
-      <section className="border-t border-border bg-cream-dark py-14 md:py-20">
+      <section
+        id="before-you-walk"
+        className="scroll-mt-16 border-t border-border bg-cream-dark py-14 md:py-20"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             Before you walk
@@ -115,22 +125,22 @@ export default function ToursPage() {
             got something wrong, tell us and we will check it against the
             documents.
           </p>
-          <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
+          <div className="mt-8 gap-x-12 md:columns-2">
             {tour.stops
               .filter((s) => s.sources && s.sources.length)
               .map((s) => (
-                <div key={s.id}>
-                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
+                <div key={s.id} className="mb-7 break-inside-avoid">
+                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/70">
                     Stop {s.number} &middot; {s.title}
                   </p>
-                  <ul className="mt-2 space-y-1.5">
+                  <ul className="mt-1.5">
                     {s.sources!.map((src) => (
                       <li key={src.url}>
                         <a
                           href={src.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
+                          className="inline-block py-1 font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
                         >
                           {src.label}
                         </a>

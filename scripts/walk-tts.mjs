@@ -42,11 +42,30 @@ if (!key) {
 }
 
 // A guide walking beside you, not a documentary narrator.
-const INSTRUCTIONS =
+const BASE_INSTRUCTIONS =
   "You are a friendly, knowledgeable local guide leading a self-paced walking tour of a Chicago park, speaking to one listener through their headphones. " +
-  "Warm, unhurried, conversational, like showing a friend around a place you love. Natural pauses between sentences; a slightly longer breath between paragraphs. " +
-  "Serious and quiet on the painful history, never solemn or theatrical. Never chirpy, never robotic. Plain American English; pronounce Chicago names naturally. " +
-  "Numbers and years read out clearly and calmly.";
+  "Warm, unhurried, conversational, like showing a friend around a place you love. Natural pauses between sentences; a slightly longer, easy breath between paragraphs. " +
+  "Serious and quiet on the painful history, never solemn or theatrical. Never chirpy, never robotic, never salesy. Plain American English; pronounce Chicago names naturally. " +
+  "Numbers and years read out clearly and calmly. ";
+
+// Per-stop coloring on top of the base read. Keyed by stop number.
+const TONES = {
+  1: "This is the welcome. Bright but settled, glad the listener showed up. Let the last paragraph slow slightly as the history opens up.",
+  2: "Storyteller mode, enjoying the spectacle of the Ferris wheel. Drop the brightness completely for the sentence about people being put on display; read it level and unflinching, with a beat of silence after 'That happened on this lawn too.' Warm again for the playground.",
+  3: "Quiet and close, like talking at a graveside bench about two people you admire. Gentle lift at the invitation to sit.",
+  4: "Start with easy wonder looking across the water. Turn steady and respectful for Rosenwald, letting the schoolhouse sentence land without any swell.",
+  5: "Affectionate and a little wry; you love this broken old bridge. Tender on the ashes and the wreaths. The last line dry, not sad.",
+  6: "Gentle and unhurried, garden-quiet. Grave and plain on the 1946 arson. Softly hopeful from Sky Landing onward, ending with an easy send-off down the path.",
+  7: "Hushed, as if not to scare the birds. Slow, with space around the sentences. The last line is a quiet promise of what is ahead.",
+  8: "Open with scale and awe at the golden statue and the vanished fair. Shift to a firm, clear, unhurried register for Ida B. Wells and Frederick Douglass; this is the heart of the tour, read it with respect and no melodrama.",
+  9: "The finale. Direct and honest, one neighbor leveling with another. Read the Obama quote as reported speech, matter of fact. Slow down for the final three sentences and let 'That is the park you just walked' close gently, almost quietly.",
+};
+
+// Encourage real pauses: newline after sentence enders shapes spoken
+// pacing without changing the on-page transcript.
+function paceText(text) {
+  return text.replace(/([.!?])\s+/g, "$1\n");
+}
 
 // ---- pull { number, transcript[] } for each stop out of the TS file ----
 function loadStops() {
@@ -87,15 +106,15 @@ function probe(file) {
   });
 }
 
-async function tts(text) {
+async function tts(text, instructions) {
   const res = await fetch("https://api.openai.com/v1/audio/speech", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       model,
       voice,
-      input: text,
-      instructions: INSTRUCTIONS,
+      input: paceText(text),
+      instructions,
       response_format: "mp3",
     }),
   });
@@ -119,7 +138,7 @@ async function main() {
     if (only && only !== id) continue;
     const raw = path.join(OUT, `raw-${id}.mp3`);
     const out = path.join(OUT, `${id}.mp3`);
-    const buf = await tts(text);
+    const buf = await tts(text, BASE_INSTRUCTIONS + (TONES[number] || ""));
     await writeFile(raw, buf);
     await run("ffmpeg", ["-y", "-loglevel", "error", "-i", raw,
       "-af", "loudnorm=I=-18:TP=-2:LRA=11", "-codec:a", "libmp3lame", "-b:a", "128k", out]);

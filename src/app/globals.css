@@ -1805,7 +1805,7 @@ body.exhibit-immersive > footer { display: none; }
 .walk-audio-range {
   -webkit-appearance: none;
   appearance: none;
-  height: 20px;
+  height: 28px;
   background: transparent;
   cursor: pointer;
 }
@@ -1833,17 +1833,17 @@ body.exhibit-immersive > footer { display: none; }
 .walk-audio-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  margin-top: -5px;
-  height: 14px;
-  width: 14px;
+  margin-top: -7px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   background: var(--color-rust);
   border: 2px solid var(--color-cream);
   box-shadow: 0 0 0 1px var(--color-rust);
 }
 .walk-audio-range::-moz-range-thumb {
-  height: 14px;
-  width: 14px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   background: var(--color-rust);
   border: 2px solid var(--color-cream);
@@ -1872,4 +1872,11 @@ body.exhibit-immersive > footer { display: none; }
     animation: none;
     opacity: 0.2;
   }
+}
+
+/* map markers: visible keyboard focus */
+.walk-marker:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 3px;
+  border-radius: 50%;
 }

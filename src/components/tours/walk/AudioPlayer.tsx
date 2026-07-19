@@ -8,6 +8,7 @@
 // ------------------------------------------------------------------
 import { useCallback, useEffect, useRef, useState } from "react";
 import { formatClock } from "@/lib/tours/walk-utils";
+import { emitAudioState, registerAudio, unregisterAudio } from "./audio-bus";
 
 const EXCLUSIVE_EVENT = "rf-walk-audio-play";
 
@@ -38,14 +39,19 @@ export default function AudioPlayer({
   const [rate, setRate] = useState(1);
   const [ready, setReady] = useState(false);
 
-  // pause when another player starts
+  // pause when another player starts; expose this element to the
+  // mini-player through the bus
   useEffect(() => {
+    if (audioRef.current) registerAudio(playerId, audioRef.current);
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<string>).detail;
       if (detail !== playerId) audioRef.current?.pause();
     };
     window.addEventListener(EXCLUSIVE_EVENT, handler);
-    return () => window.removeEventListener(EXCLUSIVE_EVENT, handler);
+    return () => {
+      window.removeEventListener(EXCLUSIVE_EVENT, handler);
+      unregisterAudio(playerId);
+    };
   }, [playerId]);
 
   const toggle = useCallback(() => {
@@ -100,18 +106,19 @@ export default function AudioPlayer({
             type="range"
             min={0}
             max={duration || seconds || 1}
-            step={1}
+            step={5}
             value={Math.min(current, duration || seconds || 1)}
             onChange={(e) => seek(Number(e.target.value))}
             aria-label={`Seek within audio. ${label}`}
+            aria-valuetext={`${formatClock(current)} of ${formatClock(duration || seconds)}`}
             className="walk-audio-range w-full"
             style={{ "--walk-progress": `${pct}%` } as React.CSSProperties}
           />
           <div className="mt-1 flex items-center justify-between">
-            <span className="font-body text-[11px] tabular-nums text-ink/60">
-              {formatClock(current)}
+            <span className="font-body text-[11px] tabular-nums text-ink/70">
+              {ready ? formatClock(current) : "Loading…"}
             </span>
-            <span className="font-body text-[11px] tabular-nums text-ink/60">
+            <span className="font-body text-[11px] tabular-nums text-ink/70">
               {formatClock(duration || seconds)}
             </span>
           </div>
@@ -121,15 +128,11 @@ export default function AudioPlayer({
           type="button"
           onClick={cycleRate}
           aria-label={`Playback speed ${rate}x. Change speed.`}
-          className="shrink-0 rounded-sm border border-border bg-cream px-2 py-1 font-body text-[11px] font-semibold tabular-nums text-ink/70 transition-colors hover:border-rust hover:text-rust"
+          className="min-h-[32px] shrink-0 rounded-sm border border-border bg-cream px-2.5 py-2 font-body text-[11px] font-semibold tabular-nums text-ink/70 transition-colors hover:border-rust hover:text-rust"
         >
           {rate}x
         </button>
       </div>
-
-      {!ready && (
-        <p className="mt-2 font-body text-[11px] text-ink/50">Loading audio&hellip;</p>
-      )}
 
       <audio
         ref={audioRef}
@@ -154,11 +157,16 @@ export default function AudioPlayer({
             navigator.mediaSession.setActionHandler("play", () => void el.play());
             navigator.mediaSession.setActionHandler("pause", () => el.pause());
           }
+          emitAudioState(playerId, true);
           onStarted?.();
         }}
-        onPause={() => setPlaying(false)}
+        onPause={() => {
+          setPlaying(false);
+          emitAudioState(playerId, false);
+        }}
         onEnded={() => {
           setPlaying(false);
+          emitAudioState(playerId, false);
           onEnded?.();
         }}
       />

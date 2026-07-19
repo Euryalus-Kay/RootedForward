@@ -6,6 +6,7 @@
 // them. The transcript is the narration text itself, so listening
 // and reading are the same content.
 // ------------------------------------------------------------------
+import type { Ref } from "react";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
 import AudioPlayer from "./AudioPlayer";
@@ -15,6 +16,8 @@ interface StopDetailProps {
   totalStops: number;
   /** live distance from the visitor to this stop, meters, if located */
   distanceMeters?: number | null;
+  /** walk mode focuses the heading after a stop change */
+  headingRef?: Ref<HTMLHeadingElement>;
   onAudioEnded?: () => void;
   onPrev?: () => void;
   onNext?: () => void;
@@ -26,6 +29,7 @@ export default function StopDetail({
   stop,
   totalStops,
   distanceMeters,
+  headingRef,
   onAudioEnded,
   onPrev,
   onNext,
@@ -36,10 +40,14 @@ export default function StopDetail({
       <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
         Stop {stop.number} of {totalStops}
       </p>
-      <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
+      <h2
+        ref={headingRef}
+        tabIndex={-1}
+        className="mt-3 font-display text-3xl leading-tight text-forest outline-none md:text-4xl"
+      >
         {stop.title}
       </h2>
-      <p className="mt-2 font-body text-base text-ink/60">{stop.dek}</p>
+      <p className="mt-2 font-body text-base text-ink/70">{stop.dek}</p>
 
       {typeof distanceMeters === "number" && distanceMeters > 45 && (
         <p className="mt-3 inline-flex items-center gap-2 rounded-sm border border-border bg-cream-dark/60 px-3 py-1.5 font-body text-xs font-semibold text-ink/70">
@@ -67,7 +75,7 @@ export default function StopDetail({
               className="h-auto w-full object-cover"
             />
           </div>
-          <figcaption className="mt-2 font-body text-[11px] leading-relaxed text-ink/60">
+          <figcaption className="mt-2 font-body text-xs leading-relaxed text-ink/70">
             {image.credit}
           </figcaption>
         </figure>
@@ -95,7 +103,7 @@ export default function StopDetail({
 
       {stop.toNext && (
         <div className="mt-8 rounded-sm border border-border bg-cream-dark/60 p-5">
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/60">
+          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/70">
             Walk to the next stop &middot; {formatWalkDistance(stop.toNext.distanceMeters)} &middot; about{" "}
             {stop.toNext.minutes} min
           </p>
@@ -111,7 +119,7 @@ export default function StopDetail({
             type="button"
             onClick={onPrev}
             disabled={!onPrev}
-            className="rounded-sm border border-border bg-cream px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 transition-colors enabled:hover:border-forest enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-sm border border-border bg-cream px-5 py-3 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 transition-colors enabled:hover:border-forest enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
           >
             Previous
           </button>
@@ -119,7 +127,7 @@ export default function StopDetail({
             type="button"
             onClick={onNext}
             disabled={!onNext}
-            className="rounded-sm bg-rust px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-white transition-colors enabled:hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-sm bg-rust px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-white transition-colors enabled:hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next stop
           </button>
