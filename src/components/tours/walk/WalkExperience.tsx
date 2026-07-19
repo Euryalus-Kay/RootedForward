@@ -258,7 +258,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 : "border border-forest/50 text-forest"
           }`}
         >
-          {visited.has(stop.id) && i !== activeIndex ? "✓" : stop.number}
+          {stop.number}
         </span>
         <span className="min-w-0 flex-1 truncate font-body text-sm text-ink/80">
           {stop.title}
@@ -291,7 +291,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 type="button"
                 aria-pressed={mode === key}
                 onClick={() => setMode(key)}
-                className="relative rounded-full px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-widest"
+                className="relative rounded-full px-6 py-2.5 font-body text-sm font-medium"
               >
                 {mode === key && (
                   <motion.span
@@ -317,15 +317,15 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
           <div className="flex items-center gap-4">
             {visitedCount > 0 && (
-              <p className="font-body text-xs font-semibold text-ink/70">
-                {visitedCount} of {stops.length} stops visited
+              <p className="font-body text-sm text-ink/70">
+                {visitedCount} of {stops.length} visited
               </p>
             )}
             {resumeIndex !== null && mode === "walk" && (
               <button
                 type="button"
                 onClick={() => goTo(resumeIndex, false)}
-                className="rounded-full border border-rust/40 bg-rust/10 px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-rust shadow-sm backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-rust hover:text-white motion-reduce:transition-none"
+                className="rounded-full border border-rust/40 bg-rust/10 px-5 py-2.5 font-body text-sm font-medium text-rust backdrop-blur-md transition-colors hover:bg-rust hover:text-white"
               >
                 Resume at stop {resumeIndex + 1}
               </button>
@@ -343,8 +343,8 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 {/* cartouche, like the title block of a printed map */}
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/60 bg-white/40 px-4 py-2.5">
                   <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
-                  <p className="font-ledger text-[10px] uppercase tracking-[0.15em] text-ink/70">
-                    Self-guided loop &middot; 2.5 mi &middot; 9 stops
+                  <p className="font-body text-xs text-ink/70">
+                    2.5 miles &middot; 9 stops
                   </p>
                 </div>
                 <WalkMap
@@ -359,40 +359,34 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                   aria-hidden="true"
                   className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/60 bg-white/40 px-4 py-2"
                 >
-                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
                     <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
                       <line x1="1" y1="3" x2="21" y2="3" stroke="#C45D3E" strokeWidth="2.4" strokeDasharray="1 5" strokeLinecap="round" />
                     </svg>
                     Route
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
                     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                       <circle cx="6" cy="6" r="4.5" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1.6" />
                     </svg>
                     Stop
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
+                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
                     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                       <circle cx="6" cy="6" r="4" fill="#4A6B8A" stroke="#FFFFFF" strokeWidth="1.6" />
                     </svg>
                     You
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-wider text-ink/70">
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                      <rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="#4A6B8A" fillOpacity="0.3" stroke="#4A6B8A" strokeOpacity="0.6" />
-                    </svg>
-                    Lagoon
-                  </span>
                 </div>
               </div>
 
-              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <div className="mt-3">
                 <button
                   type="button"
                   onClick={locationOn || locating ? stopWatching : startWatching}
-                  className={`inline-flex items-center gap-2 self-start whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-widest shadow-sm backdrop-blur-md transition-all hover:-translate-y-0.5 motion-reduce:transition-none ${
+                  className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-sm font-medium backdrop-blur-md transition-colors ${
                     locationOn
-                      ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream shadow-forest/25"
+                      ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream"
                       : "border-white/70 bg-white/50 text-ink/70 hover:text-forest"
                   }`}
                   aria-pressed={locationOn}
@@ -401,11 +395,8 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.5" />
                     <circle cx="6" cy="6" r="1.8" fill="currentColor" />
                   </svg>
-                  {locating ? "Finding you…" : locationOn ? "Location on" : "Show me on the map"}
+                  {locating ? "Finding you…" : locationOn ? "Location on" : "Find me on the map"}
                 </button>
-                <p className="min-w-0 flex-1 font-body text-xs leading-snug text-ink/70 sm:text-right">
-                  Your location stays on your phone. Nothing is sent anywhere.
-                </p>
               </div>
               <div role="status">
                 {geoNote && (
@@ -421,7 +412,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 {stops.map((stop, i) => renderStopRow(stop, i))}
               </ol>
               <details className="mt-4 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md md:hidden">
-                <summary className="cursor-pointer list-none px-5 py-3.5 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 [&::-webkit-details-marker]:hidden">
+                <summary className="cursor-pointer list-none px-5 py-3.5 font-body text-sm font-medium text-ink/80 [&::-webkit-details-marker]:hidden">
                   All {stops.length} stops
                 </summary>
                 <ol className="divide-y divide-border/50 border-t border-white/60">
@@ -521,7 +512,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 aria-label={`Back to stop ${activeStop.number} on the page`}
                 className="min-w-0 flex-1 text-left"
               >
-                <p className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/70">
+                <p className="font-body text-xs text-ink/70">
                   Stop {activeStop.number} of {stops.length}
                 </p>
                 <p className="truncate font-body text-sm font-semibold text-ink">
@@ -532,7 +523,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="shrink-0 rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2.5 font-body text-[11px] font-semibold uppercase tracking-widest text-cream shadow-md shadow-forest/25 transition-transform hover:scale-105 motion-reduce:transition-none"
+                  className="shrink-0 rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2.5 font-body text-sm font-medium text-cream shadow-md shadow-forest/25 transition-transform hover:scale-105 motion-reduce:transition-none"
                 >
                   Next
                 </button>

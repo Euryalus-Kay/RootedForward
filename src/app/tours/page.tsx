@@ -61,46 +61,23 @@ export default function ToursPage() {
             {tour.dek}
           </p>
 
-          {/* Facts, frosted */}
-          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              { label: "Starts at", value: tour.startLabel },
-              { label: "Stops", value: `${tour.stops.length}` },
-              { label: "Distance", value: `${tour.distanceMiles} miles` },
-              { label: "Walking time", value: `About ${tour.walkMinutes} min` },
-            ].map((fact) => (
-              <div
-                key={fact.label}
-                className="rounded-2xl border border-white/70 bg-white/45 px-5 py-4 shadow-lg shadow-forest/5 backdrop-blur-md"
-              >
-                <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/70">
-                  {fact.label}
-                </p>
-                <p className="mt-1 font-body text-sm font-semibold text-forest">
-                  {fact.value}
-                </p>
-              </div>
-            ))}
-          </div>
+          <p className="mt-6 inline-block rounded-full border border-white/70 bg-white/45 px-5 py-2.5 font-body text-base font-medium text-forest shadow-sm backdrop-blur-md">
+            {`${tour.stops.length} stops · ${tour.distanceMiles} miles · about an hour · free`}
+          </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-5">
+          <div className="mt-8 flex flex-wrap items-center gap-5">
             <a
               href="#tour"
-              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-9 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-xl shadow-rust/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-rust/30 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-9 py-4 font-body text-base font-semibold text-white shadow-xl shadow-rust/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-rust/30 motion-reduce:transition-none"
             >
               Start the tour
             </a>
-            <p className="font-body text-sm text-ink/70">
-              Free. No app. Every stop can also be read or listened to from
-              home.{" "}
-              <a
-                href="#before-you-walk"
-                className="underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
-              >
-                Hours and what to know first
-              </a>
-              .
-            </p>
+            <a
+              href="#before-you-walk"
+              className="font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
+            >
+              Hours and what to know first
+            </a>
           </div>
           <SurveyRule className="mt-10 text-rust" />
         </div>
@@ -187,12 +164,13 @@ export default function ToursPage() {
             got something wrong, tell us and we will check it against the
             documents.
           </p>
-          <div className="mt-8 gap-x-12 md:columns-2">
+          {/* open columns on desktop, one accordion on phones */}
+          <div className="mt-8 hidden gap-x-12 md:block md:columns-2">
             {tour.stops
               .filter((s) => s.sources && s.sources.length)
               .map((s) => (
                 <div key={s.id} className="mb-7 break-inside-avoid">
-                  <p className="font-body text-xs font-semibold uppercase tracking-wider text-ink/70">
+                  <p className="font-body text-sm font-semibold text-ink/80">
                     Stop {s.number} &middot; {s.title}
                   </p>
                   <ul className="mt-1.5">
@@ -212,6 +190,36 @@ export default function ToursPage() {
                 </div>
               ))}
           </div>
+          <details className="mt-6 rounded-2xl border border-white/70 bg-white/45 backdrop-blur-md md:hidden">
+            <summary className="cursor-pointer list-none px-5 py-4 font-body text-sm font-medium text-ink/80 [&::-webkit-details-marker]:hidden">
+              See every source
+            </summary>
+            <div className="border-t border-white/60 px-5 pb-5">
+              {tour.stops
+                .filter((s) => s.sources && s.sources.length)
+                .map((s) => (
+                  <div key={s.id} className="mt-5">
+                    <p className="font-body text-sm font-semibold text-ink/80">
+                      Stop {s.number} &middot; {s.title}
+                    </p>
+                    <ul className="mt-1">
+                      {s.sources!.map((src) => (
+                        <li key={src.url}>
+                          <a
+                            href={src.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block py-1 font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2"
+                          >
+                            {src.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+            </div>
+          </details>
         </div>
       </section>
 
@@ -229,7 +237,7 @@ export default function ToursPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/tours/chicago/hyde-park"
-              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white shadow-lg shadow-black/20 transition-all hover:-translate-y-0.5 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-8 py-3.5 font-body text-base font-semibold text-white shadow-lg shadow-black/20 transition-all hover:-translate-y-0.5 motion-reduce:transition-none"
             >
               Read the exhibit
             </Link>
@@ -237,7 +245,7 @@ export default function ToursPage() {
               href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-cream/40 bg-cream/10 px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-cream backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/20 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-full border border-cream/40 bg-cream/10 px-8 py-3.5 font-body text-base font-semibold text-cream backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/20 motion-reduce:transition-none"
             >
               Book the in-person tour
             </a>

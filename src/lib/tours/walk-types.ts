@@ -32,10 +32,9 @@ export interface WalkStop {
   audioSrc: string;
   /** seconds, measured from the generated file */
   audioSeconds: number;
-  /** the narration, paragraph per entry; doubles as the transcript */
+  /** the narration, paragraph per entry; doubles as the transcript.
+   *  `**text**` renders bold on the page and is stripped for TTS. */
   transcript: string[];
-  /** two or three bolded facts shown as chips under the dek */
-  keyFacts: string[];
   /** the concrete thing worth seeing at this exact spot */
   lookFor: string;
   /** zero, one, or two images per stop */

@@ -80,7 +80,7 @@ function loadStops() {
     const strRe = /"((?:[^"\\]|\\.)*)"/g;
     let s;
     while ((s = strRe.exec(body)) !== null) {
-      strings.push(JSON.parse(`"${s[1]}"`));
+      strings.push(JSON.parse(`"${s[1]}"`).replace(/\*\*/g, ""));
     }
     if (strings.length) stops.push({ number, text: strings.join("\n\n") });
   }

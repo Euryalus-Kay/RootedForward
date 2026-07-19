@@ -3,10 +3,9 @@
 // ------------------------------------------------------------------
 // One stop of the walking tour. Used by both modes: walk mode shows
 // a single active stop next to the map, browse mode stacks all of
-// them. The transcript is the narration text itself, so listening
-// and reading are the same content. Glass-and-gradient styling in
-// the site palette: frosted pills, soft depth, pill buttons, and a
-// prominent Google Maps handoff.
+// them. Content-first: a clear title, the photo, the player, the
+// narration with key details bolded inline, one quiet Directions
+// button, and a short "worth a look" note. No badges, no stamps.
 // ------------------------------------------------------------------
 import type { Ref } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -33,9 +32,27 @@ interface StopDetailProps {
 const gmapsWalkingUrl = (lat: number, lng: number) =>
   `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
+/** render `**bold**` spans inside a transcript paragraph */
+function RichText({ text }: { text: string }) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? (
+          <strong key={i} className="font-semibold text-ink">
+            {part}
+          </strong>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 function PinIcon({ className = "" }: { className?: string }) {
   return (
-    <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={className}>
+    <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={className}>
       <path
         d="M6 1C3.9 1 2.25 2.6 2.25 4.65 2.25 7.4 6 11 6 11s3.75-3.6 3.75-6.35C9.75 2.6 8.1 1 6 1Z"
         stroke="currentColor"
@@ -58,8 +75,6 @@ export default function StopDetail({
   showNav = true,
 }: StopDetailProps) {
   const reduceMotion = useReducedMotion();
-  // initial stays constant so server and client markup agree; reduced
-  // motion collapses the animation to an instant reveal instead
   const reveal = {
     initial: { opacity: 0, y: 18 },
     whileInView: { opacity: 1, y: 0 },
@@ -70,22 +85,32 @@ export default function StopDetail({
   };
 
   return (
-    <article aria-label={`Stop ${stop.number}. ${stop.title}`} className="relative">
-      {/* soft ghost numeral */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-8 right-0 select-none bg-gradient-to-b from-forest/10 to-forest/0 bg-clip-text font-display text-[7rem] leading-none text-transparent md:-top-10 md:text-[10rem]"
-      >
-        {stop.number}
-      </span>
-
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+    <article aria-label={`Stop ${stop.number}. ${stop.title}`}>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="font-body text-sm font-semibold text-rust">
           Stop {stop.number} of {totalStops}
         </p>
-        <p className="font-ledger text-[11px] tracking-wide text-ink/70">
-          {stop.lat.toFixed(4)}&deg; N &middot; {Math.abs(stop.lng).toFixed(4)}&deg; W
-        </p>
+        <div className="flex items-center gap-3">
+          {typeof distanceMeters === "number" && distanceMeters > 45 && (
+            <span className="font-body text-sm text-ink/70">
+              {formatWalkDistance(distanceMeters)} away
+            </span>
+          )}
+          {typeof distanceMeters === "number" && distanceMeters <= 45 && (
+            <span className="font-body text-sm font-semibold text-forest">
+              You are here
+            </span>
+          )}
+          <a
+            href={gmapsWalkingUrl(stop.lat, stop.lng)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-2 font-body text-sm font-medium text-forest backdrop-blur-md transition-colors hover:border-forest/40 hover:bg-white/80"
+          >
+            <PinIcon className="text-rust" />
+            Directions
+          </a>
+        </div>
       </div>
 
       <h2
@@ -95,50 +120,10 @@ export default function StopDetail({
       >
         {stop.title}
       </h2>
-      <p className="mt-2 font-body text-base text-ink/70">{stop.dek}</p>
-
-      {/* bolded key facts as frosted pills */}
-      <ul className="mt-5 flex flex-wrap gap-2">
-        {stop.keyFacts.map((fact) => (
-          <li
-            key={fact}
-            className="rounded-full border border-white/70 bg-white/50 px-4 py-2 font-body text-xs font-bold text-forest shadow-sm backdrop-blur-md"
-          >
-            {fact}
-          </li>
-        ))}
-      </ul>
-
-      {/* location row with a real Google Maps button */}
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        <a
-          href={gmapsWalkingUrl(stop.lat, stop.lng)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2.5 font-body text-xs font-bold uppercase tracking-widest text-cream shadow-lg shadow-forest/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-forest/25 motion-reduce:transition-none"
-        >
-          <PinIcon />
-          Take me here
-          <span aria-hidden="true" className="text-cream/70">&#8599;</span>
-        </a>
-        {typeof distanceMeters === "number" && distanceMeters > 45 && (
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/50 px-4 py-2 font-body text-xs font-semibold text-ink/70 shadow-sm backdrop-blur-md">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <circle cx="6" cy="6" r="5" stroke="#4A6B8A" strokeWidth="1.5" />
-              <circle cx="6" cy="6" r="2" fill="#4A6B8A" />
-            </svg>
-            {formatWalkDistance(distanceMeters)} from you
-          </p>
-        )}
-        {typeof distanceMeters === "number" && distanceMeters <= 45 && (
-          <p className="inline-flex items-center gap-2 rounded-full border border-forest/25 bg-forest/10 px-4 py-2 font-body text-xs font-semibold text-forest shadow-sm backdrop-blur-md">
-            You are here
-          </p>
-        )}
-      </div>
+      <p className="mt-2 font-body text-lg text-ink/70">{stop.dek}</p>
 
       {stop.images.map((image) => (
-        <motion.figure key={image.src} className="mt-7" {...reveal}>
+        <motion.figure key={image.src} className="mt-6" {...reveal}>
           <div className="overflow-hidden rounded-2xl border border-white/60 shadow-xl shadow-forest/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -154,7 +139,7 @@ export default function StopDetail({
         </motion.figure>
       ))}
 
-      <div className="mt-7">
+      <div className="mt-6">
         {stop.audioSrc ? (
           <AudioPlayer
             src={stop.audioSrc}
@@ -166,43 +151,33 @@ export default function StopDetail({
         ) : null}
       </div>
 
-      <div className="mt-7 space-y-4">
+      <div className="mt-6 space-y-4">
         {stop.transcript.map((para, i) => (
           <p key={i} className="font-body text-base leading-relaxed text-ink/80">
-            {para}
+            <RichText text={para} />
           </p>
         ))}
       </div>
 
-      {/* what to look for */}
-      <motion.div
-        className="mt-7 overflow-hidden rounded-2xl border border-white/60 bg-gradient-to-br from-[#C9A227]/15 via-white/40 to-white/30 p-5 shadow-lg shadow-forest/5 backdrop-blur-md"
+      {/* worth a look */}
+      <motion.p
+        className="mt-6 rounded-2xl bg-[#C9A227]/10 px-5 py-4 font-body text-base leading-relaxed text-ink/85"
         {...reveal}
       >
-        <p className="flex items-center gap-2.5 font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/70">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#C9A227] to-[#A8811C] text-cream shadow-md shadow-[#C9A227]/30">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M1 7s2.2-4 6-4 6 4 6 4-2.2 4-6 4-6-4-6-4Z" stroke="currentColor" strokeWidth="1.3" />
-              <circle cx="7" cy="7" r="1.9" fill="currentColor" />
-            </svg>
-          </span>
-          What to look for
-        </p>
-        <p className="mt-2.5 font-body text-sm font-medium leading-relaxed text-ink/85">
-          {stop.lookFor}
-        </p>
-      </motion.div>
+        <strong className="font-semibold text-ink">Worth a look.</strong>{" "}
+        {stop.lookFor}
+      </motion.p>
 
       {stop.toNext && (
         <motion.div
-          className="mt-7 rounded-2xl border border-white/60 bg-white/40 p-5 shadow-lg shadow-forest/5 backdrop-blur-md"
+          className="mt-6 rounded-2xl border border-white/60 bg-white/40 p-5 shadow-lg shadow-forest/5 backdrop-blur-md"
           {...reveal}
         >
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/70">
-            Walk to the next stop &middot; {formatWalkDistance(stop.toNext.distanceMeters)} &middot; about{" "}
-            {stop.toNext.minutes} min
+          <p className="font-body text-base font-semibold text-ink">
+            Next, a {stop.toNext.minutes} minute walk (
+            {formatWalkDistance(stop.toNext.distanceMeters)})
           </p>
-          <p className="mt-2 font-body text-sm leading-relaxed text-ink/75">
+          <p className="mt-2 font-body text-base leading-relaxed text-ink/75">
             {stop.toNext.text}
           </p>
           {nextStop && (
@@ -210,23 +185,22 @@ export default function StopDetail({
               href={gmapsWalkingUrl(nextStop.lat, nextStop.lng)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-forest/25 bg-white/60 px-5 py-2.5 font-body text-xs font-bold uppercase tracking-widest text-forest shadow-sm backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-forest/40 hover:shadow-md motion-reduce:transition-none"
+              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-2 font-body text-sm font-medium text-forest backdrop-blur-md transition-colors hover:border-forest/40 hover:bg-white/80"
             >
               <PinIcon className="text-rust" />
-              Guide me there in Google Maps
-              <span aria-hidden="true" className="text-forest/60">&#8599;</span>
+              Open this leg in Google Maps
             </a>
           )}
         </motion.div>
       )}
 
       {showNav && (
-        <div className="mt-8 flex items-center justify-between border-t border-border/60 pt-6">
+        <div className="mt-8 flex items-center justify-between gap-4 border-t border-border/60 pt-6">
           <button
             type="button"
             onClick={onPrev}
             disabled={!onPrev}
-            className="rounded-full border border-border bg-white/50 px-6 py-3 font-body text-xs font-semibold uppercase tracking-widest text-ink/70 shadow-sm backdrop-blur-md transition-all enabled:hover:-translate-y-0.5 enabled:hover:border-forest/40 enabled:hover:text-forest motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-full border border-border bg-white/50 px-6 py-3 font-body text-sm font-medium text-ink/70 backdrop-blur-md transition-colors enabled:hover:border-forest/40 enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
           >
             Previous
           </button>
@@ -234,7 +208,7 @@ export default function StopDetail({
             type="button"
             onClick={onNext}
             disabled={!onNext}
-            className="rounded-full bg-gradient-to-br from-rust to-rust-dark px-7 py-3 font-body text-xs font-semibold uppercase tracking-widest text-white shadow-lg shadow-rust/25 transition-all enabled:hover:-translate-y-0.5 enabled:hover:shadow-xl enabled:hover:shadow-rust/30 motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-full bg-gradient-to-br from-rust to-rust-dark px-7 py-3 font-body text-sm font-semibold text-white shadow-lg shadow-rust/25 transition-all enabled:hover:-translate-y-0.5 motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next stop
           </button>
