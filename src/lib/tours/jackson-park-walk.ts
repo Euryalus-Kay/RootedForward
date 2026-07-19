@@ -160,7 +160,14 @@ export const JACKSON_PARK_WALK: WalkTour = {
       keyFacts: ["Dedicated 1932", "Two pioneering women legislators", "Restored June 2026"],
       lookFor:
         "The long limestone bench itself, cleaned and reset this June after decades under gray paint, with the rail embankment rising behind it.",
-      images: [],
+      images: [
+        {
+          src: `${MEDIA}/suffragists-1916.jpg`,
+          alt: "Chicago suffragists in sashes lining Michigan Avenue with protest placards, with mounted police behind them, October 1916",
+          credit:
+            "Chicago suffragists protest Woodrow Wilson's opposition to woman suffrage, October 20, 1916. Burke and Atwell. Records of the National Woman's Party, Library of Congress. Public domain.",
+        },
+      ],
       toNext: {
         text: "Head back east the way you came and recross Stony Island Avenue at the same light. Inside Jackson Park, follow the paths northeast, keeping the big domed museum ahead on your left. When you reach water with the museum across it, you are at the Columbia Basin.",
         distanceMeters: 467,
