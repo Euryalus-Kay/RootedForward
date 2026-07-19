@@ -67,7 +67,7 @@ export default function ToursPage() {
 
           <div className="mt-8 flex flex-wrap items-center gap-5">
             <a
-              href="#tour"
+              href="#start"
               className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-9 py-4 font-body text-base font-semibold text-white shadow-xl shadow-rust/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-rust/30 motion-reduce:transition-none"
             >
               Start the tour

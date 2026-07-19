@@ -161,7 +161,7 @@ export default function StopDetail({
 
       {/* worth a look */}
       <motion.p
-        className="mt-6 rounded-2xl bg-[#C9A227]/10 px-5 py-4 font-body text-base leading-relaxed text-ink/85"
+        className="mt-6 rounded-2xl border-l-4 border-[#C9A227] bg-[#C9A227]/15 px-5 py-4 font-body text-base leading-relaxed text-ink/90 shadow-sm"
         {...reveal}
       >
         <strong className="font-semibold text-ink">Worth a look.</strong>{" "}
@@ -173,10 +173,15 @@ export default function StopDetail({
           className="mt-6 rounded-2xl border border-white/60 bg-white/40 p-5 shadow-lg shadow-forest/5 backdrop-blur-md"
           {...reveal}
         >
-          <p className="font-body text-base font-semibold text-ink">
-            Next, a {stop.toNext.minutes} minute walk (
-            {formatWalkDistance(stop.toNext.distanceMeters)})
-          </p>
+          <div className="flex items-baseline justify-between gap-4">
+            <p className="font-body text-base font-semibold text-ink">
+              {nextStop ? nextStop.title : "Next stop"}
+            </p>
+            <p className="shrink-0 font-body text-sm text-ink/60">
+              {stop.toNext.minutes} min walk &middot;{" "}
+              {formatWalkDistance(stop.toNext.distanceMeters)}
+            </p>
+          </div>
           <p className="mt-2 font-body text-base leading-relaxed text-ink/75">
             {stop.toNext.text}
           </p>

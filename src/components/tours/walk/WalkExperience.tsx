@@ -18,6 +18,47 @@ const STORAGE_KEY = "rf-walk-jackson-park-v1";
 
 type Mode = "walk" | "browse";
 
+const SHARE_URL = "https://rooted-forward.org/tours";
+
+function ShareButton() {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const data = {
+      title: "Walk Jackson Park",
+      text: "A free self-guided audio walking tour of Jackson Park, starting at the Obama Presidential Center.",
+      url: SHARE_URL,
+    };
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share(data);
+      } catch {
+        // user closed the share sheet
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(SHARE_URL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable; nothing sensible to do
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={share}
+      className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/50 px-4 py-2 font-body text-sm font-medium text-ink/80 backdrop-blur-md transition-colors hover:text-forest"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M7 1v8M7 1 4.2 3.8M7 1l2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 6.5H2v6h10v-6h-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      </svg>
+      {copied ? "Link copied" : "Share"}
+    </button>
+  );
+}
+
 interface UserPosition {
   lat: number;
   lng: number;
@@ -46,6 +87,7 @@ function loadProgress(): StoredProgress {
 export default function WalkExperience({ tour }: { tour: WalkTour }) {
   const reduceMotion = useReducedMotion();
   const [mode, setMode] = useState<Mode>("walk");
+  const [focusMode, setFocusMode] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<string>>(new Set());
   const [resumeIndex, setResumeIndex] = useState<number | null>(null);
@@ -71,7 +113,40 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [mode]);
+  }, [mode, focusMode]);
+
+  // "Start the tour" links to #start, which opens the focused,
+  // app-like tour view; Escape or Exit leaves it
+  useEffect(() => {
+    const check = () => {
+      if (window.location.hash === "#start") {
+        setMode("walk");
+        setFocusMode(true);
+      }
+    };
+    check();
+    window.addEventListener("hashchange", check);
+    return () => window.removeEventListener("hashchange", check);
+  }, []);
+
+  const exitFocus = useCallback(() => {
+    setFocusMode(false);
+    window.history.replaceState(null, "", "#tour");
+  }, []);
+
+  useEffect(() => {
+    if (!focusMode) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") exitFocus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [focusMode, exitFocus]);
 
   // restore progress and honor #stop-N deep links; deferred a frame so
   // hydration completes against the server-rendered initial state
@@ -271,8 +346,40 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
   );
 
   return (
-    <div>
+    <div
+      className={
+        focusMode
+          ? "fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-cream"
+          : undefined
+      }
+    >
+      {/* focused-tour top bar */}
+      {focusMode && (
+        <div
+          className="sticky top-0 z-20 border-b border-white/60 bg-cream/85 backdrop-blur-xl"
+          style={{ paddingTop: "env(safe-area-inset-top)" }}
+        >
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+            <button
+              type="button"
+              onClick={exitFocus}
+              className="inline-flex items-center gap-1 rounded-full px-3 py-2 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M9 2 4 7l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Exit
+            </button>
+            <p className="min-w-0 truncate font-display text-lg leading-none text-forest">
+              Walk Jackson Park
+            </p>
+            <ShareButton />
+          </div>
+        </div>
+      )}
+
       {/* mode toggle */}
+      {!focusMode && (
       <div className="border-b border-border bg-cream">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
           <div
@@ -330,12 +437,19 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 Resume at stop {resumeIndex + 1}
               </button>
             )}
+            <ShareButton />
           </div>
         </div>
       </div>
+      )}
 
-      {mode === "walk" ? (
-        <div ref={walkRef} className="mx-auto max-w-6xl px-6 pb-32 pt-10 md:py-14">
+      {focusMode || mode === "walk" ? (
+        <div
+          ref={walkRef}
+          className={`mx-auto max-w-6xl px-6 pb-32 ${
+            focusMode ? "pt-6 md:pt-8" : "pt-10 md:py-14"
+          }`}
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             {/* map column */}
             <div className="md:sticky md:top-24 md:self-start">
