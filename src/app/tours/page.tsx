@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
-import StopVignette from "@/components/tours/walk/StopVignette";
 import { JACKSON_PARK_WALK } from "@/lib/tours/jackson-park-walk";
 
 /* ------------------------------------------------------------------ */
@@ -71,9 +70,9 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* The plate index: one hand-drawn plate per stop. Tap one to
-          jump straight to that stop in the tour below. */}
-      <section aria-label="The nine stops, drawn" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
+      {/* The plate index: a small framed photograph of each site.
+          Tap one to jump straight to that stop in the tour below. */}
+      <section aria-label="The nine stops" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
             <h2 className="font-display text-xl text-forest">The nine stops</h2>
@@ -89,8 +88,17 @@ export default function ToursPage() {
                   aria-label={`Jump to stop ${s.number}, ${s.title}`}
                   className="group block w-28 md:w-auto"
                 >
-                  <span className="walk-plate-flush block rounded-[2px] px-1 pb-1 pt-2 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
-                    <StopVignette stopId={s.id} className="h-14 w-full" />
+                  <span className="walk-plate-flush block rounded-[2px] p-1 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.images[0].src.replace(
+                        "/jackson-park-walk/",
+                        "/jackson-park-walk/thumbs/"
+                      )}
+                      alt=""
+                      loading="lazy"
+                      className="aspect-[3/2] w-full rounded-[1px] object-cover"
+                    />
                   </span>
                   <span
                     aria-hidden="true"

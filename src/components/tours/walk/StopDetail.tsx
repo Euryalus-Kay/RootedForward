@@ -12,7 +12,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
 import AudioPlayer from "./AudioPlayer";
-import StopVignette from "./StopVignette";
 
 interface StopDetailProps {
   stop: WalkStop;
@@ -92,17 +91,7 @@ export default function StopDetail({
 
   return (
     <article aria-label={`Stop ${stop.number}. ${stop.title}`}>
-      {/* the plate: a hand-drawn vignette sitting on a short rule */}
-      <div aria-hidden="true">
-        <StopVignette stopId={stop.id} className="h-16 w-auto md:h-20" />
-        <svg viewBox="0 0 96 8" width="96" height="8" className="mt-1 text-rust" fill="none">
-          <line x1="0.5" y1="4" x2="95.5" y2="4" stroke="currentColor" strokeWidth="1" />
-          <line x1="0.5" y1="1" x2="0.5" y2="7" stroke="currentColor" strokeWidth="1" />
-          <line x1="95.5" y1="1" x2="95.5" y2="7" stroke="currentColor" strokeWidth="1" />
-        </svg>
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p
           className={`font-body text-sm font-semibold text-rust ${
             focusChrome ? "hidden md:block" : ""
@@ -110,7 +99,7 @@ export default function StopDetail({
         >
           Stop {stop.number} of {totalStops}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-3">
           {typeof distanceMeters === "number" && distanceMeters > 45 && (
             <span className="font-body text-sm text-ink/70">
               {formatWalkDistance(distanceMeters)} away
