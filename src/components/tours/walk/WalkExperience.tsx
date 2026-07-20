@@ -7,7 +7,7 @@
 // stop on the page at once, readable from anywhere).
 // ------------------------------------------------------------------
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls, useReducedMotion } from "framer-motion";
 import type { WalkTour } from "@/lib/tours/walk-types";
 import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
 import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
@@ -48,7 +48,7 @@ function ShareButton() {
     <button
       type="button"
       onClick={share}
-      className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/50 px-4 py-2 font-body text-sm font-medium text-ink/80 backdrop-blur-md transition-colors hover:text-forest"
+      className="inline-flex items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-ink/80 transition-colors hover:border-forest/60 hover:text-forest"
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
         <path d="M7 1v8M7 1 4.2 3.8M7 1l2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -101,34 +101,42 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
   const detailRef = useRef<HTMLDivElement | null>(null);
   const walkRef = useRef<HTMLDivElement | null>(null);
-  const [tourInView, setTourInView] = useState(true);
+  const sheetDrag = useDragControls();
   const stops = tour.stops;
 
-  // the mobile mini-player only pins while the tour itself is on screen
-  useEffect(() => {
-    const el = walkRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setTourInView(entry.isIntersecting),
-      { rootMargin: "80px 0px 0px 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [mode, focusMode]);
-
   // "Start the tour" links to #start, which opens the focused,
-  // app-like tour view; Escape or Exit leaves it
+  // app-like tour view; Escape or Exit leaves it. The plate index on
+  // the landing page links to #stop-N, which jumps straight to that
+  // stop in walk mode.
   useEffect(() => {
     const check = () => {
-      if (window.location.hash === "#start") {
+      const hash = window.location.hash;
+      if (hash === "#start") {
         setMode("walk");
         setFocusMode(true);
+        return;
+      }
+      const m = hash.match(/^#stop-(\d+)$/);
+      if (m) {
+        const idx = Number(m[1]) - 1;
+        if (idx >= 0 && idx < stops.length) {
+          setMode("walk");
+          setActiveIndex(idx);
+          setResumeIndex(null);
+          requestAnimationFrame(() => {
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            detailRef.current?.scrollIntoView({
+              behavior: reduce ? "auto" : "smooth",
+              block: "start",
+            });
+          });
+        }
       }
     };
     check();
     window.addEventListener("hashchange", check);
     return () => window.removeEventListener("hashchange", check);
-  }, []);
+  }, [stops.length]);
 
   const exitFocus = useCallback(() => {
     setFocusMode(false);
@@ -259,7 +267,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         if (!isNearFrame(latitude, longitude)) {
           setUserPos(null);
           setGeoNote(
-            "You are outside the Jackson Park area right now, so the map will not show your dot. The tour still works read-along."
+            "You are outside the Jackson Park area right now, so the map will not show your dot. You can still read and listen from here."
           );
           return;
         }
@@ -343,12 +351,12 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       >
         <span
           aria-hidden="true"
-          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-body text-[11px] font-bold ${
+          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-display text-[12px] font-semibold ${
             i === activeIndex
               ? "bg-rust text-white"
               : visited.has(stop.id)
                 ? "bg-forest text-cream"
-                : "border border-forest/50 text-forest"
+                : "border border-forest/60 text-forest ring-1 ring-inset ring-[#C9A227]/60"
           }`}
         >
           {stop.number}
@@ -356,7 +364,12 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         <span className="min-w-0 flex-1 truncate font-body text-sm text-ink/80">
           {stop.title}
         </span>
-        <span className="shrink-0 font-body text-[11px] tabular-nums text-ink/70">
+        <span className="inline-flex shrink-0 items-center gap-1 font-body text-[11px] tabular-nums text-ink/70">
+          {/* narration length, not walking time */}
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 3.5v3h1.8L6 8.6V1.4L3.3 3.5H1.5Z" fill="currentColor" fillOpacity="0.7" />
+            <path d="M7.4 3.4a2.4 2.4 0 0 1 0 3.2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+          </svg>
           {formatClock(stop.audioSeconds)}
         </span>
       </button>
@@ -365,10 +378,12 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
   const mapPanel = (
     <>
-      <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-xl shadow-forest/10 backdrop-blur-md">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/60 bg-white/40 px-4 py-2.5">
+      <div className="walk-plate overflow-hidden rounded-[3px]">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-ink/15 px-4 py-2.5">
           <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
-          <p className="font-body text-xs text-ink/70">2.5 miles &middot; 9 stops</p>
+          <p className="font-display text-[13px] italic text-ink/60">
+            {tour.distanceMiles} miles &middot; {stops.length} stops
+          </p>
         </div>
         <WalkMap
           stops={stops}
@@ -380,7 +395,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         />
         <div
           aria-hidden="true"
-          className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/60 bg-white/40 px-4 py-2"
+          className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-ink/15 px-4 py-2"
         >
           <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
             <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
@@ -407,10 +422,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         <button
           type="button"
           onClick={locationOn || locating ? stopWatching : startWatching}
-          className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-sm font-medium backdrop-blur-md transition-colors ${
+          className={`inline-flex items-center gap-2 whitespace-nowrap rounded-[3px] border px-5 py-2.5 font-body text-sm font-medium transition-colors ${
             locationOn
-              ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream"
-              : "border-white/70 bg-white/50 text-ink/70 hover:text-forest"
+              ? "border-forest bg-forest text-cream"
+              : "border-ink/25 bg-white text-ink/70 hover:border-forest/60 hover:text-forest"
           }`}
           aria-pressed={locationOn}
         >
@@ -423,7 +438,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       </div>
       <div role="status">
         {geoNote && (
-          <p className="mt-2 rounded-sm border border-border bg-cream-dark/60 px-3 py-2 font-body text-xs leading-relaxed text-ink/70">
+          <p className="mt-2 rounded-[3px] border border-border bg-cream-dark/60 px-3 py-2 font-body text-xs leading-relaxed text-ink/70">
             {geoNote}
           </p>
         )}
@@ -442,14 +457,14 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       {/* focused-tour top bar */}
       {focusMode && (
         <div
-          className="sticky top-0 z-20 border-b border-white/60 bg-cream/85 backdrop-blur-xl"
+          className="sticky top-0 z-20 border-b border-ink/15 bg-cream"
           style={{ paddingTop: "env(safe-area-inset-top)" }}
         >
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
             <button
               type="button"
               onClick={exitFocus}
-              className="inline-flex items-center gap-1 rounded-full px-3 py-2 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+              className="inline-flex items-center gap-1 rounded-[3px] px-3 py-2 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M9 2 4 7l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -484,7 +499,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           <div
             role="group"
             aria-label="Tour mode"
-            className="inline-flex rounded-full border border-white/70 bg-white/50 p-1 shadow-sm backdrop-blur-md"
+            className="inline-flex rounded-[3px] border border-ink/25 bg-white p-1"
           >
             {(
               [
@@ -497,12 +512,12 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 type="button"
                 aria-pressed={mode === key}
                 onClick={() => setMode(key)}
-                className="relative rounded-full px-6 py-2.5 font-body text-sm font-medium"
+                className="relative rounded-[2px] px-6 py-2.5 font-body text-sm font-medium"
               >
                 {mode === key && (
                   <motion.span
                     layoutId="walk-mode-pill"
-                    className="absolute inset-0 rounded-full bg-gradient-to-br from-forest to-forest-light shadow-md shadow-forest/25"
+                    className="absolute inset-0 rounded-[2px] bg-forest"
                     transition={
                       reduceMotion
                         ? { duration: 0 }
@@ -531,7 +546,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               <button
                 type="button"
                 onClick={() => goTo(resumeIndex, false)}
-                className="rounded-full border border-rust/40 bg-rust/10 px-5 py-2.5 font-body text-sm font-medium text-rust backdrop-blur-md transition-colors hover:bg-rust hover:text-white"
+                className="rounded-[3px] border border-rust/50 bg-white px-5 py-2.5 font-body text-sm font-medium text-rust transition-colors hover:bg-rust hover:text-white"
               >
                 Resume at stop {resumeIndex + 1}
               </button>
@@ -551,34 +566,36 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             {/* map column: on phones in the focused tour, the map
-                lives behind the floating Map button instead */}
+                lives behind the floating Map button instead; on the
+                scrolling page, the stop reads first and the map
+                follows it */}
             <div
               className={`${
-                focusMode ? "hidden md:block" : ""
+                focusMode ? "hidden md:block" : "order-2 md:order-none"
               } md:sticky md:top-24 md:self-start`}
             >
               {mapPanel}
 
               {/* quick-jump stop list: always open on desktop, folded
                   behind a summary on phones */}
-              <ol className="mt-5 hidden divide-y divide-border/50 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md md:block">
+              <ol className="walk-plate-flush mt-5 hidden divide-y divide-border/50 overflow-hidden rounded-[3px] md:block">
                 {stops.map((stop, i) => renderStopRow(stop, i))}
               </ol>
-              <details className="mt-4 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md md:hidden">
+              <details className="walk-plate-flush mt-4 overflow-hidden rounded-[3px] md:hidden">
                 <summary className="cursor-pointer list-none px-5 py-3.5 font-body text-sm font-medium text-ink/80 [&::-webkit-details-marker]:hidden">
                   All {stops.length} stops
                 </summary>
-                <ol className="divide-y divide-border/50 border-t border-white/60">
+                <ol className="divide-y divide-border/50 border-t border-ink/15">
                   {stops.map((stop, i) => renderStopRow(stop, i))}
                 </ol>
               </details>
             </div>
 
             {/* stop column */}
-            <div ref={detailRef} className="scroll-mt-24">
+            <div ref={detailRef} className="order-1 scroll-mt-24 md:order-none">
               <div role="status">
                 {nearbyOtherIndex !== null && (
-                  <div className="mb-5 flex items-center justify-between gap-3 rounded-sm border border-forest/30 bg-forest/10 px-4 py-3">
+                  <div className="mb-5 flex items-center justify-between gap-3 rounded-[3px] border border-forest/30 bg-forest/10 px-4 py-3">
                     <p className="font-body text-sm text-forest">
                       You are standing near stop {stops[nearbyOtherIndex].number},{" "}
                       {stops[nearbyOtherIndex].title}.
@@ -586,7 +603,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     <button
                       type="button"
                       onClick={() => goTo(nearbyOtherIndex, false)}
-                      className="shrink-0 rounded-sm bg-forest px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest-light"
+                      className="shrink-0 rounded-[3px] bg-forest px-4 py-2.5 font-body text-sm font-medium text-cream transition-colors hover:bg-forest-light"
                     >
                       Jump there
                     </button>
@@ -609,6 +626,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     stop={activeStop}
                     totalStops={stops.length}
                     distanceMeters={distanceToActive}
+                    focusChrome={focusMode}
                     headingRef={headingRef}
                     nextStop={
                       activeIndex < stops.length - 1
@@ -633,7 +651,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             <button
               type="button"
               onClick={() => setMapOpen(true)}
-              className="fixed bottom-28 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-white/70 bg-cream/90 px-5 py-3 font-body text-sm font-semibold text-forest shadow-xl shadow-forest/20 backdrop-blur-xl md:hidden"
+              className="fixed bottom-28 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-forest px-5 py-3 font-body text-sm font-semibold text-cream shadow-[3px_3px_0_0_rgba(26,26,26,0.3)] ring-1 ring-inset ring-cream/25 md:hidden"
             >
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
                 <path d="M5.5 2 1.5 3.5v9L5.5 11l4 1.5 4-1.5v-9L9.5 3.5 5.5 2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
@@ -657,23 +675,39 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     ? { duration: 0 }
                     : { type: "spring", bounce: 0.12, duration: 0.5 }
                 }
+                drag="y"
+                dragListener={false}
+                dragControls={sheetDrag}
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={{ top: 0, bottom: 0.7 }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y > 110 || info.velocity.y > 600) setMapOpen(false);
+                }}
               >
+                {/* the header doubles as the drag handle: pull it
+                    down to put the map away */}
                 <div
-                  className="flex items-center justify-between border-b border-white/60 bg-cream/85 px-5 py-3 backdrop-blur-xl"
-                  style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
+                  className="relative flex touch-none items-center justify-between border-b border-ink/15 bg-cream px-5 py-3"
+                  style={{ paddingTop: "calc(env(safe-area-inset-top) + 16px)" }}
+                  onPointerDown={(e) => sheetDrag.start(e)}
                 >
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-1/2 h-1 w-9 -translate-x-1/2 rounded-full bg-ink/20"
+                    style={{ top: "calc(env(safe-area-inset-top) + 5px)" }}
+                  />
                   <p className="font-display text-lg leading-none text-forest">Map</p>
                   <button
                     type="button"
                     onClick={() => setMapOpen(false)}
-                    className="rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2 font-body text-sm font-medium text-cream shadow-md shadow-forest/25"
+                    className="rounded-[3px] bg-forest px-5 py-2 font-body text-sm font-medium text-cream"
                   >
                     Done
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto overscroll-contain px-5 pb-12 pt-4">
                   {mapPanel}
-                  <ol className="mt-5 divide-y divide-border/50 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md">
+                  <ol className="walk-plate-flush mt-5 divide-y divide-border/50 overflow-hidden rounded-[3px]">
                     {stops.map((stop, i) => renderStopRow(stop, i))}
                   </ol>
                 </div>
@@ -681,13 +715,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             )}
           </AnimatePresence>
 
-          {/* transport bar, pinned while walking */}
+          {/* transport bar, the focused tour's player controls */}
+          {focusMode && (
           <div
-            inert={!tourInView}
-            aria-hidden={!tourInView}
-            className={`fixed inset-x-3 bottom-3 z-40 overflow-hidden rounded-2xl border border-white/70 bg-cream/85 shadow-2xl shadow-forest/20 backdrop-blur-xl transition-transform duration-300 motion-reduce:transition-none md:hidden ${
-              tourInView ? "translate-y-0" : "translate-y-[calc(100%+1rem)]"
-            }`}
+            className="walk-chrome fixed inset-x-3 bottom-3 z-40 overflow-hidden rounded-[6px] md:hidden"
             style={{ marginBottom: "env(safe-area-inset-bottom)" }}
           >
             {/* thin live audio progress */}
@@ -704,9 +735,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 aria-label={`Back to stop ${activeStop.number} on the page`}
                 className="min-w-0 flex-1 text-left"
               >
-                <p className="font-body text-[11px] text-ink/70">
-                  Stop {activeStop.number} of {stops.length}
-                </p>
                 <p className="truncate font-body text-sm font-semibold text-ink">
                   {activeStop.title}
                 </p>
@@ -730,7 +758,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     ? `Pause stop ${activeStop.number}`
                     : `Play stop ${activeStop.number}, ${activeStop.title}`
                 }
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-white shadow-lg shadow-rust/30 transition-transform hover:scale-105 motion-reduce:transition-none"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rust text-white ring-1 ring-inset ring-white/30 transition-transform hover:scale-105 hover:bg-rust-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-cream motion-reduce:transition-none"
               >
                 {miniPlaying ? (
                   <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -756,6 +784,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               </button>
             </div>
           </div>
+          )}
         </div>
       ) : (
         <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">

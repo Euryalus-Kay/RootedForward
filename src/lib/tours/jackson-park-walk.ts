@@ -71,7 +71,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
       id: "obama-center",
       number: 1,
       title: "The Obama Presidential Center",
-      dek: "Start on the plaza of a museum that opened this summer",
+      dek: "Start on the plaza of a museum that opened in June 2026",
       mapLabel: "Obama Center",
       lat: 41.7859,
       lng: -87.5857,
@@ -83,7 +83,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
         "The land has held big plans before. Illinois set it aside in 1869, and Frederick Law Olmsted and Calvert Vaux, **the designers of Central Park**, drew the first plan for it two years later. They wanted a park you could move through by boat. What actually shaped the ground under your feet was the **World's Fair of 1893**. Everything else on this walk goes back to that summer.",
       ],
       lookFor:
-        "Look up near the top of the tower. The carved letters spell out lines from Obama's 2015 Selma speech.",
+        "Near the top of the tower, the carved letters spell out lines from Obama's 2015 Selma speech.",
       images: [
         {
           src: `${MEDIA}/opc-opening-2026.jpg`,
@@ -156,7 +156,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
         "Sit for a minute if you like. The bench was built for exactly that. Then the walk turns back into the park.",
       ],
       lookFor:
-        "The long limestone bench itself, cleaned and reset this June after decades under gray paint, with the rail embankment rising behind it.",
+        "The long limestone bench itself, cleaned and reset in June 2026 after decades under gray paint, with the rail embankment rising behind it.",
       images: [
         {
           src: `${MEDIA}/suffragists-1916.jpg`,
@@ -299,7 +299,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
         "The island's bridge gates have been locked from dusk to dawn in recent years, so this is an afternoon place. What is left of the fair's front door is across the next bridge.",
       ],
       lookFor:
-        "Birds. Migration seasons fill the island; even in summer, keep your voice low and count the calls you can pick apart.",
+        "Birds. Migration seasons fill the island; even in summer, keep your voice low and count the calls you can tell apart.",
       images: [
         {
           src: `${MEDIA}/birdseye-1893.jpg`,
@@ -350,7 +350,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
         },
       ],
       toNext: {
-        text: "This last leg is the longest of the walk, about eighteen quiet minutes. Take the path west along the north side of Hayes Drive, then turn north onto the wide car-free trail along the lagoon's west shore. Cars ran here until 2023, when Cornell Drive was closed and turned back into parkland. Follow the trail to Stony Island Avenue and enter the Center's campus from the south.",
+        text: "This last leg is the longest of the walk. Take the path west along the north side of Hayes Drive, then turn north onto the wide car-free trail along the lagoon's west shore. Cars ran here until 2023, when Cornell Drive was closed and turned back into parkland. Follow the trail to Stony Island Avenue and enter the Center's campus from the south.",
         distanceMeters: 1415,
         minutes: 18,
       },

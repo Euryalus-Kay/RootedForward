@@ -3,26 +3,39 @@
 // Generate the Jackson Park walking tour narration with ElevenLabs,
 // one mp3 per stop, loudness-normalized. Reads the transcripts out of
 // src/lib/tours/jackson-park-walk.ts so audio never drifts from the
-// on-page text. Writes:
-//   public/media/jackson-park-walk/audio/stop-XX.mp3
-//   public/media/jackson-park-walk/audio/durations.json
+// on-page text.
+//
+// Each named voice keeps its own archive under
+//   public/media/jackson-park-walk/audio/voices/<name>/
+// and --patch promotes that archive to the live audio the site serves
+// (audio/stop-XX.mp3) and rewrites audioSeconds in the data file.
+// To switch the live narration between already-generated voices
+// without calling the API, use scripts/walk-voice.mjs instead.
 //
 // Usage:
 //   ELEVENLABS_API_KEY=... node scripts/walk-tts-eleven.mjs
-//       [--voice JBFqnCBsd6RMkjVDRZzb] [--model eleven_multilingual_v2]
-//       [--only stop-03] [--patch]
+//       [--voice zain|narrator|<raw ElevenLabs id>]
+//       [--model eleven_multilingual_v2] [--only stop-03] [--patch]
 //
 // The key is read from the environment only and never written to disk.
 // ------------------------------------------------------------------
-import { writeFile, mkdir, rm } from "node:fs/promises";
+import { writeFile, mkdir, rm, copyFile } from "node:fs/promises";
 import { readFileSync, existsSync } from "node:fs";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
 const ROOT = process.cwd();
 const DATA = path.join(ROOT, "src/lib/tours/jackson-park-walk.ts");
-const OUT = path.join(ROOT, "public/media/jackson-park-walk/audio");
-const DURS = path.join(OUT, "durations.json");
+const LIVE = path.join(ROOT, "public/media/jackson-park-walk/audio");
+
+// Named voices. "narrator" is the original professional ElevenLabs
+// narrator the tour launched with; "zain" is the owner's own cloned
+// voice ("zain voice long"). Switch back any time with
+//   node scripts/walk-voice.mjs narrator
+export const VOICES = {
+  narrator: "JBFqnCBsd6RMkjVDRZzb",
+  zain: "ZojE61ZitQ5HMBcqdLsZ",
+};
 
 function arg(name, def = null) {
   const i = process.argv.indexOf(`--${name}`);
@@ -31,7 +44,11 @@ function arg(name, def = null) {
     : def;
 }
 const hasFlag = (name) => process.argv.includes(`--${name}`);
-const voice = arg("voice", "JBFqnCBsd6RMkjVDRZzb");
+const voiceName = arg("voice", "zain");
+const voice = VOICES[voiceName] ?? voiceName;
+const archiveName = VOICES[voiceName] ? voiceName : `id-${voiceName.slice(0, 8)}`;
+const OUT = path.join(LIVE, "voices", archiveName);
+const DURS = path.join(OUT, "durations.json");
 const model = arg("model", "eleven_multilingual_v2");
 const only = arg("only");
 const key = process.env.ELEVENLABS_API_KEY;
@@ -134,17 +151,20 @@ async function main() {
   await writeFile(DURS, JSON.stringify(durations, null, 2));
 
   if (hasFlag("patch")) {
+    // promote this voice's archive to the live audio the site serves
     let src = readFileSync(DATA, "utf8");
     for (const { number } of stops) {
       const id = `stop-${String(number).padStart(2, "0")}`;
       if (!(id in durations)) continue;
+      await copyFile(path.join(OUT, `${id}.mp3`), path.join(LIVE, `${id}.mp3`));
       const re = new RegExp(`(audio/${id}\\.mp3\`,\\n\\s*audioSeconds: )\\d+`);
       src = src.replace(re, `$1${durations[id]}`);
     }
     await writeFile(DATA, src);
-    console.log("patched audioSeconds in jackson-park-walk.ts");
+    await writeFile(path.join(LIVE, "durations.json"), JSON.stringify(durations, null, 2));
+    console.log(`promoted "${archiveName}" to live audio + patched audioSeconds`);
   }
-  console.log(`\ndone. voice "${voice}", model "${model}"`);
+  console.log(`\ndone. voice "${archiveName}" (${voice}), model "${model}"`);
 }
 
 main().catch((e) => {

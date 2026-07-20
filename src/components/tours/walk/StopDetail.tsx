@@ -3,15 +3,16 @@
 // ------------------------------------------------------------------
 // One stop of the walking tour. Used by both modes: walk mode shows
 // a single active stop next to the map, browse mode stacks all of
-// them. Content-first: a clear title, the photo, the player, the
-// narration with key details bolded inline, one quiet Directions
-// button, and a short "worth a look" note. No badges, no stamps.
+// them. Styled like a catalog plate: a hand-drawn vignette over the
+// title, matted photographs, engraved frames, one quiet Directions
+// ticket. Content first, no badges, no stamps.
 // ------------------------------------------------------------------
 import type { Ref } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
 import AudioPlayer from "./AudioPlayer";
+import StopVignette from "./StopVignette";
 
 interface StopDetailProps {
   stop: WalkStop;
@@ -27,6 +28,10 @@ interface StopDetailProps {
   onNext?: () => void;
   /** walk mode shows prev/next rail; browse mode hides it */
   showNav?: boolean;
+  /** true when the focused tour chrome is around this stop; the top
+      bar and transport bar then carry stop count and play control on
+      phones, so this panel drops its own duplicates there */
+  focusChrome?: boolean;
 }
 
 const gmapsWalkingUrl = (lat: number, lng: number) =>
@@ -73,6 +78,7 @@ export default function StopDetail({
   onPrev,
   onNext,
   showNav = true,
+  focusChrome = false,
 }: StopDetailProps) {
   const reduceMotion = useReducedMotion();
   const reveal = {
@@ -86,8 +92,22 @@ export default function StopDetail({
 
   return (
     <article aria-label={`Stop ${stop.number}. ${stop.title}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-body text-sm font-semibold text-rust">
+      {/* the plate: a hand-drawn vignette sitting on a short rule */}
+      <div aria-hidden="true">
+        <StopVignette stopId={stop.id} className="h-16 w-auto md:h-20" />
+        <svg viewBox="0 0 96 8" width="96" height="8" className="mt-1 text-rust" fill="none">
+          <line x1="0.5" y1="4" x2="95.5" y2="4" stroke="currentColor" strokeWidth="1" />
+          <line x1="0.5" y1="1" x2="0.5" y2="7" stroke="currentColor" strokeWidth="1" />
+          <line x1="95.5" y1="1" x2="95.5" y2="7" stroke="currentColor" strokeWidth="1" />
+        </svg>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p
+          className={`font-body text-sm font-semibold text-rust ${
+            focusChrome ? "hidden md:block" : ""
+          }`}
+        >
           Stop {stop.number} of {totalStops}
         </p>
         <div className="flex items-center gap-3">
@@ -101,15 +121,18 @@ export default function StopDetail({
               You are here
             </span>
           )}
-          <a
-            href={gmapsWalkingUrl(stop.lat, stop.lng)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-2 font-body text-sm font-medium text-forest backdrop-blur-md transition-colors hover:border-forest/40 hover:bg-white/80"
-          >
-            <PinIcon className="text-rust" />
-            Directions
-          </a>
+          {/* no point in directions to a stop the walker is standing at */}
+          {!(typeof distanceMeters === "number" && distanceMeters <= 45) && (
+            <a
+              href={gmapsWalkingUrl(stop.lat, stop.lng)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
+            >
+              <PinIcon className="text-rust" />
+              Directions
+            </a>
+          )}
         </div>
       </div>
 
@@ -124,7 +147,7 @@ export default function StopDetail({
 
       {stop.images.map((image) => (
         <motion.figure key={image.src} className="mt-6" {...reveal}>
-          <div className="overflow-hidden rounded-2xl border border-white/60 shadow-xl shadow-forest/10">
+          <div className="walk-plate rounded-[3px] p-2 md:p-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image.src}
@@ -133,7 +156,7 @@ export default function StopDetail({
               className="h-auto w-full object-cover"
             />
           </div>
-          <figcaption className="mt-2.5 px-1 font-body text-xs leading-relaxed text-ink/70">
+          <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
             {image.credit}
           </figcaption>
         </motion.figure>
@@ -147,6 +170,7 @@ export default function StopDetail({
             playerId={stop.id}
             label={`Play stop ${stop.number}, ${stop.title}`}
             onEnded={onAudioEnded}
+            compact={focusChrome}
           />
         ) : null}
       </div>
@@ -161,7 +185,7 @@ export default function StopDetail({
 
       {/* worth a look */}
       <motion.p
-        className="mt-6 rounded-2xl border-l-4 border-[#C9A227] bg-[#C9A227]/15 px-5 py-4 font-body text-base leading-relaxed text-ink/90 shadow-sm"
+        className="walk-plate-brass mt-6 rounded-[3px] px-5 py-4 font-body text-base leading-relaxed text-ink/90"
         {...reveal}
       >
         <strong className="font-semibold text-ink">Worth a look.</strong>{" "}
@@ -169,10 +193,7 @@ export default function StopDetail({
       </motion.p>
 
       {stop.toNext && (
-        <motion.div
-          className="mt-6 rounded-2xl border border-white/60 bg-white/40 p-5 shadow-lg shadow-forest/5 backdrop-blur-md"
-          {...reveal}
-        >
+        <motion.div className="walk-plate mt-6 rounded-[3px] p-5" {...reveal}>
           <div className="flex items-baseline justify-between gap-4">
             <p className="font-body text-base font-semibold text-ink">
               {nextStop ? nextStop.title : "Next stop"}
@@ -190,7 +211,7 @@ export default function StopDetail({
               href={gmapsWalkingUrl(nextStop.lat, nextStop.lng)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-2 font-body text-sm font-medium text-forest backdrop-blur-md transition-colors hover:border-forest/40 hover:bg-white/80"
+              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
             >
               <PinIcon className="text-rust" />
               Open this leg in Google Maps
@@ -200,12 +221,16 @@ export default function StopDetail({
       )}
 
       {showNav && (
-        <div className="mt-8 hidden items-center justify-between gap-4 border-t border-border/60 pt-6 md:flex">
+        <div
+          className={`mt-8 items-center justify-between gap-4 border-t border-border/60 pt-6 ${
+            focusChrome ? "hidden md:flex" : "flex"
+          }`}
+        >
           <button
             type="button"
             onClick={onPrev}
             disabled={!onPrev}
-            className="rounded-full border border-border bg-white/50 px-6 py-3 font-body text-sm font-medium text-ink/70 backdrop-blur-md transition-colors enabled:hover:border-forest/40 enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-[3px] border border-ink/25 bg-white px-6 py-3 font-body text-sm font-medium text-ink/70 transition-colors enabled:hover:border-forest/60 enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
           >
             Previous
           </button>
@@ -213,7 +238,7 @@ export default function StopDetail({
             type="button"
             onClick={onNext}
             disabled={!onNext}
-            className="rounded-full bg-gradient-to-br from-rust to-rust-dark px-7 py-3 font-body text-sm font-semibold text-white shadow-lg shadow-rust/25 transition-all enabled:hover:-translate-y-0.5 motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-[3px] bg-rust px-7 py-3 font-body text-sm font-semibold text-white shadow-[4px_4px_0_0_rgba(27,58,45,0.15)] transition-all enabled:hover:-translate-y-0.5 enabled:hover:bg-rust-dark motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next stop
           </button>

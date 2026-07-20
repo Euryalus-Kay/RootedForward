@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
+import StopVignette from "@/components/tours/walk/StopVignette";
 import { JACKSON_PARK_WALK } from "@/lib/tours/jackson-park-walk";
 
 /* ------------------------------------------------------------------ */
@@ -20,27 +21,14 @@ const tour = JACKSON_PARK_WALK;
 export const metadata: Metadata = {
   title: "Jackson Park Walking Tour | Rooted Forward",
   description:
-    "A free self-guided audio tour of Jackson Park, starting at the Obama Presidential Center. Eight stops in about an hour of walking, from the 1893 World's Fair to the fights that shaped the South Side.",
+    "A free self-guided audio tour of Jackson Park, starting at the Obama Presidential Center. Nine stops in about an hour of walking through the grounds of the 1893 World's Fair.",
 };
 
 export default function ToursPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Opener */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-cream via-cream to-cream-dark/60 pb-16 pt-20 md:pb-24 md:pt-28">
-        {/* drifting color fields under the glass */}
-        <div
-          aria-hidden="true"
-          className="walk-blob pointer-events-none absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-[#C9A227]/15 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="walk-blob-slow pointer-events-none absolute right-1/4 top-32 h-80 w-80 rounded-full bg-rust/10 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="walk-blob pointer-events-none absolute -bottom-24 right-8 h-[26rem] w-[26rem] rounded-full bg-forest/10 blur-3xl"
-        />
+      <section className="relative overflow-hidden border-b border-border bg-cream pb-10 pt-20 md:pb-20 md:pt-28">
         {/* the 1893 Rand McNally bird's eye of these exact grounds,
             washed into the paper */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -61,14 +49,14 @@ export default function ToursPage() {
             {tour.dek}
           </p>
 
-          <p className="mt-6 inline-block rounded-full border border-white/70 bg-white/45 px-5 py-2.5 font-body text-base font-medium text-forest shadow-sm backdrop-blur-md">
-            {`${tour.stops.length} stops · ${tour.distanceMiles} miles · about an hour · free`}
+          <p className="mt-6 font-display text-lg italic text-ink/65">
+            {`${tour.distanceMiles} miles, mostly flat`}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-5">
             <a
               href="#start"
-              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-9 py-4 font-body text-base font-semibold text-white shadow-xl shadow-rust/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-rust/30 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-[3px] bg-rust px-9 py-4 font-body text-base font-semibold text-white shadow-[5px_5px_0_0_rgba(27,58,45,0.18)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
             >
               Start the tour
             </a>
@@ -79,13 +67,41 @@ export default function ToursPage() {
               Hours and what to know first
             </a>
           </div>
-          <SurveyRule className="mt-10 text-rust" />
+          <SurveyRule className="mt-10 hidden text-rust md:block" />
         </div>
-        {/* curve into the tour */}
-        <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 52" fill="none" preserveAspectRatio="none" className="block h-[52px] w-full">
-            <path d="M0 52h1440V16C1180 40 900 48 720 44 480 38 220 18 0 30v22Z" fill="#F5F0E8" />
-          </svg>
+      </section>
+
+      {/* The plate index: one hand-drawn plate per stop. Tap one to
+          jump straight to that stop in the tour below. */}
+      <section aria-label="The nine stops, drawn" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h2 className="font-display text-xl text-forest">The nine stops</h2>
+            <p className="font-display text-[13px] italic text-ink/60">
+              Pick a plate to jump ahead
+            </p>
+          </div>
+          <ol className="-mx-6 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-9 md:gap-3.5 md:overflow-visible md:px-0 md:pb-0">
+            {tour.stops.map((s) => (
+              <li key={s.id} className="shrink-0 snap-start">
+                <a
+                  href={`#stop-${s.number}`}
+                  aria-label={`Jump to stop ${s.number}, ${s.title}`}
+                  className="group block w-28 md:w-auto"
+                >
+                  <span className="walk-plate-flush block rounded-[2px] px-1 pb-1 pt-2 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
+                    <StopVignette stopId={s.id} className="h-14 w-full" />
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="mt-1.5 block text-center font-display text-sm text-ink/60"
+                  >
+                    {s.number}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -97,12 +113,8 @@ export default function ToursPage() {
       {/* Before you walk */}
       <section
         id="before-you-walk"
-        className="relative scroll-mt-16 overflow-hidden bg-gradient-to-b from-cream to-cream-dark py-14 md:py-20"
+        className="scroll-mt-16 border-t border-border bg-cream-dark/50 py-14 md:py-20"
       >
-        <div
-          aria-hidden="true"
-          className="walk-blob-slow pointer-events-none absolute -right-24 top-8 h-72 w-72 rounded-full bg-[#C9A227]/10 blur-3xl"
-        />
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             Before you walk
@@ -112,35 +124,31 @@ export default function ToursPage() {
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
             {tour.practical.map((item, i) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-white/70 bg-white/50 p-6 shadow-lg shadow-forest/5 backdrop-blur-md transition-transform hover:-translate-y-1 motion-reduce:transition-none"
-              >
-                <span
-                  aria-hidden="true"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-cream shadow-md shadow-rust/25"
-                >
-                  {i === 0 && (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M8 4.6V8l2.4 1.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  )}
-                  {i === 1 && (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M2 13c2.5 0 2.5-2.4 5-2.4S9.5 13 12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M3.5 8.5 6 3.2a.9.9 0 0 1 1.6 0l1.1 2.3M10.3 8.6l1.5-3.1a.8.8 0 0 1 1.5 0l1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  )}
-                  {i === 2 && (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <rect x="2" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                      <rect x="11" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                    </svg>
-                  )}
-                </span>
-                <h3 className="mt-3 font-display text-xl text-forest">{item.title}</h3>
+              <div key={item.title} className="walk-plate rounded-[3px] p-6">
+                <div className="flex items-center gap-3">
+                  <span aria-hidden="true" className="text-rust">
+                    {i === 0 && (
+                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.5" />
+                        <path d="M8 4.6V8l2.4 1.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    )}
+                    {i === 1 && (
+                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 13c2.5 0 2.5-2.4 5-2.4S9.5 13 12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M3.5 8.5 6 3.2a.9.9 0 0 1 1.6 0l1.1 2.3M10.3 8.6l1.5-3.1a.8.8 0 0 1 1.5 0l1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    )}
+                    {i === 2 && (
+                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <rect x="2" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
+                        <rect x="11" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
+                      </svg>
+                    )}
+                  </span>
+                  <h3 className="font-display text-xl text-forest">{item.title}</h3>
+                </div>
                 <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
                   {item.text}
                 </p>
@@ -161,8 +169,14 @@ export default function ToursPage() {
           </h2>
           <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/70">
             Every stop was written from the records below. If you think we
-            got something wrong, tell us and we will check it against the
-            documents.
+            got something wrong,{" "}
+            <Link
+              href="/contact"
+              className="underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
+            >
+              tell us
+            </Link>{" "}
+            and we will check it against the documents.
           </p>
           {/* open columns on desktop, one accordion on phones */}
           <div className="mt-8 hidden gap-x-12 md:block md:columns-2">
@@ -190,11 +204,11 @@ export default function ToursPage() {
                 </div>
               ))}
           </div>
-          <details className="mt-6 rounded-2xl border border-white/70 bg-white/45 backdrop-blur-md md:hidden">
+          <details className="walk-plate-flush mt-6 rounded-[3px] md:hidden">
             <summary className="cursor-pointer list-none px-5 py-4 font-body text-sm font-medium text-ink/80 [&::-webkit-details-marker]:hidden">
               See every source
             </summary>
-            <div className="border-t border-white/60 px-5 pb-5">
+            <div className="border-t border-ink/15 px-5 pb-5">
               {tour.stops
                 .filter((s) => s.sources && s.sources.length)
                 .map((s) => (
@@ -237,7 +251,7 @@ export default function ToursPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/tours/chicago/hyde-park"
-              className="inline-flex items-center rounded-full bg-gradient-to-br from-rust to-rust-dark px-8 py-3.5 font-body text-base font-semibold text-white shadow-lg shadow-black/20 transition-all hover:-translate-y-0.5 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-[3px] bg-rust px-8 py-3.5 font-body text-base font-semibold text-white shadow-[4px_4px_0_0_rgba(0,0,0,0.25)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
             >
               Read the exhibit
             </Link>
@@ -245,7 +259,7 @@ export default function ToursPage() {
               href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-cream/40 bg-cream/10 px-8 py-3.5 font-body text-base font-semibold text-cream backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/20 motion-reduce:transition-none"
+              className="inline-flex items-center rounded-[3px] border border-cream/50 px-8 py-3.5 font-body text-base font-semibold text-cream transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/10 motion-reduce:transition-none"
             >
               Book the in-person tour
             </a>
