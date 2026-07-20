@@ -200,7 +200,7 @@ export default function StopDetail({
       )}
 
       {showNav && (
-        <div className="mt-8 flex items-center justify-between gap-4 border-t border-border/60 pt-6">
+        <div className="mt-8 hidden items-center justify-between gap-4 border-t border-border/60 pt-6 md:flex">
           <button
             type="button"
             onClick={onPrev}

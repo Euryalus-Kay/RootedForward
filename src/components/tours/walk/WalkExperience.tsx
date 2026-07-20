@@ -10,7 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { WalkTour } from "@/lib/tours/walk-types";
 import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
-import { subscribeAudioState, toggleAudio } from "./audio-bus";
+import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
 import StopDetail from "./StopDetail";
 import WalkMap from "./WalkMap";
 
@@ -88,6 +88,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
   const reduceMotion = useReducedMotion();
   const [mode, setMode] = useState<Mode>("walk");
   const [focusMode, setFocusMode] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<string>>(new Set());
   const [resumeIndex, setResumeIndex] = useState<number | null>(null);
@@ -131,6 +132,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
   const exitFocus = useCallback(() => {
     setFocusMode(false);
+    setMapOpen(false);
     window.history.replaceState(null, "", "#tour");
   }, []);
 
@@ -139,14 +141,16 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") exitFocus();
+      if (e.key !== "Escape") return;
+      if (mapOpen) setMapOpen(false);
+      else exitFocus();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [focusMode, exitFocus]);
+  }, [focusMode, exitFocus, mapOpen]);
 
   // restore progress and honor #stop-N deep links; deferred a frame so
   // hydration completes against the server-rendered initial state
@@ -206,6 +210,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       const clamped = Math.max(0, Math.min(stops.length - 1, index));
       setActiveIndex(clamped);
       setResumeIndex(null);
+      setMapOpen(false);
       persist(visited, clamped);
       window.history.replaceState(null, "", `#stop-${clamped + 1}`);
       // announce the new stop to keyboard and screen-reader users
@@ -308,6 +313,19 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
   );
   const miniPlaying = playingId === activeStop.id;
 
+  // live progress for the transport bar's thin track
+  const [audioProgress, setAudioProgress] = useState(0);
+  useEffect(() => {
+    const read = () => {
+      const st = getAudioState(activeStop.id);
+      setAudioProgress(st && st.duration > 0 ? st.currentTime / st.duration : 0);
+    };
+    read();
+    if (!miniPlaying) return;
+    const timer = setInterval(read, 500);
+    return () => clearInterval(timer);
+  }, [miniPlaying, activeStop.id]);
+
   const visitedCount = stops.filter((s) => visited.has(s.id)).length;
 
   const renderStopRow = (stop: (typeof stops)[number], i: number) => (
@@ -345,6 +363,74 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     </li>
   );
 
+  const mapPanel = (
+    <>
+      <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-xl shadow-forest/10 backdrop-blur-md">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/60 bg-white/40 px-4 py-2.5">
+          <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
+          <p className="font-body text-xs text-ink/70">2.5 miles &middot; 9 stops</p>
+        </div>
+        <WalkMap
+          stops={stops}
+          route={tour.route}
+          activeIndex={activeIndex}
+          visitedIds={visited}
+          userPos={userPos}
+          onSelectStop={(i) => goTo(i)}
+        />
+        <div
+          aria-hidden="true"
+          className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/60 bg-white/40 px-4 py-2"
+        >
+          <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
+            <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
+              <line x1="1" y1="3" x2="21" y2="3" stroke="#C45D3E" strokeWidth="2.4" strokeDasharray="1 5" strokeLinecap="round" />
+            </svg>
+            Route
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+              <circle cx="6" cy="6" r="4.5" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1.6" />
+            </svg>
+            Stop
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+              <circle cx="6" cy="6" r="4" fill="#4A6B8A" stroke="#FFFFFF" strokeWidth="1.6" />
+            </svg>
+            You
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <button
+          type="button"
+          onClick={locationOn || locating ? stopWatching : startWatching}
+          className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-sm font-medium backdrop-blur-md transition-colors ${
+            locationOn
+              ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream"
+              : "border-white/70 bg-white/50 text-ink/70 hover:text-forest"
+          }`}
+          aria-pressed={locationOn}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="6" cy="6" r="1.8" fill="currentColor" />
+          </svg>
+          {locating ? "Finding you…" : locationOn ? "Location on" : "Find me on the map"}
+        </button>
+      </div>
+      <div role="status">
+        {geoNote && (
+          <p className="mt-2 rounded-sm border border-border bg-cream-dark/60 px-3 py-2 font-body text-xs leading-relaxed text-ink/70">
+            {geoNote}
+          </p>
+        )}
+      </div>
+    </>
+  );
+
   return (
     <div
       className={
@@ -370,9 +456,22 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               </svg>
               Exit
             </button>
-            <p className="min-w-0 truncate font-display text-lg leading-none text-forest">
-              Walk Jackson Park
-            </p>
+            <div className="min-w-0 flex-1 px-2">
+              <div className="mx-auto max-w-[220px] md:hidden">
+                <p className="text-center font-body text-xs font-medium text-ink/70">
+                  Stop {activeIndex + 1} of {stops.length}
+                </p>
+                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-border/70">
+                  <div
+                    className="h-full rounded-full bg-rust transition-all duration-500 motion-reduce:transition-none"
+                    style={{ width: `${((activeIndex + 1) / stops.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <p className="hidden truncate text-center font-display text-lg leading-none text-forest md:block">
+                Walk Jackson Park
+              </p>
+            </div>
             <ShareButton />
           </div>
         </div>
@@ -451,74 +550,14 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           }`}
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
-            {/* map column */}
-            <div className="md:sticky md:top-24 md:self-start">
-              <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-xl shadow-forest/10 backdrop-blur-md">
-                {/* cartouche, like the title block of a printed map */}
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/60 bg-white/40 px-4 py-2.5">
-                  <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
-                  <p className="font-body text-xs text-ink/70">
-                    2.5 miles &middot; 9 stops
-                  </p>
-                </div>
-                <WalkMap
-                  stops={stops}
-                  route={tour.route}
-                  activeIndex={activeIndex}
-                  visitedIds={visited}
-                  userPos={userPos}
-                  onSelectStop={(i) => goTo(i)}
-                />
-                <div
-                  aria-hidden="true"
-                  className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/60 bg-white/40 px-4 py-2"
-                >
-                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
-                    <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
-                      <line x1="1" y1="3" x2="21" y2="3" stroke="#C45D3E" strokeWidth="2.4" strokeDasharray="1 5" strokeLinecap="round" />
-                    </svg>
-                    Route
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                      <circle cx="6" cy="6" r="4.5" fill="#F5F0E8" stroke="#1B3A2D" strokeWidth="1.6" />
-                    </svg>
-                    Stop
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                      <circle cx="6" cy="6" r="4" fill="#4A6B8A" stroke="#FFFFFF" strokeWidth="1.6" />
-                    </svg>
-                    You
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={locationOn || locating ? stopWatching : startWatching}
-                  className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-sm font-medium backdrop-blur-md transition-colors ${
-                    locationOn
-                      ? "border-forest/50 bg-gradient-to-br from-forest to-forest-light text-cream"
-                      : "border-white/70 bg-white/50 text-ink/70 hover:text-forest"
-                  }`}
-                  aria-pressed={locationOn}
-                >
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.5" />
-                    <circle cx="6" cy="6" r="1.8" fill="currentColor" />
-                  </svg>
-                  {locating ? "Finding you…" : locationOn ? "Location on" : "Find me on the map"}
-                </button>
-              </div>
-              <div role="status">
-                {geoNote && (
-                  <p className="mt-2 rounded-sm border border-border bg-cream-dark/60 px-3 py-2 font-body text-xs leading-relaxed text-ink/70">
-                    {geoNote}
-                  </p>
-                )}
-              </div>
+            {/* map column: on phones in the focused tour, the map
+                lives behind the floating Map button instead */}
+            <div
+              className={`${
+                focusMode ? "hidden md:block" : ""
+              } md:sticky md:top-24 md:self-start`}
+            >
+              {mapPanel}
 
               {/* quick-jump stop list: always open on desktop, folded
                   behind a summary on phones */}
@@ -589,16 +628,100 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             </div>
           </div>
 
-          {/* mobile mini-player, pinned while walking */}
+          {/* floating map button, focused tour on phones */}
+          {focusMode && (
+            <button
+              type="button"
+              onClick={() => setMapOpen(true)}
+              className="fixed bottom-28 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-white/70 bg-cream/90 px-5 py-3 font-body text-sm font-semibold text-forest shadow-xl shadow-forest/20 backdrop-blur-xl md:hidden"
+            >
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                <path d="M5.5 2 1.5 3.5v9L5.5 11l4 1.5 4-1.5v-9L9.5 3.5 5.5 2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                <path d="M5.5 2v9M9.5 3.5v9" stroke="currentColor" strokeWidth="1.3" />
+              </svg>
+              Map
+            </button>
+          )}
+
+          {/* slide-up map sheet */}
+          <AnimatePresence>
+            {focusMode && mapOpen && (
+              <motion.div
+                key="map-sheet"
+                className="fixed inset-0 z-[90] flex flex-col bg-cream md:hidden"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { type: "spring", bounce: 0.12, duration: 0.5 }
+                }
+              >
+                <div
+                  className="flex items-center justify-between border-b border-white/60 bg-cream/85 px-5 py-3 backdrop-blur-xl"
+                  style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
+                >
+                  <p className="font-display text-lg leading-none text-forest">Map</p>
+                  <button
+                    type="button"
+                    onClick={() => setMapOpen(false)}
+                    className="rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2 font-body text-sm font-medium text-cream shadow-md shadow-forest/25"
+                  >
+                    Done
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto overscroll-contain px-5 pb-12 pt-4">
+                  {mapPanel}
+                  <ol className="mt-5 divide-y divide-border/50 overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-lg shadow-forest/5 backdrop-blur-md">
+                    {stops.map((stop, i) => renderStopRow(stop, i))}
+                  </ol>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* transport bar, pinned while walking */}
           <div
             inert={!tourInView}
             aria-hidden={!tourInView}
-            className={`fixed inset-x-3 bottom-3 z-40 rounded-2xl border border-white/70 bg-cream/80 shadow-2xl shadow-forest/20 backdrop-blur-xl transition-transform duration-300 motion-reduce:transition-none md:hidden ${
+            className={`fixed inset-x-3 bottom-3 z-40 overflow-hidden rounded-2xl border border-white/70 bg-cream/85 shadow-2xl shadow-forest/20 backdrop-blur-xl transition-transform duration-300 motion-reduce:transition-none md:hidden ${
               tourInView ? "translate-y-0" : "translate-y-[calc(100%+1rem)]"
             }`}
             style={{ marginBottom: "env(safe-area-inset-bottom)" }}
           >
-            <div className="flex items-center gap-3 px-4 py-3">
+            {/* thin live audio progress */}
+            <div aria-hidden="true" className="h-1 w-full bg-border/50">
+              <div
+                className="h-full bg-rust transition-[width] duration-500 ease-linear motion-reduce:transition-none"
+                style={{ width: `${Math.round(audioProgress * 100)}%` }}
+              />
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-2.5">
+              <button
+                type="button"
+                onClick={() => goTo(activeIndex)}
+                aria-label={`Back to stop ${activeStop.number} on the page`}
+                className="min-w-0 flex-1 text-left"
+              >
+                <p className="font-body text-[11px] text-ink/70">
+                  Stop {activeStop.number} of {stops.length}
+                </p>
+                <p className="truncate font-body text-sm font-semibold text-ink">
+                  {activeStop.title}
+                </p>
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo(activeIndex - 1)}
+                disabled={activeIndex === 0}
+                aria-label="Previous stop"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/70 transition-colors hover:text-ink disabled:opacity-30"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
               <button
                 type="button"
                 onClick={() => toggleAudio(activeStop.id)}
@@ -607,41 +730,30 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                     ? `Pause stop ${activeStop.number}`
                     : `Play stop ${activeStop.number}, ${activeStop.title}`
                 }
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-white shadow-lg shadow-rust/30 transition-transform hover:scale-105 motion-reduce:transition-none"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rust to-rust-dark text-white shadow-lg shadow-rust/30 transition-transform hover:scale-105 motion-reduce:transition-none"
               >
                 {miniPlaying ? (
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                     <rect x="2.5" y="2" width="4" height="12" rx="0.5" />
                     <rect x="9.5" y="2" width="4" height="12" rx="0.5" />
                   </svg>
                 ) : (
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                     <path d="M4 2.3v11.4c0 .5.55.8.98.53l9.02-5.7a.62.62 0 0 0 0-1.06L4.98 1.77A.62.62 0 0 0 4 2.3Z" />
                   </svg>
                 )}
               </button>
               <button
                 type="button"
-                onClick={() => goTo(activeIndex)}
-                aria-label={`Back to stop ${activeStop.number} on the page`}
-                className="min-w-0 flex-1 text-left"
+                onClick={handleNext}
+                disabled={activeIndex >= stops.length - 1}
+                aria-label="Next stop"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/70 transition-colors hover:text-ink disabled:opacity-30"
               >
-                <p className="font-body text-xs text-ink/70">
-                  Stop {activeStop.number} of {stops.length}
-                </p>
-                <p className="truncate font-body text-sm font-semibold text-ink">
-                  {activeStop.title}
-                </p>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </button>
-              {activeIndex < stops.length - 1 && (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="shrink-0 rounded-full bg-gradient-to-br from-forest to-forest-light px-5 py-2.5 font-body text-sm font-medium text-cream shadow-md shadow-forest/25 transition-transform hover:scale-105 motion-reduce:transition-none"
-                >
-                  Next
-                </button>
-              )}
             </div>
           </div>
         </div>

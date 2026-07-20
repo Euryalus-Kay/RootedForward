@@ -23,6 +23,19 @@ export function isAudioPlaying(id: string): boolean {
   return !!el && !el.paused;
 }
 
+/** live playback numbers for a stop's audio, if mounted */
+export function getAudioState(
+  id: string
+): { playing: boolean; currentTime: number; duration: number } | null {
+  const el = registry.get(id);
+  if (!el) return null;
+  return {
+    playing: !el.paused,
+    currentTime: el.currentTime,
+    duration: Number.isFinite(el.duration) ? el.duration : 0,
+  };
+}
+
 /** play/pause the audio for a stop; returns false if not mounted */
 export function toggleAudio(id: string): boolean {
   const el = registry.get(id);
