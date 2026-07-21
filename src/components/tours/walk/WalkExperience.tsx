@@ -104,10 +104,9 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
   const sheetDrag = useDragControls();
   const stops = tour.stops;
 
-  // "Start the tour" links to #start, which opens the focused,
-  // app-like tour view; Escape or Exit leaves it. The plate index on
-  // the landing page links to #stop-N, which jumps straight to that
-  // stop in walk mode.
+  // "Start the tour" links to #start and the plate index links to
+  // #stop-N; either way the focused, app-like tour view opens (at the
+  // right stop for #stop-N). Escape or Exit leaves it.
   useEffect(() => {
     const check = () => {
       const hash = window.location.hash;
@@ -121,6 +120,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         const idx = Number(m[1]) - 1;
         if (idx >= 0 && idx < stops.length) {
           setMode("walk");
+          setFocusMode(true);
           setActiveIndex(idx);
           setResumeIndex(null);
           requestAnimationFrame(() => {
@@ -219,6 +219,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       setActiveIndex(clamped);
       setResumeIndex(null);
       setMapOpen(false);
+      // any move between stops puts the visitor in the dedicated
+      // tour view, same as pressing Start the tour
+      setMode("walk");
+      setFocusMode(true);
       persist(visited, clamped);
       window.history.replaceState(null, "", `#stop-${clamped + 1}`);
       // announce the new stop to keyboard and screen-reader users
@@ -483,7 +487,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                   />
                 </div>
               </div>
-              <p className="hidden truncate text-center font-display text-lg leading-none text-forest md:block">
+              <p className="walk-title hidden truncate text-center text-lg font-semibold leading-none text-forest md:block">
                 Walk Jackson Park
               </p>
             </div>

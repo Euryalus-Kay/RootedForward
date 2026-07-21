@@ -10,6 +10,8 @@ export interface WalkImage {
   alt: string;
   /** printed credit line, e.g. "Library of Congress. No known restrictions." */
   credit: string;
+  /** small tag printed under the plate when shown as a pair, e.g. "1893" or "Today" */
+  label?: string;
 }
 
 export interface WalkDirections {
@@ -39,6 +41,9 @@ export interface WalkStop {
   lookFor: string;
   /** zero, one, or two images per stop */
   images: WalkImage[];
+  /** what the site looks like today; paired with images[0] on the page
+   *  and used as the stop's thumbnail in the plate index */
+  nowImage?: WalkImage;
   /** directions to the following stop; absent on the last stop */
   toNext?: WalkDirections;
   /** short label for the map, e.g. "Statue of the Republic" */

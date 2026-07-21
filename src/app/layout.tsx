@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, DM_Sans, Archivo_Narrow, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, DM_Sans, Archivo_Narrow, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -35,6 +35,15 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   display: "swap",
 });
+/* Walking-tour display face. A high-contrast didone in the spirit of
+   1890s exhibition printing; used only for titles on /tours. */
+const bodoniModa = Bodoni_Moda({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-bodoni-moda",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rooted-forward.org"),
@@ -68,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${fraunces.variable} ${dmSans.variable} ${archivoNarrow.variable} ${plexMono.variable}`}
+      className={`h-full antialiased ${fraunces.variable} ${dmSans.variable} ${archivoNarrow.variable} ${plexMono.variable} ${bodoniModa.variable}`}
     >
       <body className="flex min-h-full flex-col font-body bg-cream text-ink">
         <Navbar />

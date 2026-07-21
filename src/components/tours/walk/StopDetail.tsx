@@ -128,13 +128,42 @@ export default function StopDetail({
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="mt-3 font-display text-3xl leading-tight text-forest outline-none md:text-4xl"
+        className="walk-title mt-3 text-3xl font-semibold leading-tight text-forest outline-none md:text-4xl"
       >
         {stop.title}
       </h2>
       <p className="mt-2 font-body text-lg text-ink/70">{stop.dek}</p>
 
-      {stop.images.map((image) => (
+      {/* then and now: the historic image and a photograph of the same
+          site today, mounted side by side like a comparison plate */}
+      {stop.nowImage && stop.images.length > 0 && (
+        <motion.figure className="mt-6" {...reveal}>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start">
+            {[stop.images[0], stop.nowImage].map((image) => (
+              <div key={image.src} className="walk-plate rounded-[3px] p-2 md:p-2.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  className="h-auto w-full object-cover"
+                />
+                {image.label && (
+                  <p className="pb-0.5 pt-2 text-center font-display text-[12px] italic tracking-wide text-ink/60">
+                    {image.label}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+          <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
+            <span className="block">{stop.images[0].credit}</span>
+            <span className="block">{stop.nowImage.credit}</span>
+          </figcaption>
+        </motion.figure>
+      )}
+
+      {stop.images.slice(stop.nowImage ? 1 : 0).map((image) => (
         <motion.figure key={image.src} className="mt-6" {...reveal}>
           <div className="walk-plate rounded-[3px] p-2 md:p-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}

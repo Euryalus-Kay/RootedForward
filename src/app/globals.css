@@ -1916,3 +1916,9 @@ body.exhibit-immersive > footer { display: none; }
   border: 1px solid rgba(26, 26, 26, 0.22);
   box-shadow: 4px 4px 0 0 rgba(27, 58, 45, 0.14);
 }
+/* tour titles set in Bodoni Moda, the didone of 1890s exhibition
+   printing; the rest of the site keeps its own display face */
+.walk-title {
+  font-family: var(--font-bodoni-moda), 'Bodoni Moda', Didot, 'Bodoni MT', serif;
+  letter-spacing: 0.01em;
+}

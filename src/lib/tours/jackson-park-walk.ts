@@ -127,8 +127,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "The original 264-foot Ferris Wheel towering over the crowded Midway Plaisance in 1893",
           credit:
             "The first Ferris Wheel on the Midway, 1893. C. D. Arnold, Official Views of the World's Columbian Exposition. Public domain, via Wikimedia Commons.",
+          label: "1893",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/midway-today.jpg`,
+        alt: "The Midway Plaisance today, a long open lawn lined with trees, with University of Chicago towers in the distance",
+        credit:
+          "The same ground today, a mile of open green. Photograph by Joe Passe, 2021, via Wikimedia Commons. CC BY-SA 2.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Follow the center path west toward the rail embankment. The limestone bench sits just before it, on your right.",
         distanceMeters: 111,
@@ -198,8 +206,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "The domed Palace of Fine Arts reflected in the North Pond during the 1893 World's Fair",
           credit:
             "The Palace of Fine Arts, 1893, today's Museum of Science and Industry. C. D. Arnold, Official Views of the World's Columbian Exposition. Public domain, via Wikimedia Commons.",
+          label: "1893",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/columbia-basin-today.jpg`,
+        alt: "The Museum of Science and Industry today, seen straight on across the still water of the Columbia Basin",
+        credit:
+          "The same building today, across the Columbia Basin. Photograph by Warren LeMay, 2024, via Wikimedia Commons. CC BY-SA 2.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Keep the water on your left and follow the rim path southeast until you reach a low stone bridge behind a fence.",
         distanceMeters: 195,
@@ -234,8 +250,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "Portrait of Clarence Darrow in 1913, seated with his hand on his chin",
           credit:
             "Clarence Darrow, 1913. Underwood and Underwood, Library of Congress Prints and Photographs Division. Public domain.",
+          label: "1913",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/darrow-bridge-today.jpg`,
+        alt: "The low stone Darrow Bridge today, its weathered limestone blocks carrying steel beams and an iron railing over the water",
+        credit:
+          "The bridge today, still waiting on its rebuild. Photograph by Warren LeMay, 2024, via Wikimedia Commons. CC BY-SA 2.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Walk south to the next bridge, the open one, and cross onto the island. Follow the path to the garden gate at the island's north tip.",
         distanceMeters: 219,
@@ -270,8 +294,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "The Ho-o-den, Japan's wooden pavilion of three connected halls, on the Wooded Island in 1893",
           credit:
             "The Ho-o-den, Japan's pavilion on the Wooded Island, 1893. C. D. Arnold, Official Views of the World's Columbian Exposition. Public domain, via Wikimedia Commons.",
+          label: "1893",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/garden-phoenix-today.jpg`,
+        alt: "The Garden of the Phoenix today, a wooden moon bridge over still water beside a shaped pine, with the park's stone bridge in the distance",
+        credit:
+          "The garden on the same spot. Photograph by Steven Kevil, 2013, via Wikimedia Commons. CC BY-SA 3.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Take the single path that runs the length of the island, south through the trees, until you cross the small bridge off the island's far end.",
         distanceMeters: 587,
@@ -306,8 +338,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "An 1893 bird's eye lithograph of the World's Columbian Exposition grounds filling Jackson Park, with the Wooded Island at the center of the lagoons",
           credit:
             "Bird's eye view of the fairgrounds, 1893. Rand McNally and Company, Library of Congress Geography and Map Division. Public domain.",
+          label: "1893",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/wooded-island-today.jpg`,
+        alt: "A great blue heron standing at the green edge of the lagoon on Wooded Island in summer",
+        credit:
+          "A great blue heron on the island's shore. Photograph by Jules Verne Times Two, 2022, via Wikimedia Commons. CC BY-SA 4.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Follow the lagoon-side path south, cross the channel on the walkway beside Hayes Drive, and the golden statue is ahead at the corner of Hayes and Richards.",
         distanceMeters: 395,
@@ -341,6 +381,7 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "The Court of Honor and Grand Basin in 1893, seen from behind the original Statue of the Republic, with the domed Administration Building across the water",
           credit:
             "The Court of Honor from the Peristyle, 1893, with the original 65-foot Republic in the foreground. C. D. Arnold. Public domain, via Wikimedia Commons.",
+          label: "1893",
         },
         {
           src: `${MEDIA}/ida-b-wells-1893.jpg`,
@@ -349,6 +390,13 @@ export const JACKSON_PARK_WALK: WalkTour = {
             "Ida B. Wells, photographed in Chicago around 1893 by Mary Garrity. Restored by Adam Cuerden. Public domain, via Wikimedia Commons.",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/republic-today.jpg`,
+        alt: "The gilded Statue of the Republic today, arms raised holding orb and staff against summer trees",
+        credit:
+          "The Golden Lady today, at Hayes and Richards. Photograph by artistmac, 2013, via Wikimedia Commons. CC BY-SA 2.0.",
+        label: "Today",
+      },
       toNext: {
         text: "This last leg is the longest of the walk. Take the path west along the north side of Hayes Drive, then turn north onto the wide car-free trail along the lagoon's west shore. Cars ran here until 2023, when Cornell Drive was closed and turned back into parkland. Follow the trail to Stony Island Avenue and enter the Center's campus from the south.",
         distanceMeters: 1415,
@@ -384,8 +432,16 @@ export const JACKSON_PARK_WALK: WalkTour = {
           alt: "63rd Street in Woodlawn in 1973, with the elevated tracks crossing overhead and pedestrians on the sidewalks",
           credit:
             "63rd Street under the L, 1973. John H. White, EPA DOCUMERICA, National Archives. Public domain.",
+          label: "1973",
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/opc-from-park.jpg`,
+        alt: "The Obama Center tower rising beyond bare spring trees in Jackson Park, its carved letters catching the light",
+        credit:
+          "The tower from inside the park, April 2026. Photograph by Claire Fridkin, via Wikimedia Commons. CC BY-SA 4.0.",
+        label: "Today",
+      },
       sources: [
         { label: "Chicago Maroon, Obama on the community benefits agreement, 2017", url: "https://www.chicagomaroon.com/article/2017/9/15/obama-explains-presidential-center-sign-community/" },
         { label: "Chicago Lawyers' Committee, how the Obama CBA was won", url: "https://www.clccrul.org/blog/how-the-obama-cba-was-won" },

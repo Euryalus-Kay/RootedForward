@@ -41,7 +41,7 @@ export default function ToursPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Self-guided audio tour
           </p>
-          <h1 className="mt-4 max-w-[16ch] font-display text-4xl leading-[1.05] text-ink md:text-6xl">
+          <h1 className="walk-title mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.08] text-ink md:text-6xl">
             {tour.title}
           </h1>
           <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
@@ -75,7 +75,7 @@ export default function ToursPage() {
       <section aria-label="The nine stops" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 className="font-display text-xl text-forest">The nine stops</h2>
+            <h2 className="walk-title text-xl font-semibold text-forest">The nine stops</h2>
             <p className="font-display text-[13px] italic text-ink/60">
               Pick a plate to jump ahead
             </p>
@@ -89,9 +89,11 @@ export default function ToursPage() {
                   className="group block w-28 md:w-auto"
                 >
                   <span className="walk-plate-flush block rounded-[2px] p-1 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
+                    {/* the site as it looks today, so walkers know
+                        what they are heading toward */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={s.images[0].src.replace(
+                      src={(s.nowImage ?? s.images[0]).src.replace(
                         "/jackson-park-walk/",
                         "/jackson-park-walk/thumbs/"
                       )}
@@ -127,7 +129,7 @@ export default function ToursPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             Before you walk
           </p>
-          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+          <h2 className="walk-title mt-3 text-3xl font-semibold text-forest md:text-4xl">
             Good to know
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -172,7 +174,7 @@ export default function ToursPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
             Sources
           </p>
-          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
+          <h2 className="walk-title mt-3 text-3xl font-semibold text-forest md:text-4xl">
             Where this history comes from
           </h2>
           <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/70">
@@ -248,7 +250,7 @@ export default function ToursPage() {
       {/* Related */}
       <section className="bg-forest py-14 md:py-20">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="font-display text-2xl text-cream md:text-3xl">
+          <h2 className="walk-title text-2xl font-semibold text-cream md:text-3xl">
             Prefer to stay in?
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-cream/70">
