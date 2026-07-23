@@ -6,7 +6,7 @@
 // like a printed museum map rather than an embedded web map. No
 // tiles, no tokens, no external requests.
 // ------------------------------------------------------------------
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import {
@@ -88,6 +88,23 @@ export default function WalkMap({
 }: WalkMapProps) {
   const geo = WALK_GEOMETRY;
   const reduceMotion = useReducedMotion();
+
+  // the hovered marker grows, so it draws last and stays on top of
+  // its neighbors (SVG has no z-index; order is stacking)
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const drawOrder = useMemo(() => {
+    const arr = stops.map((s, i) => ({ stop: s, i }));
+    const idx = hoveredId ? arr.findIndex((e) => e.stop.id === hoveredId) : -1;
+    if (idx >= 0) arr.push(...arr.splice(idx, 1));
+    return arr;
+  }, [stops, hoveredId]);
+
+  /** the stop's little photo, same thumbnail the plate index uses */
+  const markerThumb = (stop: WalkStop) =>
+    (stop.nowImage ?? stop.images[0])?.src.replace(
+      /\/media\/([^/]+)\//,
+      "/media/$1/thumbs/"
+    );
 
   // frame the view on the route with generous padding, clamped to the
   // prepared geometry frame
@@ -297,12 +314,17 @@ export default function WalkMap({
         </g>
       )}
 
-      {/* stops */}
+      {/* stops: little framed photographs of each site, the same
+          pictures as the plate index. Hover one and it grows. */}
       <g>
-        {stops.map((stop, i) => {
+        {drawOrder.map(({ stop, i }) => {
           const p = projectPoint(stop.lat, stop.lng);
           const active = i === activeIndex;
           const visited = visitedIds.has(stop.id);
+          const r = active ? 18 : 13;
+          const thumb = markerThumb(stop);
+          const bx = p.x + r * 0.72;
+          const by = p.y + r * 0.72;
           // hit area stays generous but never reaches into a
           // neighboring medallion's disc; later markers draw on top,
           // so an oversized halo would steal its neighbor's taps
@@ -313,7 +335,7 @@ export default function WalkMap({
             const d = Math.hypot(q.x - p.x, q.y - p.y);
             if (d < nearest) nearest = d;
           }
-          const hitR = Math.max(13, Math.min(28, nearest / 2));
+          const hitR = Math.max(14, Math.min(28, nearest / 2));
           return (
             <motion.g
               key={stop.id}
@@ -327,42 +349,68 @@ export default function WalkMap({
                   onSelectStop(i);
                 }
               }}
+              onHoverStart={() => setHoveredId(stop.id)}
+              onHoverEnd={() => setHoveredId((h) => (h === stop.id ? null : h))}
               className="walk-marker cursor-pointer"
               style={{ transformBox: "fill-box", transformOrigin: "center" }}
               whileHover={{
-                scale: reduceMotion ? 1 : 1.14,
-                transition: { type: "spring", bounce: 0.4, duration: 0.3, delay: 0 },
+                scale: reduceMotion ? 1 : active ? 1.25 : 1.6,
+                transition: { type: "spring", bounce: 0.28, duration: 0.35, delay: 0 },
               }}
             >
               <circle cx={p.x} cy={p.y} r={hitR} fill="transparent" />
               {active && (
                 <circle className="walk-stop-pulse" cx={p.x} cy={p.y} r="24" fill="#C45D3E" fillOpacity="0.25" />
               )}
-              {/* medallion: solid disc, then a second hairline ring
-                  just inside, like a stamped brass survey marker */}
+              {/* the photograph in a round engraved frame */}
+              <clipPath id={`walk-mk-${stop.id}`}>
+                <circle cx={p.x} cy={p.y} r={r - 1} />
+              </clipPath>
+              <circle cx={p.x} cy={p.y} r={r} fill="#F5F0E8" />
+              {thumb && (
+                <image
+                  href={thumb}
+                  x={p.x - r}
+                  y={p.y - r}
+                  width={r * 2}
+                  height={r * 2}
+                  clipPath={`url(#walk-mk-${stop.id})`}
+                  preserveAspectRatio="xMidYMid slice"
+                  pointerEvents="none"
+                />
+              )}
               <circle
                 cx={p.x}
                 cy={p.y}
-                r={active ? 17 : 12}
-                fill={active ? "#C45D3E" : visited ? "#1B3A2D" : "#F5F0E8"}
-                stroke={active ? "#F5F0E8" : "#1B3A2D"}
-                strokeWidth={active ? 2.5 : 2}
+                r={r}
+                fill="none"
+                stroke={active ? "#C45D3E" : "#1B3A2D"}
+                strokeWidth={active ? 3 : 2}
               />
               <circle
                 cx={p.x}
                 cy={p.y}
-                r={active ? 13.5 : 9.5}
+                r={r - 2.2}
                 fill="none"
-                stroke={active || visited ? "#F5F0E8" : "#C9A227"}
-                strokeOpacity={active || visited ? 0.55 : 0.9}
+                stroke={active ? "#F5F0E8" : "#C9A227"}
+                strokeOpacity={active ? 0.6 : 0.9}
                 strokeWidth="1"
               />
+              {/* number badge, stamped over the frame's lower corner */}
+              <circle
+                cx={bx}
+                cy={by}
+                r={active ? 8.5 : 7.4}
+                fill={active ? "#C45D3E" : visited ? "#1B3A2D" : "#F5F0E8"}
+                stroke={active ? "#F5F0E8" : "#1B3A2D"}
+                strokeWidth="1.3"
+              />
               <text
-                x={p.x}
-                y={p.y}
+                x={bx}
+                y={by}
                 dy="0.36em"
                 textAnchor="middle"
-                fontSize={active ? 15 : 12}
+                fontSize={active ? 10.5 : 9.6}
                 fontWeight="600"
                 fill={active || visited ? "#F5F0E8" : "#1B3A2D"}
                 fontFamily="var(--font-display), Georgia, serif"
