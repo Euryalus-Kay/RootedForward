@@ -252,6 +252,10 @@ struct MapSheetView: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
                     .background(i == currentIndex ? RF.creamDark.opacity(0.6) : Color.clear)
+                    // The transparent middle of the row must still be
+                    // tappable; without this, taps between the title
+                    // and the duration fall through.
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("map-stop-\(stop.number)")

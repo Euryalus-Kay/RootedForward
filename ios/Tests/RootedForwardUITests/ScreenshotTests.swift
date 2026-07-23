@@ -65,19 +65,14 @@ final class ScreenshotTests: XCTestCase {
         sleep(2)
         snap("01-home-top")
 
-        // 2. The Why-this-walk essay, expanded
-        let essayMore = app.buttons["home-essay-more"]
-        var tries = 0
-        while !essayMore.isHittable && tries < 4 {
-            app.swipeUp(velocity: .fast)
-            tries += 1
-        }
-        sleep(1)
-        essayMore.tap()
+        // 2. The Why-this-walk essay sheet
+        scrollToTap(app.buttons["home-essay-more"])
+        XCTAssertTrue(app.buttons["info-done"].waitForExistence(timeout: 5))
         sleep(1)
         snap("02-home-essay")
+        app.buttons["info-done"].tap()
+        sleep(1)
 
-        app.swipeUp(velocity: .fast)
         app.swipeUp(velocity: .fast)
         app.swipeUp(velocity: .fast)
         sleep(1)
@@ -103,7 +98,7 @@ final class ScreenshotTests: XCTestCase {
 
         // 4. The photograph room
         let photo = app.buttons["stop-photo"].firstMatch
-        tries = 0
+        var tries = 0
         while !photo.isHittable && tries < 4 {
             app.swipeUp(velocity: .fast)
             tries += 1

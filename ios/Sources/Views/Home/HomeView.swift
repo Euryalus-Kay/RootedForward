@@ -1,11 +1,10 @@
 import SwiftUI
 
 // ------------------------------------------------------------------
-// The home screen. A museum placard, not an app list: cream paper,
-// the 1940 HOLC survey map ghosted behind the masthead, Bodoni tour
-// title, survey-rule divider, hard-shadow rust CTA, then the eleven
-// stops as framed plates, the five red instrument plates, and the
-// practical cards, all drawn from live tour content.
+// The home screen, kept quiet. One title, one sentence, one line of
+// facts, one button. The stops speak through their photographs, and
+// everything wordy (the essay, the five red plates, the practical
+// notes) lives one tap away in sheets instead of stacked captions.
 // ------------------------------------------------------------------
 
 struct HomeView: View {
@@ -15,7 +14,7 @@ struct HomeView: View {
     @State private var tourTarget: TourTarget?
     @State private var showSettings = false
     @State private var confirmRestart = false
-    @State private var essayExpanded = false
+    @State private var infoSheet: InfoSheet?
     @State private var heroDrift = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -25,10 +24,8 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     masthead
                     hero
-                    essay
                     stopsStrip
-                    platesCard
-                    practicalCards
+                    infoRows
                     footer
                 }
             }
@@ -45,6 +42,12 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+        }
+        .sheet(item: $infoSheet) { sheet in
+            InfoSheetView(sheet: sheet) { index in
+                infoSheet = nil
+                tourTarget = TourTarget(index: index)
+            }
         }
         .confirmationDialog(
             "Start the walk over?",
@@ -67,10 +70,10 @@ struct HomeView: View {
         HStack(spacing: 10) {
             Image("LogoMark")
                 .resizable()
-                .frame(width: 30, height: 30)
+                .frame(width: 28, height: 28)
                 .accessibilityHidden(true)
             Text("Rooted Forward")
-                .font(RF.display(19, weight: 600))
+                .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
             Spacer()
             Button {
@@ -78,13 +81,13 @@ struct HomeView: View {
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(RF.ink.opacity(0.65))
+                    .foregroundStyle(RF.ink.opacity(0.55))
                     .frame(width: 40, height: 40)
             }
             .accessibilityLabel("Settings")
             .accessibilityIdentifier("home-settings")
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 24)
         .padding(.top, 8)
     }
 
@@ -92,44 +95,37 @@ struct HomeView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
-                Text("Self-guided audio tour")
-                    .eyebrow()
-                    .padding(.top, 36)
+            VStack(alignment: .leading, spacing: -14) {
+                Text("Walk")
+                Text("Hyde Park")
+            }
+            .font(RF.didone(54, weight: 600))
+            .foregroundStyle(RF.forest)
+            .padding(.top, 52)
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
 
-                Text("Walk Hyde Park")
-                    .font(RF.didone(46, weight: 600))
-                    .foregroundStyle(RF.forest)
-                    .padding(.top, 10)
-                    .accessibilityAddTraits(.isHeader)
+            Text(firstSentence(of: content.tour.dek))
+                .font(RF.body(17))
+                .foregroundStyle(RF.ink.opacity(0.7))
+                .lineSpacing(6)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 18)
 
-                Text(content.tour.dek)
-                    .font(RF.body(16.5))
-                    .foregroundStyle(RF.ink.opacity(0.78))
-                    .lineSpacing(6)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 14)
-
-                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, mostly flat")
-                    .font(RF.display(17, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGray)
-                    .padding(.top, 12)
-
-                SurveyRule()
-                    .padding(.top, 18)
-
-                stats
-                    .padding(.top, 18)
+            Text("\(content.tour.stops.count) stops · \(content.tour.distanceMiles, specifier: "%.1f") miles · \(content.tour.listenMinutes) minutes of audio")
+                .font(RF.body(14, weight: 500))
+                .foregroundStyle(RF.warmGray)
+                .padding(.top, 12)
 
             startControls
-                .padding(.top, 24)
+                .padding(.top, 32)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            // The 1940 HOLC survey map, ghosted and drifting slowly,
-            // like a document on a light table.
+            // The 1940 HOLC survey map, ghosted and drifting slowly.
             Color.clear
-                .frame(height: 380)
+                .frame(height: 420)
                 .overlay {
                     MediaImage(
                         sitePath: "/media/hyde-park-walk/holc-chicago-1940.jpg",
@@ -139,7 +135,7 @@ struct HomeView: View {
                     .offset(x: heroDrift ? -16 : 10, y: heroDrift ? -12 : 6)
                 }
                 .clipped()
-                .opacity(0.12)
+                .opacity(0.1)
                 .mask(
                     LinearGradient(
                         colors: [.black, .black, .clear],
@@ -156,92 +152,16 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Why this walk
-
-    private var essay: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Why this walk")
-                .eyebrow()
-            Text(content.intro.title)
-                .font(RF.display(24, weight: 600))
-                .foregroundStyle(RF.forest)
-                .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: 14) {
-                ForEach(
-                    Array((essayExpanded ? content.intro.paragraphs : Array(content.intro.paragraphs.prefix(1))).enumerated()),
-                    id: \.offset
-                ) { _, paragraph in
-                    MarkedText(text: paragraph, size: 15.5)
-                }
-            }
-
-            if essayExpanded {
-                Text(content.intro.byline)
-                    .font(RF.display(14, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGray)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Button {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    essayExpanded.toggle()
-                }
-            } label: {
-                HStack(spacing: 5) {
-                    Text(essayExpanded ? "Fold it away" : "Keep reading")
-                    Image(systemName: essayExpanded ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 11, weight: .semibold))
-                }
-                .font(RF.body(14, weight: 600))
-                .foregroundStyle(RF.rust)
-            }
-            .accessibilityIdentifier("home-essay-more")
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .plate()
-        .padding(.horizontal, 20)
-        .padding(.top, 40)
-    }
-
-    private var stats: some View {
-        HStack(spacing: 0) {
-            statBlock(value: "\(content.tour.stops.count)", label: "stops")
-            divider
-            statBlock(value: String(format: "%.1f", content.tour.distanceMiles), label: "miles")
-            divider
-            statBlock(value: "\(content.tour.listenMinutes)", label: "min of audio")
-            Spacer()
-        }
-    }
-
-    private var divider: some View {
-        Rectangle()
-            .fill(RF.border)
-            .frame(width: 1, height: 34)
-            .padding(.horizontal, 18)
-    }
-
-    private func statBlock(value: String, label: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(value)
-                .font(RF.didone(26, weight: 600))
-                .foregroundStyle(RF.ink)
-            Text(label)
-                .font(RF.body(12, weight: 500))
-                .tracking(1.2)
-                .textCase(.uppercase)
-                .foregroundStyle(RF.warmGray)
-        }
+    private func firstSentence(of text: String) -> String {
+        guard let period = text.firstIndex(of: ".") else { return text }
+        return String(text[...period])
     }
 
     private var startControls: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 14) {
             Button {
                 if progress.hasProgress {
-                    let index = min(progress.lastIndex, content.tour.stops.count - 1)
-                    tourTarget = TourTarget(index: index)
+                    tourTarget = TourTarget(index: min(progress.lastIndex, content.tour.stops.count - 1))
                 } else {
                     tourTarget = TourTarget(index: 0)
                 }
@@ -255,7 +175,7 @@ struct HomeView: View {
 
             if progress.hasProgress {
                 HStack(spacing: 10) {
-                    Text("\(progress.visited.count) of \(content.tour.stops.count) stops visited")
+                    Text("\(progress.visited.count) of \(content.tour.stops.count) visited")
                         .font(RF.body(13))
                         .foregroundStyle(RF.warmGray)
                     Button("Start over") {
@@ -264,10 +184,6 @@ struct HomeView: View {
                     .font(RF.body(13, weight: 600))
                     .foregroundStyle(RF.rust)
                 }
-            } else {
-                Text(content.tour.startLabel)
-                    .font(RF.body(13))
-                    .foregroundStyle(RF.warmGray)
             }
         }
     }
@@ -275,10 +191,11 @@ struct HomeView: View {
     // MARK: - Stops strip
 
     private var stopsStrip: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("The eleven stops")
-                .eyebrow()
-                .padding(.horizontal, 20)
+        VStack(alignment: .leading, spacing: 16) {
+            Text("The stops")
+                .font(RF.display(22, weight: 600))
+                .foregroundStyle(RF.forest)
+                .padding(.horizontal, 24)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 14) {
@@ -291,180 +208,88 @@ struct HomeView: View {
                         .buttonStyle(.plain)
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 24)
                 .padding(.vertical, 6)
             }
         }
-        .padding(.top, 40)
+        .padding(.top, 52)
     }
 
-    // MARK: - The red plates
+    // MARK: - Info rows
 
-    private var platesCard: some View {
-        let plates: [(stopIndex: Int, title: String)] = content.tour.stops.enumerated().flatMap { index, stop in
-            (stop.interrupts ?? []).map { (stopIndex: index, title: $0.title) }
-        }
-        return VStack(alignment: .leading, spacing: 12) {
-            Text("The instruments")
-                .eyebrow(RF.plateRed)
-            Text("Five red plates name them")
-                .font(RF.display(23, weight: 600))
-                .foregroundStyle(RF.plateRed)
-            Text("Nothing here was weather. Along the walk, red plates name the tools that built segregation, one by one.")
-                .font(RF.body(15))
-                .foregroundStyle(RF.ink.opacity(0.75))
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(Array(plates.enumerated()), id: \.offset) { n, plate in
-                    Button {
-                        tourTarget = TourTarget(index: plate.stopIndex)
-                    } label: {
-                        HStack(spacing: 10) {
-                            Text("\(n + 1)")
-                                .font(RF.didone(15, weight: 600))
-                                .foregroundStyle(RF.plateRedGround)
-                                .frame(width: 22, height: 22)
-                                .background(Circle().fill(RF.plateRed))
-                            Text(plate.title)
-                                .font(RF.body(15, weight: 600))
-                                .foregroundStyle(RF.ink.opacity(0.85))
-                            Spacer()
-                            Text("Stop \(plate.stopIndex + 1)")
-                                .font(RF.body(13))
-                                .foregroundStyle(RF.warmGray)
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 11, weight: .semibold))
-                                .foregroundStyle(RF.warmGray)
-                        }
-                        .padding(.vertical, 11)
-                    }
-                    .buttonStyle(.plain)
-                    if n < plates.count - 1 {
-                        Rectangle().fill(RF.plateRed.opacity(0.15)).frame(height: 1)
-                    }
-                }
+    private var infoRows: some View {
+        VStack(spacing: 0) {
+            infoRow("Why this walk", identifier: "home-essay-more") {
+                infoSheet = .essay
             }
-            .padding(.top, 4)
+            divider
+            infoRow("The five red plates") {
+                infoSheet = .plates
+            }
+            divider
+            infoRow("Before you walk") {
+                infoSheet = .practical
+            }
+            divider
+            Link(destination: URL(string: "https://rooted-forward.org/tours/chicago/hyde-park")!) {
+                HStack {
+                    Text("Read the exhibit")
+                        .font(RF.body(16, weight: 500))
+                        .foregroundStyle(RF.ink.opacity(0.85))
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(RF.warmGray)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .contentShape(Rectangle())
+            }
         }
-        .padding(18)
-        .redPlate()
-        .padding(.horizontal, 20)
-        .padding(.top, 40)
+        .plate()
+        .padding(.horizontal, 24)
+        .padding(.top, 44)
     }
 
-    // MARK: - Practical
+    private var divider: some View {
+        Rectangle().fill(RF.border.opacity(0.8)).frame(height: 1)
+    }
 
-    private var practicalCards: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("Before you walk")
-                .eyebrow()
-            ForEach(content.tour.practical) { card in
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(card.title)
-                        .font(RF.display(18, weight: 600))
-                        .foregroundStyle(RF.forest)
-                    Text(card.text)
-                        .font(RF.body(14.5))
-                        .foregroundStyle(RF.ink.opacity(0.75))
-                        .lineSpacing(5)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(16)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .plate()
+    private func infoRow(_ title: String, identifier: String? = nil, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .font(RF.body(16, weight: 500))
+                    .foregroundStyle(RF.ink.opacity(0.85))
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(RF.warmGray)
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+            // Without an explicit content shape, the transparent gap
+            // in the middle of the row is not tappable at all.
+            .contentShape(Rectangle())
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 40)
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(identifier ?? "row-\(title)")
     }
 
     // MARK: - Footer
 
     private var footer: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SurveyRule(color: RF.cream.opacity(0.4))
-            Text("Prefer to stay in?")
-                .font(RF.display(21, weight: 600))
-                .foregroundStyle(RF.cream)
-            Text("The Ground Keeps Moving is the online exhibit that pairs with this walk. One map, five instruments, and the bill.")
-                .font(RF.body(14.5))
-                .foregroundStyle(RF.cream.opacity(0.75))
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-            Link(destination: URL(string: "https://rooted-forward.org/tours/chicago/hyde-park")!) {
-                HStack(spacing: 6) {
-                    Text("Read the exhibit")
-                    Image(systemName: "arrow.up.right")
-                        .font(.system(size: 12, weight: .semibold))
-                }
-                .font(RF.body(15, weight: 600))
-                .foregroundStyle(RF.cream)
-                .underline()
-            }
-            Text("A student-run Chicago nonprofit.\nrooted-forward.org")
-                .font(RF.body(12.5))
-                .foregroundStyle(RF.cream.opacity(0.6))
-                .padding(.top, 16)
-        }
-        .padding(20)
-        .padding(.bottom, 84)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RF.forest)
-        .padding(.top, 44)
-    }
-}
-
-/// The resume-audio chip pinned over the home screen while narration
-/// plays. Isolated so audio progress updates re-render only this.
-struct ListeningChip: View {
-    @EnvironmentObject private var content: ContentStore
-    @EnvironmentObject private var audio: AudioEngine
-    let onOpen: (Int) -> Void
-
-    var body: some View {
-        if audio.currentStopID != nil {
-            chip
-        }
-    }
-
-    private var chip: some View {
-        Button {
-            let index = content.tour.stops.firstIndex { audio.isCurrent($0.id) } ?? 0
-            onOpen(index)
-        } label: {
-            HStack(spacing: 12) {
-                Button {
-                    audio.isPlaying ? audio.pause() : audio.resume()
-                } label: {
-                    Image(systemName: audio.isPlaying ? "pause.fill" : "play.fill")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 34, height: 34)
-                        .background(Circle().fill(RF.rust))
-                }
-                .accessibilityLabel(audio.isPlaying ? "Pause" : "Play")
-
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(audio.currentStopTitle)
-                        .font(RF.body(14, weight: 600))
-                        .foregroundStyle(RF.ink)
-                        .lineLimit(1)
-                    Text("Tap to return to the tour")
-                        .font(RF.body(12))
-                        .foregroundStyle(RF.warmGray)
-                }
-                Spacer()
-                Image(systemName: "chevron.up")
-                    .font(.system(size: 12, weight: .semibold))
+        VStack(spacing: 12) {
+            SurveyRule(color: RF.warmGrayLight)
+            Link(destination: URL(string: "https://rooted-forward.org")!) {
+                Text("rooted-forward.org")
+                    .font(RF.body(13, weight: 500))
                     .foregroundStyle(RF.warmGray)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .plate()
         }
-        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .padding(.top, 56)
+        .padding(.bottom, 100)
     }
 }
 
@@ -472,6 +297,12 @@ struct ListeningChip: View {
 struct TourTarget: Identifiable {
     let index: Int
     var id: Int { index }
+}
+
+/// The sheets behind the home screen's info rows.
+enum InfoSheet: String, Identifiable {
+    case essay, plates, practical
+    var id: String { rawValue }
 }
 
 /// One framed thumbnail in the horizontal stop strip.
@@ -509,5 +340,53 @@ private struct StopCard: View {
             }
             .frame(width: 136, alignment: .leading)
         }
+    }
+}
+
+/// The resume-audio chip pinned over the home screen while narration
+/// plays. Isolated so audio progress updates re-render only this.
+struct ListeningChip: View {
+    @EnvironmentObject private var content: ContentStore
+    @EnvironmentObject private var audio: AudioEngine
+    let onOpen: (Int) -> Void
+
+    var body: some View {
+        if audio.currentStopID != nil {
+            chip
+        }
+    }
+
+    private var chip: some View {
+        Button {
+            let index = content.tour.stops.firstIndex { audio.isCurrent($0.id) } ?? 0
+            onOpen(index)
+        } label: {
+            HStack(spacing: 12) {
+                Button {
+                    audio.isPlaying ? audio.pause() : audio.resume()
+                } label: {
+                    Image(systemName: audio.isPlaying ? "pause.fill" : "play.fill")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 34, height: 34)
+                        .background(Circle().fill(RF.rust))
+                }
+                .accessibilityLabel(audio.isPlaying ? "Pause" : "Play")
+
+                Text(audio.currentStopTitle)
+                    .font(RF.body(14, weight: 600))
+                    .foregroundStyle(RF.ink)
+                    .lineLimit(1)
+                Spacer()
+                Image(systemName: "chevron.up")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(RF.warmGray)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .plate()
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
