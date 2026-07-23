@@ -1,0 +1,104 @@
+# ------------------------------------------------------------------
+# Rooted Forward iOS app. Run `xcodegen generate` in this folder to
+# produce RootedForward.xcodeproj, then open it in Xcode. The app is
+# the Walk Hyde Park self-guided audio tour, native SwiftUI, no
+# third-party dependencies. Content ships bundled (Resources/) and
+# refreshes from https://rooted-forward.org/api/walk so site edits
+# reach the app without an App Store update.
+# ------------------------------------------------------------------
+name: RootedForward
+options:
+  bundleIdPrefix: org.rootedforward
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_LANGUAGE: en
+targets:
+  RootedForward:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: Assets.xcassets
+      - path: Resources/Content
+        type: folder
+        buildPhase: resources
+      - path: Resources/Media
+        type: folder
+        buildPhase: resources
+      - path: Resources/Fonts
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.rootedforward.walk
+        PRODUCT_NAME: RootedForward
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: "1"
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Rooted Forward
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.education
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIBackgroundModes:
+          - audio
+        NSLocationWhenInUseUsageDescription: >-
+          Your location is used only to draw your dot on the tour map and
+          tell you when you are near a stop. It stays on your phone and is
+          never sent anywhere.
+        ITSAppUsesNonExemptEncryption: false
+        UIRequiresFullScreen: true
+  RootedForwardTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/RootedForwardTests
+    dependencies:
+      - target: RootedForward
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/RootedForward.app/RootedForward
+  RootedForwardUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/RootedForwardUITests
+    dependencies:
+      - target: RootedForward
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  RootedForward:
+    build:
+      targets:
+        RootedForward: all
+        RootedForwardTests: [test]
+        RootedForwardUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - RootedForwardTests
+        - RootedForwardUITests
+    archive:
+      config: Release

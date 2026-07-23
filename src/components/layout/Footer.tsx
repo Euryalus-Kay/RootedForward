@@ -35,6 +35,12 @@ export default function Footer() {
           <p className="mt-6 text-xs text-cream/70">
             &copy; {new Date().getFullYear()} Rooted Forward. All rights reserved.
           </p>
+          <Link
+            href="/privacy"
+            className="mt-2 inline-block text-xs text-cream/70 underline decoration-cream/30 underline-offset-2 transition-colors hover:text-cream"
+          >
+            Privacy
+          </Link>
         </div>
 
         {/* Middle column - Quick links */}

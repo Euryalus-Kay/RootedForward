@@ -1,0 +1,8 @@
+# Xcode
+*.xcuserdatad
+xcuserdata/
+DerivedData/
+
+# Bundled media is copied from ../public/media/hyde-park-walk by
+# prep-media.sh; do not duplicate 37MB of tracked media in git.
+Resources/Media/
