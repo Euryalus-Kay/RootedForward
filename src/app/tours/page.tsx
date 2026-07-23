@@ -2,25 +2,26 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
-import { JACKSON_PARK_WALK } from "@/lib/tours/jackson-park-walk";
+import { HYDE_PARK_WALK } from "@/lib/tours/hyde-park-walk";
 
 /* ------------------------------------------------------------------ */
 /*  /tours                                                             */
 /*                                                                     */
-/*  The Jackson Park self-paced audio walking tour. Starts at the     */
-/*  Obama Presidential Center, loops the park in under an hour of     */
-/*  walking, and plays a short recorded story at each stop. The map   */
-/*  is our own SVG built from Census TIGER geometry; the audio is     */
-/*  pregenerated and served from /public. The previous /tours index   */
-/*  is preserved intact at page.hidden.tsx.                           */
+/*  The Hyde Park racial-history audio walking tour. Starts at Paul   */
+/*  Cornell's stone by 53rd Street, crosses the neighborhood he       */
+/*  built, and names the instruments that decided who could live in   */
+/*  it. Same player, map, and plate design as the earlier Jackson     */
+/*  Park walk (that tour's data survives in jackson-park-walk.ts).    */
+/*  The map is our own SVG built from Census TIGER geometry; the      */
+/*  audio is pregenerated and served from /public.                    */
 /* ------------------------------------------------------------------ */
 
-const tour = JACKSON_PARK_WALK;
+const tour = HYDE_PARK_WALK;
 
 export const metadata: Metadata = {
-  title: "Jackson Park Walking Tour | Rooted Forward",
+  title: "Hyde Park Walking Tour | Rooted Forward",
   description:
-    "A free self-guided audio tour of Jackson Park, starting at the Obama Presidential Center. Nine stops in about an hour of walking through the grounds of the 1893 World's Fair.",
+    "A free self-guided audio tour of Hyde Park, from Paul Cornell's stone to Harper Court. Nine stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
 };
 
 export default function ToursPage() {
@@ -28,14 +29,14 @@ export default function ToursPage() {
     <div className="min-h-screen bg-cream">
       {/* Opener */}
       <section className="relative overflow-hidden border-b border-border bg-cream pb-10 pt-20 md:pb-20 md:pt-28">
-        {/* the 1893 Rand McNally bird's eye of these exact grounds,
-            washed into the paper */}
+        {/* the 1940 HOLC security map of Chicago, the redlining map
+            itself, washed into the paper */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/media/jackson-park-walk/birdseye-1893.jpg"
+          src="/media/site/holc-chicago-1940.jpg"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.12] mix-blend-multiply [mask-image:radial-gradient(ellipse_75%_90%_at_70%_40%,black_45%,transparent)] md:block"
+          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.14] mix-blend-multiply [mask-image:radial-gradient(ellipse_75%_90%_at_70%_40%,black_45%,transparent)] md:block"
         />
         <div className="relative mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
@@ -70,6 +71,53 @@ export default function ToursPage() {
         </div>
       </section>
 
+      {/* Why this walk: the founder's essay, shortened. The tour's
+          argument in four paragraphs before the first stop. */}
+      <section aria-label="Why this walk" className="border-b border-border bg-cream py-12 md:py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="max-w-[62ch]">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+              Why this walk
+            </p>
+            <h2 className="walk-title mt-3 text-2xl font-semibold leading-snug text-forest md:text-3xl">
+              The covenants are still on our deeds
+            </h2>
+            <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
+              <p>
+                On Juneteenth, Barack Obama opened his presidential center on
+                the ground where Chicago staged the 1893 World&apos;s Fair. The
+                fair called itself the White City, and it meant it. Ida B.
+                Wells and Frederick Douglass stood at its gates with a pamphlet
+                about who had been shut out. Now the first Black
+                president&apos;s words wrap a 225-foot tower on the same ground.
+              </p>
+              <p>
+                It reads like closure. It is not, because for a century the
+                neighborhoods around that park were a workshop where the tools
+                of American housing segregation were designed, tested, and
+                defended.
+              </p>
+              <p>
+                Paul Cornell bought lakefront acres here in 1853, cut a deal
+                with the Illinois Central for a train stop, and sold Hyde Park
+                to wealthy Chicagoans as a refuge from the city. Exclusivity
+                was the product. When Black families moved south during the
+                Great Migration, that promise grew teeth.
+              </p>
+              <p>
+                None of it was weather. Every stage had authors, and every
+                instrument had a signature. This walk goes where they signed.
+                The five red plates along the way name the instruments, one
+                by one.
+              </p>
+            </div>
+            <p className="mt-5 font-display text-[13px] italic text-ink/60">
+              Adapted from an essay by Zain Zaidi, Rooted Forward&apos;s founder.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* The plate index: a small framed photograph of each site.
           Tap one to jump straight to that stop in the tour below. */}
       <section aria-label="The nine stops" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
@@ -94,8 +142,8 @@ export default function ToursPage() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={(s.nowImage ?? s.images[0]).src.replace(
-                        "/jackson-park-walk/",
-                        "/jackson-park-walk/thumbs/"
+                        "/hyde-park-walk/",
+                        "/hyde-park-walk/thumbs/"
                       )}
                       alt=""
                       loading="lazy"

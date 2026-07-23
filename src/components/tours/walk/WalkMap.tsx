@@ -31,37 +31,47 @@ interface WalkMapProps {
 }
 
 // anchored to survive the route-fitted viewBox clamp; keep every
-// label inside roughly lng -87.592..-87.577, lat 41.791..41.778
+// label inside roughly lng -87.608..-87.576, lat 41.802..41.784
 const PLACE_LABELS: { text: string; lat: number; lng: number; size: number }[] = [
-  { text: "Lake Michigan", lat: 41.7896, lng: -87.5795, size: 13 },
-  { text: "Midway Plaisance", lat: 41.78635, lng: -87.5901, size: 11 },
-  { text: "Wooded Island", lat: 41.7839, lng: -87.5845, size: 11 },
-  { text: "Jackson Park", lat: 41.779, lng: -87.5845, size: 15 },
+  { text: "Lake Michigan", lat: 41.797, lng: -87.5755, size: 13 },
+  { text: "Hyde Park", lat: 41.7968, lng: -87.5942, size: 15 },
+  { text: "Midway Plaisance", lat: 41.78635, lng: -87.6005, size: 11 },
+  { text: "Jackson Park", lat: 41.7867, lng: -87.5805, size: 12 },
+  { text: "Woodlawn", lat: 41.7828, lng: -87.5955, size: 11 },
 ];
 
 // street names set along their streets, like a printed map's fine type
 const STREET_LABELS: { text: string; lat: number; lng: number; rotate: number; size: number }[] = [
-  { text: "Stony Island Ave", lat: 41.7815, lng: -87.5869, rotate: -90, size: 9 },
-  { text: "Cornell Dr", lat: 41.7826, lng: -87.5815, rotate: -75, size: 9 },
-  { text: "Hayes Dr", lat: 41.7756, lng: -87.5832, rotate: -7, size: 9 },
+  { text: "E 53rd St", lat: 41.8001, lng: -87.5946, rotate: 0, size: 9 },
+  { text: "E 55th St", lat: 41.7957, lng: -87.5993, rotate: 0, size: 9 },
+  { text: "E 57th St", lat: 41.7921, lng: -87.5906, rotate: 0, size: 9 },
+  { text: "Lake Park Ave", lat: 41.7967, lng: -87.5871, rotate: -87, size: 9 },
+  { text: "Woodlawn Ave", lat: 41.7932, lng: -87.5968, rotate: -90, size: 9 },
 ];
 
-// soft green ground for the park itself; boundaries are streets, the
-// lake polygon paints over the eastern overhang
+// soft green ground for the parks; boundaries are streets, the lake
+// polygon paints over the eastern overhang
 const PARK_AREAS: [number, number][][] = [
-  // Jackson Park: 56th to 67th, Stony Island to the lake
+  // Jackson Park: 56th down past the frame, Stony Island to the lake
   [
     [41.7936, -87.587],
     [41.7936, -87.566],
     [41.7737, -87.556],
     [41.7737, -87.587],
   ],
-  // Midway Plaisance strip: 59th to 60th, west to Cottage Grove
+  // Midway Plaisance strip: 59th to 60th, lake side to Washington Park
   [
     [41.7872, -87.5868],
-    [41.7872, -87.607],
-    [41.7854, -87.607],
+    [41.7872, -87.613],
+    [41.7854, -87.613],
     [41.7854, -87.5868],
+  ],
+  // Washington Park: west of Cottage Grove
+  [
+    [41.8045, -87.6063],
+    [41.8045, -87.618],
+    [41.7815, -87.618],
+    [41.7815, -87.6063],
   ],
 ];
 
@@ -115,7 +125,7 @@ export default function WalkMap({
       viewBox={viewBox}
       className="block h-auto w-full"
       role="group"
-      aria-label="Map of the tour route through Jackson Park with numbered stops. The same stops are listed in order below the map."
+      aria-label="Map of the tour route through Hyde Park with numbered stops. The same stops are listed in order below the map."
     >
       {/* engraver's water: pale wash under fine horizontal hatching,
           the way lagoons are ruled on printed park maps */}

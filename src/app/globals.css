@@ -1922,3 +1922,15 @@ body.exhibit-immersive > footer { display: none; }
   font-family: var(--font-bodoni-moda), 'Bodoni Moda', Didot, 'Bodoni MT', serif;
   letter-spacing: 0.01em;
 }
+/* the numbered instruments-of-exclusion sidebars. Red like the "D"
+   grade on a HOLC security map: same engraved plate construction,
+   different ink, so they interrupt the page the way the policies
+   interrupted the neighborhood */
+.walk-plate-red {
+  background: #F8EDE8;
+  border: 1px solid rgba(140, 42, 26, 0.55);
+  box-shadow:
+    inset 0 0 0 3px #F8EDE8,
+    inset 0 0 0 4px rgba(140, 42, 26, 0.4),
+    5px 5px 0 0 rgba(140, 42, 26, 0.16);
+}

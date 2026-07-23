@@ -201,6 +201,30 @@ export default function StopDetail({
         ))}
       </div>
 
+      {/* the numbered instruments of exclusion, printed in HOLC red */}
+      {stop.interrupts?.map((box) => (
+        <motion.aside
+          key={box.title}
+          aria-label={`${box.title}. Instrument ${box.n} of ${box.of}.`}
+          className="walk-plate-red mt-6 rounded-[3px] px-5 py-5 md:px-6"
+          {...reveal}
+        >
+          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8C2A1A]">
+            The instruments &middot; {box.n} of {box.of}
+          </p>
+          <p className="walk-title mt-1.5 text-xl font-semibold text-[#7A2416] md:text-2xl">
+            {box.title}
+          </p>
+          <div className="mt-3 space-y-3">
+            {box.body.map((para, i) => (
+              <p key={i} className="font-body text-[15px] leading-relaxed text-ink/85">
+                <RichText text={para} />
+              </p>
+            ))}
+          </div>
+        </motion.aside>
+      ))}
+
       {/* worth a look */}
       <motion.p
         className="walk-plate-brass mt-6 rounded-[3px] px-5 py-4 font-body text-base leading-relaxed text-ink/90"

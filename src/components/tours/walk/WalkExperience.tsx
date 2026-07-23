@@ -14,18 +14,18 @@ import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
 import StopDetail from "./StopDetail";
 import WalkMap from "./WalkMap";
 
-const STORAGE_KEY = "rf-walk-jackson-park-v1";
+const STORAGE_KEY = "rf-walk-hyde-park-v1";
 
 type Mode = "walk" | "browse";
 
 const SHARE_URL = "https://rooted-forward.org/tours";
 
-function ShareButton() {
+function ShareButton({ title, text }: { title: string; text: string }) {
   const [copied, setCopied] = useState(false);
   const share = async () => {
     const data = {
-      title: "Walk Jackson Park",
-      text: "A free self-guided audio walking tour of Jackson Park, starting at the Obama Presidential Center.",
+      title,
+      text,
       url: SHARE_URL,
     };
     if (typeof navigator.share === "function") {
@@ -271,7 +271,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         if (!isNearFrame(latitude, longitude)) {
           setUserPos(null);
           setGeoNote(
-            "You are outside the Jackson Park area right now, so the map will not show your dot. You can still read and listen from here."
+            "You are outside the Hyde Park area right now, so the map will not show your dot. You can still read and listen from here."
           );
           return;
         }
@@ -384,7 +384,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     <>
       <div className="walk-plate overflow-hidden rounded-[3px]">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-ink/15 px-4 py-2.5">
-          <p className="font-display text-lg leading-none text-forest">Jackson Park</p>
+          <p className="font-display text-lg leading-none text-forest">Hyde Park</p>
           <p className="font-display text-[13px] italic text-ink/60">
             {tour.distanceMiles} miles &middot; {stops.length} stops
           </p>
@@ -488,10 +488,13 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 </div>
               </div>
               <p className="walk-title hidden truncate text-center text-lg font-semibold leading-none text-forest md:block">
-                Walk Jackson Park
+                {tour.title}
               </p>
             </div>
-            <ShareButton />
+            <ShareButton
+              title={tour.title}
+              text={`${tour.title}, a free self-guided audio walking tour.`}
+            />
           </div>
         </div>
       )}
@@ -555,7 +558,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
                 Resume at stop {resumeIndex + 1}
               </button>
             )}
-            <ShareButton />
+            <ShareButton
+              title={tour.title}
+              text={`${tour.title}, a free self-guided audio walking tour.`}
+            />
           </div>
         </div>
       </div>

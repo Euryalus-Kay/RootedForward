@@ -25,8 +25,17 @@ import { spawn } from "node:child_process";
 import path from "node:path";
 
 const ROOT = process.cwd();
-const DATA = path.join(ROOT, "src/lib/tours/jackson-park-walk.ts");
-const LIVE = path.join(ROOT, "public/media/jackson-park-walk/audio");
+// two tours share this pipeline; pick with --tour (default hyde-park)
+const TOURS = {
+  "hyde-park": {
+    data: "src/lib/tours/hyde-park-walk.ts",
+    live: "public/media/hyde-park-walk/audio",
+  },
+  "jackson-park": {
+    data: "src/lib/tours/jackson-park-walk.ts",
+    live: "public/media/jackson-park-walk/audio",
+  },
+};
 
 // Named voices. "narrator" is the original professional ElevenLabs
 // narrator the tour launched with; "zain" is the owner's own cloned
@@ -44,6 +53,13 @@ function arg(name, def = null) {
     : def;
 }
 const hasFlag = (name) => process.argv.includes(`--${name}`);
+const tourName = arg("tour", "hyde-park");
+if (!TOURS[tourName]) {
+  console.error(`unknown --tour "${tourName}" (use ${Object.keys(TOURS).join(" | ")})`);
+  process.exit(1);
+}
+const DATA = path.join(ROOT, TOURS[tourName].data);
+const LIVE = path.join(ROOT, TOURS[tourName].live);
 const voiceName = arg("voice", "zain");
 const voice = VOICES[voiceName] ?? voiceName;
 const archiveName = VOICES[voiceName] ? voiceName : `id-${voiceName.slice(0, 8)}`;
@@ -130,7 +146,7 @@ async function main() {
   await mkdir(OUT, { recursive: true });
   const stops = loadStops();
   if (!stops.length) {
-    console.error("No transcripts found in jackson-park-walk.ts");
+    console.error(`No transcripts found in ${DATA}`);
     process.exit(1);
   }
   const durations = existsSync(DURS) ? JSON.parse(readFileSync(DURS, "utf8")) : {};

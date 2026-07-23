@@ -20,9 +20,11 @@ import { readFileSync, writeFileSync } from "node:fs";
 const SRC = "data/exhibit-src";
 const OUT = "src/lib/tours/walk-geometry.json";
 
-// Jackson Park and enough Woodlawn/Hyde Park context to orient a
-// visitor: 57th St to 64th St, Cottage Grove-ish to the lake.
-const F = { latMin: 41.7705, latMax: 41.801, lngMin: -87.605, lngMax: -87.568 };
+// Hyde Park proper for the racial-history walk: 51st St down past
+// the Midway, Washington Park's edge to the lake. (The old Jackson
+// Park frame was latMin 41.7705, latMax 41.801, lngMin -87.605,
+// lngMax -87.568; restore it and re-run to bring that map back.)
+const F = { latMin: 41.7815, latMax: 41.8045, lngMin: -87.612, lngMax: -87.572 };
 const LAT_MID = (F.latMin + F.latMax) / 2;
 const COS = Math.cos((LAT_MID * Math.PI) / 180);
 const W = 1000;

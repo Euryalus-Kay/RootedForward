@@ -157,7 +157,7 @@ export default function AudioPlayer({
             navigator.mediaSession.metadata = new MediaMetadata({
               title: label.replace(/^Play /, ""),
               artist: "Rooted Forward",
-              album: "Walk Jackson Park",
+              album: "Walk Hyde Park",
             });
             const el = e.currentTarget;
             navigator.mediaSession.setActionHandler("play", () => void el.play());

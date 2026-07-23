@@ -21,6 +21,19 @@ export interface WalkDirections {
   minutes: number;
 }
 
+/** one of the numbered sidebars naming a specific instrument of
+ *  exclusion (covenants, redlining, contracts...); rendered as a
+ *  red-ruled plate between the stop's story and its lookFor note */
+export interface WalkInterrupt {
+  /** position in the series, e.g. 2 */
+  n: number;
+  /** how many sidebars the tour has, e.g. 5 */
+  of: number;
+  title: string;
+  /** body paragraphs; `**bold**` renders bold */
+  body: string[];
+}
+
 export interface WalkStop {
   id: string;
   /** 1-based stop number shown on the map and cards */
@@ -44,6 +57,8 @@ export interface WalkStop {
   /** what the site looks like today; paired with images[0] on the page
    *  and used as the stop's thumbnail in the plate index */
   nowImage?: WalkImage;
+  /** the numbered instruments-of-exclusion sidebars for this stop */
+  interrupts?: WalkInterrupt[];
   /** directions to the following stop; absent on the last stop */
   toNext?: WalkDirections;
   /** short label for the map, e.g. "Statue of the Republic" */
