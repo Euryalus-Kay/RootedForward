@@ -107,8 +107,7 @@ export default function ToursPage() {
               <p>
                 None of it was weather. Every stage had authors, and every
                 instrument had a signature. This walk goes where they signed.
-                The five red plates along the way name the instruments, one
-                by one.
+                The five red plates along the way name them, one by one.
               </p>
             </div>
             <p className="mt-5 font-display text-[13px] italic text-ink/60">

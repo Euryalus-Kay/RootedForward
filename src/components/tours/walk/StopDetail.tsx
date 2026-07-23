@@ -201,18 +201,15 @@ export default function StopDetail({
         ))}
       </div>
 
-      {/* the numbered instruments of exclusion, printed in HOLC red */}
+      {/* red sidebar plates, each labeled by the mechanism it explains */}
       {stop.interrupts?.map((box) => (
         <motion.aside
           key={box.title}
-          aria-label={`${box.title}. Instrument ${box.n} of ${box.of}.`}
+          aria-label={box.title}
           className="walk-plate-red mt-6 rounded-[3px] px-5 py-5 md:px-6"
           {...reveal}
         >
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8C2A1A]">
-            The instruments &middot; {box.n} of {box.of}
-          </p>
-          <p className="walk-title mt-1.5 text-xl font-semibold text-[#7A2416] md:text-2xl">
+          <p className="walk-title text-xl font-semibold text-[#7A2416] md:text-2xl">
             {box.title}
           </p>
           <div className="mt-3 space-y-3">
@@ -225,20 +222,16 @@ export default function StopDetail({
         </motion.aside>
       ))}
 
-      {/* worth a look */}
-      <motion.p
-        className="walk-plate-brass mt-6 rounded-[3px] px-5 py-4 font-body text-base leading-relaxed text-ink/90"
-        {...reveal}
-      >
-        <strong className="font-semibold text-ink">Worth a look.</strong>{" "}
-        {stop.lookFor}
-      </motion.p>
-
-      {stop.toNext && (
-        <motion.div className="walk-plate mt-6 rounded-[3px] p-5" {...reveal}>
-          <div className="flex items-baseline justify-between gap-4">
-            <p className="font-body text-base font-semibold text-ink">
-              {nextStop ? nextStop.title : "Next stop"}
+      {/* one plate carries the whole hand-off: where you are going,
+          how to walk there, the maps link, and the controls */}
+      {stop.toNext ? (
+        <motion.div className="walk-plate mt-8 rounded-[3px] p-5" {...reveal}>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+            Next stop
+          </p>
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <p className="font-body text-lg font-semibold text-ink">
+              {nextStop ? nextStop.title : ""}
             </p>
             <p className="shrink-0 font-body text-sm text-ink/60">
               {stop.toNext.minutes} min walk &middot;{" "}
@@ -248,43 +241,54 @@ export default function StopDetail({
           <p className="mt-2 font-body text-base leading-relaxed text-ink/75">
             {stop.toNext.text}
           </p>
-          {nextStop && (
-            <a
-              href={gmapsWalkingUrl(nextStop.lat, nextStop.lng)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
-            >
-              <PinIcon className="text-rust" />
-              Open this leg in Google Maps
-            </a>
-          )}
+          <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-ink/15 pt-4">
+            {showNav && onNext && (
+              <button
+                type="button"
+                onClick={onNext}
+                className="rounded-[3px] bg-rust px-7 py-3 font-body text-sm font-semibold text-white shadow-[4px_4px_0_0_rgba(27,58,45,0.15)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
+              >
+                Next stop
+              </button>
+            )}
+            {nextStop && (
+              <a
+                href={gmapsWalkingUrl(nextStop.lat, nextStop.lng)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2.5 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
+              >
+                <PinIcon className="text-rust" />
+                Open in Google Maps
+              </a>
+            )}
+            {showNav && onPrev && (
+              <button
+                type="button"
+                onClick={onPrev}
+                className="ml-auto rounded-[3px] px-3 py-2.5 font-body text-sm font-medium text-ink/60 transition-colors hover:text-forest"
+              >
+                Back
+              </button>
+            )}
+          </div>
         </motion.div>
-      )}
-
-      {showNav && (
-        <div
-          className={`mt-8 items-center justify-between gap-4 border-t border-border/60 pt-6 ${
-            focusChrome ? "hidden md:flex" : "flex"
-          }`}
-        >
-          <button
-            type="button"
-            onClick={onPrev}
-            disabled={!onPrev}
-            className="rounded-[3px] border border-ink/25 bg-white px-6 py-3 font-body text-sm font-medium text-ink/70 transition-colors enabled:hover:border-forest/60 enabled:hover:text-forest disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Previous
-          </button>
-          <button
-            type="button"
-            onClick={onNext}
-            disabled={!onNext}
-            className="rounded-[3px] bg-rust px-7 py-3 font-body text-sm font-semibold text-white shadow-[4px_4px_0_0_rgba(27,58,45,0.15)] transition-all enabled:hover:-translate-y-0.5 enabled:hover:bg-rust-dark motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Next stop
-          </button>
-        </div>
+      ) : (
+        showNav &&
+        onPrev && (
+          <div className="mt-8 flex items-center justify-between gap-4 border-t border-border/60 pt-6">
+            <button
+              type="button"
+              onClick={onPrev}
+              className="rounded-[3px] border border-ink/25 bg-white px-6 py-3 font-body text-sm font-medium text-ink/70 transition-colors hover:border-forest/60 hover:text-forest"
+            >
+              Previous stop
+            </button>
+            <p className="font-display text-sm italic text-ink/60">
+              End of the walk
+            </p>
+          </div>
+        )
       )}
     </article>
   );

@@ -280,9 +280,7 @@ export const HYDE_PARK_WALK: WalkTour = {
         "Stand across Woodlawn and let the long roof lines run. Then look down the block. This is the product Cornell imagined, seventy years on.",
       interrupts: [
         {
-          n: 1,
-          of: 5,
-          title: "The rule",
+          title: "The Chicago Real Estate Board",
           body: [
             "In 1917 the Chicago Real Estate Board adopted a policy of block-by-block segregation, confining Black residents to blocks that already had Black neighbors. In 1924 the national realtors' association wrote the idea into its code of ethics. Article 34 read, \"A Realtor should never be instrumental in introducing into a neighborhood a character of property or occupancy, members of any race or nationality, or any individuals whose presence will clearly be detrimental to property values in that neighborhood.\"",
             "An agent who broke the rule could be expelled from the board, which could end a career. Selling a house to a Black family in a white neighborhood was, by the profession's own written standard, an ethics violation. The race language stayed in the code until 1950.",
@@ -336,8 +334,6 @@ export const HYDE_PARK_WALK: WalkTour = {
         "Look east and west and feel the length of the strip. Then stand at the curb and look south into Woodlawn. The border is still legible in the buildings.",
       interrupts: [
         {
-          n: 2,
-          of: 5,
           title: "Restrictive covenants",
           body: [
             "A covenant is a promise written into a property deed. Chicago's version barred an owner from ever selling or renting to a Black person. In 1927 the Chicago Real Estate Board circulated a model covenant, drafted by the national association's counsel Nathan William MacChesney, and pushed it block by block through churches, clubs, and property owners' associations. More than 220 Cook County subdivisions adopted its language, and people at the time claimed covenants covered as much as three-quarters of the city's residential property.",
@@ -438,8 +434,6 @@ export const HYDE_PARK_WALK: WalkTour = {
         "The 1961 townhouses' little courts, then any older graystone that survived. The gaps in age between buildings are the renewal map, drawn in brick.",
       interrupts: [
         {
-          n: 3,
-          of: 5,
           title: "Redlining",
           body: [
             "In 1939 and 1940 a federal agency, the Home Owners' Loan Corporation, graded every Chicago neighborhood for mortgage risk. Green was best, then blue, then yellow, then red. The colors tracked race almost exactly. Most of the Black Belt was drawn red, hazardous. Hyde Park and Kenwood were drawn yellow, definitely declining, in part because Black Chicago lived next door.",
@@ -447,8 +441,6 @@ export const HYDE_PARK_WALK: WalkTour = {
           ],
         },
         {
-          n: 4,
-          of: 5,
           title: "Buying on contract",
           body: [
             "A contract sale worked like rent with none of rent's protections. Researchers at Duke found that 75 to 95 percent of the homes sold to Black families in 1950s and 60s Chicago were sold on contract, at an average markup of 84 percent. A speculator might buy a building for $12,000 and resell it within months for $22,000 or more.",
@@ -504,12 +496,10 @@ export const HYDE_PARK_WALK: WalkTour = {
         "The 2013 tower over Harper Court, then any pre-1960 storefront left on 53rd. Count the national chains against the local names as you walk back east.",
       interrupts: [
         {
-          n: 5,
-          of: 5,
           title: "Urban renewal",
           body: [
             "Urban renewal let a city declare blocks blighted, clear them with public money, and hand the land to approved new uses. The Hyde Park-Kenwood plan, approved November 7, 1958, was the nation's first large federally supported renewal scheme, driven by the university's South East Chicago Commission with federal grants behind it.",
-            "What it built is all around this corner, the townhouses, the mid-street apartments, the shopping court. What it removed was the housing poor families could afford and nearly fifty bars and shops along 55th alone. Planners called it conservation. The displaced, and Baldwin, had a shorter word for it. The instruments changed over this walk, from a code of ethics to a deed clause to a color on a map to a wrecking ball. The incentives never did.",
+            "What it built is all around this corner, the townhouses, the mid-street apartments, the shopping court. What it removed was the housing poor families could afford and nearly fifty bars and shops along 55th alone. Planners called it conservation. The displaced, and Baldwin, had a shorter word for it. The tools changed over this walk, from a code of ethics to a deed clause to a color on a map to a wrecking ball. The incentives never did.",
           ],
         },
       ],

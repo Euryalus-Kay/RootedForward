@@ -21,14 +21,10 @@ export interface WalkDirections {
   minutes: number;
 }
 
-/** one of the numbered sidebars naming a specific instrument of
- *  exclusion (covenants, redlining, contracts...); rendered as a
- *  red-ruled plate between the stop's story and its lookFor note */
+/** a red sidebar plate explaining one specific mechanism (covenants,
+ *  redlining, contract selling...); labeled plainly by its subject
+ *  and rendered after the stop's story */
 export interface WalkInterrupt {
-  /** position in the series, e.g. 2 */
-  n: number;
-  /** how many sidebars the tour has, e.g. 5 */
-  of: number;
   title: string;
   /** body paragraphs; `**bold**` renders bold */
   body: string[];
@@ -50,8 +46,9 @@ export interface WalkStop {
   /** the narration, paragraph per entry; doubles as the transcript.
    *  `**text**` renders bold on the page and is stripped for TTS. */
   transcript: string[];
-  /** the concrete thing worth seeing at this exact spot */
-  lookFor: string;
+  /** the concrete thing worth seeing at this exact spot; kept in the
+   *  data but not currently rendered */
+  lookFor?: string;
   /** zero, one, or two images per stop */
   images: WalkImage[];
   /** what the site looks like today; paired with images[0] on the page
