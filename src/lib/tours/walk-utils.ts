@@ -18,7 +18,8 @@ export interface WalkGeometry {
   frame: WalkFrame;
   viewBox: { w: number; h: number };
   water: { name: string; ring: number[][] }[];
-  roads: { arterials: number[][][]; locals: number[][][] };
+  roads: { arterials: number[][][]; locals: number[][][]; alleys: number[][][] };
+  rails: number[][][];
 }
 
 export const WALK_GEOMETRY = geometry as WalkGeometry;

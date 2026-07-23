@@ -6,16 +6,17 @@
 // feature onto a metrically-true local plane, clips it to the frame,
 // and writes one compact JSON the map component imports directly:
 //   src/lib/tours/walk-geometry.json
-//     { frame, viewBox, water: [...], roads: {arterials, locals} }
+//     { frame, viewBox, water: [...],
+//       roads: {arterials, locals, alleys}, rails: [...] }
 // Client-side projection of live lat/lng (user location, stops) is
 //   x = (lng - frame.lngMin) / (frame.lngMax - frame.lngMin) * viewBox.w
 //   y = (frame.latMax - lat) / (frame.latMax - frame.latMin) * viewBox.h
 // which is metrically correct because viewBox.h is derived with the
 // cos(latMid) correction below. Re-run: node scripts/walk-prep-map.mjs
 // Source: U.S. Census Bureau TIGER/Line 2023 (tl_2023_17031_roads,
-// tl_2023_17031_areawater).
+// tl_2023_17031_areawater, tl_2023_us_rails).
 // ------------------------------------------------------------------
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const SRC = "data/exhibit-src";
 const OUT = "src/lib/tours/walk-geometry.json";
@@ -32,7 +33,7 @@ const H = Math.round((W * (F.latMax - F.latMin)) / ((F.lngMax - F.lngMin) * COS)
 
 const px = (lng) => ((lng - F.lngMin) / (F.lngMax - F.lngMin)) * W;
 const py = (lat) => ((F.latMax - lat) / (F.latMax - F.latMin)) * H;
-const rnd = (v) => Math.round(v * 10) / 10;
+const rnd = (v) => Math.round(v * 100) / 100;
 
 // padded clip window in projected units so strokes don't end visibly
 // at the frame edge
@@ -183,22 +184,40 @@ const roadShapes = readShp(`${SRC}/tl_2023_17031_roads.shp`);
 const roadRows = readDbf(`${SRC}/tl_2023_17031_roads.dbf`);
 const arterials = [];
 const locals = [];
+const alleys = [];
 roadRows.forEach((row, i) => {
   const shape = roadShapes[i];
   if (!shape) return;
   const cls = row.MTFCC;
-  // S1100/S1200 highways + arterials; S1400 locals. Alleys (S1730),
-  // ramps, and private drives stay out; they read as noise here.
-  if (cls !== "S1100" && cls !== "S1200" && cls !== "S1400") return;
+  // S1100/S1200 highways + arterials, S1400 locals, S1730 alleys as
+  // the finest hairline texture of the engraved plat
+  if (cls !== "S1100" && cls !== "S1200" && cls !== "S1400" && cls !== "S1730") return;
   for (const line of shape) {
     if (!touchesFrame(line)) continue;
     const pieces = clipLine(project(thin(line, 1)));
     for (const p of pieces) {
-      if (cls === "S1400") locals.push(p);
+      if (cls === "S1730") alleys.push(p);
+      else if (cls === "S1400") locals.push(p);
       else arterials.push(p);
     }
   }
 });
+
+// ---- rails (the IC embankment carries this tour's whole story) ----
+const rails = [];
+if (existsSync(`${SRC}/tl_2023_us_rails.shp`)) {
+  const railShapes = readShp(`${SRC}/tl_2023_us_rails.shp`);
+  for (const shape of railShapes) {
+    if (!shape) continue;
+    for (const line of shape) {
+      if (!touchesFrame(line)) continue;
+      const pieces = clipLine(project(thin(line, 1)));
+      rails.push(...pieces);
+    }
+  }
+} else {
+  console.warn("rails source missing (tl_2023_us_rails.shp); map ships without rail lines");
+}
 
 // ---- water (the lagoons carry the whole map) ----
 const waterShapes = readShp(`${SRC}/tl_2023_17031_areawater.shp`);
@@ -218,14 +237,15 @@ waterRows.forEach((row, i) => {
 
 const out = {
   source:
-    "U.S. Census Bureau TIGER/Line 2023, tl_2023_17031_roads and tl_2023_17031_areawater (public domain)",
+    "U.S. Census Bureau TIGER/Line 2023, tl_2023_17031_roads, tl_2023_17031_areawater, and tl_2023_us_rails (public domain)",
   frame: F,
   viewBox: { w: W, h: H },
   water,
-  roads: { arterials, locals },
+  roads: { arterials, locals, alleys },
+  rails,
 };
 writeFileSync(OUT, JSON.stringify(out));
 const kb = Math.round(Buffer.byteLength(JSON.stringify(out)) / 1024);
 console.log(
-  `walk-geometry: ${water.length} water rings, ${arterials.length} arterial pieces, ${locals.length} local pieces, viewBox ${W}x${H}, ${kb} KB`
+  `walk-geometry: ${water.length} water rings, ${arterials.length} arterials, ${locals.length} locals, ${alleys.length} alleys, ${rails.length} rail pieces, viewBox ${W}x${H}, ${kb} KB`
 );

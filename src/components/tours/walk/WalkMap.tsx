@@ -45,7 +45,7 @@ const STREET_LABELS: { text: string; lat: number; lng: number; rotate: number; s
   { text: "E 53rd St", lat: 41.8001, lng: -87.5946, rotate: 0, size: 9 },
   { text: "E 55th St", lat: 41.7957, lng: -87.5993, rotate: 0, size: 9 },
   { text: "E 57th St", lat: 41.7921, lng: -87.5906, rotate: 0, size: 9 },
-  { text: "Lake Park Ave", lat: 41.7967, lng: -87.5871, rotate: -87, size: 9 },
+  { text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, rotate: -87, size: 9 },
   { text: "Woodlawn Ave", lat: 41.7932, lng: -87.5968, rotate: -90, size: 9 },
 ];
 
@@ -173,8 +173,14 @@ export default function WalkMap({
         ))}
       </g>
 
-      {/* streets */}
-      <g stroke="#B5AFA4" strokeOpacity="0.55" strokeWidth="1.4" fill="none">
+      {/* streets, three engraved weights: alley hairlines, local
+          streets, then the arterials over them */}
+      <g stroke="#B5AFA4" strokeOpacity="0.28" strokeWidth="0.6" fill="none">
+        {geo.roads.alleys.map((l, i) => (
+          <path key={i} d={lineD(l)} />
+        ))}
+      </g>
+      <g stroke="#B5AFA4" strokeOpacity="0.6" strokeWidth="1.3" fill="none">
         {geo.roads.locals.map((l, i) => (
           <path key={i} d={lineD(l)} />
         ))}
@@ -182,6 +188,24 @@ export default function WalkMap({
       <g stroke="#8A8578" strokeOpacity="0.75" strokeWidth="2.6" fill="none">
         {geo.roads.arterials.map((l, i) => (
           <path key={i} d={lineD(l)} />
+        ))}
+      </g>
+
+      {/* the railroad, drawn the old way: a center line with cross
+          ties. The IC embankment is the spine of this tour's story. */}
+      <g aria-hidden="true">
+        {geo.rails.map((l, i) => (
+          <g key={i}>
+            <path d={lineD(l)} fill="none" stroke="#6E6A5E" strokeOpacity="0.8" strokeWidth="1.5" />
+            <path
+              d={lineD(l)}
+              fill="none"
+              stroke="#6E6A5E"
+              strokeOpacity="0.8"
+              strokeWidth="7"
+              strokeDasharray="1.3 9"
+            />
+          </g>
         ))}
       </g>
 
