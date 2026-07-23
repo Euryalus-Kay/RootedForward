@@ -35,10 +35,6 @@ final class ScreenshotTests: XCTestCase {
         element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         sleep(1)
         if element.exists && element.isHittable {
-            let debug = XCTAttachment(string: "frame=\(element.frame) appFrame=\(app.frame)\n\n" + app.debugDescription)
-            debug.name = "debug-hierarchy"
-            debug.lifetime = .keepAlways
-            add(debug)
             element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         }
     }
@@ -68,36 +64,56 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 10))
         sleep(2)
         snap("01-home-top")
-        app.swipeUp(velocity: .fast)
+
+        // 2. The Why-this-walk essay, expanded
+        let essayMore = app.buttons["home-essay-more"]
+        var tries = 0
+        while !essayMore.isHittable && tries < 4 {
+            app.swipeUp(velocity: .fast)
+            tries += 1
+        }
         sleep(1)
-        snap("02-home-plates")
+        essayMore.tap()
+        sleep(1)
+        snap("02-home-essay")
+
+        app.swipeUp(velocity: .fast)
         app.swipeUp(velocity: .fast)
         app.swipeUp(velocity: .fast)
         sleep(1)
         snap("03-home-footer")
-        app.swipeDown(velocity: .fast)
-        app.swipeDown(velocity: .fast)
-        app.swipeDown(velocity: .fast)
+        for _ in 0..<5 {
+            app.swipeDown(velocity: .fast)
+        }
 
-        // 2. Intro
+        // 3. Straight into stop 1, no intro screen
         app.buttons["home-start"].tap()
-        XCTAssertTrue(app.buttons["intro-begin"].waitForExistence(timeout: 5))
-        sleep(1)
-        snap("04-intro")
-
-        // 3. Stop 1
-        app.buttons["intro-begin"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(2)
-        snap("05-stop1-top")
+        snap("04-stop1-top")
 
         // Audio playing state
         app.buttons["play-stop-1"].firstMatch.tap()
         sleep(2)
-        snap("06-stop1-playing")
+        snap("05-stop1-playing")
         // Pause again; continuous scrubber updates keep XCUITest from
         // reaching quiescence and make later synthesized taps flaky.
         app.buttons["play-stop-1"].firstMatch.tap()
+        sleep(1)
+
+        // 4. The photograph room
+        let photo = app.buttons["stop-photo"].firstMatch
+        tries = 0
+        while !photo.isHittable && tries < 4 {
+            app.swipeUp(velocity: .fast)
+            tries += 1
+        }
+        sleep(1)
+        photo.tap()
+        XCTAssertTrue(app.buttons["photo-close"].waitForExistence(timeout: 5))
+        sleep(2)
+        snap("06-photo-viewer")
+        app.buttons["photo-close"].tap()
         sleep(1)
 
         app.swipeUp(velocity: .fast)
@@ -110,11 +126,18 @@ final class ScreenshotTests: XCTestCase {
         sleep(1)
         snap("08-stop1-handoff")
 
-        // 4. Map sheet
+        // 5. Map sheet and the full-screen explorer
         app.buttons["tour-map"].tap()
         XCTAssertTrue(app.buttons["map-done"].waitForExistence(timeout: 5))
         sleep(2)
         snap("09-map")
+
+        app.buttons["map-expand"].tap()
+        XCTAssertTrue(app.buttons["explorer-done"].waitForExistence(timeout: 5))
+        sleep(2)
+        snap("10-map-explorer")
+        app.buttons["explorer-done"].tap()
+        sleep(1)
 
         // Close the map, then walk forward with the transport bar
         // chevrons (row taps in a scrolled sheet are flaky under
@@ -123,37 +146,37 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["map-done"].tap()
         sleep(1)
 
-        // 5. Stop 6 has the Restrictive covenants red plate
+        // 6. Stop 6 has the Restrictive covenants red plate
         advance(to: 6)
         for _ in 0..<6 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("10-stop6-redplate")
+        snap("11-stop6-redplate")
 
-        // 6. Map stop list
+        // 7. Map stop list
         app.buttons["tour-map"].tap()
         XCTAssertTrue(app.buttons["map-done"].waitForExistence(timeout: 5))
         app.swipeUp(velocity: .slow)
         sleep(1)
-        snap("11-map-stoplist")
+        snap("12-map-stoplist")
         app.buttons["map-done"].tap()
         sleep(1)
 
-        // 7. Last stop, end of walk
+        // 8. Last stop, end of walk
         advance(to: 11)
         for _ in 0..<8 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("12-stop11-end")
+        snap("13-stop11-end")
 
-        // 7. Settings
+        // 9. Settings
         app.buttons["tour-exit"].tap()
         XCTAssertTrue(app.buttons["home-settings"].waitForExistence(timeout: 5))
         app.buttons["home-settings"].tap()
         XCTAssertTrue(app.buttons["sign-in"].waitForExistence(timeout: 5))
         sleep(1)
-        snap("13-settings")
+        snap("14-settings")
     }
 }

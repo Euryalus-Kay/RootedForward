@@ -11,9 +11,11 @@
 		0A721D95EBCF55CC47FEAFB6 /* Content in Resources */ = {isa = PBXBuildFile; fileRef = EE6D9DE9920188153245742D /* Content */; };
 		10B186EA70E04243D581BDA2 /* WalkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0257771DFF430D9E2C3CAD43 /* WalkModels.swift */; };
 		117EB9046A0C6BBBFE51CC8D /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F03630E3A0E6C36771348FB /* ScreenshotTests.swift */; };
+		147380B68D775921F4AD2A8C /* MapExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */; };
 		2E9C5D218139CF9BE2DEF93A /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868F8BC2C4D2DC79DAC7D0ED /* AudioEngine.swift */; };
 		3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F799B770CC0D56958B1860 /* MapSheetView.swift */; };
 		3D92DD9D8040C4194A9EE263 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9F27DBE57BA6C13F4A1E43 /* HomeView.swift */; };
+		443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25A37294A4B286DEFEB726A /* PhotoViewer.swift */; };
 		4698EBC9F5FAEC9B1B2ADFC8 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C9782F9F0F254E31D7B10 /* LocationService.swift */; };
 		4744C8269CC24A27F4478884 /* ContentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EFDA4FD0D683B5E271E4B3 /* ContentStore.swift */; };
 		5AAAE99D69084DE9BABA2EE9 /* TourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26B3DC3B417430FA3328484 /* TourView.swift */; };
@@ -25,7 +27,7 @@
 		864C4FE07971AB90DAEC1073 /* WalkTourUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E04A3841766FCB97638FC /* WalkTourUITests.swift */; };
 		8B60F44BF017217E0932BFA3 /* ContentIntegrityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42105EED930027414B57A88D /* ContentIntegrityTests.swift */; };
 		9DE188836959141CCF8C756E /* RootedForwardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA93164BBB51AFC9B88616D /* RootedForwardApp.swift */; };
-		C4B24B5DDBE26826C70733D1 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD43D0582FF4CB916EAC3D9 /* IntroView.swift */; };
+		BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */; };
 		CF059D3B16C1381EB501B6FF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = E16CB38A946AB51CC5FB8F11 /* Fonts */; };
 		E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318671872CB1E95D76C5579 /* WalkMapCanvas.swift */; };
 		E36CE8ECCCF9CF78B24295EC /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E907FBC06E8B34CDCAC3E91 /* Theme.swift */; };
@@ -51,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapExplorerView.swift; sourceTree = "<group>"; };
 		0257771DFF430D9E2C3CAD43 /* WalkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkModels.swift; sourceTree = "<group>"; };
 		03DDDA0AE5260E8E1A4842E0 /* MapRowTapDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRowTapDiagnostic.swift; sourceTree = "<group>"; };
 		09336D0FD9B4DD597D6C0E3C /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
@@ -66,15 +69,16 @@
 		966145B70FE859167851BD25 /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		9EA9425CFB508607C323419F /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Resources/Media; sourceTree = SOURCE_ROOT; };
 		A7D88B0725705C7778739E87 /* StopPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopPage.swift; sourceTree = "<group>"; };
+		A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomPan.swift; sourceTree = "<group>"; };
 		B26B3DC3B417430FA3328484 /* TourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourView.swift; sourceTree = "<group>"; };
 		B2EFDA4FD0D683B5E271E4B3 /* ContentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStore.swift; sourceTree = "<group>"; };
+		D25A37294A4B286DEFEB726A /* PhotoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewer.swift; sourceTree = "<group>"; };
 		D75C9782F9F0F254E31D7B10 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		D75E04A3841766FCB97638FC /* WalkTourUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTourUITests.swift; sourceTree = "<group>"; };
 		DAA93164BBB51AFC9B88616D /* RootedForwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootedForwardApp.swift; sourceTree = "<group>"; };
 		DE5928336C04A112A55DAFDA /* RootedForward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RootedForward.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16CB38A946AB51CC5FB8F11 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = Resources/Fonts; sourceTree = SOURCE_ROOT; };
 		E8F1CDEE8B26CAAEADF3FAA3 /* RootedForwardTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RootedForwardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAD43D0582FF4CB916EAC3D9 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		EE6D9DE9920188153245742D /* Content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Content; path = Resources/Content; sourceTree = SOURCE_ROOT; };
 		F819396E11680BC062C89DB9 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
 		FA687AB9E48AB9CB72428989 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -92,7 +96,9 @@
 		1F07AEC895D93FB118DAB513 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D25A37294A4B286DEFEB726A /* PhotoViewer.swift */,
 				09336D0FD9B4DD597D6C0E3C /* SharedViews.swift */,
+				A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -108,6 +114,7 @@
 		3109C939DD9849D2EA981A4B /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */,
 				61F799B770CC0D56958B1860 /* MapSheetView.swift */,
 				1318671872CB1E95D76C5579 /* WalkMapCanvas.swift */,
 			);
@@ -147,7 +154,6 @@
 		626868807ECB93EC3EC8F2D1 /* Tour */ = {
 			isa = PBXGroup;
 			children = (
-				EAD43D0582FF4CB916EAC3D9 /* IntroView.swift */,
 				A7D88B0725705C7778739E87 /* StopPage.swift */,
 				B26B3DC3B417430FA3328484 /* TourView.swift */,
 			);
@@ -352,9 +358,10 @@
 				2E9C5D218139CF9BE2DEF93A /* AudioEngine.swift in Sources */,
 				4744C8269CC24A27F4478884 /* ContentStore.swift in Sources */,
 				3D92DD9D8040C4194A9EE263 /* HomeView.swift in Sources */,
-				C4B24B5DDBE26826C70733D1 /* IntroView.swift in Sources */,
 				4698EBC9F5FAEC9B1B2ADFC8 /* LocationService.swift in Sources */,
+				147380B68D775921F4AD2A8C /* MapExplorerView.swift in Sources */,
 				3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */,
+				443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */,
 				FB21ED00E16D03FB208DC98D /* ProgressStore.swift in Sources */,
 				9DE188836959141CCF8C756E /* RootedForwardApp.swift in Sources */,
 				789E5695A02879C331B85820 /* SettingsView.swift in Sources */,
@@ -364,6 +371,7 @@
 				5AAAE99D69084DE9BABA2EE9 /* TourView.swift in Sources */,
 				E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */,
 				10B186EA70E04243D581BDA2 /* WalkModels.swift in Sources */,
+				BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

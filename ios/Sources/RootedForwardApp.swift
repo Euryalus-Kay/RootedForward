@@ -38,6 +38,7 @@ struct RootedForwardApp: App {
                 .onAppear {
                     audio.onFinished = { [weak progress] stopID in
                         progress?.markVisited(stopID)
+                        Haptics.success()
                     }
                 }
         }

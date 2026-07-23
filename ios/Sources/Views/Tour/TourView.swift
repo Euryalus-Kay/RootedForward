@@ -14,12 +14,10 @@ struct TourView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var index: Int
-    @State private var showIntro: Bool
     @State private var showMap = false
 
-    init(startAt: Int, openOnIntro: Bool) {
+    init(startAt: Int) {
         _index = State(initialValue: startAt)
-        _showIntro = State(initialValue: openOnIntro)
     }
 
     private var stops: [WalkStop] { content.tour.stops }
@@ -28,69 +26,48 @@ struct TourView: View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
                 topBar
-                if showIntro {
-                    IntroView(
-                        begin: {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                index = 0
-                                showIntro = false
-                            }
-                        },
-                        resume: progress.hasProgress ? {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                index = min(progress.lastIndex, stops.count - 1)
-                                showIntro = false
-                            }
-                        } : nil
-                    )
-                } else {
-                    TabView(selection: $index) {
-                        ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
-                            StopPage(
-                                stop: stop,
-                                isLast: i == stops.count - 1,
-                                goNext: i < stops.count - 1 ? { withAnimation { index = i + 1 } } : nil,
-                                goPrevious: i > 0 ? { withAnimation { index = i - 1 } } : nil
-                            )
-                            .tag(i)
-                        }
+                TabView(selection: $index) {
+                    ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
+                        StopPage(
+                            stop: stop,
+                            isLast: i == stops.count - 1,
+                            goNext: i < stops.count - 1 ? { withAnimation { index = i + 1 } } : nil,
+                            goPrevious: i > 0 ? { withAnimation { index = i - 1 } } : nil
+                        )
+                        .tag(i)
                     }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .ignoresSafeArea(edges: .bottom)
                 }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .ignoresSafeArea(edges: .bottom)
             }
             .background(RF.cream)
 
-            if !showIntro {
-                VStack(alignment: .trailing, spacing: 12) {
-                    nearbyHint
-                    mapPill
-                    TransportBar(
-                        stop: stops[index],
-                        canGoPrevious: index > 0,
-                        canGoNext: index < stops.count - 1,
-                        goPrevious: { withAnimation { index = max(0, index - 1) } },
-                        goNext: { withAnimation { index = min(stops.count - 1, index + 1) } }
-                    )
-                }
-                .padding(.horizontal, 12)
-                .padding(.bottom, 6)
+            VStack(alignment: .trailing, spacing: 12) {
+                nearbyHint
+                mapPill
+                TransportBar(
+                    stop: stops[index],
+                    canGoPrevious: index > 0,
+                    canGoNext: index < stops.count - 1,
+                    goPrevious: { withAnimation { index = max(0, index - 1) } },
+                    goNext: { withAnimation { index = min(stops.count - 1, index + 1) } }
+                )
             }
+            .padding(.horizontal, 12)
+            .padding(.bottom, 6)
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
+            Haptics.tap()
             progress.setLastIndex(newIndex)
         }
         .onAppear {
-            if !showIntro {
-                progress.setLastIndex(index)
-            }
+            progress.setLastIndex(index)
             location.requestAndStartIfAuthorized()
         }
         .sheet(isPresented: $showMap) {
             MapSheetView(currentIndex: index) { tapped in
                 index = tapped
-                showIntro = false
                 showMap = false
             }
         }
@@ -116,24 +93,18 @@ struct TourView: View {
             Spacer()
 
             VStack(spacing: 5) {
-                if showIntro {
-                    Text(content.tour.title)
-                        .font(RF.didone(19, weight: 600))
-                        .foregroundStyle(RF.forest)
-                } else {
-                    Text("Stop \(index + 1) of \(stops.count)")
-                        .font(RF.body(14, weight: 600))
-                        .foregroundStyle(RF.ink.opacity(0.8))
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            Capsule().fill(RF.border)
-                            Capsule()
-                                .fill(RF.rust)
-                                .frame(width: geo.size.width * CGFloat(index + 1) / CGFloat(stops.count))
-                        }
+                Text("Stop \(index + 1) of \(stops.count)")
+                    .font(RF.body(14, weight: 600))
+                    .foregroundStyle(RF.ink.opacity(0.8))
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(RF.border)
+                        Capsule()
+                            .fill(RF.rust)
+                            .frame(width: geo.size.width * CGFloat(index + 1) / CGFloat(stops.count))
                     }
-                    .frame(width: 132, height: 3)
                 }
+                .frame(width: 132, height: 3)
             }
 
             Spacer()
@@ -288,6 +259,7 @@ struct PlayButton: View {
     var body: some View {
         let playingThis = audio.isCurrent(stop.id) && audio.isPlaying
         Button {
+            Haptics.press()
             Task {
                 let thumbPath = ContentStore.thumbPath(
                     for: (stop.nowImage ?? stop.images.first)?.src ?? ""

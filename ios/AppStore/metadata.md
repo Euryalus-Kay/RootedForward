@@ -147,7 +147,7 @@ Planned set, in order.
 2. The map sheet (engraved map with the route and markers)
 3. A stop page (Paul Cornell's stone, photos and audio card)
 4. A red instrument plate (Restrictive covenants, stop 6)
-5. The intro essay (The covenants are still on our deeds)
+5. The Why-this-walk essay on the home screen
 
 ## Submission checklist
 

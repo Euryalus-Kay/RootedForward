@@ -1,10 +1,47 @@
 import SwiftUI
+import UIKit
 
 // ------------------------------------------------------------------
-// Small shared pieces: media-aware image loading and the framed
+// Small shared pieces: media-aware image loading, the framed
 // photograph plate used across the tour (white mat, hairline frame,
-// caption and credit in the site's voice).
+// caption and credit in the site's voice), haptics, and the little
+// live waveform that plays while narration runs.
 // ------------------------------------------------------------------
+
+enum Haptics {
+    static func tap() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+    static func press() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+    static func success() {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+}
+
+/// Five little bars breathing with the narration.
+struct PlayingWave: View {
+    var color: Color = RF.rust
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 1.0 / 24.0)) { context in
+            let t = context.date.timeIntervalSinceReferenceDate
+            HStack(spacing: 2.5) {
+                ForEach(0..<5, id: \.self) { i in
+                    Capsule()
+                        .fill(color)
+                        .frame(
+                            width: 3,
+                            height: 5 + 9 * abs(sin(t * 2.6 + Double(i) * 0.95))
+                        )
+                }
+            }
+            .frame(height: 16, alignment: .center)
+        }
+        .accessibilityHidden(true)
+    }
+}
 
 /// Loads a tour image through the ContentStore (bundled first, then
 /// the site) with a quiet cream placeholder while it works.
@@ -39,27 +76,50 @@ struct MediaImage: View {
 
 /// A photograph in the site's plate frame: white mat around the
 /// image, hairline border, small label under the photo, credit line
-/// in italic underneath.
+/// in italic underneath. Tapping opens the full-screen photo room.
 struct FramedImage: View {
     let image: WalkImage
     var showCredit = true
 
+    @State private var viewerOpen = false
+    @State private var pressed = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            VStack(spacing: 10) {
-                MediaImage(sitePath: image.src)
-                    .frame(maxWidth: .infinity)
-                    .clipped()
-                    .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
-                if let label = image.label {
-                    Text(label)
-                        .font(RF.display(15, weight: 400, italic: true))
-                        .foregroundStyle(RF.ink.opacity(0.65))
+            Button {
+                Haptics.tap()
+                viewerOpen = true
+            } label: {
+                VStack(spacing: 10) {
+                    MediaImage(sitePath: image.src)
+                        .frame(maxWidth: .infinity)
+                        .clipped()
+                        .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+                        .overlay(alignment: .bottomTrailing) {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(RF.ink.opacity(0.55))
+                                .padding(5)
+                                .background(RF.paper.opacity(0.85))
+                                .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.15), lineWidth: 1))
+                                .padding(6)
+                        }
+                    if let label = image.label {
+                        Text(label)
+                            .font(RF.display(15, weight: 400, italic: true))
+                            .foregroundStyle(RF.ink.opacity(0.65))
+                    }
                 }
+                .padding(12)
+                .plate()
+                .scaleEffect(pressed ? 0.985 : 1)
             }
-            .padding(12)
-            .plate()
-            .accessibilityLabel(image.alt)
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(image.alt). Opens full screen.")
+            .accessibilityIdentifier("stop-photo")
+            .fullScreenCover(isPresented: $viewerOpen) {
+                PhotoViewer(image: image)
+            }
 
             if showCredit {
                 Text(image.credit)

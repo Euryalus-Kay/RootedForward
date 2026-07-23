@@ -59,7 +59,7 @@ Product > Archive, and follow the checklist.
 | `Sources/Models` | Codable mirror of the site's walk-types.ts + projection math |
 | `Sources/Store` | ContentStore (bundle + live sync), ProgressStore, AudioEngine, LocationService, AccountStore |
 | `Sources/Theme` | Palette, brand fonts (variable TTFs), plate styles, survey rule |
-| `Sources/Views` | Home, Tour (intro, stops, transport bar), Map (canvas + sheet), Settings |
+| `Sources/Views` | Home (with the Why-this-walk essay), Tour (stops, transport bar), Map (canvas, sheet, full-screen explorer), photo viewer, Settings |
 | `Resources/Content/tour.json` | Bundled content snapshot from /api/walk |
 | `Resources/Fonts` | Bodoni Moda, Fraunces, DM Sans variable TTFs (SIL OFL) |
 | `AppStore/` | Icon source, screenshots, full submission kit |

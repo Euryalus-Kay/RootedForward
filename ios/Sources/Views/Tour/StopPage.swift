@@ -16,15 +16,21 @@ struct StopPage: View {
     let goNext: (() -> Void)?
     let goPrevious: (() -> Void)?
 
+    @State private var appeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                         .id("top")
+                        .reveal(appeared, delay: 0, reduced: reduceMotion)
                     listenCard
                         .padding(.top, 22)
+                        .reveal(appeared, delay: 0.08, reduced: reduceMotion)
                     imagePlates
+                        .reveal(appeared, delay: 0.16, reduced: reduceMotion)
                     transcript
                     interruptPlates
                     handOff
@@ -36,6 +42,9 @@ struct StopPage: View {
             .background(RF.cream)
             .onChange(of: stop.id) { _, _ in
                 proxy.scrollTo("top", anchor: .top)
+            }
+            .onAppear {
+                appeared = true
             }
         }
     }
@@ -88,9 +97,7 @@ struct StopPage: View {
         HStack(spacing: 14) {
             PlayButton(stop: stop, size: 52)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Listen to this stop")
-                    .font(RF.body(15, weight: 600))
-                    .foregroundStyle(RF.ink)
+                ListenCardTitle(stop: stop)
                 AudioTimeline(stop: stop)
             }
         }
@@ -244,7 +251,29 @@ struct StopPage: View {
     }
 }
 
-/// Scrubber + times for one stop's narration.
+/// "Listen to this stop", or the live wave while it narrates.
+struct ListenCardTitle: View {
+    @EnvironmentObject private var audio: AudioEngine
+    let stop: WalkStop
+
+    var body: some View {
+        HStack(spacing: 8) {
+            if audio.isCurrent(stop.id) && audio.isPlaying {
+                PlayingWave()
+                Text("Now playing")
+                    .font(RF.body(15, weight: 600))
+                    .foregroundStyle(RF.rust)
+            } else {
+                Text("Listen to this stop")
+                    .font(RF.body(15, weight: 600))
+                    .foregroundStyle(RF.ink)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: audio.isPlaying)
+    }
+}
+
+/// Scrubber, times, speed, and 15-second skips for one stop.
 struct AudioTimeline: View {
     @EnvironmentObject private var content: ContentStore
     @EnvironmentObject private var audio: AudioEngine
@@ -270,9 +299,20 @@ struct AudioTimeline: View {
             .tint(RF.rust)
             .disabled(!isCurrent)
 
-            HStack {
+            HStack(spacing: 14) {
                 Text(WalkFormat.clock(seconds: time))
                 Spacer()
+                Button {
+                    Haptics.tap()
+                    audio.skip(by: -15)
+                } label: {
+                    Image(systemName: "gobackward.15")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(isCurrent ? RF.ink.opacity(0.7) : RF.warmGrayLight)
+                        .frame(width: 32, height: 28)
+                }
+                .disabled(!isCurrent)
+                .accessibilityLabel("Back 15 seconds")
                 Button {
                     audio.cycleRate()
                 } label: {
@@ -285,6 +325,17 @@ struct AudioTimeline: View {
                 }
                 .disabled(!isCurrent)
                 .accessibilityLabel("Playback speed \(rateLabel)")
+                Button {
+                    Haptics.tap()
+                    audio.skip(by: 15)
+                } label: {
+                    Image(systemName: "goforward.15")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(isCurrent ? RF.ink.opacity(0.7) : RF.warmGrayLight)
+                        .frame(width: 32, height: 28)
+                }
+                .disabled(!isCurrent)
+                .accessibilityLabel("Forward 15 seconds")
                 Spacer()
                 Text(WalkFormat.clock(seconds: duration))
             }
@@ -300,4 +351,17 @@ struct AudioTimeline: View {
 
 func directionsURL(lat: Double, lng: Double) -> URL {
     URL(string: "https://maps.apple.com/?daddr=\(lat),\(lng)&dirflg=w")!
+}
+
+extension View {
+    /// Gentle entrance: fade and rise once when the page first shows.
+    func reveal(_ on: Bool, delay: Double, reduced: Bool) -> some View {
+        self
+            .opacity(on || reduced ? 1 : 0)
+            .offset(y: on || reduced ? 0 : 12)
+            .animation(
+                reduced ? nil : .easeOut(duration: 0.5).delay(delay),
+                value: on
+            )
+    }
 }

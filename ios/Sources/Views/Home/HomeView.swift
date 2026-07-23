@@ -15,6 +15,9 @@ struct HomeView: View {
     @State private var tourTarget: TourTarget?
     @State private var showSettings = false
     @State private var confirmRestart = false
+    @State private var essayExpanded = false
+    @State private var heroDrift = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -22,6 +25,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     masthead
                     hero
+                    essay
                     stopsStrip
                     platesCard
                     practicalCards
@@ -31,13 +35,13 @@ struct HomeView: View {
             .background(RF.cream)
 
             ListeningChip { index in
-                tourTarget = TourTarget(index: index, intro: false)
+                tourTarget = TourTarget(index: index)
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 10)
         }
         .fullScreenCover(item: $tourTarget) { target in
-            TourView(startAt: target.index, openOnIntro: target.intro)
+            TourView(startAt: target.index)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -49,7 +53,7 @@ struct HomeView: View {
         ) {
             Button("Start over", role: .destructive) {
                 progress.reset()
-                tourTarget = TourTarget(index: 0, intro: true)
+                tourTarget = TourTarget(index: 0)
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -122,6 +126,8 @@ struct HomeView: View {
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
+            // The 1940 HOLC survey map, ghosted and drifting slowly,
+            // like a document on a light table.
             Color.clear
                 .frame(height: 380)
                 .overlay {
@@ -129,6 +135,8 @@ struct HomeView: View {
                         sitePath: "/media/hyde-park-walk/holc-chicago-1940.jpg",
                         contentMode: .fill
                     )
+                    .scaleEffect(heroDrift ? 1.14 : 1.05)
+                    .offset(x: heroDrift ? -16 : 10, y: heroDrift ? -12 : 6)
                 }
                 .clipped()
                 .opacity(0.12)
@@ -139,7 +147,62 @@ struct HomeView: View {
                     )
                 )
                 .accessibilityHidden(true)
+                .onAppear {
+                    guard !reduceMotion else { return }
+                    withAnimation(.easeInOut(duration: 48).repeatForever(autoreverses: true)) {
+                        heroDrift = true
+                    }
+                }
         }
+    }
+
+    // MARK: - Why this walk
+
+    private var essay: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Why this walk")
+                .eyebrow()
+            Text(content.intro.title)
+                .font(RF.display(24, weight: 600))
+                .foregroundStyle(RF.forest)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 14) {
+                ForEach(
+                    Array((essayExpanded ? content.intro.paragraphs : Array(content.intro.paragraphs.prefix(1))).enumerated()),
+                    id: \.offset
+                ) { _, paragraph in
+                    MarkedText(text: paragraph, size: 15.5)
+                }
+            }
+
+            if essayExpanded {
+                Text(content.intro.byline)
+                    .font(RF.display(14, weight: 400, italic: true))
+                    .foregroundStyle(RF.warmGray)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Button {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    essayExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 5) {
+                    Text(essayExpanded ? "Fold it away" : "Keep reading")
+                    Image(systemName: essayExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 11, weight: .semibold))
+                }
+                .font(RF.body(14, weight: 600))
+                .foregroundStyle(RF.rust)
+            }
+            .accessibilityIdentifier("home-essay-more")
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .plate()
+        .padding(.horizontal, 20)
+        .padding(.top, 40)
     }
 
     private var stats: some View {
@@ -178,9 +241,9 @@ struct HomeView: View {
             Button {
                 if progress.hasProgress {
                     let index = min(progress.lastIndex, content.tour.stops.count - 1)
-                    tourTarget = TourTarget(index: index, intro: false)
+                    tourTarget = TourTarget(index: index)
                 } else {
-                    tourTarget = TourTarget(index: 0, intro: true)
+                    tourTarget = TourTarget(index: 0)
                 }
             } label: {
                 Text(progress.hasProgress
@@ -221,7 +284,7 @@ struct HomeView: View {
                 HStack(alignment: .top, spacing: 14) {
                     ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { index, stop in
                         Button {
-                            tourTarget = TourTarget(index: index, intro: false)
+                            tourTarget = TourTarget(index: index)
                         } label: {
                             StopCard(stop: stop, visited: progress.isVisited(stop.id))
                         }
@@ -256,7 +319,7 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(Array(plates.enumerated()), id: \.offset) { n, plate in
                     Button {
-                        tourTarget = TourTarget(index: plate.stopIndex, intro: false)
+                        tourTarget = TourTarget(index: plate.stopIndex)
                     } label: {
                         HStack(spacing: 10) {
                             Text("\(n + 1)")
@@ -405,11 +468,10 @@ struct ListeningChip: View {
     }
 }
 
-/// Which stop the tour opens on, and whether the intro shows first.
+/// Which stop the tour opens on.
 struct TourTarget: Identifiable {
     let index: Int
-    let intro: Bool
-    var id: String { "\(index)-\(intro)" }
+    var id: Int { index }
 }
 
 /// One framed thumbnail in the horizontal stop strip.

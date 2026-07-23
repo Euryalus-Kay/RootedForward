@@ -12,7 +12,6 @@ import type { WalkTour } from "@/lib/tours/walk-types";
 import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
 import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
 import StopDetail from "./StopDetail";
-import { WALK_INTRO } from "./WalkIntro";
 import WalkMap from "./WalkMap";
 
 const STORAGE_KEY = "rf-walk-hyde-park-v1";
@@ -89,9 +88,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
   const reduceMotion = useReducedMotion();
   const [mode, setMode] = useState<Mode>("walk");
   const [focusMode, setFocusMode] = useState(false);
-  // pressing Start shows the tour's intro page before stop 1; any
-  // stop navigation puts it away
-  const [introOpen, setIntroOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<string>>(new Set());
@@ -115,9 +111,18 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     const check = () => {
       const hash = window.location.hash;
       if (hash === "#start") {
+        // straight into the tour: the resume point when there is
+        // progress, otherwise stop 1. The essay lives on the page.
+        const stored = loadProgress();
+        const idx =
+          stored.lastIndex > 0 && stored.lastIndex < stops.length
+            ? stored.lastIndex
+            : 0;
         setMode("walk");
         setFocusMode(true);
-        setIntroOpen(true);
+        setActiveIndex(idx);
+        setResumeIndex(null);
+        window.history.replaceState(null, "", `#stop-${idx + 1}`);
         return;
       }
       const m = hash.match(/^#stop-(\d+)$/);
@@ -145,7 +150,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
 
   const exitFocus = useCallback(() => {
     setFocusMode(false);
-    setIntroOpen(false);
     setMapOpen(false);
     window.history.replaceState(null, "", "#tour");
   }, []);
@@ -229,7 +233,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       // tour view, same as pressing Start the tour
       setMode("walk");
       setFocusMode(true);
-      setIntroOpen(false);
       persist(visited, clamped);
       window.history.replaceState(null, "", `#stop-${clamped + 1}`);
       // announce the new stop to keyboard and screen-reader users
@@ -484,23 +487,15 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             </button>
             <div className="min-w-0 flex-1 px-2">
               <div className="mx-auto max-w-[220px] md:hidden">
-                {introOpen ? (
-                  <p className="walk-title truncate text-center text-base font-semibold leading-none text-forest">
-                    {tour.title}
-                  </p>
-                ) : (
-                  <>
-                    <p className="text-center font-body text-xs font-medium text-ink/70">
-                      Stop {activeIndex + 1} of {stops.length}
-                    </p>
-                    <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-border/70">
-                      <div
-                        className="h-full rounded-full bg-rust transition-all duration-500 motion-reduce:transition-none"
-                        style={{ width: `${((activeIndex + 1) / stops.length) * 100}%` }}
-                      />
-                    </div>
-                  </>
-                )}
+                <p className="text-center font-body text-xs font-medium text-ink/70">
+                  Stop {activeIndex + 1} of {stops.length}
+                </p>
+                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-border/70">
+                  <div
+                    className="h-full rounded-full bg-rust transition-all duration-500 motion-reduce:transition-none"
+                    style={{ width: `${((activeIndex + 1) / stops.length) * 100}%` }}
+                  />
+                </div>
               </div>
               <p className="walk-title hidden truncate text-center text-lg font-semibold leading-none text-forest md:block">
                 {tour.title}
@@ -589,49 +584,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             focusMode ? "pt-6 md:pt-8" : "pt-10 md:py-14"
           }`}
         >
-          {focusMode && introOpen ? (
-            /* the tour's own first page: the essay, then begin */
-            <div className="mx-auto max-w-2xl pb-16 pt-4 md:pt-10">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                Before you start
-              </p>
-              <h2 className="walk-title mt-3 text-3xl font-semibold leading-snug text-forest md:text-4xl">
-                {WALK_INTRO.title}
-              </h2>
-              <p className="mt-3 font-display text-base italic text-ink/60">
-                {`${stops.length} stops, ${tour.distanceMiles} miles, about three hours with the stops`}
-              </p>
-              <div className="mt-6 space-y-4 font-body text-base leading-relaxed text-ink/80">
-                {WALK_INTRO.paragraphs.map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-              <p className="mt-5 font-display text-[13px] italic text-ink/60">
-                {WALK_INTRO.byline}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-border/60 pt-6">
-                <button
-                  type="button"
-                  onClick={() => goTo(0, false)}
-                  className="rounded-[3px] bg-rust px-8 py-3.5 font-body text-base font-semibold text-white shadow-[4px_4px_0_0_rgba(27,58,45,0.15)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
-                >
-                  Begin at stop 1
-                </button>
-                {resumeIndex !== null && resumeIndex > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => goTo(resumeIndex, false)}
-                    className="rounded-[3px] border border-rust/50 bg-white px-6 py-3.5 font-body text-sm font-medium text-rust transition-colors hover:bg-rust hover:text-white"
-                  >
-                    Resume at stop {resumeIndex + 1}
-                  </button>
-                )}
-                <p className="w-full font-body text-sm text-ink/60 md:w-auto md:flex-1">
-                  {tour.startLabel}.
-                </p>
-              </div>
-            </div>
-          ) : (
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             {/* map column: on phones in the focused tour, the map
                 lives behind the floating Map button instead; on the
@@ -713,10 +665,9 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               </AnimatePresence>
             </div>
           </div>
-          )}
 
           {/* floating map button, focused tour on phones */}
-          {focusMode && !introOpen && (
+          {focusMode && (
             <button
               type="button"
               onClick={() => setMapOpen(true)}
@@ -785,7 +736,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
           </AnimatePresence>
 
           {/* transport bar, the focused tour's player controls */}
-          {focusMode && !introOpen && (
+          {focusMode && (
           <div
             className="walk-chrome fixed inset-x-3 bottom-3 z-40 overflow-hidden rounded-[6px] md:hidden"
             style={{ marginBottom: "env(safe-area-inset-bottom)" }}

@@ -58,6 +58,7 @@ targets:
           - UIInterfaceOrientationPortrait
         UIBackgroundModes:
           - audio
+        UIUserInterfaceStyle: Light
         NSLocationWhenInUseUsageDescription: >-
           Your location is used only to draw your dot on the tour map and
           tell you when you are near a stop. It stays on your phone and is

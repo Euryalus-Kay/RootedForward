@@ -18,6 +18,7 @@ struct MapSheetView: View {
 
     @State private var thumbs: [String: UIImage] = [:]
     @State private var showFarAway = false
+    @State private var explorerOpen = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -89,8 +90,41 @@ struct MapSheetView: View {
                 visited: progress.visited,
                 thumbs: thumbs,
                 userPoint: userPoint,
-                onTapStop: { onSelectStop($0) }
+                onTapStop: {
+                    Haptics.tap()
+                    onSelectStop($0)
+                }
             )
+            .overlay(alignment: .topLeading) {
+                Button {
+                    Haptics.tap()
+                    explorerOpen = true
+                } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.system(size: 11, weight: .semibold))
+                        Text("Explore")
+                            .font(RF.body(13, weight: 600))
+                    }
+                    .foregroundStyle(RF.ink.opacity(0.75))
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 7)
+                    .background(RF.paper.opacity(0.92))
+                    .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.2), lineWidth: 1))
+                }
+                .padding(10)
+                .accessibilityLabel("Open the full-screen map")
+                .accessibilityIdentifier("map-expand")
+            }
+            .fullScreenCover(isPresented: $explorerOpen) {
+                MapExplorerView(
+                    currentIndex: currentIndex,
+                    thumbs: thumbs
+                ) { index in
+                    explorerOpen = false
+                    onSelectStop(index)
+                }
+            }
 
             legend
                 .padding(.horizontal, 14)
@@ -185,6 +219,7 @@ struct MapSheetView: View {
         VStack(spacing: 0) {
             ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { i, stop in
                 Button {
+                    Haptics.tap()
                     onSelectStop(i)
                 } label: {
                     HStack(spacing: 13) {
