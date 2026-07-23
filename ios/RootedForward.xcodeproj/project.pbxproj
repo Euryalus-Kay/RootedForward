@@ -23,6 +23,7 @@
 		694AC6860F5140F6E81BEFDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A3CEF6483FAE221E268D250 /* Assets.xcassets */; };
 		7727F52E3E169729C1AA62F8 /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09336D0FD9B4DD597D6C0E3C /* SharedViews.swift */; };
 		789E5695A02879C331B85820 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687AB9E48AB9CB72428989 /* SettingsView.swift */; };
+		82160D1EF38EB5CB2F4E029E /* TourDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F8AA06FC9E48322A85E49E /* TourDetailView.swift */; };
 		86071F41959EF34A05F05542 /* MapRowTapDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DDDA0AE5260E8E1A4842E0 /* MapRowTapDiagnostic.swift */; };
 		864C4FE07971AB90DAEC1073 /* WalkTourUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E04A3841766FCB97638FC /* WalkTourUITests.swift */; };
 		8A259E768DA3A91D2C1E3F36 /* InfoSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B46FA53532098F1F96766 /* InfoSheetView.swift */; };
@@ -80,6 +81,7 @@
 		DAA93164BBB51AFC9B88616D /* RootedForwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootedForwardApp.swift; sourceTree = "<group>"; };
 		DE5928336C04A112A55DAFDA /* RootedForward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RootedForward.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16CB38A946AB51CC5FB8F11 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = Resources/Fonts; sourceTree = SOURCE_ROOT; };
+		E2F8AA06FC9E48322A85E49E /* TourDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailView.swift; sourceTree = "<group>"; };
 		E8F1CDEE8B26CAAEADF3FAA3 /* RootedForwardTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RootedForwardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE6D9DE9920188153245742D /* Content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Content; path = Resources/Content; sourceTree = SOURCE_ROOT; };
 		F819396E11680BC062C89DB9 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			children = (
 				1E9F27DBE57BA6C13F4A1E43 /* HomeView.swift */,
 				230B46FA53532098F1F96766 /* InfoSheetView.swift */,
+				E2F8AA06FC9E48322A85E49E /* TourDetailView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				7727F52E3E169729C1AA62F8 /* SharedViews.swift in Sources */,
 				012D8EAE0486D642E21635B8 /* StopPage.swift in Sources */,
 				E36CE8ECCCF9CF78B24295EC /* Theme.swift in Sources */,
+				82160D1EF38EB5CB2F4E029E /* TourDetailView.swift in Sources */,
 				5AAAE99D69084DE9BABA2EE9 /* TourView.swift in Sources */,
 				E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */,
 				10B186EA70E04243D581BDA2 /* WalkModels.swift in Sources */,

@@ -141,7 +141,7 @@ struct MarkedText: View {
         Text(attributed)
             .font(RF.body(size))
             .foregroundStyle(color)
-            .lineSpacing(size * 0.42)
+            .lineSpacing(size * 0.22)
             .fixedSize(horizontal: false, vertical: true)
     }
 

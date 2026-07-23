@@ -80,13 +80,11 @@ struct TourView: View {
             Button {
                 dismiss()
             } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 14, weight: .semibold))
-                    Text("Exit")
-                        .font(RF.body(16, weight: 500))
-                }
-                .foregroundStyle(RF.ink.opacity(0.7))
+                // No chevron: this is a modal dismissal, not a pop,
+                // so promising a back gesture would be a lie.
+                Text("Exit")
+                    .font(RF.body(16, weight: 500))
+                    .foregroundStyle(RF.ink.opacity(0.7))
             }
             .accessibilityIdentifier("tour-exit")
 
@@ -195,6 +193,17 @@ struct TransportBar: View {
     let goNext: () -> Void
 
     var body: some View {
+        // Hidden until narration first starts, like a mini player;
+        // the stop pages carry their own play control before that.
+        ZStack {
+            if audio.currentStopID != nil {
+                bar.transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(.easeOut(duration: 0.3), value: audio.currentStopID != nil)
+    }
+
+    private var bar: some View {
         let isCurrent = audio.isCurrent(stop.id)
         let fraction = isCurrent && audio.duration > 0
             ? min(1, audio.currentTime / audio.duration) : 0

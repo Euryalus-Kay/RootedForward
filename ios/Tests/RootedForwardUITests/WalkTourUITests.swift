@@ -16,20 +16,29 @@ final class WalkTourUITests: XCTestCase {
         app.launch()
     }
 
+    /// Home lists the tours; the walk lives one push away.
+    private func openWalk() {
+        let card = app.buttons["home-tour-card"]
+        XCTAssertTrue(card.waitForExistence(timeout: 10))
+        card.tap()
+        XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
+    }
+
     func testHomeStraightToFirstStop() {
+        openWalk()
         let start = app.buttons["home-start"]
-        XCTAssertTrue(start.waitForExistence(timeout: 10))
         start.tap()
 
         // No intro screen: the tour opens directly on stop 1.
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
-        // Exit back home
+        // Exit back to the tour screen
         app.buttons["tour-exit"].tap()
         XCTAssertTrue(start.waitForExistence(timeout: 5))
     }
 
     func testMapSheetOpensAndJumps() {
+        openWalk()
         app.buttons["home-start"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
@@ -46,6 +55,7 @@ final class WalkTourUITests: XCTestCase {
     }
 
     func testNextStopNavigation() {
+        openWalk()
         app.buttons["home-start"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 

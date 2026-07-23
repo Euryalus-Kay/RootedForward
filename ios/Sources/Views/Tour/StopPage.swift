@@ -114,7 +114,9 @@ struct StopPage: View {
         if !plates.isEmpty {
             VStack(alignment: .leading, spacing: 22) {
                 ForEach(plates, id: \.src) { image in
-                    FramedImage(image: image)
+                    // The full credit lives in the photo room; the
+                    // plate keeps only its small date label.
+                    FramedImage(image: image, showCredit: false)
                 }
             }
             .padding(.top, 26)
@@ -140,8 +142,6 @@ struct StopPage: View {
             VStack(alignment: .leading, spacing: 20) {
                 ForEach(interrupts) { interrupt in
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("The instrument")
-                            .eyebrow(RF.plateRed)
                         Text(interrupt.title)
                             .font(RF.display(21, weight: 600))
                             .foregroundStyle(RF.plateRed)

@@ -9,11 +9,11 @@ final class MapRowTapDiagnostic: XCTestCase {
         app.launchArguments = ["-uiTestReset"]
         app.launch()
 
+        let card = app.buttons["home-tour-card"]
+        XCTAssertTrue(card.waitForExistence(timeout: 10))
+        card.tap()
+        XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
         app.buttons["home-start"].tap()
-        let begin = app.buttons["intro-begin"]
-        if begin.waitForExistence(timeout: 5) {
-            begin.tap()
-        }
         XCTAssertTrue(app.buttons["tour-map"].waitForExistence(timeout: 8))
         app.buttons["tour-map"].tap()
         XCTAssertTrue(app.buttons["map-done"].waitForExistence(timeout: 5))

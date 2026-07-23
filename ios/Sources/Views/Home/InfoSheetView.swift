@@ -1,9 +1,9 @@
 import SwiftUI
 
 // ------------------------------------------------------------------
-// The sheets behind the home screen's info rows: the founder's
-// essay, the five red plates, and the practical notes. Keeping them
-// here keeps the home screen quiet.
+// The sheets behind the tour screen's info rows: the founder's
+// essay and the red plates index. Keeping them here keeps the tour
+// screen quiet.
 // ------------------------------------------------------------------
 
 struct InfoSheetView: View {
@@ -21,7 +21,6 @@ struct InfoSheetView: View {
                     switch sheet {
                     case .essay: essay
                     case .plates: plates
-                    case .practical: practical
                     }
                 }
                 .padding(.horizontal, 20)
@@ -30,13 +29,15 @@ struct InfoSheetView: View {
             }
         }
         .background(RF.cream)
+        // The plates index is a short list; a half sheet fits it.
+        .presentationDetents(sheet == .plates ? [.fraction(0.55), .large] : [.large])
+        .presentationDragIndicator(sheet == .plates ? .visible : .automatic)
     }
 
     private var title: String {
         switch sheet {
         case .essay: return "Why this walk"
-        case .plates: return "The five red plates"
-        case .practical: return "Before you walk"
+        case .plates: return "The tools of segregation"
         }
     }
 
@@ -44,7 +45,7 @@ struct InfoSheetView: View {
         HStack {
             Text(title)
                 .font(RF.display(22, weight: 600))
-                .foregroundStyle(RF.ink)
+                .foregroundStyle(RF.forest)
             Spacer()
             Button {
                 dismiss()
@@ -91,14 +92,14 @@ struct InfoSheetView: View {
         }
     }
 
-    // MARK: - The five red plates
+    // MARK: - The tools of segregation
 
     private var plates: some View {
         let items: [(stopIndex: Int, title: String)] = content.tour.stops.enumerated().flatMap { index, stop in
             (stop.interrupts ?? []).map { (stopIndex: index, title: $0.title) }
         }
         return VStack(alignment: .leading, spacing: 16) {
-            Text("Along the walk, five red plates name the tools that built segregation, one by one.")
+            Text("Along the walk, red plates name the tools that built segregation.")
                 .font(RF.body(15))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .lineSpacing(5)
@@ -111,11 +112,6 @@ struct InfoSheetView: View {
                         onJumpToStop(item.stopIndex)
                     } label: {
                         HStack(spacing: 12) {
-                            Text("\(n + 1)")
-                                .font(RF.didone(15, weight: 600))
-                                .foregroundStyle(RF.plateRedGround)
-                                .frame(width: 24, height: 24)
-                                .background(Circle().fill(RF.plateRed))
                             Text(item.title)
                                 .font(RF.body(15.5, weight: 600))
                                 .foregroundStyle(RF.ink.opacity(0.85))
@@ -142,22 +138,4 @@ struct InfoSheetView: View {
         }
     }
 
-    // MARK: - Practical
-
-    private var practical: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            ForEach(content.tour.practical) { card in
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(card.title)
-                        .font(RF.display(18, weight: 600))
-                        .foregroundStyle(RF.forest)
-                    Text(card.text)
-                        .font(RF.body(15))
-                        .foregroundStyle(RF.ink.opacity(0.75))
-                        .lineSpacing(5)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-        }
-    }
 }

@@ -191,6 +191,16 @@ extension View {
     }
 }
 
+/// A card that gives slightly under the finger, nothing more.
+struct PressableCardStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.985 : 1)
+            .opacity(configuration.isPressed ? 0.94 : 1)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
 /// Primary CTA: rust ground, white label, hard offset shadow, the
 /// site's signature button.
 struct HardShadowButtonStyle: ButtonStyle {
