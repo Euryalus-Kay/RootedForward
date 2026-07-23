@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
+import { WALK_INTRO } from "@/components/tours/walk/WalkIntro";
 import { HYDE_PARK_WALK } from "@/lib/tours/hyde-park-walk";
 
 /* ------------------------------------------------------------------ */
@@ -80,38 +81,15 @@ export default function ToursPage() {
               Why this walk
             </p>
             <h2 className="walk-title mt-3 text-2xl font-semibold leading-snug text-forest md:text-3xl">
-              The covenants are still on our deeds
+              {WALK_INTRO.title}
             </h2>
             <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
-              <p>
-                On Juneteenth, Barack Obama opened his presidential center on
-                the ground where Chicago staged the 1893 World&apos;s Fair. The
-                fair called itself the White City, and it meant it. Ida B.
-                Wells and Frederick Douglass stood at its gates with a pamphlet
-                about who had been shut out. Now the first Black
-                president&apos;s words wrap a 225-foot tower on the same ground.
-              </p>
-              <p>
-                It reads like closure. It is not, because for a century the
-                neighborhoods around that park were a workshop where the tools
-                of American housing segregation were designed, tested, and
-                defended.
-              </p>
-              <p>
-                Paul Cornell bought lakefront acres here in 1853, cut a deal
-                with the Illinois Central for a train stop, and sold Hyde Park
-                to wealthy Chicagoans as a refuge from the city. Exclusivity
-                was the product. When Black families moved south during the
-                Great Migration, that promise grew teeth.
-              </p>
-              <p>
-                None of it was weather. Every stage had authors, and every
-                instrument had a signature. This walk goes where they signed.
-                The five red plates along the way name them, one by one.
-              </p>
+              {WALK_INTRO.paragraphs.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
             </div>
             <p className="mt-5 font-display text-[13px] italic text-ink/60">
-              Adapted from an essay by Zain Zaidi, Rooted Forward&apos;s founder.
+              {WALK_INTRO.byline}
             </p>
           </div>
         </div>
