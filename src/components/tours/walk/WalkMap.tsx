@@ -34,19 +34,30 @@ interface WalkMapProps {
 // label inside roughly lng -87.608..-87.576, lat 41.802..41.784
 const PLACE_LABELS: { text: string; lat: number; lng: number; size: number }[] = [
   { text: "Lake Michigan", lat: 41.797, lng: -87.5755, size: 13 },
-  { text: "Hyde Park", lat: 41.7968, lng: -87.5942, size: 15 },
+  { text: "Hyde Park", lat: 41.7973, lng: -87.5975, size: 15 },
   { text: "Midway Plaisance", lat: 41.78635, lng: -87.6005, size: 11 },
   { text: "Jackson Park", lat: 41.7867, lng: -87.5805, size: 12 },
   { text: "Woodlawn", lat: 41.7828, lng: -87.5955, size: 11 },
+  { text: "Washington Park", lat: 41.7943, lng: -87.6094, size: 10 },
+  { text: "University of Chicago", lat: 41.79, lng: -87.5997, size: 9 },
+  { text: "Nichols Park", lat: 41.7972, lng: -87.5943, size: 8 },
 ];
 
 // street names set along their streets, like a printed map's fine type
 const STREET_LABELS: { text: string; lat: number; lng: number; rotate: number; size: number }[] = [
-  { text: "E 53rd St", lat: 41.8001, lng: -87.5946, rotate: 0, size: 9 },
+  { text: "E Hyde Park Blvd", lat: 41.8026, lng: -87.5948, rotate: 0, size: 8 },
+  { text: "E 53rd St", lat: 41.8001, lng: -87.591, rotate: 0, size: 9 },
   { text: "E 55th St", lat: 41.7957, lng: -87.5993, rotate: 0, size: 9 },
-  { text: "E 57th St", lat: 41.7921, lng: -87.5906, rotate: 0, size: 9 },
+  { text: "E 57th St", lat: 41.7921, lng: -87.5911, rotate: 0, size: 9 },
+  { text: "E 60th St", lat: 41.7846, lng: -87.599, rotate: 0, size: 8 },
   { text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, rotate: -87, size: 9 },
-  { text: "Woodlawn Ave", lat: 41.7932, lng: -87.5968, rotate: -90, size: 9 },
+  { text: "Woodlawn Ave", lat: 41.7938, lng: -87.5968, rotate: -90, size: 9 },
+  { text: "Ellis Ave", lat: 41.7958, lng: -87.6015, rotate: -90, size: 8 },
+  { text: "University Ave", lat: 41.7942, lng: -87.5986, rotate: -90, size: 8 },
+  { text: "Kimbark Ave", lat: 41.7987, lng: -87.5953, rotate: -90, size: 8 },
+  { text: "Harper Ave", lat: 41.7972, lng: -87.5889, rotate: -90, size: 8 },
+  { text: "Cottage Grove Ave", lat: 41.7935, lng: -87.6069, rotate: -90, size: 8 },
+  { text: "Stony Island Ave", lat: 41.7852, lng: -87.5873, rotate: -90, size: 8 },
 ];
 
 // soft green ground for the parks; boundaries are streets, the lake
@@ -73,7 +84,41 @@ const PARK_AREAS: [number, number][][] = [
     [41.7815, -87.618],
     [41.7815, -87.6063],
   ],
+  // Nichols Park: 53rd to 55th between Kimbark and Kenwood
+  [
+    [41.7994, -87.5948],
+    [41.7994, -87.5935],
+    [41.7953, -87.5935],
+    [41.7953, -87.5948],
+  ],
+  // Harold Washington Park: 51st to 53rd east of Hyde Park Blvd
+  [
+    [41.8032, -87.5827],
+    [41.8032, -87.579],
+    [41.7994, -87.579],
+    [41.7994, -87.5827],
+  ],
 ];
+
+// the university's main quadrangles, tinted the way printed maps mark
+// institutions, warm and slightly apart from the parks' green
+const CAMPUS_AREAS: [number, number][][] = [
+  [
+    [41.7921, -87.6014],
+    [41.7921, -87.5977],
+    [41.7885, -87.5977],
+    [41.7885, -87.6014],
+  ],
+];
+
+// where each stop's name sits relative to its marker; below unless a
+// neighbor would collide with the label
+const STOP_LABEL_SIDE: Record<string, "below" | "left" | "right"> = {
+  "cornells-stone": "right",
+  "lake-park-tracks": "right",
+  "harper-court": "left",
+  "obama-center": "right",
+};
 
 const lineD = (pts: number[][]) =>
   "M" + pts.map((p) => `${p[0]},${p[1]}`).join("L");
@@ -89,15 +134,10 @@ export default function WalkMap({
   const geo = WALK_GEOMETRY;
   const reduceMotion = useReducedMotion();
 
-  // the hovered marker grows, so it draws last and stays on top of
-  // its neighbors (SVG has no z-index; order is stacking)
+  // hover opens the HTML card above the map; the marker itself only
+  // grows slightly. Draw order stays fixed, because re-appending a
+  // hovered SVG node fires pointer-leave and kills its own hover.
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const drawOrder = useMemo(() => {
-    const arr = stops.map((s, i) => ({ stop: s, i }));
-    const idx = hoveredId ? arr.findIndex((e) => e.stop.id === hoveredId) : -1;
-    if (idx >= 0) arr.push(...arr.splice(idx, 1));
-    return arr;
-  }, [stops, hoveredId]);
 
   /** the stop's little photo, same thumbnail the plate index uses */
   const markerThumb = (stop: WalkStop) =>
@@ -136,8 +176,12 @@ export default function WalkMap({
 
   const quarterMileUnits = 402.3 / METERS_PER_UNIT;
   const vb = viewBox.split(" ").map(Number);
+  const hoveredStop = hoveredId
+    ? stops.find((s) => s.id === hoveredId) ?? null
+    : null;
 
   return (
+    <div className="relative">
     <svg
       viewBox={viewBox}
       className="block h-auto w-full"
@@ -169,6 +213,26 @@ export default function WalkMap({
             }
             fill="#1B3A2D"
             fillOpacity="0.07"
+          />
+        ))}
+        {CAMPUS_AREAS.map((ring, i) => (
+          <path
+            key={`c${i}`}
+            d={
+              "M" +
+              ring
+                .map(([lat, lng]) => {
+                  const p = projectPoint(lat, lng);
+                  return `${p.x},${p.y}`;
+                })
+                .join("L") +
+              "Z"
+            }
+            fill="#C9A227"
+            fillOpacity="0.07"
+            stroke="#C9A227"
+            strokeOpacity="0.25"
+            strokeWidth="1"
           />
         ))}
       </g>
@@ -314,14 +378,45 @@ export default function WalkMap({
         </g>
       )}
 
-      {/* stops: little framed photographs of each site, the same
-          pictures as the plate index. Hover one and it grows. */}
+      {/* every stop's name, printed under (or beside) its marker the
+          way a real map names its landmarks; kept outside the marker
+          groups so hover growth never moves the type */}
+      <g aria-hidden="true">
+        {stops.map((stop, i) => {
+          const p = projectPoint(stop.lat, stop.lng);
+          const r = i === activeIndex ? 21 : 16;
+          const side = STOP_LABEL_SIDE[stop.id] ?? "below";
+          const x = side === "left" ? p.x - r - 8 : side === "right" ? p.x + r + 8 : p.x;
+          const y = side === "below" ? p.y + r + 13 : p.y + 3.5;
+          return (
+            <text
+              key={stop.id}
+              x={x}
+              y={y}
+              textAnchor={side === "left" ? "end" : side === "right" ? "start" : "middle"}
+              fontSize="9.5"
+              fontWeight="600"
+              fill="#3D3A33"
+              fontFamily="var(--font-plat), 'Arial Narrow', sans-serif"
+              letterSpacing="0.03em"
+              paintOrder="stroke"
+              stroke="#F5F0E8"
+              strokeWidth="3"
+            >
+              {stop.mapLabel}
+            </text>
+          );
+        })}
+      </g>
+
+      {/* stops: framed photographs of each site, the same pictures as
+          the plate index. Hover one and its card opens. */}
       <g>
-        {drawOrder.map(({ stop, i }) => {
+        {stops.map((stop, i) => {
           const p = projectPoint(stop.lat, stop.lng);
           const active = i === activeIndex;
           const visited = visitedIds.has(stop.id);
-          const r = active ? 18 : 13;
+          const r = active ? 21 : 16;
           const thumb = markerThumb(stop);
           const bx = p.x + r * 0.72;
           const by = p.y + r * 0.72;
@@ -354,8 +449,8 @@ export default function WalkMap({
               className="walk-marker cursor-pointer"
               style={{ transformBox: "fill-box", transformOrigin: "center" }}
               whileHover={{
-                scale: reduceMotion ? 1 : active ? 1.25 : 1.6,
-                transition: { type: "spring", bounce: 0.28, duration: 0.35, delay: 0 },
+                scale: reduceMotion ? 1 : 1.22,
+                transition: { type: "spring", bounce: 0.3, duration: 0.35, delay: 0 },
               }}
             >
               <circle cx={p.x} cy={p.y} r={hitR} fill="transparent" />
@@ -467,5 +562,52 @@ export default function WalkMap({
         </g>
       </g>
     </svg>
+
+    {/* the hover card: the stop's photograph and name springing up
+        from its marker, a label you can actually see */}
+    {hoveredStop &&
+      (() => {
+        const p = projectPoint(hoveredStop.lat, hoveredStop.lng);
+        const leftPct = ((p.x - vb[0]) / vb[2]) * 100;
+        const topPct = ((p.y - vb[1]) / vb[3]) * 100;
+        const below = topPct < 32;
+        const thumb = markerThumb(hoveredStop);
+        return (
+          <div
+            data-testid="walk-hover-card"
+            className="pointer-events-none absolute z-10 hidden md:block"
+            style={{
+              left: `${Math.min(86, Math.max(14, leftPct))}%`,
+              top: `${topPct}%`,
+              transform: `translate(-50%, ${below ? "30px" : "calc(-100% - 30px)"})`,
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: below ? -10 : 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : { type: "spring", bounce: 0.34, duration: 0.4 }
+              }
+              className="walk-plate w-44 rounded-[3px] p-1.5"
+            >
+              {thumb && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={thumb}
+                  alt=""
+                  className="aspect-[3/2] w-full rounded-[1px] object-cover"
+                />
+              )}
+              <p className="px-1 pb-0.5 pt-1.5 text-center font-body text-[11px] font-semibold leading-tight text-ink">
+                <span className="text-rust">{hoveredStop.number}.</span>{" "}
+                {hoveredStop.title}
+              </p>
+            </motion.div>
+          </div>
+        );
+      })()}
+    </div>
   );
 }
