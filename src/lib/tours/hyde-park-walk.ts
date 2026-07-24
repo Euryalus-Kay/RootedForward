@@ -800,7 +800,7 @@ export const HYDE_PARK_WALK: WalkTour = {
         label: "Today",
       },
       toNext: {
-        text: "The main walk ends here, and the last two stops are a true detour rather than part of the route. Daley's Restaurant sits well west along 63rd Street at Cottage Grove, about half an hour on foot, and the Hansberry house is a short walk beyond it, so the two pair naturally. The number 63 bus covers the stretch, and there is parking nearby if you drove.",
+        text: "The main walk ends here. Two optional stops sit west along 63rd Street. Daley's Restaurant is at Cottage Grove, about half an hour on foot, with the Hansberry house a short walk beyond it. The number 63 bus covers the stretch, and there is parking nearby if you drove.",
         distanceMeters: 2300,
         minutes: 29,
       },
@@ -821,9 +821,8 @@ export const HYDE_PARK_WALK: WalkTour = {
       lng: -87.6064,
       optional: true,
       audioSrc: `${MEDIA}/audio/stop-14.mp3`,
-      audioSeconds: 144,
+      audioSeconds: 115,
       transcript: [
-        "First, plainly. This stop is not on the walking route. It sits about a mile and a half west of where the walk ends, so come by bus, by car, or on fresh legs, and know that the Hansberry house, the last stop, waits a short walk from here. Second, just as plainly. Nobody paid for this stop, and nobody at Daley's knows it exists. It is here because after five miles of this story you have earned a good breakfast plate, and because no business in Chicago has watched the story longer from one corner.",
         "In 1892 an Irish immigrant ironworker named **John Daley opened a lunchroom here at 63rd and Cottage Grove**, feeding the crews building the elevated railroad above the street, with the World's Fair rising a mile east. That makes it, by most accounts, **the oldest restaurant in Chicago**, older than the L trains it fed. In 1918 Daley sold to two Greek immigrants who worked in the place, a waiter named Tom Kyros and a cook named Paul Emmanuel, and the same extended family has run it ever since. They kept the Daley name. It was already worth something.",
         "Think about what has passed this corner since. 63rd Street became one of the busiest commercial streets in Black Chicago as the Great Migration remade Woodlawn, and the restaurant stayed put and fed its neighborhood while so much else moved away or burned. The menu turned toward smothered pork chops, catfish, and biscuits because that is what the neighborhood wanted. **Muhammad Ali ate here between training sessions** in the 1960s. Disinvestment hit 63rd as hard as any street in the city, the L overhead was even torn back, and Daley's kept the griddle on. In 2019 it moved into a new building directly across the street, at 6257 South Cottage Grove, and kept serving.",
         "A restaurant is a small thing to set against covenants and bulldozers. But notice what it proves. A business that stayed, served whoever walked in, and changed with its neighbors instead of fleeing them has outlived nearly every business in this story. Get the breakfast. Then, if you have one more stop in you, the house where the paper wall started to crack is a short walk northwest.",
