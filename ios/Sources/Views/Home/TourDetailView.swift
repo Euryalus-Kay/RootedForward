@@ -24,9 +24,8 @@ struct TourDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 hero
-                whyRow
-                stopsStrip
                 infoRows
+                stopsStrip
             }
             .padding(.bottom, 110)
         }
@@ -196,25 +195,19 @@ struct TourDetailView: View {
                 .padding(.vertical, 6)
             }
         }
-        .padding(.top, 52)
+        .padding(.top, 36)
     }
 
     // MARK: - Info rows
 
-    /// The founder's essay, one row right under Start.
-    private var whyRow: some View {
+    /// The three rows in one plate, directly under Start, sized so
+    /// the top of the stops strip still peeks into the first screen.
+    private var infoRows: some View {
         VStack(spacing: 0) {
             infoRow("Why this walk", identifier: "home-essay-more") {
                 infoSheet = .essay
             }
-        }
-        .plate()
-        .padding(.horizontal, 24)
-        .padding(.top, 30)
-    }
-
-    private var infoRows: some View {
-        VStack(spacing: 0) {
+            divider
             infoRow("The map and the route", identifier: "home-map-row") {
                 mapOpen = true
             }
@@ -225,7 +218,7 @@ struct TourDetailView: View {
         }
         .plate()
         .padding(.horizontal, 24)
-        .padding(.top, 44)
+        .padding(.top, 26)
     }
 
     private var divider: some View {

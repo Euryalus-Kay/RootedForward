@@ -67,12 +67,16 @@ struct TourView: View {
             }
             .background(RF.cream)
 
-            // The pill row sits centered over the transport bar.
+            // The pill row sits centered over the transport bar, the
+            // arrows flanking Directions and Map so you can step
+            // between stops without scrolling.
             VStack(alignment: .center, spacing: 12) {
                 nearbyHint
                 HStack(spacing: 10) {
+                    arrowPill(forward: false)
                     directionsPill
                     mapPill
+                    arrowPill(forward: true)
                 }
                 TransportBar(
                     stop: stops[safeIndex],
@@ -172,6 +176,29 @@ struct TourView: View {
     }
 
     // MARK: - Floating pills
+
+    /// A round paper pill stepping one stop back or forward.
+    private func arrowPill(forward: Bool) -> some View {
+        let disabled = forward ? safeIndex >= stops.count - 1 : safeIndex == 0
+        return Button {
+            move(to: forward ? min(stops.count - 1, safeIndex + 1) : max(0, safeIndex - 1))
+        } label: {
+            Image(systemName: forward ? "chevron.right" : "chevron.left")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(RF.ink.opacity(disabled ? 0.3 : 0.75))
+                .frame(width: 42, height: 42)
+                .background(Circle().fill(RF.paper))
+                .overlay(Circle().strokeBorder(RF.ink.opacity(0.22), lineWidth: 1))
+                .background(
+                    Circle().fill(RF.ink.opacity(0.18)).offset(x: 3, y: 3)
+                )
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Circle())
+        }
+        .disabled(disabled)
+        .accessibilityLabel(forward ? "Next stop" : "Previous stop")
+        .accessibilityIdentifier(forward ? "pill-next" : "pill-previous")
+    }
 
     private var directionsPill: some View {
         Link(destination: directionsURL(lat: stops[safeIndex].lat, lng: stops[safeIndex].lng)) {
