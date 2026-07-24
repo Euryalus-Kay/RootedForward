@@ -93,6 +93,19 @@ final class ScreenshotTests: XCTestCase {
 
         // 4. The red plates index sheet
         scrollToTap(app.buttons["row-The tools of segregation"])
+        if !app.buttons["info-done"].waitForExistence(timeout: 5) {
+            // A tap swallowed by scroll inertia can land on the stops
+            // strip and open the tour (or a photo); back out, retry.
+            if app.buttons["photo-close"].exists {
+                app.buttons["photo-close"].tap()
+                sleep(1)
+            }
+            if app.buttons["tour-exit"].exists {
+                app.buttons["tour-exit"].tap()
+                sleep(1)
+            }
+            scrollToTap(app.buttons["row-The tools of segregation"])
+        }
         XCTAssertTrue(app.buttons["info-done"].waitForExistence(timeout: 5))
         sleep(1)
         snap("04-tools-of-segregation")

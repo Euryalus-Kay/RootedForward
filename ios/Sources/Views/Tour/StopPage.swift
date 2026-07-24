@@ -75,15 +75,15 @@ struct StopPage: View {
     // MARK: - Listen card
 
     private var listenCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 14) {
-                PlayButton(stop: stop, size: 54)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                PlayButton(stop: stop, size: 44)
                 ListenCardTitle(stop: stop)
                 Spacer(minLength: 0)
             }
             AudioTimeline(stop: stop)
         }
-        .padding(16)
+        .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .plate()
     }
@@ -128,6 +128,7 @@ struct StopPage: View {
                             .font(RF.display(21, weight: 600))
                             .foregroundStyle(RF.plateRed)
                             .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityAddTraits(.isHeader)
                         VStack(alignment: .leading, spacing: 12) {
                             ForEach(Array(interrupt.body.enumerated()), id: \.offset) { _, paragraph in
                                 MarkedText(text: paragraph, size: 15.5, color: RF.ink.opacity(0.82))
@@ -152,6 +153,7 @@ struct StopPage: View {
                 Text("On the way")
                     .font(RF.display(17, weight: 600))
                     .foregroundStyle(RF.forest)
+                    .accessibilityAddTraits(.isHeader)
                 Text(next.text)
                     .font(RF.body(15.5))
                     .foregroundStyle(RF.ink.opacity(0.8))
@@ -159,7 +161,7 @@ struct StopPage: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Text("\(WalkFormat.distance(meters: next.distanceMeters)), about \(next.minutes) min")
                     .font(RF.display(15, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
 
                 HStack(spacing: 16) {
                     if let goNext {
@@ -191,6 +193,8 @@ struct StopPage: View {
                             .font(RF.body(15, weight: 600))
                             .foregroundStyle(RF.forest)
                             .underline()
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                 }
             }
@@ -217,6 +221,8 @@ struct StopPage: View {
                                     .underline()
                                     .multilineTextAlignment(.leading)
                                     .fixedSize(horizontal: false, vertical: true)
+                                    .frame(minHeight: 34, alignment: .leading)
+                                    .contentShape(Rectangle())
                             }
                         }
                     }
@@ -226,9 +232,9 @@ struct StopPage: View {
             } label: {
                 Text("Sources for this stop")
                     .font(RF.body(14, weight: 600))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
             }
-            .tint(RF.warmGray)
+            .tint(RF.warmGrayDark)
             .padding(.top, 30)
         }
     }
@@ -244,11 +250,11 @@ struct ListenCardTitle: View {
             if audio.isCurrent(stop.id) && audio.isPlaying {
                 PlayingWave()
                 Text("Now playing")
-                    .font(RF.body(16.5, weight: 600))
-                    .foregroundStyle(RF.rust)
+                    .font(RF.body(15, weight: 600))
+                    .foregroundStyle(RF.rustDark)
             } else {
                 Text("Listen to this stop")
-                    .font(RF.body(16.5, weight: 600))
+                    .font(RF.body(15, weight: 600))
                     .foregroundStyle(RF.ink)
             }
         }
@@ -288,6 +294,7 @@ struct AudioTimeline: View {
 
             HStack(spacing: 14) {
                 Text(WalkFormat.clock(seconds: time))
+                    .monospacedDigit()
                 Spacer()
                 Button {
                     Haptics.tap()
@@ -296,7 +303,7 @@ struct AudioTimeline: View {
                     Image(systemName: "gobackward.15")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(isCurrent ? RF.ink.opacity(0.7) : RF.warmGrayLight)
-                        .frame(width: 32, height: 28)
+                        .frame(width: 44, height: 44)
                 }
                 .disabled(!isCurrent)
                 .accessibilityLabel("Back 15 seconds")
@@ -319,15 +326,17 @@ struct AudioTimeline: View {
                     Image(systemName: "goforward.15")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(isCurrent ? RF.ink.opacity(0.7) : RF.warmGrayLight)
-                        .frame(width: 32, height: 28)
+                        .frame(width: 44, height: 44)
                 }
                 .disabled(!isCurrent)
                 .accessibilityLabel("Forward 15 seconds")
                 Spacer()
                 Text(WalkFormat.clock(seconds: duration))
+                    .monospacedDigit()
             }
             .font(RF.body(12))
-            .foregroundStyle(RF.warmGray)
+            // Dark enough for AA at this size; warmGray sits at 3.5:1
+            .foregroundStyle(RF.ink.opacity(0.62))
         }
     }
 

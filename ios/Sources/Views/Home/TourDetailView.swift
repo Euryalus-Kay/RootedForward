@@ -133,12 +133,16 @@ struct TourDetailView: View {
                 HStack(spacing: 10) {
                     Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) visited")
                         .font(RF.body(13))
-                        .foregroundStyle(RF.warmGray)
-                    Button("Start over") {
+                        .foregroundStyle(RF.warmGrayDark)
+                    Button {
                         confirmRestart = true
+                    } label: {
+                        Text("Start over")
+                            .font(RF.body(13, weight: 600))
+                            .foregroundStyle(RF.rust)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
-                    .font(RF.body(13, weight: 600))
-                    .foregroundStyle(RF.rust)
                 }
             }
         }
@@ -151,6 +155,7 @@ struct TourDetailView: View {
             Text("The stops")
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
                 .padding(.horizontal, 24)
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -162,6 +167,8 @@ struct TourDetailView: View {
                             StopCard(stop: stop, visited: progress.isVisited(stop.id))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+                        .accessibilityValue(progress.isVisited(stop.id) ? "Visited" : "Not visited")
                     }
                 }
                 .padding(.horizontal, 24)
@@ -201,7 +208,7 @@ struct TourDetailView: View {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 16)

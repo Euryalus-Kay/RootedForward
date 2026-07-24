@@ -23,6 +23,9 @@ enum RF {
     static let rustLight = Color(rfHex: 0xD4765C)
     static let rustDark = Color(rfHex: 0xA8462A)
     static let warmGray = Color(rfHex: 0x8A8578)
+    // Text-safe warm gray: the site's tone one engraved step darker,
+    // 4.8:1 on cream so small metadata clears WCAG AA.
+    static let warmGrayDark = Color(rfHex: 0x6E6A5E)
     static let warmGrayLight = Color(rfHex: 0xB5AFA4)
     static let border = Color(rfHex: 0xDDD6C8)
     // The red plates (walk-plate-red)
@@ -100,7 +103,11 @@ enum BrandFonts {
         let descriptor = UIFontDescriptor(fontAttributes: attributes)
         let uiFont = UIFont(descriptor: descriptor, size: size)
         if uiFont.familyName.caseInsensitiveCompare(family) == .orderedSame {
-            return Font(uiFont)
+            // Dynamic Type: body copy scales up to 2x, display type up
+            // to 1.5x so large headlines cannot explode the layout.
+            let cap = family == "DM Sans" ? size * 2.0 : size * 1.5
+            let metrics = UIFontMetrics(forTextStyle: .body)
+            return Font(metrics.scaledFont(for: uiFont, maximumPointSize: cap))
         }
         // Fallback keeps the app legible if registration ever fails.
         let design: Font.Design = family == "DM Sans" ? .default : .serif

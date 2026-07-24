@@ -24,6 +24,8 @@ struct PhotoViewer: View {
                     Image(uiImage: loaded)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .accessibilityLabel(image.alt)
+                        .accessibilityAddTraits(.isImage)
                 }
                 .ignoresSafeArea()
             } else if failed {
@@ -32,15 +34,19 @@ struct PhotoViewer: View {
                         .font(RF.body(15))
                         .foregroundStyle(RF.cream.opacity(0.8))
                         .multilineTextAlignment(.center)
-                    Button("Try again") {
+                    Button {
                         failed = false
                         Task { await load() }
+                    } label: {
+                        Text("Try again")
+                            .font(RF.body(15, weight: 600))
+                            .foregroundStyle(RF.cream)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 9)
+                            .overlay(Capsule().strokeBorder(RF.cream.opacity(0.4), lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
-                    .font(RF.body(15, weight: 600))
-                    .foregroundStyle(RF.cream)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 9)
-                    .overlay(Capsule().strokeBorder(RF.cream.opacity(0.4), lineWidth: 1))
                 }
                 .padding(32)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,6 +64,8 @@ struct PhotoViewer: View {
                     .foregroundStyle(RF.cream)
                     .frame(width: 40, height: 40)
                     .background(Circle().fill(.white.opacity(0.12)))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Circle())
             }
             .padding(.trailing, 16)
             .padding(.top, 8)

@@ -139,6 +139,7 @@ struct HomeView: View {
             Text("Self-guided tours")
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
 
             Text("Free audio tours walking you through the racial history of these locations.")
                 .font(RF.body(15.5))
@@ -164,7 +165,9 @@ struct HomeView: View {
             Link(destination: URL(string: "https://rooted-forward.org")!) {
                 Text("rooted-forward.org")
                     .font(RF.body(13, weight: 500))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
         }
         .frame(maxWidth: .infinity)
@@ -250,8 +253,11 @@ struct ListeningChip: View {
                         .foregroundStyle(.white)
                         .frame(width: 34, height: 34)
                         .background(Circle().fill(RF.rust))
+                        // The circle stays 34pt; the finger gets 44
+                        .frame(width: 44, height: 44)
+                        .contentShape(Circle())
                 }
-                .accessibilityLabel(audio.isPlaying ? "Pause" : "Play")
+                .accessibilityHidden(true)
 
                 Text(audio.currentStopTitle)
                     .font(RF.body(14, weight: 600))
@@ -260,13 +266,21 @@ struct ListeningChip: View {
                 Spacer()
                 Image(systemName: "chevron.up")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .plate()
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        // One VoiceOver element: named for the narration, opens the
+        // tour, with play/pause as a custom action.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Now playing, \(audio.currentStopTitle)")
+        .accessibilityHint("Opens the tour")
+        .accessibilityAction(named: audio.isPlaying ? "Pause" : "Play") {
+            audio.isPlaying ? audio.pause() : audio.resume()
+        }
     }
 }

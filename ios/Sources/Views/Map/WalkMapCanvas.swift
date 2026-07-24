@@ -98,6 +98,8 @@ struct WalkMapCanvas: View {
                 Canvas { context, size in
                     draw(in: &context, size: size, scale: scale)
                 }
+                .accessibilityLabel("Map of Hyde Park with the walking route drawn between the stops")
+                .accessibilityAddTraits(.isImage)
 
                 // Live markers over the drawing: each one is a real
                 // view, so it can grow under a held finger.
@@ -282,7 +284,7 @@ struct WalkMapCanvas: View {
                 &rotated,
                 text: Text(label.text)
                     .font(RF.display(label.size, weight: 400, italic: true))
-                    .foregroundColor(RF.warmGray),
+                    .foregroundColor(RF.warmGrayDark),
                 halo: Text(label.text)
                     .font(RF.display(label.size, weight: 400, italic: true))
                     .foregroundColor(RF.cream),
@@ -297,7 +299,7 @@ struct WalkMapCanvas: View {
             let p = projection.point(lat: label.lat, lng: label.lng)
             let text = Text(label.text)
                 .font(RF.display(label.size, weight: 400, italic: true))
-                .foregroundColor(RF.warmGray)
+                .foregroundColor(RF.warmGrayDark)
             let resolved = context.resolve(text)
             let measured = resolved.measure(in: CGSize(width: 400, height: 60))
             // Keep the label fully inside the map frame
@@ -514,6 +516,8 @@ private struct StopMarker: View {
         }
         .buttonStyle(MarkerPressStyle())
         .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+        .accessibilityValue(active ? "Current stop" : visited ? "Visited" : "Not visited")
+        .accessibilityAddTraits(active ? .isSelected : [])
     }
 }
 

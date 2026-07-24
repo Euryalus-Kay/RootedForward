@@ -54,9 +54,10 @@ struct MapExplorerView: View {
                 Text("Hyde Park")
                     .font(RF.display(22, weight: 600))
                     .foregroundStyle(RF.ink)
+                    .accessibilityAddTraits(.isHeader)
                 Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
                     .font(RF.display(13, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
             }
             Spacer()
             Button {
@@ -68,6 +69,8 @@ struct MapExplorerView: View {
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(RF.forest)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .accessibilityIdentifier("explorer-done")
         }
@@ -87,7 +90,7 @@ struct MapExplorerView: View {
                 .font(RF.body(12.5))
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .foregroundStyle(RF.warmGray)
+        .foregroundStyle(RF.warmGrayDark)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 18)
         .padding(.vertical, 12)

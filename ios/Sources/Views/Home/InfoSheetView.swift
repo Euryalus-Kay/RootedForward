@@ -46,6 +46,7 @@ struct InfoSheetView: View {
             Text(title)
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             Button {
                 dismiss()
@@ -56,6 +57,8 @@ struct InfoSheetView: View {
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(RF.forest)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .accessibilityIdentifier("info-done")
         }
@@ -74,6 +77,7 @@ struct InfoSheetView: View {
             Text(content.intro.title)
                 .font(RF.display(27, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -86,7 +90,7 @@ struct InfoSheetView: View {
 
             Text(content.intro.byline)
                 .font(RF.display(14.5, weight: 400, italic: true))
-                .foregroundStyle(RF.warmGray)
+                .foregroundStyle(RF.warmGrayDark)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 20)
         }
@@ -119,10 +123,10 @@ struct InfoSheetView: View {
                             Spacer()
                             Text("Stop \(item.stopIndex + 1)")
                                 .font(RF.body(13))
-                                .foregroundStyle(RF.warmGray)
+                                .foregroundStyle(RF.warmGrayDark)
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 11, weight: .semibold))
-                                .foregroundStyle(RF.warmGray)
+                                .foregroundStyle(RF.warmGrayDark)
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)

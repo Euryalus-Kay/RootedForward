@@ -72,6 +72,7 @@ struct SettingsView: View {
             Text("Settings")
                 .font(RF.display(24, weight: 600))
                 .foregroundStyle(RF.ink)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             Button {
                 dismiss()
@@ -82,6 +83,8 @@ struct SettingsView: View {
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(RF.forest)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
         }
         .padding(.horizontal, 18)
@@ -99,6 +102,7 @@ struct SettingsView: View {
             Text("Your account")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
 
             if let profile = account.profile {
                 VStack(alignment: .leading, spacing: 4) {
@@ -107,7 +111,7 @@ struct SettingsView: View {
                         .foregroundStyle(RF.forest)
                     Text(profile.email)
                         .font(RF.body(14.5))
-                        .foregroundStyle(RF.warmGray)
+                        .foregroundStyle(RF.warmGrayDark)
                 }
                 Text("Your account connects comments and policy signatures on rooted-forward.org. Tour progress stays on this phone either way.")
                     .font(RF.body(13.5))
@@ -123,6 +127,8 @@ struct SettingsView: View {
                             .font(RF.body(15, weight: 600))
                             .foregroundStyle(RF.forest)
                             .underline()
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     Button {
                         confirmDelete = true
@@ -131,6 +137,8 @@ struct SettingsView: View {
                             .font(RF.body(15, weight: 600))
                             .foregroundStyle(RF.plateRed)
                             .underline()
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .accessibilityIdentifier("delete-account")
                 }
@@ -205,6 +213,8 @@ struct SettingsView: View {
                         .font(RF.body(14, weight: 600))
                         .foregroundStyle(RF.forest)
                         .underline()
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                 }
                 .padding(.top, 2)
@@ -213,6 +223,12 @@ struct SettingsView: View {
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
         .plate()
+        // Sign-in and deletion failures speak, not just render.
+        .onChange(of: account.errorMessage) { _, message in
+            if let message {
+                UIAccessibility.post(notification: .announcement, argument: message)
+            }
+        }
     }
 
     // MARK: - Tour
@@ -222,6 +238,7 @@ struct SettingsView: View {
             Text("The tour")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
             Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) stops visited. Progress lives only on this phone.")
                 .font(RF.body(14))
                 .foregroundStyle(RF.ink.opacity(0.7))
@@ -233,6 +250,8 @@ struct SettingsView: View {
                     .font(RF.body(15, weight: 600))
                     .foregroundStyle(RF.rust)
                     .underline()
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
         }
         .padding(18)
@@ -247,6 +266,7 @@ struct SettingsView: View {
             Text("About")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
+                .accessibilityAddTraits(.isHeader)
             Text("Rooted Forward is a student-run Chicago nonprofit. Walking tours, an online exhibit, a podcast, and housing policy work. Photograph credits appear with each image; sources are listed on every stop.")
                 .font(RF.body(13.5))
                 .foregroundStyle(RF.ink.opacity(0.65))
@@ -263,7 +283,7 @@ struct SettingsView: View {
 
             Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
                 .font(RF.body(12))
-                .foregroundStyle(RF.warmGray)
+                .foregroundStyle(RF.warmGrayDark)
                 .padding(.top, 8)
         }
         .padding(18)
@@ -281,6 +301,8 @@ struct SettingsView: View {
                     .font(.system(size: 10, weight: .semibold))
             }
             .foregroundStyle(RF.forest)
+            .frame(minHeight: 34, alignment: .leading)
+            .contentShape(Rectangle())
         }
     }
 }

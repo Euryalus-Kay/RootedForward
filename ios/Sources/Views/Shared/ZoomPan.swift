@@ -19,6 +19,7 @@ struct ZoomPanContainer<Content: View>: View {
     @State private var steadyOffset: CGSize = .zero
     @GestureState private var pinchScale: CGFloat = 1
     @GestureState private var dragOffset: CGSize = .zero
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         GeometryReader { geo in
@@ -65,7 +66,7 @@ struct ZoomPanContainer<Content: View>: View {
                 )
                 .onTapGesture(count: 2) { location in
                     Haptics.tap()
-                    withAnimation(.spring(duration: 0.35)) {
+                    withAnimation(reduceMotion ? nil : .spring(duration: 0.35)) {
                         if steadyScale > 1.01 {
                             steadyScale = 1
                             steadyOffset = .zero
@@ -83,7 +84,7 @@ struct ZoomPanContainer<Content: View>: View {
                         }
                     }
                 }
-                .animation(.interactiveSpring(response: 0.28), value: steadyScale)
+                .animation(reduceMotion ? nil : .interactiveSpring(response: 0.28), value: steadyScale)
         }
     }
 

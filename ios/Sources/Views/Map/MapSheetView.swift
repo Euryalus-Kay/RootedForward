@@ -45,6 +45,7 @@ struct MapSheetView: View {
             Text("Map")
                 .font(RF.display(24, weight: 600))
                 .foregroundStyle(RF.ink)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             Button {
                 dismiss()
@@ -55,6 +56,8 @@ struct MapSheetView: View {
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(RF.forest)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .accessibilityIdentifier("map-done")
         }
@@ -73,10 +76,11 @@ struct MapSheetView: View {
                 Text("Hyde Park")
                     .font(RF.display(20, weight: 600))
                     .foregroundStyle(RF.ink)
+                    .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
                     .font(RF.display(14, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
@@ -111,9 +115,13 @@ struct MapSheetView: View {
                     .padding(.vertical, 7)
                     .background(RF.paper.opacity(0.92))
                     .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.2), lineWidth: 1))
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
                 }
                 .padding(10)
-                .accessibilityLabel("Open the full-screen map")
+                // Label leads with the visible word so Voice Control
+                // users can say "Tap Explore"
+                .accessibilityLabel("Explore the full-screen map")
                 .accessibilityIdentifier("map-expand")
             }
             .fullScreenCover(isPresented: $explorerOpen) {
@@ -202,12 +210,12 @@ struct MapSheetView: View {
             if location.isDenied {
                 Text("Location is off for this app. Turn it on in Settings to see your dot. It never leaves your phone.")
                     .font(RF.body(13))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
                     .fixedSize(horizontal: false, vertical: true)
             } else if showFarAway {
                 Text("You are not in Hyde Park yet. Your dot appears once you are near the route.")
                     .font(RF.body(13))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -244,10 +252,11 @@ struct MapSheetView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "speaker.wave.2")
                                 .font(.system(size: 10))
+                                .accessibilityHidden(true)
                             Text(WalkFormat.clock(seconds: stop.audioSeconds))
                         }
                         .font(RF.body(13.5))
-                        .foregroundStyle(RF.warmGray)
+                        .foregroundStyle(RF.warmGrayDark)
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
@@ -259,6 +268,11 @@ struct MapSheetView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("map-stop-\(stop.number)")
+                .accessibilityValue(
+                    i == currentIndex ? "Current stop"
+                        : progress.isVisited(stop.id) ? "Visited" : "Not visited"
+                )
+                .accessibilityAddTraits(i == currentIndex ? .isSelected : [])
 
                 if i < content.tour.stops.count - 1 {
                     Rectangle().fill(RF.border.opacity(0.7)).frame(height: 1)

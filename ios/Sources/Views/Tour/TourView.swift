@@ -28,6 +28,15 @@ struct TourView: View {
         min(max(0, index), max(0, stops.count - 1))
     }
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// Page changes slide unless the walker asked for reduced motion.
+    private func move(to newIndex: Int) {
+        withAnimation(reduceMotion ? nil : .default) {
+            index = newIndex
+        }
+    }
+
     var body: some View {
         if stops.isEmpty {
             // Only reachable if a broken payload ever slips through
@@ -47,8 +56,8 @@ struct TourView: View {
                         StopPage(
                             stop: stop,
                             isLast: i == stops.count - 1,
-                            goNext: i < stops.count - 1 ? { withAnimation { index = i + 1 } } : nil,
-                            goPrevious: i > 0 ? { withAnimation { index = i - 1 } } : nil
+                            goNext: i < stops.count - 1 ? { move(to: i + 1) } : nil,
+                            goPrevious: i > 0 ? { move(to: i - 1) } : nil
                         )
                         .tag(i)
                     }
@@ -68,8 +77,8 @@ struct TourView: View {
                     stop: stops[safeIndex],
                     canGoPrevious: safeIndex > 0,
                     canGoNext: safeIndex < stops.count - 1,
-                    goPrevious: { withAnimation { index = max(0, safeIndex - 1) } },
-                    goNext: { withAnimation { index = min(stops.count - 1, safeIndex + 1) } }
+                    goPrevious: { move(to: max(0, safeIndex - 1)) },
+                    goNext: { move(to: min(stops.count - 1, safeIndex + 1)) }
                 )
             }
             .padding(.horizontal, 12)
@@ -112,6 +121,8 @@ struct TourView: View {
                 Text("Exit")
                     .font(RF.body(16, weight: 500))
                     .foregroundStyle(RF.ink.opacity(0.7))
+                    .frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
             }
             .accessibilityIdentifier("tour-exit")
 
@@ -146,6 +157,9 @@ struct TourView: View {
                 .padding(.vertical, 7)
                 .background(.white)
                 .overlay(Rectangle().strokeBorder(RF.border, lineWidth: 1))
+                // Invisible extension up to the 44pt touch minimum
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
         }
         .padding(.horizontal, 16)
@@ -209,7 +223,7 @@ struct TourView: View {
            near.stop.id != stops[safeIndex].id {
             Button {
                 if let i = stops.firstIndex(where: { $0.id == near.stop.id }) {
-                    withAnimation { index = i }
+                    move(to: i)
                 }
             } label: {
                 HStack(spacing: 6) {
@@ -223,6 +237,8 @@ struct TourView: View {
                 .padding(.vertical, 9)
                 .background(Capsule().fill(.white))
                 .overlay(Capsule().strokeBorder(RF.forest.opacity(0.35), lineWidth: 1))
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
             .frame(maxWidth: .infinity, alignment: .center)
         }
@@ -278,7 +294,7 @@ struct TransportBar: View {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(canGoPrevious ? RF.ink.opacity(0.7) : RF.border)
-                        .frame(width: 38, height: 44)
+                        .frame(width: 44, height: 44)
                 }
                 .disabled(!canGoPrevious)
                 .accessibilityLabel("Previous stop")
@@ -290,7 +306,7 @@ struct TransportBar: View {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(canGoNext ? RF.ink.opacity(0.7) : RF.border)
-                        .frame(width: 38, height: 44)
+                        .frame(width: 44, height: 44)
                 }
                 .disabled(!canGoNext)
                 .accessibilityLabel("Next stop")

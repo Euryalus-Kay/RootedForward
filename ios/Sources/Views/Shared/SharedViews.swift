@@ -20,26 +20,37 @@ enum Haptics {
     }
 }
 
-/// Five little bars breathing with the narration.
+/// Five little bars breathing with the narration. Holds still for
+/// Reduce Motion; the label next to it already says "Now playing".
 struct PlayingWave: View {
     var color: Color = RF.rust
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1.0 / 24.0)) { context in
-            let t = context.date.timeIntervalSinceReferenceDate
-            HStack(spacing: 2.5) {
-                ForEach(0..<5, id: \.self) { i in
-                    Capsule()
-                        .fill(color)
-                        .frame(
-                            width: 3,
-                            height: 5 + 9 * abs(sin(t * 2.6 + Double(i) * 0.95))
-                        )
+        Group {
+            if reduceMotion {
+                bars(at: 0)
+            } else {
+                TimelineView(.animation(minimumInterval: 1.0 / 24.0)) { context in
+                    bars(at: context.date.timeIntervalSinceReferenceDate)
                 }
             }
-            .frame(height: 16, alignment: .center)
         }
         .accessibilityHidden(true)
+    }
+
+    private func bars(at t: TimeInterval) -> some View {
+        HStack(spacing: 2.5) {
+            ForEach(0..<5, id: \.self) { i in
+                Capsule()
+                    .fill(color)
+                    .frame(
+                        width: 3,
+                        height: 5 + 9 * abs(sin(t * 2.6 + Double(i) * 0.95))
+                    )
+            }
+        }
+        .frame(height: 16, alignment: .center)
     }
 }
 
@@ -128,7 +139,7 @@ struct FramedImage: View {
             if showCredit {
                 Text(image.credit)
                     .font(RF.body(12))
-                    .foregroundStyle(RF.warmGray)
+                    .foregroundStyle(RF.warmGrayDark)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
