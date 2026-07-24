@@ -22,8 +22,8 @@ struct MapExplorerView: View {
             header
             ZoomPanContainer(
                 contentAspect: content.geometry.viewBox.w / content.geometry.viewBox.h,
-                maxScale: 6,
-                doubleTapScale: 2.6
+                maxScale: 9,
+                doubleTapScale: 3.2
             ) {
                 WalkMapCanvas(
                     geometry: content.geometry,

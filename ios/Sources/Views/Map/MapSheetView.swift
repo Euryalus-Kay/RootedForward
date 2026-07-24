@@ -96,6 +96,7 @@ struct MapSheetView: View {
                 route: content.tour.route,
                 baseMap: baseMap,
                 detourRoutes: content.tour.detourRoutes,
+                cropRect: mainCrop,
                 currentIndex: currentIndex,
                 visited: progress.visited,
                 thumbs: thumbs,
@@ -179,9 +180,10 @@ struct MapSheetView: View {
             }
             .font(RF.body(13.5))
             .foregroundStyle(RF.ink.opacity(0.75))
-            Text("Base map: USGS survey, 1929")
+            Text("The two detours sit southwest of this view. Explore shows the whole plate. Base map: USGS survey, 1929.")
                 .font(RF.display(11, weight: 400, italic: true))
                 .foregroundStyle(RF.warmGrayDark)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -191,6 +193,29 @@ struct MapSheetView: View {
         let lng = loc.coordinate.longitude
         guard content.projection.isNearFrame(lat: lat, lng: lng, padMeters: 400) else { return nil }
         return content.projection.point(lat: lat, lng: lng)
+    }
+
+    /// The main walk's region of the plate, so the sheet map shows
+    /// the route large. The detours sit outside it; their dashed
+    /// spur exits the bottom edge, and Explore shows the whole plate.
+    private var mainCrop: CGRect {
+        let pts = content.tour.stops.filter { !$0.isDetour }
+            .map { content.projection.point(lat: $0.lat, lng: $0.lng) }
+            + content.tour.route.map { content.projection.point(lat: $0[0], lng: $0[1]) }
+        guard let first = pts.first else {
+            return CGRect(x: 0, y: 0, width: content.geometry.viewBox.w, height: content.geometry.viewBox.h)
+        }
+        var minX = first.x, maxX = first.x, minY = first.y, maxY = first.y
+        for p in pts {
+            minX = min(minX, p.x); maxX = max(maxX, p.x)
+            minY = min(minY, p.y); maxY = max(maxY, p.y)
+        }
+        let pad: CGFloat = 62
+        let x0 = max(0, minX - pad - 20)
+        let y0 = max(0, minY - pad)
+        let x1 = min(content.geometry.viewBox.w, maxX + pad)
+        let y1 = min(content.geometry.viewBox.h, maxY + pad)
+        return CGRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0)
     }
 
     // MARK: - Find me

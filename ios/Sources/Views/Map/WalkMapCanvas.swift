@@ -19,6 +19,10 @@ struct WalkMapCanvas: View {
     var baseMap: UIImage? = nil
     /// Dashed spurs out to the optional detour stops.
     var detourRoutes: [[[Double]]]? = nil
+    /// Region of the plate to show, in projected viewBox units. Nil
+    /// shows the whole plate. The map sheet crops to the main route
+    /// so the walk reads larger; the explorer passes nil.
+    var cropRect: CGRect? = nil
     let currentIndex: Int
     let visited: Set<String>
     let thumbs: [String: UIImage]
@@ -97,9 +101,19 @@ struct WalkMapCanvas: View {
         "lake-park-tracks": 11
     ]
 
+    /// The visible region in projected units.
+    private var focus: CGRect {
+        cropRect ?? CGRect(x: 0, y: 0, width: geometry.viewBox.w, height: geometry.viewBox.h)
+    }
+
+    /// Projected-unit point to on-screen point for the current crop.
+    private func screen(_ p: CGPoint, _ scale: CGFloat) -> CGPoint {
+        CGPoint(x: (p.x - focus.minX) * scale, y: (p.y - focus.minY) * scale)
+    }
+
     var body: some View {
         GeometryReader { geo in
-            let scale = geo.size.width / geometry.viewBox.w
+            let scale = geo.size.width / focus.width
             ZStack(alignment: .topLeading) {
                 Canvas { context, size in
                     draw(in: &context, size: size, scale: scale)
@@ -108,23 +122,28 @@ struct WalkMapCanvas: View {
                 .accessibilityAddTraits(.isImage)
 
                 // Live markers over the drawing: each one is a real
-                // view, so it can grow under a held finger.
+                // view, so it can grow under a held finger. Markers
+                // outside the cropped view stay off the plate.
                 ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
-                    let p = projection.point(lat: stop.lat, lng: stop.lng)
-                    StopMarker(
-                        stop: stop,
-                        active: i == currentIndex,
-                        visited: visited.contains(stop.id),
-                        thumb: thumbs[stop.id]
-                    ) {
-                        onTapStop(i)
+                    let p = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
+                    if p.x > -40, p.x < geo.size.width + 40,
+                       p.y > -40, p.y < geo.size.height + 40 {
+                        StopMarker(
+                            stop: stop,
+                            active: i == currentIndex,
+                            visited: visited.contains(stop.id),
+                            thumb: thumbs[stop.id]
+                        ) {
+                            onTapStop(i)
+                        }
+                        .position(x: p.x, y: p.y)
+                        .zIndex(i == currentIndex ? 2 : 1)
                     }
-                    .position(x: p.x * scale, y: p.y * scale)
-                    .zIndex(i == currentIndex ? 2 : 1)
                 }
             }
         }
-        .aspectRatio(geometry.viewBox.w / geometry.viewBox.h, contentMode: .fit)
+        .aspectRatio(focus.width / focus.height, contentMode: .fit)
+        .clipped()
     }
 
     // MARK: - Drawing
@@ -132,6 +151,7 @@ struct WalkMapCanvas: View {
     private func draw(in context: inout GraphicsContext, size: CGSize, scale: CGFloat) {
         var map = context
         map.scaleBy(x: scale, y: scale)
+        map.translateBy(x: -focus.minX, y: -focus.minY)
 
         // Paper
         map.fill(
@@ -313,9 +333,9 @@ struct WalkMapCanvas: View {
 
     private func drawStreetLabels(in context: inout GraphicsContext, scale: CGFloat) {
         for label in Self.streetLabels {
-            let p = projection.point(lat: label.lat, lng: label.lng)
+            let p = screen(projection.point(lat: label.lat, lng: label.lng), scale)
             var rotated = context
-            rotated.translateBy(x: p.x * scale, y: p.y * scale)
+            rotated.translateBy(x: p.x, y: p.y)
             rotated.rotate(by: .degrees(label.rotate))
             drawHaloed(
                 &rotated,
@@ -331,23 +351,26 @@ struct WalkMapCanvas: View {
     }
 
     private func drawPlaceLabels(in context: inout GraphicsContext, scale: CGFloat) {
-        let canvasWidth = geometry.viewBox.w * scale
+        let canvasWidth = focus.width * scale
+        let canvasHeight = focus.height * scale
         for label in Self.placeLabels {
-            let p = projection.point(lat: label.lat, lng: label.lng)
+            let p = screen(projection.point(lat: label.lat, lng: label.lng), scale)
+            // Labels for ground outside the cropped view stay off it
+            if p.y < -10 || p.y > canvasHeight + 10 { continue }
             let text = Text(label.text)
                 .font(RF.display(label.size, weight: 400, italic: true))
                 .foregroundColor(RF.warmGrayDark)
             let resolved = context.resolve(text)
             let measured = resolved.measure(in: CGSize(width: 400, height: 60))
             // Keep the label fully inside the map frame
-            let x = min(max(p.x * scale, measured.width / 2 + 4), canvasWidth - measured.width / 2 - 4)
+            let x = min(max(p.x, measured.width / 2 + 4), canvasWidth - measured.width / 2 - 4)
             drawHaloed(
                 &context,
                 text: text,
                 halo: Text(label.text)
                     .font(RF.display(label.size, weight: 400, italic: true))
                     .foregroundColor(RF.cream),
-                at: CGPoint(x: x, y: p.y * scale)
+                at: CGPoint(x: x, y: p.y)
             )
         }
     }
@@ -356,10 +379,11 @@ struct WalkMapCanvas: View {
     /// names its landmarks. Markers draw above as live views. A side
     /// label that would run off the plate flips to the other side.
     private func drawStopLabels(in context: inout GraphicsContext, scale: CGFloat) {
-        let canvasWidth = geometry.viewBox.w * scale
+        let canvasWidth = focus.width * scale
+        let canvasHeight = focus.height * scale
         for (i, stop) in stops.enumerated() {
-            let p = projection.point(lat: stop.lat, lng: stop.lng)
-            let center = CGPoint(x: p.x * scale, y: p.y * scale)
+            let center = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
+            if center.x < -40 || center.x > canvasWidth + 40 || center.y < -40 || center.y > canvasHeight + 40 { continue }
             let r: CGFloat = i == currentIndex ? 17 : 14
             let text = Text(stop.mapLabel)
                 .font(RF.body(9.5, weight: 600))
@@ -396,7 +420,7 @@ struct WalkMapCanvas: View {
 
     private func drawUserDot(in context: inout GraphicsContext, scale: CGFloat) {
         guard let userPoint else { return }
-        let center = CGPoint(x: userPoint.x * scale, y: userPoint.y * scale)
+        let center = screen(userPoint, scale)
         let halo = CGRect(x: center.x - 14, y: center.y - 14, width: 28, height: 28)
         context.fill(Path(ellipseIn: halo), with: .color(RF.mapWater.opacity(0.25)))
         let dot = CGRect(x: center.x - 6.5, y: center.y - 6.5, width: 13, height: 13)
@@ -407,7 +431,7 @@ struct WalkMapCanvas: View {
     private func drawScaleBar(in context: inout GraphicsContext, scale: CGFloat) {
         let quarterMileUnits = 402.336 / projection.metersPerUnit
         let width = quarterMileUnits * scale
-        let origin = CGPoint(x: 18, y: geometry.viewBox.h * scale - 20)
+        let origin = CGPoint(x: 18, y: focus.height * scale - 20)
 
         var filled = Path()
         filled.addRect(CGRect(x: origin.x, y: origin.y - 2, width: width / 2, height: 4))

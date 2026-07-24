@@ -155,12 +155,14 @@ export default function WalkMap({
       "/media/$1/thumbs/"
     );
 
-  // frame the view on the route with generous padding, clamped to the
-  // prepared geometry frame
+  // frame the view on the MAIN route with generous padding, clamped
+  // to the prepared geometry frame. The optional detours sit outside
+  // this crop on purpose; their dashed spur exits the bottom edge, so
+  // the plate stays zoomed on the walk itself.
   const viewBox = useMemo(() => {
     const pts = [
       ...route.map(([lat, lng]) => projectPoint(lat, lng)),
-      ...stops.map((s) => projectPoint(s.lat, s.lng)),
+      ...stops.filter((s) => !s.optional).map((s) => projectPoint(s.lat, s.lng)),
     ];
     if (!pts.length) return `0 0 ${geo.viewBox.w} ${geo.viewBox.h}`;
     const xs = pts.map((p) => p.x);
@@ -594,6 +596,21 @@ export default function WalkMap({
             />
           );
         })}
+        {/* where the detour spur leaves the plate, say where it goes */}
+        <text
+          x={vb[0] + vb[2] / 2}
+          y={vb[1] + vb[3] - 8}
+          textAnchor="middle"
+          fontSize="10"
+          fontStyle="italic"
+          fill="#6E6A5E"
+          fontFamily="var(--font-display), Georgia, serif"
+          paintOrder="stroke"
+          stroke="#F5F0E8"
+          strokeWidth="3"
+        >
+          Detours to Daley's and the Hansberry house continue southwest
+        </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />
           <rect x={quarterMileUnits / 2} y="-2" width={quarterMileUnits / 2} height="4" fill="none" stroke="#1A1A1A" strokeOpacity="0.55" strokeWidth="1.2" />

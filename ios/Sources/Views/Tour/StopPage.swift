@@ -169,6 +169,19 @@ struct StopPage: View {
                             .buttonStyle(HardShadowButtonStyle())
                             .accessibilityIdentifier("next-stop")
                     }
+                    if let goPrevious {
+                        Button {
+                            goPrevious()
+                        } label: {
+                            Text("Back")
+                                .font(RF.body(15, weight: 600))
+                                .foregroundStyle(RF.ink.opacity(0.65))
+                                .padding(.horizontal, 6)
+                                .frame(minHeight: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .accessibilityLabel("Back to the previous stop")
+                    }
                 }
             }
             .padding(18)
