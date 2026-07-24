@@ -11,7 +11,7 @@ import { AnimatePresence, motion, useDragControls, useReducedMotion } from "fram
 import type { WalkTour } from "@/lib/tours/walk-types";
 import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
 import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
-import StopDetail from "./StopDetail";
+import StopDetail, { gmapsWalkingUrl } from "./StopDetail";
 import WalkMap from "./WalkMap";
 
 const STORAGE_KEY = "rf-walk-hyde-park-v1";
@@ -521,6 +521,68 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               text={`${tour.title}, a free self-guided audio walking tour.`}
             />
           </div>
+
+          {/* the stop bar: the current stop's name locked in view,
+              with the arrows and Directions beside it, the way the
+              app's transport row reads */}
+          <div className="border-t border-ink/10">
+            <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2">
+              <button
+                type="button"
+                onClick={() => goTo(activeIndex - 1)}
+                disabled={activeIndex === 0}
+                aria-label="Previous stop"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 bg-white text-ink/70 transition-colors hover:border-forest/60 hover:text-forest disabled:opacity-30"
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={activeIndex >= stops.length - 1}
+                aria-label="Next stop"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 bg-white text-ink/70 transition-colors hover:border-forest/60 hover:text-forest disabled:opacity-30"
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <p className="min-w-0 flex-1 truncate px-1 font-body text-sm font-semibold text-ink">
+                <span className="text-rust">{activeStop.number}.</span>{" "}
+                {activeStop.title}
+                {activeStop.optional && (
+                  <span className="ml-2 font-display text-[12px] font-normal italic text-ink/55">
+                    detour
+                  </span>
+                )}
+              </p>
+              <a
+                href={gmapsWalkingUrl(activeStop.lat, activeStop.lng)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-ink/20 bg-white px-3.5 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="text-rust">
+                  <path d="M6 1C3.9 1 2.25 2.6 2.25 4.65 2.25 7.4 6 11 6 11s3.75-3.6 3.75-6.35C9.75 2.6 8.1 1 6 1Z" stroke="currentColor" strokeWidth="1.3" />
+                  <circle cx="6" cy="4.7" r="1.3" fill="currentColor" />
+                </svg>
+                <span className="hidden sm:inline">Directions</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setMapOpen(true)}
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-forest px-3.5 font-body text-sm font-semibold text-cream ring-1 ring-inset ring-cream/25 md:hidden"
+              >
+                <svg width="13" height="13" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                  <path d="M5.5 2 1.5 3.5v9L5.5 11l4 1.5 4-1.5v-9L9.5 3.5 5.5 2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                  <path d="M5.5 2v9M9.5 3.5v9" stroke="currentColor" strokeWidth="1.3" />
+                </svg>
+                Map
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -596,7 +658,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         <div
           ref={walkRef}
           className={`mx-auto max-w-6xl px-6 pb-32 ${
-            focusMode ? "pt-6 md:pt-8" : "pt-10 md:py-14"
+            focusMode ? "pt-4 md:pt-6" : "pt-10 md:py-14"
           }`}
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
@@ -680,21 +742,6 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
               </AnimatePresence>
             </div>
           </div>
-
-          {/* floating map button, focused tour on phones */}
-          {focusMode && (
-            <button
-              type="button"
-              onClick={() => setMapOpen(true)}
-              className="fixed bottom-28 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-forest px-5 py-3 font-body text-sm font-semibold text-cream shadow-[3px_3px_0_0_rgba(26,26,26,0.3)] ring-1 ring-inset ring-cream/25 md:hidden"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-                <path d="M5.5 2 1.5 3.5v9L5.5 11l4 1.5 4-1.5v-9L9.5 3.5 5.5 2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-                <path d="M5.5 2v9M9.5 3.5v9" stroke="currentColor" strokeWidth="1.3" />
-              </svg>
-              Map
-            </button>
-          )}
 
           {/* slide-up map sheet */}
           <AnimatePresence>

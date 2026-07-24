@@ -33,7 +33,7 @@ interface StopDetailProps {
   focusChrome?: boolean;
 }
 
-const gmapsWalkingUrl = (lat: number, lng: number) =>
+export const gmapsWalkingUrl = (lat: number, lng: number) =>
   `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
 /** render `**bold**` spans inside a transcript paragraph */
@@ -91,46 +91,48 @@ export default function StopDetail({
 
   return (
     <article aria-label={`Stop ${stop.number}. ${stop.title}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p
-          className={`font-body text-sm font-semibold text-rust ${
-            focusChrome ? "hidden md:block" : ""
-          }`}
-        >
-          {stop.optional
-            ? "Optional detour"
-            : `Stop ${stop.number} of ${totalStops}`}
-        </p>
-        <div className="ml-auto flex items-center gap-3">
-          {typeof distanceMeters === "number" && distanceMeters > 45 && (
-            <span className="font-body text-sm text-ink/70">
-              {formatWalkDistance(distanceMeters)} away
-            </span>
-          )}
-          {typeof distanceMeters === "number" && distanceMeters <= 45 && (
-            <span className="font-body text-sm font-semibold text-forest">
-              You are here
-            </span>
-          )}
-          {/* no point in directions to a stop the walker is standing at */}
-          {!(typeof distanceMeters === "number" && distanceMeters <= 45) && (
-            <a
-              href={gmapsWalkingUrl(stop.lat, stop.lng)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
-            >
-              <PinIcon className="text-rust" />
-              Directions
-            </a>
-          )}
+      {/* in the focused tour the sticky stop bar above carries the
+          number, arrows, and Directions, so this header slims down */}
+      {!focusChrome && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-body text-sm font-semibold text-rust">
+            {stop.optional
+              ? "Optional detour"
+              : `Stop ${stop.number} of ${totalStops}`}
+          </p>
+          <div className="ml-auto flex items-center gap-3">
+            {typeof distanceMeters === "number" && distanceMeters > 45 && (
+              <span className="font-body text-sm text-ink/70">
+                {formatWalkDistance(distanceMeters)} away
+              </span>
+            )}
+            {typeof distanceMeters === "number" && distanceMeters <= 45 && (
+              <span className="font-body text-sm font-semibold text-forest">
+                You are here
+              </span>
+            )}
+            {/* no point in directions to a stop the walker is standing at */}
+            {!(typeof distanceMeters === "number" && distanceMeters <= 45) && (
+              <a
+                href={gmapsWalkingUrl(stop.lat, stop.lng)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-ink/25 bg-white px-4 py-2 font-body text-sm font-medium text-forest transition-colors hover:border-forest/60"
+              >
+                <PinIcon className="text-rust" />
+                Directions
+              </a>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="walk-title mt-3 text-3xl font-semibold leading-tight text-forest outline-none md:text-4xl"
+        className={`walk-title text-3xl font-semibold leading-tight text-forest outline-none md:text-4xl ${
+          focusChrome ? "mt-0" : "mt-3"
+        }`}
       >
         {stop.title}
       </h2>
