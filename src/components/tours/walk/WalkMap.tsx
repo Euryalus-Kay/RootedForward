@@ -609,7 +609,7 @@ export default function WalkMap({
           stroke="#F5F0E8"
           strokeWidth="3"
         >
-          Detours to Daley's and the Hansberry house continue southwest
+          Detours to Daley&apos;s and the Hansberry house continue southwest
         </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />

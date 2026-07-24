@@ -401,7 +401,8 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-ink/15 px-4 py-2.5">
           <p className="font-display text-lg leading-none text-forest">Hyde Park</p>
           <p className="font-display text-[13px] italic text-ink/60">
-            {tour.distanceMiles} miles &middot; {stops.length} stops
+            {tour.distanceMiles} miles &middot;{" "}
+            {stops.filter((s) => !s.optional).length} stops
           </p>
         </div>
         <WalkMap

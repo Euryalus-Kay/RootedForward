@@ -6,7 +6,7 @@ set -e
 cd "$(dirname "$0")"
 SRC="../public/media/hyde-park-walk"
 mkdir -p Resources/Media/audio Resources/Media/images Resources/Media/thumbs
-cp "$SRC"/audio/stop-*.mp3 Resources/Media/audio/
+cp "$SRC"/audio/*.mp3 Resources/Media/audio/
 cp "$SRC"/*.jpg Resources/Media/images/
 cp "$SRC"/thumbs/*.jpg Resources/Media/thumbs/
 cp ../public/media/site/holc-chicago-1940.jpg Resources/Media/images/

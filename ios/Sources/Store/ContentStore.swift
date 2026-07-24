@@ -23,7 +23,18 @@ final class ContentStore: ObservableObject {
         WalkProjection(frame: payload.geometry.frame, viewBox: payload.geometry.viewBox)
     }
 
-    static let endpoint = URL(string: "https://rooted-forward.org/api/walk")!
+    /// Production, unless a launch argument points somewhere else.
+    /// Passing `-contentBase http://localhost:3000` lets a build under
+    /// test read a dev server, so content changes can be checked
+    /// before they are deployed.
+    static let endpoint: URL = {
+        let args = ProcessInfo.processInfo.arguments
+        if let i = args.firstIndex(of: "-contentBase"), i + 1 < args.count,
+           let base = URL(string: args[i + 1] + "/api/walk") {
+            return base
+        }
+        return URL(string: "https://rooted-forward.org/api/walk")!
+    }()
 
     private static var cacheURL: URL {
         cacheDirectory.appendingPathComponent("walk.json")

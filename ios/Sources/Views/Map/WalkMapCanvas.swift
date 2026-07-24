@@ -27,6 +27,9 @@ struct WalkMapCanvas: View {
     let visited: Set<String>
     let thumbs: [String: UIImage]
     let userPoint: CGPoint?
+    /// The stop whose card is open, drawn raised the way the site's
+    /// markers grow under a cursor.
+    var selectedIndex: Int? = nil
     let onTapStop: (Int) -> Void
 
     private struct PlaceLabel {
@@ -179,15 +182,16 @@ struct WalkMapCanvas: View {
                             stop: stop,
                             active: i == currentIndex,
                             visited: visited.contains(stop.id),
+                            raised: i == selectedIndex,
                             thumb: thumbs[stop.id]
                         ) {
                             onTapStop(i)
                         }
                         // Everything but the stop you are on steps
                         // back, so the current one wins instantly.
-                        .opacity(i == currentIndex ? 1 : 0.78)
+                        .opacity(i == currentIndex || i == selectedIndex ? 1 : 0.78)
                         .position(x: p.x, y: p.y)
-                        .zIndex(i == currentIndex ? 2 : 1)
+                        .zIndex(i == selectedIndex ? 3 : i == currentIndex ? 2 : 1)
                     }
                 }
             }
@@ -680,8 +684,10 @@ private struct StopMarker: View {
     let stop: WalkStop
     let active: Bool
     let visited: Bool
+    var raised = false
     let thumb: UIImage?
     let onTap: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let r: CGFloat = active ? 17 : 14
@@ -727,6 +733,11 @@ private struct StopMarker: View {
             // A finger pad larger than the medallion itself
             .padding(10)
             .contentShape(Circle())
+            // The open stop's medallion lifts off the plate, which is
+            // what the website's hover state does with a cursor.
+            .scaleEffect(raised && !reduceMotion ? 1.3 : 1)
+            .shadow(color: RF.ink.opacity(raised ? 0.3 : 0), radius: 6, x: 0, y: 3)
+            .animation(RFMotion.gated(.rfZoom, reduceMotion), value: raised)
         }
         .buttonStyle(MarkerPressStyle())
         .accessibilityLabel("\(stop.isDetour ? "Optional detour" : "Stop") \(stop.number), \(stop.title)")

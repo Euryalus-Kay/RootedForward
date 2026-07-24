@@ -4,14 +4,14 @@
 // text-to-speech, one mp3 per stop, loudness-normalized. Reads the
 // transcripts straight out of src/lib/tours/jackson-park-walk.ts so
 // the audio can never drift from the on-page text. Writes:
-//   public/media/jackson-park-walk/audio/stop-XX.mp3
+//   public/media/jackson-park-walk/audio/<stop-id>.mp3
 //   public/media/jackson-park-walk/audio/durations.json
 // After running, copy the printed audioSeconds values into
 // jackson-park-walk.ts (or run with --patch to do it in place).
 //
 // Usage:
 //   OPENAI_API_KEY=sk-... node scripts/walk-tts.mjs [--voice ash]
-//       [--model gpt-4o-mini-tts] [--only stop-03] [--patch]
+//       [--model gpt-4o-mini-tts] [--only harper-court] [--patch]
 //
 // The key is read from the environment only and never written to disk.
 // ------------------------------------------------------------------
@@ -113,18 +113,19 @@ function paceText(text) {
 function loadStops() {
   const src = readFileSync(DATA, "utf8");
   const stops = [];
-  const stopRe = /number:\s*(\d+),[\s\S]*?transcript:\s*\[([\s\S]*?)\n\s*\],/g;
+  const stopRe = /id:\s*"([^"]+)",\s*\n\s*number:\s*(\d+),[\s\S]*?transcript:\s*\[([\s\S]*?)\n\s*\],/g;
   let m;
   while ((m = stopRe.exec(src)) !== null) {
-    const number = parseInt(m[1], 10);
-    const body = m[2];
+    const slug = m[1];
+    const number = parseInt(m[2], 10);
+    const body = m[3];
     const strings = [];
     const strRe = /"((?:[^"\\]|\\.)*)"/g;
     let s;
     while ((s = strRe.exec(body)) !== null) {
       strings.push(JSON.parse(`"${s[1]}"`).replace(/\*\*/g, ""));
     }
-    if (strings.length) stops.push({ number, text: strings.join("\n\n") });
+    if (strings.length) stops.push({ slug, number, text: strings.join("\n\n") });
   }
   return stops;
 }
@@ -175,8 +176,8 @@ async function main() {
     process.exit(1);
   }
   const durations = existsSync(DURS) ? JSON.parse(readFileSync(DURS, "utf8")) : {};
-  for (const { number, text } of stops) {
-    const id = `stop-${String(number).padStart(2, "0")}`;
+  for (const { slug, number, text } of stops) {
+    const id = slug;
     if (only && only !== id) continue;
     const raw = path.join(OUT, `raw-${id}.mp3`);
     const out = path.join(OUT, `${id}.mp3`);
@@ -193,8 +194,8 @@ async function main() {
 
   if (hasFlag("patch")) {
     let src = readFileSync(DATA, "utf8");
-    for (const { number } of stops) {
-      const id = `stop-${String(number).padStart(2, "0")}`;
+    for (const { slug } of stops) {
+      const id = slug;
       if (!(id in durations)) continue;
       const re = new RegExp(`(audio/${id}\\.mp3\`,\\n\\s*audioSeconds: )\\d+`);
       src = src.replace(re, `$1${durations[id]}`);

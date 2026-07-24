@@ -25,6 +25,8 @@ struct MapSheetView: View {
     @State private var crop: CGRect?
     @State private var cropAtGestureStart: CGRect?
     @State private var locating = false
+    /// The stop whose card is raised over the map.
+    @State private var selected: Int?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -112,23 +114,111 @@ struct MapSheetView: View {
                 visited: progress.visited,
                 thumbs: thumbs,
                 userPoint: userPoint,
-                onTapStop: {
+                selectedIndex: selected,
+                // A tap raises the stop's card the way hovering a
+                // marker does on the website, instead of yanking the
+                // reader out of the map they were studying.
+                onTapStop: { index in
                     Haptics.tap()
-                    onSelectStop($0)
+                    withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+                        selected = selected == index ? nil : index
+                    }
                 }
             )
             .frame(width: mapWidthOnScreen, height: mapHeight)
             .contentShape(Rectangle())
-            .gesture(panGesture)
-            .gesture(magnifyGesture)
+            // One gesture so pinch and drag can run together; two
+            // separate .gesture calls let the later one win.
+            .gesture(magnifyGesture.simultaneously(with: panGesture))
             .onTapGesture(count: 2) { toggleZoom() }
+            .onTapGesture {
+                if selected != nil {
+                    withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) { selected = nil }
+                }
+            }
             .overlay(alignment: .bottomTrailing) { mapControls }
+            .overlay(alignment: .top) { stopCard }
 
             legend
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
         }
         .plate()
+    }
+
+    // MARK: - The tapped stop's card
+
+    /// The website raises a photograph and a name when you hover a
+    /// marker. A phone has no hover, so a tap does it, and the card
+    /// carries the two things you would want next.
+    @ViewBuilder
+    private var stopCard: some View {
+        if let selected, content.tour.stops.indices.contains(selected) {
+            let stop = content.tour.stops[selected]
+            VStack(alignment: .leading, spacing: 0) {
+                if let thumb = thumbs[stop.id] {
+                    Image(uiImage: thumb)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 96)
+                        .clipped()
+                        .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+                        .padding(7)
+                }
+                HStack(alignment: .firstTextBaseline, spacing: 7) {
+                    Text("\(stop.number).")
+                        .font(RF.didone(16, weight: 600))
+                        .foregroundStyle(RF.rust)
+                    Text(stop.title)
+                        .font(RF.body(15, weight: 600))
+                        .foregroundStyle(RF.ink.opacity(0.85))
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 10)
+                .padding(.top, thumbs[stop.id] == nil ? 10 : 0)
+
+                if stop.isDetour {
+                    Text("optional detour")
+                        .font(RF.display(12, weight: 400, italic: true))
+                        .foregroundStyle(RF.warmGrayDark)
+                        .padding(.horizontal, 10)
+                        .padding(.top, 1)
+                }
+
+                HStack(spacing: 8) {
+                    Button {
+                        Haptics.press()
+                        onSelectStop(selected)
+                    } label: {
+                        Text("Open stop")
+                            .font(RF.body(14, weight: 600))
+                            .foregroundStyle(RF.cream)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(RF.forest)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .accessibilityIdentifier("map-open-stop")
+
+                    Link(destination: directionsURL(lat: stop.lat, lng: stop.lng)) {
+                        Text("Directions")
+                            .font(RF.body(14, weight: 600))
+                            .foregroundStyle(RF.forest)
+                            .underline()
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 10)
+                .padding(.bottom, 4)
+            }
+            .frame(width: 218)
+            .plate()
+            .padding(.top, 10)
+            .transition(.opacity.combined(with: .scale(scale: 0.96, anchor: .top)))
+        }
     }
 
     // MARK: - Map gestures and controls

@@ -31,7 +31,7 @@ stops from Paul Cornell's stone to the Obama Presidential Center.
 ## Description
 
 Walk Hyde Park is a free self-guided audio tour from Rooted Forward,
-a student-run Chicago nonprofit. Thirteen stops, about five miles,
+a student-run Chicago nonprofit. Thirteen stops, about three and a half miles,
 from Paul Cornell's stone in Harold Washington Park to the Obama
 Presidential Center, with two optional detours to the Hansberry
 house and the oldest restaurant in Chicago.
@@ -45,7 +45,7 @@ on contract. Urban renewal.
 
 WHAT YOU GET
 
-- Thirteen narrated stops and two detours, about 45 minutes of
+- Thirteen narrated stops and two detours, about 42 minutes of
   audio, with the full text printed on every stop so you can read
   instead of listen
 - A tour map drawn over the 1929 government survey of Hyde Park,
