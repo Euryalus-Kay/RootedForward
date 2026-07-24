@@ -120,6 +120,10 @@ struct WalkMapCanvas: View {
         geometry.viewBox.w / max(focus.width, 1)
     }
 
+    /// The whole-route view already sits around 1.55, so anything
+    /// gated on detail has to clear that before it counts as zoomed.
+    private var isZoomedIn: Bool { zoomFactor > 2.2 }
+
     /// Where every marker is drawn, after nudging apart any that
     /// would otherwise sit on top of each other. Stop 3 and stop 12
     /// land 15pt apart at the default framing while the medallions
@@ -270,7 +274,7 @@ struct WalkMapCanvas: View {
         drawCurrentLeg(in: &map, scale: scale)
 
         drawLeaderLines(in: &context, scale: scale, spots: spots)
-        if zoomFactor > 1.5 {
+        if isZoomedIn {
             // Street names are the finest type on the plate. They earn
             // their space only once someone has zoomed in for them.
             drawStreetLabels(in: &context, scale: scale)
@@ -525,7 +529,12 @@ struct WalkMapCanvas: View {
     private func drawStopLabels(in context: inout GraphicsContext, scale: CGFloat, spots: [CGPoint]) {
         let canvasWidth = focus.width * scale
         let canvasHeight = focus.height * scale
+        // Thirteen names in one view of the whole route is a thicket
+        // nobody can read. Pulled back, only the stop you are on is
+        // named and the numbered medallions carry the rest.
+        let namesEarned = isZoomedIn
         for (i, stop) in stops.enumerated() {
+            if !namesEarned && i != currentIndex { continue }
             let center = spots[i]
             // A name whose marker is off the plate has nowhere to sit
             // without being sliced by the frame, so it stays off.

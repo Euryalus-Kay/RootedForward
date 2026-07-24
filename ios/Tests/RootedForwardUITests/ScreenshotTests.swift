@@ -207,7 +207,8 @@ final class ScreenshotTests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(app.buttons["home-settings"].waitForExistence(timeout: 5))
         app.buttons["home-settings"].tap()
-        XCTAssertTrue(app.buttons["sign-in"].waitForExistence(timeout: 5))
+        // Sign-in is hidden, so the tours section is the first plate.
+        XCTAssertTrue(app.buttons["reset-progress"].waitForExistence(timeout: 5))
         sleep(1)
         snap("15-settings")
     }

@@ -19,12 +19,21 @@ struct SettingsView: View {
     @State private var confirmReset = false
     @State private var deleteDone = false
 
+    /// Sign-in is hidden at the owner's request (July 2026). It did
+    /// nothing a walker could feel, since the whole tour works
+    /// without an account. The form, the Google flow and AccountStore
+    /// stay wired, so bringing it back is flipping this to true.
+    /// Nothing else in the app reads the account.
+    private static let showsAccount = false
+
     var body: some View {
         VStack(spacing: 0) {
             header
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
-                    accountPlate
+                    if Self.showsAccount {
+                        accountPlate
+                    }
                     tourPlate
                     aboutPlate
                 }
@@ -263,30 +272,82 @@ struct SettingsView: View {
 
     // MARK: - Tour
 
+    /// One row per tour rather than one vague global count, so the
+    /// section names what it is talking about and a second tour is
+    /// another row rather than a redesign.
     private var tourPlate: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("The tour")
+            Text("Your tours")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
                 .accessibilityAddTraits(.isHeader)
-            Text("\(progress.visitedCount(in: content.tour.mainline)) of \(content.tour.mainline.count) stops visited. Progress lives only on this phone.")
-                .font(RF.body(14))
-                .foregroundStyle(RF.ink.opacity(0.7))
+
+            VStack(spacing: 0) {
+                tourRow(
+                    title: content.tour.title,
+                    visited: progress.visitedCount(in: content.tour.mainline),
+                    total: content.tour.mainline.count
+                )
+            }
+            .plate()
+
+            Text("Progress lives only on this phone. Nothing about where you walk leaves it.")
+                .font(RF.body(13))
+                .foregroundStyle(RF.warmGrayDark)
                 .fixedSize(horizontal: false, vertical: true)
-            Button {
-                confirmReset = true
-            } label: {
-                Text("Reset tour progress")
-                    .font(RF.body(15, weight: 600))
-                    .foregroundStyle(RF.rust)
-                    .underline()
-                    .frame(minHeight: 44)
-                    .contentShape(Rectangle())
+                .padding(.top, 2)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func tourRow(title: String, visited: Int, total: Int) -> some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(title)
+                    .font(RF.body(16, weight: 600))
+                    .foregroundStyle(RF.ink.opacity(0.85))
+                Spacer(minLength: 8)
+                Text("\(visited) of \(total)")
+                    .font(RF.body(14, weight: 600))
+                    .foregroundStyle(visited == total ? RF.forest : RF.warmGrayDark)
+            }
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Rectangle().fill(RF.border)
+                    Rectangle()
+                        .fill(visited == total ? RF.forest : RF.rust)
+                        .frame(width: geo.size.width * CGFloat(visited) / CGFloat(max(total, 1)))
+                }
+            }
+            .frame(height: 3)
+            .accessibilityHidden(true)
+
+            HStack {
+                Text(visited == 0
+                    ? "Not started"
+                    : visited == total ? "Walked end to end" : "Stops you have read")
+                    .font(RF.body(13))
+                    .foregroundStyle(RF.warmGrayDark)
+                Spacer()
+                Button {
+                    confirmReset = true
+                } label: {
+                    Text("Reset")
+                        .font(RF.body(14, weight: 600))
+                        .foregroundStyle(visited == 0 ? RF.warmGrayLight : RF.forest)
+                        .underline()
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .disabled(visited == 0)
+                .accessibilityIdentifier("reset-progress")
             }
         }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .plate()
+        .padding(.horizontal, 16)
+        .padding(.top, 14)
+        .padding(.bottom, 2)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("\(title), \(visited) of \(total) stops read")
     }
 
     // MARK: - About

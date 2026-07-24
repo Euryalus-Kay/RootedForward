@@ -23,10 +23,16 @@ struct MapSheetView: View {
     /// markers and type stay finger-sized and crowded stops actually
     /// come apart as you zoom.
     @State private var crop: CGRect?
-    @State private var cropAtGestureStart: CGRect?
+    /// The crop each gesture started from, kept apart so a pinch and
+    /// a drag cannot each rewrite the other's baseline mid-gesture.
+    @State private var panStart: CGRect?
+    @State private var pinchStart: CGRect?
+    @State private var isPinching = false
     @State private var locating = false
-    /// The stop whose card is raised over the map.
+    /// The stop whose card is raised over the map, and the timer that
+    /// clears it if the walker moves on without dismissing it.
     @State private var selected: Int?
+    @State private var cardTimer: Task<Void, Never>?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -44,7 +50,12 @@ struct MapSheetView: View {
         }
         .background(RF.cream)
         .task {
-            if crop == nil { crop = focusCrop(around: currentIndex) }
+            // Someone who has not started the walk wants to see the
+            // whole route. Once they are actually somewhere on it,
+            // the map is for the leg in front of them.
+            if crop == nil {
+                crop = progress.hasProgress ? focusCrop(around: currentIndex) : widestCrop
+            }
             if baseMap == nil {
                 baseMap = await content.image(for: "/media/hyde-park-walk/map-base-1929.jpg")
             }
@@ -55,6 +66,7 @@ struct MapSheetView: View {
                 crop = focusCrop(around: newIndex)
             }
         }
+        .onDisappear { cardTimer?.cancel() }
     }
 
     private var header: some View {
@@ -120,22 +132,21 @@ struct MapSheetView: View {
                 // reader out of the map they were studying.
                 onTapStop: { index in
                     Haptics.tap()
-                    withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
-                        selected = selected == index ? nil : index
+                    if selected == index {
+                        dismissCard()
+                    } else {
+                        showCard(index)
                     }
                 }
             )
             .frame(width: mapWidthOnScreen, height: mapHeight)
             .contentShape(Rectangle())
-            // One gesture so pinch and drag can run together; two
-            // separate .gesture calls let the later one win.
-            .gesture(magnifyGesture.simultaneously(with: panGesture))
+            // Pinch takes priority and pan stands down while it runs,
+            // so the two never pull the crop in different directions.
+            .simultaneousGesture(magnifyGesture)
+            .gesture(panGesture)
             .onTapGesture(count: 2) { toggleZoom() }
-            .onTapGesture {
-                if selected != nil {
-                    withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) { selected = nil }
-                }
-            }
+            .onTapGesture { dismissCard() }
             .overlay(alignment: .bottomTrailing) { mapControls }
             .overlay(alignment: .top) { stopCard }
 
@@ -147,6 +158,27 @@ struct MapSheetView: View {
     }
 
     // MARK: - The tapped stop's card
+
+    /// Raises a stop's card and starts the clock on it. The card is a
+    /// glance, not a panel, so it clears itself rather than sitting
+    /// over the map until something else moves it.
+    private func showCard(_ index: Int) {
+        cardTimer?.cancel()
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) { selected = index }
+        cardTimer = Task { @MainActor in
+            // Long enough to reach the buttons, short enough that it
+            // is gone by the time you look back at the map.
+            try? await Task.sleep(for: .seconds(6))
+            guard !Task.isCancelled else { return }
+            withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) { selected = nil }
+        }
+    }
+
+    private func dismissCard() {
+        guard selected != nil else { return }
+        cardTimer?.cancel()
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) { selected = nil }
+    }
 
     /// The website raises a photograph and a name when you hover a
     /// marker. A phone has no hover, so a tap does it, and the card
@@ -224,10 +256,17 @@ struct MapSheetView: View {
     // MARK: - Map gestures and controls
 
     private var panGesture: some Gesture {
-        DragGesture(minimumDistance: 6)
+        DragGesture(minimumDistance: 4)
             .onChanged { value in
-                let start = cropAtGestureStart ?? crop ?? widestCrop
-                if cropAtGestureStart == nil { cropAtGestureStart = start }
+                // A pinch reports drag too, and letting both move the
+                // crop is what made zooming feel like it was fighting
+                // back. While fingers are pinching, only zoom runs.
+                guard !isPinching else { return }
+                if panStart == nil {
+                    panStart = crop ?? widestCrop
+                    dismissCard()
+                }
+                guard let start = panStart else { return }
                 // Screen points to plate units: the canvas is one
                 // crop wide, so the ratio is the crop's own width.
                 let perPoint = start.width / max(mapWidthOnScreen, 1)
@@ -238,17 +277,25 @@ struct MapSheetView: View {
                     height: start.height
                 ))
             }
-            .onEnded { _ in cropAtGestureStart = nil }
+            .onEnded { _ in panStart = nil }
     }
 
     private var magnifyGesture: some Gesture {
         MagnifyGesture()
             .onChanged { value in
-                let start = cropAtGestureStart ?? crop ?? widestCrop
-                if cropAtGestureStart == nil { cropAtGestureStart = start }
+                if pinchStart == nil {
+                    pinchStart = crop ?? widestCrop
+                    isPinching = true
+                    panStart = nil
+                    dismissCard()
+                }
+                guard let start = pinchStart else { return }
                 crop = zoom(by: value.magnification, anchor: value.startAnchor, from: start)
             }
-            .onEnded { _ in cropAtGestureStart = nil }
+            .onEnded { _ in
+                pinchStart = nil
+                isPinching = false
+            }
     }
 
     /// The plate's on-screen width, used to turn a drag in points
