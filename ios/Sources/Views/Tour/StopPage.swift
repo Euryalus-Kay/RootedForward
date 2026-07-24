@@ -15,8 +15,12 @@ struct StopPage: View {
     let isLast: Bool
     let goNext: (() -> Void)?
     let goPrevious: (() -> Void)?
+    /// Fires when the big title scrolls out of the viewport (and again
+    /// when it returns), so the tour's top bar can pin the stop name.
+    var onTitleHidden: ((Bool) -> Void)? = nil
 
     @State private var appeared = false
+    @State private var reportedTitleHidden = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -40,6 +44,14 @@ struct StopPage: View {
                 .padding(.bottom, 170)
             }
             .background(RF.cream)
+            .coordinateSpace(name: "stop-scroll")
+            .onPreferenceChange(TitleMaxYKey.self) { maxY in
+                let hidden = maxY < 6
+                if hidden != reportedTitleHidden {
+                    reportedTitleHidden = hidden
+                    onTitleHidden?(hidden)
+                }
+            }
             .onChange(of: stop.id) { _, _ in
                 proxy.scrollTo("top", anchor: .top)
             }
@@ -62,6 +74,16 @@ struct StopPage: View {
                 .padding(.top, 16)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("stop-title-\(stop.number)")
+                // Reports the title's bottom edge in the viewport so
+                // the top bar knows when the name has scrolled away.
+                .background(
+                    GeometryReader { geo in
+                        Color.clear.preference(
+                            key: TitleMaxYKey.self,
+                            value: geo.frame(in: .named("stop-scroll")).maxY
+                        )
+                    }
+                )
 
             Text(stop.dek)
                 .font(RF.body(17))
@@ -355,6 +377,15 @@ struct AudioTimeline: View {
 
     private var rateLabel: String {
         audio.rate == 1.0 ? "1×" : audio.rate == 1.25 ? "1.25×" : "1.5×"
+    }
+}
+
+/// Bottom edge of the stop title measured in the scroll viewport;
+/// negative or near-zero means the title has scrolled out of view.
+private struct TitleMaxYKey: PreferenceKey {
+    static var defaultValue: CGFloat = .greatestFiniteMagnitude
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = min(value, nextValue())
     }
 }
 

@@ -210,4 +210,29 @@ final class ScreenshotTests: XCTestCase {
         sleep(1)
         snap("15-settings")
     }
+
+    /// The stop name pins into the top bar only after the on-page
+    /// title scrolls away, and unpins when you scroll back up.
+    func testPinnedStopTitle() {
+        popToHome()
+        XCTAssertTrue(app.buttons["home-tour-card"].waitForExistence(timeout: 10))
+        app.buttons["home-tour-card"].tap()
+        XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
+        app.buttons["home-start"].tap()
+        XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
+        sleep(1)
+        XCTAssertFalse(app.staticTexts["pinned-stop-title"].exists)
+
+        for _ in 0..<3 {
+            app.swipeUp(velocity: .fast)
+        }
+        XCTAssertTrue(app.staticTexts["pinned-stop-title"].waitForExistence(timeout: 4))
+        snap("16-pinned-title")
+
+        for _ in 0..<6 {
+            app.swipeDown(velocity: .fast)
+        }
+        sleep(1)
+        XCTAssertFalse(app.staticTexts["pinned-stop-title"].exists)
+    }
 }

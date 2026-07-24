@@ -15,6 +15,9 @@ struct TourView: View {
 
     @State private var index: Int
     @State private var showMap = false
+    /// Stops whose on-page title has scrolled out of view; the top
+    /// bar pins the stop name only while that is true.
+    @State private var scrolledPastTitle: Set<String> = []
 
     init(startAt: Int) {
         _index = State(initialValue: startAt)
@@ -57,7 +60,14 @@ struct TourView: View {
                             stop: stop,
                             isLast: i == stops.count - 1,
                             goNext: i < stops.count - 1 ? { move(to: i + 1) } : nil,
-                            goPrevious: i > 0 ? { move(to: i - 1) } : nil
+                            goPrevious: i > 0 ? { move(to: i - 1) } : nil,
+                            onTitleHidden: { hidden in
+                                if hidden {
+                                    scrolledPastTitle.insert(stop.id)
+                                } else {
+                                    scrolledPastTitle.remove(stop.id)
+                                }
+                            }
                         )
                         .tag(i)
                     }
@@ -116,7 +126,36 @@ struct TourView: View {
 
     // MARK: - Top bar
 
+    /// True while the current stop's own title is scrolled offscreen.
+    private var showPinnedTitle: Bool {
+        scrolledPastTitle.contains(stops[safeIndex].id)
+    }
+
     private var topBar: some View {
+        VStack(spacing: 7) {
+            topBarRow
+            if showPinnedTitle {
+                Text(stops[safeIndex].title)
+                    .font(RF.display(17, weight: 600))
+                    .foregroundStyle(RF.forest)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .frame(maxWidth: .infinity)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .accessibilityIdentifier("pinned-stop-title")
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(RF.cream)
+        .overlay(alignment: .bottom) {
+            Rectangle().fill(RF.border).frame(height: 1)
+        }
+        .clipped()
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: showPinnedTitle)
+    }
+
+    private var topBarRow: some View {
         HStack(spacing: 12) {
             Button {
                 dismiss()
@@ -166,12 +205,6 @@ struct TourView: View {
                 .frame(minHeight: 44)
                 .contentShape(Rectangle())
             }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(RF.cream)
-        .overlay(alignment: .bottom) {
-            Rectangle().fill(RF.border).frame(height: 1)
         }
     }
 
