@@ -24,6 +24,7 @@ struct TourDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 hero
+                whyRow
                 stopsStrip
                 infoRows
             }
@@ -200,14 +201,22 @@ struct TourDetailView: View {
 
     // MARK: - Info rows
 
+    /// The founder's essay, one row right under Start.
+    private var whyRow: some View {
+        VStack(spacing: 0) {
+            infoRow("Why this walk", identifier: "home-essay-more") {
+                infoSheet = .essay
+            }
+        }
+        .plate()
+        .padding(.horizontal, 24)
+        .padding(.top, 30)
+    }
+
     private var infoRows: some View {
         VStack(spacing: 0) {
             infoRow("The map and the route", identifier: "home-map-row") {
                 mapOpen = true
-            }
-            divider
-            infoRow("Why this walk", identifier: "home-essay-more") {
-                infoSheet = .essay
             }
             divider
             infoRow("The tools of segregation") {
