@@ -23,7 +23,7 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertEqual(tour.stops.filter { $0.isDetour }.count, 2)
         XCTAssertEqual(tour.title, "Walk Hyde Park")
         XCTAssertFalse(Self.payload.version.isEmpty)
-        XCTAssertEqual(Self.payload.intro.paragraphs.count, 4)
+        XCTAssertEqual(Self.payload.intro.paragraphs.count, 11)
         XCTAssertGreaterThanOrEqual(tour.route.count, 30)
         XCTAssertEqual(tour.detourRoutes?.count, 1)
         XCTAssertEqual(tour.practical.count, 3)

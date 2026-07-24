@@ -72,8 +72,8 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* Why this walk: the founder's essay, shortened. The tour's
-          argument in four paragraphs before the first stop. */}
+      {/* Why this walk: the founder's op-ed, in full, before the
+          first stop. */}
       <section aria-label="Why this walk" className="border-b border-border bg-cream py-12 md:py-16">
         <div className="mx-auto max-w-6xl px-6">
           <div className="max-w-[62ch]">

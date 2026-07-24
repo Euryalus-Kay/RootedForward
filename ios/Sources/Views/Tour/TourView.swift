@@ -67,7 +67,8 @@ struct TourView: View {
             }
             .background(RF.cream)
 
-            VStack(alignment: .trailing, spacing: 12) {
+            // The pill row sits centered over the transport bar.
+            VStack(alignment: .center, spacing: 12) {
                 nearbyHint
                 HStack(spacing: 10) {
                     directionsPill
