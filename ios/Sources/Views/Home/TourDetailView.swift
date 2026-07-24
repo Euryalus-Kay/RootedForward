@@ -15,8 +15,6 @@ struct TourDetailView: View {
     @State private var infoSheet: InfoSheet?
     @State private var mapOpen = false
     @State private var confirmRestart = false
-    @State private var heroDrift = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.requestReview) private var requestReview
     @AppStorage("rf-review-asked") private var reviewAsked = false
 
@@ -27,7 +25,7 @@ struct TourDetailView: View {
                 infoRows
                 stopsStrip
             }
-            .padding(.bottom, 110)
+            .padding(.bottom, 28)
         }
         .background(RF.cream)
         .navigationTitle("")
@@ -48,9 +46,12 @@ struct TourDetailView: View {
             }
         }
         .onAppear {
-            // One polite ask, after the walk has actually been used:
-            // three or more stops visited, never asked before.
-            if !reviewAsked, progress.visitedCount(in: content.tour.stops) >= 3 {
+            // One polite ask, and only once the walk is essentially
+            // done. Asking at three stops landed the app's single
+            // lifetime prompt on someone standing on a sidewalk a
+            // fifth of the way through a three-hour walk.
+            let done = progress.visitedCount(in: mainline)
+            if !reviewAsked, done >= max(mainline.count - 1, 3) {
                 reviewAsked = true
                 requestReview()
             }
@@ -60,9 +61,11 @@ struct TourDetailView: View {
             isPresented: $confirmRestart,
             titleVisibility: .visible
         ) {
+            // Clearing progress must not also throw the walker into
+            // stop 1; the button above flips back to "Start the tour"
+            // and they can take it deliberately.
             Button("Start over", role: .destructive) {
                 progress.reset()
-                openTour(0)
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -92,24 +95,26 @@ struct TourDetailView: View {
                 .padding(.top, 18)
 
             startControls
-                .padding(.top, 30)
+                .padding(.top, 26)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            // The 1940 HOLC survey map, ghosted and drifting slowly.
+            // The route's own 1929 survey plate, held still. Home
+            // used to wear the identical drifting HOLC scan, so the
+            // push landed on a screen that looked like the one it
+            // came from.
             Color.clear
                 .frame(height: 420)
                 .overlay {
                     MediaImage(
-                        sitePath: "/media/hyde-park-walk/holc-chicago-1940.jpg",
+                        sitePath: "/media/hyde-park-walk/map-base-1929.jpg",
                         contentMode: .fill
                     )
-                    .scaleEffect(heroDrift ? 1.14 : 1.05)
-                    .offset(x: heroDrift ? -16 : 10, y: heroDrift ? -44 : -26)
+                    .scaleEffect(1.06)
                 }
                 .clipped()
-                .opacity(0.1)
+                .opacity(0.13)
                 // Fade both edges so the scan dissolves into the
                 // paper instead of ending on a pasted rectangle.
                 .mask(
@@ -124,45 +129,67 @@ struct TourDetailView: View {
                     )
                 )
                 .accessibilityHidden(true)
-                .onAppear {
-                    guard !reduceMotion else { return }
-                    withAnimation(.easeInOut(duration: 48).repeatForever(autoreverses: true)) {
-                        heroDrift = true
-                    }
-                }
         }
     }
 
+    /// The walk without its two optional detours. Counting against
+    /// all fifteen means finishing the walk still reads "13 of 15".
+    private var mainline: [WalkStop] { content.tour.mainline }
+
+    /// Quiet enough to ignore, there when someone wants the distance
+    /// and the timings before committing to a five-mile walk.
+    private var detailsButton: some View {
+        Button {
+            Haptics.tap()
+            infoSheet = .details
+        } label: {
+            Image(systemName: "questionmark")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(RF.warmGrayDark)
+                .frame(width: 30, height: 30)
+                .overlay(Circle().strokeBorder(RF.warmGrayLight, lineWidth: 1))
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
+        }
+        .accessibilityLabel("Details about this walk")
+        .accessibilityIdentifier("home-details")
+    }
+
     private var startControls: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Button {
-                if progress.hasProgress {
-                    openTour(min(progress.lastIndex, content.tour.stops.count - 1))
-                } else {
-                    openTour(0)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                Button {
+                    Haptics.press()
+                    if progress.hasProgress {
+                        openTour(min(progress.lastIndex, content.tour.stops.count - 1))
+                    } else {
+                        openTour(0)
+                    }
+                } label: {
+                    Text(progress.hasProgress
+                        ? "Resume at stop \(min(progress.lastIndex, content.tour.stops.count - 1) + 1)"
+                        : "Start the tour")
                 }
-            } label: {
-                Text(progress.hasProgress
-                    ? "Resume at stop \(min(progress.lastIndex, content.tour.stops.count - 1) + 1)"
-                    : "Start the tour")
+                .buttonStyle(HardShadowButtonStyle())
+                .accessibilityIdentifier("home-start")
+
+                detailsButton
             }
-            .buttonStyle(HardShadowButtonStyle())
-            .accessibilityIdentifier("home-start")
 
             if progress.hasProgress {
-                HStack(spacing: 10) {
-                    Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) visited")
-                        .font(RF.body(13))
+                Text("\(progress.visitedCount(in: mainline)) of \(mainline.count) visited")
+                    .font(RF.body(13))
+                    .foregroundStyle(RF.warmGrayDark)
+                    .padding(.top, 4)
+                Button {
+                    confirmRestart = true
+                } label: {
+                    Text("Start over")
+                        .font(RF.body(13, weight: 500))
                         .foregroundStyle(RF.warmGrayDark)
-                    Button {
-                        confirmRestart = true
-                    } label: {
-                        Text("Start over")
-                            .font(RF.body(13, weight: 600))
-                            .foregroundStyle(RF.rust)
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
+                        .underline()
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                 }
             }
         }
@@ -170,32 +197,45 @@ struct TourDetailView: View {
 
     // MARK: - Stops strip
 
+    /// The stops as one vertical list, the way the map sheet already
+    /// lists them. The old horizontal strip ran six screen widths
+    /// sideways inside a vertical scroller, so the two gestures fought
+    /// and stop 12 took five swipes to reach.
     private var stopsStrip: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("The stops")
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
                 .accessibilityAddTraits(.isHeader)
                 .padding(.horizontal, 24)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 14) {
-                    ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { index, stop in
-                        Button {
-                            openTour(index)
-                        } label: {
-                            StopCard(stop: stop, visited: progress.isVisited(stop.id))
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("\(stop.isDetour ? "Optional detour" : "Stop") \(stop.number), \(stop.title)")
-                        .accessibilityValue(progress.isVisited(stop.id) ? "Visited" : "Not visited")
+            VStack(spacing: 0) {
+                ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { index, stop in
+                    Button {
+                        Haptics.tap()
+                        openTour(index)
+                    } label: {
+                        StopRow(
+                            stop: stop,
+                            visited: progress.isVisited(stop.id),
+                            isResume: progress.hasProgress && index == min(progress.lastIndex, content.tour.stops.count - 1)
+                        )
+                    }
+                    .buttonStyle(PressableRowStyle())
+                    .accessibilityLabel("\(stop.isDetour ? "Optional detour" : "Stop") \(stop.number), \(stop.title)")
+                    .accessibilityValue(progress.isVisited(stop.id) ? "Visited" : "Not visited")
+
+                    if index < content.tour.stops.count - 1 {
+                        divider
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 6)
             }
+            .plate()
+            .padding(.horizontal, 24)
         }
-        .padding(.top, 36)
+        // Tight enough that the heading and the first row or two are
+        // already on screen, so the scroll is obvious.
+        .padding(.top, 24)
     }
 
     // MARK: - Info rows
@@ -204,30 +244,44 @@ struct TourDetailView: View {
     /// the top of the stops strip still peeks into the first screen.
     private var infoRows: some View {
         VStack(spacing: 0) {
-            infoRow("Why this walk", identifier: "home-essay-more") {
+            infoRow("Why this walk", glyph: "text.alignleft", identifier: "home-essay-more") {
                 infoSheet = .essay
             }
             divider
-            infoRow("The map and the route", identifier: "home-map-row") {
+            infoRow("The map and the route", glyph: "map", identifier: "home-map-row") {
                 mapOpen = true
             }
             divider
-            infoRow("The tools of segregation") {
+            infoRow("The tools of segregation", glyph: "square.stack") {
                 infoSheet = .plates
             }
         }
         .plate()
         .padding(.horizontal, 24)
-        .padding(.top, 26)
+        .padding(.top, 22)
     }
 
     private var divider: some View {
         Rectangle().fill(RF.border.opacity(0.8)).frame(height: 1)
     }
 
-    private func infoRow(_ title: String, identifier: String? = nil, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack {
+    private func infoRow(
+        _ title: String,
+        glyph: String,
+        identifier: String? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            HStack(spacing: 12) {
+                // A glyph so the row reads as a control, and so the
+                // map row announces that it opens something else.
+                Image(systemName: glyph)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(RF.rust)
+                    .frame(width: 18)
                 Text(title)
                     .font(RF.body(16, weight: 500))
                     .foregroundStyle(RF.ink.opacity(0.85))
@@ -237,57 +291,72 @@ struct TourDetailView: View {
                     .foregroundStyle(RF.warmGrayDark)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 16)
+            .padding(.vertical, 15)
             // Without an explicit content shape, the transparent gap
             // in the middle of the row is not tappable at all.
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableRowStyle())
         .accessibilityIdentifier(identifier ?? "row-\(title)")
     }
 }
 
-/// One framed thumbnail in the horizontal stop strip.
-private struct StopCard: View {
-    @EnvironmentObject private var content: ContentStore
+/// One stop as a full-width row: thumbnail, number, title, how long
+/// its narration runs, and a checkmark once it has been read.
+private struct StopRow: View {
     let stop: WalkStop
     let visited: Bool
+    /// The stop the Resume button would open, marked so "where am I"
+    /// is answered without reading a word.
+    let isResume: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        HStack(spacing: 12) {
+            Rectangle()
+                .fill(isResume ? RF.rust : Color.clear)
+                .frame(width: 3)
+
             MediaImage(
                 sitePath: ContentStore.thumbPath(for: (stop.nowImage ?? stop.images.first)?.src ?? ""),
                 contentMode: .fill
             )
-            .frame(width: 128, height: 86)
+            .frame(width: 52, height: 52)
             .clipped()
             .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
-            .padding(8)
-            .plate()
 
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text("\(stop.number)")
-                    .font(RF.didone(17, weight: 600))
-                    .foregroundStyle(visited ? RF.forest : RF.rust)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(stop.title)
-                        .font(RF.body(13, weight: 500))
-                        .foregroundStyle(RF.ink.opacity(0.8))
-                        .lineLimit(2, reservesSpace: true)
-                        .multilineTextAlignment(.leading)
+            Text("\(stop.number)")
+                .font(RF.didone(19, weight: 600))
+                .foregroundStyle(visited ? RF.forest : RF.rust)
+                .frame(minWidth: 20, alignment: .trailing)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(stop.title)
+                    .font(RF.body(15, weight: 500))
+                    .foregroundStyle(RF.ink.opacity(0.85))
+                    .lineLimit(1)
+                HStack(spacing: 6) {
+                    Text(WalkFormat.clock(seconds: stop.audioSeconds))
+                        .font(RF.body(13))
+                        .foregroundStyle(RF.warmGrayDark)
                     if stop.isDetour {
                         Text("optional detour")
-                            .font(RF.display(11, weight: 400, italic: true))
+                            .font(RF.display(12, weight: 400, italic: true))
                             .foregroundStyle(RF.warmGrayDark)
                     }
                 }
-                if visited {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundStyle(RF.forest)
-                }
             }
-            .frame(width: 136, alignment: .leading)
+
+            Spacer(minLength: 4)
+
+            if visited {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(RF.forest)
+            }
         }
+        .padding(.trailing, 14)
+        .padding(.vertical, 8)
+        .frame(minHeight: 64)
+        .contentShape(Rectangle())
     }
 }

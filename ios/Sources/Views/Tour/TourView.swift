@@ -11,6 +11,7 @@ struct TourView: View {
     @EnvironmentObject private var content: ContentStore
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var location: LocationService
+    @EnvironmentObject private var audio: AudioEngine
     @Environment(\.dismiss) private var dismiss
 
     @State private var index: Int
@@ -18,6 +19,14 @@ struct TourView: View {
     /// Stops whose on-page title has scrolled out of view; the top
     /// bar pins the stop name only while that is true.
     @State private var scrolledPastTitle: Set<String> = []
+    /// Seconds actually spent reading each stop, and which stops the
+    /// walker has engaged with (scrolled into, or listened to). A
+    /// stop counts as visited only when both are true, so neither
+    /// swiping through nor leaving the phone on a bench credits it.
+    @State private var dwell: Task<Void, Never>?
+    @State private var dwellSeconds: [String: Double] = [:]
+    @State private var engaged: Set<String> = []
+    @Environment(\.scenePhase) private var scenePhase
 
     init(startAt: Int) {
         _index = State(initialValue: startAt)
@@ -40,6 +49,45 @@ struct TourView: View {
         }
     }
 
+    /// Counts foreground seconds on the open stop and marks it
+    /// visited once the walker has both stayed a while and shown they
+    /// were actually reading it. Time accumulates per stop rather
+    /// than resetting, so stepping back to finish one still counts.
+    private func startDwell(at newIndex: Int) {
+        dwell?.cancel()
+        guard stops.indices.contains(newIndex) else { return }
+        let stopID = stops[newIndex].id
+        dwell = Task { @MainActor in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled else { return }
+                dwellSeconds[stopID, default: 0] += 1
+                if dwellSeconds[stopID, default: 0] >= 12, engaged.contains(stopID) {
+                    progress.markVisited(stopID)
+                    return
+                }
+            }
+        }
+    }
+
+    /// The walker did something that only happens while reading.
+    private func markEngaged(_ stopID: String) {
+        engaged.insert(stopID)
+    }
+
+    /// The walker declared this stop done, so credit it outright
+    /// rather than waiting on the reading clock.
+    private func finish(_ stopID: String) {
+        engaged.insert(stopID)
+        progress.markVisited(stopID)
+    }
+
+    /// The stop currently making sound, wherever the reader has
+    /// paged to since starting it.
+    private var playingStop: WalkStop? {
+        stops.first { audio.isCurrent($0.id) }
+    }
+
     var body: some View {
         if stops.isEmpty {
             // Only reachable if a broken payload ever slips through
@@ -59,14 +107,28 @@ struct TourView: View {
                         StopPage(
                             stop: stop,
                             isLast: i == stops.count - 1,
-                            goNext: i < stops.count - 1 ? { move(to: i + 1) } : nil,
+                            // Walking on from the hand-off plate is
+                            // the plainest statement there is that
+                            // this stop is done.
+                            goNext: i < stops.count - 1 ? {
+                                finish(stop.id)
+                                move(to: i + 1)
+                            } : nil,
                             goPrevious: i > 0 ? { move(to: i - 1) } : nil,
                             onTitleHidden: { hidden in
+                                // A page laid out at zero size reports
+                                // its title hidden, so a neighbour the
+                                // walker never opened must not speak.
+                                guard i == safeIndex else { return }
                                 if hidden {
                                     scrolledPastTitle.insert(stop.id)
                                 } else {
                                     scrolledPastTitle.remove(stop.id)
                                 }
+                            },
+                            onScrolled: {
+                                guard i == safeIndex else { return }
+                                markEngaged(stop.id)
                             }
                         )
                         .tag(i)
@@ -88,30 +150,61 @@ struct TourView: View {
                     mapPill
                     arrowPill(forward: true)
                 }
-                TransportBar(
-                    stop: stops[safeIndex],
-                    canGoPrevious: safeIndex > 0,
-                    canGoNext: safeIndex < stops.count - 1,
-                    goPrevious: { move(to: max(0, safeIndex - 1)) },
-                    goNext: { move(to: min(stops.count - 1, safeIndex + 1)) }
-                )
+                // Bound to whatever is actually audible, not to the
+                // page you happen to be looking at, so the round
+                // button is always a true pause for what you hear.
+                TransportBar(playing: playingStop) { id in
+                    if let i = stops.firstIndex(where: { $0.id == id }) {
+                        move(to: i)
+                    }
+                }
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
+            // Lets the transcript fade out under the chrome instead
+            // of scrolling up between four floating shapes and coming
+            // back sliced into fragments.
+            .background(alignment: .bottom) {
+                LinearGradient(
+                    colors: [RF.cream.opacity(0), RF.cream.opacity(0.92), RF.cream],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .frame(height: 150)
+                .allowsHitTesting(false)
+                .ignoresSafeArea(edges: .bottom)
+            }
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
             Haptics.tap()
             progress.setLastIndex(newIndex)
+            startDwell(at: newIndex)
         }
         .onAppear {
             progress.setLastIndex(index)
+            startDwell(at: safeIndex)
             location.requestAndStartIfAuthorized()
         }
         .onDisappear {
+            dwell?.cancel()
             // GPS belongs to the tour; leaving it must not keep the
             // radio warm for the rest of the app session.
             location.stopUpdates()
+        }
+        .onChange(of: scenePhase) { _, phase in
+            // A phone in a pocket is not reading.
+            if phase == .active {
+                startDwell(at: safeIndex)
+            } else {
+                dwell?.cancel()
+            }
+        }
+        .onChange(of: audio.currentTime) { _, time in
+            // Twenty seconds of narration is unambiguous intent, and
+            // most people never let a file run to its last second.
+            guard let id = audio.currentStopID, time >= 20 else { return }
+            engaged.insert(id)
+            progress.markVisited(id)
         }
         .onChange(of: stops.count) { _, newCount in
             index = min(index, max(0, newCount - 1))
@@ -132,18 +225,21 @@ struct TourView: View {
     }
 
     private var topBar: some View {
-        VStack(spacing: 7) {
+        // The second row is always there, holding its height. Letting
+        // it appear and disappear grew the bar by 26pt and lurched
+        // the paragraph being read down the page mid-scroll.
+        VStack(spacing: 5) {
             topBarRow
-            if showPinnedTitle {
-                Text(stops[safeIndex].title)
-                    .font(RF.display(17, weight: 600))
-                    .foregroundStyle(RF.forest)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .frame(maxWidth: .infinity)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-                    .accessibilityIdentifier("pinned-stop-title")
-            }
+            Text(showPinnedTitle ? stops[safeIndex].title : " ")
+                .font(RF.display(17, weight: 600))
+                .foregroundStyle(RF.forest)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(maxWidth: .infinity)
+                .frame(height: 22)
+                .opacity(showPinnedTitle ? 1 : 0)
+                .accessibilityIdentifier("pinned-stop-title")
+                .accessibilityHidden(!showPinnedTitle)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
@@ -152,7 +248,26 @@ struct TourView: View {
             Rectangle().fill(RF.border).frame(height: 1)
         }
         .clipped()
-        .animation(reduceMotion ? nil : .easeOut(duration: 0.22), value: showPinnedTitle)
+        .animation(RFMotion.gated(.rfAppear, reduceMotion), value: showPinnedTitle)
+    }
+
+    /// "Stop 4 of 13" against the walk proper, and a plain label on
+    /// the two optional detours, which are not numbered legs of it.
+    private var counterLabel: String {
+        let stop = stops[safeIndex]
+        if stop.isDetour { return "Optional detour" }
+        let mainline = stops.filter { !$0.isDetour }
+        let place = mainline.firstIndex(where: { $0.id == stop.id }).map { $0 + 1 } ?? (safeIndex + 1)
+        return "Stop \(place) of \(mainline.count)"
+    }
+
+    /// How far through the walk the progress capsule reads.
+    private var counterFraction: CGFloat {
+        let mainline = stops.filter { !$0.isDetour }
+        guard !mainline.isEmpty else { return 0 }
+        if stops[safeIndex].isDetour { return 1 }
+        let place = mainline.firstIndex(where: { $0.id == stops[safeIndex].id }).map { $0 + 1 } ?? 1
+        return CGFloat(place) / CGFloat(mainline.count)
     }
 
     private var topBarRow: some View {
@@ -173,7 +288,7 @@ struct TourView: View {
             Spacer()
 
             VStack(spacing: 5) {
-                Text("Stop \(safeIndex + 1) of \(stops.count)")
+                Text(counterLabel)
                     .font(RF.body(14, weight: 600))
                     .foregroundStyle(RF.ink.opacity(0.8))
                 GeometryReader { geo in
@@ -181,7 +296,7 @@ struct TourView: View {
                         Capsule().fill(RF.border)
                         Capsule()
                             .fill(RF.rust)
-                            .frame(width: geo.size.width * CGFloat(safeIndex + 1) / CGFloat(max(stops.count, 1)))
+                            .frame(width: geo.size.width * counterFraction)
                     }
                 }
                 .frame(width: 132, height: 3)
@@ -311,26 +426,30 @@ struct TourView: View {
 /// progress updates re-render only this view, not the whole tour.
 struct TransportBar: View {
     @EnvironmentObject private var audio: AudioEngine
-    let stop: WalkStop
-    let canGoPrevious: Bool
-    let canGoNext: Bool
-    let goPrevious: () -> Void
-    let goNext: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Whatever is making sound right now, or nothing.
+    let playing: WalkStop?
+    /// Taps the title to page back to the stop being narrated.
+    let goToPlaying: (String) -> Void
 
     var body: some View {
         // Hidden until narration first starts, like a mini player;
         // the stop pages carry their own play control before that.
         ZStack {
-            if audio.currentStopID != nil {
-                bar.transition(.move(edge: .bottom).combined(with: .opacity))
+            if let playing, audio.currentStopID != nil {
+                bar(playing)
+                    .transition(
+                        reduceMotion
+                            ? .opacity
+                            : .move(edge: .bottom).combined(with: .opacity)
+                    )
             }
         }
-        .animation(.easeOut(duration: 0.3), value: audio.currentStopID != nil)
+        .animation(RFMotion.gated(.rfMove, reduceMotion), value: audio.currentStopID != nil)
     }
 
-    private var bar: some View {
-        let isCurrent = audio.isCurrent(stop.id)
-        let fraction = isCurrent && audio.duration > 0
+    private func bar(_ stop: WalkStop) -> some View {
+        let fraction = audio.duration > 0
             ? min(1, audio.currentTime / audio.duration) : 0
 
         return VStack(spacing: 0) {
@@ -345,33 +464,25 @@ struct TransportBar: View {
             .frame(height: 2)
 
             HStack(spacing: 8) {
-                Text("\(stop.number). \(stop.title)")
-                    .font(RF.body(15, weight: 600))
-                    .foregroundStyle(RF.ink)
-                    .lineLimit(1)
-                Spacer(minLength: 4)
-
-                Button(action: goPrevious) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(canGoPrevious ? RF.ink.opacity(0.7) : RF.border)
-                        .frame(width: 44, height: 44)
+                Button {
+                    goToPlaying(stop.id)
+                } label: {
+                    HStack(spacing: 7) {
+                        Text("\(stop.number). \(stop.title)")
+                            .font(RF.body(15, weight: 600))
+                            .foregroundStyle(RF.ink)
+                            .lineLimit(1)
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(RF.warmGrayDark)
+                        Spacer(minLength: 4)
+                    }
+                    .contentShape(Rectangle())
                 }
-                .disabled(!canGoPrevious)
-                .accessibilityLabel("Previous stop")
-                .accessibilityIdentifier("transport-prev")
+                .buttonStyle(.plain)
+                .accessibilityLabel("Go to the stop being narrated, \(stop.title)")
 
                 PlayButton(stop: stop, size: 46)
-
-                Button(action: goNext) {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(canGoNext ? RF.ink.opacity(0.7) : RF.border)
-                        .frame(width: 44, height: 44)
-                }
-                .disabled(!canGoNext)
-                .accessibilityLabel("Next stop")
-                .accessibilityIdentifier("transport-next")
             }
             .padding(.leading, 14)
             .padding(.trailing, 6)
@@ -379,7 +490,8 @@ struct TransportBar: View {
         }
         .background(RF.paper)
         .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.22), lineWidth: 1))
-        .background(Rectangle().fill(RF.forest.opacity(0.14)).offset(x: 4, y: 4))
+        // 5pt, so the light falls the same way it does on every plate
+        .background(Rectangle().fill(RF.forest.opacity(0.14)).offset(x: 5, y: 5))
     }
 }
 

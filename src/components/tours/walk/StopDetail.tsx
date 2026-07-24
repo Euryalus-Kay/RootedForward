@@ -54,6 +54,46 @@ function RichText({ text }: { text: string }) {
   );
 }
 
+/** plates anchored to a given paragraph index */
+function platesAfter(interrupts: WalkStop["interrupts"], index: number) {
+  return (interrupts ?? []).filter((box) => box.after === index);
+}
+
+/** plates with no anchor, or one pointing past the last paragraph */
+function trailingPlates(interrupts: WalkStop["interrupts"], count: number) {
+  return (interrupts ?? []).filter(
+    (box) => box.after === undefined || box.after >= count
+  );
+}
+
+/** one red instrument plate, labeled by the mechanism it explains */
+function RedPlate({
+  box,
+  reveal,
+}: {
+  box: NonNullable<WalkStop["interrupts"]>[number];
+  reveal: Record<string, unknown>;
+}) {
+  return (
+    <motion.aside
+      aria-label={box.title}
+      className="walk-plate-red mt-6 rounded-[3px] px-5 py-5 md:px-6"
+      {...reveal}
+    >
+      <p className="walk-title text-xl font-semibold text-[#7A2416] md:text-2xl">
+        {box.title}
+      </p>
+      <div className="mt-3 space-y-3">
+        {box.body.map((para, i) => (
+          <p key={i} className="font-body text-[15px] leading-relaxed text-ink/85">
+            <RichText text={para} />
+          </p>
+        ))}
+      </div>
+    </motion.aside>
+  );
+}
+
 function PinIcon({ className = "" }: { className?: string }) {
   return (
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={className}>
@@ -197,33 +237,25 @@ export default function StopDetail({
         ) : null}
       </div>
 
+      {/* the story, with each red plate set after the paragraph that
+          sets it up, so several plates never stack back to back */}
       <div className="mt-6 space-y-4">
         {stop.transcript.map((para, i) => (
-          <p key={i} className="font-body text-base leading-relaxed text-ink/80">
-            <RichText text={para} />
-          </p>
+          <div key={i} className="space-y-4">
+            <p className="font-body text-base leading-relaxed text-ink/80">
+              <RichText text={para} />
+            </p>
+            {platesAfter(stop.interrupts, i).map((box) => (
+              <RedPlate key={box.title} box={box} reveal={reveal} />
+            ))}
+          </div>
         ))}
       </div>
 
-      {/* red sidebar plates, each labeled by the mechanism it explains */}
-      {stop.interrupts?.map((box) => (
-        <motion.aside
-          key={box.title}
-          aria-label={box.title}
-          className="walk-plate-red mt-6 rounded-[3px] px-5 py-5 md:px-6"
-          {...reveal}
-        >
-          <p className="walk-title text-xl font-semibold text-[#7A2416] md:text-2xl">
-            {box.title}
-          </p>
-          <div className="mt-3 space-y-3">
-            {box.body.map((para, i) => (
-              <p key={i} className="font-body text-[15px] leading-relaxed text-ink/85">
-                <RichText text={para} />
-              </p>
-            ))}
-          </div>
-        </motion.aside>
+      {/* plates without a paragraph anchor keep the older behavior and
+          land after the whole story */}
+      {trailingPlates(stop.interrupts, stop.transcript.length).map((box) => (
+        <RedPlate key={box.title} box={box} reveal={reveal} />
       ))}
 
       {/* one plate carries the whole hand-off: where you are going,

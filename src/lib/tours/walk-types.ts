@@ -22,12 +22,16 @@ export interface WalkDirections {
 }
 
 /** a red sidebar plate explaining one specific mechanism (covenants,
- *  redlining, contract selling...); labeled plainly by its subject
- *  and rendered after the stop's story */
+ *  redlining, contract selling...); labeled plainly by its subject */
 export interface WalkInterrupt {
   title: string;
   /** body paragraphs; `**bold**` renders bold */
   body: string[];
+  /** index of the transcript paragraph this plate follows, so a stop
+   *  carrying several plates can space them through the story rather
+   *  than stacking them at the end. Omitted plates render after the
+   *  whole transcript, which is the older behavior. */
+  after?: number;
 }
 
 export interface WalkStop {

@@ -18,38 +18,57 @@ struct StopPage: View {
     /// Fires when the big title scrolls out of the viewport (and again
     /// when it returns), so the tour's top bar can pin the stop name.
     var onTitleHidden: ((Bool) -> Void)? = nil
+    /// Fires once the walker has actually scrolled this page, which
+    /// is the signal that they are reading rather than passing through.
+    var onScrolled: (() -> Void)? = nil
 
     @State private var appeared = false
     @State private var reportedTitleHidden = false
+    @State private var restingMaxY: CGFloat?
+    @State private var reportedScroll = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
+                // No entrance animation here. The cover presenting or
+                // the page sliding is already the transition, and a
+                // second one on top of it only delayed the reading.
                 VStack(alignment: .leading, spacing: 0) {
                     header
                         .id("top")
-                        .reveal(appeared, delay: 0, reduced: reduceMotion)
                     listenCard
                         .padding(.top, 22)
-                        .reveal(appeared, delay: 0.08, reduced: reduceMotion)
                     imagePlates
-                        .reveal(appeared, delay: 0.16, reduced: reduceMotion)
                     transcript
-                    interruptPlates
+                    trailingPlates
                     handOff
                     sources
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 170)
+                // The chrome fades the text out over a gradient now,
+                // so the page no longer reserves a phone's thickness
+                // of blank paper for a bar that may never appear.
+                .padding(.bottom, 132)
             }
             .background(RF.cream)
             .coordinateSpace(name: "stop-scroll")
             .onPreferenceChange(TitleMaxYKey.self) { maxY in
-                let hidden = maxY < 6
-                if hidden != reportedTitleHidden {
-                    reportedTitleHidden = hidden
-                    onTitleHidden?(hidden)
+                guard maxY != .greatestFiniteMagnitude else { return }
+                if restingMaxY == nil { restingMaxY = maxY }
+                // Two bounds rather than one. A thumb resting near a
+                // single threshold used to insert and remove the
+                // pinned name over and over while someone read.
+                if !reportedTitleHidden, maxY < 0 {
+                    reportedTitleHidden = true
+                    onTitleHidden?(true)
+                } else if reportedTitleHidden, maxY > 28 {
+                    reportedTitleHidden = false
+                    onTitleHidden?(false)
+                }
+                if !reportedScroll, let rest = restingMaxY, maxY < rest - 24 {
+                    reportedScroll = true
+                    onScrolled?()
                 }
             }
             .onChange(of: stop.id) { _, _ in
@@ -129,10 +148,16 @@ struct StopPage: View {
 
     // MARK: - Transcript
 
+    /// The story, with each red plate set after the paragraph that
+    /// sets it up, so several plates never stack back to back.
     private var transcript: some View {
         VStack(alignment: .leading, spacing: 18) {
-            ForEach(Array(stop.transcript.enumerated()), id: \.offset) { _, paragraph in
+            ForEach(Array(stop.transcript.enumerated()), id: \.offset) { index, paragraph in
                 MarkedText(text: paragraph)
+                ForEach(plates(after: index)) { interrupt in
+                    redPlate(interrupt)
+                        .padding(.top, 6)
+                }
             }
         }
         .padding(.top, 26)
@@ -140,30 +165,43 @@ struct StopPage: View {
 
     // MARK: - Red plates
 
+    private func plates(after index: Int) -> [WalkInterrupt] {
+        (stop.interrupts ?? []).filter { $0.after == index }
+    }
+
+    /// Plates with no anchor keep the older behavior and land after
+    /// the whole story.
     @ViewBuilder
-    private var interruptPlates: some View {
-        if let interrupts = stop.interrupts, !interrupts.isEmpty {
+    private var trailingPlates: some View {
+        let loose = (stop.interrupts ?? []).filter {
+            $0.after == nil || ($0.after ?? 0) >= stop.transcript.count
+        }
+        if !loose.isEmpty {
             VStack(alignment: .leading, spacing: 20) {
-                ForEach(interrupts) { interrupt in
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(interrupt.title)
-                            .font(RF.display(21, weight: 600))
-                            .foregroundStyle(RF.plateRed)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .accessibilityAddTraits(.isHeader)
-                        VStack(alignment: .leading, spacing: 12) {
-                            ForEach(Array(interrupt.body.enumerated()), id: \.offset) { _, paragraph in
-                                MarkedText(text: paragraph, size: 15.5, color: RF.ink.opacity(0.82))
-                            }
-                        }
-                    }
-                    .padding(18)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .redPlate()
+                ForEach(loose) { interrupt in
+                    redPlate(interrupt)
                 }
             }
             .padding(.top, 28)
         }
+    }
+
+    private func redPlate(_ interrupt: WalkInterrupt) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(interrupt.title)
+                .font(RF.display(21, weight: 600))
+                .foregroundStyle(RF.plateRed)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(Array(interrupt.body.enumerated()), id: \.offset) { _, paragraph in
+                    MarkedText(text: paragraph, size: 15.5, color: RF.ink.opacity(0.82))
+                }
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .redPlate()
     }
 
     // MARK: - Hand-off
@@ -293,7 +331,7 @@ struct ListenCardTitle: View {
                     .foregroundStyle(RF.ink)
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: audio.isPlaying)
+        .animation(RFMotion.appear, value: audio.isPlaying)
     }
 }
 

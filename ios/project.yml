@@ -66,6 +66,12 @@ targets:
           never sent anywhere.
         ITSAppUsesNonExemptEncryption: false
         UIRequiresFullScreen: true
+        # Supabase hands the Google session back on this scheme; it
+        # must also be allow-listed in the project's Auth redirect URLs
+        CFBundleURLTypes:
+          - CFBundleURLName: org.rootedforward.walk.auth
+            CFBundleURLSchemes:
+              - rootedforward
   RootedForwardTests:
     type: bundle.unit-test
     platform: iOS

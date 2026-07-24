@@ -21,6 +21,7 @@ struct InfoSheetView: View {
                     switch sheet {
                     case .essay: essay
                     case .plates: plates
+                    case .details: details
                     }
                 }
                 .padding(.horizontal, 20)
@@ -29,16 +30,77 @@ struct InfoSheetView: View {
             }
         }
         .background(RF.cream)
-        // The plates index is a short list; a half sheet fits it.
-        .presentationDetents(sheet == .plates ? [.fraction(0.55), .large] : [.large])
-        .presentationDragIndicator(sheet == .plates ? .visible : .automatic)
+        // The short sheets get a half height and a drag handle; the
+        // essay is a long read and opens full.
+        .presentationDetents(sheet == .essay ? [.large] : [.fraction(0.6), .large])
+        .presentationDragIndicator(sheet == .essay ? .automatic : .visible)
     }
 
     private var title: String {
         switch sheet {
         case .essay: return "Why this walk"
         case .plates: return "The tools of segregation"
+        case .details: return "About this walk"
         }
+    }
+
+    // MARK: - Details
+
+    /// The numbers and the practical notes, kept behind a quiet mark
+    /// on the walk screen so they are there when someone wants them
+    /// and out of the way when they do not.
+    private var details: some View {
+        let tour = content.tour
+        return VStack(alignment: .leading, spacing: 22) {
+            VStack(spacing: 0) {
+                detailRow("Stops", "\(tour.mainline.count), plus two optional detours")
+                detailDivider
+                detailRow("Distance", "About \(String(format: "%.0f", tour.distanceMiles)) miles")
+                detailDivider
+                detailRow("Walking", "About \(tour.walkMinutes) minutes")
+                detailDivider
+                detailRow("Narration", "\(tour.listenMinutes) minutes")
+                detailDivider
+                detailRow("Starts at", tour.startLabel)
+            }
+            .plate()
+
+            ForEach(tour.practical) { item in
+                VStack(alignment: .leading, spacing: 7) {
+                    Text(item.title)
+                        .font(RF.display(18, weight: 600))
+                        .foregroundStyle(RF.forest)
+                        .accessibilityAddTraits(.isHeader)
+                    Text(item.text)
+                        .font(RF.body(15.5))
+                        .foregroundStyle(RF.ink.opacity(0.8))
+                        .lineSpacing(5)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func detailRow(_ label: String, _ value: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 14) {
+            Text(label)
+                .font(RF.body(14.5))
+                .foregroundStyle(RF.warmGrayDark)
+                .frame(width: 86, alignment: .leading)
+            Text(value)
+                .font(RF.body(15, weight: 500))
+                .foregroundStyle(RF.ink.opacity(0.85))
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var detailDivider: some View {
+        Rectangle().fill(RF.border.opacity(0.8)).frame(height: 1)
     }
 
     private var header: some View {

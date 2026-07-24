@@ -11,7 +11,6 @@
 		0A721D95EBCF55CC47FEAFB6 /* Content in Resources */ = {isa = PBXBuildFile; fileRef = EE6D9DE9920188153245742D /* Content */; };
 		10B186EA70E04243D581BDA2 /* WalkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0257771DFF430D9E2C3CAD43 /* WalkModels.swift */; };
 		117EB9046A0C6BBBFE51CC8D /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F03630E3A0E6C36771348FB /* ScreenshotTests.swift */; };
-		147380B68D775921F4AD2A8C /* MapExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */; };
 		2E9C5D218139CF9BE2DEF93A /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868F8BC2C4D2DC79DAC7D0ED /* AudioEngine.swift */; };
 		3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F799B770CC0D56958B1860 /* MapSheetView.swift */; };
 		3D92DD9D8040C4194A9EE263 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9F27DBE57BA6C13F4A1E43 /* HomeView.swift */; };
@@ -55,7 +54,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapExplorerView.swift; sourceTree = "<group>"; };
 		0257771DFF430D9E2C3CAD43 /* WalkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkModels.swift; sourceTree = "<group>"; };
 		03DDDA0AE5260E8E1A4842E0 /* MapRowTapDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRowTapDiagnostic.swift; sourceTree = "<group>"; };
 		09336D0FD9B4DD597D6C0E3C /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
@@ -118,7 +116,6 @@
 		3109C939DD9849D2EA981A4B /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				00AD80A9C5CF6307862F4E64 /* MapExplorerView.swift */,
 				61F799B770CC0D56958B1860 /* MapSheetView.swift */,
 				1318671872CB1E95D76C5579 /* WalkMapCanvas.swift */,
 			);
@@ -367,7 +364,6 @@
 				3D92DD9D8040C4194A9EE263 /* HomeView.swift in Sources */,
 				8A259E768DA3A91D2C1E3F36 /* InfoSheetView.swift in Sources */,
 				4698EBC9F5FAEC9B1B2ADFC8 /* LocationService.swift in Sources */,
-				147380B68D775921F4AD2A8C /* MapExplorerView.swift in Sources */,
 				3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */,
 				443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */,
 				FB21ED00E16D03FB208DC98D /* ProgressStore.swift in Sources */,

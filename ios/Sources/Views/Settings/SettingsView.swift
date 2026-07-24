@@ -158,6 +158,36 @@ struct SettingsView: View {
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
 
+                // Same Supabase project the website signs into, so
+                // one Google account is one account either way.
+                Button {
+                    Task { await account.signInWithGoogle() }
+                } label: {
+                    HStack(spacing: 9) {
+                        GoogleMark()
+                        Text("Continue with Google")
+                            .font(RF.body(15.5, weight: 600))
+                            .foregroundStyle(RF.ink.opacity(0.85))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 13)
+                    .background(.white)
+                    .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.22), lineWidth: 1))
+                    .background(Rectangle().fill(RF.ink.opacity(0.16)).offset(x: 3, y: 3))
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(PressablePlateStyle())
+                .disabled(account.isBusy)
+                .accessibilityIdentifier("sign-in-google")
+
+                HStack(spacing: 10) {
+                    Rectangle().fill(RF.border).frame(height: 1)
+                    Text("or")
+                        .font(RF.body(13))
+                        .foregroundStyle(RF.warmGrayDark)
+                    Rectangle().fill(RF.border).frame(height: 1)
+                }
+
                 VStack(spacing: 10) {
                     TextField("Email", text: $email)
                         .textContentType(.emailAddress)
@@ -239,7 +269,7 @@ struct SettingsView: View {
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
                 .accessibilityAddTraits(.isHeader)
-            Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) stops visited. Progress lives only on this phone.")
+            Text("\(progress.visitedCount(in: content.tour.mainline)) of \(content.tour.mainline.count) stops visited. Progress lives only on this phone.")
                 .font(RF.body(14))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .fixedSize(horizontal: false, vertical: true)
@@ -304,5 +334,43 @@ struct SettingsView: View {
             .frame(minHeight: 34, alignment: .leading)
             .contentShape(Rectangle())
         }
+    }
+}
+
+/// Google's four-color G, drawn rather than bundled so the app keeps
+/// shipping without an image asset for it.
+private struct GoogleMark: View {
+    var body: some View {
+        Canvas { context, size in
+            let r = min(size.width, size.height) / 2
+            let c = CGPoint(x: size.width / 2, y: size.height / 2)
+            let inner = r * 0.42
+            let arcs: [(start: Double, end: Double, color: Color)] = [
+                (-25, 90, Color(rfHex: 0x4285F4)),   // blue, right
+                (90, 180, Color(rfHex: 0x34A853)),   // green, bottom
+                (180, 260, Color(rfHex: 0xFBBC05)),  // yellow, left
+                (260, 335, Color(rfHex: 0xEA4335)),  // red, top
+            ]
+            for arc in arcs {
+                var path = Path()
+                path.addArc(
+                    center: c, radius: (r + inner) / 2,
+                    startAngle: .degrees(arc.start), endAngle: .degrees(arc.end),
+                    clockwise: false
+                )
+                context.stroke(
+                    path,
+                    with: .color(arc.color),
+                    style: StrokeStyle(lineWidth: r - inner)
+                )
+            }
+            // The bar of the G, reaching in from the right
+            context.fill(
+                Path(CGRect(x: c.x, y: c.y - (r - inner) / 2, width: r, height: r - inner)),
+                with: .color(Color(rfHex: 0x4285F4))
+            )
+        }
+        .frame(width: 17, height: 17)
+        .accessibilityHidden(true)
     }
 }

@@ -111,12 +111,59 @@ struct WalkMapCanvas: View {
         CGPoint(x: (p.x - focus.minX) * scale, y: (p.y - focus.minY) * scale)
     }
 
+    /// How far in the crop is compared with the whole plate. Fine
+    /// detail earns its ink only once someone has zoomed for it.
+    private var zoomFactor: CGFloat {
+        geometry.viewBox.w / max(focus.width, 1)
+    }
+
+    /// Where every marker is drawn, after nudging apart any that
+    /// would otherwise sit on top of each other. Stop 3 and stop 12
+    /// land 15pt apart at the default framing while the medallions
+    /// are 28pt across, so without this the later one swallows both
+    /// the earlier one and every tap meant for it.
+    private func placements(scale: CGFloat) -> [CGPoint] {
+        let minGap: CGFloat = 34
+        var placed: [CGPoint] = []
+        var result: [CGPoint] = []
+        for stop in stops {
+            let truePoint = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
+            var point = truePoint
+            var ring: CGFloat = 1
+            while placed.contains(where: { hypot($0.x - point.x, $0.y - point.y) < minGap }), ring <= 3 {
+                // Walk outward in eight directions, the way a printed
+                // map staggers names that share a corner.
+                var best = point
+                var bestClearance: CGFloat = -1
+                for step in 0..<8 {
+                    let angle = CGFloat(step) * .pi / 4
+                    let candidate = CGPoint(
+                        x: truePoint.x + cos(angle) * minGap * ring,
+                        y: truePoint.y + sin(angle) * minGap * ring
+                    )
+                    let clearance = placed.map { hypot($0.x - candidate.x, $0.y - candidate.y) }.min() ?? .infinity
+                    if clearance > bestClearance {
+                        bestClearance = clearance
+                        best = candidate
+                    }
+                }
+                point = best
+                if bestClearance >= minGap { break }
+                ring += 1
+            }
+            placed.append(point)
+            result.append(point)
+        }
+        return result
+    }
+
     var body: some View {
         GeometryReader { geo in
             let scale = geo.size.width / focus.width
+            let spots = placements(scale: scale)
             ZStack(alignment: .topLeading) {
                 Canvas { context, size in
-                    draw(in: &context, size: size, scale: scale)
+                    draw(in: &context, size: size, scale: scale, spots: spots)
                 }
                 .accessibilityLabel("Map of Hyde Park with the walking route drawn between the stops")
                 .accessibilityAddTraits(.isImage)
@@ -125,7 +172,7 @@ struct WalkMapCanvas: View {
                 // view, so it can grow under a held finger. Markers
                 // outside the cropped view stay off the plate.
                 ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
-                    let p = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
+                    let p = spots[i]
                     if p.x > -40, p.x < geo.size.width + 40,
                        p.y > -40, p.y < geo.size.height + 40 {
                         StopMarker(
@@ -136,6 +183,9 @@ struct WalkMapCanvas: View {
                         ) {
                             onTapStop(i)
                         }
+                        // Everything but the stop you are on steps
+                        // back, so the current one wins instantly.
+                        .opacity(i == currentIndex ? 1 : 0.78)
                         .position(x: p.x, y: p.y)
                         .zIndex(i == currentIndex ? 2 : 1)
                     }
@@ -148,7 +198,7 @@ struct WalkMapCanvas: View {
 
     // MARK: - Drawing
 
-    private func draw(in context: inout GraphicsContext, size: CGSize, scale: CGFloat) {
+    private func draw(in context: inout GraphicsContext, size: CGSize, scale: CGFloat, spots: [CGPoint]) {
         var map = context
         map.scaleBy(x: scale, y: scale)
         map.translateBy(x: -focus.minX, y: -focus.minY)
@@ -210,13 +260,100 @@ struct WalkMapCanvas: View {
             )
         )
 
-        drawStreetLabels(in: &context, scale: scale)
+        // The leg you are about to walk, drawn solid over the dotted
+        // line, so the map answers "which way now" and not only
+        // "where are the stops".
+        drawCurrentLeg(in: &map, scale: scale)
+
+        drawLeaderLines(in: &context, scale: scale, spots: spots)
+        if zoomFactor > 1.5 {
+            // Street names are the finest type on the plate. They earn
+            // their space only once someone has zoomed in for them.
+            drawStreetLabels(in: &context, scale: scale)
+        }
         drawPlaceLabels(in: &context, scale: scale)
-        drawStopLabels(in: &context, scale: scale)
+        drawStopLabels(in: &context, scale: scale, spots: spots)
         drawUserDot(in: &context, scale: scale)
         drawScaleBar(in: &context, scale: scale)
         drawCompass(in: &context, size: size)
         drawCornerTrim(in: &context, size: size)
+    }
+
+    /// The index of the route waypoint nearest a stop, so the route
+    /// polyline can be sliced into the walk's actual legs.
+    private func routeIndex(nearest stop: WalkStop) -> Int? {
+        let target = projection.point(lat: stop.lat, lng: stop.lng)
+        var best: (Int, CGFloat)?
+        for (i, pair) in route.enumerated() {
+            let p = projection.point(lat: pair[0], lng: pair[1])
+            let d = hypot(p.x - target.x, p.y - target.y)
+            if best == nil || d < best!.1 { best = (i, d) }
+        }
+        return best?.0
+    }
+
+    /// Solid rust over the dotted route for the leg from the current
+    /// stop to the next one, with arrowheads showing which way.
+    private func drawCurrentLeg(in map: inout GraphicsContext, scale: CGFloat) {
+        guard stops.indices.contains(currentIndex) else { return }
+        let next = currentIndex + 1
+        guard stops.indices.contains(next), !stops[next].isDetour, !stops[currentIndex].isDetour else { return }
+        guard let a = routeIndex(nearest: stops[currentIndex]),
+              let b = routeIndex(nearest: stops[next]), a != b else { return }
+        let lo = min(a, b), hi = max(a, b)
+        let points = route[lo...hi].map { projection.point(lat: $0[0], lng: $0[1]) }
+        let forward = b > a ? points : points.reversed().map { $0 }
+        guard forward.count > 1 else { return }
+        map.stroke(
+            path(from: forward),
+            with: .color(RF.rust),
+            style: StrokeStyle(lineWidth: 4.5 / scale, lineCap: .round, lineJoin: .round)
+        )
+        // Two or three engraved arrowheads along the leg
+        let arrowCount = forward.count > 6 ? 3 : 2
+        for k in 1...arrowCount {
+            let t = CGFloat(k) / CGFloat(arrowCount + 1)
+            let idx = max(1, min(forward.count - 1, Int(t * CGFloat(forward.count - 1))))
+            let from = forward[idx - 1], to = forward[idx]
+            let angle = atan2(to.y - from.y, to.x - from.x)
+            let tip = CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
+            let wing = 7 / scale
+            var head = Path()
+            head.move(to: tip)
+            head.addLine(to: CGPoint(
+                x: tip.x - cos(angle - .pi / 6) * wing,
+                y: tip.y - sin(angle - .pi / 6) * wing
+            ))
+            head.move(to: tip)
+            head.addLine(to: CGPoint(
+                x: tip.x - cos(angle + .pi / 6) * wing,
+                y: tip.y - sin(angle + .pi / 6) * wing
+            ))
+            map.stroke(
+                head,
+                with: .color(RF.cream),
+                style: StrokeStyle(lineWidth: 2.4 / scale, lineCap: .round)
+            )
+        }
+    }
+
+    /// A hairline from a nudged medallion back to the spot it really
+    /// marks, the convention a printed map uses for a crowded corner.
+    private func drawLeaderLines(in context: inout GraphicsContext, scale: CGFloat, spots: [CGPoint]) {
+        for (i, stop) in stops.enumerated() {
+            let truePoint = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
+            let drawn = spots[i]
+            let shift = hypot(drawn.x - truePoint.x, drawn.y - truePoint.y)
+            guard shift > 2 else { continue }
+            var leader = Path()
+            leader.move(to: truePoint)
+            leader.addLine(to: drawn)
+            context.stroke(leader, with: .color(RF.ink.opacity(0.35)), lineWidth: 1)
+            context.fill(
+                Path(ellipseIn: CGRect(x: truePoint.x - 2, y: truePoint.y - 2, width: 4, height: 4)),
+                with: .color(RF.ink.opacity(0.5))
+            )
+        }
     }
 
     private func path(from points: [CGPoint]) -> Path {
@@ -355,8 +492,11 @@ struct WalkMapCanvas: View {
         let canvasHeight = focus.height * scale
         for label in Self.placeLabels {
             let p = screen(projection.point(lat: label.lat, lng: label.lng), scale)
-            // Labels for ground outside the cropped view stay off it
+            // Labels for ground outside the cropped view stay off it.
+            // Clamping without this test dragged "Lake Michigan" in
+            // from off the east edge and printed it over dry blocks.
             if p.y < -10 || p.y > canvasHeight + 10 { continue }
+            if p.x < -20 || p.x > canvasWidth + 20 { continue }
             let text = Text(label.text)
                 .font(RF.display(label.size, weight: 400, italic: true))
                 .foregroundColor(RF.warmGrayDark)
@@ -378,16 +518,20 @@ struct WalkMapCanvas: View {
     /// Every stop's name printed beside its marker, like a real map
     /// names its landmarks. Markers draw above as live views. A side
     /// label that would run off the plate flips to the other side.
-    private func drawStopLabels(in context: inout GraphicsContext, scale: CGFloat) {
+    private func drawStopLabels(in context: inout GraphicsContext, scale: CGFloat, spots: [CGPoint]) {
         let canvasWidth = focus.width * scale
         let canvasHeight = focus.height * scale
         for (i, stop) in stops.enumerated() {
-            let center = screen(projection.point(lat: stop.lat, lng: stop.lng), scale)
-            if center.x < -40 || center.x > canvasWidth + 40 || center.y < -40 || center.y > canvasHeight + 40 { continue }
+            let center = spots[i]
+            // A name whose marker is off the plate has nowhere to sit
+            // without being sliced by the frame, so it stays off.
+            if center.x < 6 || center.x > canvasWidth - 6 || center.y < 6 || center.y > canvasHeight - 6 { continue }
             let r: CGFloat = i == currentIndex ? 17 : 14
+            // Big enough to read at arm's length in daylight, which
+            // 9.5pt on a moving sidewalk was not.
             let text = Text(stop.mapLabel)
-                .font(RF.body(9.5, weight: 600))
-                .foregroundColor(RF.inkLight)
+                .font(RF.body(11, weight: 600))
+                .foregroundColor(i == currentIndex ? RF.rustDark : RF.inkLight)
             let width = context.resolve(text).measure(in: CGSize(width: 300, height: 30)).width
 
             var side = Self.stopLabelSide[stop.id] ?? "below"
@@ -402,6 +546,10 @@ struct WalkMapCanvas: View {
                 y: side == "below" ? center.y + r + 10 : side == "above" ? center.y - r - 10 : center.y
             )
             point.y += Self.stopLabelExtraY[stop.id] ?? 0
+            // A side label that still runs past the frame is dropped
+            // rather than printed half off the plate.
+            if side == "left", point.x - width < 4 { continue }
+            if side == "right", point.x + width > canvasWidth - 4 { continue }
             if side == "below" || side == "above" {
                 // Centered labels clamp inside the frame too
                 point.x = min(max(point.x, width / 2 + 4), canvasWidth - width / 2 - 4)
@@ -410,7 +558,7 @@ struct WalkMapCanvas: View {
                 &context,
                 text: text,
                 halo: Text(stop.mapLabel)
-                    .font(RF.body(9.5, weight: 600))
+                    .font(RF.body(11, weight: 600))
                     .foregroundColor(RF.cream),
                 at: point,
                 anchor: anchor
@@ -594,11 +742,13 @@ private struct MarkerPressStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed && !reduceMotion ? 1.35 : 1)
+            // 1.35 with a loose spring overshot to about 1.5x, which
+            // a fingertip covers entirely anyway.
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 1.22 : 1)
             .shadow(
                 color: RF.ink.opacity(configuration.isPressed ? 0.28 : 0),
                 radius: 5, x: 0, y: 3
             )
-            .animation(.spring(response: 0.28, dampingFraction: 0.55), value: configuration.isPressed)
+            .animation(RFMotion.press, value: configuration.isPressed)
     }
 }

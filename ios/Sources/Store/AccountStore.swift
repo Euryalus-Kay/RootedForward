@@ -1,13 +1,16 @@
 import Foundation
 import Security
+import UIKit
+import AuthenticationServices
 
 // ------------------------------------------------------------------
 // Optional sign-in with a rooted-forward.org account. Talks to the
 // site's Supabase auth REST endpoints with the same public URL and
 // anon key the website ships in its own JavaScript (safe to embed;
-// row security lives server-side). Email and password only, so the
-// app carries no third-party login and Sign in with Apple is not
-// required. Account deletion calls the site's /api/user/delete.
+// row security lives server-side), so an account made on the site
+// and one made here are the same account in the same database.
+// Email and password, or Google through the same Supabase OAuth the
+// site uses. Account deletion calls the site's /api/user/delete.
 // Tokens live in the keychain.
 // ------------------------------------------------------------------
 
@@ -18,10 +21,17 @@ struct AccountProfile: Codable, Equatable {
 }
 
 @MainActor
-final class AccountStore: ObservableObject {
+final class AccountStore: NSObject, ObservableObject {
     @Published private(set) var profile: AccountProfile?
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
+
+    /// Held for the life of the browser sheet; releasing it cancels
+    /// the sign-in mid-flight.
+    private var oauthSession: ASWebAuthenticationSession?
+    /// Registered in Info.plist and allow-listed in Supabase.
+    private static let callbackScheme = "rootedforward"
+    private static let callbackURL = "rootedforward://auth-callback"
 
     private static let supabaseURL = URL(string: "https://ytiwmjnoeovhwyikyjnm.supabase.co")!
     private static let anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0aXdtam5vZW92aHd5aWt5am5tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMTcxNTAsImV4cCI6MjA5MTc5MzE1MH0.YK2hFRZ7cHPU4yodFtlY5sfuzXmFH0Tbig_Ybgsy-Sc"
@@ -54,7 +64,8 @@ final class AccountStore: ObservableObject {
 
     var isSignedIn: Bool { profile != nil }
 
-    init() {
+    override init() {
+        super.init()
         // Keychain items survive an uninstall; a fresh install should
         // not resurrect the previous owner's session.
         if !UserDefaults.standard.bool(forKey: "rf-has-launched") {
@@ -106,6 +117,89 @@ final class AccountStore: ObservableObject {
             Keychain.delete(key: "rf-access-token")
             Keychain.delete(key: "rf-refresh-token")
         }
+    }
+
+    // MARK: - Google
+
+    /// The same Supabase OAuth flow the website runs, in a system
+    /// browser sheet. Supabase hands the session back on the app's
+    /// own URL scheme, so the account is the same account and the
+    /// row is the same row.
+    func signInWithGoogle() async {
+        errorMessage = nil
+        var components = URLComponents(
+            url: Self.supabaseURL.appendingPathComponent("auth/v1/authorize"),
+            resolvingAgainstBaseURL: false
+        )
+        components?.queryItems = [
+            URLQueryItem(name: "provider", value: "google"),
+            URLQueryItem(name: "redirect_to", value: Self.callbackURL),
+        ]
+        guard let url = components?.url else {
+            errorMessage = "Could not start Google sign-in."
+            return
+        }
+
+        isBusy = true
+        defer { isBusy = false }
+
+        let callback: URL? = await withCheckedContinuation { continuation in
+            var resumed = false
+            let session = ASWebAuthenticationSession(
+                url: url,
+                callbackURLScheme: Self.callbackScheme
+            ) { returned, _ in
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: returned)
+            }
+            session.presentationContextProvider = self
+            // A shared cookie jar would silently reuse whichever
+            // Google account Safari is already signed into.
+            session.prefersEphemeralWebBrowserSession = true
+            oauthSession = session
+            if !session.start() {
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: nil)
+            }
+        }
+        oauthSession = nil
+
+        guard let callback else {
+            // A cancel is a decision, not a failure worth a message.
+            return
+        }
+        guard let tokens = Self.tokens(fromCallback: callback) else {
+            errorMessage = "Google sign-in did not complete. Please try again."
+            return
+        }
+
+        Keychain.write(key: "rf-access-token", data: Data(tokens.access.utf8))
+        Keychain.write(key: "rf-refresh-token", data: Data(tokens.refresh.utf8))
+        await loadProfile(accessToken: tokens.access)
+        if profile == nil {
+            Keychain.delete(key: "rf-access-token")
+            Keychain.delete(key: "rf-refresh-token")
+        }
+    }
+
+    /// Supabase returns the session in the URL fragment, the same way
+    /// it does for the website's callback route.
+    private static func tokens(fromCallback url: URL) -> (access: String, refresh: String)? {
+        guard let fragment = URLComponents(url: url, resolvingAgainstBaseURL: false)?.fragment else {
+            return nil
+        }
+        var pairs: [String: String] = [:]
+        for part in fragment.split(separator: "&") {
+            let halves = part.split(separator: "=", maxSplits: 1)
+            guard halves.count == 2 else { continue }
+            pairs[String(halves[0])] = String(halves[1]).removingPercentEncoding
+        }
+        guard let access = pairs["access_token"], let refresh = pairs["refresh_token"] else {
+            return nil
+        }
+        return (access, refresh)
     }
 
     /// Exchanges the stored refresh token for a fresh session.
@@ -217,6 +311,19 @@ final class AccountStore: ObservableObject {
             return 0
         }
         return (response as? HTTPURLResponse)?.statusCode ?? 0
+    }
+}
+
+// MARK: - Where the sign-in sheet hangs from
+
+extension AccountStore: ASWebAuthenticationPresentationContextProviding {
+    nonisolated func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        MainActor.assumeIsolated {
+            let scene = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }
+            return scene?.keyWindow ?? ASPresentationAnchor()
+        }
     }
 }
 

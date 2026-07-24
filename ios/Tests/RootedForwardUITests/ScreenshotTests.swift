@@ -161,12 +161,13 @@ final class ScreenshotTests: XCTestCase {
         sleep(2)
         snap("10-map")
 
-        app.buttons["map-expand"].tap()
-        XCTAssertTrue(app.buttons["explorer-done"].waitForExistence(timeout: 5))
-        sleep(2)
-        snap("11-map-explorer")
-        app.buttons["explorer-done"].tap()
-        sleep(1)
+        // The map zooms in place now, so there is no second screen.
+        // Pull back to the whole route and capture that instead.
+        if app.buttons["map-whole-route"].exists {
+            app.buttons["map-whole-route"].tap()
+            sleep(1)
+        }
+        snap("11-map-whole-route")
 
         // Close the map, then walk forward with the transport bar
         // chevrons (row taps in a scrolled sheet are flaky under
@@ -221,18 +222,24 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["home-start"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(1)
-        XCTAssertFalse(app.staticTexts["pinned-stop-title"].exists)
+        // The row holds its height at all times so the page cannot
+        // lurch, so this checks what it says rather than whether the
+        // element is in the tree.
+        let pinned = app.staticTexts["pinned-stop-title"]
+        XCTAssertTrue(pinned.waitForExistence(timeout: 4))
+        XCTAssertFalse(pinned.label.contains("Cornell"), "title pinned before it scrolled away")
 
         for _ in 0..<3 {
             app.swipeUp(velocity: .fast)
         }
-        XCTAssertTrue(app.staticTexts["pinned-stop-title"].waitForExistence(timeout: 4))
+        sleep(1)
+        XCTAssertTrue(pinned.label.contains("Cornell"), "title did not pin after scrolling")
         snap("16-pinned-title")
 
         for _ in 0..<6 {
             app.swipeDown(velocity: .fast)
         }
         sleep(1)
-        XCTAssertFalse(app.staticTexts["pinned-stop-title"].exists)
+        XCTAssertFalse(pinned.label.contains("Cornell"), "title stayed pinned back at the top")
     }
 }

@@ -34,6 +34,11 @@ struct WalkTour: Codable, Equatable {
     /// Dashed spurs to the optional detour stops; absent in older payloads.
     let detourRoutes: [[[Double]]]?
     let practical: [WalkPractical]
+
+    /// The walk proper, without the two optional detours. Counting
+    /// against this is what lets someone who finishes the walk
+    /// actually reach the end of the number.
+    var mainline: [WalkStop] { stops.filter { !$0.isDetour } }
 }
 
 struct WalkPractical: Codable, Equatable, Identifiable {
@@ -75,6 +80,9 @@ struct WalkImage: Codable, Equatable, Hashable {
 struct WalkInterrupt: Codable, Equatable, Identifiable {
     let title: String
     let body: [String]
+    /// Index of the transcript paragraph this plate follows. Absent
+    /// means it renders after the whole story, the older behavior.
+    let after: Int?
     var id: String { title }
 }
 

@@ -50,6 +50,37 @@ enum RF {
     }
 }
 
+// MARK: - Motion
+
+/// One vocabulary for time, so a press, an arrival, and a move feel
+/// like the same object everywhere. Before this every animated thing
+/// in the app was timed on its own and the app read as assembled
+/// rather than designed. Add a name here rather than a new literal.
+enum RFMotion {
+    /// A control answering a finger.
+    static let press = Animation.easeOut(duration: 0.14)
+    /// Something arriving or leaving in place.
+    static let appear = Animation.easeOut(duration: 0.24)
+    /// Something travelling across the screen.
+    static let move = Animation.spring(response: 0.38, dampingFraction: 0.92)
+    /// A map or photograph settling after a gesture.
+    static let zoom = Animation.spring(response: 0.32, dampingFraction: 0.82)
+
+    /// Nil under Reduce Motion, so the change lands without travel.
+    static func gated(_ animation: Animation, _ reduced: Bool) -> Animation? {
+        reduced ? nil : animation
+    }
+}
+
+extension Animation {
+    // Dot-shorthand for the vocabulary above, so call sites read
+    // `RFMotion.gated(.move, reduceMotion)`.
+    static var rfPress: Animation { RFMotion.press }
+    static var rfAppear: Animation { RFMotion.appear }
+    static var rfMove: Animation { RFMotion.move }
+    static var rfZoom: Animation { RFMotion.zoom }
+}
+
 extension Color {
     init(rfHex hex: UInt32) {
         self.init(
@@ -201,7 +232,31 @@ struct PressableCardStyle: ButtonStyle {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.985 : 1)
             .opacity(configuration.isPressed ? 0.94 : 1)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .animation(RFMotion.press, value: configuration.isPressed)
+    }
+}
+
+/// A whole plate pressing into the paper, the same physics the
+/// primary button uses. For the large cards, where a scale that small
+/// reads as no answer at all.
+struct PressablePlateStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .offset(
+                x: configuration.isPressed ? 3 : 0,
+                y: configuration.isPressed ? 3 : 0
+            )
+            .animation(RFMotion.press, value: configuration.isPressed)
+    }
+}
+
+/// A row that fills with the darker cream while held, instead of
+/// borrowing the system list highlight.
+struct PressableRowStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? RF.creamDark : Color.clear)
+            .animation(RFMotion.press, value: configuration.isPressed)
     }
 }
 
@@ -227,6 +282,6 @@ struct HardShadowButtonStyle: ButtonStyle {
                 x: configuration.isPressed ? 3 : 0,
                 y: configuration.isPressed ? 3 : 0
             )
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+            .animation(RFMotion.press, value: configuration.isPressed)
     }
 }

@@ -9,14 +9,29 @@ import UIKit
 // ------------------------------------------------------------------
 
 enum Haptics {
+    // Long-lived generators. Building one per call means the Taptic
+    // engine is cold on the first tap after any idle stretch, which
+    // is exactly the tap a user notices missing.
+    private static let light = UIImpactFeedbackGenerator(style: .light)
+    private static let medium = UIImpactFeedbackGenerator(style: .medium)
+    private static let notice = UINotificationFeedbackGenerator()
+
+    /// Called when a screen that taps a lot appears.
+    static func warm() {
+        light.prepare()
+        medium.prepare()
+        notice.prepare()
+    }
     static func tap() {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        light.impactOccurred()
+        light.prepare()
     }
     static func press() {
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        medium.impactOccurred()
+        medium.prepare()
     }
     static func success() {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        notice.notificationOccurred(.success)
     }
 }
 
@@ -69,6 +84,7 @@ struct MediaImage: View {
                 Image(uiImage: loaded)
                     .resizable()
                     .aspectRatio(contentMode: contentMode)
+                    .transition(.opacity)
             } else {
                 Rectangle()
                     .fill(RF.creamDark)
@@ -77,14 +93,23 @@ struct MediaImage: View {
                             .font(.system(size: 22))
                             .foregroundStyle(RF.warmGrayLight)
                     )
+                    .transition(.opacity)
             }
         }
         .task(id: sitePath) {
+            // Already decoded and in memory: show it in the same frame
+            // rather than flashing a placeholder for one tick.
+            if let cached = content.cachedImage(for: sitePath) {
+                loaded = cached
+                return
+            }
             let image = await content.image(for: sitePath)
             // A cancelled load (the path changed mid-download) must
             // not blank out the image the new task already set.
             guard !Task.isCancelled else { return }
-            loaded = image
+            // A rectangle that blinks is the loudest thing on a page
+            // built out of paper and hairlines.
+            withAnimation(RFMotion.appear) { loaded = image }
         }
     }
 }

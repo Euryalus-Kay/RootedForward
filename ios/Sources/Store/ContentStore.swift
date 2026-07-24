@@ -129,16 +129,38 @@ final class ContentStore: ObservableObject {
         localMediaURL(for: sitePath) ?? remoteMediaURL(for: sitePath)
     }
 
-    /// Loads an image, bundled-first, downloading and caching new
-    /// files the site may have added after this build shipped. The
-    /// decode and disk work run off the main actor.
+    /// Decoded images held in memory, so reopening the map or paging
+    /// back through stops does not re-decode the same JPEG off disk
+    /// and flash a placeholder while it does. NSCache empties itself
+    /// under memory pressure, which is what makes it safe to hold
+    /// full-size plates here.
+    private static let memory: NSCache<NSString, UIImage> = {
+        let cache = NSCache<NSString, UIImage>()
+        cache.countLimit = 60
+        return cache
+    }()
+
+    /// A hit only if the image is already decoded. Lets a view show
+    /// it in the same frame instead of going through a placeholder.
+    nonisolated func cachedImage(for sitePath: String) -> UIImage? {
+        Self.memory.object(forKey: sitePath as NSString)
+    }
+
+    /// Loads an image, memory-first, then bundled, then downloading
+    /// and caching new files the site may have added after this build
+    /// shipped. The decode and disk work run off the main actor.
     func image(for sitePath: String) async -> UIImage? {
+        if let hit = cachedImage(for: sitePath) { return hit }
         let local = localMediaURL(for: sitePath)
         let remote = remoteMediaURL(for: sitePath)
         let name = (sitePath as NSString).lastPathComponent
         let sub = sitePath.contains("/thumbs/") ? "Media-thumbs" : "Media-images"
         let target = Self.cacheDirectory.appendingPathComponent("dl-\(sub)-\(name)")
-        return await Self.loadImage(local: local, remote: remote, cacheTarget: target)
+        let image = await Self.loadImage(local: local, remote: remote, cacheTarget: target)
+        if let image {
+            Self.memory.setObject(image, forKey: sitePath as NSString)
+        }
+        return image
     }
 
     private nonisolated static func loadImage(
