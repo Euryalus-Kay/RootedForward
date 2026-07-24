@@ -16,9 +16,17 @@ final class WalkTourUITests: XCTestCase {
         app.launch()
     }
 
-    /// Home lists the tours; the walk lives one push away.
+    /// Home lists the tours; the walk lives one push away. A prior
+    /// force-killed session can relaunch restored onto the pushed
+    /// walk screen, so pop back first if the card is not there.
     private func openWalk() {
         let card = app.buttons["home-tour-card"]
+        if !card.waitForExistence(timeout: 4) {
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists {
+                back.tap()
+            }
+        }
         XCTAssertTrue(card.waitForExistence(timeout: 10))
         card.tap()
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
@@ -71,6 +79,12 @@ final class WalkTourUITests: XCTestCase {
     }
 
     func testSettingsShowsAccountAndPrivacy() {
+        if !app.buttons["home-settings"].waitForExistence(timeout: 4) {
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists {
+                back.tap()
+            }
+        }
         let gear = app.buttons["home-settings"]
         XCTAssertTrue(gear.waitForExistence(timeout: 10))
         gear.tap()

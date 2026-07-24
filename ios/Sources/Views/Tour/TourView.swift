@@ -44,7 +44,10 @@ struct TourView: View {
 
             VStack(alignment: .trailing, spacing: 12) {
                 nearbyHint
-                mapPill
+                HStack(spacing: 10) {
+                    directionsPill
+                    mapPill
+                }
                 TransportBar(
                     stop: stops[index],
                     canGoPrevious: index > 0,
@@ -129,7 +132,28 @@ struct TourView: View {
         }
     }
 
-    // MARK: - Map pill
+    // MARK: - Floating pills
+
+    private var directionsPill: some View {
+        Link(destination: directionsURL(lat: stops[index].lat, lng: stops[index].lng)) {
+            HStack(spacing: 7) {
+                Image(systemName: "mappin.and.ellipse")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(RF.rust)
+                Text("Directions")
+                    .font(RF.body(16, weight: 600))
+                    .foregroundStyle(RF.ink.opacity(0.85))
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 11)
+            .background(Capsule().fill(RF.paper))
+            .overlay(Capsule().strokeBorder(RF.ink.opacity(0.22), lineWidth: 1))
+            .background(
+                Capsule().fill(RF.ink.opacity(0.18)).offset(x: 3, y: 3)
+            )
+        }
+        .accessibilityLabel("Walking directions to \(stops[index].title)")
+    }
 
     private var mapPill: some View {
         Button {

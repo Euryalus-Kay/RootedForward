@@ -64,7 +64,7 @@ struct TourDetailView: View {
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
 
-            Text(lastSentence(of: content.tour.dek))
+            Text("Hyde Park mirrors the practices of race-based discrimination that ran through Chicago and the country over the last two centuries.")
                 .font(RF.body(17))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .lineSpacing(6)
@@ -111,14 +111,6 @@ struct TourDetailView: View {
                     }
                 }
         }
-    }
-
-    // The dek's closing sentence is its argument; the opening one
-    // already lives on the home card.
-    private func lastSentence(of text: String) -> String {
-        let sentences = text.split(separator: ".", omittingEmptySubsequences: true)
-        guard let last = sentences.last else { return text }
-        return last.trimmingCharacters(in: .whitespaces) + "."
     }
 
     private var startControls: some View {

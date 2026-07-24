@@ -59,8 +59,20 @@ final class ScreenshotTests: XCTestCase {
         add(attachment)
     }
 
+    /// A force-killed prior session can relaunch restored onto the
+    /// pushed walk screen; pop back to the front door first.
+    private func popToHome() {
+        if !app.buttons["home-tour-card"].waitForExistence(timeout: 4) {
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists {
+                back.tap()
+            }
+        }
+    }
+
     func testCaptureEveryScreen() {
         // 1. The organization's home: mission, then the tours
+        popToHome()
         XCTAssertTrue(app.buttons["home-tour-card"].waitForExistence(timeout: 10))
         sleep(2)
         snap("01-org-home")

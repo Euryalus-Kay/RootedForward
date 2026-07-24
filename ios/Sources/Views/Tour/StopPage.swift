@@ -1,10 +1,10 @@
 import SwiftUI
 
 // ------------------------------------------------------------------
-// One stop, matching the site's StopDetail: Directions chip, Bodoni
-// title, then/now photograph plates with credits, the listen card,
-// the transcript with bold markup, the red instrument plates, and
-// the hand-off plate walking you to the next stop.
+// One stop, matching the site's StopDetail: Bodoni title, then/now
+// photograph plates, the listen card, the transcript with bold
+// markup, the red instrument plates, and the hand-off plate walking
+// you to the next stop. Directions rides the floating pill row.
 // ------------------------------------------------------------------
 
 struct StopPage: View {
@@ -53,32 +53,13 @@ struct StopPage: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Spacer()
-                Link(destination: directionsURL(lat: stop.lat, lng: stop.lng)) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "mappin.and.ellipse")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(RF.rust)
-                        Text("Directions")
-                            .font(RF.body(14, weight: 600))
-                            .foregroundStyle(RF.ink.opacity(0.8))
-                    }
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 9)
-                    .background(.white)
-                    .overlay(Rectangle().strokeBorder(RF.border, lineWidth: 1))
-                }
-                .accessibilityLabel("Walking directions to \(stop.title)")
-            }
-            .padding(.top, 14)
-
+            // Directions lives in the floating pill row next to Map.
             Text(stop.title)
                 .font(RF.didone(33, weight: 600))
                 .foregroundStyle(RF.forest)
                 .lineSpacing(2)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+                .padding(.top, 16)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("stop-title-\(stop.number)")
 
@@ -94,14 +75,15 @@ struct StopPage: View {
     // MARK: - Listen card
 
     private var listenCard: some View {
-        HStack(spacing: 14) {
-            PlayButton(stop: stop, size: 52)
-            VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 14) {
+                PlayButton(stop: stop, size: 54)
                 ListenCardTitle(stop: stop)
-                AudioTimeline(stop: stop)
+                Spacer(minLength: 0)
             }
+            AudioTimeline(stop: stop)
         }
-        .padding(14)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .plate()
     }
@@ -262,11 +244,11 @@ struct ListenCardTitle: View {
             if audio.isCurrent(stop.id) && audio.isPlaying {
                 PlayingWave()
                 Text("Now playing")
-                    .font(RF.body(15, weight: 600))
+                    .font(RF.body(16.5, weight: 600))
                     .foregroundStyle(RF.rust)
             } else {
                 Text("Listen to this stop")
-                    .font(RF.body(15, weight: 600))
+                    .font(RF.body(16.5, weight: 600))
                     .foregroundStyle(RF.ink)
             }
         }

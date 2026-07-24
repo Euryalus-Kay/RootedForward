@@ -10,6 +10,12 @@ final class MapRowTapDiagnostic: XCTestCase {
         app.launch()
 
         let card = app.buttons["home-tour-card"]
+        if !card.waitForExistence(timeout: 4) {
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists {
+                back.tap()
+            }
+        }
         XCTAssertTrue(card.waitForExistence(timeout: 10))
         card.tap()
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))

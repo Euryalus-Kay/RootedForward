@@ -81,25 +81,17 @@ struct HomeView: View {
 
     private var mission: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("A student-run Chicago nonprofit")
-                .font(RF.display(19, weight: 500, italic: true))
-                .foregroundStyle(RF.rust)
+            // One headline, two inks. The rust sentence names who we
+            // are at the same size as the mission itself.
+            (Text("A student-run Chicago nonprofit. ")
+                .foregroundColor(RF.rust)
+                + Text("Rooted Forward educates people about racial inequality in Chicago and works to address it through education and political advocacy.")
+                .foregroundColor(RF.forest))
+                .font(RF.display(26, weight: 600))
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 52)
-
-            Text("We educate people about racial inequality in Chicago, and we work to address it.")
-                .font(RF.display(29, weight: 600))
-                .foregroundStyle(RF.forest)
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 12)
                 .accessibilityAddTraits(.isHeader)
-
-            Text("Walking tours, an online exhibit, a podcast, and housing policy work.")
-                .font(RF.body(16))
-                .foregroundStyle(RF.ink.opacity(0.72))
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 16)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -148,7 +140,7 @@ struct HomeView: View {
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
 
-            Text("Free audio walks you take at your own pace.")
+            Text("Free audio tours walking you through the racial history of these locations.")
                 .font(RF.body(15.5))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .padding(.top, 6)
