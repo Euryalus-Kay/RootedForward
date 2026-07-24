@@ -208,7 +208,7 @@ private struct TourCard: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(content.tour.title)
-                    .font(RF.didone(27, weight: 600))
+                    .font(RF.display(26, weight: 600))
                     .foregroundStyle(RF.forest)
 
                 Text("A racial history of the neighborhood.")

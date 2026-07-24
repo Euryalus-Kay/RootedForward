@@ -54,11 +54,11 @@ struct TourDetailView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: -24) {
+            VStack(alignment: .leading, spacing: -12) {
                 Text("Walk")
                 Text("Hyde Park")
             }
-            .font(RF.didone(54, weight: 600))
+            .font(RF.display(48, weight: 600))
             .foregroundStyle(RF.forest)
             .padding(.top, 20)
             .accessibilityElement(children: .combine)

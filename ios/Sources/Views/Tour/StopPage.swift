@@ -55,7 +55,7 @@ struct StopPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // Directions lives in the floating pill row next to Map.
             Text(stop.title)
-                .font(RF.didone(33, weight: 600))
+                .font(RF.display(30, weight: 600))
                 .foregroundStyle(RF.forest)
                 .lineSpacing(2)
                 .fixedSize(horizontal: false, vertical: true)

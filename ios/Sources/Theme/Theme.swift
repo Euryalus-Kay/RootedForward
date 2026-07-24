@@ -38,7 +38,9 @@ enum RF {
 
     // Type
     static func didone(_ size: CGFloat, weight: CGFloat = 600) -> Font {
-        BrandFonts.font(family: "Bodoni Moda", size: size, weight: weight, opticalSize: size)
+        // Cap the optical size axis: at full display opsz Bodoni's
+        // hairlines go razor thin and the W reads as a tangle.
+        BrandFonts.font(family: "Bodoni Moda", size: size, weight: weight, opticalSize: min(size, 24))
     }
     static func display(_ size: CGFloat, weight: CGFloat = 600, italic: Bool = false) -> Font {
         BrandFonts.font(family: "Fraunces", size: size, weight: weight, italic: italic, opticalSize: size)
