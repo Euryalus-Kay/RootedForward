@@ -82,9 +82,9 @@ struct HomeView: View {
     private var mission: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("A student-run Chicago nonprofit")
-                .font(RF.display(15.5, weight: 400, italic: true))
-                .foregroundStyle(RF.ink.opacity(0.6))
-                .padding(.top, 56)
+                .font(RF.display(19, weight: 500, italic: true))
+                .foregroundStyle(RF.rust)
+                .padding(.top, 52)
 
             Text("We educate people about racial inequality in Chicago, and we work to address it.")
                 .font(RF.display(29, weight: 600))
@@ -93,6 +93,13 @@ struct HomeView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 12)
                 .accessibilityAddTraits(.isHeader)
+
+            Text("Walking tours, an online exhibit, a podcast, and housing policy work.")
+                .font(RF.body(16))
+                .foregroundStyle(RF.ink.opacity(0.72))
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 16)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -136,19 +143,25 @@ struct HomeView: View {
     // MARK: - Tours
 
     private var tours: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 0) {
             Text("Self-guided tours")
                 .font(RF.display(22, weight: 600))
                 .foregroundStyle(RF.forest)
+
+            Text("Free audio walks you take at your own pace.")
+                .font(RF.body(15.5))
+                .foregroundStyle(RF.ink.opacity(0.7))
+                .padding(.top, 6)
 
             NavigationLink(value: "hyde-park-walk") {
                 TourCard()
             }
             .buttonStyle(PressableCardStyle())
             .accessibilityIdentifier("home-tour-card")
+            .padding(.top, 18)
         }
         .padding(.horizontal, 24)
-        .padding(.top, 56)
+        .padding(.top, 52)
     }
 
     // MARK: - Footer
@@ -180,11 +193,9 @@ enum InfoSheet: String, Identifiable {
     var id: String { rawValue }
 }
 
-/// The walk's listing card. Photograph on top, then the title, one
-/// line on what the tour is, and the facts.
+/// The walk's listing card. A photograph, the title, one line.
 private struct TourCard: View {
     @EnvironmentObject private var content: ContentStore
-    @EnvironmentObject private var progress: ProgressStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -210,35 +221,13 @@ private struct TourCard: View {
                     .foregroundStyle(RF.ink.opacity(0.85))
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
-
-                HStack(spacing: 0) {
-                    Text(meta)
-                        .font(RF.display(14.5, weight: 400, italic: true))
-                        .foregroundStyle(RF.ink.opacity(0.62))
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(RF.warmGray)
-                }
-                .padding(.top, 6)
             }
             .padding(.horizontal, 14)
             .padding(.top, 4)
-            .padding(.bottom, 16)
+            .padding(.bottom, 18)
         }
         .plate()
         .contentShape(Rectangle())
-    }
-
-    // Set like the site's italic accent lines, commas and all.
-    private var meta: String {
-        var line = "\(content.tour.stops.count) stops, "
-            + String(format: "%.1f miles", content.tour.distanceMiles)
-            + ", \(content.tour.listenMinutes) minutes of audio"
-        if progress.hasProgress {
-            line += ". At stop \(min(progress.lastIndex, content.tour.stops.count - 1) + 1)"
-        }
-        return line
     }
 }
 
