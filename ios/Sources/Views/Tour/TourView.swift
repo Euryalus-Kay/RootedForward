@@ -22,7 +22,23 @@ struct TourView: View {
 
     private var stops: [WalkStop] { content.tour.stops }
 
+    /// A content refresh can swap the stops array mid-session; the
+    /// stored index must never subscript past the new count.
+    private var safeIndex: Int {
+        min(max(0, index), max(0, stops.count - 1))
+    }
+
     var body: some View {
+        if stops.isEmpty {
+            // Only reachable if a broken payload ever slips through
+            // content validation; never strand the user in a crash.
+            Color.clear.onAppear { dismiss() }
+        } else {
+            tourBody
+        }
+    }
+
+    private var tourBody: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
                 topBar
@@ -49,11 +65,11 @@ struct TourView: View {
                     mapPill
                 }
                 TransportBar(
-                    stop: stops[index],
-                    canGoPrevious: index > 0,
-                    canGoNext: index < stops.count - 1,
-                    goPrevious: { withAnimation { index = max(0, index - 1) } },
-                    goNext: { withAnimation { index = min(stops.count - 1, index + 1) } }
+                    stop: stops[safeIndex],
+                    canGoPrevious: safeIndex > 0,
+                    canGoNext: safeIndex < stops.count - 1,
+                    goPrevious: { withAnimation { index = max(0, safeIndex - 1) } },
+                    goNext: { withAnimation { index = min(stops.count - 1, safeIndex + 1) } }
                 )
             }
             .padding(.horizontal, 12)
@@ -67,6 +83,14 @@ struct TourView: View {
         .onAppear {
             progress.setLastIndex(index)
             location.requestAndStartIfAuthorized()
+        }
+        .onDisappear {
+            // GPS belongs to the tour; leaving it must not keep the
+            // radio warm for the rest of the app session.
+            location.stopUpdates()
+        }
+        .onChange(of: stops.count) { _, newCount in
+            index = min(index, max(0, newCount - 1))
         }
         .sheet(isPresented: $showMap) {
             MapSheetView(currentIndex: index) { tapped in
@@ -94,7 +118,7 @@ struct TourView: View {
             Spacer()
 
             VStack(spacing: 5) {
-                Text("Stop \(index + 1) of \(stops.count)")
+                Text("Stop \(safeIndex + 1) of \(stops.count)")
                     .font(RF.body(14, weight: 600))
                     .foregroundStyle(RF.ink.opacity(0.8))
                 GeometryReader { geo in
@@ -102,7 +126,7 @@ struct TourView: View {
                         Capsule().fill(RF.border)
                         Capsule()
                             .fill(RF.rust)
-                            .frame(width: geo.size.width * CGFloat(index + 1) / CGFloat(stops.count))
+                            .frame(width: geo.size.width * CGFloat(safeIndex + 1) / CGFloat(max(stops.count, 1)))
                     }
                 }
                 .frame(width: 132, height: 3)
@@ -135,7 +159,7 @@ struct TourView: View {
     // MARK: - Floating pills
 
     private var directionsPill: some View {
-        Link(destination: directionsURL(lat: stops[index].lat, lng: stops[index].lng)) {
+        Link(destination: directionsURL(lat: stops[safeIndex].lat, lng: stops[safeIndex].lng)) {
             HStack(spacing: 7) {
                 Image(systemName: "mappin.and.ellipse")
                     .font(.system(size: 14, weight: .semibold))
@@ -152,7 +176,7 @@ struct TourView: View {
                 Capsule().fill(RF.ink.opacity(0.18)).offset(x: 3, y: 3)
             )
         }
-        .accessibilityLabel("Walking directions to \(stops[index].title)")
+        .accessibilityLabel("Walking directions to \(stops[safeIndex].title)")
     }
 
     private var mapPill: some View {
@@ -182,7 +206,7 @@ struct TourView: View {
     private var nearbyHint: some View {
         if let near = location.nearestStop(in: content.tour),
            near.meters < 60,
-           near.stop.id != stops[index].id {
+           near.stop.id != stops[safeIndex].id {
             Button {
                 if let i = stops.firstIndex(where: { $0.id == near.stop.id }) {
                     withAnimation { index = i }
@@ -293,12 +317,16 @@ struct PlayButton: View {
         let playingThis = audio.isCurrent(stop.id) && audio.isPlaying
         Button {
             Haptics.press()
+            // Play immediately; the lock-screen artwork is cosmetic
+            // and must never gate narration behind a network fetch.
+            audio.toggle(stop: stop, url: content.mediaURL(for: stop.audioSrc), artwork: nil)
             Task {
                 let thumbPath = ContentStore.thumbPath(
                     for: (stop.nowImage ?? stop.images.first)?.src ?? ""
                 )
-                let artwork = await content.image(for: thumbPath)
-                audio.toggle(stop: stop, url: content.mediaURL(for: stop.audioSrc), artwork: artwork)
+                if let artwork = await content.image(for: thumbPath) {
+                    audio.updateArtwork(artwork, for: stop.id)
+                }
             }
         } label: {
             Image(systemName: playingThis ? "pause.fill" : "play.fill")

@@ -26,6 +26,12 @@ final class ProgressStore: ObservableObject {
         visited.contains(stopID)
     }
 
+    /// Visited count against the live stops, so ids removed by a
+    /// content refresh never overstate progress ("12 of 11 visited").
+    func visitedCount(in stops: [WalkStop]) -> Int {
+        stops.reduce(0) { visited.contains($1.id) ? $0 + 1 : $0 }
+    }
+
     func markVisited(_ stopID: String) {
         guard !visited.contains(stopID) else { return }
         visited.insert(stopID)

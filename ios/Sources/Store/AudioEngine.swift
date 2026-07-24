@@ -26,6 +26,8 @@ final class AudioEngine: ObservableObject {
     private var player: AVPlayer?
     private var timeObserver: Any?
     private var endObserver: NSObjectProtocol?
+    private var failObserver: NSObjectProtocol?
+    private var statusObservation: NSKeyValueObservation?
     private var sessionConfigured = false
 
     private let rates: [Float] = [1.0, 1.25, 1.5]
@@ -91,6 +93,15 @@ final class AudioEngine: ObservableObject {
         currentStopID == stopID
     }
 
+    /// Late-arriving lock-screen artwork; ignored if the walker has
+    /// already moved to another stop.
+    func updateArtwork(_ artwork: UIImage, for stopID: String) {
+        guard currentStopID == stopID else { return }
+        var info = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+        info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: artwork.size) { _ in artwork }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+    }
+
     // MARK: - Loading
 
     private func load(stop: WalkStop, url: URL, artwork: UIImage?, autoplay: Bool) {
@@ -119,17 +130,40 @@ final class AudioEngine: ObservableObject {
             }
         }
 
+        // Capture the stop this observer belongs to; by the time the
+        // deferred task runs, the user may have loaded another stop.
+        let loadedStopID = stop.id
         endObserver = NotificationCenter.default.addObserver(
             forName: .AVPlayerItemDidPlayToEndTime,
             object: item,
             queue: .main
         ) { [weak self] _ in
             Task { @MainActor [weak self] in
-                guard let self, let id = self.currentStopID else { return }
+                guard let self, self.currentStopID == loadedStopID else { return }
                 self.isPlaying = false
                 self.currentTime = self.duration
                 self.updateNowPlayingPlayback()
-                self.onFinished?(id)
+                self.onFinished?(loadedStopID)
+            }
+        }
+
+        // A missing or unreachable audio file must not leave the UI
+        // claiming playback; fall back to idle instead.
+        failObserver = NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemFailedToPlayToEndTime,
+            object: item,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self, self.currentStopID == loadedStopID else { return }
+                self.stop()
+            }
+        }
+        statusObservation = item.observe(\.status) { [weak self] observed, _ in
+            guard observed.status == .failed else { return }
+            Task { @MainActor [weak self] in
+                guard let self, self.currentStopID == loadedStopID else { return }
+                self.stop()
             }
         }
 
@@ -152,6 +186,12 @@ final class AudioEngine: ObservableObject {
             NotificationCenter.default.removeObserver(observer)
             endObserver = nil
         }
+        if let observer = failObserver {
+            NotificationCenter.default.removeObserver(observer)
+            failObserver = nil
+        }
+        statusObservation?.invalidate()
+        statusObservation = nil
     }
 
     private func configureSessionIfNeeded() {
@@ -171,6 +211,23 @@ final class AudioEngine: ObservableObject {
                       let raw = note.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt,
                       let type = AVAudioSession.InterruptionType(rawValue: raw) else { return }
                 if type == .began, self.isPlaying {
+                    self.pause()
+                }
+            }
+        }
+
+        // Pulled headphones pause the narration instead of blasting
+        // it out of the speaker mid-sidewalk.
+        NotificationCenter.default.addObserver(
+            forName: AVAudioSession.routeChangeNotification,
+            object: session,
+            queue: .main
+        ) { [weak self] note in
+            Task { @MainActor [weak self] in
+                guard let self,
+                      let raw = note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt,
+                      let reason = AVAudioSession.RouteChangeReason(rawValue: raw) else { return }
+                if reason == .oldDeviceUnavailable, self.isPlaying {
                     self.pause()
                 }
             }

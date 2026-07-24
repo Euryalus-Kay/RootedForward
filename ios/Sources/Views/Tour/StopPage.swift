@@ -281,6 +281,10 @@ struct AudioTimeline: View {
             )
             .tint(RF.rust)
             .disabled(!isCurrent)
+            .accessibilityLabel("Narration position")
+            .accessibilityValue(
+                "\(WalkFormat.clock(seconds: time)) of \(WalkFormat.clock(seconds: duration))"
+            )
 
             HStack(spacing: 14) {
                 Text(WalkFormat.clock(seconds: time))

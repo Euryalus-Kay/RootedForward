@@ -135,6 +135,14 @@ struct SettingsView: View {
                     .accessibilityIdentifier("delete-account")
                 }
                 .padding(.top, 4)
+
+                // Deletion failures land here, while still signed in.
+                if let message = account.errorMessage {
+                    Text(message)
+                        .font(RF.body(13.5))
+                        .foregroundStyle(RF.plateRed)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             } else {
                 Text("Optional. The whole tour works without one. Signing in connects the account you use for comments and policy signatures on rooted-forward.org.")
                     .font(RF.body(13.5))
@@ -214,7 +222,7 @@ struct SettingsView: View {
             Text("The tour")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
-            Text("\(progress.visited.count) of \(content.tour.stops.count) stops visited. Progress lives only on this phone.")
+            Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) stops visited. Progress lives only on this phone.")
                 .font(RF.body(14))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .fixedSize(horizontal: false, vertical: true)

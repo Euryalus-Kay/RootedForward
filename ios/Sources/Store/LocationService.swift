@@ -16,6 +16,11 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
 
     private let manager = CLLocationManager()
 
+    // Set while a screen actually consumes position updates; the
+    // authorization callback fires at launch for previously granted
+    // users and must not start GPS on its own.
+    private var wantsUpdates = false
+
     override init() {
         super.init()
         manager.delegate = self
@@ -28,6 +33,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func requestAndStart() {
+        wantsUpdates = true
         switch manager.authorizationStatus {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
@@ -39,12 +45,14 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func start() {
+        wantsUpdates = true
         guard !isUpdating else { return }
         isUpdating = true
         manager.startUpdatingLocation()
     }
 
     func stopUpdates() {
+        wantsUpdates = false
         isUpdating = false
         manager.stopUpdatingLocation()
     }
@@ -63,7 +71,8 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
         let newStatus = manager.authorizationStatus
         Task { @MainActor in
             self.status = newStatus
-            if newStatus == .authorizedWhenInUse || newStatus == .authorizedAlways {
+            if newStatus == .authorizedWhenInUse || newStatus == .authorizedAlways,
+               self.wantsUpdates {
                 self.start()
             }
         }

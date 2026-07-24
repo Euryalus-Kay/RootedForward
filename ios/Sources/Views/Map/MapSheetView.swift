@@ -289,13 +289,29 @@ struct MapSheetView: View {
     // MARK: - Thumbs
 
     private func loadThumbs() async {
-        for stop in content.tour.stops where thumbs[stop.id] == nil {
-            let source = (stop.nowImage ?? stop.images.first)?.src ?? ""
-            guard !source.isEmpty else { continue }
-            if let image = await content.image(for: ContentStore.thumbPath(for: source)) {
-                thumbs[stop.id] = image
+        // Concurrent loads with a single state write, so one slow
+        // network thumb never staggers the whole marker set.
+        let wanted = content.tour.stops
+            .filter { thumbs[$0.id] == nil }
+            .compactMap { stop -> (String, String)? in
+                guard let source = (stop.nowImage ?? stop.images.first)?.src else { return nil }
+                return (stop.id, ContentStore.thumbPath(for: source))
+            }
+        guard !wanted.isEmpty else { return }
+        var loaded: [String: UIImage] = [:]
+        await withTaskGroup(of: (String, UIImage?).self) { group in
+            for (id, path) in wanted {
+                group.addTask { @MainActor in
+                    (id, await content.image(for: path))
+                }
+            }
+            for await (id, image) in group {
+                if let image {
+                    loaded[id] = image
+                }
             }
         }
+        thumbs.merge(loaded) { _, new in new }
     }
 }
 

@@ -131,7 +131,7 @@ struct TourDetailView: View {
 
             if progress.hasProgress {
                 HStack(spacing: 10) {
-                    Text("\(progress.visited.count) of \(content.tour.stops.count) visited")
+                    Text("\(progress.visitedCount(in: content.tour.stops)) of \(content.tour.stops.count) visited")
                         .font(RF.body(13))
                         .foregroundStyle(RF.warmGray)
                     Button("Start over") {

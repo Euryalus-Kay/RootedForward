@@ -2,10 +2,12 @@ import SwiftUI
 
 // ------------------------------------------------------------------
 // The engraved tour map, drawn natively from the same TIGER-derived
-// geometry the site uses (already in viewBox units). Water with
-// hatching, three weights of streets, the rail line with cross
-// ties, the dotted rust route, photograph-medallion stop markers,
-// place labels, a quarter-mile scale bar, and a compass rose.
+// geometry the site uses (already in viewBox units). Park and campus
+// grounds, water with hatching, three weights of streets, the rail
+// line with cross ties, street names set along their streets, the
+// dotted rust route, named photograph-medallion stop markers that
+// grow under your finger, a quarter-mile scale bar, corner trim
+// marks, and a compass rose. Mirrors WalkMap.tsx on the site.
 // ------------------------------------------------------------------
 
 struct WalkMapCanvas: View {
@@ -24,6 +26,7 @@ struct WalkMapCanvas: View {
         let lat: Double
         let lng: Double
         let size: CGFloat
+        var rotate: Double = 0
     }
 
     // Committed site labels (WalkMap.tsx PLACE_LABELS)
@@ -35,6 +38,57 @@ struct WalkMapCanvas: View {
         .init(text: "Woodlawn", lat: 41.7828, lng: -87.5955, size: 10),
         .init(text: "Washington Park", lat: 41.7943, lng: -87.6094, size: 9),
         .init(text: "University of Chicago", lat: 41.79, lng: -87.5997, size: 9),
+        // Nichols Park stays unlabeled here; at phone scale its name
+        // collides with the Hyde Park label and the green reads alone.
+    ]
+
+    // Street names in fine italic along their streets (WalkMap.tsx)
+    private static let streetLabels: [PlaceLabel] = [
+        .init(text: "E Hyde Park Blvd", lat: 41.8026, lng: -87.5948, size: 8),
+        .init(text: "E 53rd St", lat: 41.8001, lng: -87.591, size: 9),
+        .init(text: "E 55th St", lat: 41.7957, lng: -87.5993, size: 9),
+        .init(text: "E 57th St", lat: 41.7921, lng: -87.5911, size: 9),
+        .init(text: "E 60th St", lat: 41.7846, lng: -87.599, size: 8),
+        .init(text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, size: 9, rotate: -87),
+        .init(text: "Woodlawn Ave", lat: 41.7938, lng: -87.5968, size: 9, rotate: -90),
+        .init(text: "Ellis Ave", lat: 41.7958, lng: -87.6015, size: 8, rotate: -90),
+        .init(text: "University Ave", lat: 41.7942, lng: -87.5986, size: 8, rotate: -90),
+        .init(text: "Kimbark Ave", lat: 41.7987, lng: -87.5953, size: 8, rotate: -90),
+        .init(text: "Harper Ave", lat: 41.7972, lng: -87.5889, size: 8, rotate: -90),
+        .init(text: "Cottage Grove Ave", lat: 41.7935, lng: -87.6069, size: 8, rotate: -90),
+        .init(text: "Stony Island Ave", lat: 41.7852, lng: -87.5873, size: 8, rotate: -90),
+    ]
+
+    // Soft green ground for the parks; the lake polygon paints over
+    // the eastern overhang (WalkMap.tsx PARK_AREAS)
+    private static let parkAreas: [[[Double]]] = [
+        [[41.7936, -87.587], [41.7936, -87.566], [41.7737, -87.556], [41.7737, -87.587]],
+        [[41.7872, -87.5868], [41.7872, -87.613], [41.7854, -87.613], [41.7854, -87.5868]],
+        [[41.8045, -87.6063], [41.8045, -87.618], [41.7815, -87.618], [41.7815, -87.6063]],
+        [[41.7994, -87.5948], [41.7994, -87.5935], [41.7953, -87.5935], [41.7953, -87.5948]],
+        [[41.8032, -87.5827], [41.8032, -87.579], [41.7994, -87.579], [41.7994, -87.5827]],
+    ]
+
+    // The university's main quadrangles, tinted brass like printed
+    // maps mark institutions (WalkMap.tsx CAMPUS_AREAS)
+    private static let campusAreas: [[[Double]]] = [
+        [[41.7921, -87.6014], [41.7921, -87.5977], [41.7885, -87.5977], [41.7885, -87.6014]]
+    ]
+
+    // Where each stop's name sits relative to its marker; tuned for
+    // phone scale, where the 53rd Street cluster runs tight
+    private static let stopLabelSide: [String: String] = [
+        "cornells-stone": "above",
+        "lake-park-tracks": "below",
+        "robie-house": "right",
+        "harper-court": "left",
+        "obama-center": "right",
+    ]
+
+    // A second label row for the dense cluster, the way printed maps
+    // stagger names that share a street
+    private static let stopLabelExtraY: [String: CGFloat] = [
+        "lake-park-tracks": 11
     ]
 
     var body: some View {
@@ -45,16 +99,20 @@ struct WalkMapCanvas: View {
                     draw(in: &context, size: size, scale: scale)
                 }
 
-                // Invisible tap targets over each marker
+                // Live markers over the drawing: each one is a real
+                // view, so it can grow under a held finger.
                 ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
                     let p = projection.point(lat: stop.lat, lng: stop.lng)
-                    Button {
+                    StopMarker(
+                        stop: stop,
+                        active: i == currentIndex,
+                        visited: visited.contains(stop.id),
+                        thumb: thumbs[stop.id]
+                    ) {
                         onTapStop(i)
-                    } label: {
-                        Color.clear.frame(width: 44, height: 44)
                     }
                     .position(x: p.x * scale, y: p.y * scale)
-                    .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+                    .zIndex(i == currentIndex ? 2 : 1)
                 }
             }
         }
@@ -73,6 +131,7 @@ struct WalkMapCanvas: View {
             with: .color(RF.cream)
         )
 
+        drawGrounds(in: &map)
         drawWater(in: &map)
         drawRoads(in: &map)
         drawRails(in: &map)
@@ -94,11 +153,13 @@ struct WalkMapCanvas: View {
             )
         )
 
+        drawStreetLabels(in: &context, scale: scale)
         drawPlaceLabels(in: &context, scale: scale)
-        drawMarkers(in: &context, scale: scale)
+        drawStopLabels(in: &context, scale: scale)
         drawUserDot(in: &context, scale: scale)
         drawScaleBar(in: &context, scale: scale)
         drawCompass(in: &context, size: size)
+        drawCornerTrim(in: &context, size: size)
     }
 
     private func path(from points: [CGPoint]) -> Path {
@@ -115,6 +176,24 @@ struct WalkMapCanvas: View {
         var p = path(from: ring.map { CGPoint(x: $0[0], y: $0[1]) })
         p.closeSubpath()
         return p
+    }
+
+    private func projectedRing(_ ring: [[Double]]) -> Path {
+        var p = path(from: ring.map { projection.point(lat: $0[0], lng: $0[1]) })
+        p.closeSubpath()
+        return p
+    }
+
+    /// Park and campus grounds under everything else.
+    private func drawGrounds(in map: inout GraphicsContext) {
+        for ring in Self.parkAreas {
+            map.fill(projectedRing(ring), with: .color(RF.forest.opacity(0.07)))
+        }
+        for ring in Self.campusAreas {
+            let p = projectedRing(ring)
+            map.fill(p, with: .color(RF.mapBrass.opacity(0.07)))
+            map.stroke(p, with: .color(RF.mapBrass.opacity(0.25)), lineWidth: 1)
+        }
     }
 
     private func drawWater(in map: inout GraphicsContext) {
@@ -174,6 +253,44 @@ struct WalkMapCanvas: View {
         }
     }
 
+    /// Draws text with a cream halo so route dots and street lines
+    /// never cut through a word, the canvas version of the site's
+    /// paint-order stroke.
+    private func drawHaloed(
+        _ context: inout GraphicsContext,
+        text: Text,
+        halo: Text,
+        at point: CGPoint,
+        anchor: UnitPoint = .center
+    ) {
+        let haloResolved = context.resolve(halo)
+        for dx in [-1.2, 0, 1.2] {
+            for dy in [-1.2, 0, 1.2] where dx != 0 || dy != 0 {
+                context.draw(haloResolved, at: CGPoint(x: point.x + dx, y: point.y + dy), anchor: anchor)
+            }
+        }
+        context.draw(context.resolve(text), at: point, anchor: anchor)
+    }
+
+    private func drawStreetLabels(in context: inout GraphicsContext, scale: CGFloat) {
+        for label in Self.streetLabels {
+            let p = projection.point(lat: label.lat, lng: label.lng)
+            var rotated = context
+            rotated.translateBy(x: p.x * scale, y: p.y * scale)
+            rotated.rotate(by: .degrees(label.rotate))
+            drawHaloed(
+                &rotated,
+                text: Text(label.text)
+                    .font(RF.display(label.size, weight: 400, italic: true))
+                    .foregroundColor(RF.warmGray),
+                halo: Text(label.text)
+                    .font(RF.display(label.size, weight: 400, italic: true))
+                    .foregroundColor(RF.cream),
+                at: .zero
+            )
+        }
+    }
+
     private func drawPlaceLabels(in context: inout GraphicsContext, scale: CGFloat) {
         let canvasWidth = geometry.viewBox.w * scale
         for label in Self.placeLabels {
@@ -185,74 +302,55 @@ struct WalkMapCanvas: View {
             let measured = resolved.measure(in: CGSize(width: 400, height: 60))
             // Keep the label fully inside the map frame
             let x = min(max(p.x * scale, measured.width / 2 + 4), canvasWidth - measured.width / 2 - 4)
-            context.draw(resolved, at: CGPoint(x: x, y: p.y * scale), anchor: .center)
+            drawHaloed(
+                &context,
+                text: text,
+                halo: Text(label.text)
+                    .font(RF.display(label.size, weight: 400, italic: true))
+                    .foregroundColor(RF.cream),
+                at: CGPoint(x: x, y: p.y * scale)
+            )
         }
     }
 
-    private func drawMarkers(in context: inout GraphicsContext, scale: CGFloat) {
+    /// Every stop's name printed beside its marker, like a real map
+    /// names its landmarks. Markers draw above as live views. A side
+    /// label that would run off the plate flips to the other side.
+    private func drawStopLabels(in context: inout GraphicsContext, scale: CGFloat) {
+        let canvasWidth = geometry.viewBox.w * scale
         for (i, stop) in stops.enumerated() {
             let p = projection.point(lat: stop.lat, lng: stop.lng)
             let center = CGPoint(x: p.x * scale, y: p.y * scale)
-            let active = i == currentIndex
-            let isVisited = visited.contains(stop.id)
-            let r: CGFloat = active ? 17 : 14
-            let rect = CGRect(x: center.x - r, y: center.y - r, width: 2 * r, height: 2 * r)
+            let r: CGFloat = i == currentIndex ? 17 : 14
+            let text = Text(stop.mapLabel)
+                .font(RF.body(9.5, weight: 600))
+                .foregroundColor(RF.inkLight)
+            let width = context.resolve(text).measure(in: CGSize(width: 300, height: 30)).width
 
-            // Photograph medallion
-            context.fill(Path(ellipseIn: rect), with: .color(RF.cream))
-            if let thumb = thumbs[stop.id] {
-                context.drawLayer { layer in
-                    layer.clip(to: Path(ellipseIn: rect.insetBy(dx: 1.5, dy: 1.5)))
-                    let imageSize = thumb.size
-                    let side = max(rect.width, rect.height)
-                    let aspect = imageSize.width / max(imageSize.height, 1)
-                    let drawSize = aspect > 1
-                        ? CGSize(width: side * aspect, height: side)
-                        : CGSize(width: side, height: side / aspect)
-                    let drawRect = CGRect(
-                        x: center.x - drawSize.width / 2,
-                        y: center.y - drawSize.height / 2,
-                        width: drawSize.width,
-                        height: drawSize.height
-                    )
-                    layer.draw(Image(uiImage: thumb), in: drawRect)
-                }
+            var side = Self.stopLabelSide[stop.id] ?? "below"
+            if side == "right", center.x + r + 7 + width > canvasWidth - 4 {
+                side = "left"
+            } else if side == "left", center.x - r - 7 - width < 4 {
+                side = "right"
             }
-            // Rings: outer forest or rust, inner brass
-            context.stroke(
-                Path(ellipseIn: rect),
-                with: .color(active ? RF.rust : RF.forest),
-                lineWidth: active ? 3 : 2
+            let anchor: UnitPoint = side == "left" ? .trailing : side == "right" ? .leading : .center
+            var point = CGPoint(
+                x: side == "left" ? center.x - r - 7 : side == "right" ? center.x + r + 7 : center.x,
+                y: side == "below" ? center.y + r + 10 : side == "above" ? center.y - r - 10 : center.y
             )
-            context.stroke(
-                Path(ellipseIn: rect.insetBy(dx: 2.5, dy: 2.5)),
-                with: .color(active ? RF.cream : RF.mapBrass),
-                lineWidth: 1
-            )
-
-            // Number badge, bottom-right of the medallion
-            let badgeCenter = CGPoint(x: center.x + r * 0.78, y: center.y + r * 0.78)
-            let badgeR: CGFloat = 7.5
-            let badgeRect = CGRect(
-                x: badgeCenter.x - badgeR, y: badgeCenter.y - badgeR,
-                width: 2 * badgeR, height: 2 * badgeR
-            )
-            let badgeFill: Color = active ? RF.rust : isVisited ? RF.forest : RF.cream
-            let badgeText: Color = active || isVisited ? RF.cream : RF.forest
-            context.fill(Path(ellipseIn: badgeRect), with: .color(badgeFill))
-            context.stroke(
-                Path(ellipseIn: badgeRect),
-                with: .color(active ? RF.cream : RF.forest),
-                lineWidth: 1.2
-            )
-            context.draw(
-                context.resolve(
-                    Text("\(stop.number)")
-                        .font(RF.body(9.5, weight: 700))
-                        .foregroundColor(badgeText)
-                ),
-                at: badgeCenter,
-                anchor: .center
+            point.y += Self.stopLabelExtraY[stop.id] ?? 0
+            if side == "below" || side == "above" {
+                // Centered labels clamp inside the frame too
+                point.x = min(max(point.x, width / 2 + 4), canvasWidth - width / 2 - 4)
+            }
+            drawHaloed(
+                &context,
+                text: text,
+                halo: Text(stop.mapLabel)
+                    .font(RF.body(9.5, weight: 600))
+                    .foregroundColor(RF.cream),
+                at: point,
+                anchor: anchor
             )
         }
     }
@@ -295,24 +393,142 @@ struct WalkMapCanvas: View {
         )
     }
 
+    /// The eight-point rose from the site map, not just a needle.
     private func drawCompass(in context: inout GraphicsContext, size: CGSize) {
-        let center = CGPoint(x: size.width - 26, y: 30)
-        let ring = CGRect(x: center.x - 11, y: center.y - 11, width: 22, height: 22)
+        let center = CGPoint(x: size.width - 30, y: 36)
+        let ring = CGRect(x: center.x - 13, y: center.y - 13, width: 26, height: 26)
         context.stroke(Path(ellipseIn: ring), with: .color(RF.ink.opacity(0.35)), lineWidth: 1)
-        var needle = Path()
-        needle.move(to: CGPoint(x: center.x, y: center.y - 10))
-        needle.addLine(to: CGPoint(x: center.x + 2.2, y: center.y - 2))
-        needle.addLine(to: CGPoint(x: center.x, y: center.y))
-        needle.closeSubpath()
-        context.fill(needle, with: .color(RF.rust.opacity(0.85)))
+
+        var star = Path()
+        let long: CGFloat = 11.5
+        let short: CGFloat = 2.3
+        for i in 0..<8 {
+            let angle = CGFloat(i) * .pi / 4 - .pi / 2
+            let radius = i % 2 == 0 ? long : short
+            let point = CGPoint(
+                x: center.x + cos(angle) * radius,
+                y: center.y + sin(angle) * radius
+            )
+            if i == 0 {
+                star.move(to: point)
+            } else {
+                star.addLine(to: point)
+            }
+        }
+        star.closeSubpath()
+        context.fill(star, with: .color(RF.cream))
+        context.stroke(star, with: .color(RF.ink.opacity(0.55)), lineWidth: 1.2)
+
+        // North quarter in rust
+        var north = Path()
+        north.move(to: CGPoint(x: center.x, y: center.y - long))
+        north.addLine(to: CGPoint(x: center.x + short, y: center.y - short))
+        north.addLine(to: CGPoint(x: center.x, y: center.y))
+        north.closeSubpath()
+        context.fill(north, with: .color(RF.rust.opacity(0.85)))
+        context.fill(
+            Path(ellipseIn: CGRect(x: center.x - 1.5, y: center.y - 1.5, width: 3, height: 3)),
+            with: .color(RF.ink.opacity(0.6))
+        )
         context.draw(
             context.resolve(
                 Text("N")
                     .font(RF.display(9, weight: 400))
                     .foregroundColor(RF.ink.opacity(0.6))
             ),
-            at: CGPoint(x: center.x, y: center.y - 17),
+            at: CGPoint(x: center.x, y: center.y - 19),
             anchor: .center
         )
+    }
+
+    /// Plate corner trim marks, the printed map's registration ticks.
+    private func drawCornerTrim(in context: inout GraphicsContext, size: CGSize) {
+        let inset: CGFloat = 8
+        let arm: CGFloat = 9
+        let corners: [(CGPoint, CGFloat, CGFloat)] = [
+            (CGPoint(x: inset, y: inset), 1, 1),
+            (CGPoint(x: size.width - inset, y: inset), -1, 1),
+            (CGPoint(x: inset, y: size.height - inset), 1, -1),
+            (CGPoint(x: size.width - inset, y: size.height - inset), -1, -1),
+        ]
+        for (corner, sx, sy) in corners {
+            var trim = Path()
+            trim.move(to: CGPoint(x: corner.x, y: corner.y + sy * arm))
+            trim.addLine(to: corner)
+            trim.addLine(to: CGPoint(x: corner.x + sx * arm, y: corner.y))
+            context.stroke(trim, with: .color(RF.ink.opacity(0.3)), lineWidth: 1.4)
+        }
+    }
+}
+
+// MARK: - Live markers
+
+/// A stop's photograph in its round engraved frame, grown gently
+/// while a finger holds it. Tapping opens the stop.
+private struct StopMarker: View {
+    let stop: WalkStop
+    let active: Bool
+    let visited: Bool
+    let thumb: UIImage?
+    let onTap: () -> Void
+
+    var body: some View {
+        let r: CGFloat = active ? 17 : 14
+        Button(action: onTap) {
+            ZStack(alignment: .bottomTrailing) {
+                ZStack {
+                    Circle().fill(RF.cream)
+                    if let thumb {
+                        Image(uiImage: thumb)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 2 * r - 3, height: 2 * r - 3)
+                            .clipShape(Circle())
+                    }
+                    Circle().strokeBorder(
+                        active ? RF.rust : RF.forest,
+                        lineWidth: active ? 3 : 2
+                    )
+                    Circle()
+                        .inset(by: 2.5)
+                        .strokeBorder(active ? RF.cream : RF.mapBrass, lineWidth: 1)
+                }
+                .frame(width: 2 * r, height: 2 * r)
+
+                // Number badge stamped over the frame's lower corner
+                Text("\(stop.number)")
+                    .font(RF.body(9.5, weight: 700))
+                    .foregroundStyle(active || visited ? RF.cream : RF.forest)
+                    .frame(width: 15, height: 15)
+                    .background(
+                        Circle().fill(active ? RF.rust : visited ? RF.forest : RF.cream)
+                    )
+                    .overlay(
+                        Circle().strokeBorder(active ? RF.cream : RF.forest, lineWidth: 1.2)
+                    )
+                    .offset(x: 3, y: 3)
+            }
+            // A finger pad larger than the medallion itself
+            .padding(10)
+            .contentShape(Circle())
+        }
+        .buttonStyle(MarkerPressStyle())
+        .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+    }
+}
+
+/// Springs the medallion up while the finger is down, like the
+/// site's markers growing under the cursor.
+private struct MarkerPressStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 1.35 : 1)
+            .shadow(
+                color: RF.ink.opacity(configuration.isPressed ? 0.28 : 0),
+                radius: 5, x: 0, y: 3
+            )
+            .animation(.spring(response: 0.28, dampingFraction: 0.55), value: configuration.isPressed)
     }
 }

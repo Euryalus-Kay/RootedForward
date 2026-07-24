@@ -11,6 +11,7 @@ struct PhotoViewer: View {
     let image: WalkImage
 
     @State private var loaded: UIImage?
+    @State private var failed = false
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -25,6 +26,24 @@ struct PhotoViewer: View {
                         .aspectRatio(contentMode: .fit)
                 }
                 .ignoresSafeArea()
+            } else if failed {
+                VStack(spacing: 14) {
+                    Text("The photograph did not load. Check your connection.")
+                        .font(RF.body(15))
+                        .foregroundStyle(RF.cream.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                    Button("Try again") {
+                        failed = false
+                        Task { await load() }
+                    }
+                    .font(RF.body(15, weight: 600))
+                    .foregroundStyle(RF.cream)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 9)
+                    .overlay(Capsule().strokeBorder(RF.cream.opacity(0.4), lineWidth: 1))
+                }
+                .padding(32)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ProgressView()
                     .tint(RF.cream)
@@ -68,8 +87,13 @@ struct PhotoViewer: View {
             )
         }
         .task {
-            loaded = await content.image(for: image.src)
+            await load()
         }
         .statusBarHidden()
+    }
+
+    private func load() async {
+        loaded = await content.image(for: image.src)
+        failed = loaded == nil
     }
 }

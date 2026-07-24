@@ -40,10 +40,18 @@ final class ContentStore: ObservableObject {
         payload = Self.loadInitial()
     }
 
+    /// A payload the UI can actually stand on; decode success alone
+    /// is not enough, since a bad deploy of /api/walk would be
+    /// cached and crash the app on every launch.
+    private static func isUsable(_ payload: WalkPayload) -> Bool {
+        !payload.tour.stops.isEmpty && payload.tour.route.count >= 2
+    }
+
     private static func loadInitial() -> WalkPayload {
         let decoder = JSONDecoder()
         if let data = try? Data(contentsOf: cacheURL),
-           let cached = try? decoder.decode(WalkPayload.self, from: data) {
+           let cached = try? decoder.decode(WalkPayload.self, from: data),
+           isUsable(cached) {
             return cached
         }
         guard let url = Bundle.main.url(forResource: "tour", withExtension: "json", subdirectory: "Content"),
@@ -62,8 +70,14 @@ final class ContentStore: ObservableObject {
         request.timeoutInterval = 15
         request.cachePolicy = .reloadIgnoringLocalCacheData
         guard let (data, response) = try? await URLSession.shared.data(for: request),
-              let http = response as? HTTPURLResponse, http.statusCode == 200,
-              let fresh = try? JSONDecoder().decode(WalkPayload.self, from: data) else {
+              let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            return
+        }
+        // Decode off the main actor; the payload runs to hundreds of
+        // kilobytes and this fires on every foregrounding.
+        guard let fresh = await Task.detached(priority: .utility, operation: {
+            try? JSONDecoder().decode(WalkPayload.self, from: data)
+        }).value, Self.isUsable(fresh) else {
             return
         }
         lastRefresh = Date()
@@ -116,22 +130,31 @@ final class ContentStore: ObservableObject {
     }
 
     /// Loads an image, bundled-first, downloading and caching new
-    /// files the site may have added after this build shipped.
+    /// files the site may have added after this build shipped. The
+    /// decode and disk work run off the main actor.
     func image(for sitePath: String) async -> UIImage? {
-        if let local = localMediaURL(for: sitePath),
-           let image = UIImage(contentsOfFile: local.path) {
+        let local = localMediaURL(for: sitePath)
+        let remote = remoteMediaURL(for: sitePath)
+        let name = (sitePath as NSString).lastPathComponent
+        let sub = sitePath.contains("/thumbs/") ? "Media-thumbs" : "Media-images"
+        let target = Self.cacheDirectory.appendingPathComponent("dl-\(sub)-\(name)")
+        return await Self.loadImage(local: local, remote: remote, cacheTarget: target)
+    }
+
+    private nonisolated static func loadImage(
+        local: URL?,
+        remote: URL,
+        cacheTarget: URL
+    ) async -> UIImage? {
+        if let local, let image = UIImage(contentsOfFile: local.path) {
             return image
         }
-        let remote = remoteMediaURL(for: sitePath)
         guard let (data, response) = try? await URLSession.shared.data(from: remote),
               let http = response as? HTTPURLResponse, http.statusCode == 200,
               let image = UIImage(data: data) else {
             return nil
         }
-        let name = (sitePath as NSString).lastPathComponent
-        let sub = sitePath.contains("/thumbs/") ? "Media-thumbs" : "Media-images"
-        let target = Self.cacheDirectory.appendingPathComponent("dl-\(sub)-\(name)")
-        try? data.write(to: target, options: .atomic)
+        try? data.write(to: cacheTarget, options: .atomic)
         return image
     }
 }

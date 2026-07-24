@@ -69,7 +69,11 @@ struct MediaImage: View {
             }
         }
         .task(id: sitePath) {
-            loaded = await content.image(for: sitePath)
+            let image = await content.image(for: sitePath)
+            // A cancelled load (the path changed mid-download) must
+            // not blank out the image the new task already set.
+            guard !Task.isCancelled else { return }
+            loaded = image
         }
     }
 }

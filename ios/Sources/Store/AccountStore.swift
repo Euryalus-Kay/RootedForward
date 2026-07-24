@@ -55,6 +55,14 @@ final class AccountStore: ObservableObject {
     var isSignedIn: Bool { profile != nil }
 
     init() {
+        // Keychain items survive an uninstall; a fresh install should
+        // not resurrect the previous owner's session.
+        if !UserDefaults.standard.bool(forKey: "rf-has-launched") {
+            UserDefaults.standard.set(true, forKey: "rf-has-launched")
+            Keychain.delete(key: "rf-access-token")
+            Keychain.delete(key: "rf-refresh-token")
+            Keychain.delete(key: "rf-profile")
+        }
         if let stored = Keychain.read(key: "rf-profile"),
            let decoded = try? JSONDecoder().decode(AccountProfile.self, from: stored) {
             profile = decoded
@@ -92,6 +100,37 @@ final class AccountStore: ObservableObject {
         Keychain.write(key: "rf-access-token", data: Data(tokens.accessToken.utf8))
         Keychain.write(key: "rf-refresh-token", data: Data(tokens.refreshToken.utf8))
         await loadProfile(accessToken: tokens.accessToken)
+        // A half-open session (tokens stored, profile load failed)
+        // would look signed out while holding live credentials.
+        if profile == nil {
+            Keychain.delete(key: "rf-access-token")
+            Keychain.delete(key: "rf-refresh-token")
+        }
+    }
+
+    /// Exchanges the stored refresh token for a fresh session.
+    /// Supabase rotates refresh tokens, so both come back new.
+    private func refreshTokens() async -> String? {
+        guard let stored = Keychain.read(key: "rf-refresh-token"),
+              let refreshToken = String(data: stored, encoding: .utf8) else {
+            return nil
+        }
+        var request = URLRequest(url: Self.supabaseURL.appendingPathComponent("auth/v1/token"))
+        request.url = request.url?.appending(queryItems: [URLQueryItem(name: "grant_type", value: "refresh_token")])
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(Self.anonKey, forHTTPHeaderField: "apikey")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: [
+            "refresh_token": refreshToken
+        ])
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              (response as? HTTPURLResponse)?.statusCode == 200,
+              let tokens = try? JSONDecoder().decode(TokenResponse.self, from: data) else {
+            return nil
+        }
+        Keychain.write(key: "rf-access-token", data: Data(tokens.accessToken.utf8))
+        Keychain.write(key: "rf-refresh-token", data: Data(tokens.refreshToken.utf8))
+        return tokens.accessToken
     }
 
     private func loadProfile(accessToken: String) async {
@@ -116,6 +155,18 @@ final class AccountStore: ObservableObject {
     }
 
     func signOut() {
+        // Revoke the server-side session too; best effort, the local
+        // sign-out must not wait on the network.
+        if let tokenData = Keychain.read(key: "rf-access-token"),
+           let token = String(data: tokenData, encoding: .utf8) {
+            var request = URLRequest(url: Self.supabaseURL.appendingPathComponent("auth/v1/logout"))
+            request.httpMethod = "POST"
+            request.setValue(Self.anonKey, forHTTPHeaderField: "apikey")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            Task.detached {
+                _ = try? await URLSession.shared.data(for: request)
+            }
+        }
         profile = nil
         errorMessage = nil
         Keychain.delete(key: "rf-access-token")
@@ -126,7 +177,8 @@ final class AccountStore: ObservableObject {
     // MARK: - Deletion (App Store guideline 5.1.1)
 
     /// Permanently deletes the account through the site. Returns true
-    /// on success.
+    /// on success. Access tokens expire after about an hour, so a
+    /// 401 gets one retry with a refreshed token.
     func deleteAccount() async -> Bool {
         guard let tokenData = Keychain.read(key: "rf-access-token"),
               let token = String(data: tokenData, encoding: .utf8) else {
@@ -138,16 +190,33 @@ final class AccountStore: ObservableObject {
         isBusy = true
         defer { isBusy = false }
 
-        var request = URLRequest(url: Self.deleteEndpoint)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        guard let (_, response) = try? await URLSession.shared.data(for: request),
-              (response as? HTTPURLResponse)?.statusCode == 200 else {
+        var status = await requestDelete(token: token)
+        if status == 401 {
+            if let fresh = await refreshTokens() {
+                status = await requestDelete(token: fresh)
+            } else {
+                errorMessage = "Your session expired. Sign in again, then delete."
+                signOut()
+                return false
+            }
+        }
+        guard status == 200 else {
             errorMessage = "Deleting the account failed. Try again, or email contact@rooted-forward.org."
             return false
         }
         signOut()
         return true
+    }
+
+    /// Returns the HTTP status, or 0 when the request never landed.
+    private func requestDelete(token: String) async -> Int {
+        var request = URLRequest(url: Self.deleteEndpoint)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        guard let (_, response) = try? await URLSession.shared.data(for: request) else {
+            return 0
+        }
+        return (response as? HTTPURLResponse)?.statusCode ?? 0
     }
 }
 
