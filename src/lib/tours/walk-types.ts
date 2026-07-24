@@ -62,6 +62,10 @@ export interface WalkStop {
   mapLabel: string;
   /** works consulted for this stop, printed in the Sources section */
   sources?: { label: string; url: string }[];
+  /** true for detour stops that sit off the main route (the walk is
+   *  complete without them); rendered with a dashed spur on the map
+   *  and labeled as a detour instead of a numbered leg */
+  optional?: boolean;
 }
 
 export interface WalkTour {
@@ -76,6 +80,9 @@ export interface WalkTour {
   stops: WalkStop[];
   /** lat/lng waypoints of the full walking route, in walk order */
   route: [number, number][];
+  /** dashed spurs to the optional detour stops, drawn apart from the
+   *  main route line */
+  detourRoutes?: [number, number][][];
   /** "Good to know" cards under the tour */
   practical: { title: string; text: string }[];
 }

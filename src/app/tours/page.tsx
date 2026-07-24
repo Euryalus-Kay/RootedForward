@@ -22,7 +22,7 @@ const tour = HYDE_PARK_WALK;
 export const metadata: Metadata = {
   title: "Hyde Park Walking Tour | Rooted Forward",
   description:
-    "A free self-guided audio tour of Hyde Park, from Paul Cornell's stone to the Obama Presidential Center. Eleven stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
+    "A free self-guided audio tour of Hyde Park, from Paul Cornell's stone to the Obama Presidential Center. Thirteen stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
 };
 
 export default function ToursPage() {
@@ -97,10 +97,10 @@ export default function ToursPage() {
 
       {/* The plate index: a small framed photograph of each site.
           Tap one to jump straight to that stop in the tour below. */}
-      <section aria-label="The eleven stops" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
+      <section aria-label="The thirteen stops and two detours" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 className="walk-title text-xl font-semibold text-forest">The eleven stops</h2>
+            <h2 className="walk-title text-xl font-semibold text-forest">The thirteen stops</h2>
             <p className="font-display text-[13px] italic text-ink/60">
               Pick a plate to jump ahead
             </p>

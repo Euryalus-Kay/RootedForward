@@ -31,6 +31,8 @@ struct WalkTour: Codable, Equatable {
     let startLabel: String
     let stops: [WalkStop]
     let route: [[Double]]
+    /// Dashed spurs to the optional detour stops; absent in older payloads.
+    let detourRoutes: [[[Double]]]?
     let practical: [WalkPractical]
 }
 
@@ -57,6 +59,10 @@ struct WalkStop: Codable, Equatable, Identifiable {
     let toNext: WalkDirections?
     let mapLabel: String
     let sources: [WalkSource]?
+    /// True for detour stops off the main route; absent in older payloads.
+    let optional: Bool?
+
+    var isDetour: Bool { optional == true }
 }
 
 struct WalkImage: Codable, Equatable, Hashable {

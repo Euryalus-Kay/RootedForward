@@ -15,6 +15,10 @@ struct WalkMapCanvas: View {
     let projection: WalkProjection
     let stops: [WalkStop]
     let route: [[Double]]
+    /// The 1929 USGS survey plate, cropped to the geometry frame.
+    var baseMap: UIImage? = nil
+    /// Dashed spurs out to the optional detour stops.
+    var detourRoutes: [[[Double]]]? = nil
     let currentIndex: Int
     let visited: Set<String>
     let thumbs: [String: UIImage]
@@ -49,6 +53,8 @@ struct WalkMapCanvas: View {
         .init(text: "E 55th St", lat: 41.7957, lng: -87.5993, size: 9),
         .init(text: "E 57th St", lat: 41.7921, lng: -87.5911, size: 9),
         .init(text: "E 60th St", lat: 41.7846, lng: -87.599, size: 8),
+        .init(text: "E 61st St", lat: 41.78415, lng: -87.6091, size: 8),
+        .init(text: "E 63rd St", lat: 41.78055, lng: -87.5989, size: 8),
         .init(text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, size: 9, rotate: -87),
         .init(text: "Woodlawn Ave", lat: 41.7938, lng: -87.5968, size: 9, rotate: -90),
         .init(text: "Ellis Ave", lat: 41.7958, lng: -87.6015, size: 8, rotate: -90),
@@ -132,11 +138,40 @@ struct WalkMapCanvas: View {
             Path(CGRect(x: 0, y: 0, width: geometry.viewBox.w, height: geometry.viewBox.h)),
             with: .color(RF.cream)
         )
+        // The 1929 survey plate under the drawing: period building
+        // fabric and shoreline engraving, flattened onto cream and
+        // aligned to the same frame as the projection.
+        if let baseMap {
+            map.draw(
+                Image(uiImage: baseMap),
+                in: CGRect(x: 0, y: 0, width: geometry.viewBox.w, height: geometry.viewBox.h)
+            )
+        }
 
         drawGrounds(in: &map)
         drawWater(in: &map)
         drawRoads(in: &map)
         drawRails(in: &map)
+
+        // Dashed spurs out to the optional detour stops, under the
+        // main route line
+        for spur in detourRoutes ?? [] {
+            let spurPath = path(from: spur.map { projection.point(lat: $0[0], lng: $0[1]) })
+            map.stroke(
+                spurPath,
+                with: .color(RF.cream),
+                style: StrokeStyle(lineWidth: 6 / scale, lineCap: .round, lineJoin: .round)
+            )
+            map.stroke(
+                spurPath,
+                with: .color(RF.mapRail.opacity(0.85)),
+                style: StrokeStyle(
+                    lineWidth: 2 / scale,
+                    lineCap: .round, lineJoin: .round,
+                    dash: [7 / scale, 5 / scale]
+                )
+            )
+        }
 
         // Route (point-space widths for crisp dots)
         let routePath = path(from: route.map { projection.point(lat: $0[0], lng: $0[1]) })
@@ -220,10 +255,12 @@ struct WalkMapCanvas: View {
     }
 
     private func drawRoads(in map: inout GraphicsContext) {
+        // Alleys drop to a whisper now that the 1929 plate carries
+        // the block fabric underneath
         for alley in geometry.roads.alleys {
             map.stroke(
                 path(from: alley.map { CGPoint(x: $0[0], y: $0[1]) }),
-                with: .color(RF.warmGrayLight.opacity(0.28)),
+                with: .color(RF.warmGrayLight.opacity(0.16)),
                 lineWidth: 0.6
             )
         }
@@ -487,9 +524,14 @@ private struct StopMarker: View {
                             .frame(width: 2 * r - 3, height: 2 * r - 3)
                             .clipShape(Circle())
                     }
+                    // Detour stops wear a dashed frame, matching
+                    // their dashed spur on the plate
                     Circle().strokeBorder(
                         active ? RF.rust : RF.forest,
-                        lineWidth: active ? 3 : 2
+                        style: StrokeStyle(
+                            lineWidth: active ? 3 : 2,
+                            dash: stop.isDetour && !active ? [3.5, 2.5] : []
+                        )
                     )
                     Circle()
                         .inset(by: 2.5)
@@ -515,7 +557,7 @@ private struct StopMarker: View {
             .contentShape(Circle())
         }
         .buttonStyle(MarkerPressStyle())
-        .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+        .accessibilityLabel("\(stop.isDetour ? "Optional detour" : "Stop") \(stop.number), \(stop.title)")
         .accessibilityValue(active ? "Current stop" : visited ? "Visited" : "Not visited")
         .accessibilityAddTraits(active ? .isSelected : [])
     }

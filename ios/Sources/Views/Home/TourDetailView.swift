@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 
 // ------------------------------------------------------------------
 // The walk's own screen, pushed from the tours list. The title, one
@@ -12,9 +13,12 @@ struct TourDetailView: View {
     let openTour: (Int) -> Void
 
     @State private var infoSheet: InfoSheet?
+    @State private var mapOpen = false
     @State private var confirmRestart = false
     @State private var heroDrift = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.requestReview) private var requestReview
+    @AppStorage("rf-review-asked") private var reviewAsked = false
 
     var body: some View {
         ScrollView {
@@ -33,6 +37,22 @@ struct TourDetailView: View {
             InfoSheetView(sheet: sheet) { index in
                 infoSheet = nil
                 openTour(index)
+            }
+        }
+        .sheet(isPresented: $mapOpen) {
+            MapSheetView(
+                currentIndex: min(progress.lastIndex, max(content.tour.stops.count - 1, 0))
+            ) { index in
+                mapOpen = false
+                openTour(index)
+            }
+        }
+        .onAppear {
+            // One polite ask, after the walk has actually been used:
+            // three or more stops visited, never asked before.
+            if !reviewAsked, progress.visitedCount(in: content.tour.stops) >= 3 {
+                reviewAsked = true
+                requestReview()
             }
         }
         .confirmationDialog(
@@ -167,7 +187,7 @@ struct TourDetailView: View {
                             StopCard(stop: stop, visited: progress.isVisited(stop.id))
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Stop \(stop.number), \(stop.title)")
+                        .accessibilityLabel("\(stop.isDetour ? "Optional detour" : "Stop") \(stop.number), \(stop.title)")
                         .accessibilityValue(progress.isVisited(stop.id) ? "Visited" : "Not visited")
                     }
                 }
@@ -182,6 +202,10 @@ struct TourDetailView: View {
 
     private var infoRows: some View {
         VStack(spacing: 0) {
+            infoRow("The map and the route", identifier: "home-map-row") {
+                mapOpen = true
+            }
+            divider
             infoRow("Why this walk", identifier: "home-essay-more") {
                 infoSheet = .essay
             }
@@ -243,11 +267,18 @@ private struct StopCard: View {
                 Text("\(stop.number)")
                     .font(RF.didone(17, weight: 600))
                     .foregroundStyle(visited ? RF.forest : RF.rust)
-                Text(stop.title)
-                    .font(RF.body(13, weight: 500))
-                    .foregroundStyle(RF.ink.opacity(0.8))
-                    .lineLimit(2, reservesSpace: true)
-                    .multilineTextAlignment(.leading)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(stop.title)
+                        .font(RF.body(13, weight: 500))
+                        .foregroundStyle(RF.ink.opacity(0.8))
+                        .lineLimit(2, reservesSpace: true)
+                        .multilineTextAlignment(.leading)
+                    if stop.isDetour {
+                        Text("optional detour")
+                            .font(RF.display(11, weight: 400, italic: true))
+                            .foregroundStyle(RF.warmGrayDark)
+                    }
+                }
                 if visited {
                     Image(systemName: "checkmark")
                         .font(.system(size: 10, weight: .bold))

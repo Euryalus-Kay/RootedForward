@@ -19,15 +19,17 @@ final class ContentIntegrityTests: XCTestCase {
 
     func testTourShape() {
         let tour = Self.payload.tour
-        XCTAssertEqual(tour.stops.count, 11)
+        XCTAssertEqual(tour.stops.count, 15)
+        XCTAssertEqual(tour.stops.filter { $0.isDetour }.count, 2)
         XCTAssertEqual(tour.title, "Walk Hyde Park")
         XCTAssertFalse(Self.payload.version.isEmpty)
         XCTAssertEqual(Self.payload.intro.paragraphs.count, 4)
         XCTAssertGreaterThanOrEqual(tour.route.count, 30)
+        XCTAssertEqual(tour.detourRoutes?.count, 1)
         XCTAssertEqual(tour.practical.count, 3)
-        // The five red instrument plates
+        // The six red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
-        XCTAssertEqual(interrupts.count, 5)
+        XCTAssertEqual(interrupts.count, 6)
     }
 
     func testEveryAudioFileIsBundled() {

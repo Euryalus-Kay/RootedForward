@@ -22,10 +22,14 @@ const SRC = "data/exhibit-src";
 const OUT = "src/lib/tours/walk-geometry.json";
 
 // Hyde Park proper for the racial-history walk: 51st St down past
-// the Midway, Washington Park's edge to the lake. (The old Jackson
-// Park frame was latMin 41.7705, latMax 41.801, lngMin -87.605,
-// lngMax -87.568; restore it and re-run to bring that map back.)
-const F = { latMin: 41.7815, latMax: 41.8045, lngMin: -87.612, lngMax: -87.572 };
+// the Midway, Washington Park's edge to the lake, extended south and
+// west so the optional detours (the Hansberry house on Rhodes, and
+// Daley's at 63rd and Cottage Grove) sit on the plate. Must match the
+// crop frame of the 1929 USGS underlay (map-base-1929.jpg). (The old
+// Jackson Park frame was latMin 41.7705, latMax 41.801, lngMin
+// -87.605, lngMax -87.568; restore it and re-run to bring that map
+// back.)
+const F = { latMin: 41.7775, latMax: 41.8045, lngMin: -87.616, lngMax: -87.572 };
 const LAT_MID = (F.latMin + F.latMax) / 2;
 const COS = Math.cos((LAT_MID * Math.PI) / 180);
 const W = 1000;

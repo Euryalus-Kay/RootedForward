@@ -192,13 +192,13 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["map-done"].tap()
         sleep(1)
 
-        // 10. Last stop, end of walk
-        advance(to: 11)
+        // 10. The Obama Center, end of the main walk
+        advance(to: 13)
         for _ in 0..<8 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("14-stop11-end")
+        snap("14-stop13-end")
 
         // 11. Back out to the org home, then settings
         app.buttons["tour-exit"].tap()

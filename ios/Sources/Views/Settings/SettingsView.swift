@@ -274,6 +274,7 @@ struct SettingsView: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             VStack(alignment: .leading, spacing: 12) {
+                aboutLink("Rate the app on the App Store", url: "https://apps.apple.com/app/id6793979867?action=write-review")
                 aboutLink("rooted-forward.org", url: "https://rooted-forward.org")
                 aboutLink("The Ground Keeps Moving, the online exhibit", url: "https://rooted-forward.org/tours/chicago/hyde-park")
                 aboutLink("Privacy policy", url: "https://rooted-forward.org/privacy")

@@ -24,11 +24,17 @@ interface UserPosition {
 interface WalkMapProps {
   stops: WalkStop[];
   route: [number, number][];
+  detourRoutes?: [number, number][][];
   activeIndex: number;
   visitedIds: ReadonlySet<string>;
   userPos: UserPosition | null;
   onSelectStop: (index: number) => void;
 }
+
+// The printed base plate under the drawn map: the USGS Jackson Park
+// quadrangle, 1929 edition (public domain), reprojected and cropped
+// to exactly the geometry frame, flattened onto cream as one ink.
+const BASE_MAP_SRC = "/media/hyde-park-walk/map-base-1929.jpg";
 
 // anchored to survive the route-fitted viewBox clamp; keep every
 // label inside roughly lng -87.608..-87.576, lat 41.802..41.784
@@ -50,6 +56,8 @@ const STREET_LABELS: { text: string; lat: number; lng: number; rotate: number; s
   { text: "E 55th St", lat: 41.7957, lng: -87.5993, rotate: 0, size: 9 },
   { text: "E 57th St", lat: 41.7921, lng: -87.5911, rotate: 0, size: 9 },
   { text: "E 60th St", lat: 41.7846, lng: -87.599, rotate: 0, size: 8 },
+  { text: "E 61st St", lat: 41.78415, lng: -87.6091, rotate: 0, size: 8 },
+  { text: "E 63rd St", lat: 41.78055, lng: -87.5989, rotate: 0, size: 8 },
   { text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, rotate: -87, size: 9 },
   { text: "Woodlawn Ave", lat: 41.7938, lng: -87.5968, rotate: -90, size: 9 },
   { text: "Ellis Ave", lat: 41.7958, lng: -87.6015, rotate: -90, size: 8 },
@@ -114,7 +122,7 @@ const CAMPUS_AREAS: [number, number][][] = [
 // where each stop's name sits relative to its marker; below unless a
 // neighbor would collide with the label
 const STOP_LABEL_SIDE: Record<string, "below" | "left" | "right"> = {
-  "cornells-stone": "right",
+  "cornells-stone": "left",
   "lake-park-tracks": "right",
   "harper-court": "left",
   "obama-center": "right",
@@ -126,6 +134,7 @@ const lineD = (pts: number[][]) =>
 export default function WalkMap({
   stops,
   route,
+  detourRoutes,
   activeIndex,
   visitedIds,
   userPos,
@@ -196,6 +205,19 @@ export default function WalkMap({
         </pattern>
       </defs>
 
+      {/* the 1929 survey plate under everything: building fabric,
+          shoreline hachures, and lagoon engraving from the year the
+          covenants went up */}
+      <image
+        href={BASE_MAP_SRC}
+        x="0"
+        y="0"
+        width={geo.viewBox.w}
+        height={geo.viewBox.h}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      />
+
       {/* park ground */}
       <g>
         {PARK_AREAS.map((ring, i) => (
@@ -256,7 +278,9 @@ export default function WalkMap({
 
       {/* streets, three engraved weights: alley hairlines, local
           streets, then the arterials over them */}
-      <g stroke="#B5AFA4" strokeOpacity="0.28" strokeWidth="0.6" fill="none">
+      {/* alleys drop to a whisper now that the 1929 plate carries the
+          block fabric underneath */}
+      <g stroke="#B5AFA4" strokeOpacity="0.16" strokeWidth="0.6" fill="none">
         {geo.roads.alleys.map((l, i) => (
           <path key={i} d={lineD(l)} />
         ))}
@@ -289,6 +313,39 @@ export default function WalkMap({
           </g>
         ))}
       </g>
+
+      {/* dashed spurs out to the optional detour stops */}
+      {detourRoutes?.map((spur, i) => {
+        const d = lineD(
+          spur.map(([lat, lng]) => {
+            const p = projectPoint(lat, lng);
+            return [p.x, p.y];
+          })
+        );
+        return (
+          <g key={`detour-${i}`}>
+            <path
+              d={d}
+              fill="none"
+              stroke="#F5F0E8"
+              strokeWidth="6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeOpacity="0.8"
+            />
+            <path
+              d={d}
+              fill="none"
+              stroke="#6E6A5E"
+              strokeWidth="2"
+              strokeDasharray="7 5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeOpacity="0.85"
+            />
+          </g>
+        );
+      })}
 
       {/* route */}
       <path
@@ -436,7 +493,7 @@ export default function WalkMap({
               key={stop.id}
               role="button"
               tabIndex={0}
-              aria-label={`Stop ${stop.number}. ${stop.title}.${active ? " Current stop." : ""}`}
+              aria-label={`${stop.optional ? "Optional detour" : "Stop"} ${stop.number}. ${stop.title}.${active ? " Current stop." : ""}`}
               onClick={() => onSelectStop(i)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -481,6 +538,8 @@ export default function WalkMap({
                 fill="none"
                 stroke={active ? "#C45D3E" : "#1B3A2D"}
                 strokeWidth={active ? 3 : 2}
+                // detour stops wear a dashed frame, matching their spur
+                strokeDasharray={stop.optional && !active ? "3.5 2.5" : undefined}
               />
               <circle
                 cx={p.x}

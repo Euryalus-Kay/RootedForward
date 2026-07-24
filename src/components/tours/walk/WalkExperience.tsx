@@ -356,7 +356,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         type="button"
         onClick={() => goTo(i, false)}
         aria-current={i === activeIndex ? "true" : undefined}
-        aria-label={`Stop ${stop.number}. ${stop.title}.${
+        aria-label={`${stop.optional ? "Optional detour" : "Stop"} ${stop.number}. ${stop.title}.${
           visited.has(stop.id) ? " Visited." : ""
         }`}
         className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors ${
@@ -377,6 +377,11 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         </span>
         <span className="min-w-0 flex-1 truncate font-body text-sm text-ink/80">
           {stop.title}
+          {stop.optional && (
+            <span className="ml-2 font-display text-[11px] italic text-ink/55">
+              detour
+            </span>
+          )}
         </span>
         <span className="inline-flex shrink-0 items-center gap-1 font-body text-[11px] tabular-nums text-ink/70">
           {/* narration length, not walking time */}
@@ -402,6 +407,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         <WalkMap
           stops={stops}
           route={tour.route}
+          detourRoutes={tour.detourRoutes}
           activeIndex={activeIndex}
           visitedIds={visited}
           userPos={userPos}
@@ -424,10 +430,19 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
             Stop
           </span>
           <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
+            <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
+              <line x1="1" y1="3" x2="21" y2="3" stroke="#6E6A5E" strokeWidth="1.8" strokeDasharray="5 3.5" strokeLinecap="round" />
+            </svg>
+            Detour
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-body text-xs text-ink/70">
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
               <circle cx="6" cy="6" r="4" fill="#4A6B8A" stroke="#FFFFFF" strokeWidth="1.6" />
             </svg>
             You
+          </span>
+          <span className="ml-auto font-display text-[11px] italic text-ink/50">
+            Base map: USGS survey, 1929
           </span>
         </div>
       </div>

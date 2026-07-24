@@ -14,6 +14,7 @@ struct MapExplorerView: View {
 
     let currentIndex: Int
     let thumbs: [String: UIImage]
+    var baseMap: UIImage? = nil
     let onSelectStop: (Int) -> Void
 
     var body: some View {
@@ -29,6 +30,8 @@ struct MapExplorerView: View {
                     projection: content.projection,
                     stops: content.tour.stops,
                     route: content.tour.route,
+                    baseMap: baseMap,
+                    detourRoutes: content.tour.detourRoutes,
                     currentIndex: currentIndex,
                     visited: progress.visited,
                     thumbs: thumbs,
@@ -55,7 +58,7 @@ struct MapExplorerView: View {
                     .font(RF.display(22, weight: 600))
                     .foregroundStyle(RF.ink)
                     .accessibilityAddTraits(.isHeader)
-                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
+                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.filter { !$0.isDetour }.count) stops")
                     .font(RF.display(13, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGrayDark)
             }

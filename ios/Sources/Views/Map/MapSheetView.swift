@@ -17,6 +17,7 @@ struct MapSheetView: View {
     let onSelectStop: (Int) -> Void
 
     @State private var thumbs: [String: UIImage] = [:]
+    @State private var baseMap: UIImage?
     @State private var showFarAway = false
     @State private var explorerOpen = false
 
@@ -36,6 +37,9 @@ struct MapSheetView: View {
         }
         .background(RF.cream)
         .task {
+            if baseMap == nil {
+                baseMap = await content.image(for: "/media/hyde-park-walk/map-base-1929.jpg")
+            }
             await loadThumbs()
         }
     }
@@ -78,7 +82,7 @@ struct MapSheetView: View {
                     .foregroundStyle(RF.ink)
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
-                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
+                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.filter { !$0.isDetour }.count) stops")
                     .font(RF.display(14, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGrayDark)
             }
@@ -90,6 +94,8 @@ struct MapSheetView: View {
                 projection: content.projection,
                 stops: content.tour.stops,
                 route: content.tour.route,
+                baseMap: baseMap,
+                detourRoutes: content.tour.detourRoutes,
                 currentIndex: currentIndex,
                 visited: progress.visited,
                 thumbs: thumbs,
@@ -127,7 +133,8 @@ struct MapSheetView: View {
             .fullScreenCover(isPresented: $explorerOpen) {
                 MapExplorerView(
                     currentIndex: currentIndex,
-                    thumbs: thumbs
+                    thumbs: thumbs,
+                    baseMap: baseMap
                 ) { index in
                     explorerOpen = false
                     onSelectStop(index)
@@ -142,29 +149,40 @@ struct MapSheetView: View {
     }
 
     private var legend: some View {
-        HStack(spacing: 22) {
-            HStack(spacing: 7) {
-                Line(dotted: true)
-                    .stroke(RF.rust, style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [0.1, 6]))
-                    .frame(width: 26, height: 3)
-                Text("Route")
+        VStack(alignment: .leading, spacing: 7) {
+            HStack(spacing: 18) {
+                HStack(spacing: 7) {
+                    Line(dotted: true)
+                        .stroke(RF.rust, style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [0.1, 6]))
+                        .frame(width: 26, height: 3)
+                    Text("Route")
+                }
+                HStack(spacing: 7) {
+                    Line()
+                        .stroke(RF.mapRail.opacity(0.85), style: StrokeStyle(lineWidth: 1.8, lineCap: .round, dash: [5, 3.5]))
+                        .frame(width: 26, height: 3)
+                    Text("Detour")
+                }
+                HStack(spacing: 7) {
+                    Circle()
+                        .strokeBorder(RF.ink, lineWidth: 1.6)
+                        .frame(width: 12, height: 12)
+                    Text("Stop")
+                }
+                HStack(spacing: 7) {
+                    Circle()
+                        .fill(RF.mapWater)
+                        .frame(width: 9, height: 9)
+                    Text("You")
+                }
+                Spacer()
             }
-            HStack(spacing: 7) {
-                Circle()
-                    .strokeBorder(RF.ink, lineWidth: 1.6)
-                    .frame(width: 12, height: 12)
-                Text("Stop")
-            }
-            HStack(spacing: 7) {
-                Circle()
-                    .fill(RF.mapWater)
-                    .frame(width: 9, height: 9)
-                Text("You")
-            }
-            Spacer()
+            .font(RF.body(13.5))
+            .foregroundStyle(RF.ink.opacity(0.75))
+            Text("Base map: USGS survey, 1929")
+                .font(RF.display(11, weight: 400, italic: true))
+                .foregroundStyle(RF.warmGrayDark)
         }
-        .font(RF.body(13.5))
-        .foregroundStyle(RF.ink.opacity(0.75))
     }
 
     private var userPoint: CGPoint? {
@@ -246,6 +264,12 @@ struct MapSheetView: View {
                             .font(RF.body(15.5, weight: i == currentIndex ? 700 : 500))
                             .foregroundStyle(RF.ink.opacity(0.85))
                             .lineLimit(1)
+
+                        if stop.isDetour {
+                            Text("detour")
+                                .font(RF.display(12, weight: 400, italic: true))
+                                .foregroundStyle(RF.warmGrayDark)
+                        }
 
                         Spacer()
 

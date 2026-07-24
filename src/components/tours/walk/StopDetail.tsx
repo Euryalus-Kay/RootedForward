@@ -97,7 +97,9 @@ export default function StopDetail({
             focusChrome ? "hidden md:block" : ""
           }`}
         >
-          Stop {stop.number} of {totalStops}
+          {stop.optional
+            ? "Optional detour"
+            : `Stop ${stop.number} of ${totalStops}`}
         </p>
         <div className="ml-auto flex items-center gap-3">
           {typeof distanceMeters === "number" && distanceMeters > 45 && (

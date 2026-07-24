@@ -25,29 +25,31 @@ no colons inside sentences or titles).
 
 ## Promotional text (170 chars max)
 
-A free self-guided audio walking tour of Hyde Park, Chicago. Eleven
+A free self-guided audio walking tour of Hyde Park, Chicago. Thirteen
 stops from Paul Cornell's stone to the Obama Presidential Center.
 
 ## Description
 
 Walk Hyde Park is a free self-guided audio tour from Rooted Forward,
-a student-run Chicago nonprofit. Eleven stops, about five miles, from
-Paul Cornell's stone in Harold Washington Park to the Obama
-Presidential Center.
+a student-run Chicago nonprofit. Thirteen stops, about five miles,
+from Paul Cornell's stone in Harold Washington Park to the Obama
+Presidential Center, with two optional detours to the Hansberry
+house and the oldest restaurant in Chicago.
 
 Hyde Park sold exclusivity from its first day, and a century of
 paperwork decided who got to live in it. This walk goes where the
-paperwork was signed. Along the way, five red plates name the
-instruments that built American housing segregation, one by one. The
-Chicago Real Estate Board. Restrictive covenants. Redlining. Buying
+paperwork was signed. Along the way, red plates name the instruments
+that built American housing segregation, one by one. The improvement
+associations. Restrictive covenants. Redlining. Blockbusting. Buying
 on contract. Urban renewal.
 
 WHAT YOU GET
 
-- Eleven narrated stops, about 28 minutes of audio, with the full
-  text printed on every stop so you can read instead of listen
-- A hand-engraved tour map with the route, every stop, and your
-  position drawn on it
+- Thirteen narrated stops and two detours, about 45 minutes of
+  audio, with the full text printed on every stop so you can read
+  instead of listen
+- A tour map drawn over the 1929 government survey of Hyde Park,
+  with the route, every stop, and your position on it
 - Then-and-now photographs with full credits at every stop
 - Walking directions between stops, with one tap into Apple Maps
 - Audio that keeps playing with the screen locked, with controls on
@@ -69,8 +71,8 @@ chicago,hyde park,walking tour,audio tour,history,redlining,obama center,archite
 
 ## What's New (version 1.0)
 
-The first release. Eleven stops, the full audio, the map, and
-offline support.
+The first release. Thirteen stops plus two detours, the full audio,
+the 1929 survey map, and offline support.
 
 ---
 
