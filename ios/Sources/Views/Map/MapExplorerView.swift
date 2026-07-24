@@ -54,7 +54,7 @@ struct MapExplorerView: View {
                 Text("Hyde Park")
                     .font(RF.display(22, weight: 600))
                     .foregroundStyle(RF.ink)
-                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles · \(content.tour.stops.count) stops")
+                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
                     .font(RF.display(13, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGray)
             }

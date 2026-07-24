@@ -71,9 +71,9 @@ struct TourDetailView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 18)
 
-            Text("\(content.tour.stops.count) stops · \(content.tour.distanceMiles, specifier: "%.1f") miles · \(content.tour.listenMinutes) minutes of audio")
-                .font(RF.body(14, weight: 500))
-                .foregroundStyle(RF.warmGray)
+            Text("\(content.tour.stops.count) stops, \(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.listenMinutes) minutes of audio")
+                .font(RF.display(15, weight: 400, italic: true))
+                .foregroundStyle(RF.ink.opacity(0.62))
                 .padding(.top, 12)
 
             startControls

@@ -181,14 +181,9 @@ extension View {
             shadow: RF.plateRed.opacity(0.16)
         ))
     }
-    /// Small uppercase tracked label (the site's eyebrow style).
-    func eyebrow(_ color: Color = RF.rust) -> some View {
-        self
-            .font(RF.body(12, weight: 600))
-            .tracking(3)
-            .textCase(.uppercase)
-            .foregroundStyle(color)
-    }
+    // The tracked-caps eyebrow style was retired July 2026; the
+    // owner reads it as template styling. Headings use the serif
+    // display face and accents use the italic cut instead.
 }
 
 /// A card that gives slightly under the finger, nothing more.

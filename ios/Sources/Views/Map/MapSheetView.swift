@@ -74,7 +74,7 @@ struct MapSheetView: View {
                     .font(RF.display(20, weight: 600))
                     .foregroundStyle(RF.ink)
                 Spacer()
-                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles · \(content.tour.stops.count) stops")
+                Text("\(content.tour.distanceMiles, specifier: "%.1f") miles, \(content.tour.stops.count) stops")
                     .font(RF.display(14, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGray)
             }

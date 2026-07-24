@@ -168,13 +168,14 @@ struct StopPage: View {
         if let next = stop.toNext {
             VStack(alignment: .leading, spacing: 12) {
                 Text("On the way")
-                    .eyebrow(RF.forest)
+                    .font(RF.display(17, weight: 600))
+                    .foregroundStyle(RF.forest)
                 Text(next.text)
                     .font(RF.body(15.5))
                     .foregroundStyle(RF.ink.opacity(0.8))
                     .lineSpacing(5)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("\(WalkFormat.distance(meters: next.distanceMeters)) · about \(next.minutes) min")
+                Text("\(WalkFormat.distance(meters: next.distanceMeters)), about \(next.minutes) min")
                     .font(RF.display(15, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGray)
 

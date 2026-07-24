@@ -82,7 +82,8 @@ struct HomeView: View {
     private var mission: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("A student-run Chicago nonprofit")
-                .eyebrow()
+                .font(RF.display(15.5, weight: 400, italic: true))
+                .foregroundStyle(RF.ink.opacity(0.6))
                 .padding(.top, 56)
 
             Text("We educate people about racial inequality in Chicago, and we work to address it.")
@@ -90,11 +91,8 @@ struct HomeView: View {
                 .foregroundStyle(RF.forest)
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 16)
+                .padding(.top, 12)
                 .accessibilityAddTraits(.isHeader)
-
-            SurveyRule()
-                .padding(.top, 30)
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -208,21 +206,21 @@ private struct TourCard: View {
                     .foregroundStyle(RF.forest)
 
                 Text("A racial history of the neighborhood.")
-                    .font(RF.body(15))
-                    .foregroundStyle(RF.ink.opacity(0.7))
+                    .font(RF.body(15, weight: 600))
+                    .foregroundStyle(RF.ink.opacity(0.85))
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 0) {
                     Text(meta)
-                        .font(RF.body(13, weight: 500))
-                        .foregroundStyle(RF.warmGray)
+                        .font(RF.display(14.5, weight: 400, italic: true))
+                        .foregroundStyle(RF.ink.opacity(0.62))
                     Spacer()
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(RF.warmGray)
                 }
-                .padding(.top, 8)
+                .padding(.top, 6)
             }
             .padding(.horizontal, 14)
             .padding(.top, 4)
@@ -232,16 +230,15 @@ private struct TourCard: View {
         .contentShape(Rectangle())
     }
 
+    // Set like the site's italic accent lines, commas and all.
     private var meta: String {
-        var parts = [
-            "\(content.tour.stops.count) stops",
-            String(format: "%.1f miles", content.tour.distanceMiles),
-            "\(content.tour.listenMinutes) minutes of audio",
-        ]
+        var line = "\(content.tour.stops.count) stops, "
+            + String(format: "%.1f miles", content.tour.distanceMiles)
+            + ", \(content.tour.listenMinutes) minutes of audio"
         if progress.hasProgress {
-            parts.append("at stop \(min(progress.lastIndex, content.tour.stops.count - 1) + 1)")
+            line += ". At stop \(min(progress.lastIndex, content.tour.stops.count - 1) + 1)"
         }
-        return parts.joined(separator: " · ")
+        return line
     }
 }
 

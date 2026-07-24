@@ -97,7 +97,8 @@ struct SettingsView: View {
     private var accountPlate: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Your account")
-                .eyebrow()
+                .font(RF.display(17, weight: 600))
+                .foregroundStyle(RF.forest)
 
             if let profile = account.profile {
                 VStack(alignment: .leading, spacing: 4) {
@@ -211,7 +212,8 @@ struct SettingsView: View {
     private var tourPlate: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("The tour")
-                .eyebrow()
+                .font(RF.display(17, weight: 600))
+                .foregroundStyle(RF.forest)
             Text("\(progress.visited.count) of \(content.tour.stops.count) stops visited. Progress lives only on this phone.")
                 .font(RF.body(14))
                 .foregroundStyle(RF.ink.opacity(0.7))
@@ -235,7 +237,8 @@ struct SettingsView: View {
     private var aboutPlate: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("About")
-                .eyebrow()
+                .font(RF.display(17, weight: 600))
+                .foregroundStyle(RF.forest)
             Text("Rooted Forward is a student-run Chicago nonprofit. Walking tours, an online exhibit, a podcast, and housing policy work. Photograph credits appear with each image; sources are listed on every stop.")
                 .font(RF.body(13.5))
                 .foregroundStyle(RF.ink.opacity(0.65))
