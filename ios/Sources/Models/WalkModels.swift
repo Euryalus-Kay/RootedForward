@@ -75,6 +75,10 @@ struct WalkImage: Codable, Equatable, Hashable {
     let alt: String
     let credit: String
     let label: String?
+    /// Index of the transcript paragraph this photograph follows, so a
+    /// picture can sit beside the sentence that explains it. Absent in
+    /// older payloads, where every photograph mats above the story.
+    let after: Int?
 }
 
 struct WalkInterrupt: Codable, Equatable, Identifiable {

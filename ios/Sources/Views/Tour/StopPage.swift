@@ -131,9 +131,16 @@ struct StopPage: View {
 
     // MARK: - Images
 
+    /// Every photograph on the stop, historic views then the modern one.
+    private var allImages: [WalkImage] {
+        stop.images + (stop.nowImage.map { [$0] } ?? [])
+    }
+
+    /// Photographs with no paragraph anchor, which mat above the story
+    /// the way they always have.
     @ViewBuilder
     private var imagePlates: some View {
-        let plates = stop.images + (stop.nowImage.map { [$0] } ?? [])
+        let plates = allImages.filter { $0.after == nil }
         if !plates.isEmpty {
             VStack(alignment: .leading, spacing: 22) {
                 ForEach(plates, id: \.src) { image in
@@ -146,14 +153,24 @@ struct StopPage: View {
         }
     }
 
+    /// Photographs anchored to one paragraph, set right under it.
+    private func images(after index: Int) -> [WalkImage] {
+        allImages.filter { $0.after == index }
+    }
+
     // MARK: - Transcript
 
-    /// The story, with each red plate set after the paragraph that
-    /// sets it up, so several plates never stack back to back.
+    /// The story, with each red plate and each anchored photograph set
+    /// after the paragraph that sets it up, so nothing stacks back to
+    /// back and no picture arrives ahead of its sentence.
     private var transcript: some View {
         VStack(alignment: .leading, spacing: 18) {
             ForEach(Array(stop.transcript.enumerated()), id: \.offset) { index, paragraph in
                 MarkedText(text: paragraph)
+                ForEach(images(after: index), id: \.src) { image in
+                    FramedImage(image: image, showCredit: false)
+                        .padding(.top, 6)
+                }
                 ForEach(plates(after: index)) { interrupt in
                     redPlate(interrupt)
                         .padding(.top, 6)

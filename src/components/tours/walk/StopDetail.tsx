@@ -59,6 +59,12 @@ function platesAfter(interrupts: WalkStop["interrupts"], index: number) {
   return (interrupts ?? []).filter((box) => box.after === index);
 }
 
+/** every photograph on a stop, in one list, so anchoring can sort
+ *  them into the top of the page or into the middle of the story */
+function allImages(stop: WalkStop) {
+  return stop.nowImage ? [...stop.images, stop.nowImage] : stop.images;
+}
+
 /** plates with no anchor, or one pointing past the last paragraph */
 function trailingPlates(interrupts: WalkStop["interrupts"], count: number) {
   return (interrupts ?? []).filter(
@@ -94,6 +100,97 @@ function RedPlate({
   );
 }
 
+/** one photograph, matted and captioned */
+function SinglePlate({
+  image,
+  reveal,
+}: {
+  image: WalkStop["images"][number];
+  reveal: Record<string, unknown>;
+}) {
+  return (
+    <motion.figure className="mt-6" {...reveal}>
+      <div className="walk-plate rounded-[3px] p-2 md:p-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image.src}
+          alt={image.alt}
+          loading="lazy"
+          className="h-auto w-full object-cover"
+        />
+        {image.label && (
+          <p className="pb-0.5 pt-2 text-center font-display text-[12px] italic tracking-wide text-ink/60">
+            {image.label}
+          </p>
+        )}
+      </div>
+      <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
+        {image.credit}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+/** then and now: two photographs of the same ground mounted side by
+ *  side like a comparison plate */
+function PairPlate({
+  images,
+  reveal,
+}: {
+  images: WalkStop["images"];
+  reveal: Record<string, unknown>;
+}) {
+  return (
+    <motion.figure className="mt-6" {...reveal}>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start">
+        {images.map((image) => (
+          <div key={image.src} className="walk-plate rounded-[3px] p-2 md:p-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image.src}
+              alt={image.alt}
+              loading="lazy"
+              className="h-auto w-full object-cover"
+            />
+            {image.label && (
+              <p className="pb-0.5 pt-2 text-center font-display text-[12px] italic tracking-wide text-ink/60">
+                {image.label}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+      <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
+        {images.map((image) => (
+          <span key={image.src} className="block">
+            {image.credit}
+          </span>
+        ))}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+/** a run of photographs anchored to one place on the page. Exactly
+ *  two get the side-by-side comparison mat; anything else stacks. */
+function Plates({
+  images,
+  reveal,
+}: {
+  images: WalkStop["images"];
+  reveal: Record<string, unknown>;
+}) {
+  if (images.length === 0) return null;
+  if (images.length === 2) return <PairPlate images={images} reveal={reveal} />;
+  return (
+    <>
+      {images.map((image) => (
+        <SinglePlate key={image.src} image={image} reveal={reveal} />
+      ))}
+    </>
+  );
+}
+
 function PinIcon({ className = "" }: { className?: string }) {
   return (
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={className}>
@@ -120,6 +217,22 @@ export default function StopDetail({
   focusChrome = false,
 }: StopDetailProps) {
   const reduceMotion = useReducedMotion();
+
+  // Photographs sort into two places. Anything carrying an `after`
+  // index waits for its paragraph; everything else mats up top, with
+  // the first historic view paired against the same ground today.
+  const imagesAfter = (index: number) =>
+    allImages(stop).filter((image) => image.after === index);
+  const loose = stop.images.filter((image) => image.after === undefined);
+  const looseNow =
+    stop.nowImage && stop.nowImage.after === undefined ? stop.nowImage : null;
+  const frontPair = looseNow && loose.length > 0 ? [loose[0], looseNow] : null;
+  const frontRest = frontPair
+    ? loose.slice(1)
+    : looseNow
+      ? [...loose, looseNow]
+      : loose;
+
   const reveal = {
     initial: { opacity: 0, y: 18 },
     whileInView: { opacity: 1, y: 0 },
@@ -178,50 +291,11 @@ export default function StopDetail({
       </h2>
       <p className="mt-2 font-body text-lg text-ink/70">{stop.dek}</p>
 
-      {/* then and now: the historic image and a photograph of the same
-          site today, mounted side by side like a comparison plate */}
-      {stop.nowImage && stop.images.length > 0 && (
-        <motion.figure className="mt-6" {...reveal}>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start">
-            {[stop.images[0], stop.nowImage].map((image) => (
-              <div key={image.src} className="walk-plate rounded-[3px] p-2 md:p-2.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  loading="lazy"
-                  className="h-auto w-full object-cover"
-                />
-                {image.label && (
-                  <p className="pb-0.5 pt-2 text-center font-display text-[12px] italic tracking-wide text-ink/60">
-                    {image.label}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-          <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
-            <span className="block">{stop.images[0].credit}</span>
-            <span className="block">{stop.nowImage.credit}</span>
-          </figcaption>
-        </motion.figure>
-      )}
-
-      {stop.images.slice(stop.nowImage ? 1 : 0).map((image) => (
-        <motion.figure key={image.src} className="mt-6" {...reveal}>
-          <div className="walk-plate rounded-[3px] p-2 md:p-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={image.src}
-              alt={image.alt}
-              loading="lazy"
-              className="h-auto w-full object-cover"
-            />
-          </div>
-          <figcaption className="mt-2.5 px-1 font-display text-[13px] italic leading-relaxed text-ink/60">
-            {image.credit}
-          </figcaption>
-        </motion.figure>
+      {/* photographs with no paragraph anchor stay at the top of the
+          stop, the historic view paired with the same ground today */}
+      {frontPair && <PairPlate images={frontPair} reveal={reveal} />}
+      {frontRest.map((image) => (
+        <SinglePlate key={image.src} image={image} reveal={reveal} />
       ))}
 
       <div className="mt-6">
@@ -237,14 +311,16 @@ export default function StopDetail({
         ) : null}
       </div>
 
-      {/* the story, with each red plate set after the paragraph that
-          sets it up, so several plates never stack back to back */}
+      {/* the story, with each red plate and each anchored photograph
+          set after the paragraph that sets it up, so nothing stacks
+          back to back and no picture arrives before its sentence */}
       <div className="mt-6 space-y-4">
         {stop.transcript.map((para, i) => (
           <div key={i} className="space-y-4">
             <p className="font-body text-base leading-relaxed text-ink/80">
               <RichText text={para} />
             </p>
+            <Plates images={imagesAfter(i)} reveal={reveal} />
             {platesAfter(stop.interrupts, i).map((box) => (
               <RedPlate key={box.title} box={box} reveal={reveal} />
             ))}

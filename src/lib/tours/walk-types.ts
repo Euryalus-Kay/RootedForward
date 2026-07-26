@@ -12,6 +12,11 @@ export interface WalkImage {
   credit: string;
   /** small tag printed under the plate when shown as a pair, e.g. "1893" or "Today" */
   label?: string;
+  /** index of the transcript paragraph this photograph follows, so a
+   *  stop can set a picture beside the sentence that explains it
+   *  instead of stacking every plate above the story. Images without
+   *  it stay at the top of the stop, which is the older behavior. */
+  after?: number;
 }
 
 export interface WalkDirections {

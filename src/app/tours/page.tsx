@@ -22,7 +22,7 @@ const tour = HYDE_PARK_WALK;
 export const metadata: Metadata = {
   title: "Hyde Park Walking Tour | Rooted Forward",
   description:
-    "A free self-guided audio tour of Hyde Park, from Paul Cornell's stone to the Obama Presidential Center. Thirteen stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
+    "A free self-guided audio tour of Hyde Park, told in the order it happened, from Paul Cornell's stone through the fair and the university to Harper Court. Thirteen stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
 };
 
 export default function ToursPage() {

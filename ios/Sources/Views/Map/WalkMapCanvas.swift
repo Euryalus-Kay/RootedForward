@@ -240,11 +240,13 @@ struct WalkMapCanvas: View {
                 with: .color(RF.cream),
                 style: StrokeStyle(lineWidth: 6 / scale, lineCap: .round, lineJoin: .round)
             )
+            // Green, not the route's rust and not the rails' gray, so
+            // a detour reads as a choice rather than a wrong turn.
             map.stroke(
                 spurPath,
-                with: .color(RF.mapRail.opacity(0.85)),
+                with: .color(RF.forest.opacity(0.9)),
                 style: StrokeStyle(
-                    lineWidth: 2 / scale,
+                    lineWidth: 2.2 / scale,
                     lineCap: .round, lineJoin: .round,
                     dash: [7 / scale, 5 / scale]
                 )

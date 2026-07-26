@@ -402,7 +402,7 @@ struct MapSheetView: View {
             }
             HStack(spacing: 7) {
                 Line()
-                    .stroke(RF.mapRail.opacity(0.85), style: StrokeStyle(lineWidth: 1.8, lineCap: .round, dash: [5, 3.5]))
+                    .stroke(RF.forest.opacity(0.9), style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 3.5]))
                     .frame(width: 22, height: 3)
                 Text("Detour")
             }

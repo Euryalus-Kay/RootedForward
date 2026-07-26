@@ -26,10 +26,42 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertEqual(Self.payload.intro.paragraphs.count, 11)
         XCTAssertGreaterThanOrEqual(tour.route.count, 30)
         XCTAssertEqual(tour.detourRoutes?.count, 1)
-        XCTAssertEqual(tour.practical.count, 3)
-        // The six red instrument plates
+        XCTAssertEqual(tour.practical.count, 4)
+        // The seven red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
-        XCTAssertEqual(interrupts.count, 6)
+        XCTAssertEqual(interrupts.count, 7)
+    }
+
+    /// Stops render in array order and print their own number, so the
+    /// two must agree or the map and the page disagree with each other.
+    func testStopsAreNumberedInOrder() {
+        for (index, stop) in Self.payload.tour.stops.enumerated() {
+            XCTAssertEqual(stop.number, index + 1, "\(stop.id) is out of order")
+        }
+    }
+
+    /// A photograph or plate anchored past the end of a stop's story
+    /// silently disappears on the page, so catch it here instead.
+    func testAnchorsPointAtRealParagraphs() {
+        for stop in Self.payload.tour.stops {
+            let paragraphs = stop.transcript.count
+            var images = stop.images
+            if let now = stop.nowImage { images.append(now) }
+            for image in images {
+                guard let after = image.after else { continue }
+                XCTAssertTrue(
+                    after >= 0 && after < paragraphs,
+                    "\(stop.id) anchors an image after paragraph \(after) of \(paragraphs)"
+                )
+            }
+            for plate in stop.interrupts ?? [] {
+                guard let after = plate.after else { continue }
+                XCTAssertTrue(
+                    after >= 0 && after < paragraphs,
+                    "\(stop.id) anchors \(plate.title) after paragraph \(after) of \(paragraphs)"
+                )
+            }
+        }
     }
 
     func testEveryAudioFileIsBundled() {

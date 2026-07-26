@@ -335,15 +335,17 @@ export default function WalkMap({
               strokeLinejoin="round"
               strokeOpacity="0.8"
             />
+            {/* green, not the route's rust and not the rails' gray,
+                so a detour reads as a choice rather than a wrong turn */}
             <path
               d={d}
               fill="none"
-              stroke="#6E6A5E"
-              strokeWidth="2"
+              stroke="#1B3A2D"
+              strokeWidth="2.2"
               strokeDasharray="7 5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeOpacity="0.85"
+              strokeOpacity="0.9"
             />
           </g>
         );
@@ -609,7 +611,7 @@ export default function WalkMap({
           stroke="#F5F0E8"
           strokeWidth="3"
         >
-          Detours to Daley&apos;s and the Hansberry house continue southwest
+          Green detours to the Hansberry house and Daley&apos;s continue southwest
         </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />

@@ -256,9 +256,10 @@ struct TourView: View {
     private var counterLabel: String {
         let stop = stops[safeIndex]
         if stop.isDetour { return "Optional detour" }
-        let mainline = stops.filter { !$0.isDetour }
-        let place = mainline.firstIndex(where: { $0.id == stop.id }).map { $0 + 1 } ?? (safeIndex + 1)
-        return "Stop \(place) of \(mainline.count)"
+        // The stop's own number, not its place in the mainline. With
+        // the two detours sitting mid-walk the two diverge, and the
+        // number is what the map, the list, and the site all print.
+        return "Stop \(stop.number) of \(stops.count)"
     }
 
     /// How far through the walk the progress capsule reads.
