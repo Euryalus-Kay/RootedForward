@@ -199,7 +199,7 @@ struct MapSheetView: View {
                 }
                 HStack(alignment: .firstTextBaseline, spacing: 7) {
                     Text("\(stop.number).")
-                        .font(RF.didone(16, weight: 600))
+                        .font(RF.display(16, weight: 600))
                         .foregroundStyle(RF.rust)
                     Text(stop.title)
                         .font(RF.body(15, weight: 600))
@@ -611,7 +611,7 @@ struct MapSheetView: View {
                 } label: {
                     HStack(spacing: 13) {
                         Text("\(stop.number)")
-                            .font(RF.didone(16, weight: 600))
+                            .font(RF.display(16, weight: 600))
                             .foregroundStyle(numberColor(index: i, stop: stop))
                             .frame(width: 30, height: 30)
                             .background(

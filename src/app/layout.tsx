@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, DM_Sans, Archivo_Narrow, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
+import { Source_Serif_4, DM_Sans, Archivo_Narrow, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,11 +9,14 @@ import { Toaster } from "react-hot-toast";
 /* Self-hosted via next/font instead of the old render-blocking Google
    Fonts @import in globals.css. The CSS variables here feed the
    font-display / font-body / font-plat / font-ledger tokens. */
-const fraunces = Fraunces({
+/* The display face for every heading on the site and in the app. An
+   ordinary text serif, chosen in July 2026 to replace two faces the
+   owner read as stylish rather than plain. */
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
   style: ["normal", "italic"],
   axes: ["opsz"],
-  variable: "--font-fraunces",
+  variable: "--font-source-serif",
   display: "swap",
 });
 const dmSans = DM_Sans({
@@ -33,15 +36,6 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-plex-mono",
-  display: "swap",
-});
-/* Walking-tour display face. A high-contrast didone in the spirit of
-   1890s exhibition printing; used only for titles on /tours. */
-const bodoniModa = Bodoni_Moda({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-bodoni-moda",
   display: "swap",
 });
 
@@ -77,7 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${fraunces.variable} ${dmSans.variable} ${archivoNarrow.variable} ${plexMono.variable} ${bodoniModa.variable}`}
+      className={`h-full antialiased ${sourceSerif.variable} ${dmSans.variable} ${archivoNarrow.variable} ${plexMono.variable}`}
     >
       <body className="flex min-h-full flex-col font-body bg-cream text-ink">
         <Navbar />

@@ -4,10 +4,16 @@ import CoreText
 // ------------------------------------------------------------------
 // The Rooted Forward look, ported from the site's Tailwind theme.
 // Colors come from globals.css; type comes from the three bundled
-// Google Fonts (all SIL OFL): Bodoni Moda for tour titles, Fraunces
-// for display text, DM Sans for body. The fonts ship as variable
-// TTFs, so weights resolve through the wght variation axis rather
-// than guessed PostScript instance names.
+// Google Fonts, both SIL OFL. Source Serif 4 sets every heading,
+// title and numeral, and DM Sans sets body copy. The fonts ship as
+// variable TTFs, so weights resolve through the wght variation axis
+// rather than guessed PostScript instance names.
+//
+// Fraunces and Bodoni Moda were both here and are both gone at the
+// owner's request (July 2026). One reads as a stylish contemporary
+// serif and the other as a fashion-magazine face, and neither suits
+// a tour about property records. Source Serif is an ordinary text
+// serif that gets out of the way.
 // ------------------------------------------------------------------
 
 enum RF {
@@ -37,13 +43,13 @@ enum RF {
     static let mapRail = Color(rfHex: 0x6E6A5E)
 
     // Type
-    static func didone(_ size: CGFloat, weight: CGFloat = 600) -> Font {
-        // Cap the optical size axis: at full display opsz Bodoni's
-        // hairlines go razor thin and the W reads as a tangle.
-        BrandFonts.font(family: "Bodoni Moda", size: size, weight: weight, opticalSize: min(size, 24))
-    }
     static func display(_ size: CGFloat, weight: CGFloat = 600, italic: Bool = false) -> Font {
-        BrandFonts.font(family: "Fraunces", size: size, weight: weight, italic: italic, opticalSize: size)
+        // Track the optical size axis with the point size, clamped to
+        // the range the face actually ships, 8 through 60.
+        BrandFonts.font(
+            family: "Source Serif 4", size: size, weight: weight,
+            italic: italic, opticalSize: min(max(size, 8), 60)
+        )
     }
     static func body(_ size: CGFloat, weight: CGFloat = 400, italic: Bool = false) -> Font {
         BrandFonts.font(family: "DM Sans", size: size, weight: weight, italic: italic)
@@ -116,10 +122,6 @@ enum BrandFonts {
         var variations: [Int: CGFloat] = [0x77676874: weight] // 'wght'
         if let opsz = opticalSize {
             variations[0x6F70737A] = opsz // 'opsz'
-        }
-        if family == "Fraunces" {
-            variations[0x534F4654] = 0 // 'SOFT'
-            variations[0x574F4E4B] = 0 // 'WONK', the site uses the upright cut
         }
         // Set traits explicitly both ways; the upright and italic files
         // share a family name, and an unconstrained descriptor can

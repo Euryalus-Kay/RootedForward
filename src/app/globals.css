@@ -1,5 +1,5 @@
 /* Fonts are self-hosted through next/font in src/app/layout.tsx, which
-   sets the --font-fraunces / --font-dm-sans / --font-archivo-narrow /
+   sets the --font-source-serif / --font-dm-sans / --font-archivo-narrow /
    --font-plex-mono variables referenced below. */
 @import "tailwindcss";
 
@@ -26,7 +26,7 @@
   --color-warm-gray-light: #B5AFA4;
   --color-border: #DDD6C8;
 
-  --font-display: var(--font-fraunces), 'Fraunces', serif;
+  --font-display: var(--font-source-serif), 'Source Serif 4', Georgia, serif;
   --font-body: var(--font-dm-sans), 'DM Sans', sans-serif;
 
   /* The Ground Keeps Moving exhibit palette. Document-derived colors:
@@ -1124,12 +1124,17 @@ body.exhibit-immersive > footer { display: none; }
   .ground-stage[data-tilt="10"] { --gtilt: 8deg; }
   .ground-stage[data-tilt="22"] { --gtilt: 8deg; }
 }
-/* the svg keeps its pane height minus the sheet margins */
-.ground-sheet .ground-svg { height: calc(44svh - 76px); }
-@media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100svh - 146px); } }
+/* the svg keeps its pane height minus the sheet margins and the R11
+   dock's lane. Desktop: dock 123px + margins 2 and 37 (the 37 clears
+   the fixed Ledger Rail's ~31px lane) + 18px sheet margins = 180.
+   Mobile: dock 64px + margins 8 + 18px sheet margins = 90 (the rail
+   sits at the screen's foot, far below the sticky pane). The map plus
+   the dock exactly fill the pane above the rail. */
+.ground-sheet .ground-svg { height: calc(44svh - 90px); }
+@media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100svh - 180px); } }
 @supports not (height: 1svh) {
-  .ground-sheet .ground-svg { height: calc(40vh - 76px); }
-  @media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100vh - 146px); } }
+  .ground-sheet .ground-svg { height: calc(40vh - 90px); }
+  @media (min-width: 1024px) { .ground-sheet .ground-svg { height: calc(100vh - 180px); } }
 }
 
 /* a second sheet laid on the desk (frame cuts stay cuts) */
@@ -1799,6 +1804,380 @@ body.exhibit-immersive > footer { display: none; }
   .ground-stage [data-today-tag] { font-size: calc(40px * var(--gtext-k, 1)); }
 }
 
+/* ==================================================================
+   R11, THE FILLED GROUND. Complete real geography under the story:
+   suburb landmass, the true lake and river, streets at two weights.
+   Sources ride data-source attributes and the colophon.
+   ================================================================== */
+.ground-stage [data-suburbs] {
+  fill: color-mix(in srgb, var(--color-exh-ink) 2.5%, var(--color-exh-linen));
+}
+.ground-stage [data-arterials] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.2;
+  stroke-width: 0.9px;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+.ground-stage [data-locals],
+.ground-stage [data-hp-streets] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.13;
+  stroke-width: 0.7px;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+.ground-stage [data-arterials],
+.ground-stage [data-locals],
+.ground-stage [data-hp-streets] { transition: opacity 450ms ease; }
+/* streets are the modern grid; they join the fabric's era (1900 on),
+   and locals ink only at the deep cameras */
+.ground-stage[data-g-fabric="off"] [data-arterials],
+.ground-stage[data-g-fabric="off"] [data-locals],
+.ground-stage[data-g-fabric="off"] [data-hp-streets] { opacity: 0; }
+.ground-stage[data-camdeep="off"] [data-locals] { opacity: 0; }
+.ground-stage[data-tween="on"] [data-arterials],
+.ground-stage[data-tween="on"] [data-locals],
+.ground-stage[data-tween="on"] [data-hp-streets] { opacity: 0; }
+[data-motion="off"] .ground-stage [data-arterials],
+[data-motion="off"] .ground-stage [data-locals],
+[data-motion="off"] .ground-stage [data-hp-streets] { transition: none; }
+
+/* the hull backfill wears the same water ink as the true shoreline */
+.ground-stage [data-lake-under] { fill: color-mix(in srgb, var(--color-exh-blue) 24%, var(--color-exh-linen)); }
+
+/* --- the magnifying lens and the lit veil (R11 effects) ------------- */
+.ground-stage [data-veil-lite] {
+  fill: #fff;
+  fill-opacity: 0;
+  pointer-events: none;
+  transition: fill-opacity 450ms ease;
+}
+.ground-stage[data-veil="on"] [data-veil-lite] { fill-opacity: 0.16; }
+.ground-stage [data-loupe] { opacity: 0; transition: opacity 500ms ease; pointer-events: none; }
+.ground-stage[data-loupeon="on"]:not([data-tween="on"]) [data-loupe] { opacity: 1; }
+.ground-stage [data-loupe-ring] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.8;
+  stroke-width: 2.4px;
+  vector-effect: non-scaling-stroke;
+}
+.ground-stage [data-loupe-halo] {
+  fill: none;
+  stroke: var(--color-exh-linen);
+  stroke-opacity: 0.9;
+  stroke-width: 7px;
+  vector-effect: non-scaling-stroke;
+}
+[data-motion="off"] .ground-stage [data-loupe],
+[data-motion="off"] .ground-stage [data-veil-lite] { transition: none; }
+
+/* --- lens scene inks (real pre-clipped geometry, R11) --------------- */
+.ground-stage [data-loupe-paper] { fill: var(--color-exh-linen); }
+.ground-stage [data-lp-water] { fill: color-mix(in srgb, var(--color-exh-blue) 26%, var(--color-exh-linen)); }
+.ground-stage [data-lp-parks] { fill: color-mix(in srgb, #6b6b4a 28%, var(--color-exh-linen)); }
+.ground-stage [data-lp-streets] {
+  fill: none;
+  stroke: var(--color-exh-ink);
+  stroke-opacity: 0.28;
+  stroke-width: 0.8px;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+.ground-stage [data-lp-todayring] { fill: none; stroke: var(--exh-rust); stroke-width: 5; }
+.ground-stage [data-loupe-scene] { display: none; }
+.ground-stage[data-loupekey="today"] [data-loupe-scene="today"] { display: inline; }
+.ground-stage[data-loupekey="jacksonPark"] [data-loupe-scene="jacksonPark"] { display: inline; }
+
+/* R11 dock remake */
+/* The docked register regrown into a focal instrument (owner verdict,
+   July 2026: the old strip was small, unclear, confusing). Anatomy,
+   top to bottom: a title line with the live year figure at the right,
+   a left name rail in plat caps, five 9px ink lanes at full true span,
+   a labeled axis with decade hairlines, and THE UNION BAND at the
+   foot with its honest split. A two-segment caret spans lanes and
+   band with a year chip at its top; caret, chip and figure go rust
+   only at 2026. These rules override the older docked blocks above
+   purely by cascade order; the old .gr-* child rules go dead because
+   the markup now uses .grx-* classes. Vertical geometry rides custom
+   properties measured from the dock's top edge, so the rail names and
+   the bars share one ruler. Pane budget: dock height plus dock and
+   sheet margins equals the constant subtracted in the .ground-sheet
+   .ground-svg calcs (180px desktop, 90px mobile; the desktop bottom
+   margin also clears the fixed Ledger Rail's lane). */
+.ground-register-docked {
+  --grx-rail-w: 92px;
+  --grx-gap: 10px;
+  --grx-lane0: 30px;
+  --grx-pitch: 12px;
+  --grx-bar-h: 9px;
+  --grx-base-top: 92px;
+  --grx-ticklab-top: 99px;
+  --grx-band-top: 111px;
+  --grx-band-h: 12px;
+  --grx-caret-top: 28px;
+  --grx-chip-top: 15px;
+  height: 123px;
+  margin: 2px 14px 37px;
+}
+.ground-register-docked:hover .grx-title { text-decoration: underline; }
+.ground-register-docked .grx-track { position: absolute; inset: 0; display: block; }
+.ground-register-docked .grx-title {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-exh-ink-soft);
+  white-space: nowrap;
+}
+.ground-register-docked .grx-fig {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-exh-ink);
+}
+.ground-register-docked[data-now="on"] .grx-fig { color: var(--exh-rust); }
+.ground-register-docked .grx-rail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--grx-rail-w);
+  display: block;
+}
+.ground-register-docked .grx-name {
+  position: absolute;
+  right: 0;
+  font-size: 8px;
+  line-height: var(--grx-bar-h);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--color-exh-ink-soft);
+  white-space: nowrap;
+}
+.ground-register-docked .grx-chart {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--grx-rail-w) + var(--grx-gap));
+  right: 0;
+  display: block;
+}
+/* full true spans always read; live years get emphasis, never a
+   reveal; the deboss keeps the bars in the plate's material */
+.ground-register-docked .grx-bar {
+  position: absolute;
+  height: var(--grx-bar-h);
+  background: var(--color-exh-ink);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-exh-linen) 26%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 30%, transparent);
+  opacity: 0.55;
+  transition: opacity 300ms ease;
+}
+.ground-register-docked .grx-bar[data-live="on"] { opacity: 1; }
+.ground-register-docked .grx-baseline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--grx-base-top);
+  height: 1px;
+  background: color-mix(in srgb, var(--color-exh-ink) 40%, transparent);
+}
+.ground-register-docked .grx-tickline {
+  position: absolute;
+  top: var(--grx-base-top);
+  width: 1px;
+  height: 4px;
+  background: color-mix(in srgb, var(--color-exh-ink) 30%, transparent);
+}
+.ground-register-docked .grx-tickline[data-major="on"] {
+  height: 6px;
+  background: color-mix(in srgb, var(--color-exh-ink) 60%, transparent);
+}
+.ground-register-docked .grx-tick {
+  position: absolute;
+  top: var(--grx-ticklab-top);
+  transform: translateX(-50%);
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0.1em;
+  color: var(--color-exh-ink-soft);
+}
+.ground-register-docked .grx-tick[data-year="1900"] { transform: translateX(0); }
+.ground-register-docked .grx-tick[data-year="2026"] { transform: translateX(-100%); }
+.ground-register-docked .grx-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--grx-band-top);
+  height: var(--grx-band-h);
+  display: block;
+}
+.ground-register-docked .grx-ubseg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: color-mix(in srgb, var(--color-exh-ink) 94%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-exh-linen) 22%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 30%, transparent);
+}
+.ground-register-docked .grx-ubseg[data-open="on"] {
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-exh-ink) 78%, transparent) 0 1.5px,
+    transparent 1.5px 4.5px
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-exh-ink) 50%, transparent);
+}
+/* each claim label sits inside its own drawn mass */
+.ground-register-docked .grx-ublabel {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 7px;
+  line-height: 8px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-exh-linen);
+  white-space: nowrap;
+  z-index: 2;
+}
+.ground-register-docked .grx-ublabel[data-open="on"] {
+  color: var(--color-exh-ink);
+  background: var(--color-exh-linen);
+  padding: 1px 5px;
+}
+/* the caret is ink and spans lanes and band; over the solid union
+   ink it cuts a linen notch so it never disappears into the mass */
+.ground-register-docked .grx-caret {
+  position: absolute;
+  top: var(--grx-caret-top);
+  height: calc(var(--grx-base-top) - var(--grx-caret-top));
+  width: 1.5px;
+  background: var(--color-exh-ink);
+  transition: left 300ms ease;
+  z-index: 1;
+}
+.ground-register-docked .grx-caret[data-seg="band"] {
+  top: var(--grx-band-top);
+  height: var(--grx-band-h);
+}
+.ground-register-docked .grx-caret[data-seg="band"][data-onsolid="on"] {
+  background: var(--color-exh-linen);
+}
+.ground-register-docked[data-now="on"] .grx-caret { background: var(--exh-rust); }
+.ground-register-docked .grx-chip {
+  position: absolute;
+  top: var(--grx-chip-top);
+  transform: translateX(-50%);
+  font-size: 9px;
+  line-height: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 1px 4px;
+  border: 1px solid color-mix(in srgb, var(--color-exh-ink) 35%, transparent);
+  background: var(--color-exh-ink);
+  color: var(--color-exh-linen);
+  transition: left 300ms ease;
+  z-index: 3;
+}
+.ground-register-docked[data-now="on"] .grx-chip {
+  background: var(--exh-rust);
+  border-color: var(--exh-rust);
+}
+/* story years before the rail's start drop the caret and its chip;
+   the fixed figure at the right carries the year alone */
+.ground-register-docked[data-prerail="on"] .grx-caret,
+.ground-register-docked[data-prerail="on"] .grx-chip { display: none; }
+.ground-register-docked .grx-taphint { display: none; }
+[data-motion="off"] .ground-register-docked .grx-caret,
+[data-motion="off"] .ground-register-docked .grx-chip,
+[data-motion="off"] .ground-register-docked .grx-bar { transition: none; }
+
+/* phones and tablets: the same chart at 64px, the rail at 7px caps */
+@media (max-width: 1023px) {
+  .ground-register-docked {
+    --grx-rail-w: 58px;
+    --grx-gap: 8px;
+    --grx-lane0: 12px;
+    --grx-pitch: 6px;
+    --grx-bar-h: 4px;
+    --grx-base-top: 42px;
+    --grx-ticklab-top: 47px;
+    --grx-band-top: 56px;
+    --grx-band-h: 8px;
+    --grx-caret-top: 11px;
+    --grx-chip-top: 0px;
+    height: 64px;
+    margin: 2px 14px 6px;
+  }
+  .ground-register-docked .grx-title,
+  .ground-register-docked .grx-fig { display: none; }
+  .ground-register-docked .grx-name {
+    font-size: 7px;
+    line-height: 7px;
+    letter-spacing: 0.1em;
+    margin-top: -1.5px;
+  }
+  .ground-register-docked .grx-tick { font-size: 7px; line-height: 7px; }
+  .ground-register-docked .grx-tickline { height: 3px; }
+  .ground-register-docked .grx-tickline[data-major="on"] { height: 4px; }
+  .ground-register-docked .grx-chip {
+    font-size: 8px;
+    line-height: 8px;
+    padding: 1px 3px;
+  }
+  .ground-register-docked .grx-ublabel { font-size: 6.5px; letter-spacing: 0.14em; }
+}
+/* under 480px the union band carries the read at full size; the
+   lanes and rail yield and the chevron marks the dock as a tap */
+@media (max-width: 479px) {
+  .ground-register-docked {
+    --grx-rail-w: 0px;
+    --grx-gap: 0px;
+    --grx-band-top: 16px;
+    --grx-band-h: 18px;
+    --grx-base-top: 40px;
+    --grx-ticklab-top: 46px;
+    --grx-caret-top: 11px;
+    --grx-chip-top: 0px;
+    height: 64px;
+  }
+  .ground-register-docked .grx-rail,
+  .ground-register-docked .grx-bar,
+  .ground-register-docked .grx-caret[data-seg="band"] { display: none; }
+  /* the one caret runs from the chip through the band to the axis */
+  .ground-register-docked .grx-caret { z-index: 0; }
+  .ground-register-docked .grx-ublabel { font-size: 7px; }
+  .ground-register-docked .grx-taphint {
+    display: block;
+    position: absolute;
+    right: -11px;
+    top: calc(var(--grx-band-top) + var(--grx-band-h) / 2);
+    transform: translateY(-52%);
+    font-size: 16px;
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-exh-ink) 65%, transparent);
+  }
+}
+
+/* the present-day tag steps south of the lens on its beat so the
+   glass never covers its own caption */
+.ground-stage[data-loupekey="today"][data-loupeon="on"] [data-today-tag] { transform: translateY(84px); }
+
 /* ------------------------------------------------------------------ */
 /* Walking tour (/tours): audio player range input and map pulses     */
 /* ------------------------------------------------------------------ */
@@ -1883,6 +2262,7 @@ body.exhibit-immersive > footer { display: none; }
   border-radius: 50%;
 }
 
+
 /* walking tour: engraved exhibit plates. A hairline frame, a second
    hairline set just inside it, and a solid offset shadow, like a
    printed catalog plate. Replaces the old frosted-glass panels. */
@@ -1916,10 +2296,11 @@ body.exhibit-immersive > footer { display: none; }
   border: 1px solid rgba(26, 26, 26, 0.22);
   box-shadow: 4px 4px 0 0 rgba(27, 58, 45, 0.14);
 }
-/* tour titles set in Bodoni Moda, the didone of 1890s exhibition
-   printing; the rest of the site keeps its own display face */
+/* tour titles once carried their own didone. They share the site's
+   display serif now, so the walk stops announcing itself in a second
+   typeface nobody asked for. */
 .walk-title {
-  font-family: var(--font-bodoni-moda), 'Bodoni Moda', Didot, 'Bodoni MT', serif;
+  font-family: var(--font-display);
   letter-spacing: 0.01em;
 }
 /* the numbered instruments-of-exclusion sidebars. Red like the "D"

@@ -1,7 +1,7 @@
 import SwiftUI
 
 // ------------------------------------------------------------------
-// One stop, matching the site's StopDetail: Bodoni title, then/now
+// One stop, matching the site's StopDetail. Serif title, then/now
 // photograph plates, the listen card, the transcript with bold
 // markup, the red instrument plates, and the hand-off plate walking
 // you to the next stop. Directions rides the floating pill row.

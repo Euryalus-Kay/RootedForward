@@ -325,7 +325,7 @@ private struct StopRow: View {
             .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
 
             Text("\(stop.number)")
-                .font(RF.didone(19, weight: 600))
+                .font(RF.display(19, weight: 600))
                 .foregroundStyle(visited ? RF.forest : RF.rust)
                 .frame(minWidth: 20, alignment: .trailing)
 
