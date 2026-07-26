@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { label: "Podcast", href: "/podcasts" },
   { label: "Policy", href: "/policy" },
   { label: "About", href: "/about" },
+  { label: "Team", href: "/about/team" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -114,7 +115,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2.5"
+          className="flex items-center gap-2.5 whitespace-nowrap"
         >
           <img src="/logo.svg" alt="" className="h-8 w-8" />
           <span className="font-display text-xl font-semibold tracking-tight text-forest">
@@ -122,8 +123,14 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop links — centered as a group, pushed slightly right toward the account/search */}
-        <ul className="hidden items-center justify-end gap-7 md:flex md:pr-2 lg:pr-4">
+        {/* Desktop links, pushed right toward the account and search.
+
+            These sit behind lg, not md. Seven destinations need about
+            345px of text before any gap, and a 768px bar has roughly 335px
+            left after the wordmark, the log in button, and search. At md
+            the row overflowed and wrapped the wordmark onto two lines, so
+            768 to 1023 gets the hamburger like a phone does. */}
+        <ul className="hidden items-center justify-end gap-5 lg:flex lg:pr-2 xl:gap-7 xl:pr-4">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
@@ -193,7 +200,7 @@ export default function Navbar() {
             /* Login / Sign up */
             <Link
               href="/auth/login"
-              className="hidden rounded-full bg-rust px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-rust-dark md:inline-block"
+              className="hidden rounded-full bg-rust px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-rust-dark lg:inline-block"
             >
               Log in
             </Link>
@@ -205,7 +212,7 @@ export default function Navbar() {
               const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
               document.dispatchEvent(event);
             }}
-            className="hidden items-center gap-2 rounded-full border border-border bg-cream-dark/50 px-3 py-1.5 text-sm text-warm-gray transition-colors hover:border-warm-gray-light hover:text-ink md:flex"
+            className="hidden items-center gap-2 rounded-full border border-border bg-cream-dark/50 px-3 py-1.5 text-sm text-warm-gray transition-colors hover:border-warm-gray-light hover:text-ink lg:flex"
             aria-label="Search"
           >
             <Search className="h-3.5 w-3.5" />
@@ -219,7 +226,7 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="flex h-9 w-9 items-center justify-center rounded-md text-forest md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-md text-forest lg:hidden"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -235,7 +242,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-border bg-cream md:hidden"
+            className="overflow-hidden border-t border-border bg-cream lg:hidden"
           >
             <ul className="flex flex-col gap-1 px-4 py-4">
               {NAV_LINKS.map((link) => (

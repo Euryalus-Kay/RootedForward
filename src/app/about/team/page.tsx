@@ -1,0 +1,164 @@
+/* ------------------------------------------------------------------ */
+/*  /about/team                                                        */
+/*                                                                     */
+/*  Its own tab in the navbar at the owner's request, July 2026.       */
+/*                                                                     */
+/*  The layout is TeamGrid, which carries the reasoning behind the     */
+/*  shape. Cards show city and school, not job titles (owner's call).  */
+/*  The bios came off the Mayor's Youth Commission roster and were     */
+/*  rewritten around what each person actually works on. The MYC       */
+/*  mention stays only for the two people it is genuinely central to.  */
+/*                                                                     */
+/*  The roster is TEAM_MEMBERS in src/lib/team-constants.ts, merged    */
+/*  with live rows from the Supabase board_members table so the admin  */
+/*  at /admin/about/board still reaches the public site. Both sides    */
+/*  dedupe by slug, same read-live-then-fall-back pattern as the rest  */
+/*  of the site.                                                       */
+/*                                                                     */
+/*  Real people only. Two seats are spoken for and not named yet, so   */
+/*  they render as reserved tiles with no name and no face. Set        */
+/*  OPEN_SEATS to 0 in team-constants.ts once both are filled.         */
+/*                                                                     */
+/*  Voice rules (owner, July 2026). No aphorism headlines, no balanced */
+/*  pairs, no numbered rows, no rhetorical triads. Site-wide, no       */
+/*  em-dashes and no colons inside sentences or headings.              */
+/* ------------------------------------------------------------------ */
+
+import Link from "next/link";
+import type { Metadata } from "next";
+import PageTransition from "@/components/layout/PageTransition";
+import TeamGrid from "@/components/about/TeamGrid";
+import {
+  TEAM_MEMBERS,
+  isRealName,
+  type TeamMember,
+} from "@/lib/team-constants";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Meet the team | Rooted Forward",
+  description:
+    "The students who run Rooted Forward. Who each person is, where they go to school, and what they work on.",
+};
+
+/* Shape of the board_members rows the public page cares about. */
+interface BoardRow {
+  slug: string | null;
+  full_name: string;
+  role: string;
+  city: string | null;
+  bio: string | null;
+  photo_url: string | null;
+  board_type: "student" | "advisory";
+  display_order: number | null;
+}
+
+async function loadRoster(): Promise<TeamMember[]> {
+  if (!isSupabaseConfigured()) return TEAM_MEMBERS;
+
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("board_members")
+      .select(
+        "slug, full_name, role, city, bio, photo_url, board_type, display_order",
+      )
+      .eq("is_active", true)
+      .order("display_order");
+
+    if (!data) return TEAM_MEMBERS;
+
+    const known = new Set(TEAM_MEMBERS.map((m) => m.slug));
+    const extra = (data as BoardRow[])
+      .filter((r) => isRealName(r.full_name))
+      /* A row with no bio has nothing behind its Read bio button, so it
+         stays off the page until somebody writes the paragraph. */
+      .filter((r) => (r.bio ?? "").trim().length > 0)
+      .map<TeamMember>((r) => ({
+        slug: r.slug ?? r.full_name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        name: r.full_name,
+        /* The table has no sort field, so the last word of the name is the
+           fallback. Anyone whose name it gets wrong belongs in
+           team-constants.ts with an explicit sortKey. */
+        sortKey: r.full_name.trim().split(/\s+/).pop() ?? r.full_name,
+        role: r.role,
+        city: r.city?.trim() || undefined,
+        bio: r.bio!.trim(),
+        photo: r.photo_url,
+      }))
+      .filter((m) => !known.has(m.slug));
+
+    return [...TEAM_MEMBERS, ...extra];
+  } catch {
+    /* No connection, no extra rows. The constants still render. */
+    return TEAM_MEMBERS;
+  }
+}
+
+export default async function TeamPage() {
+  const roster = await loadRoster();
+
+  return (
+    <PageTransition>
+      {/* ============================================================
+          WHO IS ON IT
+          ============================================================ */}
+      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            Meet the team
+          </p>
+          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
+            Who is on this
+          </h1>
+          <p className="mt-7 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
+            Rooted Forward is run by students. Here is everyone on it, where
+            they go to school, and what each person works on.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================================================
+          THE ROSTER
+          ============================================================ */}
+      <section className="bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <TeamGrid members={roster} />
+        </div>
+      </section>
+
+      {/* ============================================================
+          THE DOOR OUT. The roster is short because the organization is
+          small, so the honest thing to put under it is the opening.
+          ============================================================ */}
+      <section className="border-t border-border bg-cream-dark/35 py-14 md:py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-2xl text-forest md:text-3xl">
+            We could use your help
+          </h2>
+          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
+            If you can dig through an archive, run a survey table at a market,
+            or edit audio, there is work here for you. You do not need
+            experience to start.
+          </p>
+          <Link
+            href="/get-involved"
+            className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Get involved
+          </Link>
+          <p className="mt-7 font-body text-sm leading-relaxed text-ink/70">
+            Questions go to{" "}
+            <a
+              href="mailto:contact@rooted-forward.org"
+              className="text-forest underline decoration-1 underline-offset-[3px] transition-colors hover:text-rust-dark"
+            >
+              contact@rooted-forward.org
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+    </PageTransition>
+  );
+}
