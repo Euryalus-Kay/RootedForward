@@ -176,10 +176,7 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            What we do
-          </p>
-          <h2 className="mt-4 font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-7xl">
+          <h2 className="font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-7xl">
             Ways we help
           </h2>
 
