@@ -4,278 +4,504 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = {
   title: "Privacy Policy | Rooted Forward",
   description:
-    "How Rooted Forward collects, uses, shares, retains and deletes information on rooted-forward.org and in the Walk Hyde Park iOS app.",
+    "The Rooted Forward privacy policy for rooted-forward.org and the Walk Hyde Park mobile application. What we collect, how we use and disclose it, how long we keep it, and your rights.",
 };
 
 /* ------------------------------------------------------------------
-   The privacy policy for rooted-forward.org and the Walk Hyde Park
-   iOS app. The App Store listing points here, and Apple's review
-   guideline 5.1.1 requires this page to name the data collected, how
-   it is collected, every use of it, the third parties that receive
-   it, how long it is kept, and how someone withdraws consent and
-   deletes their account. Keep every claim on this page true of what
-   the site and the app actually do.
+   Privacy policy for rooted-forward.org and the Walk Hyde Park iOS
+   app. Structured on the ordinary corporate template (dated header,
+   linked contents, numbered sections and subsections, CCPA category
+   table, jurisdiction blocks, formal contact) so it reads like the
+   policy a reader has seen on every other site.
+
+   The App Store listing links here, and Apple's guideline 5.1.1 wants
+   this page to state the data collected, how it is collected, every
+   use, the parties it is disclosed to, retention, and how a user
+   withdraws consent and deletes an account. Keep every claim true of
+   what the site and the app actually do.
    ------------------------------------------------------------------ */
 
-const EFFECTIVE = "July 26, 2026";
+const LAST_UPDATED = "July 26, 2026";
 
-const SUMMARY = [
-  "The Walk Hyde Park app collects nothing. There is no account, no sign-in, and no analytics in it at all.",
-  "Your tour progress and your location stay on your phone. Neither one is ever sent to us.",
-  "On the website you can read everything, including the whole tour and the research archive, without an account.",
-  "We show no advertising, run no tracking of any kind, and never sell or rent anything about you.",
-];
-
-type Row = { item: string; why: string; where: string };
-
-const SITE_ROWS: Row[] = [
-  {
-    item: "Your name and email address",
-    why: "So you can sign in, comment, and sign policy campaigns",
-    where: "Only if you create an account",
-  },
-  {
-    item: "Your password",
-    why: "So you can sign in. It is hashed by our sign-in provider and we never see it",
-    where: "Only if you create an account with a password",
-  },
-  {
-    item: "Your Google name and email",
-    why: "Creates the account when you choose to sign in with Google",
-    where: "Only if you use Google sign-in",
-  },
-  {
-    item: "Comments, campaign signatures and anything you submit",
-    why: "So it can appear where you posted it, attached to your account",
-    where: "Only what you choose to write",
-  },
-  {
-    item: "A record of research files you download",
-    why: "So we can see how the archive gets used and stop abuse of it",
-    where: "Only when you download from the research archive",
-  },
-  {
-    item: "A sign-in cookie",
-    why: "Keeps you signed in between pages. It is the only cookie we set",
-    where: "Only while you are signed in",
-  },
-  {
-    item: "Ordinary server logs, including your IP address",
-    why: "Our host records these to serve pages and block attacks",
-    where: "Every visit, the same as any website",
-  },
-];
-
-const APP_ROWS: Row[] = [
-  {
-    item: "Which stops you have finished and where you stopped",
-    why: "So the walk picks up where you left it",
-    where: "Your phone only. Deleting the app deletes it",
-  },
-  {
-    item: "Your location, if you allow it",
-    why: "Draws your dot on the tour map and tells you when a stop is near",
-    where: "Your phone only. It is never sent anywhere",
-  },
-  {
-    item: "Nothing else",
-    why: "There is no account, no sign-in, no analytics and no advertising identifier in the app",
-    where: "Nowhere, because it does not exist",
-  },
-];
-
-type Section = {
-  id: string;
-  title: string;
+type Clause = {
+  heading?: string;
   paragraphs?: string[];
-  rows?: Row[];
   bullets?: string[];
-  /** Rendered under the bullet list, for sections that open with a
-   *  list and then close on a sentence. */
-  after?: string[];
+  /** Definition-style rows, used for the processor and retention lists. */
+  defs?: { term: string; text: string }[];
 };
+
+type Section = { id: string; title: string; clauses: Clause[] };
 
 const SECTIONS: Section[] = [
   {
-    id: "who-we-are",
-    title: "Who we are",
-    paragraphs: [
-      "Rooted Forward is a student-run nonprofit in Chicago. We publish research, a podcast, policy work, and a free self-guided walking tour of Hyde Park. This policy covers the website at rooted-forward.org and the Walk Hyde Park app for iPhone and iPad. Both are run by the same small group of people, and you can reach us at contact@rooted-forward.org.",
-      "The app is the simple half of this page. It collects nothing at all. Everything that follows about accounts, sign-in and stored records applies to the website only, and even there it only applies if you choose to make an account, which nothing requires you to do.",
+    id: "scope",
+    title: "Scope of This Policy",
+    clauses: [
+      {
+        paragraphs: [
+          "This Privacy Policy applies to the Rooted Forward website at rooted-forward.org and to the Walk Hyde Park application for iPhone and iPad, which we refer to together as the Services.",
+          "It does not apply to any third-party website, application or service that we link to. Those are governed by their own policies, and we describe them further in Section 10.",
+          "By using the Services you agree to this Privacy Policy. If you do not agree with it, please do not use the Services.",
+        ],
+      },
     ],
   },
   {
-    id: "website",
-    title: "What the website collects",
-    paragraphs: [
-      "You can read every page on this site, including the research archive and the full text of the walking tour, without signing in and without telling us anything about yourself.",
+    id: "collect",
+    title: "Information We Collect",
+    clauses: [
+      {
+        heading: "2.1 Information You Provide to Us",
+        paragraphs: [
+          "You can read every page of the website, including the full text of the walking tour and the research archive, without an account and without providing any information about yourself. We collect the following only when you choose to give it.",
+        ],
+        defs: [
+          {
+            term: "Account information",
+            text: "Your name, your email address and a password, provided when you register an account on the website. Passwords are hashed by our authentication provider and are never stored or visible to us in readable form.",
+          },
+          {
+            term: "Google account information",
+            text: "If you register using Google, Google provides us with your name and email address in order to create the account. We receive nothing else from Google.",
+          },
+          {
+            term: "Content you submit",
+            text: "Comments, policy campaign signatures, proposal submissions and any other material you post through the website, together with the account that posted it.",
+          },
+          {
+            term: "Correspondence",
+            text: "Your email address and the contents of your message when you write to us. The website has no contact form, so this reaches us only as ordinary email.",
+          },
+        ],
+      },
+      {
+        heading: "2.2 Information We Collect Automatically",
+        defs: [
+          {
+            term: "Authentication cookie",
+            text: "A single cookie that keeps you signed in as you move between pages. It is set only while you are signed in, and it is the only cookie the website places on your device. We use no advertising, analytics or third-party cookies.",
+          },
+          {
+            term: "Server log data",
+            text: "Our hosting provider records ordinary web server logs, including your IP address, the pages requested, the date and time, and your browser type. These are generated by the act of serving a web page and are used to operate the site and to prevent abuse.",
+          },
+          {
+            term: "Research archive activity",
+            text: "When you download a file from the research archive we record which file was requested, when, and by which account. We use this to understand how the archive is used and to detect scraping.",
+          },
+        ],
+      },
+      {
+        heading: "2.3 Information Collected Through the Mobile Application",
+        paragraphs: [
+          "None. The Walk Hyde Park application collects no personal information of any kind.",
+          "The entire tour, including every stop, photograph and audio file, is contained in the application when you install it, so it operates offline. The application contains no account system, no sign-in screen, no registration, no analytics library, no crash-reporting library, no advertising identifier and no tracking technology.",
+          "Two categories of information exist while you use the application, and both remain on your device. Neither is transmitted to us or to any other party.",
+        ],
+        defs: [
+          {
+            term: "Tour progress",
+            text: "Which stops you have completed and where you stopped, stored locally so that the walk resumes where you left it. Removing the application removes it.",
+          },
+          {
+            term: "Device location",
+            text: "If you grant permission, your location is used on the device to display your position on the tour map and to indicate when you are near a stop. It is processed entirely on the device and is never transmitted. Section 7.4 describes the permission and how to withdraw it.",
+          },
+        ],
+      },
+      {
+        heading: "2.4 Information We Do Not Collect",
+        paragraphs: [
+          "We do not collect payment information, government identifiers, biometric information, health information, precise location on our servers, or any special category of personal data. We do not purchase personal information from data brokers.",
+        ],
+      },
     ],
-    rows: SITE_ROWS,
   },
   {
-    id: "app",
-    title: "What the Walk Hyde Park app collects",
-    paragraphs: [
-      "Nothing. That is the whole answer, and the rest of this section is only there to show its work.",
-      "The app ships with the entire tour inside it. Every stop, every photograph and all of the narration are already on your phone when you install it, so the walk runs in airplane mode. There is no account, no sign-in screen, no registration, no analytics library, no crash reporter, no advertising identifier and no tracking of any kind. We could not tell you how many people finished the walk, let alone who they are.",
-      "Two things exist while you use it, and both stay on your phone.",
-    ],
-    rows: APP_ROWS,
-    after: [
-      "The app makes exactly one request to us, an ordinary web request to rooted-forward.org asking for the latest tour text. That is how a correction reaches you without waiting on an App Store update. It carries nothing about you.",
-    ],
-  },
-  {
-    id: "location",
-    title: "How the app uses your location",
-    paragraphs: [
-      "The app asks for location once, when you tap Find me on the tour map, and it asks for it only while you are using the app, never in the background. Say no and everything keeps working. All the app does with your position is draw your dot on the map and tell you when you are close to the next stop.",
-      "That calculation happens on your phone. Your coordinates are never transmitted to us, never written to our database, and never handed to anyone else. We could not tell you where a single walker has been.",
-      "You can turn location off at any time in the iOS Settings app under Privacy and Security, then Location Services, then Walk Hyde Park. The tour keeps working.",
-    ],
-  },
-  {
-    id: "uses",
-    title: "How we use what we do collect",
-    paragraphs: [
-      "This section is about the website, since the app gives us nothing to use.",
-    ],
-    bullets: [
-      "To sign you in and keep you signed in.",
-      "To show your comments, submissions and campaign signatures under your name where you posted them.",
-      "To reply when you write to us.",
-      "To understand which research datasets get used, and to stop anyone from scraping the archive.",
-      "To keep the site running, secure, and free of abuse.",
-    ],
-    after: [
-      "That is the complete list. We do not build advertising profiles, we do not score or rank you, and we do not use your information to train any model.",
+    id: "use",
+    title: "How We Use Information",
+    clauses: [
+      {
+        paragraphs: [
+          "Because the application collects nothing, this section concerns the website only. We use the information described in Section 2 for the following purposes.",
+        ],
+        bullets: [
+          "To create your account, authenticate you, and keep you signed in.",
+          "To display your comments, submissions and campaign signatures where you posted them, attributed to your account.",
+          "To respond to your correspondence and to provide support.",
+          "To understand which research datasets are used and to prevent bulk scraping of the archive.",
+          "To operate, maintain and secure the Services, and to detect and prevent fraud, abuse and technical problems.",
+          "To comply with applicable law and to enforce our terms.",
+        ],
+      },
+      {
+        paragraphs: [
+          "We do not use your information for advertising, we do not build advertising or behavioral profiles, and we do not use anything you provide to train machine learning models, whether our own or a third party's.",
+        ],
+      },
     ],
   },
   {
-    id: "sharing",
-    title: "Who else handles your information",
-    paragraphs: [
-      "We use a small number of companies to run the website. They process information on our instructions, under their own written security commitments, and they are not permitted to use it for their own purposes. None of them receives anything from the app.",
-    ],
-    bullets: [
-      "Supabase holds accounts, sign-in records, comments, signatures and download logs.",
-      "Vercel hosts the website and keeps ordinary server logs.",
-      "Google receives nothing unless you choose Google sign-in, in which case Google gives us your name and email to create the account.",
-      "Apple distributes the app and shows us anonymous, aggregate download figures in its own dashboard. Apple never tells us who you are, and the app sends Apple nothing on our behalf.",
-    ],
-    after: [
-      "We do not sell your information, we do not rent it, and we do not trade it. The only other time we would hand anything over is if the law required it, and we would tell you unless we were legally barred from doing so.",
-    ],
-  },
-  {
-    id: "never",
-    title: "What we never do",
-    bullets: [
-      "No advertising, anywhere on the site or in the app.",
-      "No third-party analytics, no tracking pixels, no advertising identifiers, no cross-site or cross-app tracking.",
-      "No selling or renting of anything about you, to anyone, ever.",
-      "No location data leaving your phone.",
-      "No account anywhere in the app, and no account needed on the site to read, listen, or walk.",
-      "No use of anything you write to train a model, ours or anyone else's.",
+    id: "disclose",
+    title: "How We Disclose Information",
+    clauses: [
+      {
+        heading: "4.1 Service Providers",
+        paragraphs: [
+          "We disclose information to a small number of service providers that process it on our behalf, on our instructions, and under contractual confidentiality and security obligations. They are not permitted to use it for their own purposes.",
+        ],
+        defs: [
+          {
+            term: "Supabase",
+            text: "Database and authentication provider. Holds accounts, authentication records, comments, campaign signatures, submissions and research download records.",
+          },
+          {
+            term: "Vercel",
+            text: "Hosting provider for the website. Generates and retains the server logs described in Section 2.2.",
+          },
+          {
+            term: "Google",
+            text: "Identity provider, and only if you choose to register or sign in using Google. Google provides your name and email address to us for that purpose.",
+          },
+          {
+            term: "Apple",
+            text: "Distributes the application through the App Store and provides us with anonymous, aggregate download statistics through its own dashboard. Apple does not identify you to us, and the application transmits nothing to Apple on our behalf.",
+          },
+        ],
+      },
+      {
+        heading: "4.2 Legal and Safety Disclosures",
+        paragraphs: [
+          "We may disclose information if we are required to do so by law, subpoena or other legal process, or where we believe in good faith that disclosure is necessary to protect the rights, property or safety of Rooted Forward, our users or the public. Where we are legally permitted to notify you of such a request, we will.",
+        ],
+      },
+      {
+        heading: "4.3 Business Transfers",
+        paragraphs: [
+          "Rooted Forward is a nonprofit and is not for sale. If it were ever to merge with or transfer its programs to another organization, we would notify you before any personal information became subject to a different privacy policy, and you would have the opportunity to delete your account first.",
+        ],
+      },
+      {
+        heading: "4.4 No Sale or Sharing of Personal Information",
+        paragraphs: [
+          "We do not sell personal information, we do not rent or trade it, and we do not share it for cross-context behavioral advertising, as those terms are defined under the California Consumer Privacy Act. We have never done so.",
+        ],
+      },
     ],
   },
   {
     id: "retention",
-    title: "How long we keep things",
-    bullets: [
-      "Your account and profile stay until you delete them.",
-      "Comments, submissions and campaign signatures stay until you delete your account, which removes them with it.",
-      "Research download records are kept for two years, then deleted.",
-      "Server logs are kept by our host for about thirty days.",
-      "Nothing from the app is on our side at all, so there is nothing for us to keep or to delete. Removing the app removes everything it held.",
-    ],
-  },
-  {
-    id: "rights",
-    title: "Your choices and your rights",
-    paragraphs: [
-      "You can ask us for a copy of everything tied to your account, ask us to correct something wrong, ask us to delete it, or withdraw a permission you gave us earlier. Write to contact@rooted-forward.org and we will answer within thirty days. We will not charge you and we will not treat you differently for asking.",
-      "If you are in California, the European Union, or the United Kingdom, the rights your law gives you are the rights described here, and we extend them to everyone regardless of where they live.",
-    ],
-  },
-  {
-    id: "delete",
-    title: "Deleting your account",
-    paragraphs: [
-      "This applies to the website only. The app has no account to delete, and deleting the app removes everything it ever held, since all of it was on your phone.",
-      "To delete a website account, email contact@rooted-forward.org from the address on the account and we will remove it within seven days. Deletion is permanent. Your profile, your sign-in record, your comments, your submissions and your signatures go with it. We cannot restore an account once it is gone.",
+    title: "Data Retention",
+    clauses: [
+      {
+        paragraphs: [
+          "We retain personal information only for as long as it serves the purposes described in Section 3, after which it is deleted.",
+        ],
+        defs: [
+          {
+            term: "Account information",
+            text: "Retained until you delete your account. Deletion is described in Section 7.2.",
+          },
+          {
+            term: "Content you submit",
+            text: "Retained until you delete it or delete your account, which removes it.",
+          },
+          {
+            term: "Research archive activity",
+            text: "Retained for two years, then deleted.",
+          },
+          {
+            term: "Server log data",
+            text: "Retained by our hosting provider for approximately thirty days.",
+          },
+          {
+            term: "Application data",
+            text: "Never held by us at all. Tour progress and location remain on your device and are removed when you remove the application.",
+          },
+        ],
+      },
     ],
   },
   {
     id: "security",
-    title: "How we protect it",
-    paragraphs: [
-      "Everything travels over HTTPS. Passwords are hashed by our sign-in provider and are never stored or seen by us in readable form. Access to the database is limited to the people who run the organization. The app holds no credentials at all, so there is nothing in it to steal.",
-      "No system is perfect, and we will not pretend otherwise. If a breach ever affects your information we will tell you and the relevant authorities as quickly as the law requires.",
+    title: "How We Secure Information",
+    clauses: [
+      {
+        paragraphs: [
+          "All traffic to and from the Services is encrypted in transit using HTTPS. Passwords are hashed by our authentication provider using industry-standard algorithms and are never stored or seen by us in readable form. Access to the production database is limited to the individuals who administer the organization. The application stores no credentials of any kind.",
+          "No method of transmission or storage is completely secure, and we do not claim otherwise. In the event of a data breach affecting your personal information, we will notify you and the appropriate authorities as required by applicable law.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "rights",
+    title: "Your Privacy Rights and Choices",
+    clauses: [
+      {
+        heading: "7.1 Rights Available to You",
+        paragraphs: [
+          "Depending on where you live, you may have some or all of the rights below under applicable law. As a matter of policy we extend all of them to every user regardless of location.",
+        ],
+        bullets: [
+          "The right to know what personal information we hold about you and how we use and disclose it.",
+          "The right to access a copy of that information in a portable format.",
+          "The right to correct information that is inaccurate.",
+          "The right to delete your personal information.",
+          "The right to withdraw consent you previously gave, at any time.",
+          "The right to opt out of the sale or sharing of personal information, which we note we do not do.",
+          "The right not to receive discriminatory treatment for exercising any of these rights.",
+        ],
+      },
+      {
+        heading: "7.2 Exercising Your Rights",
+        paragraphs: [
+          "To exercise any right above, email contact@rooted-forward.org from the address associated with your account. We will respond within thirty days and we do not charge a fee. We may ask you to confirm your identity before acting on a request, in order to protect your account. An authorized agent may submit a request on your behalf with written proof of authorization.",
+          "To delete your account, email contact@rooted-forward.org from the address on the account. Deletion is permanent and takes effect within seven days. It removes your profile, your authentication record, your comments, your submissions and your campaign signatures. It cannot be reversed, and we are unable to restore an account once it has been deleted.",
+          "The application has no account and no sign-in, so there is nothing in it to delete. Removing the application from your device removes everything it held.",
+        ],
+      },
+      {
+        heading: "7.3 Cookies",
+        paragraphs: [
+          "The only cookie we set is the authentication cookie described in Section 2.2. Because it is strictly necessary to keep you signed in, there is no consent banner and nothing to opt out of. If you sign out or clear your browser's cookies, it is removed. We use no advertising, analytics or third-party cookies, so there is no cross-site tracking to disable.",
+        ],
+      },
+      {
+        heading: "7.4 Location Permission in the Application",
+        paragraphs: [
+          "The application requests location access once, when you tap Find me on the tour map, and it requests access only while the application is in use. It never requests background location. If you decline, every part of the tour continues to work.",
+          "You may withdraw the permission at any time by opening the iOS Settings application and selecting Privacy and Security, then Location Services, then Walk Hyde Park. Because your location is processed on your device and is never transmitted, withdrawing permission leaves nothing behind on our side to delete.",
+        ],
+      },
     ],
   },
   {
     id: "children",
-    title: "Children",
-    paragraphs: [
-      "The site and the app are made for a general audience, including students, and the tour is written to be walked by a high school class. We do not knowingly collect personal information from anyone under 13. Nothing about reading, listening or walking requires an account, so a child can use all of it without giving us anything.",
-      "If you believe a child under 13 has created an account, write to contact@rooted-forward.org and we will delete it.",
+    title: "Children's Privacy",
+    clauses: [
+      {
+        paragraphs: [
+          "The Services are intended for a general audience, including students, and the walking tour is written to be used by secondary school classes. We do not knowingly collect personal information from children under 13 years of age. No account is required to read, listen to or walk any part of the Services, so a child may use all of it without providing anything to us.",
+          "If you believe that a child under 13 has provided us with personal information, please email contact@rooted-forward.org and we will delete it promptly.",
+        ],
+      },
     ],
   },
   {
     id: "international",
-    title: "People outside the United States",
-    paragraphs: [
-      "We are based in Chicago and our providers store data in the United States. If you use the site or the app from elsewhere, your information is processed here, where privacy law may differ from your own country's.",
+    title: "International Users and Data Transfers",
+    clauses: [
+      {
+        paragraphs: [
+          "Rooted Forward is based in Chicago, Illinois, in the United States, and our service providers store data in the United States. If you access the Services from outside the United States, your information is transferred to and processed in the United States, where data protection law may differ from that of your country.",
+          "Where we transfer personal data from the European Economic Area or the United Kingdom, we rely on the European Commission's Standard Contractual Clauses as incorporated into our agreements with our service providers.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "third-party",
+    title: "Third-Party Links and Services",
+    clauses: [
+      {
+        paragraphs: [
+          "The Services link to external websites, including archives, libraries, newspapers and the sources cited on every tour stop. We do not control those sites and this Privacy Policy does not apply to them. We encourage you to read the privacy policy of any site you visit.",
+          "Tapping Directions in the application opens your device's own maps application. What that application does with the request is governed by its own privacy policy and by your device settings.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "jurisdiction",
+    title: "Jurisdiction-Specific Disclosures",
+    clauses: [
+      {
+        heading: "11.1 California Residents",
+        paragraphs: [
+          "Under the California Consumer Privacy Act, as amended, California residents are entitled to the disclosures in this section and to the rights listed in Section 7. In the twelve months preceding the date of this policy, we collected the categories of personal information marked below. We disclosed the marked categories to the service providers listed in Section 4.1 for the business purposes described in Section 3. We sold no personal information and shared none for cross-context behavioral advertising.",
+        ],
+      },
+      {
+        heading: "11.2 EEA and United Kingdom Residents",
+        paragraphs: [
+          "Rooted Forward is the controller of the personal data described in this policy. We rely on the following legal bases under the General Data Protection Regulation and the UK GDPR.",
+        ],
+        defs: [
+          {
+            term: "Consent",
+            text: "Creating an account, posting content, and granting location permission. You may withdraw consent at any time, as described in Section 7.",
+          },
+          {
+            term: "Legitimate interests",
+            text: "Operating and securing the Services, preventing abuse of the research archive, and responding to correspondence. We have assessed that these interests are not overridden by your rights.",
+          },
+          {
+            term: "Legal obligation",
+            text: "Retaining or disclosing information where the law requires it.",
+          },
+        ],
+      },
+      {
+        paragraphs: [
+          "You have the right to lodge a complaint with your local supervisory authority. In the United Kingdom this is the Information Commissioner's Office. We would appreciate the chance to address your concern first, at contact@rooted-forward.org.",
+        ],
+      },
     ],
   },
   {
     id: "changes",
-    title: "Changes to this policy",
-    paragraphs: [
-      "If we change what we collect or what we do with it, we will update this page and change the date at the top. If the change is a significant one, we will say so plainly at the top of the page rather than hoping you notice.",
+    title: "Changes to This Policy",
+    clauses: [
+      {
+        paragraphs: [
+          "We may update this Privacy Policy from time to time. When we do, we will revise the date at the top of this page. If a change materially affects what we collect or how we use it, we will state that plainly at the top of this page rather than rely on you to notice the new date.",
+          "Your continued use of the Services after a revision takes effect constitutes acceptance of the revised policy.",
+        ],
+      },
     ],
   },
   {
     id: "contact",
-    title: "How to reach us",
-    paragraphs: [
-      "Email contact@rooted-forward.org with anything about this policy, a request about your information, or a question you think this page should have answered. A person reads it.",
+    title: "Contact Us",
+    clauses: [
+      {
+        paragraphs: [
+          "If you have questions about this Privacy Policy, wish to exercise a right described in Section 7, or believe we hold information about you that should be corrected or removed, please contact us. A person reads every message.",
+        ],
+      },
     ],
   },
 ];
 
-function DataTable({ rows }: { rows: Row[] }) {
+/** The standard CCPA category list, answered honestly for this site. */
+const CCPA_ROWS: { cat: string; examples: string; collected: string }[] = [
+  {
+    cat: "A. Identifiers",
+    examples: "Real name, email address, IP address, account identifier",
+    collected: "Yes, website only",
+  },
+  {
+    cat: "B. Categories in Cal. Civ. Code 1798.80(e)",
+    examples: "Name and email address",
+    collected: "Yes, website only",
+  },
+  {
+    cat: "C. Protected classification characteristics",
+    examples: "Race, age, sex, national origin, disability",
+    collected: "No",
+  },
+  {
+    cat: "D. Commercial information",
+    examples: "Records of products or services purchased",
+    collected: "No",
+  },
+  {
+    cat: "E. Biometric information",
+    examples: "Fingerprints, faceprints, voiceprints",
+    collected: "No",
+  },
+  {
+    cat: "F. Internet or other network activity",
+    examples: "Pages requested, research files downloaded, server logs",
+    collected: "Yes, website only",
+  },
+  {
+    cat: "G. Geolocation data",
+    examples: "Physical location or movements",
+    collected: "No. Processed on your device and never transmitted",
+  },
+  {
+    cat: "H. Sensory data",
+    examples: "Audio, electronic, visual or similar information",
+    collected: "No",
+  },
+  {
+    cat: "I. Professional or employment information",
+    examples: "Job history, performance evaluations",
+    collected: "No",
+  },
+  {
+    cat: "J. Non-public education information",
+    examples: "Student records under FERPA",
+    collected: "No",
+  },
+  {
+    cat: "K. Inferences drawn from other personal information",
+    examples: "Profiles reflecting preferences or behavior",
+    collected: "No",
+  },
+];
+
+function Paragraphs({ items }: { items: string[] }) {
   return (
-    <div className="mt-6 overflow-hidden rounded-sm border border-border">
-      <div className="hidden bg-cream-dark/60 md:grid md:grid-cols-[1.1fr_1.3fr_1fr]">
-        {["What", "Why we have it", "Where it lives"].map((h) => (
-          <div
-            key={h}
-            className="border-r border-border px-4 py-3 font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-forest last:border-r-0"
-          >
-            {h}
-          </div>
-        ))}
-      </div>
-      {rows.map((row, i) => (
-        <div
-          key={row.item}
-          className={`grid gap-1 px-4 py-4 md:grid-cols-[1.1fr_1.3fr_1fr] md:gap-0 md:px-0 md:py-0 ${
-            i > 0 ? "border-t border-border" : ""
-          } ${i % 2 === 1 ? "bg-cream-dark/25" : ""}`}
+    <>
+      {items.map((p, i) => (
+        <p
+          key={i}
+          className="mt-4 font-body text-[15px] leading-[1.75] text-ink/80"
         >
-          <div className="font-body text-sm font-semibold leading-snug text-ink md:border-r md:border-border md:px-4 md:py-4">
-            {row.item}
-          </div>
-          <div className="font-body text-sm leading-relaxed text-ink/75 md:border-r md:border-border md:px-4 md:py-4">
-            {row.why}
-          </div>
-          <div className="font-body text-sm leading-relaxed text-warm-gray md:px-4 md:py-4">
-            {row.where}
-          </div>
+          {p}
+        </p>
+      ))}
+    </>
+  );
+}
+
+function Defs({ items }: { items: { term: string; text: string }[] }) {
+  return (
+    <dl className="mt-4 space-y-3.5">
+      {items.map((d) => (
+        <div key={d.term}>
+          <dt className="font-body text-[15px] font-semibold text-ink">
+            {d.term}
+          </dt>
+          <dd className="mt-1 font-body text-[15px] leading-[1.75] text-ink/75">
+            {d.text}
+          </dd>
         </div>
       ))}
+    </dl>
+  );
+}
+
+function CcpaTable() {
+  return (
+    <div className="mt-5 overflow-x-auto">
+      <table className="w-full min-w-[36rem] border-collapse border border-border text-left">
+        <thead>
+          <tr className="bg-cream-dark/60">
+            {["Category", "Examples", "Collected"].map((h) => (
+              <th
+                key={h}
+                scope="col"
+                className="border border-border px-3 py-2.5 font-body text-[11px] font-semibold uppercase tracking-[0.15em] text-forest"
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {CCPA_ROWS.map((r) => (
+            <tr key={r.cat} className="align-top">
+              <th
+                scope="row"
+                className="border border-border px-3 py-2.5 font-body text-[13.5px] font-semibold leading-snug text-ink"
+              >
+                {r.cat}
+              </th>
+              <td className="border border-border px-3 py-2.5 font-body text-[13.5px] leading-snug text-ink/75">
+                {r.examples}
+              </td>
+              <td className="border border-border px-3 py-2.5 font-body text-[13.5px] leading-snug text-ink/75">
+                {r.collected}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -283,152 +509,123 @@ function DataTable({ rows }: { rows: Row[] }) {
 export default function PrivacyPage() {
   return (
     <PageTransition>
-      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
+      <div className="bg-cream pb-20 pt-16 md:pt-24">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+          {/* Header */}
+          <h1 className="font-display text-4xl text-ink md:text-5xl">
             Privacy Policy
-          </p>
-          <h1 className="mt-4 font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-            What we keep, and what we don&apos;t.
           </h1>
-          <p className="mt-5 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
-            This page covers rooted-forward.org and the Walk Hyde Park app for
-            iPhone and iPad. The app collects nothing at all. On the website we
-            keep only what an account needs, and this page says plainly what
-            that is, why we have it, how long we hold it, and how to get rid of
-            it.
+          <p className="mt-3 font-body text-sm text-warm-gray">
+            Last updated {LAST_UPDATED}
           </p>
-          <p className="mt-6 font-body text-sm text-warm-gray">
-            Effective {EFFECTIVE}. Last updated {EFFECTIVE}.
-          </p>
-        </div>
-      </section>
 
-      <section className="border-b border-border bg-cream-dark/40 py-12 md:py-14">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            The short version
-          </h2>
-          <ul className="mt-5 space-y-3">
-            {SUMMARY.map((line) => (
-              <li key={line} className="flex gap-3">
-                <span
-                  aria-hidden
-                  className="mt-[0.6em] h-px w-4 shrink-0 bg-rust"
-                />
-                <span className="font-body text-base leading-relaxed text-ink/85">
-                  {line}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 font-body text-sm italic leading-relaxed text-warm-gray">
-            The short version is a summary, not the policy. The sections below
-            are the policy.
-          </p>
-        </div>
-      </section>
+          <div className="mt-8 border-t border-border pt-8">
+            <Paragraphs
+              items={[
+                "Rooted Forward (“Rooted Forward,” “we,” “us” or “our”) is a nonprofit organization in Chicago, Illinois. We operate the website at rooted-forward.org and the Walk Hyde Park application for iPhone and iPad. This Privacy Policy describes the personal information we collect, how we use and disclose it, how long we retain it, and the rights and choices available to you.",
+              ]}
+            />
+            <p className="mt-4 font-body text-[15px] font-semibold leading-[1.75] text-forest">
+              The Walk Hyde Park application collects no personal information of
+              any kind. It contains no account, no sign-in, no analytics and no
+              tracking technology. The provisions below concerning accounts,
+              stored records and disclosure apply to the website only.
+            </p>
+          </div>
 
-      <section className="border-b border-border bg-cream py-10">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-warm-gray">
-            Contents
-          </h2>
-          <ol className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {/* Contents */}
+          <nav
+            aria-label="Contents"
+            className="mt-10 border border-border bg-cream-dark/30 px-6 py-5"
+          >
+            <h2 className="font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-gray">
+              Contents
+            </h2>
+            <ol className="mt-3 space-y-1.5">
+              {SECTIONS.map((s, i) => (
+                <li key={s.id} className="flex gap-2.5">
+                  <span className="font-body text-[14px] tabular-nums text-warm-gray">
+                    {i + 1}.
+                  </span>
+                  <a
+                    href={`#${s.id}`}
+                    className="font-body text-[14px] text-forest underline decoration-border underline-offset-4 transition-colors hover:decoration-forest"
+                  >
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          {/* Body */}
+          <div className="mt-12 space-y-11">
             {SECTIONS.map((section, i) => (
-              <li key={section.id} className="flex gap-3">
-                <span className="font-body text-sm tabular-nums text-rust">
-                  {i + 1}.
-                </span>
-                <a
-                  href={`#${section.id}`}
-                  className="font-body text-sm leading-relaxed text-ink/80 underline decoration-border underline-offset-4 transition-colors hover:text-forest hover:decoration-forest"
-                >
-                  {section.title}
-                </a>
-              </li>
+              <section
+                key={section.id}
+                id={section.id}
+                className="scroll-mt-28"
+              >
+                <h2 className="font-display text-2xl leading-snug text-forest">
+                  {i + 1}. {section.title}
+                </h2>
+
+                {section.clauses.map((clause, j) => (
+                  <div key={j} className={clause.heading ? "mt-6" : ""}>
+                    {clause.heading && (
+                      <h3 className="font-body text-[15px] font-semibold text-ink">
+                        {clause.heading}
+                      </h3>
+                    )}
+                    {clause.paragraphs && (
+                      <Paragraphs items={clause.paragraphs} />
+                    )}
+                    {clause.bullets && (
+                      <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-rust">
+                        {clause.bullets.map((b) => (
+                          <li
+                            key={b}
+                            className="font-body text-[15px] leading-[1.75] text-ink/80"
+                          >
+                            {b}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {clause.defs && <Defs items={clause.defs} />}
+                    {section.id === "jurisdiction" &&
+                      clause.heading?.startsWith("11.1") && <CcpaTable />}
+                  </div>
+                ))}
+
+                {section.id === "contact" && (
+                  <address className="mt-5 border border-border bg-cream-dark/30 px-6 py-5 not-italic">
+                    <p className="font-body text-[15px] font-semibold text-ink">
+                      Rooted Forward
+                    </p>
+                    <p className="mt-1 font-body text-[15px] leading-[1.75] text-ink/75">
+                      Chicago, Illinois, United States
+                    </p>
+                    <p className="mt-1 font-body text-[15px] leading-[1.75]">
+                      <a
+                        href="mailto:contact@rooted-forward.org"
+                        className="text-forest underline decoration-border underline-offset-4 transition-colors hover:decoration-forest"
+                      >
+                        contact@rooted-forward.org
+                      </a>
+                    </p>
+                  </address>
+                )}
+              </section>
             ))}
-          </ol>
-        </div>
-      </section>
+          </div>
 
-      <section className="bg-cream py-14 md:py-20">
-        <div className="mx-auto max-w-3xl space-y-14 px-6">
-          {SECTIONS.map((section, i) => (
-            <div key={section.id} id={section.id} className="scroll-mt-28">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <h2 className="mt-3 font-display text-2xl text-forest md:text-3xl">
-                {section.title}
-              </h2>
-
-              {section.paragraphs && (
-                <div className="mt-4 space-y-4">
-                  {section.paragraphs.map((p, j) => (
-                    <p
-                      key={j}
-                      className="font-body text-base leading-relaxed text-ink/80"
-                    >
-                      {p}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {section.rows && <DataTable rows={section.rows} />}
-
-              {section.bullets && (
-                <ul className="mt-5 space-y-2.5">
-                  {section.bullets.map((b) => (
-                    <li key={b} className="flex gap-3">
-                      <span
-                        aria-hidden
-                        className="mt-[0.62em] h-1.5 w-1.5 shrink-0 rounded-full bg-rust"
-                      />
-                      <span className="font-body text-base leading-relaxed text-ink/80">
-                        {b}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {section.after && (
-                <div className="mt-5 space-y-4">
-                  {section.after.map((p, j) => (
-                    <p
-                      key={j}
-                      className="font-body text-base leading-relaxed text-ink/80"
-                    >
-                      {p}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-forest py-14 md:py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/50">
-            Questions
-          </p>
-          <p className="mt-4 font-display text-2xl text-cream md:text-3xl">
-            <a
-              href="mailto:contact@rooted-forward.org"
-              className="underline decoration-cream/30 underline-offset-[6px] transition-colors hover:decoration-cream"
-            >
-              contact@rooted-forward.org
-            </a>
-          </p>
-          <p className="mt-5 font-body text-base leading-relaxed text-cream/65">
-            Rooted Forward, Chicago, Illinois. Effective {EFFECTIVE}.
+          <p className="mt-14 border-t border-border pt-6 font-body text-sm text-warm-gray">
+            This Privacy Policy is effective as of {LAST_UPDATED} and supersedes
+            all prior versions.
           </p>
         </div>
-      </section>
+      </div>
     </PageTransition>
   );
 }
