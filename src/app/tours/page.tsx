@@ -435,9 +435,8 @@ export default function ToursPage() {
                   No iPhone
                 </p>
                 <p className="mt-4 font-body text-base leading-relaxed text-cream/75">
-                  The Hyde Park walk runs in a browser too, with the same
-                  audio, map, and photographs. It is not as good on the street,
-                  but it is the whole tour.
+                  The Hyde Park walk runs in a browser too. It is not as good
+                  on the street, but it is the whole tour.
                 </p>
                 <Link
                   href="/tours/hyde-park-walk"
