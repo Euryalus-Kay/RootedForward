@@ -1,306 +1,482 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import SurveyRule from "@/components/ui/SurveyRule";
-import WalkExperience from "@/components/tours/walk/WalkExperience";
-import { WALK_INTRO } from "@/components/tours/walk/WalkIntro";
-import { HYDE_PARK_WALK } from "@/lib/tours/hyde-park-walk";
-
 /* ------------------------------------------------------------------ */
 /*  /tours                                                             */
 /*                                                                     */
-/*  The Hyde Park racial-history audio walking tour. Starts at Paul   */
-/*  Cornell's stone by 53rd Street, crosses the neighborhood he       */
-/*  built, and names the instruments that decided who could live in   */
-/*  it. Same player, map, and plate design as the earlier Jackson     */
-/*  Park walk (that tour's data survives in jackson-park-walk.ts).    */
-/*  The map is our own SVG built from Census TIGER geometry; the      */
-/*  audio is pregenerated and served from /public.                    */
+/*  Rebuilt July 2026. This page no longer hosts a tour of its own.    */
+/*  It explains what the tours are, lists the routes that are          */
+/*  finished, and sends people to the iPhone app. The in-browser       */
+/*  Hyde Park player moved to /tours/hyde-park-walk and stays linked    */
+/*  as the fallback for anyone without an iPhone.                      */
+/*                                                                     */
+/*  Two things are deliberately kept in one place each, so the page    */
+/*  is cheap to update later.                                          */
+/*    - The App Store link lives in src/lib/app-store.ts. Fill it in   */
+/*      and every button here becomes a live link.                     */
+/*    - The list of tours lives in src/lib/tours/catalog.ts. Add an    */
+/*      entry and it shows up in the list below.                       */
+/*                                                                     */
+/*  Voice rules from the owner apply. No aphorisms, no balanced-pair   */
+/*  sentences, no numbered rows, no triads. Say the concrete thing.    */
 /* ------------------------------------------------------------------ */
 
-const tour = HYDE_PARK_WALK;
+import type { Metadata } from "next";
+import Link from "next/link";
+import PageTransition from "@/components/layout/PageTransition";
+import AppStoreButton from "@/components/app/AppStoreButton";
+import { APP } from "@/lib/app-store";
+import { TOUR_CATALOG } from "@/lib/tours/catalog";
 
 export const metadata: Metadata = {
-  title: "Hyde Park Walking Tour | Rooted Forward",
+  title: "Tours | Rooted Forward",
   description:
-    "A free self-guided audio tour of Hyde Park, told in the order it happened, from Paul Cornell's stone through the fair and the university to Harper Court. Thirteen stops on how the neighborhood was built, who it was built for, and the paperwork that kept it that way.",
+    "Free self-guided audio tours of the neighborhoods we research, in the Rooted Forward iPhone app. Walk Hyde Park in Chicago is the first route, thirteen stops and about four miles.",
 };
+
+/* ------------------------------------------------------------------ */
+/*  Line icons, same heroicons-outline vocabulary as the home page.    */
+/* ------------------------------------------------------------------ */
+
+const ICON = "h-6 w-6";
+
+function SpeakerIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+    </svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+    </svg>
+  );
+}
+
+function PhotoIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+    </svg>
+  );
+}
+
+function SignalSlashIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 .53 4.575M10.61 2.844a9.75 9.75 0 0 1 8.548 8.549M3 3l18 18M6.364 6.364a9.75 9.75 0 0 0 1.79 11.272" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+const FEATURES = [
+  {
+    icon: SpeakerIcon,
+    title: "Narration at every stop",
+    body: "You stand where it happened and hear what happened there. The whole script is printed under the player, so you can read it instead if you would rather not use headphones.",
+  },
+  {
+    icon: MapPinIcon,
+    title: "A map that knows where you are",
+    body: "The route is drawn over the 1929 government survey of the neighborhood. Turn on location and your own dot appears on it, along with walking directions between stops.",
+  },
+  {
+    icon: PhotoIcon,
+    title: "The photographs, credited",
+    body: "Archival pictures of each corner sit next to the same view today, and every source is named on the stop it belongs to.",
+  },
+  {
+    icon: SignalSlashIcon,
+    title: "Works with no signal",
+    body: "Audio, photographs, and the map are all on the phone once the app is installed, so a dead zone or a dead data plan does not end the walk.",
+  },
+  {
+    icon: LockIcon,
+    title: "Free, with no account",
+    body: "Nothing to sign up for, no ads, and no tracking. If you allow location, it is used to draw your dot and never leaves the phone.",
+  },
+];
+
+/* A phone shell for the app screenshots, drawn in the site palette. */
+function Phone({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`rounded-[1.5rem] border border-ink/15 bg-ink p-1.5 shadow-[0_18px_40px_-18px_rgba(27,58,45,0.45)] sm:rounded-[2rem] sm:p-2 ${className}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="block w-full rounded-[1.1rem] object-cover sm:rounded-[1.5rem]"
+      />
+    </div>
+  );
+}
 
 export default function ToursPage() {
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Opener */}
-      <section className="relative overflow-hidden border-b border-border bg-cream pb-10 pt-20 md:pb-20 md:pt-28">
-        {/* the 1940 HOLC security map of Chicago, the redlining map
-            itself, washed into the paper */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/media/site/holc-chicago-1940.jpg"
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.14] mix-blend-multiply [mask-image:radial-gradient(ellipse_75%_90%_at_70%_40%,black_45%,transparent)] md:block"
-        />
-        <div className="relative mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Self-guided audio tour
-          </p>
-          <h1 className="walk-title mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.08] text-ink md:text-6xl">
-            {tour.title}
-          </h1>
-          <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
-            {tour.dek}
-          </p>
+    <PageTransition>
+      {/* ============================================================
+          OPENER
+          What the tours are, and the app button, next to the app
+          itself. The 1940 HOLC map washes in behind the type.
+          ============================================================ */}
+      <section className="relative overflow-hidden border-b border-border bg-cream">
+        <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-20 md:pb-24 md:pt-28">
+          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-10">
+            <div className="md:col-span-7">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+                Tours
+              </p>
+              <h1 className="mt-4 max-w-[15ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
+                Take the tour on your phone.
+              </h1>
+              <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
+                Our student researchers take one neighborhood at a time and
+                work out how race shaped it, out of the deeds, the appraisal
+                maps, and the plans the city drew. What they find becomes a
+                free audio tour you can walk at your own pace, whenever you
+                want.
+              </p>
+              <p className="mt-4 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
+                The tours live in our iPhone app. Hyde Park in Chicago is the
+                first route finished, and more neighborhoods are being
+                researched now.
+              </p>
 
-          <p className="mt-6 font-display text-lg italic text-ink/65">
-            {`${tour.distanceMiles} miles, mostly flat`}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-5">
-            <a
-              href="#start"
-              className="inline-flex items-center rounded-[3px] bg-rust px-9 py-4 font-body text-base font-semibold text-white shadow-[5px_5px_0_0_rgba(27,58,45,0.18)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
-            >
-              Start the tour
-            </a>
-            <a
-              href="#before-you-walk"
-              className="font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
-            >
-              Hours and what to know first
-            </a>
-          </div>
-          <SurveyRule className="mt-10 hidden text-rust md:block" />
-        </div>
-      </section>
-
-      {/* Why this walk: the founder's op-ed, in full, before the
-          first stop. */}
-      <section aria-label="Why this walk" className="border-b border-border bg-cream py-12 md:py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="max-w-[62ch]">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-              Before you start
-            </p>
-            <h2 className="walk-title mt-3 text-2xl font-semibold leading-snug text-forest md:text-3xl">
-              {WALK_INTRO.title}
-            </h2>
-            <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
-              {WALK_INTRO.paragraphs.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-            <p className="mt-5 font-display text-[13px] italic text-ink/60">
-              {WALK_INTRO.byline}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* The plate index: a small framed photograph of each site.
-          Tap one to jump straight to that stop in the tour below. */}
-      <section aria-label="The thirteen stops and three detours" className="border-b border-border bg-[#FBF8F2] py-8 md:py-10">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 className="walk-title text-xl font-semibold text-forest">The stops</h2>
-            <p className="font-display text-[13px] italic text-ink/60">
-              Pick a plate to jump ahead
-            </p>
-          </div>
-          <ol className="-mx-6 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-6 md:gap-3.5 md:overflow-visible md:px-0 md:pb-0">
-            {tour.stops.map((s) => (
-              <li key={s.id} className="shrink-0 snap-start">
+              <div className="mt-9 flex flex-wrap items-start gap-x-10 gap-y-5">
+                <AppStoreButton tone="rust" />
                 <a
-                  href={`#stop-${s.number}`}
-                  aria-label={`Jump to stop ${s.number}, ${s.title}`}
-                  className="group block w-28 md:w-auto"
+                  href="#tours"
+                  className="group mt-2 font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
                 >
-                  <span className="walk-plate-flush block rounded-[2px] p-1 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
-                    {/* the site as it looks today, so walkers know
-                        what they are heading toward */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={(s.nowImage ?? s.images[0]).src.replace(
-                        "/hyde-park-walk/",
-                        "/hyde-park-walk/thumbs/"
-                      )}
-                      alt=""
-                      loading="lazy"
-                      className="aspect-[3/2] w-full rounded-[1px] object-cover"
-                    />
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="mt-1.5 block text-center font-display text-sm text-ink/60"
-                  >
-                    {s.number}
+                  See the tours{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
                   </span>
                 </a>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* The tour itself */}
-      <section id="tour" className="scroll-mt-16">
-        <WalkExperience tour={tour} />
-      </section>
-
-      {/* Before you walk */}
-      <section
-        id="before-you-walk"
-        className="scroll-mt-16 border-t border-border bg-cream-dark/50 py-14 md:py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            Before you walk
-          </p>
-          <h2 className="walk-title mt-3 text-3xl font-semibold text-forest md:text-4xl">
-            Good to know
-          </h2>
-          <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {tour.practical.map((item, i) => (
-              <div key={item.title} className="walk-plate rounded-[3px] p-6">
-                <div className="flex items-center gap-3">
-                  <span aria-hidden="true" className="text-rust">
-                    {i === 0 && (
-                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
-                        <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.5" />
-                        <path d="M8 4.6V8l2.4 1.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                    )}
-                    {i === 1 && (
-                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
-                        <path d="M2 13c2.5 0 2.5-2.4 5-2.4S9.5 13 12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M3.5 8.5 6 3.2a.9.9 0 0 1 1.6 0l1.1 2.3M10.3 8.6l1.5-3.1a.8.8 0 0 1 1.5 0l1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                    )}
-                    {i === 2 && (
-                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
-                        <path d="M3 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <rect x="2" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                        <rect x="11" y="10" width="3" height="4" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                      </svg>
-                    )}
-                  </span>
-                  <h3 className="font-display text-xl text-forest">{item.title}</h3>
-                </div>
-                <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
-                  {item.text}
-                </p>
               </div>
-            ))}
+            </div>
+
+            {/* The app itself, on a panel of the 1940 HOLC map so the
+                phone has something to sit against. */}
+            <div className="md:col-span-5">
+              <div className="relative overflow-hidden rounded-sm border border-border bg-cream-dark px-8 py-10 md:px-6">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/media/site/holc-chicago-1940.jpg"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.16] mix-blend-multiply"
+                />
+                <div className="relative mx-auto max-w-[14rem]">
+                  <Phone
+                    src={APP.screenshots[1].src}
+                    alt={APP.screenshots[1].alt}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Sources */}
-      <section className="border-t border-border bg-cream py-14 md:py-20">
+      {/* ============================================================
+          WHAT YOU GET
+          ============================================================ */}
+      <section className="bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            The app
+          </p>
+          <h2 className="mt-4 max-w-[18ch] font-display text-3xl leading-tight text-forest md:text-4xl">
+            What you get when you download it
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-2">
+            {FEATURES.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div key={feature.title}>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-rust/45 text-rust">
+                    <Icon />
+                  </div>
+                  <h3 className="mt-4 font-display text-2xl text-ink">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/75">
+                    {feature.body}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* The rest of the screens. A swipeable strip on phones, a
+              row of three once there is room for one. */}
+          <div className="mx-auto mt-16 max-w-3xl">
+            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-7 sm:overflow-visible sm:px-0 sm:pb-0">
+              {[APP.screenshots[0], APP.screenshots[2], APP.screenshots[3]].map(
+                (shot) => (
+                  <div key={shot.src} className="w-44 shrink-0 snap-start sm:w-auto">
+                    <Phone src={shot.src} alt={shot.alt} />
+                  </div>
+                )
+              )}
+            </div>
+            <p className="mt-4 font-body text-[11px] text-ink/55 sm:text-center">
+              Screens from the Hyde Park tour in the app.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          THE TOURS
+          Driven by TOUR_CATALOG. One entry today.
+          ============================================================ */}
+      <section id="tours" className="scroll-mt-16 border-t border-border bg-cream-dark py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            Sources
+            The routes
           </p>
-          <h2 className="walk-title mt-3 text-3xl font-semibold text-forest md:text-4xl">
-            Where this history comes from
+          <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
+            What you can walk right now
           </h2>
-          <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/70">
-            Every stop was written from the records below. If you think we
-            got something wrong,{" "}
-            <Link
-              href="/contact"
-              className="underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
-            >
-              tell us
-            </Link>{" "}
-            and we will check it against the documents.
-          </p>
-          {/* open columns on desktop, one accordion on phones */}
-          <div className="mt-8 hidden gap-x-12 md:block md:columns-2">
-            {tour.stops
-              .filter((s) => s.sources && s.sources.length)
-              .map((s) => (
-                <div key={s.id} className="mb-7 break-inside-avoid">
-                  <p className="font-body text-sm font-semibold text-ink/80">
-                    Stop {s.number} &middot; {s.title}
+
+          <div className="mt-12 flex flex-col gap-14">
+            {TOUR_CATALOG.map((tour) => (
+              <article
+                key={tour.slug}
+                className="grid grid-cols-1 gap-y-8 border-t border-border pt-10 md:grid-cols-12 md:gap-x-14"
+              >
+                <div className="md:col-span-5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={tour.image.src}
+                    alt={tour.image.alt}
+                    loading="lazy"
+                    className="w-full rounded-sm border border-border object-cover"
+                  />
+                  <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
+                    {tour.image.credit}
                   </p>
-                  <ul className="mt-1.5">
-                    {s.sources!.map((src) => (
-                      <li key={src.url}>
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block py-1 font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2 transition-colors hover:text-rust"
-                        >
-                          {src.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              ))}
-          </div>
-          <details className="walk-plate-flush mt-6 rounded-[3px] md:hidden">
-            <summary className="cursor-pointer list-none px-5 py-4 font-body text-sm font-medium text-ink/80 [&::-webkit-details-marker]:hidden">
-              See every source
-            </summary>
-            <div className="border-t border-ink/15 px-5 pb-5">
-              {tour.stops
-                .filter((s) => s.sources && s.sources.length)
-                .map((s) => (
-                  <div key={s.id} className="mt-5">
-                    <p className="font-body text-sm font-semibold text-ink/80">
-                      Stop {s.number} &middot; {s.title}
-                    </p>
-                    <ul className="mt-1">
-                      {s.sources!.map((src) => (
-                        <li key={src.url}>
-                          <a
-                            href={src.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block py-1 font-body text-sm text-ink/70 underline decoration-warm-gray-light underline-offset-2"
-                          >
-                            {src.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+
+                <div className="md:col-span-7">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center rounded-sm bg-forest px-3 py-1 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-cream">
+                      In the app
+                    </span>
+                    <span className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
+                      {tour.city}
+                    </span>
                   </div>
-                ))}
-            </div>
-          </details>
+
+                  <h3 className="mt-4 font-display text-3xl text-ink md:text-4xl">
+                    {tour.title}
+                  </h3>
+                  <p className="mt-4 max-w-[54ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
+                    {tour.blurb}
+                  </p>
+
+                  <div className="mt-8 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+                    {tour.facts.map((fact) => (
+                      <div key={fact.label} className="bg-cream px-4 py-3">
+                        <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/55">
+                          {fact.label}
+                        </p>
+                        <p className="mt-1 font-body text-sm font-semibold text-forest">
+                          {fact.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    <AppStoreButton tone="rust" withNote={false} />
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3">
+                    {tour.readHref && (
+                      <Link
+                        href={tour.readHref}
+                        className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                      >
+                        {tour.readLabel ?? "Read it online"}{" "}
+                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                          &rarr;
+                        </span>
+                      </Link>
+                    )}
+                    {tour.browserHref && (
+                      <Link
+                        href={tour.browserHref}
+                        className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                      >
+                        Walk it in your browser{" "}
+                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                          &rarr;
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* What is coming. Named cities only, no invented routes. */}
+          <div className="mt-16 border-t border-border pt-10">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+              Next
+            </p>
+            <h3 className="mt-4 max-w-[20ch] font-display text-2xl leading-tight text-forest md:text-3xl">
+              More neighborhoods are in the works
+            </h3>
+            <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/75">
+              Chicago is where we started and still where most of the work is.
+              We have members in New York and Washington, DC digging through
+              the records for their own neighborhoods now. A route goes in the
+              app once the research behind it is finished and checked, so this
+              list grows slowly on purpose.
+            </p>
+            <Link
+              href="/get-involved"
+              className="group mt-6 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+            >
+              Help research the next one{" "}
+              <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Related */}
-      <section className="bg-forest py-14 md:py-20">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="walk-title text-2xl font-semibold text-cream md:text-3xl">
-            Prefer to stay in?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-cream/70">
-            Our online exhibit walks the same ground on one long page, built
-            from the original deeds, appraisal forms, and maps. Our in-person
-            Hyde Park tour is on Viator.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/tours/chicago/hyde-park"
-              className="inline-flex items-center rounded-[3px] bg-rust px-8 py-3.5 font-body text-base font-semibold text-white shadow-[4px_4px_0_0_rgba(0,0,0,0.25)] transition-all hover:-translate-y-0.5 hover:bg-rust-dark motion-reduce:transition-none"
-            >
-              Read the exhibit
-            </Link>
-            <a
-              href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-[3px] border border-cream/50 px-8 py-3.5 font-body text-base font-semibold text-cream transition-all hover:-translate-y-0.5 hover:border-cream hover:bg-cream/10 motion-reduce:transition-none"
-            >
-              Book the in-person tour
-            </a>
+      {/* ============================================================
+          IN PERSON
+          ============================================================ */}
+      <section className="border-t border-border bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
+                In person
+              </p>
+              <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
+                Or walk Hyde Park with a guide
+              </h2>
+              <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-ink/75">
+                Our student researchers run the same route in person for small
+                groups, about two hours, working from the documents the app is
+                built on. You can ask them questions the recording cannot
+                answer.
+              </p>
+              <a
+                href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex items-center rounded-sm bg-rust px-10 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              >
+                Book on Viator
+              </a>
+            </div>
+            <div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/media/hyde-park-walk/cobb-hall-1900.jpg"
+                alt="Cobb Lecture Hall about 1900, a long four-storey limestone Gothic block with steep gables and turrets, young trees along the sidewalk and a horse and buggy passing on the unpaved street"
+                loading="lazy"
+                className="w-full rounded-sm border border-border object-cover"
+              />
+              <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
+                Cobb Lecture Hall about 1900, a stop on the walk. Detroit
+                Publishing Company, Library of Congress Prints and Photographs
+                Division. No known restrictions on publication.
+              </p>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* ============================================================
+          DOWNLOAD
+          The closer. One more App Store button, plus the fallback for
+          anyone who is not on an iPhone.
+          ============================================================ */}
+      <section className="bg-forest py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-14">
+            <div className="md:col-span-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/media/app/app-icon.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-16 w-16 rounded-[14px] border border-cream/20"
+              />
+              <h2 className="mt-6 max-w-[16ch] font-display text-3xl leading-tight text-cream md:text-4xl">
+                Download the app
+              </h2>
+              <p className="mt-5 max-w-[50ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                It is free, and every tour we finish shows up in it. Get it
+                before you leave the house, since the whole walk works without
+                a signal.
+              </p>
+              <p className="mt-4 font-body text-sm text-cream/60">
+                {APP.platform}, {APP.requires}. {APP.price}.
+              </p>
+
+              <div className="mt-8">
+                <AppStoreButton tone="onDark" />
+              </div>
+            </div>
+
+            <div className="md:col-span-4">
+              <div className="rounded-sm border border-cream/20 p-6">
+                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/60">
+                  No iPhone
+                </p>
+                <p className="mt-4 font-body text-base leading-relaxed text-cream/75">
+                  The Hyde Park walk runs in a browser too, with the same
+                  audio, map, and photographs. It is not as good on the street,
+                  but it is the whole tour.
+                </p>
+                <Link
+                  href="/tours/hyde-park-walk"
+                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:text-rust"
+                >
+                  Open it in your browser{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </PageTransition>
   );
 }

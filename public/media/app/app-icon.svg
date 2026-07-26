@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="#1B3A2D"/>
+  <rect x="34" y="34" width="956" height="956" fill="none" stroke="#E8DCC8" stroke-opacity="0.35" stroke-width="4"/>
+  <rect x="52" y="52" width="920" height="920" fill="none" stroke="#E8DCC8" stroke-opacity="0.18" stroke-width="2"/>
+  <!-- Root system, contained inside the frame -->
+  <g transform="translate(120,118) scale(1.96)" clip-path="none">
+    <path d="M12 332 C80 326, 140 322, 200 320 C260 322, 320 326, 388 332 L388 340 C320 334, 260 330, 200 328 C140 330, 80 334, 12 340Z" fill="#3D6B58"/>
+    <path d="M40 356 C100 350, 150 347, 200 346 C250 347, 300 350, 360 356 L360 362 C300 356, 250 353, 200 352 C150 353, 100 356, 40 362Z" fill="#3D6B58"/>
+    <path d="M70 378 C120 373, 160 370, 200 369 C240 370, 280 373, 330 378 L330 383 C280 378, 240 375, 200 374 C160 375, 120 378, 70 383Z" fill="#3D6B58"/>
+    <g fill="none" stroke="#3D6B58" stroke-linecap="round">
+      <path d="M70 332 C60 352, 48 372, 34 392" stroke-width="7"/>
+      <path d="M135 326 C122 350, 106 372, 90 392" stroke-width="6"/>
+      <path d="M200 322 C198 348, 193 370, 187 392" stroke-width="5"/>
+      <path d="M200 322 C202 348, 207 370, 213 392" stroke-width="5"/>
+      <path d="M265 326 C278 350, 294 372, 310 392" stroke-width="6"/>
+      <path d="M330 332 C340 352, 352 372, 366 392" stroke-width="7"/>
+    </g>
+  </g>
+  <!-- RF letterforms -->
+  <g transform="translate(112,42) scale(2.0)">
+    <path d="M79 88 L79 308 L101 308 L101 200 L148 200 L200 308 L226 308 L172 197 C202 190 218 168 218 144 C218 114 198 88 164 88 Z M101 110 L161 110 C186 110 196 124 196 144 C196 164 186 178 161 178 L101 178 Z" fill="#E8DCC8" fill-rule="evenodd"/>
+    <path d="M232 88 L232 308 L254 308 L254 200 L321 200 L321 182 L254 182 L254 110 L321 110 L321 88 Z" fill="#C45D3E"/>
+  </g>
+</svg>

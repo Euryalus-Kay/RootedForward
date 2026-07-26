@@ -277,7 +277,7 @@ export default function Home() {
                 href="/tours"
                 className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
               >
-                Start the tour
+                Get the tour
               </Link>
             </div>
           </div>

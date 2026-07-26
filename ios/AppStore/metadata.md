@@ -63,7 +63,7 @@ No ads, no tracking, no account required.
 
 The tour was researched and written by Rooted Forward. Sources are
 listed on every stop. The narration is also published free at
-rooted-forward.org/tours.
+rooted-forward.org/tours/hyde-park-walk.
 
 ## Keywords (100 chars max)
 
