@@ -31,6 +31,7 @@
 		CF059D3B16C1381EB501B6FF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = E16CB38A946AB51CC5FB8F11 /* Fonts */; };
 		E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318671872CB1E95D76C5579 /* WalkMapCanvas.swift */; };
 		E36CE8ECCCF9CF78B24295EC /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E907FBC06E8B34CDCAC3E91 /* Theme.swift */; };
+		EEC98B87F7133E6AC5F6F72D /* IntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407C1BACCEEAAD9A997CCBDA /* IntroPage.swift */; };
 		F5E6581298D422332B57FE74 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = 9EA9425CFB508607C323419F /* Media */; };
 		FB21ED00E16D03FB208DC98D /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966145B70FE859167851BD25 /* ProgressStore.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		230B46FA53532098F1F96766 /* InfoSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSheetView.swift; sourceTree = "<group>"; };
 		2A3CEF6483FAE221E268D250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E907FBC06E8B34CDCAC3E91 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		407C1BACCEEAAD9A997CCBDA /* IntroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPage.swift; sourceTree = "<group>"; };
 		42105EED930027414B57A88D /* ContentIntegrityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentIntegrityTests.swift; sourceTree = "<group>"; };
 		61F799B770CC0D56958B1860 /* MapSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSheetView.swift; sourceTree = "<group>"; };
 		698A5224186848ADB6559543 /* RootedForwardUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RootedForwardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 		626868807ECB93EC3EC8F2D1 /* Tour */ = {
 			isa = PBXGroup;
 			children = (
+				407C1BACCEEAAD9A997CCBDA /* IntroPage.swift */,
 				A7D88B0725705C7778739E87 /* StopPage.swift */,
 				B26B3DC3B417430FA3328484 /* TourView.swift */,
 			);
@@ -359,6 +362,7 @@
 				4744C8269CC24A27F4478884 /* ContentStore.swift in Sources */,
 				3D92DD9D8040C4194A9EE263 /* HomeView.swift in Sources */,
 				8A259E768DA3A91D2C1E3F36 /* InfoSheetView.swift in Sources */,
+				EEC98B87F7133E6AC5F6F72D /* IntroPage.swift in Sources */,
 				4698EBC9F5FAEC9B1B2ADFC8 /* LocationService.swift in Sources */,
 				3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */,
 				443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */,

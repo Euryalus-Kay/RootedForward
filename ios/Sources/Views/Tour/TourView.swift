@@ -2,9 +2,10 @@ import SwiftUI
 
 // ------------------------------------------------------------------
 // The tour itself, the native version of the site's focus mode.
-// Intro essay first (when starting fresh), then one stop per page
-// with swipe or prev/next navigation, the floating Map pill, and the
-// paper transport bar with the audio controls.
+// "Why this walk" is the page before stop one when the walk is
+// started from the beginning, then one stop per page with swipe or
+// prev/next navigation, the floating Map pill, and the paper
+// transport bar with the audio controls.
 // ------------------------------------------------------------------
 
 struct TourView: View {
@@ -15,6 +16,10 @@ struct TourView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var index: Int
+    /// "Why this walk" sits in front of stop one whenever the walk is
+    /// opened at the beginning. Resuming mid-walk skips it, because
+    /// nobody standing at stop nine wants the essay again.
+    @State private var onIntro: Bool
     @State private var showMap = false
     /// Stops whose on-page title has scrolled out of view; the top
     /// bar pins the stop name only while that is true.
@@ -34,8 +39,18 @@ struct TourView: View {
     @State private var detourNoticeShown = false
     @Environment(\.scenePhase) private var scenePhase
 
-    init(startAt: Int) {
+    /// A red plate to land on inside the opening stop, set when the
+    /// walker arrives from the tools-of-segregation index. It is
+    /// consumed by the page that uses it so a later swipe back to
+    /// that stop opens at the top like any other.
+    @State private var openPlate: String?
+
+    init(startAt: Int, openPlate: String? = nil) {
         _index = State(initialValue: startAt)
+        // Arriving on a specific plate is a deliberate jump, so it
+        // skips the essay even when the plate lives on stop one.
+        _onIntro = State(initialValue: startAt == 0 && openPlate == nil)
+        _openPlate = State(initialValue: openPlate)
     }
 
     private var stops: [WalkStop] { content.tour.stops }
@@ -52,6 +67,28 @@ struct TourView: View {
     private func move(to newIndex: Int) {
         withAnimation(reduceMotion ? nil : .default) {
             index = newIndex
+        }
+    }
+
+    /// Leaving the intro lands on stop one and starts everything the
+    /// tour normally starts when a page opens.
+    private func leaveIntro() {
+        Haptics.tap()
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            onIntro = false
+        }
+        index = 0
+        progress.setLastIndex(0)
+        startDwell(at: 0)
+    }
+
+    /// Stepping back onto the intro. The reading clock stops, because
+    /// the essay is not a stop and must not credit one.
+    private func enterIntro() {
+        Haptics.tap()
+        dwell?.cancel()
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            onIntro = true
         }
     }
 
@@ -108,6 +145,10 @@ struct TourView: View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
                 topBar
+                if onIntro {
+                    IntroPage(goNext: { leaveIntro() })
+                        .transition(.opacity)
+                } else {
                 TabView(selection: $index) {
                     ForEach(Array(stops.enumerated()), id: \.element.id) { i, stop in
                         StopPage(
@@ -120,7 +161,10 @@ struct TourView: View {
                                 finish(stop.id)
                                 move(to: i + 1)
                             } : nil,
-                            goPrevious: i > 0 ? { move(to: i - 1) } : nil,
+                            // Stop one steps back onto the intro, so
+                            // the essay is a page in the sequence
+                            // rather than a one-way door.
+                            goPrevious: i > 0 ? { move(to: i - 1) } : { enterIntro() },
                             onTitleHidden: { hidden in
                                 // A page laid out at zero size reports
                                 // its title hidden, so a neighbour the
@@ -135,13 +179,16 @@ struct TourView: View {
                             onScrolled: {
                                 guard i == safeIndex else { return }
                                 markEngaged(stop.id)
-                            }
+                            },
+                            scrollToPlate: i == safeIndex ? openPlate : nil,
+                            onPlateShown: { openPlate = nil }
                         )
                         .tag(i)
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .ignoresSafeArea(edges: .bottom)
+                }
             }
             .background(RF.cream)
 
@@ -151,6 +198,10 @@ struct TourView: View {
             // strength transcript running under the pills and into
             // the home indicator. Anchored here it fades the text
             // out above the bar and stays solid all the way down.
+            // The intro carries its own Next inside the page, so the
+            // scrim and the pill row would be fading and floating over
+            // nothing.
+            if !onIntro {
             bottomScrim
 
             // The pill row sits centered over the transport bar, the
@@ -175,18 +226,21 @@ struct TourView: View {
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
+            }
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
+            guard !onIntro else { return }
             Haptics.tap()
             progress.setLastIndex(newIndex)
             startDwell(at: newIndex)
             offerDetourNotice()
         }
         .onAppear {
+            location.requestAndStartIfAuthorized()
+            guard !onIntro else { return }
             progress.setLastIndex(index)
             startDwell(at: safeIndex)
-            location.requestAndStartIfAuthorized()
             offerDetourNotice()
         }
         .onDisappear {
@@ -197,7 +251,7 @@ struct TourView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             // A phone in a pocket is not reading.
-            if phase == .active {
+            if phase == .active, !onIntro {
                 startDwell(at: safeIndex)
             } else {
                 dwell?.cancel()
@@ -300,7 +354,7 @@ struct TourView: View {
         // the paragraph being read down the page mid-scroll.
         VStack(spacing: 5) {
             topBarRow
-            Text(showPinnedTitle ? stops[safeIndex].title : " ")
+            Text(showPinnedTitle && !onIntro ? stops[safeIndex].title : " ")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
                 .lineLimit(1)
@@ -318,12 +372,13 @@ struct TourView: View {
             Rectangle().fill(RF.border).frame(height: 1)
         }
         .clipped()
-        .animation(RFMotion.gated(.rfAppear, reduceMotion), value: showPinnedTitle)
+        .animation(RFMotion.gated(.rfAppear, reduceMotion), value: showPinnedTitle && !onIntro)
     }
 
     /// "Stop 4 of 16" against the walk proper, and a plain label on
     /// the optional detours, which are not numbered legs of it.
     private var counterLabel: String {
+        if onIntro { return "Before you start" }
         let stop = stops[safeIndex]
         if stop.isDetour { return "Optional detour" }
         // The stop's own number, not its place in the mainline. With
@@ -334,6 +389,7 @@ struct TourView: View {
 
     /// How far through the walk the progress capsule reads.
     private var counterFraction: CGFloat {
+        if onIntro { return 0 }
         let mainline = stops.filter { !$0.isDetour }
         guard !mainline.isEmpty else { return 0 }
         if stops[safeIndex].isDetour { return 1 }
@@ -398,9 +454,13 @@ struct TourView: View {
 
     /// A round paper pill stepping one stop back or forward.
     private func arrowPill(forward: Bool) -> some View {
-        let disabled = forward ? safeIndex >= stops.count - 1 : safeIndex == 0
+        let disabled = forward && safeIndex >= stops.count - 1
         return Button {
-            move(to: forward ? min(stops.count - 1, safeIndex + 1) : max(0, safeIndex - 1))
+            if !forward, safeIndex == 0 {
+                enterIntro()
+            } else {
+                move(to: forward ? min(stops.count - 1, safeIndex + 1) : max(0, safeIndex - 1))
+            }
         } label: {
             Image(systemName: forward ? "chevron.right" : "chevron.left")
                 .font(.system(size: 15, weight: .semibold))
@@ -415,7 +475,9 @@ struct TourView: View {
                 .contentShape(Circle())
         }
         .disabled(disabled)
-        .accessibilityLabel(forward ? "Next stop" : "Previous stop")
+        .accessibilityLabel(
+            forward ? "Next stop" : (safeIndex == 0 ? "Back to why this walk" : "Previous stop")
+        )
         .accessibilityIdentifier(forward ? "pill-next" : "pill-previous")
     }
 

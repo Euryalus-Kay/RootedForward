@@ -1,9 +1,10 @@
 import SwiftUI
 
 // ------------------------------------------------------------------
-// The sheets behind the tour screen's info rows: the founder's
-// essay and the red plates index. Keeping them here keeps the tour
-// screen quiet.
+// The sheets behind the tour screen's info rows, the red plates
+// index and the practical details. Keeping them here keeps the tour
+// screen quiet. The founder's essay used to be a third sheet; it is
+// the page in front of stop one now, in IntroPage.
 // ------------------------------------------------------------------
 
 struct InfoSheetView: View {
@@ -11,7 +12,8 @@ struct InfoSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
     let sheet: InfoSheet
-    let onJumpToStop: (Int) -> Void
+    /// Stop index, and the red plate to land on inside it.
+    let onJumpToStop: (Int, String?) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,7 +21,6 @@ struct InfoSheetView: View {
             ScrollView {
                 Group {
                     switch sheet {
-                    case .essay: essay
                     case .plates: plates
                     case .details: details
                     }
@@ -30,15 +31,12 @@ struct InfoSheetView: View {
             }
         }
         .background(RF.cream)
-        // The short sheets get a half height and a drag handle; the
-        // essay is a long read and opens full.
-        .presentationDetents(sheet == .essay ? [.large] : [.fraction(0.6), .large])
-        .presentationDragIndicator(sheet == .essay ? .automatic : .visible)
+        .presentationDetents([.fraction(0.6), .large])
+        .presentationDragIndicator(.visible)
     }
 
     private var title: String {
         switch sheet {
-        case .essay: return "Why this walk"
         case .plates: return "The tools of segregation"
         case .details: return "About this walk"
         }
@@ -134,35 +132,11 @@ struct InfoSheetView: View {
 
     // MARK: - Essay
 
-    private var essay: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(content.intro.title)
-                .font(RF.display(27, weight: 600))
-                .foregroundStyle(RF.forest)
-                .accessibilityAddTraits(.isHeader)
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: 18) {
-                ForEach(Array(content.intro.paragraphs.enumerated()), id: \.offset) { _, paragraph in
-                    MarkedText(text: paragraph)
-                }
-            }
-            .padding(.top, 20)
-
-            Text(content.intro.byline)
-                .font(RF.display(14.5, weight: 400, italic: true))
-                .foregroundStyle(RF.warmGrayDark)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 20)
-        }
-    }
-
     // MARK: - The tools of segregation
 
     private var plates: some View {
-        let items: [(stopIndex: Int, title: String)] = content.tour.stops.enumerated().flatMap { index, stop in
-            (stop.interrupts ?? []).map { (stopIndex: index, title: $0.title) }
+        let items: [(stopIndex: Int, title: String, plate: String)] = content.tour.stops.enumerated().flatMap { index, stop in
+            (stop.interrupts ?? []).map { (stopIndex: index, title: $0.title, plate: $0.id) }
         }
         return VStack(alignment: .leading, spacing: 16) {
             Text("Along the walk, red plates name the tools that built segregation.")
@@ -175,7 +149,7 @@ struct InfoSheetView: View {
                 ForEach(Array(items.enumerated()), id: \.offset) { n, item in
                     Button {
                         Haptics.tap()
-                        onJumpToStop(item.stopIndex)
+                        onJumpToStop(item.stopIndex, item.plate)
                     } label: {
                         HStack(spacing: 12) {
                             Text(item.title)

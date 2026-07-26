@@ -45,7 +45,7 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       title: "The three detours",
-      text: "Stops twelve, thirteen and fourteen are drawn in green on the map because they are genuinely out of the way. The Hansberry house and Daley's sit southwest of campus in Woodlawn, and Drexel Boulevard runs northwest through Kenwood. The Hansberry house is where the covenant wall first cracked, Daley's is by most accounts the oldest restaurant in the city, and Drexel is where you can read this whole tour in one street. All three together add roughly two hours on foot, so do them in daylight, and take a friend if you can. The number 4 bus runs the length of Cottage Grove past Daley's and Drexel Square both, and the Green Line stops at 63rd. The main walk is complete without any of them.",
+      text: "Stops twelve, thirteen and fourteen are drawn in green on the map because they are genuinely out of the way. Drexel Boulevard runs northwest through Kenwood, and the Hansberry house and Daley's sit southwest of campus in Woodlawn, so the three of them together cross the neighborhood from top to bottom. Drexel is where you can read this whole tour in one street, the Hansberry house is where the covenant wall first cracked, and Daley's is by most accounts the oldest restaurant in the city. All three together add roughly two hours on foot, so do them in daylight, and take a friend if you can. The number 4 bus runs the length of Cottage Grove past Daley's and Drexel Square both, and the Green Line stops at 63rd. The main walk is complete without any of them.",
     },
     {
       title: "Listening",
@@ -104,6 +104,7 @@ export const HYDE_PARK_WALK: WalkTour = {
       [41.78058, -87.6056],
     ],
     [
+      [41.7925, -87.6011],
       [41.795, -87.6011],
       [41.7972, -87.6012],
       [41.7995, -87.6013],
@@ -496,7 +497,7 @@ export const HYDE_PARK_WALK: WalkTour = {
         "It had a darker draw too. The Midway's so-called villages put human beings on display, people brought from Africa, Asia, the Middle East, and the Americas, presented under the banner of anthropology for paying crowds who stared at them like exhibits. The Tribune recommended the exhibit as a chance to descend the spiral of evolution. That happened here, on this grass, and the fair sold tickets to it all summer.",
         "Now look at the ground itself. You saw the reason on the 1871 plan back at the White City. The lawn sits sunken below the streets because **Olmsted meant to dig a canal here**, water linking the Jackson Park lagoons to Washington Park a mile west. Crews started digging, the money ran out, and the water never came. The ditch stayed a lawn.",
         "But the empty channel found another job. **The Midway became a border.** North of this grass, the university and white Hyde Park. South of it, Woodlawn. And when the Great Migration filled the Black Belt to bursting, that narrow strip of housing along State Street, now flanked by the Dan Ryan, families started looking for rooms anywhere they could find them. The blocks south of the Midway were the pressure line. For most of a century, which side of this lawn you lived on decided your mortgage, your rent, and what the city thought your block was worth. The line stayed blunt for decades. As late as 1980 the blocks north of this lawn and the blocks south of it were still sharply separated by race. Cross the lawn today and you can still feel the seam.",
-        "That line was not drawn by accident, and it was not drawn by geography. It was drawn on paper, by people with names, and the stops ahead introduce them one at a time. A mile southwest of here, in 1937, a family named **Hansberry** bought a brick three-flat across one of those paper lines, and a mob gathered outside their window the first evening. Their daughter Lorraine grew up to put that year on Broadway as A Raisin in the Sun. Their house is stop twelve, an optional detour, and the paperwork that brought the mob is explained there, standing in front of the building it was written against.",
+        "That line was not drawn by accident, and it was not drawn by geography. It was drawn on paper, by people with names, and the stops ahead introduce them one at a time. A mile southwest of here, in 1937, a family named **Hansberry** bought a brick three-flat across one of those paper lines, and a mob gathered outside their window the first evening. Their daughter Lorraine grew up to put that year on Broadway as A Raisin in the Sun. Their house is stop thirteen, an optional detour, and the paperwork that brought the mob is explained there, standing in front of the building it was written against.",
       ],
       images: [
         {
@@ -774,9 +775,9 @@ export const HYDE_PARK_WALK: WalkTour = {
         after: 4,
       },
       toNext: {
-        text: "Three optional stops branch off here, and all three are a real walk, so decide now. To skip them, go north on Ellis Avenue to 55th Street and turn east. That is stop fifteen, about thirteen minutes. To take them, follow Ellis south past the Midway to 61st Street, turn west and go about half a mile to Rhodes Avenue, then turn left. The brick three-flat partway down the block, 6140 South Rhodes, is the Hansberry house. It is a private home, so look at it from the sidewalk. Daley's follows two blocks on, and Drexel Boulevard comes after that, back north up Cottage Grove. If your feet are done, the number 4 bus runs the length of Cottage Grove and the Green Line stops at 63rd. Do these in daylight, and take someone with you if you can. Whatever you decide on foot, read stops twelve through fourteen on the page. Three of the walk's seven red plates sit on them, including the two that explain how the money was actually taken.",
-        distanceMeters: 2018,
-        minutes: 25,
+        text: "Three optional stops branch off here, and all three are a real walk, so decide now. To skip them, go north on Ellis Avenue to 55th Street and turn east. That is stop fifteen, about thirteen minutes. To take them, stay on Ellis and keep going north, past 55th and on through Kenwood to 51st Street, then turn west for two blocks. The triangle of park on your left, with a tall bronze fountain standing in the middle of it, is Drexel Square, and the boulevard runs north from there.",
+        distanceMeters: 1180,
+        minutes: 15,
       },
       sources: [
         { label: "University of Chicago, the first nuclear reactor explained", url: "https://news.uchicago.edu/explainer/first-nuclear-reactor-explained" },
@@ -789,97 +790,8 @@ export const HYDE_PARK_WALK: WalkTour = {
       ],
     },
     {
-      id: "hansberry-house",
-      number: 12,
-      title: "The Hansberry house",
-      dek: "One family's move into this three-flat cracked the covenant wall",
-      mapLabel: "Hansberry house",
-      lat: 41.7827,
-      lng: -87.6123,
-      optional: true,
-      audioSrc: `${MEDIA}/audio/hansberry-house.mp3`,
-      audioSeconds: 233,
-      transcript: [
-        "You have left the tour's main line to get here, and it is worth saying why this address earned the walk. At first glance it is a brick three-flat on a quiet block in the Washington Park Subdivision, the northwest corner of Woodlawn. In 1937 it became one of the most important buildings in the legal fight against housing segregation in America, and the little girl who lived behind that window grew up to put what happened here on Broadway.",
-        "**Carl Hansberry** came up from Mississippi in the Great Migration, one of the hundreds of thousands the Defender called north. He became a real estate broker, and he watched his people pay double for half. The paper wall this walk has been tracing ran right through here. These twelve blocks are the **Washington Park Subdivision**, built on the ground where the Washington Park Race Track ran until Illinois shut down horse racing, one street south of the park itself. Its covenant was signed on **September 30, 1927** and recorded the following February, it barred owners from selling or leasing to any Black buyer except live-in servants, and it was written to run until the first day of 1948. It was also the very covenant the University of Chicago had helped defend in court four years before Hansberry arrived. He chose the block deliberately. He wrote later, in the Defender, \"I figured the most vulnerable spot to attack the restrictive covenants was where the pressure was the greatest.\"",
-        "In the spring of 1937 he bought this building and moved in his family. A white mob gathered. Something thrown through the window barely missed the head of his seven-year-old daughter, **Lorraine**. A neighbor named Anna Lee sued to enforce the covenant, and the case, **Hansberry v. Lee**, went all the way to the Supreme Court. The weak point was in the paper itself. The covenant only took effect if the owners of **95 percent of the frontage** signed it, an earlier case had been settled on everyone simply agreeing that they had, and the Hansberrys' lawyers showed the real number fell well short. In 1940 the family won, on the ground that they could not be bound by a judgment reached in a case where nobody had represented them. It was a technicality rather than a ruling on covenants themselves, but it voided the paper on this neighborhood, and the Defender reported that it opened hundreds of homes to Black Chicagoans. The wall did not fall for eight more years. This is where it cracked.",
-        "The honest version of Carl Hansberry is complicated, and this tour owes it to him. He fought the covenants, sued a railroad over segregated cars, printed know-your-rights pamphlets, and helped start one of Chicago's first Black-owned banks. He also made part of his fortune carving buildings into cramped kitchenettes, the same one-room conversions this tour describes on Drexel Boulevard. City officials called the family slumlords while inspectors buried them in fines. The Black press called him a race man. Both were describing the same cage from different sides, a market where a Black landlord could sell his people nothing better because the city allowed nothing better. Worn down and disillusioned, he was preparing a move to Mexico when he died there in 1946.",
-        "Lorraine carried this house with her. In 1959 her play **A Raisin in the Sun**, about a Black family deciding whether to move into a white neighborhood that does not want them, became the first play by a Black woman produced on Broadway. The mob outside these windows is in it. So is the arithmetic of the kitchenettes. It opened while the bulldozers this walk ends with were already rolling.",
-      ],
-      interrupts: [
-        {
-          title: "Restrictive covenants",
-          after: 2,
-          body: [
-            "A racial covenant was **a ban written into a property deed**, a clause in which the owner promised never to sell or rent to a Black person. It bound every later owner of the land, so one signing campaign could seal a block for generations. Through the 1910s the idea spread quietly, and in **1926 the Supreme Court, in Corrigan v. Buckley, let covenants stand** because they were private contracts between neighbors. That was the green light.",
-            "In **1927 the Chicago Real Estate Board circulated a model covenant**, drafted by the national association's counsel Nathan William MacChesney, and pushed it block by block through churches, clubs, and property owners' associations. The model text is worth reading once, because it says out loud what the century said quietly. **\"No part of said premises shall in any manner be used or occupied directly or indirectly by any negro or negroes,\"** with an exemption for janitors, chauffeurs, and house servants actually employed on the property. More than **220 Cook County subdivisions** adopted the language, one count put **38 of the 85 square miles** of Chicago set aside for housing south of North Avenue under covenant, and within a year of that campaign the Hyde Park Herald wrote that the covenants stretched **\"like a marvelous delicately woven chain of armor\"** across the South Side.",
-            "The University of Chicago helped pay for the armor. It paid the property owners' associations that spread covenants on the blocks around campus, quietly financed the 1933 lawsuit that kept Black families out of the blocks near Washington Park, and spent **tens of thousands of dollars defending covenants in court**, over the objection of its own sociologist Louis Wirth, who called them morally repulsive. The covenant on the building in front of you came out of that campaign.",
-            "When **Carl Hansberry bought at 6140 South Rhodes** in 1937 anyway, a chunk of concrete thrown through the window nearly hit seven-year-old Lorraine. The Supreme Court let the family stay in **1940** on a technicality, and in **1948, in Shelley v. Kraemer, it made every racial covenant in America unenforceable**. Nobody erased them. The words still sit on Cook County deeds today, including on deeds a few blocks from here.",
-          ],
-        },
-      ],
-      images: [
-        {
-          src: `${MEDIA}/hansberry-house-today.jpg`,
-          alt: "The Hansberry house today, a brick three-flat at 6140 South Rhodes Avenue, its front bay windows facing the street above a small yard",
-          credit:
-            "The house today, a Chicago Landmark since 2010 and still a private home. Photograph by Legimet, via Wikimedia Commons. CC BY-SA 4.0.",
-          label: "Today",
-        },
-      ],
-      toNext: {
-        text: "Walk back east on 61st Street to Cottage Grove Avenue, turn south, and go two blocks to 63rd Street. Daley's is on the corner at 6257 South Cottage Grove.",
-        distanceMeters: 1020,
-        minutes: 13,
-      },
-      sources: [
-        { label: "Hansberry v. Lee, 311 U.S. 32 (1940)", url: "https://supreme.justia.com/cases/federal/us/311/32/" },
-        { label: "Lorraine Hansberry, Wikipedia", url: "https://en.wikipedia.org/wiki/Lorraine_Hansberry" },
-        { label: "Hansberry v. Lee, Wikipedia", url: "https://en.wikipedia.org/wiki/Hansberry_v._Lee" },
-        { label: "Chicago Public Library, Lorraine Hansberry biography", url: "https://www.chipublib.org/lorraine-hansberry-biography/" },
-        { label: "Encyclopedia of Chicago, Restrictive Covenants", url: "http://www.encyclopedia.chicagohistory.org/pages/1067.html" },
-        { label: "WBEZ, Chicago home records still contain racist covenants", url: "https://www.wbez.org/race-class-communities/2021/11/21/chicago-home-records-still-contain-racist-covenants" },
-        { label: "HUD Cityscape, documenting racially restrictive covenants in twentieth-century Chicago", url: "https://www.huduser.gov/portal/periodicals/cityscape/vol22num3/ch5.pdf" },
-      ],
-    },
-    {
-      id: "daleys",
-      number: 13,
-      title: "Daley's Restaurant",
-      dek: "The oldest restaurant in Chicago has held this corner since 1892, with one gap",
-      mapLabel: "Daley's",
-      lat: 41.78058,
-      lng: -87.6056,
-      optional: true,
-      audioSrc: `${MEDIA}/audio/daleys.mp3`,
-      audioSeconds: 131,
-      transcript: [
-        "In 1892 an Irish immigrant ironworker named **John Daley opened a lunchroom here at 63rd and Cottage Grove**, feeding the crews building the elevated railroad above the street, with the World's Fair rising a mile east. That makes it, by most accounts, **the oldest restaurant in Chicago**, older than the L trains it fed. In 1918 Daley sold to two Greek immigrants who worked in the place, a waiter named Tom Kyros and a cook named Paul Emmanuel, and the same extended family has run it ever since. They kept the Daley name. It was already worth something.",
-        "Think about what has passed this corner since. In 1932 Kyros and Emmanuel tore the old building down to rebuild it, and their bank failed in the middle of the work. The lot sat empty for five years while the two of them took other jobs and saved, and Daley's reopened in 1937. After that it did not leave. 63rd Street became one of the busiest commercial streets in Black Chicago as the Great Migration remade Woodlawn, and the restaurant fed its neighborhood while so much else moved away or burned. The menu turned toward smothered pork chops, catfish, and biscuits because that is what the neighborhood wanted. **Muhammad Ali ate here between training sessions** in the 1960s. Disinvestment hit 63rd as hard as any street in the city, the L overhead was even torn back, and Daley's kept the griddle on. In 2019 it moved into a new building directly across the street, at 6257 South Cottage Grove, and kept serving.",
-        "A restaurant is a small thing to set against covenants and bulldozers. But it is still here. It fed whoever came through the door and let the menu follow the neighborhood, and it has outlived nearly every business in this story. Get the breakfast. Then head back north, because the rest of this walk is where the story you have been following gets finished, first with contracts and then with heavy equipment.",
-      ],
-      images: [
-        {
-          src: `${MEDIA}/sixty-third-1973.jpg`,
-          alt: "63rd Street in 1973 under the elevated tracks, storefronts on both sides, a lit DRUGS sign, delivery trucks at the curb and people on the sidewalks",
-          credit:
-            "63rd Street at Calumet in 1973, still a working commercial street under the L, four blocks west of this corner. John H. White, EPA DOCUMERICA, National Archives. Public domain.",
-          label: "1973",
-        },
-      ],
-      toNext: {
-        text: "Head north up Cottage Grove Avenue, the same street you are standing on, about a mile and a half. The number 4 bus runs the whole way and stops where you want to be. Get off at 51st Street. The triangle of park on the east side, with a tall bronze fountain standing in the middle of it, is Drexel Square, and the boulevard runs north from there. If you would rather skip this one, cut east to 55th Street instead and pick the walk up at stop fifteen.",
-        distanceMeters: 2372,
-        minutes: 30,
-      },
-      sources: [
-        { label: "Daley's Restaurant, our history", url: "https://www.daleysrestaurant.com/history" },
-        { label: "Daley's Restaurant, menus", url: "https://www.daleysrestaurant.com/menus" },
-      ],
-    },
-    {
       id: "drexel-boulevard",
-      number: 14,
+      number: 12,
       title: "Drexel Boulevard",
       dek: "The grandest street on the South Side, and the whole tour in one mile of pavement",
       mapLabel: "Drexel Blvd",
@@ -887,7 +799,7 @@ export const HYDE_PARK_WALK: WalkTour = {
       lng: -87.60446,
       optional: true,
       audioSrc: `${MEDIA}/audio/drexel-boulevard.mp3`,
-      audioSeconds: 350,
+      audioSeconds: 339,
       transcript: [
         "Stand at the fountain in Drexel Square and look north up the boulevard. You are at the foot of what was, for about forty years, the best address on the South Side, and at the northwest corner of Hyde Park. Everything this walk has been describing happened to this one street, in order, and you can read it off the buildings from here. That is why the detour is worth the bus ride.",
         "The street exists because of the same 1869 law that made the parks. Paul Cornell, who bought the marsh at the start of this walk, led the campaign for a South Park system and sat on its first board of commissioners, and Drexel Boulevard was the first piece of private land the commission bought. The Drexels were Philadelphia bankers who had already been subdividing down here, and they had given the city the land for the old Drexel Avenue at least twenty years earlier. The boulevard widened that avenue to **a hundred feet** and ran it from Oakland Boulevard down to Washington Park, with a landscaped median down the middle and a carriageway on either side. Nobody was going anywhere in a hurry on it. That was the idea.",
@@ -905,7 +817,7 @@ export const HYDE_PARK_WALK: WalkTour = {
           title: "Blockbusting",
           after: 5,
           body: [
-            "Blockbusting was **the business of turning white panic into profit**. The speculator's opening move was fear at the dinner hour, **phone calls night after night and flyers under every door**, telling white owners a Black family had bought on the block and their equity was about to vanish. A typical house went to the speculator for **$12,000**. Days or weeks later the same house sold to a Black family for **$22,000, on contract**, because the redlined banks had left them no other way to buy.",
+            "Blockbusting is what replaced the covenant. Once the Supreme Court stopped courts enforcing racial covenants in 1948, the wall around a block like this one had to come down, and the men who had profited from keeping it up found a way to profit from taking it down instead. That is the plate at the Hansberry house, the next stop on this detour, and this is what came after it. Blockbusting was **the business of turning white panic into profit**. The speculator's opening move was fear at the dinner hour, **phone calls night after night and flyers under every door**, telling white owners a Black family had bought on the block and their equity was about to vanish. A typical house went to the speculator for **$12,000**. Days or weeks later the same house sold to a Black family for **$22,000, on contract**, because the redlined banks had left them no other way to buy.",
             "The trade depended on **both prejudices at once**. It needed white owners who believed a Black neighbor destroyed value, and it needed Black buyers desperate enough to pay double for what the city refused to sell them honestly. The white seller lost, the Black buyer paid brutally, and the man in the middle kept the difference. It turned over block after block of the South Side in a few short years.",
           ],
         },
@@ -962,9 +874,9 @@ export const HYDE_PARK_WALK: WalkTour = {
         after: 0,
       },
       toNext: {
-        text: "Head back southeast into Hyde Park. Walk east on 51st Street, which is signed Hyde Park Boulevard, then turn south on Woodlawn or Kimbark and go down to 55th. It is about twenty-three minutes, or take the number 4 bus back south and cut east. Stop on 55th where low townhouses stand behind small fenced front courts, with two concrete towers on an island in the middle of the road just to the west.",
-        distanceMeters: 1821,
-        minutes: 23,
+        text: "The next two detours are a mile and a half south, so this is the leg to ride. Cottage Grove Avenue is a block west of the square and the number 4 bus runs down it the whole way. Get off at 61st Street, walk west about half a mile to Rhodes Avenue, and turn left. The brick three-flat partway down the block, 6140 South Rhodes, is the Hansberry house. If you would rather stop the detours here, cut east to 55th Street instead and pick the walk up at stop fifteen.",
+        distanceMeters: 2400,
+        minutes: 30,
       },
       sources: [
         { label: "Commission on Chicago Landmarks, McGill House designation report, 4938 S. Drexel Boulevard", url: "https://www.chicago.gov/content/dam/city/depts/zlup/Historic_Preservation/Publications/McGill_House.pdf" },
@@ -979,6 +891,95 @@ export const HYDE_PARK_WALK: WalkTour = {
       ],
     },
     {
+      id: "hansberry-house",
+      number: 13,
+      title: "The Hansberry house",
+      dek: "One family's move into this three-flat cracked the covenant wall",
+      mapLabel: "Hansberry house",
+      lat: 41.7827,
+      lng: -87.6123,
+      optional: true,
+      audioSrc: `${MEDIA}/audio/hansberry-house.mp3`,
+      audioSeconds: 233,
+      transcript: [
+        "You have left the tour's main line to get here, and it is worth saying why this address earned the walk. At first glance it is a brick three-flat on a quiet block in the Washington Park Subdivision, the northwest corner of Woodlawn. In 1937 it became one of the most important buildings in the legal fight against housing segregation in America, and the little girl who lived behind that window grew up to put what happened here on Broadway.",
+        "**Carl Hansberry** came up from Mississippi in the Great Migration, one of the hundreds of thousands the Defender called north. He became a real estate broker, and he watched his people pay double for half. The paper wall this walk has been tracing ran right through here. These twelve blocks are the **Washington Park Subdivision**, built on the ground where the Washington Park Race Track ran until Illinois shut down horse racing, one street south of the park itself. Its covenant was signed on **September 30, 1927** and recorded the following February, it barred owners from selling or leasing to any Black buyer except live-in servants, and it was written to run until the first day of 1948. It was also the very covenant the University of Chicago had helped defend in court four years before Hansberry arrived. He chose the block deliberately. He wrote later, in the Defender, \"I figured the most vulnerable spot to attack the restrictive covenants was where the pressure was the greatest.\"",
+        "In the spring of 1937 he bought this building and moved in his family. A white mob gathered. Something thrown through the window barely missed the head of his seven-year-old daughter, **Lorraine**. A neighbor named Anna Lee sued to enforce the covenant, and the case, **Hansberry v. Lee**, went all the way to the Supreme Court. The weak point was in the paper itself. The covenant only took effect if the owners of **95 percent of the frontage** signed it, an earlier case had been settled on everyone simply agreeing that they had, and the Hansberrys' lawyers showed the real number fell well short. In 1940 the family won, on the ground that they could not be bound by a judgment reached in a case where nobody had represented them. It was a technicality rather than a ruling on covenants themselves, but it voided the paper on this neighborhood, and the Defender reported that it opened hundreds of homes to Black Chicagoans. The wall did not fall for eight more years. This is where it cracked.",
+        "The honest version of Carl Hansberry is complicated, and this tour owes it to him. He fought the covenants, sued a railroad over segregated cars, printed know-your-rights pamphlets, and helped start one of Chicago's first Black-owned banks. He also made part of his fortune carving buildings into cramped kitchenettes, the same one-room conversions this tour describes on Drexel Boulevard. City officials called the family slumlords while inspectors buried them in fines. The Black press called him a race man. Both were describing the same cage from different sides, a market where a Black landlord could sell his people nothing better because the city allowed nothing better. Worn down and disillusioned, he was preparing a move to Mexico when he died there in 1946.",
+        "Lorraine carried this house with her. In 1959 her play **A Raisin in the Sun**, about a Black family deciding whether to move into a white neighborhood that does not want them, became the first play by a Black woman produced on Broadway. The mob outside these windows is in it. So is the arithmetic of the kitchenettes. It opened while the bulldozers this walk ends with were already rolling.",
+      ],
+      interrupts: [
+        {
+          title: "Restrictive covenants",
+          after: 2,
+          body: [
+            "A racial covenant was **a ban written into a property deed**, a clause in which the owner promised never to sell or rent to a Black person. It bound every later owner of the land, so one signing campaign could seal a block for generations. Through the 1910s the idea spread quietly, and in **1926 the Supreme Court, in Corrigan v. Buckley, let covenants stand** because they were private contracts between neighbors. That was the green light.",
+            "In **1927 the Chicago Real Estate Board circulated a model covenant**, drafted by the national association's counsel Nathan William MacChesney, and pushed it block by block through churches, clubs, and property owners' associations. The model text is worth reading once, because it says out loud what the century said quietly. **\"No part of said premises shall in any manner be used or occupied directly or indirectly by any negro or negroes,\"** with an exemption for janitors, chauffeurs, and house servants actually employed on the property. More than **220 Cook County subdivisions** adopted the language, one count put **38 of the 85 square miles** of Chicago set aside for housing south of North Avenue under covenant, and within a year of that campaign the Hyde Park Herald wrote that the covenants stretched **\"like a marvelous delicately woven chain of armor\"** across the South Side.",
+            "The University of Chicago helped pay for the armor. It paid the property owners' associations that spread covenants on the blocks around campus, quietly financed the 1933 lawsuit that kept Black families out of the blocks near Washington Park, and spent **tens of thousands of dollars defending covenants in court**, over the objection of its own sociologist Louis Wirth, who called them morally repulsive. The covenant on the building in front of you came out of that campaign.",
+            "When **Carl Hansberry bought at 6140 South Rhodes** in 1937 anyway, a chunk of concrete thrown through the window nearly hit seven-year-old Lorraine. The Supreme Court let the family stay in **1940** on a technicality, and in **1948, in Shelley v. Kraemer, it made every racial covenant in America unenforceable**. Nobody erased them. The words still sit on Cook County deeds today, including on deeds a few blocks from here.",
+          ],
+        },
+      ],
+      images: [
+        {
+          src: `${MEDIA}/hansberry-house-today.jpg`,
+          alt: "The Hansberry house today, a brick three-flat at 6140 South Rhodes Avenue, its front bay windows facing the street above a small yard",
+          credit:
+            "The house today, a Chicago Landmark since 2010 and still a private home. Photograph by Legimet, via Wikimedia Commons. CC BY-SA 4.0.",
+          label: "Today",
+        },
+      ],
+      toNext: {
+        text: "Walk back east on 61st Street to Cottage Grove Avenue, turn south, and go two blocks to 63rd Street. Daley's is on the corner at 6257 South Cottage Grove.",
+        distanceMeters: 1020,
+        minutes: 13,
+      },
+      sources: [
+        { label: "Hansberry v. Lee, 311 U.S. 32 (1940)", url: "https://supreme.justia.com/cases/federal/us/311/32/" },
+        { label: "Lorraine Hansberry, Wikipedia", url: "https://en.wikipedia.org/wiki/Lorraine_Hansberry" },
+        { label: "Hansberry v. Lee, Wikipedia", url: "https://en.wikipedia.org/wiki/Hansberry_v._Lee" },
+        { label: "Chicago Public Library, Lorraine Hansberry biography", url: "https://www.chipublib.org/lorraine-hansberry-biography/" },
+        { label: "Encyclopedia of Chicago, Restrictive Covenants", url: "http://www.encyclopedia.chicagohistory.org/pages/1067.html" },
+        { label: "WBEZ, Chicago home records still contain racist covenants", url: "https://www.wbez.org/race-class-communities/2021/11/21/chicago-home-records-still-contain-racist-covenants" },
+        { label: "HUD Cityscape, documenting racially restrictive covenants in twentieth-century Chicago", url: "https://www.huduser.gov/portal/periodicals/cityscape/vol22num3/ch5.pdf" },
+      ],
+    },
+    {
+      id: "daleys",
+      number: 14,
+      title: "Daley's Restaurant",
+      dek: "The oldest restaurant in Chicago has held this corner since 1892, with one gap",
+      mapLabel: "Daley's",
+      lat: 41.78058,
+      lng: -87.6056,
+      optional: true,
+      audioSrc: `${MEDIA}/audio/daleys.mp3`,
+      audioSeconds: 131,
+      transcript: [
+        "In 1892 an Irish immigrant ironworker named **John Daley opened a lunchroom here at 63rd and Cottage Grove**, feeding the crews building the elevated railroad above the street, with the World's Fair rising a mile east. That makes it, by most accounts, **the oldest restaurant in Chicago**, older than the L trains it fed. In 1918 Daley sold to two Greek immigrants who worked in the place, a waiter named Tom Kyros and a cook named Paul Emmanuel, and the same extended family has run it ever since. They kept the Daley name. It was already worth something.",
+        "Think about what has passed this corner since. In 1932 Kyros and Emmanuel tore the old building down to rebuild it, and their bank failed in the middle of the work. The lot sat empty for five years while the two of them took other jobs and saved, and Daley's reopened in 1937. After that it did not leave. 63rd Street became one of the busiest commercial streets in Black Chicago as the Great Migration remade Woodlawn, and the restaurant fed its neighborhood while so much else moved away or burned. The menu turned toward smothered pork chops, catfish, and biscuits because that is what the neighborhood wanted. **Muhammad Ali ate here between training sessions** in the 1960s. Disinvestment hit 63rd as hard as any street in the city, the L overhead was even torn back, and Daley's kept the griddle on. In 2019 it moved into a new building directly across the street, at 6257 South Cottage Grove, and kept serving.",
+        "A restaurant is a small thing to set against covenants and bulldozers. But it is still here. It fed whoever came through the door and let the menu follow the neighborhood, and it has outlived nearly every business in this story. Get the breakfast. Then head back north, because the rest of this walk is where the story you have been following gets finished, first with contracts and then with heavy equipment.",
+      ],
+      images: [
+        {
+          src: `${MEDIA}/sixty-third-1973.jpg`,
+          alt: "63rd Street in 1973 under the elevated tracks, storefronts on both sides, a lit DRUGS sign, delivery trucks at the curb and people on the sidewalks",
+          credit:
+            "63rd Street at Calumet in 1973, still a working commercial street under the L, four blocks west of this corner. John H. White, EPA DOCUMERICA, National Archives. Public domain.",
+          label: "1973",
+        },
+      ],
+      toNext: {
+        text: "Head back north into Hyde Park. The number 4 bus runs up Cottage Grove from the corner you are standing on and saves you a mile and a half, so take it if it comes; on foot it is about thirty-five minutes. Get off at 55th Street and walk east. Stop where low townhouses stand behind small fenced front courts, with two concrete towers on an island in the middle of the road just to the west.",
+        distanceMeters: 2410,
+        minutes: 30,
+      },
+      sources: [
+        { label: "Daley's Restaurant, our history", url: "https://www.daleysrestaurant.com/history" },
+        { label: "Daley's Restaurant, menus", url: "https://www.daleysrestaurant.com/menus" },
+      ],
+    },
+    {
       id: "fifty-fifth",
       number: 15,
       title: "Fifty-Fifth Street",
@@ -990,7 +991,7 @@ export const HYDE_PARK_WALK: WalkTour = {
       audioSeconds: 267,
       transcript: [
         "In 1948 the Supreme Court made racial covenants unenforceable, and Hyde Park's paper wall came down. After decades boxed inside the overcrowded Black Belt, Black families could finally buy on blocks like this one, and they did. In 1950 Hyde Park and Kenwood together were about six percent nonwhite. By 1956 the two were almost thirty-seven percent, with roughly twenty thousand white residents leaving and twenty-four thousand Black residents arriving in those six years. What met them was not a welcome. It was a business, and it worked the block rather than the house.",
-        "The business had two halves and needed both. First the speculator frightened the white owners, calling at dinner time night after night and putting flyers under every door, until a house came to him cheap. Then he sold that same house to a Black family at nearly double, on a contract rather than a mortgage, because no ordinary bank on the South Side would lend to them. Buildings got carved into single rooms with a hot plate and a bathroom down the hall to squeeze more rent out of the same walls, and then the crowding was pointed at as proof that Black neighbors ruin a street. Both halves of that trade get a full plate on the Drexel Boulevard detour, which is stop fourteen, and the reason no bank would lend is on the plate right below.",
+        "The business had two halves and needed both. First the speculator frightened the white owners, calling at dinner time night after night and putting flyers under every door, until a house came to him cheap. Then he sold that same house to a Black family at nearly double, on a contract rather than a mortgage, because no ordinary bank on the South Side would lend to them. Buildings got carved into single rooms with a hot plate and a bathroom down the hall to squeeze more rent out of the same walls, and then the crowding was pointed at as proof that Black neighbors ruin a street. Both halves of that trade get a full plate on this detour, and the reason no bank would lend is on the plate right below.",
         "Hyde Park fought all of it harder than most neighborhoods did, and mostly with volunteers. More than sixty **block clubs** formed at the peak, and they reported illegal conversions, met the panic calls at the front door, sat with owners who were being worked on, and on at least one block quietly **passed the hat so a Black family trapped in a punitive contract could keep their home**. They were arguing against arithmetic, though, and the arithmetic had been written into federal policy a decade earlier.",
         "Now picture this street before any of the concrete around you existed. Look at the two photographs taken from the same spot on the railroad embankment, six years apart. Dozens of bars, clubs and shops ran along 55th and Lake Park, and the tavern count climbed every year the covenants aged. The Compass Players opened in a storefront at 1152 East 55th in 1955, the troupe that grew into Second City. It was crowded, loud, newly integrated, a little rough, and more alive than almost any street in the city.",
         "The university two blocks south looked at all that life and saw a threat to its future, and it had the legal power to act on the thought. The plate below is the instrument it used, and the rest of this stop is what the instrument produced.",

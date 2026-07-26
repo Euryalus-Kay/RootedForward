@@ -46,8 +46,8 @@ struct HomeView: View {
             .background(RF.cream)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { _ in
-                TourDetailView { index in
-                    tourTarget = TourTarget(index: index)
+                TourDetailView { index, plate in
+                    tourTarget = TourTarget(index: index, plate: plate)
                 }
             }
         }
@@ -55,11 +55,11 @@ struct HomeView: View {
         // reserve blank space for a control that is usually absent.
         .safeAreaInset(edge: .bottom, spacing: 0) {
             ListeningChip { index in
-                tourTarget = TourTarget(index: index)
+                tourTarget = TourTarget(index: index, plate: nil)
             }
         }
         .fullScreenCover(item: $tourTarget) { target in
-            TourView(startAt: target.index)
+            TourView(startAt: target.index, openPlate: target.plate)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -223,15 +223,18 @@ struct ScrollOffsetKey: PreferenceKey {
     }
 }
 
-/// Which stop the tour opens on.
+/// Which stop the tour opens on, and optionally which red plate
+/// inside it. The plate index used to drop the reader at the top of
+/// a long stop and leave them to hunt for the thing they tapped.
 struct TourTarget: Identifiable {
     let index: Int
-    var id: Int { index }
+    var plate: String? = nil
+    var id: String { "\(index)-\(plate ?? "")" }
 }
 
 /// The sheets behind the tour screen's info rows.
 enum InfoSheet: String, Identifiable {
-    case essay, plates, details
+    case plates, details
     var id: String { rawValue }
 }
 

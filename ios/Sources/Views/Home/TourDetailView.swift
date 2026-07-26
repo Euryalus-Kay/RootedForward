@@ -10,7 +10,7 @@ import StoreKit
 struct TourDetailView: View {
     @EnvironmentObject private var content: ContentStore
     @EnvironmentObject private var progress: ProgressStore
-    let openTour: (Int) -> Void
+    let openTour: (Int, String?) -> Void
 
     @State private var infoSheet: InfoSheet?
     @State private var mapOpen = false
@@ -32,9 +32,9 @@ struct TourDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(RF.cream, for: .navigationBar)
         .sheet(item: $infoSheet) { sheet in
-            InfoSheetView(sheet: sheet) { index in
+            InfoSheetView(sheet: sheet) { index, plate in
                 infoSheet = nil
-                openTour(index)
+                openTour(index, plate)
             }
         }
         .sheet(isPresented: $mapOpen) {
@@ -42,7 +42,7 @@ struct TourDetailView: View {
                 currentIndex: min(progress.lastIndex, max(content.tour.stops.count - 1, 0))
             ) { index in
                 mapOpen = false
-                openTour(index)
+                openTour(index, nil)
             }
         }
         .onAppear {
@@ -161,9 +161,9 @@ struct TourDetailView: View {
                 Button {
                     Haptics.press()
                     if progress.hasProgress {
-                        openTour(min(progress.lastIndex, content.tour.stops.count - 1))
+                        openTour(min(progress.lastIndex, content.tour.stops.count - 1), nil)
                     } else {
-                        openTour(0)
+                        openTour(0, nil)
                     }
                 } label: {
                     Text(progress.hasProgress
@@ -213,7 +213,7 @@ struct TourDetailView: View {
                 ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { index, stop in
                     Button {
                         Haptics.tap()
-                        openTour(index)
+                        openTour(index, nil)
                     } label: {
                         StopRow(
                             stop: stop,
@@ -244,10 +244,10 @@ struct TourDetailView: View {
     /// the top of the stops strip still peeks into the first screen.
     private var infoRows: some View {
         VStack(spacing: 0) {
-            infoRow("Why this walk", glyph: "text.alignleft", identifier: "home-essay-more") {
-                infoSheet = .essay
-            }
-            divider
+            // "Why this walk" used to be the first row here. It is
+            // the page in front of stop one now, so the essay is read
+            // on the way into the walk rather than behind a row most
+            // people never opened.
             infoRow("The map and the route", glyph: "map", identifier: "home-map-row") {
                 mapOpen = true
             }

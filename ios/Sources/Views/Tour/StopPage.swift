@@ -21,6 +21,11 @@ struct StopPage: View {
     /// Fires once the walker has actually scrolled this page, which
     /// is the signal that they are reading rather than passing through.
     var onScrolled: (() -> Void)? = nil
+    /// A red plate to open on rather than the top of the stop, set
+    /// when the walker taps an entry in the tools-of-segregation
+    /// index. Nil is the ordinary case.
+    var scrollToPlate: String? = nil
+    var onPlateShown: (() -> Void)? = nil
 
     @State private var appeared = false
     @State private var reportedTitleHidden = false
@@ -76,6 +81,15 @@ struct StopPage: View {
             }
             .onAppear {
                 appeared = true
+                guard let plate = scrollToPlate else { return }
+                // One runloop turn so the plate has been laid out and
+                // the proxy can actually find its anchor.
+                DispatchQueue.main.async {
+                    withAnimation(.rfAppear) {
+                        proxy.scrollTo(plate, anchor: .top)
+                    }
+                    onPlateShown?()
+                }
             }
         }
     }
@@ -219,6 +233,8 @@ struct StopPage: View {
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
         .redPlate()
+        // The anchor the tools-of-segregation index scrolls to.
+        .id(interrupt.id)
     }
 
     // MARK: - Hand-off
