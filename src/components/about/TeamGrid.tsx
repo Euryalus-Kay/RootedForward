@@ -73,7 +73,7 @@ function PersonCard({ member }: { member: TeamMember }) {
       </h2>
 
       {member.city && (
-        <p className="mt-2 font-body text-sm leading-snug text-ink/70">
+        <p className="mt-2 font-body text-sm font-semibold leading-snug text-ink/80">
           {member.city}
         </p>
       )}

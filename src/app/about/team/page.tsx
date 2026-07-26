@@ -103,18 +103,14 @@ export default async function TeamPage() {
       {/* ============================================================
           WHO IS ON IT
           ============================================================ */}
-      <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
+      {/* Just the heading. The owner cut the eyebrow and the standfirst
+          in July 2026, since the cards underneath already say who these
+          people are and where they go to school. */}
+      <section className="border-b border-border bg-cream pb-10 pt-20 md:pb-12 md:pt-28">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Meet the team
-          </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
-            Who is on this
+          <h1 className="font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
+            Leadership team
           </h1>
-          <p className="mt-7 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
-            Rooted Forward is run by students. Here is everyone on it, where
-            they go to school, and what each person works on.
-          </p>
         </div>
       </section>
 

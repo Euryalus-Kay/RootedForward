@@ -126,14 +126,39 @@ export function sortRoster<T extends TeamMember>(members: T[]): T[] {
     );
 }
 
-/* Development seed rows ("Member Name", "Advisor Name", "test") are still
-   sitting in the live board_members table. Anything that looks like one
-   never reaches the page. */
+/* Development seed rows are still sitting in the live board_members table
+   ("Member Name" x3, "Advisor Name" x2, and one called "tesr"). Anything
+   that looks like one never reaches the page.
+
+   The load-bearing rule is the last one. Chasing individual typos with a
+   regex is how "tesr" reached production in the first place, since it
+   does not match test, tset, or teest. A real roster entry has a first
+   name and a last name, so a single-token name is a keyboard test. The
+   escape hatch for anyone who genuinely goes by one name is to add them
+   to TEAM_MEMBERS above, which does not go through this filter. */
+const SEED_NAMES = new Set([
+  "test",
+  "tesr",
+  "tset",
+  "asdf",
+  "name",
+  "new member",
+]);
+
 export function isRealName(name: string): boolean {
   const n = name.trim().toLowerCase();
   if (!n) return false;
-  if (n.includes("member name") || n.includes("advisor name")) return false;
-  if (n.includes("placeholder")) return false;
-  if (n === "test" || /^tes+t?$/.test(n)) return false;
-  return true;
+  if (SEED_NAMES.has(n)) return false;
+  if (
+    n.includes("member name") ||
+    n.includes("advisor name") ||
+    n.includes("placeholder")
+  ) {
+    return false;
+  }
+  const tokens = n.split(/\s+/).filter(Boolean);
+  /* One word is a keyboard test. Two tokens is a first and last name, and
+     a single initial counts, so "J Smith" survives. */
+  if (tokens.length < 2) return false;
+  return !tokens.some((t) => SEED_NAMES.has(t));
 }
