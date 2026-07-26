@@ -258,9 +258,10 @@ export default function Home() {
                 Self-guided Hyde Park tour
               </h2>
               <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                Sixteen stops around Hyde Park, following how the neighborhood
-                decided who was allowed to live in it. Free, and about four
-                miles on foot.
+                The tour goes through the Chicago neighborhood of Hyde Park,
+                stopping at sites that reflect its deep racial history and the
+                inequality that still shapes the neighborhood today. It is
+                about four miles, on foot, and you guide yourself.
               </p>
               <Link
                 href="/tours"

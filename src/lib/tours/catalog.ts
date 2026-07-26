@@ -24,8 +24,6 @@ export interface TourListing {
   /** Where the same history can be read on the site, if anywhere. */
   readHref?: string;
   readLabel?: string;
-  /** In-browser version of the walk itself, for people without an iPhone. */
-  browserHref?: string;
 }
 
 export const TOUR_CATALOG: TourListing[] = [
@@ -35,7 +33,7 @@ export const TOUR_CATALOG: TourListing[] = [
     city: "Chicago",
     neighborhood: "Hyde Park",
     blurb:
-      "Hyde Park sold exclusivity from its first day, and a century of paperwork decided who got to live in it. The walk starts at Paul Cornell's stone by 53rd Street and ends at Harper Court, in the order it happened.",
+      "The tour goes through the Chicago neighborhood of Hyde Park, stopping at sites that reflect its deep racial history and the inequality that still shapes the neighborhood today. It starts at Paul Cornell's stone by 53rd Street and ends at Harper Court.",
     facts: [
       { label: "Stops", value: "13, plus 3 detours" },
       { label: "On foot", value: "About 4 miles" },
@@ -50,6 +48,5 @@ export const TOUR_CATALOG: TourListing[] = [
     },
     readHref: "/tours/chicago/hyde-park",
     readLabel: "Read the online exhibit",
-    browserHref: "/tours/hyde-park-walk",
   },
 ];

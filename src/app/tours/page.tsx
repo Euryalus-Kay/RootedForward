@@ -119,10 +119,7 @@ export default function ToursPage() {
         <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-20 md:pb-24 md:pt-28">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-7">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-                Tours
-              </p>
-              <h1 className="mt-4 max-w-[15ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
+              <h1 className="max-w-[15ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
                 Take the tour on your phone.
               </h1>
               <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
@@ -197,10 +194,7 @@ export default function ToursPage() {
             </p>
           </div>
 
-          <p className="mt-20 font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            The app
-          </p>
-          <h2 className="mt-4 max-w-[18ch] font-display text-3xl leading-tight text-forest md:text-4xl">
+          <h2 className="mt-20 max-w-[18ch] font-display text-3xl leading-tight text-forest md:text-4xl">
             What you get when you download it
           </h2>
 
@@ -233,10 +227,7 @@ export default function ToursPage() {
           ============================================================ */}
       <section id="tours" className="scroll-mt-16 border-t border-border bg-cream-dark py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            The routes
-          </p>
-          <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
             What you can walk right now
           </h2>
 
@@ -260,18 +251,12 @@ export default function ToursPage() {
                 </div>
 
                 <div className="md:col-span-7">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center rounded-sm bg-forest px-3 py-1 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-cream">
-                      In the app
-                    </span>
-                    <span className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
-                      {tour.city}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-4 font-display text-3xl text-ink md:text-4xl">
+                  <h3 className="font-display text-3xl text-ink md:text-4xl">
                     {tour.title}
                   </h3>
+                  <p className="mt-2 font-display text-lg italic text-ink/60">
+                    {tour.neighborhood}, {tour.city}
+                  </p>
                   <p className="mt-4 max-w-[54ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
                     {tour.blurb}
                   </p>
@@ -279,7 +264,7 @@ export default function ToursPage() {
                   <div className="mt-8 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
                     {tour.facts.map((fact) => (
                       <div key={fact.label} className="bg-cream px-4 py-3">
-                        <p className="font-body text-[11px] font-semibold uppercase tracking-wider text-ink/55">
+                        <p className="font-body text-[13px] text-ink/60">
                           {fact.label}
                         </p>
                         <p className="mt-1 font-body text-sm font-semibold text-forest">
@@ -293,8 +278,8 @@ export default function ToursPage() {
                     <AppStoreButton tone="rust" withNote={false} />
                   </div>
 
-                  <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3">
-                    {tour.readHref && (
+                  {tour.readHref && (
+                    <div className="mt-6">
                       <Link
                         href={tour.readHref}
                         className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
@@ -304,19 +289,8 @@ export default function ToursPage() {
                           &rarr;
                         </span>
                       </Link>
-                    )}
-                    {tour.browserHref && (
-                      <Link
-                        href={tour.browserHref}
-                        className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                      >
-                        Walk it in your browser{" "}
-                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                          &rarr;
-                        </span>
-                      </Link>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </article>
             ))}
@@ -324,10 +298,7 @@ export default function ToursPage() {
 
           {/* What is coming. Named cities only, no invented routes. */}
           <div className="mt-16 border-t border-border pt-10">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-              Next
-            </p>
-            <h3 className="mt-4 max-w-[20ch] font-display text-2xl leading-tight text-forest md:text-3xl">
+            <h3 className="max-w-[20ch] font-display text-2xl leading-tight text-forest md:text-3xl">
               More neighborhoods are in the works
             </h3>
             <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/75">
@@ -357,10 +328,7 @@ export default function ToursPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
             <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                In person
-              </p>
-              <h2 className="mt-4 font-display text-3xl leading-tight text-forest md:text-4xl">
+              <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
                 Or walk Hyde Park with a guide
               </h2>
               <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-ink/75">
@@ -431,12 +399,9 @@ export default function ToursPage() {
 
             <div className="md:col-span-4">
               <div className="rounded-sm border border-cream/20 p-6">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-cream/60">
-                  No iPhone
-                </p>
-                <p className="mt-4 font-body text-base leading-relaxed text-cream/75">
-                  The Hyde Park walk runs in a browser too. It is not as good
-                  on the street, but it is the whole tour.
+                <p className="font-body text-base leading-relaxed text-cream/75">
+                  No iPhone? The Hyde Park walk runs in a browser too. It is
+                  not as good on the street, but it is the whole tour.
                 </p>
                 <Link
                   href="/tours/hyde-park-walk"
