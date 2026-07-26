@@ -1,27 +1,133 @@
 /* ------------------------------------------------------------------ */
 /*  Home page                                                          */
 /*                                                                     */
-/*  Voice rules learned the hard way (owner feedback, July 2026):     */
-/*  no aphorism headlines, no balanced-pair sentences ("we teach X,   */
-/*  we work on Y"), no numbered 01/02 list rows, no triads. Say the   */
-/*  concrete thing. Hierarchy comes from size (the tour is the big    */
-/*  block, everything else steps down), not from a uniform grid.      */
-/*  All imagery is public domain or CC0, provenance in                */
-/*  public/media/hyde-park/credits.json.                              */
+/*  Rebuilt July 2026 around one rule from the owner. A visitor who    */
+/*  reads only the name and the paragraph under it should already      */
+/*  know what this organization does. Everything after that is the     */
+/*  four things we actually do, in the order they matter, one short    */
+/*  row each. No explaining, no build-up.                              */
+/*                                                                     */
+/*  Voice rules learned the hard way (owner feedback, July 2026):      */
+/*  no aphorism headlines, no balanced-pair sentences ("we teach X,    */
+/*  we work on Y"), no numbered 01/02 list rows, no triads. Say the    */
+/*  concrete thing.                                                    */
+/*                                                                     */
+/*  There are no photographs of our own work yet, so the rows carry    */
+/*  their weight with type and a line icon rather than an image        */
+/*  placeholder. The two archival pictures on the page are public      */
+/*  domain, provenance in public/media/hyde-park/credits.json.         */
 /* ------------------------------------------------------------------ */
 
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
 import SurveyRule from "@/components/ui/SurveyRule";
-import { GROUND_TITLE as EXHIBIT_TITLE } from "@/components/exhibit/ground/GroundShell";
+
+/* ------------------------------------------------------------------ */
+/*  Line icons. Same heroicons-outline vocabulary the policy page      */
+/*  uses, so the site keeps one drawing style.                         */
+/* ------------------------------------------------------------------ */
+
+const ICON_CLS = "h-7 w-7";
+
+function MapIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON_CLS}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+    </svg>
+  );
+}
+
+function ClipboardIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON_CLS}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+    </svg>
+  );
+}
+
+function MicrophoneIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON_CLS}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+    </svg>
+  );
+}
+
+function ScaleIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON_CLS}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  The four things we do. Order is deliberate. Tours carry the most   */
+/*  people, policy is the newest.                                      */
+/* ------------------------------------------------------------------ */
+
+interface WorkItem {
+  label: string;
+  title: string;
+  body: string[];
+  icon: () => React.ReactElement;
+  links: { label: string; href: string }[];
+}
+
+const WORK: WorkItem[] = [
+  {
+    label: "Tours",
+    title: "Self-guided walking tours",
+    icon: MapIcon,
+    body: [
+      "Our student researchers take one neighborhood at a time and work out how race shaped the blocks people walk past every day. The deeds, the appraisal forms, the bulldozed lots.",
+      "They build a tour out of what they find and put it on the Rooted Forward app. You can walk the route with it, or read the whole thing at home. We count how many people take each tour, and that count is how we know whether the research reached anyone.",
+    ],
+    links: [
+      { label: "Walk Hyde Park", href: "/tours" },
+      { label: "Read it online instead", href: "/tours/chicago/hyde-park" },
+    ],
+  },
+  {
+    label: "Outreach",
+    title: "Community outreach",
+    icon: ClipboardIcon,
+    body: [
+      "We set up where people already are, like the Obama Presidential Center and neighborhood farmers markets, and we interview and survey residents. We ask about their own block, and we ask what they know about how racial inequality was built into Chicago.",
+      "The answers become data on where the gaps are, and they keep our research answerable to the people who live there. It is also where we hand out the tour app, so somebody standing in the neighborhood can walk it that afternoon.",
+    ],
+    links: [{ label: "Help us run one", href: "/get-involved" }],
+  },
+  {
+    label: "Podcast",
+    title: "The podcast",
+    icon: MicrophoneIcon,
+    body: [
+      "We sit down with people who live in the neighborhoods we study and record what they have been through.",
+      "A census table can tell you a block lost half its households. It cannot tell you what that was like, or what the people still there think should happen next. Those conversations decide what we research and what we end up asking the city for.",
+    ],
+    links: [{ label: "Listen", href: "/podcasts" }],
+  },
+  {
+    label: "Policy",
+    title: "Policy advocacy",
+    icon: ScaleIcon,
+    body: [
+      "We run petitions on Chicago bills that would undo part of the long-term damage from disinvestment in Black and Brown neighborhoods.",
+      "We pick bills that are already written and already introduced and are now sitting in a committee that will not vote. We explain in plain words what each one would do, and we hand the signatures to that committee.",
+    ],
+    links: [{ label: "Sign a petition", href: "/policy" }],
+  },
+];
 
 export default function Home() {
   return (
     <PageTransition>
       {/* ============================================================
-          HERO
-          The 1940 HOLC Residential Security Map of Chicago. The
-          headline just says what the map on screen did.
+          WHO WE ARE
+          The 1940 HOLC Residential Security Map of Chicago sits
+          behind the name. The paragraph under the name is the whole
+          pitch, so it says what we do and nothing else.
           ============================================================ */}
       <section className="relative overflow-hidden">
         {/* Cropped to the graded city and shoreline; the full sheet
@@ -36,30 +142,32 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/95 to-cream/45" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-28 pt-24 md:pb-40 md:pt-36">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            A student-run Chicago nonprofit
-          </p>
-          <h1 className="mt-5 font-display text-6xl leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
+        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-24 md:pb-32 md:pt-32">
+          <h1 className="font-display text-6xl leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
             Rooted Forward
           </h1>
-          <p className="mt-7 max-w-xl font-body text-lg leading-relaxed text-ink/80">
-            Racial inequality shaped Chicago, and its impact is still
-            visible in the city&rsquo;s neighborhoods. We educate people
-            about that history and work to address it through policy.
+          <p className="mt-8 max-w-[46ch] font-body text-xl leading-relaxed text-ink/85 md:text-2xl md:leading-relaxed">
+            We are a student-run nonprofit in Chicago. We research how racial
+            inequality was built into this city&rsquo;s neighborhoods, and we
+            put that research where people can use it.
+          </p>
+          <p className="mt-5 max-w-[46ch] font-body text-lg leading-relaxed text-ink/70">
+            Everything we make is free. We want more Chicagoans to know this
+            history, and we want the city to pass the bills that would undo
+            part of it.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
               href="/tours"
               className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
             >
-              Book the walking tour
+              Take a tour
             </Link>
             <Link
-              href="/tours/chicago/hyde-park"
+              href="/policy"
               className="group font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
             >
-              Read the exhibit{" "}
+              Sign a petition{" "}
               <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
                 &rarr;
               </span>
@@ -74,98 +182,112 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-          THE WALKING TOUR — the main offer, so it gets the big block
+          WAYS WE HELP
+          Four rows. Big title on the left, the plain description on
+          the right, a hairline between each.
           ============================================================ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <SurveyRule className="text-rust" />
-          <div className="mt-10 grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
+          <h2 className="mt-8 font-display text-5xl leading-none tracking-tight text-forest md:text-7xl">
+            Ways we help
+          </h2>
+          <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-ink/70">
+            Four things, and we do all four in the same neighborhoods.
+          </p>
+
+          <div className="mt-14 border-t-2 border-ink/15">
+            {WORK.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="grid grid-cols-1 gap-y-6 border-b border-border py-12 md:grid-cols-12 md:gap-x-14 md:py-16"
+                >
+                  <div className="md:col-span-5">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-rust/45 text-rust">
+                      <Icon />
+                    </div>
+                    <p className="mt-5 font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
+                      {item.label}
+                    </p>
+                    <h3 className="mt-3 max-w-[14ch] font-display text-3xl leading-tight text-ink md:text-4xl">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  <div className="md:col-span-7">
+                    <div className="flex flex-col gap-4">
+                      {item.body.map((para, i) => (
+                        <p
+                          key={i}
+                          className="max-w-[58ch] font-body text-base leading-relaxed text-ink/75 md:text-lg"
+                        >
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                    <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3">
+                      {item.links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                        >
+                          {link.label}{" "}
+                          <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                            &rarr;
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          THE NEIGHBORHOOD WE HAVE FINISHED
+          One archival picture and one button, so the first tour has
+          a door of its own without another wall of text.
+          ============================================================ */}
+      <section className="bg-forest py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
             <div className="md:col-span-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                The walking tour
+              <img
+                src="/media/site/hyde-park-aerial-1928.jpg"
+                alt="Aerial photograph of Hyde Park and the lakefront taken by the Chicago Aerial Survey Company in 1928"
+                loading="lazy"
+                className="w-full rounded-sm border border-cream/20 object-cover"
+              />
+              <p className="mt-2 font-body text-[11px] text-cream/65">
+                Hyde Park and the lakefront from the air, 1928. Chicago Aerial
+                Survey Co. Public domain.
               </p>
-              <h2 className="mt-3 font-display text-3xl leading-tight text-ink md:text-4xl">
-                Two hours on foot in Hyde Park
+            </div>
+            <div className="md:col-span-6">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
+                Finished and live
+              </p>
+              <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
+                Hyde Park is the one we have done
               </h2>
-              <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
-                Our researchers walk you through the neighborhood and tell
-                you what happened on the blocks you are standing on. The
-                route covers the university&rsquo;s expansion campaigns, the
-                restrictive covenants, and the urban renewal bulldozers.
-                Every stop comes with the documents to back it up.
-              </p>
-              <p className="mt-4 font-body text-sm font-semibold uppercase tracking-wider text-ink/60">
-                2 hours &middot; Small groups &middot; Led by students
+              <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                Thirteen stops between the lakefront and Harper Court, told in
+                the order the history happened rather than in a tidy loop.
+                About four miles, with three optional detours for anyone who
+                wants the rest. Every claim has the document behind it attached
+                to the stop it belongs to.
               </p>
               <Link
                 href="/tours"
                 className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
               >
-                Tour details &amp; booking
-              </Link>
-            </div>
-            <div className="md:col-span-6">
-              <img
-                src="/media/site/cobb-hall-postcard.jpg"
-                alt="Hand-colored postcard of Cobb Hall at the University of Chicago"
-                loading="lazy"
-                className="w-full rounded-sm border border-border object-cover"
-              />
-              <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
-                Cobb Hall at the University of Chicago. Tichnor Brothers
-                postcard, circa 1930-1945. Public domain.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          THE EXHIBIT — forest band, explained in plain words
-          ============================================================ */}
-      <section className="bg-forest py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
-            <div className="md:col-span-6">
-              <Link href="/tours/chicago/hyde-park" className="group block">
-                <div className="overflow-hidden rounded-sm border border-cream/20">
-                  <img
-                    src="/media/site/midway-1893.jpg"
-                    alt="Crowds on the Midway Plaisance beneath the first Ferris Wheel at the 1893 World's Columbian Exposition"
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                  />
-                </div>
-              </Link>
-              <p className="mt-2 font-body text-[11px] text-cream/65">
-                The Midway Plaisance under the Ferris Wheel, 1893.
-                Rijksmuseum collection, CC0.
-              </p>
-            </div>
-
-            <div className="md:col-span-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
-                The online exhibit
-              </p>
-              <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
-                Can&rsquo;t make the tour? Read the whole story online.
-              </h2>
-              <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                The exhibit shows the real paperwork that built Hyde Park,
-                including deeds with the racial covenants still printed in
-                them, bank appraisal forms, and the federal map from 1940.
-                It walks you through them from 1832 to today on one long
-                page, at your own pace.
-              </p>
-              <p className="mt-4 font-body text-sm text-cream/75">
-                It is free to read and needs no account. We call it{" "}
-                {EXHIBIT_TITLE}.
-              </p>
-              <Link
-                href="/tours/chicago/hyde-park"
-                className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Start reading
+                Start the tour
               </Link>
             </div>
           </div>
@@ -173,59 +295,8 @@ export default function Home() {
       </section>
 
       {/* ============================================================
-          PODCAST AND POLICY — the two smaller doors, side by side
-          ============================================================ */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-            <div className="border-t-2 border-border pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                The podcast
-              </p>
-              <h2 className="mt-3 font-display text-2xl text-ink">
-                Chicago neighborhoods, on your commute
-              </h2>
-              <p className="mt-3 max-w-[48ch] font-body text-base leading-relaxed text-ink/70">
-                Conversations about the city&rsquo;s neighborhoods and the
-                policies that shaped them. On Spotify or right on the site.
-              </p>
-              <Link
-                href="/podcasts"
-                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-              >
-                Listen{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
-              </Link>
-            </div>
-
-            <div className="border-t-2 border-border pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-                Policy
-              </p>
-              <h2 className="mt-3 font-display text-2xl text-ink">
-                Tools for pushing back
-              </h2>
-              <p className="mt-3 max-w-[48ch] font-body text-base leading-relaxed text-ink/70">
-                Plain guides to testifying, commenting, and getting an
-                ordinance moving. No campaign is running right now. The
-                first one is in the works.
-              </p>
-              <Link
-                href="/policy"
-                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-              >
-                See the policy tools{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          CLOSER — ink band, short and plain. No archival photo here;
-          pairing one with a recruitment button read as too much
-          (owner, July 2026).
+          CLOSER. No archival photo here; pairing one with a
+          recruitment button read as too much (owner, July 2026).
           ============================================================ */}
       <section className="bg-ink py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
@@ -234,9 +305,9 @@ export default function Home() {
             We could use your help.
           </h2>
           <p className="mx-auto mt-5 max-w-[48ch] font-body text-lg leading-relaxed text-cream/75">
-            Rooted Forward is small and run by students. If you can dig
-            through an archive, lead a tour, or edit audio, there is work
-            here for you, and you do not need experience to start.
+            Rooted Forward is small and run by students. If you can dig through
+            an archive, run a survey table at a market, or edit audio, there is
+            work here for you, and you do not need experience to start.
           </p>
           <Link
             href="/get-involved"
