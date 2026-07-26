@@ -12,7 +12,6 @@ struct RootedForwardApp: App {
     @StateObject private var progress = ProgressStore()
     @StateObject private var audio = AudioEngine()
     @StateObject private var location = LocationService()
-    @StateObject private var account = AccountStore()
 
     @Environment(\.scenePhase) private var scenePhase
 
@@ -33,7 +32,6 @@ struct RootedForwardApp: App {
                 .environmentObject(progress)
                 .environmentObject(audio)
                 .environmentObject(location)
-                .environmentObject(account)
                 .tint(RF.rust)
                 .onAppear {
                     audio.onFinished = { [weak progress] stopID in

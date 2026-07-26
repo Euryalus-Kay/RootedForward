@@ -34,6 +34,9 @@ struct WalkTour: Codable, Equatable {
     /// Dashed spurs to the optional detour stops; absent in older payloads.
     let detourRoutes: [[[Double]]]?
     let practical: [WalkPractical]
+    /// The one-screen version of the detour warning; absent in older
+    /// payloads, where the alert falls back to its own wording.
+    let detourNotice: String?
 
     /// The walk proper, without the two optional detours. Counting
     /// against this is what lets someone who finishes the walk

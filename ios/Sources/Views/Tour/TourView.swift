@@ -231,13 +231,13 @@ struct TourView: View {
 
     // MARK: - The detour notice
 
-    /// The practical card the owner wrote, reused word for word so
-    /// the popup can never drift from the page it came off.
+    /// Written for this moment rather than lifted off the practical
+    /// card, which is a reference the walker reads at home. Standing
+    /// on a sidewalk they need two facts, the time it costs and the
+    /// advice to go in daylight with company.
     private var detourNoticeText: String {
-        content.tour.practical
-            .first { $0.title.lowercased().contains("detour") }?
-            .text
-            ?? "These stops sit off the main walk and add real distance. Do them in daylight, and take someone with you if you can. The main walk is complete without them."
+        content.tour.detourNotice
+            ?? "This stop sits off the main route and adds real distance. Go in daylight, and bring someone with you if you can. The main walk is complete without it."
     }
 
     /// The first stop after this one that is back on the main line,

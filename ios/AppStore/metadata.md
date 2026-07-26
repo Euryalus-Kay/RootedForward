@@ -103,17 +103,22 @@ Expected rating 12+.
 
 Data collection answers, matching what the code actually does.
 
+Answer **Data Not Collected** for the whole label. Nothing in this
+app is collected, and the table below is the itemized version of why.
+
 | Type | Collected? | Notes |
 |---|---|---|
-| Location | Not collected | Processed on device only, never transmitted. Answer "No" for collection since it never leaves the phone. |
-| Contact info (email, name) | Collected only if the user signs in | Linked to identity, used for app functionality (account sign-in). Not used for tracking. |
-| Identifiers | No | |
-| Usage data / analytics | No | The app contains no analytics SDK. |
-| Tracking | No | |
+| Location | No | Processed on device only, never transmitted, and the tour works fully if the user declines. |
+| Contact info (email, name) | No | There is no account and no sign-in anywhere in the app. |
+| Identifiers | No | No advertising identifier, no device identifier, no user ID. |
+| Usage data / analytics | No | The app contains no analytics SDK of any kind. |
+| Diagnostics | No | No crash-reporting SDK. Apple's own aggregate figures are not collected by us. |
+| Tracking | No | Nothing is tracked, so the App Tracking Transparency prompt does not apply. |
 
-If the reviewer asks, sign-in is optional, the tour is fully usable
-signed out, and accounts exist for the website's comments and policy
-features.
+The app makes exactly one network request, an unauthenticated GET to
+https://rooted-forward.org/api/walk for the latest tour text, so a
+correction reaches walkers without an App Store update. It carries no
+identifier and no body.
 
 ## App Review notes (paste into the Notes field)
 
@@ -122,13 +127,10 @@ Hyde Park, Chicago, from the nonprofit Rooted Forward
 (rooted-forward.org). All tour content ships inside the binary and
 works offline in airplane mode.
 
-Sign-in is OPTIONAL and never required. It uses email and password
-only (no third-party login, so guideline 4.8 does not apply). There
-is no in-app account creation; the Create one link opens the website
-in the browser. Account deletion is available in the app under
-Settings, Your account, Delete account, satisfying guideline
-5.1.1(v). Test account available on request, or create one at
-https://rooted-forward.org/auth/signup.
+There is no account, no sign-in and no registration anywhere in this
+app, so guidelines 4.8 and 5.1.1(v) do not apply and no test account
+is needed. Nothing is gated. Every stop, photograph and audio file is
+available on first launch.
 
 Location permission is requested only when the user taps Find me on
 the map, is when-in-use, and is processed entirely on device (it
@@ -158,7 +160,7 @@ Planned set, in order.
       identity table above
 - [ ] Paste description, promotional text, keywords, notes
 - [ ] Upload the 6.9 inch screenshots
-- [ ] Privacy: fill the nutrition label from the table above
+- [ ] Privacy: answer Data Not Collected, per the table above
 - [ ] Age rating questionnaire from the table above
 - [ ] App uses non-exempt encryption, answer No (already in
       Info.plist as ITSAppUsesNonExemptEncryption)

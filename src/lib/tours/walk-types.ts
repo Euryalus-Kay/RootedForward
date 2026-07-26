@@ -94,4 +94,8 @@ export interface WalkTour {
   detourRoutes?: [number, number][][];
   /** "Good to know" cards under the tour */
   practical: { title: string; text: string }[];
+  /** Shown once in the app when a walker opens their first optional
+   *  stop. Shorter and blunter than the practical card, because it
+   *  has to land on someone already standing on a sidewalk. */
+  detourNotice?: string;
 }

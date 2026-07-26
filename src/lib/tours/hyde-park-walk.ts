@@ -52,6 +52,8 @@ export const HYDE_PARK_WALK: WalkTour = {
       text: "Headphones are nicest, but a phone speaker works fine. Every stop's audio is also printed on the page, so you can read instead of listen. If you share your location, it is used only to draw your dot on the map. It never leaves your phone.",
     },
   ],
+  detourNotice:
+    "This stop sits off the main route. Walking all three detours adds about two hours, and the legs between them are long and residential, with far fewer people about than on 53rd Street or the campus. Go in daylight, and bring someone with you if you can. The number 4 bus down Cottage Grove covers most of the distance. The main walk is complete without any of this, so skipping ahead costs you nothing.",
   route: [
     [41.79991, -87.58295],
     [41.79955, -87.583],
