@@ -66,7 +66,6 @@ function ScaleIcon() {
 /* ------------------------------------------------------------------ */
 
 interface WorkItem {
-  label: string;
   title: string;
   body: string[];
   icon: () => React.ReactElement;
@@ -75,20 +74,15 @@ interface WorkItem {
 
 const WORK: WorkItem[] = [
   {
-    label: "Tours",
     title: "Self-guided walking tours",
     icon: MapIcon,
     body: [
       "Our student researchers take one neighborhood at a time and work out how race shaped the blocks people walk past every day. The deeds, the appraisal forms, the bulldozed lots.",
       "They build a tour out of what they find and put it on the Rooted Forward app. You can walk the route with it, or read the whole thing at home. We count how many people take each tour, and that count is how we know whether the research reached anyone.",
     ],
-    links: [
-      { label: "Walk Hyde Park", href: "/tours" },
-      { label: "Read it online instead", href: "/tours/chicago/hyde-park" },
-    ],
+    links: [{ label: "Walk Hyde Park", href: "/tours" }],
   },
   {
-    label: "Outreach",
     title: "Community outreach",
     icon: ClipboardIcon,
     body: [
@@ -98,7 +92,6 @@ const WORK: WorkItem[] = [
     links: [{ label: "Help us run one", href: "/get-involved" }],
   },
   {
-    label: "Podcast",
     title: "The podcast",
     icon: MicrophoneIcon,
     body: [
@@ -108,7 +101,6 @@ const WORK: WorkItem[] = [
     links: [{ label: "Listen", href: "/podcasts" }],
   },
   {
-    label: "Policy",
     title: "Policy advocacy",
     icon: ScaleIcon,
     body: [
@@ -203,10 +195,7 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-full border border-rust/45 text-rust">
                       <Icon />
                     </div>
-                    <p className="mt-5 font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
-                      {item.label}
-                    </p>
-                    <h3 className="mt-3 max-w-[14ch] font-display text-3xl leading-tight text-ink md:text-4xl">
+                    <h3 className="mt-5 max-w-[14ch] font-display text-3xl leading-tight text-ink md:text-4xl">
                       {item.title}
                     </h3>
                   </div>
