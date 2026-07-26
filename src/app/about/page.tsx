@@ -1,307 +1,323 @@
-"use client";
-
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import SurveyRule from "@/components/ui/SurveyRule";
-import type { BoardMember } from "@/lib/about-constants";
-
 /* ------------------------------------------------------------------ */
 /*  /about                                                             */
 /*                                                                     */
-/*  Short and readable. A plain opener, the story with one archival   */
-/*  portrait, two program blocks, then People. Right now People is    */
-/*  the founder plus one honest line about the boards being formed;   */
-/*  when real board_members rows exist they render automatically      */
-/*  (managed at /admin/about/board), so nothing here needs a rewrite  */
-/*  when advisors join. No fake names, ever.                          */
+/*  Rebuilt from nothing, July 2026. The old page tried to be a        */
+/*  mission statement, a program list, and a staff directory at once,  */
+/*  and the staff directory was mostly an apology for being empty.     */
+/*  The people now live on their own page at /about/team.              */
+/*                                                                     */
+/*  What is left here is four things in order. The mission, what we    */
+/*  do, how it started, and where we work. A visitor who reads only    */
+/*  the first screen should already have it.                           */
+/*                                                                     */
+/*  Voice rules (owner, July 2026): no aphorism headlines, no          */
+/*  balanced-pair sentences, no numbered rows, no rhetorical triads.   */
+/*  Say the concrete thing. Site-wide, no em-dashes and no colons      */
+/*  inside sentences or headings.                                      */
+/*                                                                     */
+/*  There are still no photographs of our own work. The one picture    */
+/*  on this page is the actual document the founder's story is about,  */
+/*  which is public domain (see public/media/hyde-park/credits.json).  */
 /* ------------------------------------------------------------------ */
 
-/* Development seed rows ("Member Name", "Advisor Name", test entries)
-   still exist in the live table. Filter them out so they can never
-   render as if they were real people. */
-function isRealMember(m: BoardMember): boolean {
-  const name = m.full_name.trim().toLowerCase();
-  if (!name) return false;
-  if (name.includes("member name") || name.includes("advisor name")) return false;
-  if (/^tes+t?$/.test(name) || name === "test" || name === "placeholder") return false;
-  return true;
-}
+import Link from "next/link";
+import type { Metadata } from "next";
+import PageTransition from "@/components/layout/PageTransition";
+import SurveyRule from "@/components/ui/SurveyRule";
 
-function InitialsAvatar({ name }: { name: string }) {
-  const initials = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
-  return (
-    <div className="flex h-full w-full items-center justify-center bg-cream-dark">
-      <span className="font-display text-3xl text-ink/60-light">{initials}</span>
-    </div>
-  );
-}
+export const metadata: Metadata = {
+  title: "About | Rooted Forward",
+  description:
+    "Rooted Forward is a student-run nonprofit that researches how racial inequality was built into Chicago's neighborhoods and puts that research where people can use it. Started by Zain Zaidi after a survey of more than 140 residents at the Obama Presidential Center.",
+};
 
-/* People rows run as a single column, photo left, text right. */
-function BoardRow({ member }: { member: BoardMember }) {
-  return (
-    <div className="flex gap-6 py-8 sm:gap-8">
-      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-sm bg-cream-dark sm:h-28 sm:w-28">
-        {member.photo_url ? (
-          <img src={member.photo_url} alt={member.full_name} className="h-full w-full object-cover" />
-        ) : (
-          <InitialsAvatar name={member.full_name} />
-        )}
-      </div>
-      <div className="min-w-0">
-        <h4 className="font-display text-xl text-forest">{member.full_name}</h4>
-        <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
-          {member.role}
-          {member.city && ` · ${member.city}`}
-        </p>
-        {member.affiliation && (
-          <p className="mt-0.5 font-body text-xs italic text-ink/60">{member.affiliation}</p>
-        )}
-        <p className="mt-3 max-w-[60ch] font-body text-sm leading-relaxed text-ink/65">
-          {member.bio}
-        </p>
-      </div>
-    </div>
-  );
-}
+/* ------------------------------------------------------------------ */
+/*  What we do. The long version of each of these is on the home       */
+/*  page, so here it is one sentence and a door.                       */
+/* ------------------------------------------------------------------ */
 
-/* Founder photo. While no photo has shipped, this stays null and the  */
-/* initials mark renders with no image request at all (an img pointing */
-/* at a missing file would 404 on every visit and flash broken before  */
-/* hydration). When the photo lands, drop it at public/founder.jpg and */
-/* set this to "/founder.jpg".                                          */
-const FOUNDER_PHOTO_SRC: string | null = null;
-
-function FounderPhoto() {
-  const [failed, setFailed] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  // onError misses failures that happen before hydration, so also
-  // check the img's loaded state after mount
-  useEffect(() => {
-    const el = imgRef.current;
-    if (el && el.complete && el.naturalWidth === 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFailed(true);
-    }
-  }, []);
-
-  if (!FOUNDER_PHOTO_SRC || failed) {
-    return <InitialsAvatar name="Zain Zaidi" />;
-  }
-  return (
-    <img
-      ref={imgRef}
-      src={FOUNDER_PHOTO_SRC}
-      alt="Zain Zaidi, founder of Rooted Forward"
-      className="h-full w-full object-cover"
-      onError={() => setFailed(true)}
-    />
-  );
-}
+const WORK = [
+  {
+    title: "Self-guided walking tours",
+    line: "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.",
+    link: { label: "See the tours", href: "/tours" },
+  },
+  {
+    title: "Community outreach",
+    line: "We set up where people already are, like the Obama Presidential Center and neighborhood markets, and we survey and interview residents about their own block.",
+    link: { label: "Help run one", href: "/get-involved" },
+  },
+  {
+    title: "The podcast",
+    line: "We record long conversations with people who have lived through what we research, and those conversations decide what we work on next.",
+    link: { label: "Listen", href: "/podcasts" },
+  },
+  {
+    title: "Policy advocacy",
+    line: "We run petitions on Chicago bills that are already introduced and stuck in a committee, then hand the signatures to that committee.",
+    link: { label: "Sign a petition", href: "/policy" },
+  },
+];
 
 export default function AboutPage() {
-  const [studentBoard, setStudentBoard] = useState<BoardMember[]>([]);
-  const [advisoryBoard, setAdvisoryBoard] = useState<BoardMember[]>([]);
-
-  useEffect(() => {
-    async function fetchBoards() {
-      try {
-        const { createClient } = await import("@/lib/supabase/client");
-        const supabase = createClient();
-        const [s, a] = await Promise.all([
-          supabase.from("board_members").select("*").eq("board_type", "student").eq("is_active", true).order("display_order"),
-          supabase.from("board_members").select("*").eq("board_type", "advisory").eq("is_active", true).order("display_order"),
-        ]);
-        if (s.data) setStudentBoard((s.data as BoardMember[]).filter(isRealMember));
-        if (a.data) setAdvisoryBoard((a.data as BoardMember[]).filter(isRealMember));
-      } catch {
-        /* boards stay hidden until real rows exist */
-      }
-    }
-    fetchBoards();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Opener */}
-      <section className="border-b border-border bg-cream pb-14 pt-20 md:pb-20 md:pt-28">
-        <div className="mx-auto max-w-6xl px-6">
+    <PageTransition>
+      {/* ============================================================
+          MISSION
+          The whole pitch. Nothing above it, nothing beside it.
+          ============================================================ */}
+      <section className="border-b border-border bg-cream pb-16 pt-20 md:pb-20 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Our mission
           </p>
-          <h1 className="mt-4 max-w-[24ch] font-display text-4xl leading-[1.1] text-ink md:text-5xl">
-            We educate people about racial inequality in Chicago, and we
-            work to address it.
+          <h1 className="mt-5 max-w-[26ch] font-display text-4xl leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
+            We close the gap between what was done to Chicago&rsquo;s
+            neighborhoods and what people know about it.
           </h1>
-          <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">
-            That inequality was built by policy. Redlining, restrictive
-            covenants, and urban renewal decided who could live where, and
-            you can still see their impact in the city&rsquo;s neighborhoods
-            today. We take it on two ways, through education and through
-            policy advocacy. The work is led by students.
+          <p className="mt-8 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
+            Redlining, restrictive covenants, and urban renewal decided who
+            could live where in this city. You can still see the result block
+            by block. Almost nobody walking those blocks was ever taught it,
+            and that is the part we work on.
           </p>
-          <SurveyRule className="mt-10 text-rust" />
+          <p className="mt-5 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
+            Rooted Forward is a nonprofit run by students. Everything we make
+            is free.
+          </p>
+          <SurveyRule className="mt-12 text-rust" />
         </div>
       </section>
 
-      {/* About us */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            About us
+      {/* ============================================================
+          WHAT WE DO
+          Four blocks, one sentence each. The home page carries the
+          long version, so this one stays scannable.
+          ============================================================ */}
+      <section className="bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            What we do
+          </h2>
+          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/65 md:text-lg">
+            Four things, and we do all four in the same neighborhoods.
           </p>
-          <div className="mt-6 max-w-[58ch] space-y-5">
-            <p className="font-body text-lg leading-relaxed text-ink/75">
-              Rooted Forward is a student-run nonprofit in Chicago, founded
-              by Zain Zaidi. It started in Hyde Park, where the old deeds,
-              appraisal maps, and urban renewal plans still explain who
-              lives on which block.
-            </p>
-            <p className="font-body text-lg leading-relaxed text-ink/75">
-              Today that means a walking tour of the neighborhood, an online
-              exhibit built from the original documents, a podcast, and
-              policy work anyone can join.
-            </p>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 md:grid-cols-2">
+            {WORK.map((item) => (
+              <div key={item.title} className="border-t-2 border-ink/15 pt-6">
+                <h3 className="max-w-[18ch] font-display text-2xl leading-tight text-ink">
+                  {item.title}
+                </h3>
+                <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
+                  {item.line}
+                </p>
+                <Link
+                  href={item.link.href}
+                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                >
+                  {item.link.label}{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What we do */}
-      <section className="border-t border-border py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            What we do
-          </p>
-          <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-            <div className="border-t-2 border-border pt-6">
-              <h3 className="font-display text-2xl text-ink">Teach the history</h3>
-              <p className="mt-3 max-w-[50ch] font-body text-base leading-relaxed text-ink/70">
-                A two-hour walking tour of Hyde Park, an online exhibit built
-                from the original documents, and a podcast about
-                Chicago&rsquo;s neighborhoods.
+      {/* ============================================================
+          HOW IT STARTED
+          The founder's account, plus the one number the whole
+          organization came out of.
+          ============================================================ */}
+      <section className="border-t border-border bg-cream-dark/35 py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            How it started
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 gap-y-12 md:grid-cols-12 md:gap-x-16">
+            <div className="md:col-span-7">
+              <div className="flex max-w-[58ch] flex-col gap-5 font-body text-base leading-relaxed text-ink/80 md:text-lg md:leading-relaxed">
+                <p>
+                  Rooted Forward was started by Zain Zaidi, a student who lives
+                  on the Near South Side and goes to school in Hyde Park. Going
+                  between the two every day, he kept running into the bubble
+                  around the University of Chicago, and how completely the city
+                  changed from one block to the next.
+                </p>
+                <p>
+                  He went looking for why, and found redlining, restrictive
+                  covenants, and the urban renewal campaigns that cleared and
+                  re-sorted these blocks on purpose. The pattern he had been
+                  walking through every day was drawn on a map decades before
+                  he was born.
+                </p>
+                <p>
+                  The next thing he wanted to know was how much of this the
+                  neighborhood already knew. He ran a survey at the Obama
+                  Presidential Center and talked with more than 140 people
+                  about what they had lived through and what they had been
+                  taught. The gap was far wider than he expected, including
+                  among lifelong Chicagoans and especially among young people.
+                </p>
+                <p>
+                  So he built this. Students from across Chicago do the
+                  archival work and run the outreach now, and what comes out of
+                  it gets published free.
+                </p>
+                <p>
+                  The policy side comes from his seat on Chicago&rsquo;s
+                  Mayor&rsquo;s Youth Commission. Sitting in those rooms is
+                  where he saw how much a single ordinance can move, and how
+                  few people outside City Hall are ever there when one is
+                  decided. Rooted Forward works on that in small steps, on
+                  bills that are already written and already stalled.
+                </p>
+              </div>
+            </div>
+
+            <div className="md:col-span-5">
+              {/* The number the organization came out of. */}
+              <div className="rounded-sm border-2 border-ink/15 bg-cream p-7">
+                <p className="font-display text-6xl leading-none text-rust">
+                  140+
+                </p>
+                <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
+                  Residents surveyed at the Obama Presidential Center about
+                  what they knew of this history.
+                </p>
+                <p className="mt-3 font-body text-sm leading-relaxed text-ink/55">
+                  Most had not been taught it. That result is the reason there
+                  is an organization.
+                </p>
+              </div>
+
+              {/* The document the second paragraph is about. */}
+              <figure className="mt-8">
+                <img
+                  src="/media/site/holc-chicago-1940.jpg"
+                  alt="The 1940 Home Owners' Loan Corporation Residential Security Map of Chicago, with neighborhoods graded A through D in green, blue, yellow, and red"
+                  loading="lazy"
+                  className="w-full rounded-sm border border-border object-cover"
+                />
+                <figcaption className="mt-2 font-body text-[11px] leading-snug text-ink/60">
+                  Residential Security Map of Chicago. Home Owners&rsquo; Loan
+                  Corporation, 1940. CC0. The neighborhoods shaded red were the
+                  ones banks were told to stay out of.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          WHERE WE WORK
+          Chicago is the start and still the bulk of it. The other two
+          are real members doing real research, with nothing published
+          yet, and the copy says exactly that.
+          ============================================================ */}
+      <section className="border-t border-border bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            Where we work
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 md:grid-cols-2">
+            <div className="border-t-2 border-ink/15 pt-6">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
+                Where we started
+              </p>
+              <h3 className="mt-3 font-display text-2xl text-ink">Chicago</h3>
+              <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
+                Most of the work is still here. Hyde Park is the neighborhood
+                we have finished, nine stops between the Midway and the lake,
+                and the survey tables run here too.
               </p>
               <Link
                 href="/tours"
-                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
               >
-                Tours &amp; exhibit{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                Walk Hyde Park{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </div>
 
-            <div className="border-t-2 border-border pt-6">
-              <h3 className="font-display text-2xl text-ink">Work on what&rsquo;s next</h3>
-              <p className="mt-3 max-w-[50ch] font-body text-base leading-relaxed text-ink/70">
-                Guides that teach Chicagoans how to testify and comment at
-                City Hall, a channel for community policy ideas, and
-                campaigns when there is one worth running.
+            <div className="border-t-2 border-ink/15 pt-6">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
+                Where we went next
+              </p>
+              <h3 className="mt-3 font-display text-2xl text-ink">
+                New York and Washington, DC
+              </h3>
+              <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
+                We have members in both cities researching their own
+                neighborhoods the same way we did Hyde Park. Tours and
+                curriculum for both are being built now, and nothing is
+                published until the documents behind it are.
               </p>
               <Link
-                href="/policy"
-                className="group mt-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                href="/about/team"
+                className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
               >
-                Policy tools{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                See who is on it{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* People */}
-      <section id="people" className="scroll-mt-20 border-t border-border py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-            People
-          </p>
-          <h2 className="mt-3 font-display text-3xl text-forest md:text-4xl">
-            Who runs it
-          </h2>
-
-          {/* Founder */}
-          <div className="mt-10 grid max-w-4xl grid-cols-1 gap-8 rounded-sm border border-border bg-cream-dark/40 p-8 sm:grid-cols-[180px_1fr] md:p-10">
-            <div className="aspect-square w-full max-w-[180px] overflow-hidden rounded-sm bg-cream-dark">
-              <FounderPhoto />
-            </div>
-            <div>
-              <h3 className="font-display text-2xl text-forest">Zain Zaidi</h3>
-              <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wider text-ink/60">
-                Founder · Chicago
-              </p>
-              <p className="mt-4 max-w-[60ch] font-body text-base leading-relaxed text-ink/75">
-                Zain founded Rooted Forward and runs it day to day, from the
-                Hyde Park walking tour to the policy work. If you email the
-                organization, he is probably the one answering.
-              </p>
-            </div>
-          </div>
-
-          {/* Boards render only when real members exist; until then,
-              one honest line instead of empty placeholder boxes. */}
-          {studentBoard.length > 0 && (
-            <div className="mt-14 max-w-4xl">
-              <h3 className="font-display text-2xl text-forest">Student Board</h3>
-              <div className="mt-4 divide-y divide-border border-y border-border">
-                {studentBoard.map((m) => <BoardRow key={m.id} member={m} />)}
-              </div>
-            </div>
-          )}
-          {advisoryBoard.length > 0 && (
-            <div className="mt-14 max-w-4xl">
-              <h3 className="font-display text-2xl text-forest">Advisory Board</h3>
-              <div className="mt-4 divide-y divide-border border-y border-border">
-                {advisoryBoard.map((m) => <BoardRow key={m.id} member={m} />)}
-              </div>
-            </div>
-          )}
-          {studentBoard.length === 0 && advisoryBoard.length === 0 && (
-            <p className="mt-8 max-w-[58ch] font-body text-base leading-relaxed text-ink/60">
-              A student board and an advisory board are forming now. If you
-              want a seat on either one, say so on the{" "}
-              <Link href="/get-involved" className="text-rust underline underline-offset-2">
-                get involved page
-              </Link>
-              .
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/* Get Involved */}
+      {/* ============================================================
+          THE TWO DOORS OUT. Meet the team, or join it.
+          ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-5xl px-6">
           <SurveyRule className="text-rust-light" />
-          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
             <div>
-              <h3 className="font-display text-xl text-cream">Join the team</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
-                Open to students across Chicago.
+              <h2 className="font-display text-3xl text-cream md:text-4xl">
+                Who runs it
+              </h2>
+              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                Students in Chicago, New York, and Washington, DC.
               </p>
-              <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
-                Get involved &rarr;
+              <Link
+                href="/about/team"
+                className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              >
+                Meet the team
               </Link>
             </div>
             <div>
-              <h3 className="font-display text-xl text-cream">Start a chapter</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
-                Outside Chicago? Bring the model to your city.
+              <h2 className="font-display text-3xl text-cream md:text-4xl">
+                We could use your help
+              </h2>
+              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                If you can dig through an archive, run a survey table at a
+                market, or edit audio, there is work here for you. You do not
+                need experience to start.
               </p>
-              <Link href="/get-involved" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
-                Tell us where &rarr;
-              </Link>
-            </div>
-            <div>
-              <h3 className="font-display text-xl text-cream">Partner with us</h3>
-              <p className="mt-2 font-body text-sm leading-relaxed text-cream/75">
-                For schools, nonprofits, and community groups.
-              </p>
-              <Link href="/contact" className="mt-3 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream">
-                Get in touch &rarr;
+              <Link
+                href="/get-involved"
+                className="group mt-7 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream"
+              >
+                Get involved{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </div>
           </div>
         </div>
       </section>
-    </div>
+    </PageTransition>
   );
 }
