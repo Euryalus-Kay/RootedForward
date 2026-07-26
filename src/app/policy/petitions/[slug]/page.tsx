@@ -59,7 +59,10 @@ export default async function PetitionPage({
           >
             &larr; All petitions
           </Link>
-          <h1 className="mt-6 font-display text-4xl leading-[1.08] text-ink md:text-5xl">
+          <span className="mt-6 inline-block rounded-sm bg-forest px-4 py-2 font-body text-base font-bold uppercase tracking-[0.2em] text-cream">
+            {petition.city}
+          </span>
+          <h1 className="mt-5 font-display text-4xl leading-[1.08] text-ink md:text-5xl">
             {petition.title}
           </h1>
           <p className="mt-5 font-body text-lg leading-relaxed text-ink/80">
@@ -143,6 +146,7 @@ export default async function PetitionPage({
           <div className="mt-8">
             <PetitionForm
               slug={petition.slug}
+              city={petition.city}
               statement={petition.petitionStatement}
               initialCount={count}
             />

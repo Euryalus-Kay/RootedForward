@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS public.petitions (
   slug text UNIQUE NOT NULL,
   title text NOT NULL,
   bill_name text NOT NULL,
+  -- the city the bill affects, shown big on the card
+  city text NOT NULL DEFAULT 'Chicago',
   record_number text,
   status text NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'closed')),
   one_liner text NOT NULL,
@@ -44,6 +46,10 @@ CREATE TABLE IF NOT EXISTS public.petition_signatures (
   signer_name text NOT NULL CHECK (char_length(signer_name) BETWEEN 1 AND 80),
   email text NOT NULL CHECK (char_length(email) <= 254),
   zip text CHECK (char_length(zip) <= 10),
+  -- how the signer answered "do you live in <city>?". A committee
+  -- weighs a resident differently, so we ask instead of guessing.
+  residency text NOT NULL DEFAULT 'resident'
+    CHECK (residency IN ('resident', 'work_or_school', 'nearby', 'supporter')),
   -- signer chose to have their first name and zip shown on the page
   is_public boolean NOT NULL DEFAULT true,
   -- flipped once the signature list has been handed to the committee
@@ -110,7 +116,7 @@ CREATE POLICY "Admins can read signatures"
 -- ------------------------------------------------------------
 
 INSERT INTO public.petitions (
-  slug, title, bill_name, record_number, status, one_liner,
+  slug, title, bill_name, city, record_number, status, one_liner,
   where_it_stands, addressed_to, what_it_would_do, why_we_care,
   petition_statement, sources, sort_order
 ) VALUES
@@ -118,6 +124,7 @@ INSERT INTO public.petitions (
   'protecting-renters-ordinance',
   'Protect Chicago renters',
   'Protecting Renters Ordinance',
+  'Chicago',
   NULL,
   'open',
   'Landlords would need a real reason to evict you or refuse to renew your lease.',
@@ -147,6 +154,7 @@ INSERT INTO public.petitions (
   'hazel-johnson-cumulative-impacts-ordinance',
   'Stop stacking pollution on the same neighborhoods',
   'Hazel M. Johnson Cumulative Impacts Ordinance',
+  'Chicago',
   'O2025-0016697',
   'open',
   'Before the city approves another polluting plant, it would have to count the pollution the neighborhood already carries.',

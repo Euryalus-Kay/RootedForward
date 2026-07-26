@@ -29,6 +29,9 @@ export interface Petition {
   title: string;
   /** The bill's formal name, as the city files it. */
   billName: string;
+  /** The city the bill affects. Shown big on the card, and the form
+      asks a signer whether they live here. */
+  city: string;
   /** City record number, when the bill has one. */
   recordNumber: string | null;
   status: "open" | "closed";
@@ -54,6 +57,7 @@ export const PETITIONS: Petition[] = [
     slug: "protecting-renters-ordinance",
     title: "Protect Chicago renters",
     billName: "Protecting Renters Ordinance",
+    city: "Chicago",
     recordNumber: null,
     status: "open",
     oneLiner:
@@ -102,6 +106,7 @@ export const PETITIONS: Petition[] = [
     slug: "hazel-johnson-cumulative-impacts-ordinance",
     title: "Stop stacking pollution on the same neighborhoods",
     billName: "Hazel M. Johnson Cumulative Impacts Ordinance",
+    city: "Chicago",
     recordNumber: "O2025-0016697",
     status: "open",
     oneLiner:

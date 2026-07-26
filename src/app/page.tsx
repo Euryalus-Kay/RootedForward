@@ -20,7 +20,6 @@
 
 import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
-import SurveyRule from "@/components/ui/SurveyRule";
 
 /* ------------------------------------------------------------------ */
 /*  Line icons. Same heroicons-outline vocabulary the policy page      */
@@ -93,7 +92,7 @@ const WORK: WorkItem[] = [
     title: "Community outreach",
     icon: ClipboardIcon,
     body: [
-      "We set up where people already are, like the Obama Presidential Center and neighborhood farmers markets, and we interview and survey residents. We ask about their own block, and we ask what they know about how racial inequality was built into Chicago.",
+      "We set up where people already are, like the Obama Presidential Center in Chicago and neighborhood farmers markets, and we interview and survey residents. We ask about their own block, and we ask what they know about how racial inequality was built into their city.",
       "The answers become data on where the gaps are, and they keep our research answerable to the people who live there. It is also where we hand out the tour app, so somebody standing in the neighborhood can walk it that afternoon.",
     ],
     links: [{ label: "Help us run one", href: "/get-involved" }],
@@ -113,7 +112,7 @@ const WORK: WorkItem[] = [
     title: "Policy advocacy",
     icon: ScaleIcon,
     body: [
-      "We run petitions on Chicago bills that would undo part of the long-term damage from disinvestment in Black and Brown neighborhoods.",
+      "We run petitions on bills that would undo part of the long-term damage from disinvestment in Black and Brown neighborhoods. Everything open right now is a Chicago bill.",
       "We pick bills that are already written and already introduced and are now sitting in a committee that will not vote. We explain in plain words what each one would do, and we hand the signatures to that committee.",
     ],
     links: [{ label: "Sign a petition", href: "/policy" }],
@@ -143,18 +142,15 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-24 md:pb-32 md:pt-32">
-          <h1 className="font-display text-6xl leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
+          <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tight text-forest sm:text-7xl md:text-8xl">
             Rooted Forward
           </h1>
           <p className="mt-8 max-w-[46ch] font-body text-xl leading-relaxed text-ink/85 md:text-2xl md:leading-relaxed">
-            We are a student-run nonprofit in Chicago. We research how racial
-            inequality was built into this city&rsquo;s neighborhoods, and we
-            put that research where people can use it.
-          </p>
-          <p className="mt-5 max-w-[46ch] font-body text-lg leading-relaxed text-ink/70">
-            Everything we make is free. We want more Chicagoans to know this
-            history, and we want the city to pass the bills that would undo
-            part of it.
+            We are a student-run nonprofit that started in Chicago and now
+            works in New York too. We research how racial inequality was built
+            into cities across the United States. That research becomes
+            education where there is a gap, and advocacy for the local policy
+            that would address it.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
@@ -188,15 +184,14 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-cream py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <SurveyRule className="text-rust" />
-          <h2 className="mt-8 font-display text-5xl leading-none tracking-tight text-forest md:text-7xl">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            What we do
+          </p>
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-7xl">
             Ways we help
           </h2>
-          <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-ink/70">
-            Four things, and we do all four in the same neighborhoods.
-          </p>
 
-          <div className="mt-14 border-t-2 border-ink/15">
+          <div className="mt-14">
             {WORK.map((item) => {
               const Icon = item.icon;
               return (
@@ -270,18 +265,13 @@ export default function Home() {
               </p>
             </div>
             <div className="md:col-span-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
-                Finished and live
-              </p>
-              <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
-                Hyde Park is the one we have done
+              <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
+                Self-guided Hyde Park tour
               </h2>
               <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                Thirteen stops between the lakefront and Harper Court, told in
-                the order the history happened rather than in a tidy loop.
-                About four miles, with three optional detours for anyone who
-                wants the rest. Every claim has the document behind it attached
-                to the stop it belongs to.
+                Sixteen stops around Hyde Park, following how the neighborhood
+                decided who was allowed to live in it. Free, and about four
+                miles on foot.
               </p>
               <Link
                 href="/tours"
@@ -300,8 +290,7 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-ink py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <SurveyRule className="mx-auto text-rust-light" />
-          <h2 className="mt-6 font-display text-3xl text-cream md:text-4xl">
+          <h2 className="font-display text-3xl text-cream md:text-4xl">
             We could use your help.
           </h2>
           <p className="mx-auto mt-5 max-w-[48ch] font-body text-lg leading-relaxed text-cream/75">

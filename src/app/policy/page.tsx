@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import SurveyRule from "@/components/ui/SurveyRule";
 import { PETITIONS } from "@/lib/petitions";
 import { countSignaturesFor } from "@/lib/petition-signatures";
 
@@ -77,14 +76,14 @@ export default async function PolicyPage() {
             Sign a petition
           </h1>
           <p className="mt-6 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80">
-            We pick Chicago bills that are already written, already introduced,
-            and stuck in a committee. Read what one does, then add your name. We
-            hand the signatures to the committee that is sitting on it.
+            These are petitions for bills aldermen have already proposed.
+            Signing one shows support from residents of the area. We give the
+            signatures to the committee reviewing the bill, along with a public
+            comment from Rooted Forward.
           </p>
           <p className="mt-4 font-body text-base text-ink/60">
             No account. About a minute.
           </p>
-          <SurveyRule className="mt-10 text-rust" />
         </div>
       </section>
 
@@ -115,7 +114,13 @@ export default async function PolicyPage() {
                     href={`/policy/petitions/${petition.slug}`}
                     className="group block rounded-sm border-2 border-border bg-cream p-7 transition-colors hover:border-forest md:p-10"
                   >
-                    <p className="font-body text-xs font-semibold uppercase tracking-widest text-rust">
+                    {/* The city a bill actually affects, stated first and
+                        stated loudly, so nobody signs the wrong city's
+                        petition (owner, July 2026). */}
+                    <span className="inline-block rounded-sm bg-forest px-4 py-2 font-body text-base font-bold uppercase tracking-[0.2em] text-cream">
+                      {petition.city}
+                    </span>
+                    <p className="mt-4 font-body text-xs font-semibold uppercase tracking-widest text-rust">
                       {petition.billName}
                       {petition.recordNumber && ` · ${petition.recordNumber}`}
                     </p>
@@ -205,28 +210,44 @@ export default async function PolicyPage() {
       </section>
 
       {/* ============================================================
-          QUIET FOOTER
+          SUGGEST A BILL
+          This was a grey line of small print at the bottom and
+          nobody would have seen it (owner, July 2026). It is a
+          section with a button now.
           ============================================================ */}
-      <section className="bg-cream pb-20 pt-12">
+      <section className="bg-cream py-16 md:py-20">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="max-w-[62ch] font-body text-sm leading-relaxed text-ink/60">
-            Have a bill you think we should be petitioning on, or an idea for
-            one that does not exist yet?{" "}
-            <Link
-              href="/policy/submit-proposal"
-              className="text-forest underline decoration-border underline-offset-2 transition-colors hover:decoration-forest"
-            >
-              Send it to us
-            </Link>
-            , or write to{" "}
-            <a
-              href="mailto:contact@rooted-forward.org"
-              className="text-forest underline decoration-border underline-offset-2 transition-colors hover:decoration-forest"
-            >
-              contact@rooted-forward.org
-            </a>
-            .
-          </p>
+          <div className="rounded-sm border-2 border-border bg-cream-dark p-8 md:p-12">
+            <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12">
+              <div className="md:col-span-7">
+                <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+                  Know a bill we should be on?
+                </h2>
+                <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
+                  Tell us about it. It can be a bill sitting in a committee, or
+                  a problem on your block that nobody has written a bill for
+                  yet. We read every one that comes in.
+                </p>
+              </div>
+              <div className="md:col-span-5 md:text-right">
+                <Link
+                  href="/policy/submit-proposal"
+                  className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Send it to us
+                </Link>
+                <p className="mt-4 font-body text-sm text-ink/60">
+                  Or write to{" "}
+                  <a
+                    href="mailto:contact@rooted-forward.org"
+                    className="text-forest underline decoration-border underline-offset-2 transition-colors hover:decoration-forest"
+                  >
+                    contact@rooted-forward.org
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </PageTransition>

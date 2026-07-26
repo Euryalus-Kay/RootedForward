@@ -22,6 +22,8 @@ import { notifyAdmin } from "@/lib/notify";
 const NAME_CAP = 80;
 const ZIP_RE = /^[0-9]{5}(-[0-9]{4})?$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/* Mirrors RESIDENCY_OPTIONS in PetitionForm and the table's CHECK. */
+const RESIDENCY = ["resident", "work_or_school", "nearby", "supporter"];
 
 /** migration 009 not applied yet (undefined table / PostgREST schema-cache miss) */
 function isMissingTable(error: { code?: string; message?: string } | null): boolean {
@@ -71,6 +73,8 @@ export async function POST(request: NextRequest) {
   const name = typeof payload.name === "string" ? payload.name.trim() : "";
   const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
   const zip = typeof payload.zip === "string" ? payload.zip.trim() : "";
+  const residency =
+    typeof payload.residency === "string" ? payload.residency.trim() : "resident";
   const isPublic = payload.isPublic !== false;
   const honeypot = typeof payload.website === "string" ? payload.website.trim() : "";
 
@@ -105,6 +109,12 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
+  if (!RESIDENCY.includes(residency)) {
+    return NextResponse.json(
+      { error: "Pick one of the options for where you live" },
+      { status: 400 }
+    );
+  }
 
   // Honeypot filled means a bot found the invisible field. Answer with
   // the normal success shape and write nothing anywhere.
@@ -125,6 +135,7 @@ export async function POST(request: NextRequest) {
       signer_name: name,
       email,
       zip: zip || null,
+      residency,
       is_public: isPublic,
     });
 
@@ -161,6 +172,7 @@ export async function POST(request: NextRequest) {
       `Name: ${name}`,
       `Email: ${email}`,
       zip ? `ZIP: ${zip}` : "ZIP: not given",
+      `Lives in ${petition.city}: ${residency}`,
       `Shows name publicly: ${isPublic ? "yes" : "no"}`,
       "",
       count === null ? "" : `Total signatures now ${count}.`,

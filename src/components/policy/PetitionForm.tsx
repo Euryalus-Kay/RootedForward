@@ -10,8 +10,19 @@ import { useState } from "react";
 /*  fills it, and a bot that does gets a success message and no row.   */
 /* ------------------------------------------------------------------ */
 
+/* A committee weighs a resident's signature differently from an
+   out-of-town one, so we ask rather than guess from the ZIP. */
+export const RESIDENCY_OPTIONS = [
+  { value: "resident", label: "Yes, I live there" },
+  { value: "work_or_school", label: "I work or go to school there" },
+  { value: "nearby", label: "I live elsewhere in the metro area" },
+  { value: "supporter", label: "No, but I support this" },
+] as const;
+
 interface PetitionFormProps {
   slug: string;
+  /** The city the bill affects. Names the residency question. */
+  city: string;
   /** Rendered above the fields so a signer reads what they are signing. */
   statement: string;
   /** Server-rendered starting count. null means we could not read it. */
@@ -20,12 +31,14 @@ interface PetitionFormProps {
 
 export default function PetitionForm({
   slug,
+  city,
   statement,
   initialCount,
 }: PetitionFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [zip, setZip] = useState("");
+  const [residency, setResidency] = useState<string>("resident");
   const [isPublic, setIsPublic] = useState(true);
   const [website, setWebsite] = useState("");
   const [count, setCount] = useState<number | null>(initialCount);
@@ -41,7 +54,7 @@ export default function PetitionForm({
       const res = await fetch("/api/policy/petitions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, name, email, zip, isPublic, website }),
+        body: JSON.stringify({ slug, name, email, zip, residency, isPublic, website }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -140,6 +153,28 @@ export default function PetitionForm({
         </div>
 
         <div>
+          <label htmlFor="petition-residency" className={labelCls}>
+            Do you live in {city}?
+          </label>
+          <select
+            id="petition-residency"
+            value={residency}
+            onChange={(e) => setResidency(e.target.value)}
+            className={fieldCls}
+          >
+            {RESIDENCY_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 font-body text-xs text-ink/55">
+            The committee counts residents separately, so this changes how
+            much weight your signature carries.
+          </p>
+        </div>
+
+        <div>
           <label htmlFor="petition-zip" className={labelCls}>
             ZIP code <span className="font-normal normal-case tracking-normal text-ink/45">(optional)</span>
           </label>
@@ -154,8 +189,7 @@ export default function PetitionForm({
             className={`${fieldCls} max-w-[12rem]`}
           />
           <p className="mt-2 font-body text-xs text-ink/55">
-            A committee pays more attention when it can see the signatures come
-            from Chicago wards.
+            Lets us show the committee which wards the signatures came from.
           </p>
         </div>
 
