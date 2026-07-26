@@ -35,8 +35,11 @@ function initials(name: string): string {
     .slice(0, 2);
 }
 
+/* The soft shadow is what lifts a circle off the gradient behind it. On
+   flat cream it would be invisible; on the wash it is the difference
+   between a portrait and a hole cut in the background. */
 const CIRCLE =
-  "h-36 w-36 rounded-full border border-border object-cover sm:h-40 sm:w-40";
+  "h-36 w-36 rounded-full border border-border object-cover shadow-[0_6px_22px_-8px_rgba(26,26,26,0.28)] sm:h-40 sm:w-40";
 
 function PersonCard({ member }: { member: TeamMember }) {
   const dialog = useRef<HTMLDialogElement>(null);

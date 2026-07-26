@@ -103,25 +103,48 @@ export default async function TeamPage() {
       {/* ============================================================
           WHO IS ON IT
           ============================================================ */}
-      {/* Just the heading. The owner cut the eyebrow and the standfirst
-          in July 2026, since the cards underneath already say who these
-          people are and where they go to school. */}
-      <section className="border-b border-border bg-cream pb-10 pt-20 md:pb-12 md:pt-28">
-        <div className="mx-auto max-w-5xl px-6">
-          <h1 className="font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
-            Leadership team
-          </h1>
-        </div>
-      </section>
-
       {/* ============================================================
-          THE ROSTER
+          THE ROSTER, on a soft wash rather than flat cream. Owner asked
+          for the page to be more interesting than a grid on a blank
+          background (July 2026).
+
+          Two low-alpha radial stops, rust coming in from the top left
+          and forest answering from the bottom right, over the cream
+          token. Both sit under 0.16 alpha on purpose. Anything stronger
+          and an archival civic page starts reading like a product
+          landing page, which is the failure mode this palette is most
+          exposed to. Written as an inline style because Tailwind v4
+          would need three nested arbitrary values to say the same thing.
+
+          The heading shares the wash, so there is no rule cutting the
+          gradient in half.
           ============================================================ */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <TeamGrid members={roster} />
-        </div>
-      </section>
+      <div
+        className="bg-cream"
+        style={{
+          backgroundImage:
+            "radial-gradient(64rem 40rem at 4% -14%, rgba(196, 93, 62, 0.34), rgba(196, 93, 62, 0) 62%), " +
+            "radial-gradient(44rem 30rem at 82% 4%, rgba(212, 118, 92, 0.20), rgba(212, 118, 92, 0) 58%), " +
+            "radial-gradient(56rem 42rem at 96% 108%, rgba(27, 58, 45, 0.16), rgba(27, 58, 45, 0) 62%)",
+        }}
+      >
+        {/* Just the heading. The owner cut the eyebrow and the standfirst
+            in July 2026, since the cards underneath already say who these
+            people are and where they go to school. */}
+        <section className="pb-12 pt-20 md:pb-16 md:pt-28">
+          <div className="mx-auto max-w-5xl px-6">
+            <h1 className="font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
+              Leadership team
+            </h1>
+          </div>
+        </section>
+
+        <section className="pb-20 md:pb-28">
+          <div className="mx-auto max-w-5xl px-6">
+            <TeamGrid members={roster} />
+          </div>
+        </section>
+      </div>
 
       {/* ============================================================
           THE DOOR OUT. The roster is short because the organization is
