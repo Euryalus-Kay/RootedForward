@@ -41,9 +41,12 @@ export interface Petition {
   whereItStands: string;
   /** Who the signatures are addressed to. */
   addressedTo: string;
-  /** What the bill would do. Short paragraphs, no jargon. */
+  /** What the bill would do. One short plain line each, read as a
+      list. Not paragraphs, and no clause anyone has to reread. */
   whatItWouldDo: string[];
-  /** Why this org is asking, tied to the history the site covers. */
+  /** Where to read the bill itself, on a government site. */
+  readTheBill: { label: string; publisher: string; url: string }[];
+  /** Why this org is asking. Same short-line rule as above. */
   whyWeCareAboutIt: string[];
   /** The sentence a signer is putting their name to. */
   petitionStatement: string;
@@ -66,15 +69,31 @@ export const PETITIONS: Petition[] = [
       "Mayor Brandon Johnson brought it straight to the Committee on Housing and Real Estate in June 2026. The committee has not voted. A full City Council vote is expected in the fall.",
     addressedTo: "The Chicago City Council Committee on Housing and Real Estate",
     whatItWouldDo: [
-      "Right now a Chicago landlord can decline to renew your lease without giving any reason at all. This ordinance would change that. A landlord would need a valid cause to evict a tenant or end a lease.",
-      "If you do have to move because the owner is moving in, or because the building is being sold, gutted, or torn down, the landlord would owe you relocation money. The amount is five months of rent or $5,000, whichever is larger.",
-      "It also caps a security deposit at one month of rent, caps an application fee at $20, and bans the move-in charges that get added on top of rent.",
-      "The rest of it is plumbing. Landlords would register their units with the city once a year, and a new Bureau of Rental Housing Services inside the Department of Housing would take complaints and enforce the rules.",
+      "A landlord needs a real reason to evict you or end your lease.",
+      "If you have to move because the owner is moving in, selling, or gutting the building, they owe you five months of rent or $5,000, whichever is more.",
+      "Security deposits capped at one month of rent.",
+      "Application fees capped at $20.",
+      "No more move-in fees charged on top of rent.",
+      "Landlords register their units with the city once a year.",
+      "A new office in the Department of Housing takes renter complaints.",
+    ],
+    readTheBill: [
+      {
+        label: "The city's announcement of the ordinance",
+        publisher: "chicago.gov",
+        url: "https://www.chicago.gov/city/en/depts/mayor/press_room/press_releases/2026/may/protecting-renters-ordinance.html",
+      },
+      {
+        label: "Track it in the City Council record",
+        publisher: "chicago.legistar.com",
+        url: "https://chicago.legistar.com",
+      },
     ],
     whyWeCareAboutIt: [
-      "Chicago has not seriously rewritten its renter law since the mid-1980s.",
-      "The neighborhoods our tours cover are the ones where this lands hardest. In East Woodlawn, a few blocks from the Obama Presidential Center, the median price of a single-family home went from roughly $220,000 in 2019 to roughly $440,000 in 2025. Renters who stayed through the decades when no bank would lend on those blocks are the ones being asked to leave now.",
-      "A rule that makes a landlord say why is a small thing. It is also the difference between moving and not moving for a lot of families.",
+      "Chicago has not rewritten its renter law since the mid-1980s.",
+      "Today a landlord can refuse to renew your lease and never say why.",
+      "In East Woodlawn, near the Obama Presidential Center, the median single-family home went from about $220,000 in 2019 to about $440,000 in 2025.",
+      "The renters being pushed out are the ones who stayed when no bank would lend on those blocks.",
     ],
     petitionStatement:
       "I am asking the Committee on Housing and Real Estate to hold a vote on the Protecting Renters Ordinance and to advance it to the full City Council. Chicago renters should not lose their homes without a reason.",
@@ -116,15 +135,29 @@ export const PETITIONS: Petition[] = [
     addressedTo:
       "The Chicago City Council Committee on Zoning, Landmarks and Building Standards",
     whatItWouldDo: [
-      "Chicago reviews industrial rezoning applications one at a time. A scrapyard is judged on its own, then an asphalt plant is judged on its own, and nobody adds up what a single neighborhood is breathing by the end.",
-      "This ordinance would make the city add it up. A company asking for a heavy industrial rezoning would have to show how its pollution stacks on top of what is already there before the zoning is approved.",
-      "It also puts an environmental justice project manager and an advisory board inside city government, and adds requirements for companies that relocate.",
-      "It is named for Hazel M. Johnson, who organized against industrial pollution around the Altgeld Gardens public housing development on the Far South Side and is widely called the mother of the environmental justice movement.",
+      "A company asking to rezone land for heavy industry has to report the pollution the neighborhood already carries.",
+      "The city has to weigh that existing pollution before approving more of it.",
+      "Creates an environmental justice project manager and an advisory board inside city government.",
+      "Adds relocation requirements for the companies it covers.",
+      "Named for Hazel M. Johnson, who organized against industrial pollution around Altgeld Gardens on the Far South Side.",
+    ],
+    readTheBill: [
+      {
+        label: "The city's announcement of the ordinance",
+        publisher: "chicago.gov",
+        url: "https://www.chicago.gov/city/en/depts/mayor/press_room/press_releases/2025/april/Hazel-Johnson-Cumulative-Impacts-Ordinance.html",
+      },
+      {
+        label: "The full ordinance record, O2025-0016697",
+        publisher: "Chicago Councilmatic",
+        url: "https://chicago.councilmatic.org/legislation/o2025-0016697/",
+      },
     ],
     whyWeCareAboutIt: [
-      "The city's own cumulative impacts assessment found the heaviest pollution burdens sitting on Black and Latino neighborhoods on the South and West sides.",
-      "Those are largely the same neighborhoods the federal government graded red in 1940, and the same ones the city later zoned for the industry nobody wanted next door. Our exhibit walks through how that map was drawn. This ordinance is one of the few live chances to stop the pattern from repeating.",
-      "The bill has now been stuck in one committee for most of a year. A committee that never votes never has to go on record.",
+      "The city's own study found the worst pollution burdens sit on Black and Latino neighborhoods on the South and West sides.",
+      "Those are largely the same blocks the federal government graded red in 1940, and the same ones the city later zoned for heavy industry.",
+      "The bill has sat in one committee since September 2025 with no vote scheduled.",
+      "A committee that never votes never has to go on record.",
     ],
     petitionStatement:
       "I am asking the Committee on Zoning, Landmarks and Building Standards to schedule a vote on the Hazel M. Johnson Cumulative Impacts Ordinance. Chicago should count the pollution a neighborhood already carries before approving more of it.",

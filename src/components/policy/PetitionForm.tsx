@@ -23,6 +23,8 @@ interface PetitionFormProps {
   slug: string;
   /** The city the bill affects. Names the residency question. */
   city: string;
+  /** The committee the signatures go to. */
+  addressedTo: string;
   /** Rendered above the fields so a signer reads what they are signing. */
   statement: string;
   /** Server-rendered starting count. null means we could not read it. */
@@ -32,6 +34,7 @@ interface PetitionFormProps {
 export default function PetitionForm({
   slug,
   city,
+  addressedTo,
   statement,
   initialCount,
 }: PetitionFormProps) {
@@ -106,7 +109,12 @@ export default function PetitionForm({
       <h2 className="font-display text-2xl text-forest md:text-3xl">
         Sign this petition
       </h2>
-      <p className="mt-4 border-l-2 border-rust pl-4 font-body text-base italic leading-relaxed text-ink/80">
+      {/* addressedTo is written to stand alone elsewhere, so it starts
+          with a capitalised "The". Lowercase it mid-sentence. */}
+      <p className="mt-2 font-body text-sm text-ink/60">
+        Goes to {addressedTo.replace(/^The\s/, "the ")}.
+      </p>
+      <p className="mt-5 border-l-2 border-rust pl-4 font-body text-base leading-relaxed text-ink/80">
         {statement}
       </p>
       {count !== null && count > 0 && (
