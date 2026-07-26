@@ -6,9 +6,9 @@
 /*  and the staff directory was mostly an apology for being empty.     */
 /*  The people now live on their own page at /about/team.              */
 /*                                                                     */
-/*  What is left here is four things in order. The mission, what we    */
-/*  do, how it started, and where we work. A visitor who reads only    */
-/*  the first screen should already have it.                           */
+/*  Order, owner's call. Mission, how it started, what we do, where we */
+/*  work. The founder's account sits directly under the mission        */
+/*  because it is the reason the mission exists.                       */
 /*                                                                     */
 /*  The mission is the owner's own sentence, set in two colors at his  */
 /*  request. Rust for who we are, ink for what we do. It says cities   */
@@ -16,10 +16,15 @@
 /*  in New York and Washington, DC and Chicago is only where we        */
 /*  started. Keep that scope if you touch this copy.                   */
 /*                                                                     */
+/*  No SurveyRule on this page. The owner asked for every one of them  */
+/*  to come off /about and /about/team (July 2026); the divider is     */
+/*  still in use elsewhere on the site.                                */
+/*                                                                     */
 /*  Voice rules (owner, July 2026): no aphorism headlines, no          */
 /*  balanced-pair sentences, no numbered rows, no rhetorical triads.   */
 /*  Say the concrete thing. Site-wide, no em-dashes and no colons      */
-/*  inside sentences or headings.                                      */
+/*  inside sentences or headings, and the owner has asked specifically */
+/*  that this page carry no dash punctuation at all.                   */
 /*                                                                     */
 /*  There are still no photographs of our own work. The one picture    */
 /*  on this page is the actual document the founder's story is about,  */
@@ -29,7 +34,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import SurveyRule from "@/components/ui/SurveyRule";
 
 export const metadata: Metadata = {
   title: "About | Rooted Forward",
@@ -77,11 +81,12 @@ export default function AboutPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Our mission
           </p>
+
           {/* Two colors in one statement, owner's call. The rust sentence
               says who we are, the ink sentence says what we do. Rust on
               cream is 3.7:1, which clears AA at this size and would not at
-              body size, so this treatment stays on the headline only. */}
-          {/* 44px rather than a scale step, so it stays clearly larger
+              body size, so this treatment stays on the headline only.
+              44px rather than a scale step, so it stays clearly larger
               than the 36px section headings without running to seven
               lines the way text-5xl did. */}
           <h1 className="mt-5 max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
@@ -94,64 +99,36 @@ export default function AboutPage() {
               education, awareness, and political advocacy.
             </span>
           </h1>
+
           <p className="mt-8 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
             Redlining, restrictive covenants, and urban renewal decided who
-            could live where in American cities. You can still see the result
-            block by block. Almost nobody walking those blocks was ever taught
-            any of it, and closing that gap is the work.
-          </p>
-          <p className="mt-5 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
-            We started in Chicago and now have members in New York and
-            Washington, DC. Everything we make is free.
-          </p>
-          <SurveyRule className="mt-12 text-rust" />
-        </div>
-      </section>
-
-      {/* ============================================================
-          WHAT WE DO
-          Four blocks, one sentence each. The home page carries the
-          long version, so this one stays scannable.
-          ============================================================ */}
-      <section className="bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
-            What we do
-          </h2>
-          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/65 md:text-lg">
-            Four things, and we do all four in the same neighborhoods.
+            could live where in American cities. The impact is easy to see. In
+            every one of these cities the difference between one block and the
+            next is measurable in race, income, and life expectancy.
           </p>
 
-          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 md:grid-cols-2">
-            {WORK.map((item) => (
-              <div key={item.title} className="border-t-2 border-ink/15 pt-6">
-                <h3 className="max-w-[18ch] font-display text-2xl leading-tight text-ink">
-                  {item.title}
-                </h3>
-                <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                  {item.line}
-                </p>
-                <Link
-                  href={item.link.href}
-                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                >
-                  {item.link.label}{" "}
-                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </Link>
-              </div>
-            ))}
+          {/* The reach of the organization gets its own forest block so it
+              does not read as one more line of body copy. Owner asked for
+              this to stand out from the text around it. */}
+          <div className="mt-9 max-w-[46ch] rounded-sm bg-forest px-7 py-6">
+            <p className="font-body text-lg font-semibold leading-relaxed text-cream md:text-xl md:leading-relaxed">
+              We started in Chicago and now have members in New York and
+              Washington, DC.
+            </p>
+            <p className="mt-2 font-body text-base leading-relaxed text-cream/75">
+              Everything we make is free.
+            </p>
           </div>
         </div>
       </section>
 
       {/* ============================================================
           HOW IT STARTED
-          The founder's account, plus the one number the whole
-          organization came out of.
+          Directly under the mission, owner's call. The founder's
+          account, plus the one number the whole organization came
+          out of.
           ============================================================ */}
-      <section className="border-t border-border bg-cream-dark/35 py-16 md:py-24">
+      <section className="bg-cream-dark/35 py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
             How it started
@@ -170,7 +147,7 @@ export default function AboutPage() {
                 <p>
                   He went looking for why, and found redlining, restrictive
                   covenants, and the urban renewal campaigns that cleared and
-                  re-sorted these blocks on purpose. The pattern he had been
+                  rearranged these blocks on purpose. The pattern he had been
                   walking through every day was drawn on a map decades before
                   he was born.
                 </p>
@@ -208,10 +185,6 @@ export default function AboutPage() {
                   Residents surveyed at the Obama Presidential Center about
                   what they knew of this history.
                 </p>
-                <p className="mt-3 font-body text-sm leading-relaxed text-ink/55">
-                  Most had not been taught it. That result is the reason there
-                  is an organization.
-                </p>
               </div>
 
               {/* The document the second paragraph is about. */}
@@ -229,6 +202,41 @@ export default function AboutPage() {
                 </figcaption>
               </figure>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          WHAT WE DO
+          Four blocks, one sentence each. The home page carries the
+          long version, so this one stays scannable.
+          ============================================================ */}
+      <section className="border-t border-border bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            What we do
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 md:grid-cols-2">
+            {WORK.map((item) => (
+              <div key={item.title} className="border-t-2 border-ink/15 pt-6">
+                <h3 className="max-w-[18ch] font-display text-2xl leading-tight text-ink">
+                  {item.title}
+                </h3>
+                <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
+                  {item.line}
+                </p>
+                <Link
+                  href={item.link.href}
+                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                >
+                  {item.link.label}{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -299,8 +307,7 @@ export default function AboutPage() {
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
-          <SurveyRule className="text-rust-light" />
-          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
             <div>
               <h2 className="font-display text-3xl text-cream md:text-4xl">
                 Who runs it

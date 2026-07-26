@@ -12,7 +12,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
-import SurveyRule from "@/components/ui/SurveyRule";
 import TeamRoster from "@/components/about/TeamRoster";
 
 export const metadata: Metadata = {
@@ -39,7 +38,6 @@ export default function TeamPage() {
             Rooted Forward is run by students. Here is everyone on it, what
             they work on, and which city they are in.
           </p>
-          <SurveyRule className="mt-10 text-rust" />
         </div>
       </section>
 
