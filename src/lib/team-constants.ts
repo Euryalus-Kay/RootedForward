@@ -30,9 +30,18 @@
 /*                                                                     */
 /*  pinned   Lower sorts first, ahead of everyone unpinned.            */
 /*                                                                     */
-/*  photo    Drop the file in public/media/team and point at it. Until */
-/*           then an initials circle renders, which is deliberate      */
+/*  photo    Run the raw portrait through                              */
+/*           scripts/prep-team-headshots.py, which trims the frame,    */
+/*           crops square on the face, moves every backdrop to the     */
+/*           same neutral, matches exposure, and writes a 480px JPEG   */
+/*           into public/media/team. Point at that. A person with no   */
+/*           photo yet gets an initials circle, which is deliberate    */
 /*           rather than a broken image slot.                          */
+/*                                                                     */
+/*           The four shipped in July 2026 came off ~142px originals,  */
+/*           so they are upscaled and slightly soft on a retina        */
+/*           screen. Re-run the script on the real files when they     */
+/*           turn up and nothing else has to change.                   */
 /* ------------------------------------------------------------------ */
 
 export interface TeamMember {
@@ -78,7 +87,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     school: "University of Chicago Laboratory Schools",
     bio:
       "Zain started Rooted Forward after going back and forth between the Near South Side, where he lives, and Hyde Park, where he goes to school, and running into how completely the city changed from one block to the next. He sits on Chicago's Mayor's Youth Commission and is on its Education Working Group, which is where the policy work here comes from. He also teaches public speaking and writing to refugee students through Forging Opportunities for Refugees in America. He debates, golfs, codes, and walks Chicago neighborhoods.",
-    photo: null,
+    photo: "/media/team/zain-zaidi.jpg",
   },
   {
     slug: "ayomide-olatunji",
@@ -88,7 +97,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     school: "Harvard University",
     bio:
       "Ayomide works on getting science-based health information to more people, particularly around mental health and cancer prevention. He sits on Chicago's Mayor's Youth Commission, where he is part of the Public Health working group and both the Summit Planning and Charter committees. His academic interest is in how cellular and metabolic changes drive neurological disease and long-term health outcomes, and he plans to study neuroscience and public policy on the way to becoming a physician and an educator. He plays the talking drum, cooks, and plays club soccer.",
-    photo: null,
+    photo: "/media/team/ayomide-olatunji.jpg",
   },
   {
     slug: "osheanna-tyler-hudson",
@@ -98,7 +107,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     school: "DePaul University",
     bio:
       "Osheanna finished at Christ the King Jesuit College Prep and starts at DePaul this fall. She works with nonprofits in Austin that create ways for young people to get involved in their own neighborhood, and she wants a firsthand understanding of how Chicago politics actually works. She is going for a business degree first, and law school after that.",
-    photo: null,
+    photo: "/media/team/osheanna-tyler-hudson.jpg",
   },
   {
     slug: "javonte-white",
@@ -108,7 +117,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     school: "Collins Academy High School",
     bio:
       "Javonte is from North Lawndale and goes to Collins Academy High School. He writes stories and poems, and uses writing as the place he works out what he is thinking. He listens to a lot of R&B and lo-fi rap. He graduates in 2028 and wants to write screenplays for television and film. He also wants to be a leader people notice, inside his own school and across Chicago Public Schools.",
-    photo: null,
+    photo: "/media/team/javonte-white.jpg",
   },
 ];
 

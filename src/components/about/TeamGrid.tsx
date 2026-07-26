@@ -57,7 +57,10 @@ function PersonCard({ member }: { member: TeamMember }) {
           width={480}
           height={480}
           loading="lazy"
-          style={{ objectPosition: member.objectPosition ?? "50% 30%" }}
+          /* Centre by default, because scripts/prep-team-headshots.py
+             already delivers a square crop with the face where it belongs.
+             Override per person only for a photo that skipped that step. */
+          style={{ objectPosition: member.objectPosition ?? "50% 50%" }}
           className={CIRCLE}
         />
       ) : (
