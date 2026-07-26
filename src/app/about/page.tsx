@@ -4,7 +4,10 @@
 /*  Rebuilt from nothing, July 2026. The old page tried to be a        */
 /*  mission statement, a program list, and a staff directory at once,  */
 /*  and the staff directory was mostly an apology for being empty.     */
-/*  The people now live on their own page at /about/team.              */
+/*  There is no people section here at all now. A /about/team page      */
+/*  was built and then pulled at the owner's request (July 2026) so    */
+/*  he could build the real one himself; see git history at 92bc616    */
+/*  for the roster component if it is worth reusing.                   */
 /*                                                                     */
 /*  Order, owner's call. Mission, how it started, what we do, where we */
 /*  work. The founder's account sits directly under the mission        */
@@ -17,8 +20,8 @@
 /*  started. Keep that scope if you touch this copy.                   */
 /*                                                                     */
 /*  No SurveyRule on this page. The owner asked for every one of them  */
-/*  to come off /about and /about/team (July 2026); the divider is     */
-/*  still in use elsewhere on the site.                                */
+/*  to come off /about (July 2026); the divider is still in use        */
+/*  elsewhere on the site.                                             */
 /*                                                                     */
 /*  Voice rules (owner, July 2026): no aphorism headlines, no          */
 /*  balanced-pair sentences, no numbered rows, no rhetorical triads.   */
@@ -260,9 +263,8 @@ export default function AboutPage() {
               </p>
               <h3 className="mt-3 font-display text-2xl text-ink">Chicago</h3>
               <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                Most of the work is still here. Hyde Park is the neighborhood
-                we have finished, nine stops between the Midway and the lake,
-                and the survey tables run here too.
+                Most of the work is still here. Hyde Park is finished, nine
+                stops between the Midway and the lake.
               </p>
               <Link
                 href="/tours"
@@ -283,65 +285,36 @@ export default function AboutPage() {
                 New York and Washington, DC
               </h3>
               <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                We have members in both cities researching their own
-                neighborhoods the same way we did Hyde Park. Tours and
-                curriculum for both are being built now, and nothing is
-                published until the documents behind it are.
+                Members in both cities are researching their own
+                neighborhoods. Nothing is published yet.
               </p>
-              <Link
-                href="/about/team"
-                className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-              >
-                See who is on it{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* ============================================================
-          THE TWO DOORS OUT. Meet the team, or join it.
+          THE DOOR OUT. The "Who runs it" column that sat beside this
+          pointed at /about/team, which the owner is rebuilding himself
+          (July 2026). Put a people section back here when his page
+          exists, and add its route to the footer and the sitemap.
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            <div>
-              <h2 className="font-display text-3xl text-cream md:text-4xl">
-                Who runs it
-              </h2>
-              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                Students in Chicago, New York, and Washington, DC.
-              </p>
-              <Link
-                href="/about/team"
-                className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Meet the team
-              </Link>
-            </div>
-            <div>
-              <h2 className="font-display text-3xl text-cream md:text-4xl">
-                We could use your help
-              </h2>
-              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                If you can dig through an archive, run a survey table at a
-                market, or edit audio, there is work here for you. You do not
-                need experience to start.
-              </p>
-              <Link
-                href="/get-involved"
-                className="group mt-7 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream"
-              >
-                Get involved{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
-            </div>
-          </div>
+          <h2 className="font-display text-3xl text-cream md:text-4xl">
+            We could use your help
+          </h2>
+          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+            If you can dig through an archive, run a survey table at a market,
+            or edit audio, there is work here for you. You do not need
+            experience to start.
+          </p>
+          <Link
+            href="/get-involved"
+            className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Get involved
+          </Link>
         </div>
       </section>
     </PageTransition>
