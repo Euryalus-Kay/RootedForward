@@ -26,6 +26,12 @@ struct TourView: View {
     @State private var dwell: Task<Void, Never>?
     @State private var dwellSeconds: [String: Double] = [:]
     @State private var engaged: Set<String> = []
+    /// The detour notice is a once-per-session courtesy. It fires the
+    /// first time a walker lands on an optional stop, because that is
+    /// the moment they might set off for Woodlawn without having read
+    /// the practical card on the home screen.
+    @State private var showDetourNotice = false
+    @State private var detourNoticeShown = false
     @Environment(\.scenePhase) private var scenePhase
 
     init(startAt: Int) {
@@ -139,6 +145,14 @@ struct TourView: View {
             }
             .background(RF.cream)
 
+            // The scrim belongs to the screen, not to the chrome
+            // stack. Hung off the chrome it stopped wherever that
+            // stack happened to end, which left a strip of full
+            // strength transcript running under the pills and into
+            // the home indicator. Anchored here it fades the text
+            // out above the bar and stays solid all the way down.
+            bottomScrim
+
             // The pill row sits centered over the transport bar, the
             // arrows flanking Directions and Map so you can step
             // between stops without scrolling.
@@ -161,29 +175,19 @@ struct TourView: View {
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
-            // Lets the transcript fade out under the chrome instead
-            // of scrolling up between four floating shapes and coming
-            // back sliced into fragments.
-            .background(alignment: .bottom) {
-                LinearGradient(
-                    colors: [RF.cream.opacity(0), RF.cream.opacity(0.92), RF.cream],
-                    startPoint: .top, endPoint: .bottom
-                )
-                .frame(height: 150)
-                .allowsHitTesting(false)
-                .ignoresSafeArea(edges: .bottom)
-            }
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
             Haptics.tap()
             progress.setLastIndex(newIndex)
             startDwell(at: newIndex)
+            offerDetourNotice()
         }
         .onAppear {
             progress.setLastIndex(index)
             startDwell(at: safeIndex)
             location.requestAndStartIfAuthorized()
+            offerDetourNotice()
         }
         .onDisappear {
             dwell?.cancel()
@@ -215,6 +219,72 @@ struct TourView: View {
                 showMap = false
             }
         }
+        .alert("This one is an optional detour", isPresented: $showDetourNotice) {
+            if let rejoin = nextMainlineIndex {
+                Button("Skip to stop \(stops[rejoin].number)") { move(to: rejoin) }
+            }
+            Button("Keep reading", role: .cancel) {}
+        } message: {
+            Text(detourNoticeText)
+        }
+    }
+
+    // MARK: - The detour notice
+
+    /// The practical card the owner wrote, reused word for word so
+    /// the popup can never drift from the page it came off.
+    private var detourNoticeText: String {
+        content.tour.practical
+            .first { $0.title.lowercased().contains("detour") }?
+            .text
+            ?? "These stops sit off the main walk and add real distance. Do them in daylight, and take someone with you if you can. The main walk is complete without them."
+    }
+
+    /// The first stop after this one that is back on the main line,
+    /// so the alert can offer a way out rather than just a warning.
+    private var nextMainlineIndex: Int? {
+        guard safeIndex + 1 < stops.count else { return nil }
+        return stops[(safeIndex + 1)...].firstIndex { !$0.isDetour }
+    }
+
+    /// Fires once per visit to the tour, the first time the walker
+    /// actually opens one of the optional stops.
+    private func offerDetourNotice() {
+        guard !detourNoticeShown, stops.indices.contains(safeIndex),
+              stops[safeIndex].isDetour else { return }
+        detourNoticeShown = true
+        showDetourNotice = true
+    }
+
+    // MARK: - Bottom scrim
+
+    /// Cream that starts at nothing, is solid by the time it reaches
+    /// the pill row, and stays solid to the bottom edge of the glass.
+    /// Two hundred points is enough to swallow three lines of the
+    /// transcript on the largest text size we ship.
+    private var bottomScrim: some View {
+        // The spacer, not the gradient, is what reaches the glass.
+        // ignoresSafeArea on a fixed-height gradient only lets it sit
+        // in the home-indicator strip, it does not stretch it, so a
+        // line of transcript kept showing under the pills.
+        VStack(spacing: 0) {
+            Spacer(minLength: 0)
+            LinearGradient(
+                stops: [
+                    .init(color: RF.cream.opacity(0), location: 0),
+                    .init(color: RF.cream.opacity(0.85), location: 0.42),
+                    .init(color: RF.cream, location: 0.62),
+                    .init(color: RF.cream, location: 1),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 210)
+        }
+        .frame(maxWidth: .infinity)
+        .ignoresSafeArea(edges: .bottom)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 
     // MARK: - Top bar
@@ -251,13 +321,13 @@ struct TourView: View {
         .animation(RFMotion.gated(.rfAppear, reduceMotion), value: showPinnedTitle)
     }
 
-    /// "Stop 4 of 13" against the walk proper, and a plain label on
-    /// the two optional detours, which are not numbered legs of it.
+    /// "Stop 4 of 16" against the walk proper, and a plain label on
+    /// the optional detours, which are not numbered legs of it.
     private var counterLabel: String {
         let stop = stops[safeIndex]
         if stop.isDetour { return "Optional detour" }
         // The stop's own number, not its place in the mainline. With
-        // the two detours sitting mid-walk the two diverge, and the
+        // three detours sitting mid-walk the two diverge, and the
         // number is what the map, the list, and the site all print.
         return "Stop \(stop.number) of \(stops.count)"
     }

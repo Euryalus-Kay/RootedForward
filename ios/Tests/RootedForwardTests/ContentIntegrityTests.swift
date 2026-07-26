@@ -19,13 +19,13 @@ final class ContentIntegrityTests: XCTestCase {
 
     func testTourShape() {
         let tour = Self.payload.tour
-        XCTAssertEqual(tour.stops.count, 15)
-        XCTAssertEqual(tour.stops.filter { $0.isDetour }.count, 2)
+        XCTAssertEqual(tour.stops.count, 16)
+        XCTAssertEqual(tour.stops.filter { $0.isDetour }.count, 3)
         XCTAssertEqual(tour.title, "Walk Hyde Park")
         XCTAssertFalse(Self.payload.version.isEmpty)
         XCTAssertEqual(Self.payload.intro.paragraphs.count, 11)
         XCTAssertGreaterThanOrEqual(tour.route.count, 30)
-        XCTAssertEqual(tour.detourRoutes?.count, 1)
+        XCTAssertEqual(tour.detourRoutes?.count, 2)
         XCTAssertEqual(tour.practical.count, 4)
         // The seven red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }

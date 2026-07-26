@@ -611,7 +611,7 @@ export default function WalkMap({
           stroke="#F5F0E8"
           strokeWidth="3"
         >
-          Green detours to the Hansberry house and Daley&apos;s continue southwest
+          Green detours run southwest to the Hansberry house and Daley&apos;s, northwest to Drexel Boulevard
         </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />
