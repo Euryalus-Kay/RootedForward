@@ -54,26 +54,10 @@ function MapPinIcon() {
   );
 }
 
-function PhotoIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-    </svg>
-  );
-}
-
 function SignalSlashIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 .53 4.575M10.61 2.844a9.75 9.75 0 0 1 8.548 8.549M3 3l18 18M6.364 6.364a9.75 9.75 0 0 0 1.79 11.272" />
-    </svg>
-  );
-}
-
-function LockIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
     </svg>
   );
 }
@@ -83,28 +67,18 @@ function LockIcon() {
 const FEATURES = [
   {
     icon: SpeakerIcon,
-    title: "Narration at every stop",
-    body: "You stand where it happened and hear what happened there. The whole script is printed under the player, so you can read it instead if you would rather not use headphones.",
+    title: "Self-guided narration",
+    body: "You stand where it happened and hear what happened there, with the whole script under the player if you would rather read it.",
   },
   {
     icon: MapPinIcon,
-    title: "A map that knows where you are",
-    body: "The route is drawn over the 1929 government survey of the neighborhood. Turn on location and your own dot appears on it, along with walking directions between stops.",
-  },
-  {
-    icon: PhotoIcon,
-    title: "The photographs, credited",
-    body: "Archival pictures of each corner sit next to the same view today, and every source is named on the stop it belongs to.",
+    title: "A map of the route",
+    body: "Drawn over the 1929 government survey, with every stop on it, your own dot, and walking directions between them.",
   },
   {
     icon: SignalSlashIcon,
-    title: "Works with no signal",
-    body: "Audio, photographs, and the map are all on the phone once the app is installed, so a dead zone or a dead data plan does not end the walk.",
-  },
-  {
-    icon: LockIcon,
-    title: "Free, with no account",
-    body: "Nothing to sign up for, no ads, and no tracking. If you allow location, it is used to draw your dot and never leaves the phone.",
+    title: "Works without a signal",
+    body: "Everything downloads with the app, so a dead zone does not end the walk. No account, no ads, no tracking.",
   },
 ];
 
@@ -204,37 +178,11 @@ export default function ToursPage() {
       {/* ============================================================
           WHAT YOU GET
           ============================================================ */}
-      <section className="bg-cream py-16 md:py-24">
+      <section className="bg-cream pb-16 pt-12 md:pb-24 md:pt-16">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            The app
-          </p>
-          <h2 className="mt-4 max-w-[18ch] font-display text-3xl leading-tight text-forest md:text-4xl">
-            What you get when you download it
-          </h2>
-
-          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-2">
-            {FEATURES.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <div key={feature.title}>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-rust/45 text-rust">
-                    <Icon />
-                  </div>
-                  <h3 className="mt-4 font-display text-2xl text-ink">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/75">
-                    {feature.body}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* The rest of the screens. A swipeable strip on phones, a
-              row of three once there is room for one. */}
-          <div className="mx-auto mt-16 max-w-3xl">
+          {/* The screens come first. A swipeable strip on phones, a row
+              of three once there is room for one. */}
+          <div className="mx-auto max-w-3xl">
             <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-7 sm:overflow-visible sm:px-0 sm:pb-0">
               {[APP.screenshots[0], APP.screenshots[2], APP.screenshots[3]].map(
                 (shot) => (
@@ -247,6 +195,34 @@ export default function ToursPage() {
             <p className="mt-4 font-body text-[11px] text-ink/55 sm:text-center">
               Screens from the Hyde Park tour in the app.
             </p>
+          </div>
+
+          <p className="mt-20 font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
+            The app
+          </p>
+          <h2 className="mt-4 max-w-[18ch] font-display text-3xl leading-tight text-forest md:text-4xl">
+            What you get when you download it
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-3">
+            {FEATURES.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div key={feature.title}>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-rust/45 text-rust">
+                    <Icon />
+                  </div>
+                  {/* min-height keeps the three bodies on one baseline
+                      when a title runs to two lines */}
+                  <h3 className="mt-4 font-display text-2xl leading-tight text-ink sm:min-h-[2.5em]">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-3 max-w-[38ch] font-body text-base leading-relaxed text-ink/75">
+                    {feature.body}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

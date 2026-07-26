@@ -24,24 +24,24 @@ export default function ToursLoading() {
         </div>
       </section>
 
-      {/* Feature grid */}
+      {/* Screens, then the feature grid */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="h-3 w-20 rounded bg-cream-dark" />
+          <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 sm:gap-7">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="aspect-[1320/2868] rounded-[2rem] bg-cream-dark" />
+            ))}
+          </div>
+          <div className="mt-20 h-3 w-20 rounded bg-cream-dark" />
           <div className="mt-5 h-10 w-3/5 max-w-xl rounded bg-cream-dark" />
-          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-2">
-            {[0, 1, 2, 3, 4].map((i) => (
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-3">
+            {[0, 1, 2].map((i) => (
               <div key={i}>
                 <div className="h-11 w-11 rounded-full bg-cream-dark" />
                 <div className="mt-4 h-7 w-2/3 rounded bg-cream-dark" />
                 <div className="mt-4 h-4 w-full rounded bg-cream-dark" />
                 <div className="mt-2 h-4 w-4/5 rounded bg-cream-dark" />
               </div>
-            ))}
-          </div>
-          <div className="mt-16 grid grid-cols-3 gap-4 md:gap-8">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="aspect-[1320/2868] rounded-[2rem] bg-cream-dark" />
             ))}
           </div>
         </div>
