@@ -10,6 +10,12 @@
 /*  do, how it started, and where we work. A visitor who reads only    */
 /*  the first screen should already have it.                           */
 /*                                                                     */
+/*  The mission is the owner's own sentence, set in two colors at his  */
+/*  request. Rust for who we are, ink for what we do. It says cities   */
+/*  across the United States, not Chicago, because members now work    */
+/*  in New York and Washington, DC and Chicago is only where we        */
+/*  started. Keep that scope if you touch this copy.                   */
+/*                                                                     */
 /*  Voice rules (owner, July 2026): no aphorism headlines, no          */
 /*  balanced-pair sentences, no numbered rows, no rhetorical triads.   */
 /*  Say the concrete thing. Site-wide, no em-dashes and no colons      */
@@ -28,7 +34,7 @@ import SurveyRule from "@/components/ui/SurveyRule";
 export const metadata: Metadata = {
   title: "About | Rooted Forward",
   description:
-    "Rooted Forward is a student-run nonprofit that researches how racial inequality was built into Chicago's neighborhoods and puts that research where people can use it. Started by Zain Zaidi after a survey of more than 140 residents at the Obama Presidential Center.",
+    "A student-run nonprofit started in Chicago. Rooted Forward educates people about racial inequality in cities across the United States, and works to address it through education, awareness, and political advocacy.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -71,19 +77,32 @@ export default function AboutPage() {
           <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
             Our mission
           </p>
-          <h1 className="mt-5 max-w-[26ch] font-display text-4xl leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
-            We close the gap between what was done to Chicago&rsquo;s
-            neighborhoods and what people know about it.
+          {/* Two colors in one statement, owner's call. The rust sentence
+              says who we are, the ink sentence says what we do. Rust on
+              cream is 3.7:1, which clears AA at this size and would not at
+              body size, so this treatment stays on the headline only. */}
+          {/* 44px rather than a scale step, so it stays clearly larger
+              than the 36px section headings without running to seven
+              lines the way text-5xl did. */}
+          <h1 className="mt-5 max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
+            <span className="text-rust">
+              A student-run nonprofit started in Chicago.
+            </span>{" "}
+            <span className="text-ink">
+              Rooted Forward educates people about racial inequality in cities
+              across the United States, and works to address it through
+              education, awareness, and political advocacy.
+            </span>
           </h1>
           <p className="mt-8 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
             Redlining, restrictive covenants, and urban renewal decided who
-            could live where in this city. You can still see the result block
-            by block. Almost nobody walking those blocks was ever taught it,
-            and that is the part we work on.
+            could live where in American cities. You can still see the result
+            block by block. Almost nobody walking those blocks was ever taught
+            any of it, and closing that gap is the work.
           </p>
           <p className="mt-5 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
-            Rooted Forward is a nonprofit run by students. Everything we make
-            is free.
+            We started in Chicago and now have members in New York and
+            Washington, DC. Everything we make is free.
           </p>
           <SurveyRule className="mt-12 text-rust" />
         </div>
@@ -164,9 +183,9 @@ export default function AboutPage() {
                   among lifelong Chicagoans and especially among young people.
                 </p>
                 <p>
-                  So he built this. Students from across Chicago do the
-                  archival work and run the outreach now, and what comes out of
-                  it gets published free.
+                  So he built this. Students in three cities do the archival
+                  work and run the outreach now, and what comes out of it gets
+                  published free.
                 </p>
                 <p>
                   The policy side comes from his seat on Chicago&rsquo;s
