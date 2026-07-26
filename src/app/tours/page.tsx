@@ -78,7 +78,7 @@ export default function ToursPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="max-w-[62ch]">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-              Why this walk
+              Before you start
             </p>
             <h2 className="walk-title mt-3 text-2xl font-semibold leading-snug text-forest md:text-3xl">
               {WALK_INTRO.title}
