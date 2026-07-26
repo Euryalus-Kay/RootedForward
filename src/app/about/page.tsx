@@ -4,10 +4,9 @@
 /*  Rebuilt from nothing, July 2026. The old page tried to be a        */
 /*  mission statement, a program list, and a staff directory at once,  */
 /*  and the staff directory was mostly an apology for being empty.     */
-/*  There is no people section here at all now. A /about/team page      */
-/*  was built and then pulled at the owner's request (July 2026) so    */
-/*  he could build the real one himself; see git history at 92bc616    */
-/*  for the roster component if it is worth reusing.                   */
+/*  There is no people section here at all now. The roster lives on    */
+/*  /about/team, which is its own tab in the navbar, and this page     */
+/*  points at it from the closing band.                                */
 /*                                                                     */
 /*  Order, owner's call. Mission, how it started, what we do, where we */
 /*  work. The founder's account sits directly under the mission        */
@@ -70,6 +69,18 @@ const WORK = [
     line: "We run petitions on Chicago bills that are already introduced and stuck in a committee, then hand the signatures to that committee.",
     link: { label: "Sign a petition", href: "/policy" },
   },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Where we work. City and status, nothing else (owner, July 2026).   */
+/*  `live` drives the box treatment, so a city going live is one flag  */
+/*  and a new status string.                                           */
+/* ------------------------------------------------------------------ */
+
+const LOCATIONS = [
+  { city: "Chicago", status: "Starting location", live: true },
+  { city: "New York", status: "Coming soon", live: false },
+  { city: "Washington, DC", status: "Coming soon", live: false },
 ];
 
 export default function AboutPage() {
@@ -246,9 +257,9 @@ export default function AboutPage() {
 
       {/* ============================================================
           WHERE WE WORK
-          Chicago is the start and still the bulk of it. The other two
-          are real members doing real research, with nothing published
-          yet, and the copy says exactly that.
+          Three boxes, city and status, nothing else. Chicago is live
+          and the other two are not, and the box treatment carries that
+          difference so the copy does not have to explain it.
           ============================================================ */}
       <section className="border-t border-border bg-cream py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
@@ -256,65 +267,74 @@ export default function AboutPage() {
             Where we work
           </h2>
 
-          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-10 md:grid-cols-2">
-            <div className="border-t-2 border-ink/15 pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
-                Where we started
-              </p>
-              <h3 className="mt-3 font-display text-2xl text-ink">Chicago</h3>
-              <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                Most of the work is still here. Hyde Park is finished, nine
-                stops between the Midway and the lake.
-              </p>
-              <Link
-                href="/tours"
-                className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {LOCATIONS.map((place) => (
+              <div
+                key={place.city}
+                className={
+                  place.live
+                    ? "rounded-sm border-2 border-forest/30 bg-cream p-7"
+                    : "rounded-sm border border-border bg-cream-dark/30 p-7"
+                }
               >
-                Walk Hyde Park{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
-            </div>
-
-            <div className="border-t-2 border-ink/15 pt-6">
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/55">
-                Where we went next
-              </p>
-              <h3 className="mt-3 font-display text-2xl text-ink">
-                New York and Washington, DC
-              </h3>
-              <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                Members in both cities are researching their own
-                neighborhoods. Nothing is published yet.
-              </p>
-            </div>
+                <h3 className="font-display text-2xl leading-tight text-ink">
+                  {place.city}
+                </h3>
+                <p
+                  className={`mt-2 font-body text-xs font-semibold uppercase tracking-[0.2em] ${
+                    place.live ? "text-rust" : "text-ink/45"
+                  }`}
+                >
+                  {place.status}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ============================================================
-          THE DOOR OUT. The "Who runs it" column that sat beside this
-          pointed at /about/team, which the owner is rebuilding himself
-          (July 2026). Put a people section back here when his page
-          exists, and add its route to the footer and the sitemap.
+          THE TWO DOORS OUT. Meet the team, or join it. The team column
+          came off in July 2026 while /about/team did not exist, and
+          went back on when the rebuilt page shipped.
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-3xl text-cream md:text-4xl">
-            We could use your help
-          </h2>
-          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-            If you can dig through an archive, run a survey table at a market,
-            or edit audio, there is work here for you. You do not need
-            experience to start.
-          </p>
-          <Link
-            href="/get-involved"
-            className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-          >
-            Get involved
-          </Link>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+            <div>
+              <h2 className="font-display text-3xl text-cream md:text-4xl">
+                Who runs it
+              </h2>
+              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                Students in Chicago, New York, and Washington, DC.
+              </p>
+              <Link
+                href="/about/team"
+                className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+              >
+                Meet the team
+              </Link>
+            </div>
+            <div>
+              <h2 className="font-display text-3xl text-cream md:text-4xl">
+                We could use your help
+              </h2>
+              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                If you can dig through an archive, run a survey table at a
+                market, or edit audio, there is work here for you. You do not
+                need experience to start.
+              </p>
+              <Link
+                href="/get-involved"
+                className="group mt-7 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream"
+              >
+                Get involved{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </PageTransition>
