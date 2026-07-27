@@ -128,9 +128,9 @@ export default async function TeamPage() {
         className="bg-cream"
         style={{
           backgroundImage:
-            "linear-gradient(158deg, rgba(27, 58, 45, 0.40) 0%, rgba(42, 84, 64, 0.21) 26%, " +
-            "rgba(42, 84, 64, 0.07) 48%, rgba(27, 58, 45, 0) 66%), " +
-            "radial-gradient(52rem 36rem at 92% 100%, rgba(27, 58, 45, 0.15), rgba(27, 58, 45, 0) 62%)",
+            "linear-gradient(158deg, rgba(27, 58, 45, 0.47) 0%, rgba(42, 84, 64, 0.27) 26%, " +
+            "rgba(42, 84, 64, 0.11) 48%, rgba(27, 58, 45, 0) 72%), " +
+            "radial-gradient(52rem 36rem at 92% 100%, rgba(27, 58, 45, 0.19), rgba(27, 58, 45, 0) 62%)",
         }}
       >
         {/* Just the heading. The owner cut the eyebrow and the standfirst
