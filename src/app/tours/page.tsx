@@ -283,18 +283,12 @@ export default function ToursPage() {
             ))}
           </div>
 
-          {/* What is coming. Named cities only, no invented routes. */}
+          {/* What is coming. The explaining paragraph came off at the
+              owner's request; the heading and the ask carry it. */}
           <div className="mt-16 border-t border-border pt-10">
             <h3 className="max-w-[20ch] font-display text-2xl leading-tight text-forest md:text-3xl">
               More neighborhoods are in the works
             </h3>
-            <p className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-ink/75">
-              Chicago is where we started and still where most of the work is.
-              We have members in New York and Washington, DC digging through
-              the records for their own neighborhoods now. A route goes in the
-              app once the research behind it is finished and checked, so this
-              list grows slowly on purpose.
-            </p>
             <Link
               href="/get-involved"
               className="group mt-6 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
