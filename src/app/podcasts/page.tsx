@@ -7,17 +7,22 @@
 /*  no DB rows. Every episode an admin adds at /admin/podcasts shows */
 /*  up here in episode-number-descending order.                        */
 /*                                                                     */
+/*  Stripped down July 2026 at the owner's request. No eyebrow, no    */
+/*  decorative rule, no show name. Guest requests go to the one form  */
+/*  on /get-involved, which preselects the podcast option off the     */
+/*  #podcast hash.                                                     */
+/*                                                                     */
 /* ------------------------------------------------------------------ */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
-import SurveyRule from "@/components/ui/SurveyRule";
 import type { Podcast } from "@/lib/types/database";
 
 export const metadata: Metadata = {
-  title: "Roots in Rogers Park | Rooted Forward",
+  title: "Rooted Forward Podcast",
   description:
-    "Roots in Rogers Park, the Rooted Forward podcast. Conversations about Chicago's neighborhoods and the policies that shaped them.",
+    "The Rooted Forward podcast. Students sit down with people who live in Chicago, New York, and Washington, DC and ask what changed on their block.",
 };
 
 export const revalidate = 600;
@@ -63,18 +68,17 @@ export default async function PodcastsPage() {
       {/* Opener */}
       <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Podcast
-          </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-            Roots in Rogers Park
+          <h1 className="max-w-[18ch] font-display text-4xl leading-[1.05] text-forest md:text-5xl">
+            Rooted Forward Podcast
           </h1>
-          <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/75">
-            Our podcast. Conversations about Chicago&rsquo;s neighborhoods
-            and the policies that shaped them. Listen right here or wherever
-            you get your podcasts.
+          <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/80">
+            We talk to people who live in the cities we work in, Chicago, New
+            York, and Washington, DC. They tell us what their block was like,
+            what changed, and who made the change.
           </p>
-          <SurveyRule className="mt-10 text-rust" />
+          <p className="mt-4 max-w-[55ch] font-body text-lg leading-relaxed text-ink/80">
+            Listen here or wherever you get your podcasts.
+          </p>
         </div>
       </section>
 
@@ -122,7 +126,7 @@ export default async function PodcastsPage() {
         </section>
       ) : (
         /* Fallback to Spotify show embed when DB has no rows */
-        <section className="bg-cream pb-20 pt-12 md:pb-28 md:pt-16">
+        <section className="bg-cream pb-12 pt-12 md:pt-16">
           <div className="mx-auto max-w-3xl px-6">
             <iframe
               src={`https://open.spotify.com/embed/show/${SPOTIFY_SHOW_ID}?utm_source=generator&theme=0`}
@@ -131,44 +135,49 @@ export default async function PodcastsPage() {
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
               className="rounded-lg"
-              title="Roots in Rogers Park on Spotify"
+              title="The Rooted Forward podcast on Spotify"
             />
-            <p className="mt-6 font-body text-sm text-ink/60">
-              Listen on{" "}
-              <a
-                href={`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-forest underline underline-offset-2"
-              >
-                Spotify
-              </a>{" "}
-              or wherever you get your podcasts.
-            </p>
           </div>
         </section>
       )}
 
-      {/* Listen-elsewhere strip — visible whenever DB-backed list is shown */}
-      {hasEpisodes && (
-        <section className="bg-cream pb-20 pt-8 md:pb-28">
-          <div className="mx-auto max-w-3xl px-6">
-            <hr className="mb-10 border-border" />
-            <p className="font-body text-sm text-ink/60">
-              Subscribe on{" "}
-              <a
-                href={`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-forest underline underline-offset-2"
-              >
-                Spotify
-              </a>{" "}
-              or wherever you get your podcasts.
-            </p>
-          </div>
-        </section>
-      )}
+      {/* Subscribe line */}
+      <section className="bg-cream pb-16 md:pb-20">
+        <div className="mx-auto max-w-3xl px-6">
+          <p className="font-body text-base text-ink/70">
+            Subscribe on{" "}
+            <a
+              href={`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-forest underline underline-offset-2"
+            >
+              Spotify
+            </a>{" "}
+            or wherever you get your podcasts.
+          </p>
+        </div>
+      </section>
+
+      {/* Be a guest */}
+      <section className="border-t border-border bg-cream-dark py-16 md:py-20">
+        <div className="mx-auto max-w-3xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            Want to be on it?
+          </h2>
+          <p className="mt-5 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
+            If you live in one of our cities and have something to say about
+            your block, tell us. Fill in the form and a student will write
+            back.
+          </p>
+          <Link
+            href="/get-involved#podcast"
+            className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Ask to be a guest
+          </Link>
+        </div>
+      </section>
     </PageTransition>
   );
 }

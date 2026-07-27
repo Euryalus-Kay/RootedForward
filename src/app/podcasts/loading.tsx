@@ -10,12 +10,10 @@ export default function PodcastsLoading() {
       {/* Opener */}
       <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-3xl px-6">
-          <SkeletonLine width="4rem" height="0.75rem" />
-          <div className="mt-4 h-11 w-4/5 animate-pulse rounded bg-cream-dark" />
+          <div className="h-11 w-4/5 animate-pulse rounded bg-cream-dark" />
           <div className="mt-6 max-w-[55ch]">
-            <SkeletonText lines={2} />
+            <SkeletonText lines={3} />
           </div>
-          <div className="mt-10 h-3 w-24 animate-pulse rounded bg-cream-dark" />
         </div>
       </section>
 
