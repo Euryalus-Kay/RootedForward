@@ -112,8 +112,10 @@ export default async function TeamPage() {
           as "this page has a slightly odd background". A linear ramp
           across the diagonal reads as a gradient, which is what was
           asked for. Forest at the top left running out to bare cream by
-          two thirds down, with one radial stop bottom right so the
-          block does not end flat where the green band starts.
+          two thirds down, and a second green corner answering it from
+          the bottom right. Two opposite corners rather than one, so the
+          block is anchored at both ends of the diagonal instead of
+          fading out and stopping.
 
           The rust is left to the Read bio buttons, where it works as an
           accent instead of as the whole page. Written as an inline
@@ -129,7 +131,7 @@ export default async function TeamPage() {
           backgroundImage:
             "linear-gradient(158deg, rgba(27, 58, 45, 0.47) 0%, rgba(42, 84, 64, 0.27) 26%, " +
             "rgba(42, 84, 64, 0.11) 48%, rgba(27, 58, 45, 0) 72%), " +
-            "radial-gradient(52rem 36rem at 92% 100%, rgba(27, 58, 45, 0.19), rgba(27, 58, 45, 0) 62%)",
+            "radial-gradient(64rem 46rem at 100% 100%, rgba(27, 58, 45, 0.46), rgba(27, 58, 45, 0) 68%)",
         }}
       >
         {/* Just the heading. The owner cut the eyebrow and the standfirst
