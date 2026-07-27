@@ -92,10 +92,6 @@ export default function AboutPage() {
           ============================================================ */}
       <section className="border-b border-border bg-cream pb-16 pt-20 md:pb-20 md:pt-28">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Our mission
-          </p>
-
           {/* Two colors in one statement, owner's call. The rust sentence
               says who we are, the ink sentence says what we do. Rust on
               cream is 3.7:1, which clears AA at this size and would not at
@@ -103,7 +99,7 @@ export default function AboutPage() {
               44px rather than a scale step, so it stays clearly larger
               than the 36px section headings without running to seven
               lines the way text-5xl did. */}
-          <h1 className="mt-5 max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
+          <h1 className="max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
             <span className="text-rust">
               A student-run nonprofit started in Chicago.
             </span>{" "}

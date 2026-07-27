@@ -139,14 +139,13 @@ export default async function TeamPage() {
             people are and where they go to school. */}
         <section className="pb-12 pt-20 md:pb-16 md:pt-28">
           <div className="mx-auto max-w-5xl px-6">
-            {/* Centred and bold on a phone, left and regular weight from sm
-                up (owner, July 2026). On a phone the cards below are a
-                single centred column, so a left-aligned heading is the one
-                thing on the screen that is not centred. At desktop the
-                cards form a block that starts at the left margin, so the
-                heading lines up with them and the site's usual treatment
-                is the right one. */}
-            <h1 className="text-center font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-left sm:text-5xl sm:font-normal md:text-6xl">
+            {/* Centred on a phone, left from sm up (owner, July 2026). On a
+                phone the cards below are a single centred column, so a
+                left-aligned heading is the one thing on the screen that is
+                not centred. At desktop the cards form a block that starts at
+                the left margin, so the heading lines up with them. The type
+                itself is the site's standard page title, matched to /tours. */}
+            <h1 className="text-center font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest sm:text-left md:text-6xl">
               Leadership team
             </h1>
           </div>

@@ -29,10 +29,6 @@ export default function GetInvolvedPage() {
           <h1 className="font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
             Get involved
           </h1>
-          <p className="mt-6 max-w-[50ch] font-body text-lg leading-relaxed text-ink/80">
-            Put your name down and a student will write back. No experience
-            needed, and it does not cost anything.
-          </p>
         </div>
       </section>
 

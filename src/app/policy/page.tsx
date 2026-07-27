@@ -69,10 +69,7 @@ export default async function PolicyPage() {
           ============================================================ */}
       <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Policy
-          </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-5xl leading-[1.0] text-ink md:text-7xl">
+          <h1 className="max-w-[18ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
             Sign a petition
           </h1>
           <p className="mt-6 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80">
@@ -159,10 +156,7 @@ export default async function PolicyPage() {
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
-            Say it in your own words
-          </p>
-          <h2 className="mt-3 max-w-[20ch] font-display text-3xl leading-tight text-cream md:text-5xl">
+          <h2 className="max-w-[20ch] font-display text-3xl leading-tight text-cream md:text-5xl">
             How to send the city a comment
           </h2>
           <p className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">

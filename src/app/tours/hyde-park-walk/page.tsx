@@ -48,10 +48,7 @@ export default function ToursPage() {
           className="pointer-events-none absolute -right-10 top-0 hidden h-full w-[62%] object-cover opacity-[0.14] mix-blend-multiply [mask-image:radial-gradient(ellipse_75%_90%_at_70%_40%,black_45%,transparent)] md:block"
         />
         <div className="relative mx-auto max-w-6xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Self-guided audio tour
-          </p>
-          <h1 className="walk-title mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.08] text-ink md:text-6xl">
+          <h1 className="max-w-[16ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
             {tour.title}
           </h1>
           <p className="mt-6 max-w-[58ch] font-body text-lg leading-relaxed text-ink/75">

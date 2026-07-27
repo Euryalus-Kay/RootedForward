@@ -512,7 +512,7 @@ export default function PrivacyPage() {
       <div className="bg-cream pb-20 pt-16 md:pt-24">
         <div className="mx-auto max-w-3xl px-6">
           {/* Header */}
-          <h1 className="font-display text-4xl text-ink md:text-5xl">
+          <h1 className="font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
             Privacy Policy
           </h1>
           <p className="mt-3 font-body text-sm text-warm-gray">
