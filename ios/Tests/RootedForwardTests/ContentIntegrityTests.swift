@@ -25,7 +25,9 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertFalse(Self.payload.version.isEmpty)
         XCTAssertEqual(Self.payload.intro.paragraphs.count, 9)
         XCTAssertGreaterThanOrEqual(tour.route.count, 30)
-        XCTAssertEqual(tour.detourRoutes?.count, 2)
+        // One spur, because all three detours branch off stop eleven
+        // and rejoin at stop fifteen.
+        XCTAssertEqual(tour.detourRoutes?.count, 1)
         XCTAssertEqual(tour.practical.count, 4)
         // The seven red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
