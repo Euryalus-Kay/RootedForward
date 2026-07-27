@@ -11,6 +11,8 @@ struct TourDetailView: View {
     @EnvironmentObject private var content: ContentStore
     @EnvironmentObject private var progress: ProgressStore
     let openTour: (Int, String?) -> Void
+    /// Opens the walk on "Why this tour" rather than on a stop.
+    let openIntro: () -> Void
 
     @State private var infoSheet: InfoSheet?
     @State private var mapOpen = false
@@ -163,7 +165,7 @@ struct TourDetailView: View {
                     if progress.hasProgress {
                         openTour(min(progress.lastIndex, content.tour.stops.count - 1), nil)
                     } else {
-                        openTour(0, nil)
+                        openIntro()
                     }
                 } label: {
                     Text(progress.hasProgress
@@ -210,6 +212,21 @@ struct TourDetailView: View {
                 .padding(.horizontal, 24)
 
             VStack(spacing: 0) {
+                // "Why this tour" is the first row rather than a page
+                // people fall into, so it can be seen, chosen, and
+                // come back to instead of being skipped by tapping
+                // straight into a stop.
+                Button {
+                    Haptics.tap()
+                    openIntro()
+                } label: {
+                    IntroRow(title: content.intro.title)
+                }
+                .buttonStyle(PressableRowStyle())
+                .accessibilityLabel("Start. \(content.intro.title). Read before stop one.")
+                .accessibilityIdentifier("home-intro-row")
+                divider
+
                 ForEach(Array(content.tour.stops.enumerated()), id: \.element.id) { index, stop in
                     Button {
                         Haptics.tap()
@@ -303,6 +320,51 @@ struct TourDetailView: View {
 
 /// One stop as a full-width row: thumbnail, number, title, how long
 /// its narration runs, and a checkmark once it has been read.
+/// The opening essay, dressed as a stop so it reads as part of the
+/// sequence. No photograph and no clock, because it is neither a place
+/// nor a recording.
+private struct IntroRow: View {
+    let title: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Rectangle()
+                .fill(Color.clear)
+                .frame(width: 3)
+
+            ZStack {
+                Rectangle().fill(RF.forest.opacity(0.07))
+                Image(systemName: "text.alignleft")
+                    .font(.system(size: 19, weight: .regular))
+                    .foregroundStyle(RF.forest.opacity(0.75))
+            }
+            .frame(width: 52, height: 52)
+            .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+
+            Text("0")
+                .font(RF.display(19, weight: 600))
+                .foregroundStyle(RF.rust)
+                .frame(minWidth: 20, alignment: .trailing)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(RF.body(15, weight: 500))
+                    .foregroundStyle(RF.ink.opacity(0.85))
+                    .lineLimit(1)
+                Text("Start here, before stop one")
+                    .font(RF.display(12, weight: 400, italic: true))
+                    .foregroundStyle(RF.warmGrayDark)
+            }
+
+            Spacer(minLength: 4)
+        }
+        .padding(.trailing, 14)
+        .padding(.vertical, 8)
+        .frame(minHeight: 64)
+        .contentShape(Rectangle())
+    }
+}
+
 private struct StopRow: View {
     let stop: WalkStop
     let visited: Bool

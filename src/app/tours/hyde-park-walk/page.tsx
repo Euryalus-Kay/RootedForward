@@ -79,7 +79,11 @@ export default function ToursPage() {
 
       {/* Why this walk: the founder's op-ed, in full, before the
           first stop. */}
-      <section aria-label="Why this walk" className="border-b border-border bg-cream py-12 md:py-16">
+      <section
+        id="why-this-tour"
+        aria-label="Why this tour"
+        className="scroll-mt-16 border-b border-border bg-cream py-12 md:py-16"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <div className="max-w-[62ch]">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
@@ -111,6 +115,28 @@ export default function ToursPage() {
             </p>
           </div>
           <ol className="-mx-6 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-6 md:gap-3.5 md:overflow-visible md:px-0 md:pb-0">
+            {/* the opening essay sits in the index as its own plate, so
+                it reads as the start of the sequence instead of a
+                section people scroll past on their way to stop one */}
+            <li className="shrink-0 snap-start">
+              <a
+                href="#why-this-tour"
+                aria-label="Start with Why this tour, read before stop one"
+                className="group block w-28 md:w-auto"
+              >
+                <span className="walk-plate-flush block rounded-[2px] p-1 shadow-[3px_3px_0_0_rgba(27,58,45,0.08)] transition-transform group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0_0_rgba(27,58,45,0.1)] group-active:translate-x-[2px] group-active:translate-y-[2px] motion-reduce:transition-none">
+                  <span className="flex aspect-[3/2] w-full items-center justify-center rounded-[1px] bg-forest/[0.07] px-2 text-center font-display text-[13px] italic leading-tight text-forest/80">
+                    {WALK_INTRO.title}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="mt-1.5 block text-center font-display text-sm text-rust"
+                >
+                  Start
+                </span>
+              </a>
+            </li>
             {tour.stops.map((s) => (
               <li key={s.id} className="shrink-0 snap-start">
                 <a

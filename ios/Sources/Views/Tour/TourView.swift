@@ -45,11 +45,13 @@ struct TourView: View {
     /// that stop opens at the top like any other.
     @State private var openPlate: String?
 
-    init(startAt: Int, openPlate: String? = nil) {
+    init(startAt: Int, openPlate: String? = nil, startOnIntro: Bool = false) {
         _index = State(initialValue: startAt)
-        // Arriving on a specific plate is a deliberate jump, so it
-        // skips the essay even when the plate lives on stop one.
-        _onIntro = State(initialValue: startAt == 0 && openPlate == nil)
+        // The caller says whether the essay is wanted, because "Why
+        // this tour" is its own row in the stop list now. Tapping that
+        // row asks for it; tapping stop one does not. Arriving on a
+        // specific plate is a deliberate jump and always skips it.
+        _onIntro = State(initialValue: startOnIntro && openPlate == nil)
         _openPlate = State(initialValue: openPlate)
     }
 

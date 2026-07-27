@@ -46,9 +46,14 @@ struct HomeView: View {
             .background(RF.cream)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { _ in
-                TourDetailView { index, plate in
-                    tourTarget = TourTarget(index: index, plate: plate)
-                }
+                TourDetailView(
+                    openTour: { index, plate in
+                        tourTarget = TourTarget(index: index, plate: plate)
+                    },
+                    openIntro: {
+                        tourTarget = TourTarget(index: 0, plate: nil, onIntro: true)
+                    }
+                )
             }
         }
         // The chip contributes its own inset, so no screen has to
@@ -59,7 +64,7 @@ struct HomeView: View {
             }
         }
         .fullScreenCover(item: $tourTarget) { target in
-            TourView(startAt: target.index, openPlate: target.plate)
+            TourView(startAt: target.index, openPlate: target.plate, startOnIntro: target.onIntro)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -228,8 +233,11 @@ struct ScrollOffsetKey: PreferenceKey {
 /// a long stop and leave them to hunt for the thing they tapped.
 struct TourTarget: Identifiable {
     let index: Int
-    var plate: String? = nil
-    var id: String { "\(index)-\(plate ?? "")" }
+    let plate: String?
+    /// True only when the walker asked for "Why this tour", which is
+    /// its own row in the stop list rather than a page they fall into.
+    var onIntro: Bool = false
+    var id: String { "\(index)-\(plate ?? "")-\(onIntro)" }
 }
 
 /// The sheets behind the tour screen's info rows.
