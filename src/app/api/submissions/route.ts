@@ -167,16 +167,38 @@ export async function POST(request: NextRequest) {
   const isCurriculum =
     type === "contact" &&
     (chapter === "Curriculum Request" || message.includes("[CURRICULUM REQUEST]"));
+
+  /* The Get involved form has two tabs and both arrive as type
+     volunteer, so the tag on the message is what tells them apart.
+     Keep the subject lines distinct; the owner reads these in an inbox
+     and should not have to open one to know which it is. */
+  const isPodcastGuest =
+    type === "volunteer" && message.includes("[PODCAST GUEST]");
+
   const subject = isCurriculum
     ? "New Curriculum Request"
-    : type === "volunteer"
-      ? "New Volunteer Application"
-      : "New Contact Form Submission";
+    : isPodcastGuest
+      ? "New Podcast Guest Request"
+      : type === "volunteer"
+        ? "New Volunteer Signup"
+        : "New Contact Form Submission";
+
+  const what = isCurriculum
+    ? "a curriculum request"
+    : isPodcastGuest
+      ? "the Get involved form, asking to be a podcast guest"
+      : type === "volunteer"
+        ? "the Get involved form, volunteering"
+        : "the contact form";
 
   const emailBody = [
-    `${name} (${email}) submitted a ${isCurriculum ? "curriculum request" : `${type} form`} via rooted-forward.org.`,
+    `${name} (${email}) submitted ${what} via rooted-forward.org.`,
     "",
-    chapter ? `Chapter: ${chapter}` : "",
+    /* Volunteer and podcast submissions put the person's city in this
+       column, so label it for what it holds. */
+    chapter
+      ? `${type === "volunteer" ? "City" : "Chapter"}: ${chapter}`
+      : "",
     phone ? `Phone: ${phone}` : "",
     message ? `\nMessage:\n${message}` : "",
   ]
