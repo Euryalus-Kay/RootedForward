@@ -79,8 +79,8 @@ const WORK = [
 
 const LOCATIONS = [
   { city: "Chicago", status: "Starting location", live: true },
-  { city: "New York", status: "Coming soon", live: false },
-  { city: "Washington, DC", status: "Coming soon", live: false },
+  { city: "New York", status: "Research in progress", live: false },
+  { city: "Washington, DC", status: "Research in progress", live: false },
 ];
 
 export default function AboutPage() {
