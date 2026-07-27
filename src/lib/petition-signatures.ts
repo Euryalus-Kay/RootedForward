@@ -83,12 +83,16 @@ export async function countSignatures(slug: string): Promise<SignatureCount> {
       .select("id", { count: "exact", head: true })
       .eq("petition_slug", slug);
 
-    if (error) {
-      if (isMissingTable(error)) return countFallback(slug);
+    // head:true means the 404 for a missing table comes back with no
+    // body, so supabase-js has nothing to read PGRST205 out of and
+    // hands back count null with error null. Treat a null count as a
+    // failed read rather than as zero signatures.
+    if (error || count === null) {
+      if (!error || isMissingTable(error)) return countFallback(slug);
       console.error("[petitions] count failed:", error.message);
       return { count: null };
     }
-    return { count: count ?? 0 };
+    return { count };
   } catch (err) {
     console.error("[petitions] count exception:", err);
     return { count: null };

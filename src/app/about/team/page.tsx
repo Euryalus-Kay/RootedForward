@@ -15,9 +15,9 @@
 /*  dedupe by slug, same read-live-then-fall-back pattern as the rest  */
 /*  of the site.                                                       */
 /*                                                                     */
-/*  Real people only. Two seats are spoken for and not named yet, so   */
-/*  they render as reserved tiles with no name and no face. Set        */
-/*  OPEN_SEATS to 0 in team-constants.ts once both are filled.         */
+/*  Real people only. The roster is six and complete, so OPEN_SEATS is */
+/*  0 and no reserved tiles render. Put it back above 0 if a seat is   */
+/*  ever spoken for before the person is named.                        */
 /*                                                                     */
 /*  Voice rules (owner, July 2026). No aphorism headlines, no balanced */
 /*  pairs, no numbered rows, no rhetorical triads. Site-wide, no       */

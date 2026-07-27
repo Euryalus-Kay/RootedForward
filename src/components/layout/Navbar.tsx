@@ -198,15 +198,13 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-          ) : (
-            /* Login / Sign up */
-            <Link
-              href="/auth/login"
-              className="hidden rounded-full bg-rust px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-rust-dark lg:inline-block"
-            >
-              Log in
-            </Link>
-          )}
+          ) : null}
+          {/* The log in button was removed at the owner's request
+              (July 2026). Nothing on the public site needs an account.
+              Admins go straight to /admin, which the proxy bounces to
+              /auth/login and back again once they are signed in, so the
+              route is still gated. The account menu above still renders
+              for anyone who is already signed in. */}
 
           {/* The search button used to sit here. Removed at the owner's
               request (July 2026). The ⌘K modal is still mounted in the
@@ -248,17 +246,8 @@ export default function Navbar() {
                 </li>
               ))}
 
-              {!user && (
-                <li className="mt-2">
-                  <Link
-                    href="/auth/login"
-                    onClick={() => setMobileOpen(false)}
-                    className="block rounded-full bg-rust px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-rust-dark"
-                  >
-                    Log in / Sign up
-                  </Link>
-                </li>
-              )}
+              {/* No log in entry here either. See the note by the
+                  desktop account menu above. */}
             </ul>
           </motion.div>
         )}

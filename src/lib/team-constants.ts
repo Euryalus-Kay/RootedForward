@@ -137,7 +137,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     city: "Washington, DC",
     school: "Georgetown University",
     bio:
-      "Ahmed grew up in Dallas and is an undergraduate at Georgetown University. He does medical research and is heading into medicine. He cooks, mostly the homemade dishes he grew up eating. He works out of Washington, DC, which is one of the two cities Rooted Forward moved into after Chicago.",
+      "Ahmed grew up in Dallas and is now an undergraduate at Georgetown University. He conducts medical research and plans to pursue a career in medicine. His research includes a study on how a patient's insurance affects the outcomes of simultaneous pancreas and kidney transplants. In Washington, DC, he researches how urban development has shaped racial inequality across the city, helping Rooted Forward better understand the communities it works with. In his free time, Ahmed enjoys cooking, especially experimenting with new recipes.",
     photo: "/media/team/ahmed-agha.jpg",
   },
   {
@@ -150,7 +150,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
        Spotted on the crest on her polo and then confirmed by the owner. */
     school: "Xaverian High School",
     bio:
-      "Sabina goes to Xaverian in Bay Ridge. She spends her free time walking around New York and looking for restaurants she has not tried yet, and somewhere in that she got curious about how the city got built the way it did. That question is what brought her here.",
+      "Sabina attends Xaverian High School in Bay Ridge, Brooklyn. She spends much of her free time walking through New York's neighborhoods and searching for restaurants she has not tried before. As she explored more of the city, she began noticing how quickly the streets, housing, businesses, and public spaces could change from one neighborhood to the next. Her research helps turn what she notices while walking through the city into a clearer understanding of how New York was built and how it could become more equal.",
     photo: "/media/team/sabina-aliyev.jpg",
   },
 ];

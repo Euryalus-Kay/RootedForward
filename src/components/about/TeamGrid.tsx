@@ -125,7 +125,10 @@ function PersonCard({ member }: { member: TeamMember }) {
             onClick={(e) => {
               if (e.target === dialog.current) dialog.current?.close();
             }}
-            className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-sm border border-border bg-cream p-0 text-left backdrop:bg-ink/50"
+            /* Capped and scrollable. The bios sit inside the word band, but
+               a long one on a short phone would otherwise run off the
+               bottom of a dialog with nowhere to go. */
+            className="m-auto max-h-[85vh] w-[min(34rem,calc(100vw-2rem))] overflow-y-auto rounded-sm border border-border bg-cream p-0 text-left backdrop:bg-ink/50"
           >
             <div className="p-7 sm:p-9">
               <h3
