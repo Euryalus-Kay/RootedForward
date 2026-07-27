@@ -700,6 +700,14 @@ export const HYDE_PARK_WALK: WalkTour = {
           label: "c. 1907, from the air",
           after: 2,
         },
+        {
+          src: `${MEDIA}/quads-aerial-today.jpg`,
+          alt: "The University of Chicago from directly overhead today, the Gothic quadrangles and their green courtyards filling the centre of the frame, Ellis Avenue running down the left and the glass dome of the Mansueto Library at the top",
+          credit:
+            "The same quadrangles from the air today. Orthoimagery from The National Map, USDA and USGS. Public domain.",
+          label: "Today, from the air",
+          after: 2,
+        },
       ],
       nowImage: {
         src: `${MEDIA}/cobb-hall-today.jpg`,
