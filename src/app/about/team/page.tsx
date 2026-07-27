@@ -24,7 +24,6 @@
 /*  em-dashes and no colons inside sentences or headings.              */
 /* ------------------------------------------------------------------ */
 
-import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 import TeamGrid from "@/components/about/TeamGrid";
@@ -151,38 +150,10 @@ export default async function TeamPage() {
         </section>
       </div>
 
-      {/* ============================================================
-          THE DOOR OUT. The roster is short because the organization is
-          small, so the honest thing to put under it is the opening.
-          ============================================================ */}
-      <section className="border-t border-border bg-cream-dark/35 py-14 md:py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-2xl text-forest md:text-3xl">
-            We could use your help
-          </h2>
-          <p className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
-            If you can dig through an archive, run a survey table at a market,
-            or edit audio, there is work here for you. You do not need
-            experience to start.
-          </p>
-          <Link
-            href="/get-involved"
-            className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-          >
-            Get involved
-          </Link>
-          <p className="mt-7 font-body text-sm leading-relaxed text-ink/70">
-            Questions go to{" "}
-            <a
-              href="mailto:contact@rooted-forward.org"
-              className="text-forest underline decoration-1 underline-offset-[3px] transition-colors hover:text-rust-dark"
-            >
-              contact@rooted-forward.org
-            </a>
-            .
-          </p>
-        </div>
-      </section>
+      {/* The page ends on the roster. A recruiting band used to sit here
+          and the owner took it off (July 2026). Get involved is already a
+          nav tab and a footer link, and the closing address duplicated the
+          one in the footer. */}
     </PageTransition>
   );
 }
