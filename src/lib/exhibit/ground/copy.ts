@@ -41,6 +41,7 @@ function resolve(): ResolvedStep[] {
           note: null,
           tilt: 0,
           veil: "none",
+          loupe: null,
           sr: undefined,
           ...step.stage,
           press: pressed,

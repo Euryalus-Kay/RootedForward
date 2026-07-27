@@ -191,20 +191,6 @@ export default async function PetitionPage({
               </div>
             </div>
           )}
-
-          {/* Second ask, right before the green band. */}
-          <div className="mt-10 border-t border-border pt-9">
-            <PetitionSignButton
-              slug={petition.slug}
-              city={petition.city}
-              addressedTo={petition.addressedTo}
-              statement={petition.petitionStatement}
-              initialCount={count}
-              fullWidth
-              label="Sign the petition"
-              note={`Goes to ${petition.addressedTo.replace(/^The\s/, "the ")}.`}
-            />
-          </div>
         </div>
       </section>
 

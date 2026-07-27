@@ -61,6 +61,8 @@ function buildClientProps(): StageClientProps {
   }
   const sq = geometry.citywide.square as { x: number; y: number; w: number; h: number };
   anchors.square = { x: sq.x + sq.w / 2, y: sq.y + sq.h / 2 };
+  /* the loupe's citywide beat magnifies the one present-day mark */
+  anchors.todayUser = geometry.citywide.todayAnchor as { x: number; y: number };
 
   /* anchor positions as percentages of the citywide home crop, for
      HTML that stands at true geography (the act6 dollar towers) */
@@ -87,6 +89,11 @@ function buildClientProps(): StageClientProps {
     anchorsPct,
     focus: geometry.citywide.focus as StageClientProps["focus"],
     veilHoles: geometry.citywide.veilHoles as StageClientProps["veilHoles"],
+    loupes: Object.fromEntries(
+      Object.entries(
+        geometry.citywide.loupes as Record<string, { frame: string; cx: number; cy: number; r: number }>
+      ).map(([k, v]) => [k, { frame: v.frame, cx: v.cx, cy: v.cy, r: v.r }])
+    ),
   };
 }
 

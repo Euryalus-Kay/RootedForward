@@ -3,16 +3,20 @@
 /*  The Instrument Register, the exhibit's thesis graphic. Five bars   */
 /*  on one 1900 to 2026 axis with true dates from machines.json.       */
 /*                                                                     */
-/*  Docked mode (R10 rebuild) is a legible strip riding under the      */
-/*  Stage: a year rail with decade hairlines and labeled ticks, five   */
-/*  full-span ink lanes with boxed initials, THE UNION BAND (the       */
+/*  Docked mode (R11 remake) is a real chart, not a strip: a title     */
+/*  line (FIVE INSTRUMENTS, ONE RELAY) with the live year figure       */
+/*  prominent at the right, a left name rail carrying the five short   */
+/*  instrument names in plat caps (RULE, DEED, MAP, RENEWAL,           */
+/*  CONTRACT), five full-span ink lanes, a labeled axis with decade    */
+/*  hairlines beneath them, and THE UNION BAND at the foot (the        */
 /*  computed boolean union of the five true intervals, split at the    */
 /*  last closure year into a solid bar carrying the no-year-off label  */
-/*  and a hatched open continuation for whatever still runs), and an   */
-/*  ink caret riding the story's year that turns rust only at 2026,    */
-/*  because rust means present day. The whole strip is a link to the   */
-/*  register wall. Below 480px the lanes hide, the union band carries  */
-/*  the read, and a chevron at the right end marks the strip as a tap. */
+/*  and a hatched open continuation for whatever still runs). An ink   */
+/*  caret spans lanes and band with a year chip at its top; caret,     */
+/*  chip and figure turn rust only at 2026, because rust means         */
+/*  present day. The whole dock is a link to the register wall.        */
+/*  Below 480px the lanes and rail yield, the union band carries the   */
+/*  read at full size, and a chevron marks the dock as a tap.          */
 /*                                                                     */
 /*  Wall mode keeps the studied five-row layout and adds the baton-    */
 /*  pass verticals (each closure drops a hairline to a bar actually    */
@@ -43,13 +47,21 @@ const CHAPTER_OF: Record<string, string> = {
 };
 /** the order the bars stack, first written to last */
 const ORDER = ["code", "deed", "map", "bulldozer", "contract"];
-/** one-letter marks at each bar's left edge in the docked strip */
+/** one-letter marks taught on the wall's row labels */
 const INITIAL_OF: Record<string, string> = {
   code: "R", // the realtors' rule
   deed: "C", // restrictive covenants
   map: "M", // the map (redlining)
   bulldozer: "U", // urban renewal
   contract: "S", // contract selling
+};
+/** short plat-caps names on the dock's left rail, one per lane */
+const SHORT_NAME: Record<string, string> = {
+  code: "RULE",
+  deed: "DEED",
+  map: "MAP",
+  bulldozer: "RENEWAL",
+  contract: "CONTRACT",
 };
 /** dated end annotations where a court or a repeal stopped an instrument */
 const END_NOTES: Record<string, { text: string; at: number }> = {
@@ -201,16 +213,10 @@ function DockedStrip() {
     if (labeledYears.every((ly) => Math.abs(ly - y) > 3)) minorDecades.push(y);
   }
 
-  /* initials sit just left of their bar's start; when two nearby
-     lanes start the same year (urban renewal and contract selling,
-     both 1952) the later letter steps one slot further left */
-  const initialShift = machines.map((m, i) => {
-    let s = 0;
-    for (let j = 0; j < i; j++) {
-      if (Math.abs(machines[j].onYear - m.onYear) < 5 && Math.abs(j - i) <= 1) s += 1;
-    }
-    return s;
-  });
+  /* the band caret cuts a linen notch while it rides the solid ink */
+  const onSolid =
+    solid.length > 0 && cursorYear >= solid[0][0] && cursorYear <= splitYear && !atNow;
+  const segMid = ([on, off]: [number, number]) => (pct(on) + pct(off)) / 2;
 
   return (
     <a
@@ -223,95 +229,103 @@ function DockedStrip() {
         solid[0]?.[0] ?? AXIS_START
       } to ${splitYear} no year passed with every instrument off.${runningSentence} The story is at ${cursorYear}. Jump to the full register.`}
     >
-      <span className="gr-track" aria-hidden="true">
-        {machines.map((m, i) => (
-          <span
-            key={m.machineId}
-            className="gr-lane"
-            style={{ top: `calc(var(--grd-lane0) + ${i} * var(--grd-lane-pitch))` }}
-          >
+      <span className="grx-track" aria-hidden="true">
+        <span className="grx-title exh-plat">Five instruments, one relay</span>
+        <span className="grx-fig exh-mono">{cursorYear}</span>
+        <span className="grx-rail exh-plat">
+          {machines.map((m, i) => (
             <span
-              className="gr-init exh-plat"
-              style={{
-                left: `${pct(m.onYear)}%`,
-                transform: `translateX(calc(-100% - ${5 + initialShift[i] * 13}px))`,
-              }}
+              key={m.machineId}
+              className="grx-name"
               title={m.plainName}
+              style={{ top: `calc(var(--grx-lane0) + ${i} * var(--grx-pitch))` }}
             >
-              {INITIAL_OF[m.machineId] ?? m.plainName.slice(0, 1)}
+              {SHORT_NAME[m.machineId] ?? m.plainName}
             </span>
+          ))}
+        </span>
+        <span className="grx-chart">
+          {machines.map((m, i) => (
             <span
-              className="gr-bar"
+              key={m.machineId}
+              className="grx-bar"
               title={`${m.plainName}, ${m.onYear} to ${m.offYear ?? "now"}`}
               data-live={cursorYear >= m.onYear && cursorYear <= (m.offYear ?? AXIS_END) ? "on" : "off"}
               style={{
+                top: `calc(var(--grx-lane0) + ${i} * var(--grx-pitch))`,
                 left: `${pct(m.onYear)}%`,
                 width: `${pct(m.offYear ?? AXIS_END) - pct(m.onYear)}%`,
               }}
             />
-          </span>
-        ))}
-        <span className="gr-uband">
-          {solid.map(([on, off]) => (
-            <span
-              key={`s${on}`}
-              className="gr-ubseg"
-              style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
-            />
           ))}
-          {open.map(([on, off]) => (
-            <span
-              key={`o${on}`}
-              className="gr-ubseg"
-              data-open="on"
-              style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
-            />
+          <span className="grx-baseline" />
+          {minorDecades.map((y) => (
+            <span key={y} className="grx-tickline" style={{ left: `${pct(y)}%` }} />
           ))}
-          {/* each plate rides inside its own segment at the right end,
-              clear of the 1952 initials and of the caret through the
-              story years; the solid plate anchors on the solid ink only */}
-          {solid.length ? (
-            <span
-              className="gr-ublabel exh-plat"
-              style={{ right: `calc(${100 - pct(solid[solid.length - 1][1])}% + 8px)` }}
-            >
-              {solidLabelText(solid)}
+          {labeledYears.map((y) => (
+            <span key={`l${y}`} className="grx-tickline" data-major="on" style={{ left: `${pct(y)}%` }} />
+          ))}
+          {labeledYears.map((y) => (
+            <span key={y} className="grx-tick exh-plat" data-year={y} style={{ left: `${pct(y)}%` }}>
+              {y}
             </span>
-          ) : null}
-          {open.length ? (
-            <span
-              className="gr-ublabel exh-plat"
-              data-open="on"
-              style={{ right: `calc(${100 - pct(open[open.length - 1][1])}% + 8px)` }}
-            >
-              {countWord(running.length)} STILL RUNNING
-            </span>
-          ) : null}
-        </span>
-        <span className="gr-baseline" />
-        {minorDecades.map((y) => (
-          <span key={y} className="gr-tickline" style={{ left: `${pct(y)}%` }} />
-        ))}
-        {labeledYears.map((y) => (
-          <span key={`l${y}`} className="gr-tickline" data-major="on" style={{ left: `${pct(y)}%` }} />
-        ))}
-        {labeledYears.map((y) => (
-          <span key={y} className="gr-tick exh-plat" data-year={y} style={{ left: `${pct(y)}%` }}>
-            {y}
+          ))}
+          <span className="grx-band">
+            {solid.map(([on, off]) => (
+              <span
+                key={`s${on}`}
+                className="grx-ubseg"
+                style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
+              />
+            ))}
+            {open.map(([on, off]) => (
+              <span
+                key={`o${on}`}
+                className="grx-ubseg"
+                data-open="on"
+                style={{ left: `${pct(on)}%`, width: `${pct(off) - pct(on)}%` }}
+              />
+            ))}
+            {/* each label sits inside its own drawn mass: linen type on
+                the solid ink, an ink plate over the open hatch, so the
+                dark mass still ends exactly where the claim ends */}
+            {solid.length ? (
+              <span
+                className="grx-ublabel exh-plat"
+                style={{ left: `${segMid(solid[solid.length - 1])}%` }}
+              >
+                {solidLabelText(solid)}
+              </span>
+            ) : null}
+            {open.length ? (
+              <span
+                className="grx-ublabel exh-plat"
+                data-open="on"
+                style={{ left: `${segMid(open[open.length - 1])}%` }}
+              >
+                {countWord(running.length)} STILL RUNNING
+              </span>
+            ) : null}
           </span>
-        ))}
-        <span className="gr-cursor" style={{ left: `${cursorAt}%` }} />
-        <span
-          className="gr-yearfig exh-mono"
-          style={{ left: preRail ? "0%" : `clamp(16px, ${cursorAt}%, calc(100% - 16px))` }}
-        >
-          {cursorYear}
-        </span>
-        {/* phone-only affordance so the strip reads as a tap, not a
-            static graphic (R10 audit, dock-tap-hint); sits in the
-            right margin where the year chip can never reach */}
-        <span className="gr-taphint" aria-hidden="true">
-          {"›"}
+          <span className="grx-caret" style={{ left: `${cursorAt}%` }} />
+          <span
+            className="grx-caret"
+            data-seg="band"
+            data-onsolid={onSolid ? "on" : "off"}
+            style={{ left: `${cursorAt}%` }}
+          />
+          <span
+            className="grx-chip exh-mono"
+            style={{ left: `clamp(18px, ${cursorAt}%, calc(100% - 18px))` }}
+          >
+            {cursorYear}
+          </span>
+          {/* phone-only affordance so the dock reads as a tap, not a
+              static graphic (R10 audit, dock-tap-hint); sits in the
+              right margin where the year chip can never reach */}
+          <span className="grx-taphint" aria-hidden="true">
+            {"›"}
+          </span>
         </span>
       </span>
     </a>

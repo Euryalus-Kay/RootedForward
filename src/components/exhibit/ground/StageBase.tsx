@@ -83,6 +83,11 @@ export default function StageBase() {
         <filter id="ground-lift" x="-30%" y="-30%" width="160%" height="160%">
           <feDropShadow dx="1.2" dy="1.8" stdDeviation="1.1" floodColor="#262019" floodOpacity="0.4" />
         </filter>
+        {/* the veil target's light: a soft paper-white bloom inside
+            the spotlit geometry (R11, parts of the map light up) */}
+        <filter id="ground-lite" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="4.5" />
+        </filter>
         {/* the survey grid never rules open water (audit: the 1830s
             plats did not grid the lake); everything except the lake */}
         <clipPath id="ground-dryland" clipPathUnits="userSpaceOnUse">
@@ -93,7 +98,7 @@ export default function StageBase() {
         </clipPath>
       </defs>
 
-      <g data-camera>
+      <g data-camera id="ground-cam">
         {/* the paper itself, so value shifts (the bombing chapter's dim)
             darken the ground and not just the ink on it */}
         <rect data-paper x={PAPER_X} y={PAPER_Y} width={PAPER_W} height={PAPER_H} aria-hidden="true" />
@@ -107,11 +112,22 @@ export default function StageBase() {
               so deduping them restyles the page. Recorded as a declined
               audit item (ssr-double-payload). */}
           <g data-ground-plane aria-hidden="true">
-            <path data-lake d={city.ground.lake} data-source="community-areas-hull" />
-            <path data-lake-lines d={city.ground.lake} fill="url(#ground-waterlines)" />
+            {/* R11 order: suburb ground, the city's own land, then the
+                real water ABOVE both (the river cuts through the
+                city), parks, the survey grid, streets at two weights,
+                and the neighborhood fabric on top */}
+            <path data-suburbs d={city.ground.suburbs} fillRule="evenodd" data-source="tiger-places-2023" />
             <path data-land d={city.ground.land} fillRule="evenodd" data-source="chicago-community-areas" />
+            {/* the derived hull backfills the far water the county
+                file clips; the true TIGER shoreline draws over it */}
+            <path data-lake-under d={city.ground.lakeUnder} data-source="community-areas-hull" />
+            <path data-lake d={city.ground.lake} data-source="tiger-areawater-2023" />
+            <path data-lake-lines d={city.ground.lakeUnder} fill="url(#ground-waterlines)" />
+            <path data-lake-lines d={city.ground.lake} fill="url(#ground-waterlines)" />
             <path data-parks d={city.ground.parks} data-source="chicago-park-district" />
             <path data-grid d={city.ground.grid} clipPath="url(#ground-dryland)" data-source="plss-mile-arithmetic" />
+            <path data-arterials d={city.ground.arterials} data-source="tiger-roads-2023" />
+            <path data-locals d={city.ground.locals} data-source="tiger-roads-2023" />
             <path data-fabric d={city.ground.land} fillRule="evenodd" data-source="chicago-community-areas" />
           </g>
           <g data-grade-fills aria-hidden="true">
@@ -180,6 +196,7 @@ export default function StageBase() {
           <g data-hp-ground aria-hidden="true">
             <path data-parks d={hp.ground.parks} data-source="chicago-park-district" />
             <path data-grid d={hp.ground.grid} clipPath="url(#ground-dryland-hp)" data-source="plss-mile-arithmetic" />
+            <path data-hp-streets d={hp.ground.streets} data-source="tiger-roads-2023" />
           </g>
           <g data-hp-grade-fills aria-hidden="true">
             {GRADES.map((g) => (
@@ -202,8 +219,46 @@ export default function StageBase() {
         </g>
 
         {/* the spotlight veil, above both sheets; the controller writes
-            its hole (real geometry) per step */}
+            its hole (real geometry) per step, and the lite twin makes
+            the spotlit ground glow instead of merely surviving */}
         <path data-veil d="" fillRule="evenodd" aria-hidden="true" />
+        <path data-veil-lite d="" filter="url(#ground-lite)" aria-hidden="true" />
+      </g>
+
+      {/* the magnifying lens (R11): the examiner's glass reveals the
+          ground's fine grain over a named point. Each beat's scene is
+          real pre-clipped geometry (geometry.json citywide.loupes),
+          styled like everything else; a live use-clone of the sheet
+          was tried and rejected (Blink runs no document CSS inside
+          use shadow trees, so clones paint black). Stationary above
+          the camera group, shown at rest on its beats. */}
+      <g data-loupe aria-hidden="true">
+        <clipPath id="ground-loupe-clip" clipPathUnits="userSpaceOnUse">
+          <circle data-loupe-clipc cx={0} cy={0} r={0} />
+        </clipPath>
+        <g clipPath="url(#ground-loupe-clip)">
+          <rect data-loupe-paper x={0} y={0} width={0} height={0} />
+          <g data-loupe-scene="today">
+            <path data-lp-water d={city.loupes.today.water} />
+            <path data-lp-parks d={city.loupes.today.parks} />
+            <path data-lp-streets d={city.loupes.today.streets} />
+            <circle
+              data-lp-todayring
+              cx={city.todayAnchor.x}
+              cy={city.todayAnchor.y}
+              r={31}
+            />
+          </g>
+          <g data-loupe-scene="jacksonPark">
+            {/* no streets on the 1893 lens; the modern grid would be
+                an anachronism on the fair's plat. Parks under water,
+                or the park fill buries its own lagoons. */}
+            <path data-lp-parks d={city.loupes.jacksonPark.parks} />
+            <path data-lp-water d={city.loupes.jacksonPark.water} />
+          </g>
+        </g>
+        <circle data-loupe-halo cx={0} cy={0} r={0} />
+        <circle data-loupe-ring cx={0} cy={0} r={0} />
       </g>
     </svg>
   );

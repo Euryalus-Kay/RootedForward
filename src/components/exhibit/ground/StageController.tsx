@@ -34,6 +34,8 @@ export interface StageClientProps {
   focus: Record<string, Box>;
   /** named veil holes, real-geometry path strings */
   veilHoles: Record<string, string>;
+  /** the magnifying lens beats: circle + which frame owns each */
+  loupes: Record<string, { frame: string; cx: number; cy: number; r: number }>;
 }
 
 /** which strata an era shows; the grid is the 1830s survey's own
@@ -128,6 +130,10 @@ export default function StageController({
       );
       const rScreen = Math.min(Math.max(3.2 * kx, 4.5), 9);
       root.style.setProperty("--gmark-r", `${Math.round((rScreen / kx) * 10) / 10}px`);
+      /* local streets only subtend a pixel at deep cameras; the flag
+         gates their ink so the detail region never reads as a patch
+         at the wide view */
+      root.setAttribute("data-camdeep", kx > 2 ? "on" : "off");
       /* counter-scale from the MEET scales, not raw widths; the home
          crop is height-constrained in the pane, so a width ratio
          oversized close-crop type by up to 44 percent (audit) */
@@ -220,11 +226,15 @@ export default function StageController({
     if (!root) return;
     const veil = root.querySelector<SVGPathElement>("[data-veil]");
     if (!veil) return;
+    const lite = root.querySelector<SVGPathElement>("[data-veil-lite]");
     const target = stage.veil ?? "none";
     if (target === "none") {
       /* fade first, clear the geometry after the 450ms opacity ride
          (clearing d immediately made the veil-off a hard pop) */
-      const t = window.setTimeout(() => veil.setAttribute("d", ""), 500);
+      const t = window.setTimeout(() => {
+        veil.setAttribute("d", "");
+        lite?.setAttribute("d", "");
+      }, 500);
       return () => window.clearTimeout(t);
     }
     let hole = "";
@@ -241,7 +251,48 @@ export default function StageController({
       if (stage.frame === "hydePark" && !clientProps.veilHoles[key]) hole = "";
     }
     veil.setAttribute("d", hole ? VEIL_RECT + hole : "");
+    /* the same geometry, painted as light */
+    lite?.setAttribute("d", hole || "");
   }, [stage.veil, stage.frame, clientProps.veilHoles, locatedArea]);
+
+  /* the magnifying lens: a clipped live clone of the sheet at 2.6x
+     over a named point, shown at rest on its beats (R11) */
+  useEffect(() => {
+    const root = wrapRef.current;
+    if (!root) return;
+    const clipC = root.querySelector<SVGCircleElement>("[data-loupe-clipc]");
+    const ring = root.querySelector<SVGCircleElement>("[data-loupe-ring]");
+    const halo = root.querySelector<SVGCircleElement>("[data-loupe-halo]");
+    const paper = root.querySelector<SVGRectElement>("[data-loupe-paper]");
+    if (!clipC || !ring || !halo || !paper) return;
+    const key = stage.loupe ?? null;
+    const lp = key ? clientProps.loupes[key] : null;
+    if (!lp || lp.frame !== stage.frame) {
+      root.setAttribute("data-loupeon", "off");
+      return;
+    }
+    const Z = 2.6;
+    for (const c of [clipC, ring, halo]) {
+      c.setAttribute("cx", String(lp.cx));
+      c.setAttribute("cy", String(lp.cy));
+    }
+    clipC.setAttribute("r", String(lp.r));
+    ring.setAttribute("r", String(lp.r));
+    halo.setAttribute("r", String(lp.r + 3));
+    paper.setAttribute("x", String(lp.cx - lp.r - 2));
+    paper.setAttribute("y", String(lp.cy - lp.r - 2));
+    paper.setAttribute("width", String((lp.r + 2) * 2));
+    paper.setAttribute("height", String((lp.r + 2) * 2));
+    /* magnify the scene about the lens center: T = (1-Z)*c, scale Z */
+    const scene = root.querySelector<SVGGElement>(`[data-loupe-scene="${key}"]`);
+    scene?.setAttribute(
+      "transform",
+      `translate(${(lp.cx * (1 - Z)).toFixed(1)} ${(lp.cy * (1 - Z)).toFixed(1)}) scale(${Z})`
+    );
+    root.setAttribute("data-loupekey", key ?? "");
+    root.setAttribute("data-loupeon", "on");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage.loupe, stage.frame, clientProps.loupes]);
 
   /* the grade flood inks batches of areas in sheet filing order */
   useEffect(() => {

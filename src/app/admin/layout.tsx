@@ -20,6 +20,7 @@ import {
   Waves,
   Clapperboard,
   Landmark,
+  PenLine,
   LogOut,
   Menu,
   X,
@@ -40,6 +41,7 @@ const navItems = [
   { href: "/admin/exhibit", label: "Exhibit wall", icon: Landmark },
   { href: "/admin/about/board", label: "Board", icon: Users },
   { href: "/admin/policy", label: "Policy", icon: Scale },
+  { href: "/admin/policy/petitions", label: "Petitions", icon: PenLine },
   { href: "/admin/research", label: "Research", icon: BookOpen },
   { href: "/admin/research/data-usage", label: "Data Usage", icon: Database },
 ];
@@ -61,6 +63,8 @@ export default function AdminLayout({
       href === "/admin/research" &&
       pathname.startsWith("/admin/research/data-usage")
     )
+      return false;
+    if (href === "/admin/policy" && pathname.startsWith("/admin/policy/petitions"))
       return false;
     return pathname.startsWith(href);
   };

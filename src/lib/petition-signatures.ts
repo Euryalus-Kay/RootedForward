@@ -15,9 +15,34 @@
 /*  the page renders without a number rather than failing.             */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/*  Fallback store                                                     */
+/*                                                                     */
+/*  Migration 009 has to be pasted into the Supabase SQL editor by     */
+/*  hand, the same as 006 and 008, and until somebody does that the    */
+/*  petition tables do not exist. Rather than lose signatures in the   */
+/*  meantime they go into the `submissions` table, which is already    */
+/*  there and already has an admin view.                               */
+/*                                                                     */
+/*  `submissions.type` is constrained to volunteer or contact, so a    */
+/*  signature is a contact row tagged in `chapter`. Curriculum         */
+/*  requests already use this exact trick, so it is the house pattern  */
+/*  rather than a new one.                                             */
+/*                                                                     */
+/*  Once 009 is applied the real table wins and these rows stay put    */
+/*  as history. Nothing has to be migrated.                            */
+/* ------------------------------------------------------------------ */
+export const FALLBACK_CHAPTER_PREFIX = "petition:";
+
+export function fallbackChapter(slug: string): string {
+  return `${FALLBACK_CHAPTER_PREFIX}${slug}`;
+}
+
 export interface SignatureCount {
   /** null means we genuinely do not know, not zero. */
   count: number | null;
+  /** true when the count came from the fallback store. */
+  fallback?: true;
   migrationPending?: true;
 }
 
@@ -59,7 +84,7 @@ export async function countSignatures(slug: string): Promise<SignatureCount> {
       .eq("petition_slug", slug);
 
     if (error) {
-      if (isMissingTable(error)) return { count: null, migrationPending: true };
+      if (isMissingTable(error)) return countFallback(slug);
       console.error("[petitions] count failed:", error.message);
       return { count: null };
     }
@@ -67,6 +92,27 @@ export async function countSignatures(slug: string): Promise<SignatureCount> {
   } catch (err) {
     console.error("[petitions] count exception:", err);
     return { count: null };
+  }
+}
+
+/** Signatures parked in `submissions` because 009 is not applied yet. */
+async function countFallback(slug: string): Promise<SignatureCount> {
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/server");
+    const supabase = await createAdminClient();
+    const { count, error } = await supabase
+      .from("submissions")
+      .select("id", { count: "exact", head: true })
+      .eq("chapter", fallbackChapter(slug));
+
+    if (error) {
+      console.error("[petitions] fallback count failed:", error.message);
+      return { count: null, migrationPending: true };
+    }
+    return { count: count ?? 0, fallback: true, migrationPending: true };
+  } catch (err) {
+    console.error("[petitions] fallback count exception:", err);
+    return { count: null, migrationPending: true };
   }
 }
 
@@ -100,9 +146,8 @@ export async function listPublicSigners(
       .limit(limit);
 
     if (error) {
-      if (!isMissingTable(error)) {
-        console.error("[petitions] signer list failed:", error.message);
-      }
+      if (isMissingTable(error)) return listPublicSignersFallback(slug, limit);
+      console.error("[petitions] signer list failed:", error.message);
       return [];
     }
 
@@ -112,6 +157,39 @@ export async function listPublicSigners(
     }));
   } catch (err) {
     console.error("[petitions] signer list exception:", err);
+    return [];
+  }
+}
+
+/* The fallback rows keep their flags inside the message body, so the
+   public list only shows the ones that opted in. */
+async function listPublicSignersFallback(
+  slug: string,
+  limit: number
+): Promise<PublicSigner[]> {
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/server");
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("submissions")
+      .select("name, message")
+      .eq("chapter", fallbackChapter(slug))
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("[petitions] fallback signer list failed:", error.message);
+      return [];
+    }
+
+    return (data ?? [])
+      .filter((row) => !String(row.message ?? "").includes("public=no"))
+      .map((row) => {
+        const zip = String(row.message ?? "").match(/zip=(\d{5}(?:-\d{4})?)/);
+        return { name: shorten(row.name as string), zip: zip ? zip[1] : null };
+      });
+  } catch (err) {
+    console.error("[petitions] fallback signer list exception:", err);
     return [];
   }
 }

@@ -187,9 +187,11 @@ export default function Colophon(_props: SceneProps) {
       >
         The map&rsquo;s ground layers are drawn from the City of Chicago community area
         boundaries and the Chicago Park District park boundaries, both from the City of
-        Chicago Data Portal. The Lake Michigan shoreline is derived from the eastern edge
-        of those same recorded polygons. The mile section grid follows the street-grid
-        arithmetic documented in this exhibit&rsquo;s bombing geocoding notes.
+        Chicago Data Portal, and from the U.S. Census Bureau&rsquo;s TIGER/Line 2023 files
+        (public domain), which carry the streets, the municipal landmass, Lake Michigan,
+        the Chicago River, and the canals. The far water beyond the county line is filled
+        from the eastern edge of the recorded polygons. The mile section grid follows the
+        street-grid arithmetic documented in this exhibit&rsquo;s bombing geocoding notes.
       </p>
 
       {/* ---------------- the Study Room door ---------------- */}

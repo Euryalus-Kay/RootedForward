@@ -141,11 +141,48 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       if (isMissingTable(error)) {
-        return NextResponse.json({ migrationPending: true }, { status: 503 });
-      }
-      // 23505 is the (petition_slug, email) unique index. Signing twice
-      // is not a mistake worth an error page.
-      if (error.code !== "23505") {
+        // Migration 009 is not applied yet. Park the signature in the
+        // submissions table instead of dropping it on the floor.
+        const { fallbackChapter } = await import("@/lib/petition-signatures");
+        // submissions has no unique index, so dedupe by hand the way the
+        // real table's (petition_slug, email) constraint would.
+        const { data: already } = await supabase
+          .from("submissions")
+          .select("id")
+          .eq("chapter", fallbackChapter(slug))
+          .eq("email", email)
+          .limit(1);
+        if (already && already.length > 0) {
+          const { countSignatures } = await import("@/lib/petition-signatures");
+          const { count: dupCount } = await countSignatures(slug);
+          return NextResponse.json({ signed: true, count: dupCount }, { status: 200 });
+        }
+        const { error: fbError } = await supabase.from("submissions").insert({
+          type: "contact",
+          name,
+          email,
+          chapter: fallbackChapter(slug),
+          message: [
+            `Petition signature for ${petition.billName} (${petition.city}).`,
+            `slug=${slug}`,
+            `residency=${residency}`,
+            `zip=${zip || "none"}`,
+            `public=${isPublic ? "yes" : "no"}`,
+            "",
+            "Recorded before migration 009 was applied, so it lives here",
+            "rather than in petition_signatures.",
+          ].join("\n"),
+        });
+        if (fbError) {
+          console.error("[petitions] fallback insert failed:", fbError.message);
+          return NextResponse.json(
+            { error: "We could not record your signature just now" },
+            { status: 502 }
+          );
+        }
+      } else if (error.code !== "23505") {
+        // 23505 is the (petition_slug, email) unique index. Signing twice
+        // is not a mistake worth an error page.
         console.error("[petitions] insert failed:", error.message);
         return NextResponse.json(
           { error: "We could not record your signature just now" },

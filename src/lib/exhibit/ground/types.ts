@@ -72,6 +72,9 @@ export interface StageState {
   /** how the bombing marks read at this camera: a counted badge from
    *  afar, individually readable dots up close */
   marksMode?: "badge" | "dots";
+  /** a magnifying lens over a named point of the sheet (R11); an
+   *  event field, reset unless restated */
+  loupe?: "jacksonPark" | "today" | null;
   /** sr-only resolved-state sentence (non-visual parity for drawn
    *  claims); carried forward like every other field */
   sr?: string;
