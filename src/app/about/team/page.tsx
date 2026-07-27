@@ -108,13 +108,17 @@ export default async function TeamPage() {
           for the page to be more interesting than a grid on a blank
           background (July 2026).
 
-          Two low-alpha radial stops, rust coming in from the top left
-          and forest answering from the bottom right, over the cream
-          token. Both sit under 0.16 alpha on purpose. Anything stronger
-          and an archival civic page starts reading like a product
-          landing page, which is the failure mode this palette is most
-          exposed to. Written as an inline style because Tailwind v4
-          would need three nested arbitrary values to say the same thing.
+          Green rather than rust, owner's call. Three low-alpha radial
+          stops in forest and forest-light over the cream token, which
+          lands as a sage wash rather than a colour field. The rust is
+          left to the Read bio buttons, where it reads as an accent
+          instead of as the whole page.
+
+          Nothing above 0.26 alpha on purpose. Anything stronger and an
+          archival civic page starts reading like a product landing
+          page, which is the failure mode this palette is most exposed
+          to. Written as an inline style because Tailwind v4 would need
+          three nested arbitrary values to say the same thing.
 
           The heading shares the wash, so there is no rule cutting the
           gradient in half.
@@ -123,9 +127,9 @@ export default async function TeamPage() {
         className="bg-cream"
         style={{
           backgroundImage:
-            "radial-gradient(64rem 40rem at 4% -14%, rgba(196, 93, 62, 0.34), rgba(196, 93, 62, 0) 62%), " +
-            "radial-gradient(44rem 30rem at 82% 4%, rgba(212, 118, 92, 0.20), rgba(212, 118, 92, 0) 58%), " +
-            "radial-gradient(56rem 42rem at 96% 108%, rgba(27, 58, 45, 0.16), rgba(27, 58, 45, 0) 62%)",
+            "radial-gradient(64rem 40rem at 4% -14%, rgba(27, 58, 45, 0.26), rgba(27, 58, 45, 0) 62%), " +
+            "radial-gradient(44rem 30rem at 82% 4%, rgba(42, 84, 64, 0.17), rgba(42, 84, 64, 0) 58%), " +
+            "radial-gradient(56rem 42rem at 96% 108%, rgba(27, 58, 45, 0.14), rgba(27, 58, 45, 0) 62%)",
         }}
       >
         {/* Just the heading. The owner cut the eyebrow and the standfirst

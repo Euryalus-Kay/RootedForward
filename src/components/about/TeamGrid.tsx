@@ -78,6 +78,17 @@ function PersonCard({ member }: { member: TeamMember }) {
         {member.name}
       </h2>
 
+      {/* Only the founder carries one of these, and it is set as a quiet
+          italic annotation rather than a title badge. Small, grey, lower
+          case except the initial, sitting under the name the way a
+          masthead credit does. It states a fact the About page already
+          states, so it should not arrive looking like a claim. */}
+      {member.role && (
+        <p className="mt-1.5 font-body text-[13px] italic leading-snug text-ink/60">
+          {member.role}
+        </p>
+      )}
+
       {member.city && (
         <p className="mt-2 font-body text-sm font-semibold leading-snug text-ink/80">
           {member.city}

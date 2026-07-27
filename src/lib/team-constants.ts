@@ -53,8 +53,10 @@ export interface TeamMember {
   sortKey: string;
   /** Lower numbers sort ahead of everyone without one. */
   pinned?: number;
-  /** Optional. The cards show school rather than title, so this is only
-   *  read where a title genuinely matters. */
+  /** Optional, and mostly empty on purpose. The cards lead with school
+   *  rather than title, so this is for the handful of people where the
+   *  title is the fact (the founder). It renders as a quiet italic line
+   *  under the name, not as a badge. */
   role?: string;
   /** Optional, but all or nothing across the whole roster. */
   city?: string;
