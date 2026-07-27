@@ -22,7 +22,7 @@ import type { Podcast } from "@/lib/types/database";
 export const metadata: Metadata = {
   title: "Rooted Forward Podcast",
   description:
-    "The Rooted Forward podcast. Students sit down with people who live in Chicago, New York, and Washington, DC and ask what changed on their block.",
+    "The Rooted Forward podcast. We talk to people who live in Chicago, New York, and Washington, DC about their experience living in those cities.",
 };
 
 export const revalidate = 600;
@@ -68,13 +68,13 @@ export default async function PodcastsPage() {
       {/* Opener */}
       <section className="border-b border-border bg-cream pb-12 pt-20 md:pb-16 md:pt-28">
         <div className="mx-auto max-w-3xl px-6">
-          <h1 className="max-w-[18ch] font-display text-4xl leading-[1.05] text-forest md:text-5xl">
+          <h1 className="max-w-[18ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
             Rooted Forward Podcast
           </h1>
           <p className="mt-6 max-w-[55ch] font-body text-lg leading-relaxed text-ink/80">
             We talk to people who live in the cities we work in, Chicago, New
-            York, and Washington, DC. They tell us what their block was like,
-            what changed, and who made the change.
+            York, and Washington, DC. They tell us about their experience
+            living in those cities.
           </p>
           <p className="mt-4 max-w-[55ch] font-body text-lg leading-relaxed text-ink/80">
             Listen here or wherever you get your podcasts.
