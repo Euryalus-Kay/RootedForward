@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageTransition from "@/components/layout/PageTransition";
-import PetitionForm from "@/components/policy/PetitionForm";
+import PetitionSignButton from "@/components/policy/PetitionSignButton";
 import { getPetition } from "@/lib/petitions";
 import { countSignatures, listPublicSigners } from "@/lib/petition-signatures";
 
@@ -116,6 +116,24 @@ export default async function PetitionPage({
               {petition.whereItStands}
             </p>
           </div>
+
+          {/* The ask, high on the page. It used to sit below every
+              section and nobody would have scrolled to it. */}
+          <div className="mt-9">
+            <PetitionSignButton
+              slug={petition.slug}
+              city={petition.city}
+              addressedTo={petition.addressedTo}
+              statement={petition.petitionStatement}
+              initialCount={count}
+              fullWidth
+              note={
+                count !== null && count > 0
+                  ? `${count.toLocaleString()} ${count === 1 ? "person has" : "people have"} signed. No account, about a minute.`
+                  : "No account. About a minute."
+              }
+            />
+          </div>
         </div>
       </section>
 
@@ -173,6 +191,20 @@ export default async function PetitionPage({
               </div>
             </div>
           )}
+
+          {/* Second ask, right before the green band. */}
+          <div className="mt-10 border-t border-border pt-9">
+            <PetitionSignButton
+              slug={petition.slug}
+              city={petition.city}
+              addressedTo={petition.addressedTo}
+              statement={petition.petitionStatement}
+              initialCount={count}
+              fullWidth
+              label="Sign the petition"
+              note={`Goes to ${petition.addressedTo.replace(/^The\s/, "the ")}.`}
+            />
+          </div>
         </div>
       </section>
 
@@ -205,17 +237,30 @@ export default async function PetitionPage({
       </section>
 
       {/* ============================================================
-          THE FORM
+          THE CLOSING ASK. The form itself opens in a dialog.
           ============================================================ */}
       <section className="bg-cream py-14 md:py-18">
         <div className="mx-auto max-w-3xl px-6">
-          <PetitionForm
-            slug={petition.slug}
-            city={petition.city}
-            addressedTo={petition.addressedTo}
-            statement={petition.petitionStatement}
-            initialCount={count}
-          />
+          <div className="rounded-sm border-2 border-forest bg-cream-dark p-8 text-center md:p-10">
+            <h2 className="font-display text-3xl text-forest md:text-4xl">
+              Add your name
+            </h2>
+            <p className="mx-auto mt-4 max-w-[46ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
+              We hand the signatures to the committee sitting on this bill,
+              along with a public comment from Rooted Forward.
+            </p>
+            <div className="mt-8">
+              <PetitionSignButton
+                slug={petition.slug}
+                city={petition.city}
+                addressedTo={petition.addressedTo}
+                statement={petition.petitionStatement}
+                initialCount={count}
+                fullWidth
+                note="No account. About a minute."
+              />
+            </div>
+          </div>
 
           {signers.length > 0 && (
             <div className="mt-10 border-t border-border pt-8">

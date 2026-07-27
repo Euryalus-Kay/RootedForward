@@ -61,7 +61,7 @@ export const PETITIONS: Petition[] = [
     title: "Protect Chicago renters",
     billName: "Protecting Renters Ordinance",
     city: "Chicago",
-    recordNumber: null,
+    recordNumber: "O2026-0026554",
     status: "open",
     oneLiner:
       "Landlords would need a real reason to evict you or refuse to renew your lease.",
@@ -79,14 +79,14 @@ export const PETITIONS: Petition[] = [
     ],
     readTheBill: [
       {
-        label: "The city's announcement of the ordinance",
+        label: "What the ordinance does, from the Department of Housing",
         publisher: "chicago.gov",
-        url: "https://www.chicago.gov/city/en/depts/mayor/press_room/press_releases/2026/may/protecting-renters-ordinance.html",
+        url: "https://www.chicago.gov/city/en/depts/doh/provdrs/renters/svcs/protecting-renters-ordinance.html",
       },
       {
-        label: "Track it in the City Council record",
-        publisher: "chicago.legistar.com",
-        url: "https://chicago.legistar.com",
+        label: "The full ordinance record, O2026-0026554",
+        publisher: "Chicago Councilmatic",
+        url: "https://chicago.councilmatic.org/legislation/o2026-0026554/",
       },
     ],
     whyWeCareAboutIt: [

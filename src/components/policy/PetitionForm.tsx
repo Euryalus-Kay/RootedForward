@@ -29,6 +29,12 @@ interface PetitionFormProps {
   statement: string;
   /** Server-rendered starting count. null means we could not read it. */
   initialCount: number | null;
+  /** Drops the form's own card and heading; the dialog supplies both. */
+  inModal?: boolean;
+  /** Called after a successful signature, to close the dialog. */
+  onDone?: () => void;
+  /** Called once a signature lands, so the page can refresh its counts. */
+  onSigned?: () => void;
 }
 
 export default function PetitionForm({
@@ -37,6 +43,9 @@ export default function PetitionForm({
   addressedTo,
   statement,
   initialCount,
+  inModal = false,
+  onDone,
+  onSigned,
 }: PetitionFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,6 +79,7 @@ export default function PetitionForm({
       }
       if (typeof data.count === "number") setCount(data.count);
       setSigned(true);
+      onSigned?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -79,7 +89,7 @@ export default function PetitionForm({
 
   if (signed) {
     return (
-      <div className="rounded-sm border-2 border-forest bg-cream p-8">
+      <div className="rounded-sm border-2 border-forest bg-cream p-8 text-center">
         <h2 className="font-display text-2xl text-forest">
           Signed. Thank you.
         </h2>
@@ -91,6 +101,15 @@ export default function PetitionForm({
           <p className="mt-4 font-body text-sm font-semibold uppercase tracking-widest text-rust">
             {count.toLocaleString()} {count === 1 ? "signature" : "signatures"}
           </p>
+        )}
+        {onDone && (
+          <button
+            type="button"
+            onClick={onDone}
+            className="mt-6 rounded-sm bg-forest px-7 py-3 font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:bg-forest/90"
+          >
+            Close
+          </button>
         )}
       </div>
     );
@@ -104,14 +123,20 @@ export default function PetitionForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-sm border-2 border-forest bg-cream p-6 md:p-8"
+      /* Inside the dialog the Modal already draws the card and the
+         heading, so the form drops its own chrome. */
+      className={
+        inModal ? "" : "rounded-sm border-2 border-forest bg-cream p-6 md:p-8"
+      }
     >
-      <h2 className="font-display text-2xl text-forest md:text-3xl">
-        Sign this petition
-      </h2>
+      {!inModal && (
+        <h2 className="font-display text-2xl text-forest md:text-3xl">
+          Sign this petition
+        </h2>
+      )}
       {/* addressedTo is written to stand alone elsewhere, so it starts
           with a capitalised "The". Lowercase it mid-sentence. */}
-      <p className="mt-2 font-body text-sm text-ink/60">
+      <p className={`font-body text-sm text-ink/60 ${inModal ? "" : "mt-2"}`}>
         Goes to {addressedTo.replace(/^The\s/, "the ")}.
       </p>
       <p className="mt-5 border-l-2 border-rust pl-4 font-body text-base leading-relaxed text-ink/80">
