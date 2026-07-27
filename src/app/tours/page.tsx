@@ -119,8 +119,8 @@ export default function ToursPage() {
         <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-20 md:pb-24 md:pt-28">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-7">
-              <h1 className="max-w-[15ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
-                Take the tour on your phone.
+              <h1 className="max-w-[18ch] font-display text-4xl font-semibold leading-[1.03] tracking-tight text-forest md:text-6xl">
+                Mobile self-guided tour app
               </h1>
               <p className="mt-6 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
                 Our student researchers take one neighborhood at a time and
