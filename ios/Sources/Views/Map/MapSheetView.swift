@@ -507,13 +507,31 @@ struct MapSheetView: View {
         CGRect(x: 0, y: 0, width: content.geometry.viewBox.w, height: content.geometry.viewBox.h)
     }
 
+    /// True once the walker is standing on an optional stop. At that
+    /// point the detour is the path they actually need to read, so
+    /// the crop has to hold all of it.
+    private var showsDetours: Bool {
+        content.tour.stops.indices.contains(currentIndex)
+            && content.tour.stops[currentIndex].isDetour
+    }
+
     /// The main walk's region of the plate, so the sheet map shows
-    /// the route large. The detours sit outside it; their dashed
-    /// spur exits the bottom edge, and Explore shows the whole plate.
+    /// the route large. The detours normally sit outside it, with
+    /// their dashed spurs running off the edge, and Explore shows the
+    /// whole plate. Land on a detour stop and this opens up to hold
+    /// the spur out and the way back.
     private var mainCrop: CGRect {
-        let pts = content.tour.mainline
+        var pts = content.tour.mainline
             .map { content.projection.point(lat: $0.lat, lng: $0.lng) }
             + content.tour.route.map { content.projection.point(lat: $0[0], lng: $0[1]) }
+        if showsDetours {
+            pts += content.tour.stops
+                .filter(\.isDetour)
+                .map { content.projection.point(lat: $0.lat, lng: $0.lng) }
+            pts += (content.tour.detourRoutes ?? [])
+                .flatMap { $0 }
+                .map { content.projection.point(lat: $0[0], lng: $0[1]) }
+        }
         guard let first = pts.first else { return plate }
         var minX = first.x, maxX = first.x, minY = first.y, maxY = first.y
         for p in pts {

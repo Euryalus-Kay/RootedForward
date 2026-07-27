@@ -32,12 +32,26 @@ final class WalkTourUITests: XCTestCase {
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
     }
 
-    func testHomeStraightToFirstStop() {
+    /// Starting the walk at the beginning lands on the "Why this tour"
+    /// page. Step through it to reach stop one. Resuming mid-walk
+    /// skips the page, so the tap is conditional.
+    private func startAndPassIntro() {
+        app.buttons["home-start"].tap()
+        let next = app.buttons["intro-next"]
+        if next.waitForExistence(timeout: 6) {
+            next.tap()
+        }
+    }
+
+    func testIntroPageThenFirstStop() {
         openWalk()
         let start = app.buttons["home-start"]
         start.tap()
 
-        // No intro screen: the tour opens directly on stop 1.
+        // The walk opens on "Why this tour", and Next turns to stop 1.
+        let next = app.buttons["intro-next"]
+        XCTAssertTrue(next.waitForExistence(timeout: 8))
+        next.tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         // Exit back to the tour screen
@@ -47,7 +61,7 @@ final class WalkTourUITests: XCTestCase {
 
     func testMapSheetOpensAndJumps() {
         openWalk()
-        app.buttons["home-start"].tap()
+        startAndPassIntro()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         let mapButton = app.buttons["tour-map"]
@@ -64,7 +78,7 @@ final class WalkTourUITests: XCTestCase {
 
     func testNextStopNavigation() {
         openWalk()
-        app.buttons["home-start"].tap()
+        startAndPassIntro()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         let next = app.buttons["next-stop"]
@@ -78,7 +92,7 @@ final class WalkTourUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["stop-title-2"].waitForExistence(timeout: 8))
     }
 
-    func testSettingsShowsAccountAndPrivacy() {
+    func testSettingsShowsProgressAndPrivacy() {
         if !app.buttons["home-settings"].waitForExistence(timeout: 4) {
             let back = app.navigationBars.buttons.firstMatch
             if back.exists {
@@ -89,7 +103,9 @@ final class WalkTourUITests: XCTestCase {
         XCTAssertTrue(gear.waitForExistence(timeout: 10))
         gear.tap()
 
-        XCTAssertTrue(app.buttons["sign-in"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.textFields["email-field"].exists)
+        // The app carries no account at all, so settings is progress
+        // plus the outbound links.
+        XCTAssertTrue(app.buttons["reset-progress"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.links["Privacy policy"].exists)
     }
 }

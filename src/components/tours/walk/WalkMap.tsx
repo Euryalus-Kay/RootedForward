@@ -148,6 +148,13 @@ export default function WalkMap({
   // hovered SVG node fires pointer-leave and kills its own hover.
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
+  // Anyone actually doing an optional stop needs to see where it goes
+  // and how to get back, so the plate widens the moment they land on
+  // one. The button lets everybody else look before they commit.
+  const [showDetours, setShowDetours] = useState(false);
+  const activeIsDetour = stops[activeIndex]?.optional === true;
+  const wide = showDetours || activeIsDetour;
+
   /** the stop's little photo, same thumbnail the plate index uses */
   const markerThumb = (stop: WalkStop) =>
     (stop.nowImage ?? stop.images[0])?.src.replace(
@@ -156,24 +163,32 @@ export default function WalkMap({
     );
 
   // frame the view on the MAIN route with generous padding, clamped
-  // to the prepared geometry frame. The optional detours sit outside
-  // this crop on purpose; their dashed spur exits the bottom edge, so
-  // the plate stays zoomed on the walk itself.
+  // to the prepared geometry frame, so the plate stays zoomed on the
+  // walk itself. When the detours are showing, the frame grows to
+  // hold every spur end to end instead of letting them run off the
+  // edge.
   const viewBox = useMemo(() => {
     const pts = [
       ...route.map(([lat, lng]) => projectPoint(lat, lng)),
-      ...stops.filter((s) => !s.optional).map((s) => projectPoint(s.lat, s.lng)),
+      ...stops
+        .filter((s) => wide || !s.optional)
+        .map((s) => projectPoint(s.lat, s.lng)),
+      ...(wide
+        ? (detourRoutes ?? [])
+            .flat()
+            .map(([lat, lng]) => projectPoint(lat, lng))
+        : []),
     ];
     if (!pts.length) return `0 0 ${geo.viewBox.w} ${geo.viewBox.h}`;
     const xs = pts.map((p) => p.x);
     const ys = pts.map((p) => p.y);
-    const pad = 88;
+    const pad = wide ? 56 : 88;
     const x0 = Math.max(0, Math.min(...xs) - pad - 30);
     const y0 = Math.max(0, Math.min(...ys) - pad);
     const x1 = Math.min(geo.viewBox.w, Math.max(...xs) + pad);
     const y1 = Math.min(geo.viewBox.h, Math.max(...ys) + pad);
     return `${x0} ${y0} ${x1 - x0} ${y1 - y0}`;
-  }, [route, stops, geo.viewBox.w, geo.viewBox.h]);
+  }, [route, stops, detourRoutes, wide, geo.viewBox.w, geo.viewBox.h]);
 
   const routeD = useMemo(
     () => lineD(route.map(([lat, lng]) => { const p = projectPoint(lat, lng); return [p.x, p.y]; })),
@@ -598,7 +613,8 @@ export default function WalkMap({
             />
           );
         })}
-        {/* where the detour spur leaves the plate, say where it goes */}
+        {/* say what the green lines are, and where they go when the
+            plate is cropped too tight to show it */}
         <text
           x={vb[0] + vb[2] / 2}
           y={vb[1] + vb[3] - 8}
@@ -611,7 +627,9 @@ export default function WalkMap({
           stroke="#F5F0E8"
           strokeWidth="3"
         >
-          Green detours run southwest to the Hansberry house and Daley&apos;s, northwest to Drexel Boulevard
+          {wide
+            ? "Green lines are the optional detours, drawn out and back to the stop the walk rejoins"
+            : "Green detours run southwest to the Hansberry house and Daley’s, northwest to Drexel Boulevard"}
         </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />
@@ -640,6 +658,21 @@ export default function WalkMap({
         </g>
       </g>
     </svg>
+
+    {/* the plate crops to the walk by default. This opens it out so
+        anyone thinking about an optional stop can see the whole path
+        instead of a green line leaving the page. On a detour stop it
+        is already open, so the button steps aside. */}
+    {!activeIsDetour && (
+      <button
+        type="button"
+        onClick={() => setShowDetours((v) => !v)}
+        aria-pressed={showDetours}
+        className="absolute right-2 top-2 rounded-[2px] border border-forest/40 bg-cream/95 px-2.5 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-forest shadow-sm transition-colors hover:bg-cream-dark"
+      >
+        {showDetours ? "Just the walk" : "Show the detours"}
+      </button>
+    )}
 
     {/* the hover card: the stop's photograph and name springing up
         from its marker, a label you can actually see */}

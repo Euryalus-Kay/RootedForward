@@ -83,15 +83,7 @@ final class ScreenshotTests: XCTestCase {
         sleep(2)
         snap("02-tour-detail")
 
-        // 3. The Why-this-walk essay sheet
-        scrollToTap(app.buttons["home-essay-more"])
-        XCTAssertTrue(app.buttons["info-done"].waitForExistence(timeout: 5))
-        sleep(1)
-        snap("03-essay")
-        app.buttons["info-done"].tap()
-        sleep(1)
-
-        // 4. The red plates index sheet
+        // 3. The red plates index sheet
         scrollToTap(app.buttons["row-The tools of segregation"])
         if !app.buttons["info-done"].waitForExistence(timeout: 5) {
             // A tap swallowed by scroll inertia can land on the stops
@@ -108,15 +100,22 @@ final class ScreenshotTests: XCTestCase {
         }
         XCTAssertTrue(app.buttons["info-done"].waitForExistence(timeout: 5))
         sleep(1)
-        snap("04-tools-of-segregation")
+        snap("03-tools-of-segregation")
         app.buttons["info-done"].tap()
         sleep(1)
         for _ in 0..<5 {
             app.swipeDown(velocity: .fast)
         }
 
-        // 5. Straight into stop 1, no intro screen
+        // 4. "Why this tour", the page in front of stop one
         app.buttons["home-start"].tap()
+        let introNext = app.buttons["intro-next"]
+        XCTAssertTrue(introNext.waitForExistence(timeout: 8))
+        sleep(2)
+        snap("04-why-this-tour")
+        introNext.tap()
+
+        // 5. Stop 1
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(2)
         snap("05-stop1-top")
@@ -176,13 +175,13 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["map-done"].tap()
         sleep(1)
 
-        // 8. Stop 6 has the Restrictive covenants red plate
-        advance(to: 6)
+        // 8. Stop 9, the Robie House, carries two of the red plates
+        advance(to: 9)
         for _ in 0..<6 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("12-stop6-redplate")
+        snap("12-stop9-redplate")
 
         // 9. Map stop list
         app.buttons["tour-map"].tap()
@@ -193,13 +192,13 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["map-done"].tap()
         sleep(1)
 
-        // 10. The Obama Center, end of the main walk
-        advance(to: 13)
+        // 10. Fifty-Fifth Street, where the renewal story lands
+        advance(to: 14)
         for _ in 0..<8 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("14-stop13-end")
+        snap("14-stop14-renewal")
 
         // 11. Back out to the org home, then settings
         app.buttons["tour-exit"].tap()
@@ -221,6 +220,10 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["home-tour-card"].tap()
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
         app.buttons["home-start"].tap()
+        let introNext2 = app.buttons["intro-next"]
+        if introNext2.waitForExistence(timeout: 6) {
+            introNext2.tap()
+        }
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(1)
         // The row holds its height at all times so the page cannot

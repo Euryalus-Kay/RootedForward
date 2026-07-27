@@ -227,6 +227,12 @@ struct TourView: View {
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
             }
+
+            if showDetourNotice {
+                detourNoticeCard
+                    .transition(.opacity)
+                    .zIndex(10)
+            }
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
@@ -273,25 +279,70 @@ struct TourView: View {
                 showMap = false
             }
         }
-        .alert("This one is an optional detour", isPresented: $showDetourNotice) {
-            if let rejoin = nextMainlineIndex {
-                Button("Skip to stop \(stops[rejoin].number)") { move(to: rejoin) }
-            }
-            Button("Keep reading", role: .cancel) {}
-        } message: {
-            Text(detourNoticeText)
-        }
     }
 
     // MARK: - The detour notice
 
+    /// A plate rather than a system alert. The one line that has to
+    /// land here is the safety line, and UIAlertController renders its
+    /// message as flat text with no way to weight a single word.
+    private var detourNoticeCard: some View {
+        ZStack {
+            RF.ink.opacity(0.45)
+                .ignoresSafeArea()
+                .onTapGesture { dismissDetourNotice() }
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 14) {
+                Text("This one is an optional detour")
+                    .font(RF.display(23, weight: 600))
+                    .foregroundStyle(RF.forest)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+
+                MarkedText(text: detourNoticeText, size: 16)
+
+                VStack(spacing: 12) {
+                    if let rejoin = nextMainlineIndex {
+                        Button("Skip to stop \(stops[rejoin].number)") {
+                            dismissDetourNotice()
+                            move(to: rejoin)
+                        }
+                        .buttonStyle(HardShadowButtonStyle())
+                        .accessibilityIdentifier("detour-skip")
+                    }
+                    Button("Keep reading") { dismissDetourNotice() }
+                        .font(RF.body(16, weight: 600))
+                        .foregroundStyle(RF.forest)
+                        .accessibilityIdentifier("detour-keep")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 6)
+            }
+            .padding(20)
+            .frame(maxWidth: 380, alignment: .leading)
+            .plate()
+            .padding(.horizontal, 26)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func dismissDetourNotice() {
+        Haptics.tap()
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            showDetourNotice = false
+        }
+    }
+
     /// Written for this moment rather than lifted off the practical
     /// card, which is a reference the walker reads at home. Standing
     /// on a sidewalk they need two facts, the time it costs and the
-    /// advice to go in daylight with company.
+    /// advice to go in daylight with company. The second of those is
+    /// bolded in the data, which is why this renders through
+    /// MarkedText.
     private var detourNoticeText: String {
         content.tour.detourNotice
-            ?? "This stop sits off the main route and adds real distance. Go in daylight, and bring someone with you if you can. The main walk is complete without it."
+            ?? "This stop sits off the main route and adds real distance. **Go in daylight, and bring someone with you if you can.** The main walk is complete without it."
     }
 
     /// The first stop after this one that is back on the main line,
@@ -307,7 +358,9 @@ struct TourView: View {
         guard !detourNoticeShown, stops.indices.contains(safeIndex),
               stops[safeIndex].isDetour else { return }
         detourNoticeShown = true
-        showDetourNotice = true
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            showDetourNotice = true
+        }
     }
 
     // MARK: - Bottom scrim

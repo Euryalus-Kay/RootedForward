@@ -56,7 +56,10 @@ function arg(name, def = null) {
 const hasFlag = (name) => process.argv.includes(`--${name}`);
 const voice = arg("voice", "ash");
 const model = arg("model", "gpt-4o-mini-tts");
+// --only takes one stop id or a comma-separated list, so an edit
+// touching six stops is one run instead of six.
 const only = arg("only");
+const onlySet = only ? new Set(only.split(",").map((s) => s.trim())) : null;
 const key = process.env.OPENAI_API_KEY;
 if (!key) {
   console.error("OPENAI_API_KEY must be set in the environment");
@@ -84,11 +87,11 @@ const TONE_SETS = {
     9: "Affection for the strange brilliant house, a storyteller enjoying Wright and Robie. Real interest in the rescue twist and the Zeckendorf irony. Then lean in hard for the last two paragraphs. 'How do you keep a wealthy Hyde Park white' is the question the whole tour turns on; ask it plainly, no sneer, and let the silence after it do the work.",
     10: "Campus-tour warmth with an edge of amusement at the instant-ancestry Gothic. Read the Douglas plantation sentence plainly and let it sit. The William Allison Davis paragraph is level and unhurried, and the paragraph after it, about the document filed in the Loop, is cold and exact. End with easy momentum toward the stadium.",
     11: "Relish the football spectacle, then measured and frank for the Hutchins collapse, the cost laid out plainly. Genuine awe, hushed and precise, for the pile paragraph; slow right down for the date and the twenty-eight minutes. The closing pivot back to the neighborhood is quiet and pointed.",
-    12: "A whole century in one street. Open with a guide who is glad you came the extra mile. Genuine pleasure in the fountain, the chateau and the flower beds, never plummy. Then flatten out completely for the paragraphs on 1948, the kitchenettes and the contracts; that is a con being explained step by step, anger held in check. Real warmth returns for the Sutherland and the musicians. End easy and practical.",
-    13: "The most personal stop. Quiet, close, unhurried throughout. The mob and the window are read with restraint, no drama added. The complicated-Carl paragraph gets absolute evenhandedness. Warm a little for Lorraine and Broadway.",
-    14: "Off duty, almost. Straight history for John Daley and the Greek families, warm respect for the street and for Ali at the counter. End with honest appetite and an easy pointer onward.",
-    15: "The hardest stop. Level, controlled and unhurried; the two-halves paragraph is the con explained one move at a time. Warmth for the block clubs and for the bars and the Compass Players. Cool again for the university's gaze. Read the Nichols Park paragraph slowly and let the Japanese American sentence land without any push. The last line is a real question, asked lightly.",
-    16: "The finale. Measured and direct, a reckoning delivered by a fair witness. Read the displacement numbers slowly, and Baldwin's line plain, no flourish. Then let real affection in for the concession stands and the painters who took them over; that stretch is the warmest thing in the tour. Give the two-things-are-true paragraph room. Slow for 'run the whole line once' and read that list with weight. End warm on the thanks.",
+    12: "The most personal stop. Quiet, close, unhurried throughout. The mob and the window are read with restraint, no drama added. The complicated-Carl paragraph gets absolute evenhandedness. Warm a little for Lorraine and Broadway.",
+    13: "Off duty, almost. Straight history for John Daley and the Greek families, warm respect for the street and for Ali at the counter. End with honest appetite and an easy pointer onward.",
+    14: "The longest and hardest stop, and the one the whole walk has been building to. Level, controlled and unhurried throughout; the two-halves paragraph is the con explained one move at a time. Warmth for the block clubs and for the bars and the Compass Players. Then cool right down for Kimpton, Levi and the 1953 law; that stretch is a record being read out, not an accusation. Read the four thousand families and Baldwin's line plainly, no flourish. Real regret, quietly, for the businesses that never reopened, and let the shopping carts land as the small good thing it is. Read the Nichols Park paragraph slowly and let the Japanese American sentence sit without any push. End flat and certain.",
+    15: "A whole century in one street. Open with a guide who is glad you came the extra mile. Genuine pleasure in the fountain, the chateau and the flower beds, never plummy. Then flatten out completely for the paragraphs on 1948, the kitchenettes and the contracts; that is a con being explained step by step, anger held in check. Real warmth returns for the Sutherland and the musicians. End easy and practical.",
+    16: "The finale, and after the weight of the last stop this one lifts. Let real affection in for the concession stands and the painters who took them over; that stretch is the warmest thing in the tour. Give the two-things-are-true paragraph room, evenhanded and unhurried. Slow for 'run the whole line once' and read that list with weight, one clean beat between each. End warm on the thanks.",
   },
   "jackson-park": {
     1: "This is the welcome. Bright but settled, glad the listener showed up. Let the last paragraph slow slightly as the history opens up.",
@@ -179,7 +182,7 @@ async function main() {
   const durations = existsSync(DURS) ? JSON.parse(readFileSync(DURS, "utf8")) : {};
   for (const { slug, number, text } of stops) {
     const id = slug;
-    if (only && only !== id) continue;
+    if (onlySet && !onlySet.has(id)) continue;
     const raw = path.join(OUT, `raw-${id}.mp3`);
     const out = path.join(OUT, `${id}.mp3`);
     const buf = await tts(text, BASE_INSTRUCTIONS + (TONES[number] || ""));

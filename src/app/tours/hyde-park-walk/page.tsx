@@ -193,7 +193,17 @@ export default function ToursPage() {
                   <h3 className="font-display text-xl text-forest">{item.title}</h3>
                 </div>
                 <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">
-                  {item.text}
+                  {item.text
+                    .split(/\*\*(.+?)\*\*/g)
+                    .map((part, j) =>
+                      j % 2 === 1 ? (
+                        <strong key={j} className="font-semibold text-ink">
+                          {part}
+                        </strong>
+                      ) : (
+                        part
+                      )
+                    )}
                 </p>
               </div>
             ))}
