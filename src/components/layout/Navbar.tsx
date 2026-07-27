@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, User, LogOut, LayoutDashboard, Search } from "lucide-react";
+import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/lib/supabase/auth-helpers";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
@@ -123,14 +123,16 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop links, pushed right toward the account and search.
+        {/* Desktop links, pushed right toward the log in button. They
+            used to stop short of a search button that is no longer
+            there, so the right padding held for it is gone too.
 
             These sit behind lg, not md. Seven destinations need about
-            345px of text before any gap, and a 768px bar has roughly 335px
-            left after the wordmark, the log in button, and search. At md
-            the row overflowed and wrapped the wordmark onto two lines, so
-            768 to 1023 gets the hamburger like a phone does. */}
-        <ul className="hidden items-center justify-end gap-5 lg:flex lg:pr-2 xl:gap-7 xl:pr-4">
+            345px of text before any gap, which a 768px bar does not
+            have after the wordmark and the log in button. At md the row
+            overflowed and wrapped the wordmark onto two lines, so 768 to
+            1023 gets the hamburger like a phone does. */}
+        <ul className="hidden items-center justify-end gap-5 lg:flex xl:gap-7">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
@@ -206,21 +208,10 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Search button (desktop) */}
-          <button
-            onClick={() => {
-              const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
-              document.dispatchEvent(event);
-            }}
-            className="hidden items-center gap-2 rounded-full border border-border bg-cream-dark/50 px-3 py-1.5 text-sm text-warm-gray transition-colors hover:border-warm-gray-light hover:text-ink lg:flex"
-            aria-label="Search"
-          >
-            <Search className="h-3.5 w-3.5" />
-            <span className="text-xs">Search</span>
-            <kbd className="ml-1 rounded border border-border bg-cream px-1.5 py-0.5 text-[10px] font-medium text-warm-gray-light">
-              ⌘K
-            </kbd>
-          </button>
+          {/* The search button used to sit here. Removed at the owner's
+              request (July 2026). The ⌘K modal is still mounted in the
+              layout, so the shortcut works for anyone who knows it and
+              the button can come back without rewiring anything. */}
 
           {/* Mobile hamburger */}
           <button
