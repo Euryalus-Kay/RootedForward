@@ -100,35 +100,23 @@ export default function AboutPage() {
               than the 36px section headings without running to seven
               lines the way text-5xl did. */}
           <h1 className="max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
-            <span className="text-rust">
+            <span className="block text-rust">
               A student-run nonprofit started in Chicago.
-            </span>{" "}
-            <span className="text-ink">
+            </span>
+            <span className="mt-2 block text-ink">
               Rooted Forward educates people about racial inequality in cities
               across the United States, and works to address it through
               education, awareness, and political advocacy.
             </span>
           </h1>
 
-          <p className="mt-8 max-w-[56ch] font-body text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
-            Redlining, restrictive covenants, and urban renewal decided who
-            could live where in American cities. The impact is easy to see. In
-            every one of these cities the difference between one block and the
-            next is measurable in race, income, and life expectancy.
+          {/* One caption, nothing else. The redlining paragraph and the
+              forest reach block that used to sit here both came off at
+              the owner's request (July 2026). The mission statement is
+              the section. */}
+          <p className="mt-7 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
+            We are currently based in Chicago, New York, and Washington, DC.
           </p>
-
-          {/* The reach of the organization gets its own forest block so it
-              does not read as one more line of body copy. Owner asked for
-              this to stand out from the text around it. */}
-          <div className="mt-9 max-w-[46ch] rounded-sm bg-forest px-7 py-6">
-            <p className="font-body text-lg font-semibold leading-relaxed text-cream md:text-xl md:leading-relaxed">
-              We started in Chicago and now have members in New York and
-              Washington, DC.
-            </p>
-            <p className="mt-2 font-body text-base leading-relaxed text-cream/75">
-              Everything we make is free.
-            </p>
-          </div>
         </div>
       </section>
 
