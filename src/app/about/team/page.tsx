@@ -108,17 +108,18 @@ export default async function TeamPage() {
           for the page to be more interesting than a grid on a blank
           background (July 2026).
 
-          Green rather than rust, owner's call. Three low-alpha radial
-          stops in forest and forest-light over the cream token, which
-          lands as a sage wash rather than a colour field. The rust is
-          left to the Read bio buttons, where it reads as an accent
-          instead of as the whole page.
+          Green rather than rust, owner's call, and a directional
+          gradient rather than a diffuse tint. Diffuse radial stops read
+          as "this page has a slightly odd background". A linear ramp
+          across the diagonal reads as a gradient, which is what was
+          asked for. Forest at the top left running out to bare cream by
+          two thirds down, with one radial stop bottom right so the
+          block does not end flat where the green band starts.
 
-          Nothing above 0.26 alpha on purpose. Anything stronger and an
-          archival civic page starts reading like a product landing
-          page, which is the failure mode this palette is most exposed
-          to. Written as an inline style because Tailwind v4 would need
-          three nested arbitrary values to say the same thing.
+          The rust is left to the Read bio buttons, where it works as an
+          accent instead of as the whole page. Written as an inline
+          style because Tailwind v4 would need several nested arbitrary
+          values to say the same thing.
 
           The heading shares the wash, so there is no rule cutting the
           gradient in half.
@@ -127,9 +128,9 @@ export default async function TeamPage() {
         className="bg-cream"
         style={{
           backgroundImage:
-            "radial-gradient(64rem 40rem at 4% -14%, rgba(27, 58, 45, 0.26), rgba(27, 58, 45, 0) 62%), " +
-            "radial-gradient(44rem 30rem at 82% 4%, rgba(42, 84, 64, 0.17), rgba(42, 84, 64, 0) 58%), " +
-            "radial-gradient(56rem 42rem at 96% 108%, rgba(27, 58, 45, 0.14), rgba(27, 58, 45, 0) 62%)",
+            "linear-gradient(158deg, rgba(27, 58, 45, 0.40) 0%, rgba(42, 84, 64, 0.21) 26%, " +
+            "rgba(42, 84, 64, 0.07) 48%, rgba(27, 58, 45, 0) 66%), " +
+            "radial-gradient(52rem 36rem at 92% 100%, rgba(27, 58, 45, 0.15), rgba(27, 58, 45, 0) 62%)",
         }}
       >
         {/* Just the heading. The owner cut the eyebrow and the standfirst

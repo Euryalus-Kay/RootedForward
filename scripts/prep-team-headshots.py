@@ -31,10 +31,27 @@ from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 # the circle mask and gets sliced. He gets more room above; nobody else
 # needs an override.
 MAPPING = [
-    ("paste-1.png", "zain-zaidi", None),
     ("paste-2.png", "osheanna-tyler-hudson", None),
     ("paste-3.png", "javonte-white", None),
     ("paste-4.png", "ayomide-olatunji", 0.16),
+]
+
+# Portraits that are not plain-backdrop ID shots. These skip the frame trim,
+# the crown detector, and the backdrop pass, all three of which assume a flat
+# wall. Zain's is a phone portrait on a street, so the "backdrop" is a real
+# blurred building and flattening it would be vandalism.
+#
+# Crop is given by hand instead, as fractions of the source: where the top of
+# the head sits, where the face is horizontally, and how much room to leave
+# above. Measured off a gridded copy of the file rather than guessed.
+ENVIRONMENT = [
+    {
+        "src": "zain-hires-1.jpg",
+        "slug": "zain-zaidi",
+        "hair_top": 0.265,
+        "face_cx": 0.48,
+        "headroom": 0.11,
+    },
 ]
 
 # The circle renders at 160 CSS px, so 480 covers a 3x display.
@@ -259,6 +276,26 @@ def finish(im: Image.Image) -> Image.Image:
     return im.filter(ImageFilter.UnsharpMask(radius=1.3, percent=52, threshold=4))
 
 
+def prepare_environment(src: Path, spec: dict) -> Image.Image:
+    """Crop and finish a portrait that was shot somewhere real.
+
+    The square is the full width of the source, which is the widest crop
+    available and therefore the one that puts the least of the subject's head
+    in the frame. On a phone portrait that still runs tighter than an ID
+    photo, which is why the headroom is specified per file.
+    """
+    im = Image.open(src).convert("RGB")
+    w, h = im.size
+    side = min(w, h)
+
+    top = int(spec["hair_top"] * h - spec["headroom"] * side)
+    top = max(0, min(top, h - side))
+    left = int(spec["face_cx"] * w - side / 2)
+    left = max(0, min(left, w - side))
+
+    return finish(im.crop((left, top, left + side, top + side)))
+
+
 def main() -> int:
     if len(sys.argv) < 2:
         print(__doc__)
@@ -292,6 +329,20 @@ def main() -> int:
             f"{slug:24s} {original[0]}x{original[1]} -> {OUT_PX}x{OUT_PX}  "
             f"crown y={crown}  bg={tuple(round(c) for c in bg)}  "
             f"{dest.stat().st_size // 1024}kb"
+        )
+
+    for spec in ENVIRONMENT:
+        path = src / spec["src"]
+        if not path.exists():
+            print(f"skip {spec['src']}, not found")
+            continue
+        original = Image.open(path).size
+        im = prepare_environment(path, spec)
+        dest = out / f"{spec['slug']}.jpg"
+        im.save(dest, "JPEG", quality=90, optimize=True, progressive=True)
+        print(
+            f"{spec['slug']:24s} {original[0]}x{original[1]} -> {OUT_PX}x{OUT_PX}  "
+            f"environment  {dest.stat().st_size // 1024}kb"
         )
 
     return 0
