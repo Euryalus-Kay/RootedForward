@@ -74,6 +74,14 @@ ENVIRONMENT = [
         "widen": 0.20,
         # Flash hotspot across the top of her hair. See reduce_glare().
         "glare": 0.8,
+        # And a second one on her forehead, which is skin and needs the
+        # other treatment. Boxes are fractions of the finished square, so
+        # re-measure them if the crop above ever moves.
+        "shine": {
+            "region": (0.315, 0.205, 0.625, 0.395),
+            "clean_skin": [(0.34, 0.48, 0.44, 0.57), (0.56, 0.48, 0.64, 0.57)],
+            "strength": 1.1,
+        },
     },
 ]
 
@@ -454,6 +462,114 @@ def reduce_glare(im: Image.Image, strength: float) -> Image.Image:
     return im
 
 
+def _is_skin(r: float, g: float, b: float) -> bool:
+    """Warm, mid-bright, red clearly above both green and blue."""
+    return r > b + 22 and r > g + 14 and 80 < luminance((r, g, b)) < 236
+
+
+def skin_reference(im: Image.Image, boxes) -> tuple[float, float, float] | None:
+    """Median skin colour from patches that are known not to be shiny.
+
+    Sampled per channel rather than by picking the median pixel, which lands
+    on whatever single pixel sits in the middle by luminance and came back
+    far too saturated the first time.
+    """
+    px = im.load()
+    w, h = im.size
+    reds, greens, blues = [], [], []
+    for x0, y0, x1, y1 in boxes:
+        for y in range(int(y0 * h), int(y1 * h)):
+            for x in range(int(x0 * w), int(x1 * w)):
+                r, g, b = px[x, y]
+                if _is_skin(r, g, b):
+                    reds.append(r)
+                    greens.append(g)
+                    blues.append(b)
+    if not reds:
+        return None
+    mid = lambda v: sorted(v)[len(v) // 2]  # noqa: E731
+    return (mid(reds), mid(greens), mid(blues))
+
+
+def reduce_skin_shine(
+    im: Image.Image,
+    ref: tuple[float, float, float],
+    region,
+    strength: float = 1.1,
+    keep: float = 0.46,
+    chroma: float = 0.45,
+    feather: float = 0.05,
+) -> Image.Image:
+    """Take a specular hotspot off skin, using clean skin as the target.
+
+    Different problem from reduce_glare, which handles the cool sparkle on
+    hair and explicitly skips anything warm. This one only touches warm
+    pixels, which is the shine across a forehead under a flash.
+
+    The correction is bounded three ways and needs all three. A rectangle
+    over the forehead, because a warm bright patch of backdrop otherwise
+    qualifies and gets painted skin-coloured, which is what happened first
+    time. A skin test, so the eyebrows and hairline inside that rectangle
+    are left alone. And a luminance floor at the reference, so only pixels
+    brighter than her own cheeks move at all.
+
+    `keep` is the important dial. Pulling the forehead all the way down to
+    cheek luminance makes a face look flat and pasted-on, so a bit under
+    half the original difference survives and the forehead still reads as
+    the part of the face nearest the light.
+    """
+    w, h = im.size
+    px = im.load()
+    small = im.resize((w // 5, h // 5), Image.LANCZOS).filter(
+        ImageFilter.MedianFilter(5)
+    )
+    sp = small.resize((w, h), Image.LANCZOS).load()
+
+    ref_l = luminance(ref)
+    rr, rg, rb = ref
+    x0, y0, x1, y1 = region
+    X0, X1, Y0, Y1 = x0 * w, x1 * w, y0 * h, y1 * h
+    fx, fy = feather * w, feather * h
+
+    for y in range(max(0, int(Y0 - fy)), min(h, int(Y1 + fy))):
+        gy = 1.0
+        if y < Y0:
+            gy = max(0.0, 1 - (Y0 - y) / fy)
+        elif y > Y1:
+            gy = max(0.0, 1 - (y - Y1) / fy)
+        for x in range(max(0, int(X0 - fx)), min(w, int(X1 + fx))):
+            gx = 1.0
+            if x < X0:
+                gx = max(0.0, 1 - (X0 - x) / fx)
+            elif x > X1:
+                gx = max(0.0, 1 - (x - X1) / fx)
+            r, g, b = px[x, y]
+            l = luminance((r, g, b))
+            if l <= ref_l + 8 or not _is_skin(r, g, b):
+                continue
+            m = min(1.0, (l - ref_l - 8) / 50.0) * gy * gx * strength
+            if m <= 0:
+                continue
+            sr, sg, sb = sp[x, y]
+            r = r + m * 0.85 * (sr - r)
+            g = g + m * 0.85 * (sg - g)
+            b = b + m * 0.85 * (sb - b)
+            l = luminance((r, g, b))
+            target = ref_l + keep * (l - ref_l)
+            scale = target / max(1.0, l)
+            r, g, b = r * scale, g * scale, b * scale
+            k = chroma * m
+            r = r + k * (rr * target / ref_l - r)
+            g = g + k * (rg * target / ref_l - g)
+            b = b + k * (rb * target / ref_l - b)
+            px[x, y] = (
+                max(0, min(255, int(r))),
+                max(0, min(255, int(g))),
+                max(0, min(255, int(b))),
+            )
+    return im
+
+
 def prepare_environment(src: Path, spec: dict) -> Image.Image:
     """Crop and finish a portrait that was shot somewhere real.
 
@@ -484,6 +600,12 @@ def prepare_environment(src: Path, spec: dict) -> Image.Image:
     cropped = im.crop((left, top, left + side, top + side))
     if spec.get("glare"):
         cropped = reduce_glare(cropped, spec["glare"])
+    if spec.get("shine"):
+        ref = skin_reference(cropped, spec["shine"]["clean_skin"])
+        if ref:
+            cropped = reduce_skin_shine(
+                cropped, ref, spec["shine"]["region"], spec["shine"]["strength"]
+            )
     return finish(cropped)
 
 

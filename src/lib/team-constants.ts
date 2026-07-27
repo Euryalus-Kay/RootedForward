@@ -111,7 +111,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "osheanna-tyler-hudson",
     name: "Osheanna Tyler-Hudson",
     sortKey: "Tyler-Hudson",
-    order: 5,
+    order: 3,
     city: "Chicago",
     school: "DePaul University",
     bio:
@@ -122,7 +122,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "javonte-white",
     name: "Javonte White",
     sortKey: "White",
-    order: 3,
+    order: 5,
     city: "Chicago",
     school: "Collins Academy High School",
     bio:
@@ -149,9 +149,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     /* Xaverian High School, the Catholic school in Bay Ridge, Brooklyn.
        Spotted on the crest on her polo and then confirmed by the owner. */
     school: "Xaverian High School",
-    /* No bio yet. The card renders without one and the Read bio button
-       stays off until there is something behind it. Do not fill this in
-       from anything found online. */
+    bio:
+      "Sabina goes to Xaverian in Bay Ridge. She spends her free time walking around New York and looking for restaurants she has not tried yet, and somewhere in that she got curious about how the city got built the way it did. That question is what brought her here.",
     photo: "/media/team/sabina-aliyev.jpg",
   },
 ];
