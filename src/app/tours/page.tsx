@@ -353,54 +353,30 @@ export default function ToursPage() {
 
       {/* ============================================================
           DOWNLOAD
-          The closer. One more App Store button, plus the fallback for
-          anyone who is not on an iPhone.
+          The closer. One more App Store button and nothing beside it.
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-14">
-            <div className="md:col-span-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/media/app/app-icon.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-16 w-16 rounded-[14px] border border-cream/20"
-              />
-              <h2 className="mt-6 max-w-[16ch] font-display text-3xl leading-tight text-cream md:text-4xl">
-                Download the app
-              </h2>
-              <p className="mt-5 max-w-[50ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                It is free, and every tour we finish shows up in it. Get it
-                before you leave the house, since the whole walk works without
-                a signal.
-              </p>
-              <p className="mt-4 font-body text-sm text-cream/60">
-                {APP.platform}, {APP.requires}. {APP.price}.
-              </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/media/app/app-icon.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-16 w-16 rounded-[14px] border border-cream/20"
+          />
+          <h2 className="mt-6 max-w-[16ch] font-display text-3xl leading-tight text-cream md:text-4xl">
+            Download the app
+          </h2>
+          <p className="mt-5 max-w-[50ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+            It is free, and every tour we finish shows up in it. Get it before
+            you leave the house, since the whole walk works without a signal.
+          </p>
+          <p className="mt-4 font-body text-sm text-cream/60">
+            {APP.platform}, {APP.requires}. {APP.price}.
+          </p>
 
-              <div className="mt-8">
-                <AppStoreButton tone="onDark" />
-              </div>
-            </div>
-
-            <div className="md:col-span-4">
-              <div className="rounded-sm border border-cream/20 p-6">
-                <p className="font-body text-base leading-relaxed text-cream/75">
-                  No iPhone? The Hyde Park walk runs in a browser too. It is
-                  not as good on the street, but it is the whole tour.
-                </p>
-                <Link
-                  href="/tours/hyde-park-walk"
-                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:text-rust"
-                >
-                  Open it in your browser{" "}
-                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </Link>
-              </div>
-            </div>
+          <div className="mt-8">
+            <AppStoreButton tone="onDark" />
           </div>
         </div>
       </section>
