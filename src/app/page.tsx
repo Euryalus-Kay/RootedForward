@@ -130,19 +130,33 @@ export default function Home() {
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[50%_44%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/95 to-cream/45" />
+        {/* The wash is horizontal, so on a phone the text runs all the way
+            into the transparent end and line-ends land on map detail. Hold
+            it near-opaque until there is room for the map beside the text. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/95 to-cream/85 md:to-cream/45" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-24 md:pb-32 md:pt-32">
           <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tight text-forest sm:text-7xl md:text-8xl">
             Rooted Forward
           </h1>
-          <p className="mt-8 max-w-[46ch] font-body text-xl leading-relaxed text-ink/85 md:text-2xl md:leading-relaxed">
-            We are a student-run nonprofit that started in Chicago and now
-            works in New York too. We research how racial inequality was built
-            into cities across the United States. That research becomes
-            education where there is a gap, and advocacy for the local policy
-            that would address it.
+          {/* The mission, worded exactly as it is on /about at the owner's
+              request. Same two-tone split too, the rust sentence saying who
+              we are and the ink sentence saying what we do.
+
+              It has to stay in display type at 24px and up. Rust on cream is
+              3.7:1, which clears AA as large text and fails at body size, so
+              this treatment cannot be dropped into a normal paragraph. Same
+              note is on the /about headline. */}
+          <p className="mt-8 max-w-[40ch] font-display text-2xl leading-[1.25] tracking-tight sm:text-3xl md:max-w-[42ch] md:text-[2.5rem]">
+            <span className="text-rust">
+              A student-run nonprofit started in Chicago.
+            </span>{" "}
+            <span className="text-ink">
+              Rooted Forward educates people about racial inequality in cities
+              across the United States, and works to address it through
+              education, awareness, and political advocacy.
+            </span>
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
