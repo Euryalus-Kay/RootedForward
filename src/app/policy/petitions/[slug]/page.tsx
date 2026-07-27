@@ -154,7 +154,10 @@ export default async function PetitionPage({
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-baseline justify-between gap-4 border-b border-border pb-3 last:border-b-0 last:pb-0"
+                    /* Stacked on a phone. Sharing one row squeezed the
+                       label into a narrow column next to the publisher
+                       and both wrapped badly. */
+                    className="group flex flex-col gap-1 border-b border-border pb-3 last:border-b-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
                   >
                     <span className="font-body text-base font-medium text-forest transition-colors group-hover:text-rust">
                       {link.label}{" "}
@@ -162,7 +165,7 @@ export default async function PetitionPage({
                         &rarr;
                       </span>
                     </span>
-                    <span className="flex-shrink-0 font-body text-xs text-ink/50">
+                    <span className="font-body text-xs text-ink/50 sm:flex-shrink-0">
                       {link.publisher}
                     </span>
                   </a>
