@@ -146,10 +146,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     sortKey: "Aliyev",
     order: 4,
     city: "New York",
-    /* Read off the crest on her polo in the photo the owner supplied, not
-       looked up. Xaverian is a private high school in Brooklyn. Confirm it
-       with her before treating it as settled, since a uniform in a photo
-       can be a year or two out of date. */
+    /* Xaverian High School, the Catholic school in Bay Ridge, Brooklyn.
+       Spotted on the crest on her polo and then confirmed by the owner. */
     school: "Xaverian High School",
     /* No bio yet. The card renders without one and the Read bio button
        stays off until there is something behind it. Do not fill this in

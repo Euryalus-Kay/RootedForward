@@ -57,10 +57,12 @@ ENVIRONMENT = [
         "slug": "ahmed-agha",
         "hair_top": 0.215,
         "face_cx": 0.47,
-        # His source is framed tight, so the widest square available still
-        # puts his head across four fifths of the circle. Small headroom is
-        # the least bad option; a wider original would fix it properly.
-        "headroom": 0.07,
+        "headroom": 0.10,
+        # Framed tight enough that a full-width square put his head across
+        # four fifths of the circle. The margin is a hotel lobby rather than
+        # a studio wall, so it needs the heavy blur to pass.
+        "widen": 0.24,
+        "widen_blur": 2.6,
     },
     {
         "src": "sabina-src.jpg",
@@ -68,9 +70,7 @@ ENVIRONMENT = [
         "hair_top": 0.045,
         "face_cx": 0.47,
         "headroom": 0.12,
-        # Studio backdrop with nothing in it, so the canvas can be widened
-        # to pull the crop back. See widen() for why that is only ever safe
-        # on a plain backdrop.
+        # Studio backdrop with nothing in it, so the canvas widens cleanly.
         "widen": 0.20,
         # Flash hotspot across the top of her hair. See reduce_glare().
         "glare": 0.8,
@@ -327,7 +327,9 @@ def finish(im: Image.Image) -> Image.Image:
     return im.filter(ImageFilter.UnsharpMask(radius=1.3, percent=52, threshold=4))
 
 
-def widen(im: Image.Image, pad_frac: float) -> tuple[Image.Image, float, float]:
+def widen(
+    im: Image.Image, pad_frac: float, blur_mult: float = 1.0
+) -> tuple[Image.Image, float, float]:
     """Grow the canvas by stretching the backdrop, so the crop can pull back.
 
     Sabina's portrait is framed tight enough that the widest square available
@@ -341,8 +343,12 @@ def widen(im: Image.Image, pad_frac: float) -> tuple[Image.Image, float, float]:
     pure backdrop all the way down, so that is what gets stretched out to
     fill the new margin, then blurred.
 
-    ONLY EVER DO THIS ON A PLAIN BACKDROP. Stretching a real scene smears a
-    doorway across the width of the picture.
+    It also works on a busy background if the margin is blurred hard enough,
+    which is what blur_mult is for. Ahmed's is a hotel lobby with a
+    geometric screen in it, and at three times the base blur the stretched
+    margin reads as the same room going out of focus. Turn blur_mult up
+    before turning pad_frac up; a wide margin at low blur is where the smear
+    starts to show.
 
     Returns the widened image plus the offsets needed to move the caller's
     hair_top and face_cx fractions into it.
@@ -365,12 +371,12 @@ def widen(im: Image.Image, pad_frac: float) -> tuple[Image.Image, float, float]:
         (0, 0),
     )
 
-    blurred = out.filter(ImageFilter.GaussianBlur(max(5, w // 40)))
+    blurred = out.filter(ImageFilter.GaussianBlur(max(5, int(w / 40 * blur_mult))))
     mask = Image.new("L", out.size, 255)
     ImageDraw.Draw(mask).rectangle(
         (px + w // 18, py + h // 18, px + w - w // 18, out.height), fill=0
     )
-    mask = mask.filter(ImageFilter.GaussianBlur(max(8, w // 26)))
+    mask = mask.filter(ImageFilter.GaussianBlur(max(8, int(w / 26 * blur_mult))))
     out = Image.composite(blurred, out, mask)
     return out, (h + py, py), (w + px * 2, px)
 
@@ -460,7 +466,9 @@ def prepare_environment(src: Path, spec: dict) -> Image.Image:
 
     if spec.get("widen"):
         base_h, base_w = im.size[1], im.size[0]
-        im, (new_h, pad_y), (new_w, pad_x) = widen(im, spec["widen"])
+        im, (new_h, pad_y), (new_w, pad_x) = widen(
+            im, spec["widen"], spec.get("widen_blur", 1.0)
+        )
         spec = dict(spec)
         spec["hair_top"] = (spec["hair_top"] * base_h + pad_y) / new_h
         spec["face_cx"] = (spec["face_cx"] * base_w + pad_x) / new_w
