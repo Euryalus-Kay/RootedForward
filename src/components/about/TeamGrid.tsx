@@ -100,49 +100,57 @@ function PersonCard({ member }: { member: TeamMember }) {
         </p>
       )}
 
-      <div className="mt-auto pt-5">
-        <button
-          type="button"
-          onClick={() => dialog.current?.showModal()}
-          aria-haspopup="dialog"
-          className="rounded-full bg-rust px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-dark"
-        >
-          Read bio
-        </button>
-      </div>
+      {/* No bio, no button. Somebody can go up with a name and a face on
+          the day they join, and get the button when they write their
+          paragraph. An empty dialog behind a button is worse than no
+          button. */}
+      {member.bio && (
+        <>
+          <div className="mt-auto pt-5">
+            <button
+              type="button"
+              onClick={() => dialog.current?.showModal()}
+              aria-haspopup="dialog"
+              className="rounded-full bg-rust px-6 py-2.5 font-body text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-dark"
+            >
+              Read bio
+            </button>
+          </div>
 
-      <dialog
-        ref={dialog}
-        aria-labelledby={headingId}
-        /* Clicking the backdrop lands on the dialog element itself, since
+          <dialog
+            ref={dialog}
+            aria-labelledby={headingId}
+            /* Clicking the backdrop lands on the dialog element itself, since
            the panel inside swallows its own clicks. */
-        onClick={(e) => {
-          if (e.target === dialog.current) dialog.current?.close();
-        }}
-        className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-sm border border-border bg-cream p-0 text-left backdrop:bg-ink/50"
-      >
-        <div className="p-7 sm:p-9">
-          <h3
-            id={headingId}
-            className="font-display text-2xl leading-tight text-forest"
+            onClick={(e) => {
+              if (e.target === dialog.current) dialog.current?.close();
+            }}
+            className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-sm border border-border bg-cream p-0 text-left backdrop:bg-ink/50"
           >
-            {member.name}
-          </h3>
-          <p className="mt-1.5 font-body text-[13px] leading-snug text-ink/65">
-            {[member.city, member.school].filter(Boolean).join(" · ")}
-          </p>
-          <p className="mt-5 font-body text-base leading-relaxed text-ink/80">
-            {member.bio}
-          </p>
-          <button
-            type="button"
-            onClick={() => dialog.current?.close()}
-            className="mt-7 font-body text-sm font-semibold uppercase tracking-widest text-rust-dark underline decoration-1 underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-dark"
-          >
-            Close
-          </button>
-        </div>
-      </dialog>
+            <div className="p-7 sm:p-9">
+              <h3
+                id={headingId}
+                className="font-display text-2xl leading-tight text-forest"
+              >
+                {member.name}
+              </h3>
+              <p className="mt-1.5 font-body text-[13px] leading-snug text-ink/65">
+                {[member.city, member.school].filter(Boolean).join(" · ")}
+              </p>
+              <p className="mt-5 font-body text-base leading-relaxed text-ink/80">
+                {member.bio}
+              </p>
+              <button
+                type="button"
+                onClick={() => dialog.current?.close()}
+                className="mt-7 font-body text-sm font-semibold uppercase tracking-widest text-rust-dark underline decoration-1 underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-dark"
+              >
+                Close
+              </button>
+            </div>
+          </dialog>
+        </>
+      )}
     </li>
   );
 }

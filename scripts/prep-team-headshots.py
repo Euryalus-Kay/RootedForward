@@ -22,7 +22,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageEnhance, ImageFilter, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
 # Source file, output slug, and an optional headroom override.
 #
@@ -51,6 +51,29 @@ ENVIRONMENT = [
         "hair_top": 0.265,
         "face_cx": 0.48,
         "headroom": 0.11,
+    },
+    {
+        "src": "ahmed-src.png",
+        "slug": "ahmed-agha",
+        "hair_top": 0.215,
+        "face_cx": 0.47,
+        # His source is framed tight, so the widest square available still
+        # puts his head across four fifths of the circle. Small headroom is
+        # the least bad option; a wider original would fix it properly.
+        "headroom": 0.07,
+    },
+    {
+        "src": "sabina-src.jpg",
+        "slug": "sabina-aliyev",
+        "hair_top": 0.045,
+        "face_cx": 0.47,
+        "headroom": 0.12,
+        # Studio backdrop with nothing in it, so the canvas can be widened
+        # to pull the crop back. See widen() for why that is only ever safe
+        # on a plain backdrop.
+        "widen": 0.20,
+        # Flash hotspot across the top of her hair. See reduce_glare().
+        "glare": 0.8,
     },
 ]
 
@@ -257,8 +280,36 @@ def match_exposure(im: Image.Image, bg: tuple[float, float, float]) -> Image.Ima
     return im.point(lambda v: max(0, min(255, int(v * gain))))
 
 
+def normalise_exposure(im: Image.Image) -> Image.Image:
+    """Put every portrait at the same exposure, without touching complexion.
+
+    The obvious version of this, matching the average brightness of each
+    face, is wrong and would be worse than doing nothing. Six people do not
+    have the same skin tone, and equalising face brightness across them
+    literally edits complexion. So the reference is the bright end of the
+    frame, the 90th percentile of luminance, which tracks how the shot was
+    exposed rather than who is in it. Gain is clamped, so an underexposed
+    file gets lifted and nobody gets bleached.
+    """
+    hist = im.convert("L").histogram()
+    total = sum(hist)
+    running, p90 = 0, 255
+    for value, count in enumerate(hist):
+        running += count
+        if running >= total * 0.90:
+            p90 = value
+            break
+    if p90 < 1:
+        return im
+    gain = max(0.92, min(1.16, 224.0 / p90))
+    if abs(gain - 1.0) < 0.01:
+        return im
+    return im.point(lambda v: max(0, min(255, int(v * gain))))
+
+
 def finish(im: Image.Image) -> Image.Image:
     """Upscale in two steps, then sharpen. One big jump smears edges."""
+    im = normalise_exposure(im)
     im = ImageOps.autocontrast(im, cutoff=(0.4, 0.2), preserve_tone=True)
     im = ImageEnhance.Color(im).enhance(1.07)
 
@@ -276,6 +327,127 @@ def finish(im: Image.Image) -> Image.Image:
     return im.filter(ImageFilter.UnsharpMask(radius=1.3, percent=52, threshold=4))
 
 
+def widen(im: Image.Image, pad_frac: float) -> tuple[Image.Image, float, float]:
+    """Grow the canvas by stretching the backdrop, so the crop can pull back.
+
+    Sabina's portrait is framed tight enough that the widest square available
+    is the full width of the file, which puts her head across three quarters
+    of the circle. Her backdrop is a soft out-of-focus studio wash with no
+    detail in it, so more of it can be manufactured convincingly.
+
+    Stretch, not mirror. Mirroring a wide edge strip was the first attempt
+    and it folded the outer edge of her hair back into the frame, which read
+    as two dark smudges either side of her head. A narrow outermost strip is
+    pure backdrop all the way down, so that is what gets stretched out to
+    fill the new margin, then blurred.
+
+    ONLY EVER DO THIS ON A PLAIN BACKDROP. Stretching a real scene smears a
+    doorway across the width of the picture.
+
+    Returns the widened image plus the offsets needed to move the caller's
+    hair_top and face_cx fractions into it.
+    """
+    w, h = im.size
+    px, py = int(w * pad_frac), int(h * pad_frac / 2)
+    strip = max(2, int(w * 0.03))
+
+    out = Image.new("RGB", (w + px * 2, h + py))
+    out.paste(im, (px, py))
+    out.paste(im.crop((0, 0, strip, h)).resize((px, h), Image.LANCZOS), (0, py))
+    out.paste(
+        im.crop((w - strip, 0, w, h)).resize((px, h), Image.LANCZOS), (px + w, py)
+    )
+    # Top margin comes from the top edge of the now full-width image.
+    out.paste(
+        out.crop((0, py, out.width, py + strip)).resize(
+            (out.width, py), Image.LANCZOS
+        ),
+        (0, 0),
+    )
+
+    blurred = out.filter(ImageFilter.GaussianBlur(max(5, w // 40)))
+    mask = Image.new("L", out.size, 255)
+    ImageDraw.Draw(mask).rectangle(
+        (px + w // 18, py + h // 18, px + w - w // 18, out.height), fill=0
+    )
+    mask = mask.filter(ImageFilter.GaussianBlur(max(8, w // 26)))
+    out = Image.composite(blurred, out, mask)
+    return out, (h + py, py), (w + px * 2, px)
+
+
+def reduce_glare(im: Image.Image, strength: float) -> Image.Image:
+    """Take the blue and the sparkle out of a flash hotspot on hair.
+
+    Read the limits before touching this. The hotspot on Sabina's source is
+    a large blown-out area across the top of her head, and it looks like a
+    photograph of a glossy print rather than a digital original, which is
+    where the speckle comes from. Genuinely removing it means inventing hair
+    texture that is not in the file, which is not something this script will
+    do. What it does instead is take the blue cast off and knock the speckle
+    down, which is a real improvement and an honest one.
+
+    Three earlier attempts are worth not repeating. A global highlight knee
+    dulled her teeth and the lit side of her face before it touched the hair.
+    Local-contrast masking never fired, because the hotspot is large enough
+    to contaminate its own neighbourhood. And a colour mask without a
+    horizontal bound turned the whole backdrop grey, since the backdrop is
+    bright and cool too.
+    """
+    band, x0, x1, feather = 0.42, 0.19, 0.81, 0.12
+    w, h = im.size
+    px = im.load()
+    small = im.resize((w // 4, h // 4), Image.LANCZOS).filter(
+        ImageFilter.MedianFilter(5)
+    )
+    sp = small.resize((w, h), Image.LANCZOS).load()
+
+    cut, fade = band * h, feather * h
+    xa, xb, xf = x0 * w, x1 * w, 0.07 * w
+
+    for y in range(int(cut + fade)):
+        gy = 1.0 if y <= cut else max(0.0, 1.0 - (y - cut) / fade)
+        if gy <= 0:
+            continue
+        for x in range(max(0, int(xa - xf)), min(w, int(xb + xf))):
+            if x < xa:
+                gx = max(0.0, 1.0 - (xa - x) / xf)
+            elif x > xb:
+                gx = max(0.0, 1.0 - (x - xb) / xf)
+            else:
+                gx = 1.0
+            r, g, b = px[x, y]
+            l = luminance((r, g, b))
+            if l < 100:
+                continue
+            warmth = r - b
+            if warmth > 24:      # skin, leave it alone
+                continue
+            m = (
+                min(1.0, (24 - warmth) / 32.0)
+                * min(1.0, (l - 100) / 55.0)
+                * gy
+                * gx
+                * strength
+            )
+            if m <= 0:
+                continue
+            sr, sg, sb = sp[x, y]
+            r = r + m * 0.7 * (sr - r)
+            g = g + m * 0.7 * (sg - g)
+            b = b + m * 0.7 * (sb - b)
+            grey = (r + g + b) / 3.0
+            r = r + m * (grey - r)
+            g = g + m * (grey - g)
+            b = b + m * (grey * 0.95 - b)
+            d = 1.0 - 0.16 * m
+            px[x, y] = (
+                max(0, min(255, int(r * d))),
+                max(0, min(255, int(g * d))),
+                max(0, min(255, int(b * d))),
+            )
+    return im
+
+
 def prepare_environment(src: Path, spec: dict) -> Image.Image:
     """Crop and finish a portrait that was shot somewhere real.
 
@@ -285,6 +457,14 @@ def prepare_environment(src: Path, spec: dict) -> Image.Image:
     photo, which is why the headroom is specified per file.
     """
     im = Image.open(src).convert("RGB")
+
+    if spec.get("widen"):
+        base_h, base_w = im.size[1], im.size[0]
+        im, (new_h, pad_y), (new_w, pad_x) = widen(im, spec["widen"])
+        spec = dict(spec)
+        spec["hair_top"] = (spec["hair_top"] * base_h + pad_y) / new_h
+        spec["face_cx"] = (spec["face_cx"] * base_w + pad_x) / new_w
+
     w, h = im.size
     side = min(w, h)
 
@@ -293,7 +473,10 @@ def prepare_environment(src: Path, spec: dict) -> Image.Image:
     left = int(spec["face_cx"] * w - side / 2)
     left = max(0, min(left, w - side))
 
-    return finish(im.crop((left, top, left + side, top + side)))
+    cropped = im.crop((left, top, left + side, top + side))
+    if spec.get("glare"):
+        cropped = reduce_glare(cropped, spec["glare"])
+    return finish(cropped)
 
 
 def main() -> int:

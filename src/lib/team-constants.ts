@@ -28,7 +28,9 @@
 /*           split off `name`, which gets mononyms, particles, and     */
 /*           non-Western name order wrong on the first try.            */
 /*                                                                     */
-/*  pinned   Lower sorts first, ahead of everyone unpinned.            */
+/*  order    The owner set the running order by hand (July 2026), so    */
+/*           every member carries one. Anyone added without one falls  */
+/*           to the end, alphabetically by sortKey.                    */
 /*                                                                     */
 /*  photo    Run the raw portrait through                              */
 /*           scripts/prep-team-headshots.py, which trims the frame,    */
@@ -51,8 +53,9 @@ export interface TeamMember {
   name: string;
   /** Surname as this person writes it, used for sorting. */
   sortKey: string;
-  /** Lower numbers sort ahead of everyone without one. */
-  pinned?: number;
+  /** Display order, set by the owner. Lower sorts first, and anyone
+   *  without one falls to the end alphabetically. */
+  order?: number;
   /** Optional, and mostly empty on purpose. The cards lead with school
    *  rather than title, so this is for the handful of people where the
    *  title is the fact (the founder). It renders as a quiet italic line
@@ -62,8 +65,10 @@ export interface TeamMember {
   city?: string;
   /** Where this person studies. Shown on the card under the city. */
   school?: string;
-  /** 45 to 110 words, third person. Opens in the bio dialog. */
-  bio: string;
+  /** 45 to 110 words, third person. Opens in the bio dialog. Optional,
+   *  so somebody can go up with a name and a face on the day they join
+   *  and get their paragraph when they write it. No bio, no button. */
+  bio?: string;
   /** Path under /public or a full URL. Falls back to an initials circle. */
   photo?: string | null;
   /** CSS object-position for the circular crop, e.g. "50% 20%" for a
@@ -74,16 +79,16 @@ export interface TeamMember {
 }
 
 /* Seats that are spoken for and not named yet. They render as reserved
-   tiles so the grid shows the shape the roster is heading for. Set to 0
-   the moment both people are added above. */
-export const OPEN_SEATS = 2;
+   tiles so the grid shows the shape the roster is heading for. Back to 0
+   in July 2026, when the last two people landed. */
+export const OPEN_SEATS = 0;
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
     slug: "zain-zaidi",
     name: "Zain Zaidi",
     sortKey: "Zaidi",
-    pinned: 0,
+    order: 0,
     role: "Founder",
     city: "Chicago",
     school: "University of Chicago Laboratory Schools",
@@ -95,6 +100,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "ayomide-olatunji",
     name: "Ayomide Olatunji",
     sortKey: "Olatunji",
+    order: 1,
     city: "Chicago",
     school: "Harvard University",
     bio:
@@ -105,6 +111,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "osheanna-tyler-hudson",
     name: "Osheanna Tyler-Hudson",
     sortKey: "Tyler-Hudson",
+    order: 5,
     city: "Chicago",
     school: "DePaul University",
     bio:
@@ -115,15 +122,44 @@ export const TEAM_MEMBERS: TeamMember[] = [
     slug: "javonte-white",
     name: "Javonte White",
     sortKey: "White",
+    order: 3,
     city: "Chicago",
     school: "Collins Academy High School",
     bio:
       "Javonte is from North Lawndale and goes to Collins Academy High School. He writes stories and poems, and uses writing as the place he works out what he is thinking. He listens to a lot of R&B and lo-fi rap. He graduates in 2028 and wants to write screenplays for television and film. He also wants to be a leader people notice, inside his own school and across Chicago Public Schools.",
     photo: "/media/team/javonte-white.jpg",
   },
+  {
+    slug: "ahmed-agha",
+    name: "Ahmed Agha",
+    sortKey: "Agha",
+    order: 2,
+    city: "Washington, DC",
+    school: "Georgetown University",
+    bio:
+      "Ahmed grew up in Dallas and is an undergraduate at Georgetown University. He does medical research and is heading into medicine. He cooks, mostly the homemade dishes he grew up eating. He works out of Washington, DC, which is one of the two cities Rooted Forward moved into after Chicago.",
+    photo: "/media/team/ahmed-agha.jpg",
+  },
+  {
+    slug: "sabina-aliyev",
+    name: "Sabina Aliyev",
+    sortKey: "Aliyev",
+    order: 4,
+    city: "New York",
+    /* Read off the crest on her polo in the photo the owner supplied, not
+       looked up. Xaverian is a private high school in Brooklyn. Confirm it
+       with her before treating it as settled, since a uniform in a photo
+       can be a year or two out of date. */
+    school: "Xaverian High School",
+    /* No bio yet. The card renders without one and the Read bio button
+       stays off until there is something behind it. Do not fill this in
+       from anything found online. */
+    photo: "/media/team/sabina-aliyev.jpg",
+  },
 ];
 
-/* Pinned first, then alphabetical by the surname each person supplied.
+/* The owner's running order first, then alphabetical by surname for
+   anyone who does not have one.
    Sorted here rather than by the order of the array, so a new member can
    be appended to TEAM_MEMBERS without landing at the bottom of the page. */
 export function sortRoster<T extends TeamMember>(members: T[]): T[] {
@@ -131,8 +167,8 @@ export function sortRoster<T extends TeamMember>(members: T[]): T[] {
     .slice()
     .sort(
       (a, b) =>
-        (a.pinned ?? Number.MAX_SAFE_INTEGER) -
-          (b.pinned ?? Number.MAX_SAFE_INTEGER) ||
+        (a.order ?? Number.MAX_SAFE_INTEGER) -
+          (b.order ?? Number.MAX_SAFE_INTEGER) ||
         a.sortKey.localeCompare(b.sortKey),
     );
 }
