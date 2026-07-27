@@ -193,12 +193,12 @@ final class ScreenshotTests: XCTestCase {
         sleep(1)
 
         // 10. Fifty-Fifth Street, where the renewal story lands
-        advance(to: 14)
+        advance(to: 15)
         for _ in 0..<8 {
             app.swipeUp(velocity: .fast)
         }
         sleep(1)
-        snap("14-stop14-renewal")
+        snap("14-stop15-renewal")
 
         // 11. Back out to the org home, then settings
         app.buttons["tour-exit"].tap()
