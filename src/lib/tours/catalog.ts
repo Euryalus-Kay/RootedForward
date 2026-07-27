@@ -21,9 +21,6 @@ export interface TourListing {
   /** Facts strip. Keep these matched to src/lib/tours/*-walk.ts. */
   facts: { label: string; value: string }[];
   image: { src: string; alt: string; credit: string };
-  /** Where the same history can be read on the site, if anywhere. */
-  readHref?: string;
-  readLabel?: string;
 }
 
 export const TOUR_CATALOG: TourListing[] = [
@@ -46,7 +43,5 @@ export const TOUR_CATALOG: TourListing[] = [
       credit:
         "Hyde Park and the lakefront from the air, 1928. Chicago Aerial Survey Co. Public domain.",
     },
-    readHref: "/tours/chicago/hyde-park",
-    readLabel: "Read the online exhibit",
   },
 ];

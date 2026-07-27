@@ -278,19 +278,6 @@ export default function ToursPage() {
                     <AppStoreButton tone="rust" withNote={false} />
                   </div>
 
-                  {tour.readHref && (
-                    <div className="mt-6">
-                      <Link
-                        href={tour.readHref}
-                        className="group font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                      >
-                        {tour.readLabel ?? "Read it online"}{" "}
-                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                          &rarr;
-                        </span>
-                      </Link>
-                    </div>
-                  )}
                 </div>
               </article>
             ))}
