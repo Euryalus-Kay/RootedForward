@@ -1,5 +1,5 @@
 {
-    "version": "4vf9-14ez9vt",
+    "version": "4vrq-c125zn",
     "mediaBase": "https://rooted-forward.org",
     "intro": {
         "title": "Why this tour",
@@ -963,6 +963,13 @@
                         "alt": "A two-panel panoramic view over the University of Chicago about 1907, the Gothic quadrangles filling the centre, apartment blocks and streets running off to the left, and the long open Midway Plaisance stretching away to the right",
                         "credit": "The quadrangles from the air about 1907, with the Midway Plaisance running off to the right. Panoramic photograph by George R. Lawrence, Library of Congress Prints and Photographs Division. No known restrictions on publication.",
                         "label": "c. 1907, from the air",
+                        "after": 2
+                    },
+                    {
+                        "src": "/media/hyde-park-walk/quads-aerial-today.jpg",
+                        "alt": "The University of Chicago from directly overhead today, the Gothic quadrangles and their green courtyards filling the centre of the frame, Ellis Avenue running down the left and the glass dome of the Mansueto Library at the top",
+                        "credit": "The same quadrangles from the air today. Orthoimagery from The National Map, USDA and USGS. Public domain.",
+                        "label": "Today, from the air",
                         "after": 2
                     }
                 ],
