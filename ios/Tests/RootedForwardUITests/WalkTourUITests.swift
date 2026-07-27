@@ -104,8 +104,18 @@ final class WalkTourUITests: XCTestCase {
         gear.tap()
 
         // The app carries no account at all, so settings is progress
-        // plus the outbound links.
+        // plus the outbound links. SwiftUI Link exposes itself
+        // inconsistently across runtimes, so match on the label.
         XCTAssertTrue(app.buttons["reset-progress"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.links["Privacy policy"].exists)
+        XCTAssertFalse(app.buttons["sign-in"].exists)
+        let privacy = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Privacy policy'"))
+            .firstMatch
+        var tries = 0
+        while !privacy.exists && tries < 6 {
+            app.swipeUp(velocity: .fast)
+            tries += 1
+        }
+        XCTAssertTrue(privacy.waitForExistence(timeout: 4))
     }
 }

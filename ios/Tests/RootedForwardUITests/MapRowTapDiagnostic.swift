@@ -1,7 +1,13 @@
 import XCTest
 
-// Temporary diagnostic: does a stop-list row tap navigate after the
-// map sheet has been scrolled?
+// Does a stop-list row tap navigate when the row is far enough down
+// the map sheet that it has to be scrolled to? WalkTourUITests covers
+// a row near the top; this covers the last stop of the walk, which is
+// where row taps used to get swallowed.
+//
+// The scrolling is left to XCUITest. The sheet's upper half is the map
+// canvas and the map takes pan and zoom gestures, so a hand-rolled
+// app.swipeUp() lands on the drawing and never reaches the list.
 
 final class MapRowTapDiagnostic: XCTestCase {
     func testMapListRowTapAfterScroll() {
@@ -29,17 +35,13 @@ final class MapRowTapDiagnostic: XCTestCase {
         XCTAssertTrue(app.buttons["tour-map"].waitForExistence(timeout: 8))
         app.buttons["tour-map"].tap()
         XCTAssertTrue(app.buttons["map-done"].waitForExistence(timeout: 5))
-        sleep(2)
 
-        app.swipeUp(velocity: .fast)
-        sleep(2)
-
-        let row = app.buttons["map-stop-8"]
-        XCTAssertTrue(row.waitForExistence(timeout: 5), "row not found")
-        XCTAssertTrue(row.isHittable, "row not hittable")
+        // The last stop of the walk, well below the fold.
+        let row = app.buttons["map-stop-16"]
+        XCTAssertTrue(row.waitForExistence(timeout: 8), "row not found")
         row.tap()
         XCTAssertTrue(
-            app.staticTexts["stop-title-8"].waitForExistence(timeout: 8),
+            app.staticTexts["stop-title-16"].waitForExistence(timeout: 8),
             "List row tap after scroll did not navigate"
         )
     }

@@ -42,7 +42,7 @@ final class ScreenshotTests: XCTestCase {
     /// Taps the transport bar's next chevron until the numbered stop
     /// title is on screen.
     private func advance(to stopNumber: Int) {
-        let next = app.buttons["transport-next"]
+        let next = app.buttons["pill-next"]
         for _ in 0..<(stopNumber * 2) {
             if app.staticTexts["stop-title-\(stopNumber)"].exists { break }
             XCTAssertTrue(next.waitForExistence(timeout: 5))
