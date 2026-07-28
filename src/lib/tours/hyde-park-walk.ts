@@ -131,11 +131,9 @@ export const HYDE_PARK_WALK: WalkTour = {
       lat: 41.79991,
       lng: -87.58295,
       audioSrc: `${MEDIA}/audio/cornells-stone.mp3`,
-      audioSeconds: 378,
+      audioSeconds: 302,
       transcript: [
         "Find the boulder in Harold Washington Park at East 53rd Street and South Shore Drive, across from the tall brick building with the red awning. That building will become important shortly. The stone stands near the place where Hyde Park began. Before continuing, look at the towers on this block and the trains behind the trees. Both trace back to a farm that a lawyer bought near this location in 1853.",
-        "Before beginning, here is some background on the tour. Rooted Forward is a youth-led nonprofit that documents how Chicago decided who could live in different parts of the city. Hyde Park is especially important because many of those decisions were made nearby. Neighborhood clubs monitored these blocks. A realtors' code treated the sale of a home to a Black family as a punishable offense. Racial restrictions were added to deeds, federal maps graded areas by race, housing contracts stripped families of their savings, and urban renewal later brought demolition. Each policy had identifiable authors, many of whom worked within a mile of this stone. People who opposed those policies also lived in this area, and the tour introduces them along the same streets.",
-        "The route follows the history in chronological order rather than forming a simple loop. As a result, it doubles back in places, and several stops are close to one another. You will pass 55th Street early in the walk and return to it near the end. This arrangement shows how the neighborhood was first developed and how later projects changed it.",
         "Paul Cornell was a young lawyer from upstate New York who arrived in Chicago in 1847 with one dollar and fifty cents. A thief stole his belongings on his first night in the city, so he had to begin again with almost nothing. He later met Illinois senator Stephen Douglas, who advised him to invest south of Chicago because the city was likely to grow in that direction. Cornell eventually rode south along the lake shore, through marsh grass and sand ridges, until he reached a small farm and tavern near present-day 53rd Street. It served travelers making the final part of their trip into Chicago.",
         "In August 1853, Cornell bought **sixty acres from Electa Watson Garnsey**, the tavern keeper's widow. He continued buying land until he owned about **300 acres of lakefront** between roughly 51st and 55th Streets. He named the area Hyde Park to give it a refined image. At the time, Chicago sent sewage into the river and lake and was known for its smell. Cornell marketed Hyde Park as an escape with cleaner air and cooler water for families who could afford to leave the city.",
         "Cornell needed a reliable way to bring those families to Hyde Park. In 1856, he gave the Illinois Central sixty acres of land at no cost. In return, the railroad built a **station at 53rd Street and guaranteed daily trains downtown**. On the first run, June 1, 1856, the station agent reported that there was nary a passenger up or down. Regular service still began that July, with four trains each day at a fare of seven and a half cents. The line later became extremely busy, carrying more than five hundred trains a day by 1929. Cornell divided his property into large lots, with eighteen lots per block and fifty feet of frontage, and kept the development relatively rural. Early residents maintained gardens, stables, and some animals.",
@@ -157,7 +155,7 @@ export const HYDE_PARK_WALK: WalkTour = {
           credit:
             "The Hyde Park House, Cornell's resort centerpiece, standing on what was then the shore. Photographed in the 1870s, and in the public domain by age.",
           label: "c. 1870s",
-          after: 6,
+          after: 4,
         },
         {
           src: `${MEDIA}/sisson-1920s.jpg`,
@@ -165,7 +163,7 @@ export const HYDE_PARK_WALK: WalkTour = {
           credit:
             "The Sisson Hotel on the old Hyde Park House grounds, around 1920. From Early Chicago Hotels. Public domain, via Wikimedia Commons.",
           label: "c. 1920",
-          after: 7,
+          after: 5,
         },
       ],
       nowImage: {
@@ -174,7 +172,7 @@ export const HYDE_PARK_WALK: WalkTour = {
         credit:
           "The same building today, the Hampton House. Photograph by TonyTheTiger, 2006, via Wikimedia Commons. CC BY-SA 3.0.",
         label: "Today",
-        after: 7,
+        after: 5,
       },
       toNext: {
         text: "Leave the boulder and walk west along 53rd Street, out of the park and one block in from the lake, to Hyde Park Boulevard. The tall brick building on the corner, with carved faces in its terra cotta near the top, is the Del Prado.",
