@@ -46,6 +46,17 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_USER_SCRIPT_SANDBOXING: YES
         SWIFT_EMIT_LOC_STRINGS: YES
+        # Xcode 16 splits a debug build into the app plus an
+        # injected RootedForward.debug.dylib, and on iOS 27 betas
+        # that shim reaches libdispatch internals the running OS
+        # does not implement. The app then dies at launch on
+        # -[OS_dispatch_mach_msg _setContext:], an unrecognized
+        # selector the objc runtime turns into abort_with_payload.
+        # Same binary, two phones on different iOS 27 builds, only
+        # one crashes. Building the old way, one binary, no
+        # injection, sidesteps it and costs nothing but slightly
+        # slower incremental builds.
+        ENABLE_DEBUG_DYLIB: NO
     info:
       path: Info.plist
       properties:
