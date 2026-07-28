@@ -274,6 +274,11 @@ struct TourTarget: Identifiable {
 /// The sheets behind the tour screen's info rows.
 enum InfoSheet: String, Identifiable {
     case plates, details
+    /// A place worth going that is not on the route, with its own
+    /// audio. Only walks that have one show the row.
+    case dayTrip
+    /// The claims the research threw out.
+    case checks
     var id: String { rawValue }
 }
 

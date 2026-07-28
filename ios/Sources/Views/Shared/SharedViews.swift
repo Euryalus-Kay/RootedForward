@@ -171,7 +171,9 @@ struct FramedImage: View {
     }
 }
 
-/// Transcript paragraph with the site's **bold** markup.
+/// Transcript paragraph with the site's markup. `**bold**` carries the
+/// history, `*italic*` sets publication titles. Both come out of the
+/// markdown parser already; this only gives them the right faces.
 struct MarkedText: View {
     let text: String
     var size: CGFloat = 17
@@ -190,11 +192,74 @@ struct MarkedText: View {
             markdown: text,
             options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         ) {
-            for run in parsed.runs where run.inlinePresentationIntent?.contains(.stronglyEmphasized) == true {
-                parsed[run.range].font = RF.body(size, weight: 700)
+            for run in parsed.runs {
+                guard let intent = run.inlinePresentationIntent else { continue }
+                if intent.contains(.stronglyEmphasized) {
+                    parsed[run.range].font = RF.body(size, weight: 700)
+                } else if intent.contains(.emphasized) {
+                    parsed[run.range].font = RF.display(size, weight: 400, italic: true)
+                }
             }
             return parsed
         }
         return AttributedString(text)
+    }
+}
+
+
+/// A play control for a recording that is not one of the numbered
+/// stops, currently just the day trip. The engine is built around
+/// WalkStop, so this hands it one describing the clip rather than
+/// growing a second code path through the lock screen and the
+/// now-playing bar.
+struct AudioBar: View {
+    @EnvironmentObject private var content: ContentStore
+    @EnvironmentObject private var audio: AudioEngine
+
+    let src: String
+    let seconds: Double
+    let label: String
+
+    private var stop: WalkStop {
+        WalkStop(
+            id: "day-trip", number: 0, title: label, dek: "",
+            lat: 0, lng: 0, audioSrc: src, audioSeconds: seconds,
+            transcript: [], lookFor: nil, images: [], nowImage: nil,
+            interrupts: nil, toNext: nil, mapLabel: label,
+            sources: nil, optional: true
+        )
+    }
+
+    private var playing: Bool { audio.isCurrent("day-trip") && audio.isPlaying }
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            audio.toggle(stop: stop, url: content.mediaURL(for: src), artwork: nil)
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: playing ? "pause.fill" : "play.fill")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(RF.cream)
+                    .frame(width: 38, height: 38)
+                    .background(Circle().fill(RF.rust))
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(playing ? "Playing" : "Listen")
+                        .font(RF.body(15, weight: 600))
+                        .foregroundStyle(RF.forest)
+                    Text(WalkFormat.clock(seconds: seconds))
+                        .font(RF.body(13))
+                        .foregroundStyle(RF.warmGrayDark)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(.plain)
+        .plate()
+        .accessibilityLabel("\(playing ? "Pause" : "Play") \(label)")
     }
 }

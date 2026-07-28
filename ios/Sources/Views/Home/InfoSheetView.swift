@@ -23,6 +23,8 @@ struct InfoSheetView: View {
                     switch sheet {
                     case .plates: plates
                     case .details: details
+                    case .dayTrip: dayTrip
+                    case .checks: checks
                     }
                 }
                 .padding(.horizontal, 20)
@@ -39,6 +41,65 @@ struct InfoSheetView: View {
         switch sheet {
         case .plates: return "The tools of segregation"
         case .details: return "About this walk"
+        case .dayTrip: return content.tour.dayTrip?.title ?? "Not on the route"
+        case .checks: return content.tour.checks?.title ?? "How we checked this"
+        }
+    }
+
+    // MARK: - The day trip
+
+    /// A place the walk points at but cannot reach on foot. Harlem's
+    /// is Addisleigh Park, an hour away in Queens, and it carries its
+    /// own recording, so the sheet is a short read with a player.
+    @ViewBuilder private var dayTrip: some View {
+        if let trip = content.tour.dayTrip {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(trip.dek)
+                    .font(RF.display(17, weight: 400, italic: true))
+                    .foregroundStyle(RF.warmGrayDark)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                AudioBar(
+                    src: trip.audioSrc,
+                    seconds: trip.audioSeconds,
+                    label: trip.title
+                )
+
+                ForEach(Array(trip.body.enumerated()), id: \.offset) { _, para in
+                    MarkedText(text: para, size: 16)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    // MARK: - Corrections
+
+    /// What the research threw out. Printed because the corrections
+    /// are more interesting than the errors, and because a reader who
+    /// meets one of these elsewhere will know what happened.
+    @ViewBuilder private var checks: some View {
+        if let checks = content.tour.checks {
+            VStack(alignment: .leading, spacing: 18) {
+                Text(checks.intro)
+                    .font(RF.body(15.5))
+                    .foregroundStyle(RF.ink.opacity(0.75))
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                ForEach(Array(checks.items.enumerated()), id: \.offset) { _, item in
+                    HStack(alignment: .top, spacing: 12) {
+                        Rectangle()
+                            .fill(RF.rust.opacity(0.35))
+                            .frame(width: 2)
+                        MarkedText(text: item, size: 15)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
