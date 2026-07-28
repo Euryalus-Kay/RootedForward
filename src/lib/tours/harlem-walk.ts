@@ -355,7 +355,7 @@ export const HARLEM_WALK: WalkTour = {
           credit:
             "Morningside Park and the Ninth Avenue elevated. Detroit Publishing Company postcard number 12453, 1908 to 1909, New York Public Library, via Wikimedia Commons. Public domain.",
           label: "1908 to 1909",
-          after: 7,
+          after: 5,
         },
       ],
       nowImage: {
@@ -854,7 +854,6 @@ export const HARLEM_WALK: WalkTour = {
             "The city scans contain **no searchable text layer**, which makes the report difficult to use and helps explain why a few secondhand quotations are repeated while its block-level data are rarely cited. Rooted Forward used optical character recognition on the housing, health, and March 19 chapters and compared the important figures with enlarged page images. Every number used at this stop was checked against the original typescript.",
             "The report ended its housing analysis with a judgment that also applies to a later stop: **\"the present proposed federal housing project for five or six hundred families will scarcely touch the problem of the 56,157 Negro families in Harlem.\"** The project was Harlem River Houses. **Its 574 apartments represented about one percent of 56,157 families.**",
           ],
-          after: 11,
         },
       ],
       images: [
