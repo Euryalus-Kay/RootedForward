@@ -28,7 +28,7 @@ import { TOUR_CATALOG } from "@/lib/tours/catalog";
 export const metadata: Metadata = {
   title: "Tours | Rooted Forward",
   description:
-    "Free self-guided audio tours of the neighborhoods we research, in the Rooted Forward iPhone app. Walk Hyde Park in Chicago is the first route, thirteen stops and about four miles.",
+    "Free self-guided audio tours of the neighborhoods we research, in the Rooted Forward iPhone app and free in any browser. Walk Hyde Park in Chicago and Walk Harlem in New York, twenty-nine stops between them.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -73,7 +73,7 @@ const FEATURES = [
   {
     icon: MapPinIcon,
     title: "A map of the route",
-    body: "Drawn over the 1929 government survey, with every stop on it, your own dot, and walking directions between them.",
+    body: "Drawn over the government survey of the day, with every stop on it, your own dot, and walking directions between them.",
   },
   {
     icon: SignalSlashIcon,
@@ -130,8 +130,8 @@ export default function ToursPage() {
                 want.
               </p>
               <p className="mt-4 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
-                The tours live in our iPhone app. Hyde Park in Chicago is the
-                first route finished, and more neighborhoods are being
+                The tours live in our iPhone app. Hyde Park in Chicago and Harlem in
+                New York are finished, and more neighborhoods are being
                 researched now.
               </p>
 
@@ -274,8 +274,19 @@ export default function ToursPage() {
                     ))}
                   </div>
 
-                  <div className="mt-8">
+                  <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
                     <AppStoreButton tone="rust" withNote={false} />
+                    {tour.offerBrowser && (
+                      <Link
+                        href={tour.path}
+                        className="group font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
+                      >
+                        Or take it in your browser{" "}
+                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                          &rarr;
+                        </span>
+                      </Link>
+                    )}
                   </div>
 
                 </div>

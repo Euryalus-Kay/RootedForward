@@ -9,7 +9,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "framer-motion";
 import type { WalkTour } from "@/lib/tours/walk-types";
-import { formatClock, haversineMeters, isNearFrame } from "@/lib/tours/walk-utils";
+import type { WalkGeometry, WalkMapConfig } from "@/lib/tours/walk-utils";
+import { createProjection, formatClock, haversineMeters } from "@/lib/tours/walk-utils";
 import { getAudioState, subscribeAudioState, toggleAudio } from "./audio-bus";
 import StopDetail, { gmapsWalkingUrl } from "./StopDetail";
 import WalkMap from "./WalkMap";
@@ -84,7 +85,16 @@ function loadProgress(): StoredProgress {
   }
 }
 
-export default function WalkExperience({ tour }: { tour: WalkTour }) {
+export default function WalkExperience({
+  tour,
+  geometry,
+  map,
+}: {
+  tour: WalkTour;
+  geometry: WalkGeometry;
+  map: WalkMapConfig;
+}) {
+  const projection = useMemo(() => createProjection(geometry), [geometry]);
   const reduceMotion = useReducedMotion();
   const [mode, setMode] = useState<Mode>("walk");
   const [focusMode, setFocusMode] = useState(false);
@@ -278,10 +288,10 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
         setLocating(false);
         setLocationOn(true);
         const { latitude, longitude, accuracy } = pos.coords;
-        if (!isNearFrame(latitude, longitude)) {
+        if (!projection.isNearFrame(latitude, longitude)) {
           setUserPos(null);
           setGeoNote(
-            "You are outside the Hyde Park area right now, so the map will not show your dot. You can still read and listen from here."
+            `You are outside the ${map.areaName} area right now, so the map will not show your dot. You can still read and listen from here.`
           );
           return;
         }
@@ -299,7 +309,7 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
       },
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
     );
-  }, []);
+  }, [projection, map.areaName]);
 
   useEffect(() => () => stopWatching(), [stopWatching]);
 
@@ -399,13 +409,17 @@ export default function WalkExperience({ tour }: { tour: WalkTour }) {
     <>
       <div className="walk-plate overflow-hidden rounded-[3px]">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-ink/15 px-4 py-2.5">
-          <p className="font-display text-lg leading-none text-forest">Hyde Park</p>
+          <p className="font-display text-lg leading-none text-forest">
+            {map.areaName}
+          </p>
           <p className="font-display text-[13px] italic text-ink/60">
             {tour.distanceMiles} miles &middot;{" "}
             {stops.filter((s) => !s.optional).length} stops
           </p>
         </div>
         <WalkMap
+          geometry={geometry}
+          map={map}
           stops={stops}
           route={tour.route}
           detourRoutes={tour.detourRoutes}

@@ -1,7 +1,13 @@
 // ------------------------------------------------------------------
-// Types for the self-paced audio walking tour (/tours).
-// The tour data itself lives in jackson-park-walk.ts; the map
-// geometry (TIGER-derived) in walk-geometry.json.
+// Types for the self-paced audio walking tours (/tours).
+// One file per tour under src/lib/tours (hyde-park-walk.ts,
+// harlem-walk.ts), each paired with its own TIGER-derived geometry
+// (<tour>-geometry.json) and registered in registry.ts. The registry
+// is what /api/walk and the page routes read.
+//
+// `**bold**` and `*italic*` render as markup everywhere a transcript,
+// plate body or card text is printed, and both are stripped before
+// the narration is recorded, so styling never changes what is said.
 // ------------------------------------------------------------------
 
 export interface WalkImage {
@@ -98,4 +104,35 @@ export interface WalkTour {
    *  stop. Shorter and blunter than the practical card, because it
    *  has to land on someone already standing on a sidewalk. */
   detourNotice?: string;
+  /** A place worth going that is not walkable from the route. Harlem
+   *  has one, because New York's racial covenants were taken to court
+   *  in Queens and not in Manhattan, so the legal half of that story
+   *  sits in another borough. Printed at the end of the tour page
+   *  with its own audio, outside the numbered stops. */
+  dayTrip?: WalkDayTrip;
+  /** Claims the research rejected, printed under "How we checked
+   *  this". Harlem attracts confident statistics that do not survive
+   *  checking, and naming the ones we threw out is the honest way to
+   *  publish the ones we kept. */
+  checks?: WalkChecks;
+}
+
+export interface WalkDayTrip {
+  title: string;
+  /** one line under the title */
+  dek: string;
+  /** printed paragraphs */
+  body: string[];
+  audioSrc: string;
+  audioSeconds: number;
+  sources?: { label: string; url: string }[];
+}
+
+export interface WalkChecks {
+  /** heading on the page, e.g. "How we checked this" */
+  title: string;
+  intro: string;
+  /** one rejected claim per entry, each opening with the correction
+   *  in bold so the list reads as answers rather than errors */
+  items: string[];
 }

@@ -64,3 +64,17 @@ public/media/hyde-park/video/hyde-park-museum.mp4
 data/tiles/
 public/media/hyde-park/video/deepdive-*.mp4
 .r9shots/
+
+# Xcode build products
+ios/build/
+
+# Census TIGER/Line shapefiles, the input to scripts/walk-prep-map.mjs.
+# Large, public domain, and regenerable, so the derived geometry JSON is
+# committed instead. Re-download with the URLs in that script's header.
+data/exhibit-src/*.shp
+data/exhibit-src/*.shx
+data/exhibit-src/*.dbf
+data/exhibit-src/*.prj
+data/exhibit-src/*.cpg
+data/exhibit-src/*.zip
+data/exhibit-src/*.shp.*.xml

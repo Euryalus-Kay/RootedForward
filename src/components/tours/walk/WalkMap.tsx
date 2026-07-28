@@ -5,15 +5,16 @@
 // geometry (public domain), drawn in the site palette so it reads
 // like a printed museum map rather than an embedded web map. No
 // tiles, no tokens, no external requests.
+//
+// City-agnostic. Everything specific to one walk, its survey plate,
+// its park polygons, its street and place names, arrives as the
+// `map` prop from src/lib/tours/<tour>-map.ts.
 // ------------------------------------------------------------------
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
-import {
-  METERS_PER_UNIT,
-  WALK_GEOMETRY,
-  projectPoint,
-} from "@/lib/tours/walk-utils";
+import type { WalkGeometry, WalkMapConfig } from "@/lib/tours/walk-utils";
+import { createProjection } from "@/lib/tours/walk-utils";
 
 interface UserPosition {
   lat: number;
@@ -22,6 +23,9 @@ interface UserPosition {
 }
 
 interface WalkMapProps {
+  /** this tour's TIGER-derived geometry and its printed dressing */
+  geometry: WalkGeometry;
+  map: WalkMapConfig;
   stops: WalkStop[];
   route: [number, number][];
   detourRoutes?: [number, number][][];
@@ -31,107 +35,12 @@ interface WalkMapProps {
   onSelectStop: (index: number) => void;
 }
 
-// The printed base plate under the drawn map: the USGS Jackson Park
-// quadrangle, 1929 edition (public domain), reprojected and cropped
-// to exactly the geometry frame, flattened onto cream as one ink.
-const BASE_MAP_SRC = "/media/hyde-park-walk/map-base-1929.jpg";
-
-// anchored to survive the route-fitted viewBox clamp; keep every
-// label inside roughly lng -87.608..-87.576, lat 41.802..41.784
-const PLACE_LABELS: { text: string; lat: number; lng: number; size: number }[] = [
-  { text: "Lake Michigan", lat: 41.797, lng: -87.5755, size: 13 },
-  { text: "Hyde Park", lat: 41.7973, lng: -87.5975, size: 15 },
-  { text: "Midway Plaisance", lat: 41.78635, lng: -87.6005, size: 11 },
-  { text: "Jackson Park", lat: 41.7867, lng: -87.5805, size: 12 },
-  { text: "Woodlawn", lat: 41.7828, lng: -87.5955, size: 11 },
-  { text: "Washington Park", lat: 41.7943, lng: -87.6094, size: 10 },
-  { text: "University of Chicago", lat: 41.79, lng: -87.5997, size: 9 },
-  { text: "Nichols Park", lat: 41.7972, lng: -87.5943, size: 8 },
-];
-
-// street names set along their streets, like a printed map's fine type
-const STREET_LABELS: { text: string; lat: number; lng: number; rotate: number; size: number }[] = [
-  { text: "E Hyde Park Blvd", lat: 41.8026, lng: -87.5948, rotate: 0, size: 8 },
-  { text: "E 53rd St", lat: 41.8001, lng: -87.591, rotate: 0, size: 9 },
-  { text: "E 55th St", lat: 41.7957, lng: -87.5993, rotate: 0, size: 9 },
-  { text: "E 57th St", lat: 41.7921, lng: -87.5911, rotate: 0, size: 9 },
-  { text: "E 60th St", lat: 41.7846, lng: -87.599, rotate: 0, size: 8 },
-  { text: "E 61st St", lat: 41.78415, lng: -87.6091, rotate: 0, size: 8 },
-  { text: "E 63rd St", lat: 41.78055, lng: -87.5989, rotate: 0, size: 8 },
-  { text: "Lake Park Ave", lat: 41.7967, lng: -87.58722, rotate: -87, size: 9 },
-  { text: "Woodlawn Ave", lat: 41.7938, lng: -87.5968, rotate: -90, size: 9 },
-  { text: "Ellis Ave", lat: 41.7958, lng: -87.6015, rotate: -90, size: 8 },
-  { text: "University Ave", lat: 41.7942, lng: -87.5986, rotate: -90, size: 8 },
-  { text: "Kimbark Ave", lat: 41.7987, lng: -87.5953, rotate: -90, size: 8 },
-  { text: "Harper Ave", lat: 41.7972, lng: -87.5889, rotate: -90, size: 8 },
-  { text: "Cottage Grove Ave", lat: 41.7935, lng: -87.6069, rotate: -90, size: 8 },
-  { text: "Stony Island Ave", lat: 41.7852, lng: -87.5873, rotate: -90, size: 8 },
-];
-
-// soft green ground for the parks; boundaries are streets, the lake
-// polygon paints over the eastern overhang
-const PARK_AREAS: [number, number][][] = [
-  // Jackson Park: 56th down past the frame, Stony Island to the lake
-  [
-    [41.7936, -87.587],
-    [41.7936, -87.566],
-    [41.7737, -87.556],
-    [41.7737, -87.587],
-  ],
-  // Midway Plaisance strip: 59th to 60th, lake side to Washington Park
-  [
-    [41.7872, -87.5868],
-    [41.7872, -87.613],
-    [41.7854, -87.613],
-    [41.7854, -87.5868],
-  ],
-  // Washington Park: west of Cottage Grove
-  [
-    [41.8045, -87.6063],
-    [41.8045, -87.618],
-    [41.7815, -87.618],
-    [41.7815, -87.6063],
-  ],
-  // Nichols Park: 53rd to 55th between Kimbark and Kenwood
-  [
-    [41.7994, -87.5948],
-    [41.7994, -87.5935],
-    [41.7953, -87.5935],
-    [41.7953, -87.5948],
-  ],
-  // Harold Washington Park: 51st to 53rd east of Hyde Park Blvd
-  [
-    [41.8032, -87.5827],
-    [41.8032, -87.579],
-    [41.7994, -87.579],
-    [41.7994, -87.5827],
-  ],
-];
-
-// the university's main quadrangles, tinted the way printed maps mark
-// institutions, warm and slightly apart from the parks' green
-const CAMPUS_AREAS: [number, number][][] = [
-  [
-    [41.7921, -87.6014],
-    [41.7921, -87.5977],
-    [41.7885, -87.5977],
-    [41.7885, -87.6014],
-  ],
-];
-
-// where each stop's name sits relative to its marker; below unless a
-// neighbor would collide with the label
-const STOP_LABEL_SIDE: Record<string, "below" | "left" | "right"> = {
-  "cornells-stone": "left",
-  "lake-park-tracks": "right",
-  "harper-court": "left",
-  "obama-center": "right",
-};
-
 const lineD = (pts: number[][]) =>
   "M" + pts.map((p) => `${p[0]},${p[1]}`).join("L");
 
 export default function WalkMap({
+  geometry,
+  map,
   stops,
   route,
   detourRoutes,
@@ -140,7 +49,11 @@ export default function WalkMap({
   userPos,
   onSelectStop,
 }: WalkMapProps) {
-  const geo = WALK_GEOMETRY;
+  const geo = geometry;
+  const { projectPoint, metersPerUnit } = useMemo(
+    () => createProjection(geometry),
+    [geometry]
+  );
   const reduceMotion = useReducedMotion();
 
   // hover opens the HTML card above the map; the marker itself only
@@ -183,24 +96,59 @@ export default function WalkMap({
     const xs = pts.map((p) => p.x);
     const ys = pts.map((p) => p.y);
     const pad = wide ? 56 : 88;
-    const x0 = Math.max(0, Math.min(...xs) - pad - 30);
-    const y0 = Math.max(0, Math.min(...ys) - pad);
-    const x1 = Math.min(geo.viewBox.w, Math.max(...xs) + pad);
-    const y1 = Math.min(geo.viewBox.h, Math.max(...ys) + pad);
+    let x0 = Math.max(0, Math.min(...xs) - pad - 30);
+    let y0 = Math.max(0, Math.min(...ys) - pad);
+    let x1 = Math.min(geo.viewBox.w, Math.max(...xs) + pad);
+    let y1 = Math.min(geo.viewBox.h, Math.max(...ys) + pad);
+
+    // Keep the plate from going strip-shaped. Harlem's walk runs
+    // thirty blocks north and barely three avenues across, so fitting
+    // it tightly would hand the map column a picture twice as tall as
+    // it is wide and push the stop list off the screen. Widening the
+    // narrow axis costs nothing but map, and the extra ground either
+    // side is real neighborhood rather than padding.
+    const MIN_ASPECT = 0.78; // width over height
+    const MAX_ASPECT = 1.75;
+    const grow = (
+      a: number,
+      b: number,
+      target: number,
+      limit: number
+    ): [number, number] => {
+      const add = (target - (b - a)) / 2;
+      let lo = a - add;
+      let hi = b + add;
+      if (lo < 0) {
+        hi = Math.min(limit, hi - lo);
+        lo = 0;
+      }
+      if (hi > limit) {
+        lo = Math.max(0, lo - (hi - limit));
+        hi = limit;
+      }
+      return [lo, hi];
+    };
+    const w = x1 - x0;
+    const h = y1 - y0;
+    if (w / h < MIN_ASPECT) {
+      [x0, x1] = grow(x0, x1, h * MIN_ASPECT, geo.viewBox.w);
+    } else if (w / h > MAX_ASPECT) {
+      [y0, y1] = grow(y0, y1, w / MAX_ASPECT, geo.viewBox.h);
+    }
     return `${x0} ${y0} ${x1 - x0} ${y1 - y0}`;
-  }, [route, stops, detourRoutes, wide, geo.viewBox.w, geo.viewBox.h]);
+  }, [route, stops, detourRoutes, wide, projectPoint, geo.viewBox.w, geo.viewBox.h]);
 
   const routeD = useMemo(
     () => lineD(route.map(([lat, lng]) => { const p = projectPoint(lat, lng); return [p.x, p.y]; })),
-    [route]
+    [route, projectPoint]
   );
 
   const user = userPos ? projectPoint(userPos.lat, userPos.lng) : null;
   const accuracyR = userPos
-    ? Math.min(120, Math.max(10, userPos.accuracy / METERS_PER_UNIT))
+    ? Math.min(120, Math.max(10, userPos.accuracy / metersPerUnit))
     : 0;
 
-  const quarterMileUnits = 402.3 / METERS_PER_UNIT;
+  const quarterMileUnits = 402.3 / metersPerUnit;
   const vb = viewBox.split(" ").map(Number);
   const hoveredStop = hoveredId
     ? stops.find((s) => s.id === hoveredId) ?? null
@@ -212,7 +160,7 @@ export default function WalkMap({
       viewBox={viewBox}
       className="block h-auto w-full"
       role="group"
-      aria-label="Map of the tour route through Hyde Park with numbered stops. The same stops are listed in order below the map."
+      aria-label={`Map of the tour route through ${map.areaName} with numbered stops. The same stops are listed in order below the map.`}
     >
       {/* engraver's water: pale wash under fine horizontal hatching,
           the way lagoons are ruled on printed park maps */}
@@ -222,11 +170,11 @@ export default function WalkMap({
         </pattern>
       </defs>
 
-      {/* the 1929 survey plate under everything: building fabric,
-          shoreline hachures, and lagoon engraving from the year the
-          covenants went up */}
+      {/* the survey plate under everything, carrying period building
+          fabric and shoreline engraving from the years this walk is
+          about */}
       <image
-        href={BASE_MAP_SRC}
+        href={map.baseMapSrc}
         x="0"
         y="0"
         width={geo.viewBox.w}
@@ -237,7 +185,7 @@ export default function WalkMap({
 
       {/* park ground */}
       <g>
-        {PARK_AREAS.map((ring, i) => (
+        {map.parkAreas.map((ring, i) => (
           <path
             key={i}
             d={
@@ -254,7 +202,7 @@ export default function WalkMap({
             fillOpacity="0.07"
           />
         ))}
-        {CAMPUS_AREAS.map((ring, i) => (
+        {map.campusAreas.map((ring, i) => (
           <path
             key={`c${i}`}
             d={
@@ -295,8 +243,8 @@ export default function WalkMap({
 
       {/* streets, three engraved weights: alley hairlines, local
           streets, then the arterials over them */}
-      {/* alleys drop to a whisper now that the 1929 plate carries the
-          block fabric underneath */}
+      {/* alleys drop to a whisper now that the survey plate carries
+          the block fabric underneath */}
       <g stroke="#B5AFA4" strokeOpacity="0.16" strokeWidth="0.6" fill="none">
         {geo.roads.alleys.map((l, i) => (
           <path key={i} d={lineD(l)} />
@@ -388,7 +336,7 @@ export default function WalkMap({
 
       {/* street names in fine italic, rotated along their streets */}
       <g aria-hidden="true">
-        {STREET_LABELS.map((l) => {
+        {map.streetLabels.map((l) => {
           const p = projectPoint(l.lat, l.lng);
           return (
             <text
@@ -413,7 +361,7 @@ export default function WalkMap({
       {/* place labels sit above the route, with a cream halo so the
           dotted line never cuts through a word */}
       <g aria-hidden="true">
-        {PLACE_LABELS.map((l) => {
+        {map.placeLabels.map((l) => {
           const p = projectPoint(l.lat, l.lng);
           return (
             <text
@@ -461,7 +409,7 @@ export default function WalkMap({
         {stops.map((stop, i) => {
           const p = projectPoint(stop.lat, stop.lng);
           const r = i === activeIndex ? 21 : 16;
-          const side = STOP_LABEL_SIDE[stop.id] ?? "below";
+          const side = map.stopLabelSide[stop.id] ?? "below";
           const x = side === "left" ? p.x - r - 8 : side === "right" ? p.x + r + 8 : p.x;
           const y = side === "below" ? p.y + r + 13 : p.y + 3.5;
           return (
@@ -629,7 +577,7 @@ export default function WalkMap({
         >
           {wide
             ? "Green lines are the optional detours, drawn out and back to the stop the walk rejoins"
-            : "Green detours run southwest to the Hansberry house and Daley’s, northwest to Drexel Boulevard"}
+            : map.detourLegend}
         </text>
         <g transform={`translate(${vb[0] + 24}, ${vb[1] + vb[3] - 26})`}>
           <rect x="0" y="-2" width={quarterMileUnits / 2} height="4" fill="#1A1A1A" fillOpacity="0.55" />

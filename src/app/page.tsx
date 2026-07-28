@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------ */
 
 import Link from "next/link";
+import { TOUR_CATALOG } from "@/lib/tours/catalog";
 import PageTransition from "@/components/layout/PageTransition";
 
 /* ------------------------------------------------------------------ */
@@ -78,10 +79,10 @@ const WORK: WorkItem[] = [
     icon: MapIcon,
     body: [
       "Race shapes the blocks people walk past each day. It shapes the deeds, the appraisal forms, the bulldozed lots.",
-      "We built our tour based on our research findings and presented it on the Rooted Forward app. Walk the route, listen to it, or read it at your leisure on the app.",
+      "We build our tours from our research findings and present them in the Rooted Forward app. Walk the route, listen to it, or read it at your leisure. Hyde Park in Chicago and Harlem in New York are both finished.",
       "Our goal is to build awareness, and we count the tours accessed. This way, we can best assess how our research reaches the community.",
     ],
-    links: [{ label: "Walk Hyde Park", href: "/tours" }],
+    links: [{ label: "See the walks", href: "/tours" }],
   },
   {
     title: "Community outreach",
@@ -252,37 +253,55 @@ export default function Home() {
           ============================================================ */}
       <section className="bg-forest py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
-            <div className="md:col-span-6">
-              <img
-                src="/media/site/hyde-park-aerial-1928.jpg"
-                alt="Aerial photograph of Hyde Park and the lakefront taken by the Chicago Aerial Survey Company in 1928"
-                loading="lazy"
-                className="w-full rounded-sm border border-cream/20 object-cover"
-              />
-              <p className="mt-2 font-body text-[11px] text-cream/65">
-                Hyde Park and the lakefront from the air, 1928. Chicago Aerial
-                Survey Co. Public domain.
-              </p>
-            </div>
-            <div className="md:col-span-6">
-              <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
-                Self-guided Hyde Park tour
-              </h2>
-              <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                The tour goes through the Chicago neighborhood of Hyde Park,
-                stopping at sites that reflect its deep racial history and the
-                inequality that still shapes the neighborhood today. It is
-                about four miles, on foot, and you guide yourself.
-              </p>
-              <Link
-                href="/tours"
-                className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Get the tour
-              </Link>
-            </div>
+          <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
+            Self-guided walking tours
+          </h2>
+          <p className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+            Each one runs in the order the history happened, on the ground
+            where it happened. Free in the app and free in a browser.
+          </p>
+
+          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 md:grid-cols-2">
+            {TOUR_CATALOG.map((tour) => (
+              <article key={tour.slug}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={tour.image.src}
+                  alt={tour.image.alt}
+                  loading="lazy"
+                  className="aspect-[3/2] w-full rounded-sm border border-cream/20 object-cover"
+                />
+                <p className="mt-2 font-body text-[11px] leading-snug text-cream/65">
+                  {tour.image.credit}
+                </p>
+                <h3 className="mt-5 font-display text-2xl leading-tight text-cream md:text-3xl">
+                  {tour.title}
+                </h3>
+                <p className="mt-1 font-display text-base italic text-cream/60">
+                  {tour.neighborhood}, {tour.city}
+                </p>
+                <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75">
+                  {tour.blurb}
+                </p>
+                <Link
+                  href={tour.path}
+                  className="group mt-6 inline-block font-body text-sm font-semibold uppercase tracking-widest text-cream transition-colors hover:text-rust"
+                >
+                  Take this walk{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </Link>
+              </article>
+            ))}
           </div>
+
+          <Link
+            href="/tours"
+            className="mt-12 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+          >
+            Get the app
+          </Link>
         </div>
       </section>
 

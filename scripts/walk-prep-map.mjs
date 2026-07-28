@@ -1,35 +1,75 @@
 #!/usr/bin/env node
 // ------------------------------------------------------------------
-// Jackson Park walking-tour map prep. Parses the cached Census
-// TIGER/Line 2023 shapefiles (public domain, already in
-// data/exhibit-src) down to a Jackson Park frame, projects every
-// feature onto a metrically-true local plane, clips it to the frame,
-// and writes one compact JSON the map component imports directly:
-//   src/lib/tours/walk-geometry.json
+// Walking-tour map prep. Parses cached Census TIGER/Line 2023
+// shapefiles (public domain, in data/exhibit-src) down to one tour's
+// frame, projects every feature onto a metrically-true local plane,
+// clips it to the frame, and writes one compact JSON the map
+// component imports directly:
+//   src/lib/tours/<tour>-geometry.json
 //     { frame, viewBox, water: [...],
 //       roads: {arterials, locals, alleys}, rails: [...] }
 // Client-side projection of live lat/lng (user location, stops) is
 //   x = (lng - frame.lngMin) / (frame.lngMax - frame.lngMin) * viewBox.w
 //   y = (frame.latMax - lat) / (frame.latMax - frame.latMin) * viewBox.h
 // which is metrically correct because viewBox.h is derived with the
-// cos(latMid) correction below. Re-run: node scripts/walk-prep-map.mjs
-// Source: U.S. Census Bureau TIGER/Line 2023 (tl_2023_17031_roads,
-// tl_2023_17031_areawater, tl_2023_us_rails).
+// cos(latMid) correction below.
+//
+// Usage:  node scripts/walk-prep-map.mjs --tour hyde-park
+//         node scripts/walk-prep-map.mjs --tour harlem
+//
+// The shapefiles are gitignored, being large and public domain. Fetch
+// them into data/exhibit-src before running:
+//   https://www2.census.gov/geo/tiger/TIGER2023/ROADS/tl_2023_<fips>_roads.zip
+//   https://www2.census.gov/geo/tiger/TIGER2023/AREAWATER/tl_2023_<fips>_areawater.zip
+//   https://www2.census.gov/geo/tiger/TIGER2023/RAILS/tl_2023_us_rails.zip
+// fips 17031 is Cook County, 36061 New York County, 36005 the Bronx.
 // ------------------------------------------------------------------
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const SRC = "data/exhibit-src";
-const OUT = "src/lib/tours/walk-geometry.json";
 
-// Hyde Park proper for the racial-history walk: 51st St down past
-// the Midway, Washington Park's edge to the lake, extended south and
-// west so the optional detours (the Hansberry house on Rhodes, and
-// Daley's at 63rd and Cottage Grove) sit on the plate. Must match the
-// crop frame of the 1929 USGS underlay (map-base-1929.jpg). (The old
-// Jackson Park frame was latMin 41.7705, latMax 41.801, lngMin
-// -87.605, lngMax -87.568; restore it and re-run to bring that map
-// back.)
-const F = { latMin: 41.7775, latMax: 41.8045, lngMin: -87.616, lngMax: -87.572 };
+// One entry per walk. `counties` are TIGER FIPS codes whose roads and
+// water fall inside the frame; a frame that crosses a county line
+// needs both, or half the map arrives blank.
+const TOURS = {
+  // Hyde Park proper for the racial-history walk: 51st St down past
+  // the Midway, Washington Park's edge to the lake, extended south
+  // and west so the optional detours (the Hansberry house on Rhodes,
+  // and Daley's at 63rd and Cottage Grove) sit on the plate. Must
+  // match the crop frame of the 1929 USGS underlay
+  // (map-base-1929.jpg). (The old Jackson Park frame was latMin
+  // 41.7705, latMax 41.801, lngMin -87.605, lngMax -87.568; restore
+  // it and re-run to bring that map back.)
+  "hyde-park": {
+    out: "src/lib/tours/hyde-park-geometry.json",
+    counties: ["17031"],
+    frame: { latMin: 41.7775, latMax: 41.8045, lngMin: -87.616, lngMax: -87.572 },
+  },
+  // Central Harlem from 125th Street to 155th, wide enough to carry
+  // both rivers. The walk itself is a narrow north-south corridor, so
+  // the frame is deliberately broader than the route: the Hudson on
+  // the west and the Harlem River on the east are what make the plate
+  // read as Manhattan rather than a strip of blocks. Reaches south to
+  // 110th for the Morningside Park detour and across the Harlem River
+  // into the Bronx, hence two counties.
+  harlem: {
+    out: "src/lib/tours/harlem-geometry.json",
+    counties: ["36061", "36005"],
+    frame: { latMin: 40.798, latMax: 40.838, lngMin: -73.975, lngMax: -73.92 },
+  },
+};
+
+const tourArg = (() => {
+  const i = process.argv.indexOf("--tour");
+  return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : "hyde-park";
+})();
+const TOUR = TOURS[tourArg];
+if (!TOUR) {
+  console.error(`unknown --tour "${tourArg}" (use ${Object.keys(TOURS).join(" | ")})`);
+  process.exit(1);
+}
+const OUT = TOUR.out;
+const F = TOUR.frame;
 const LAT_MID = (F.latMin + F.latMax) / 2;
 const COS = Math.cos((LAT_MID * Math.PI) / 180);
 const W = 1000;
@@ -184,30 +224,36 @@ const touchesFrame = (line) =>
   );
 
 // ---- roads ----
-const roadShapes = readShp(`${SRC}/tl_2023_17031_roads.shp`);
-const roadRows = readDbf(`${SRC}/tl_2023_17031_roads.dbf`);
 const arterials = [];
 const locals = [];
 const alleys = [];
-roadRows.forEach((row, i) => {
-  const shape = roadShapes[i];
-  if (!shape) return;
-  const cls = row.MTFCC;
-  // S1100/S1200 highways + arterials, S1400 locals, S1730 alleys as
-  // the finest hairline texture of the engraved plat
-  if (cls !== "S1100" && cls !== "S1200" && cls !== "S1400" && cls !== "S1730") return;
-  for (const line of shape) {
-    if (!touchesFrame(line)) continue;
-    const pieces = clipLine(project(thin(line, 1)));
-    for (const p of pieces) {
-      if (cls === "S1730") alleys.push(p);
-      else if (cls === "S1400") locals.push(p);
-      else arterials.push(p);
+for (const county of TOUR.counties) {
+  const roadShapes = readShp(`${SRC}/tl_2023_${county}_roads.shp`);
+  const roadRows = readDbf(`${SRC}/tl_2023_${county}_roads.dbf`);
+  roadRows.forEach((row, i) => {
+    const shape = roadShapes[i];
+    if (!shape) return;
+    const cls = row.MTFCC;
+    // S1100/S1200 highways + arterials, S1400 locals, S1730 alleys as
+    // the finest hairline texture of the engraved plat
+    if (cls !== "S1100" && cls !== "S1200" && cls !== "S1400" && cls !== "S1730") return;
+    for (const line of shape) {
+      if (!touchesFrame(line)) continue;
+      const pieces = clipLine(project(thin(line, 1)));
+      for (const p of pieces) {
+        if (cls === "S1730") alleys.push(p);
+        else if (cls === "S1400") locals.push(p);
+        else arterials.push(p);
+      }
     }
-  }
-});
+  });
+}
 
-// ---- rails (the IC embankment carries this tour's whole story) ----
+// ---- rails ----
+// In Hyde Park the Illinois Central embankment carries the whole
+// story. In Harlem the Lenox Avenue subway is underground and does
+// not appear in this file at all, which is correct; the surface
+// lines near the Harlem River still draw.
 const rails = [];
 if (existsSync(`${SRC}/tl_2023_us_rails.shp`)) {
   const railShapes = readShp(`${SRC}/tl_2023_us_rails.shp`);
@@ -223,25 +269,31 @@ if (existsSync(`${SRC}/tl_2023_us_rails.shp`)) {
   console.warn("rails source missing (tl_2023_us_rails.shp); map ships without rail lines");
 }
 
-// ---- water (the lagoons carry the whole map) ----
-const waterShapes = readShp(`${SRC}/tl_2023_17031_areawater.shp`);
-const waterRows = readDbf(`${SRC}/tl_2023_17031_areawater.dbf`);
+// ---- water ----
 const water = [];
-waterRows.forEach((row, i) => {
-  const shape = waterShapes[i];
-  if (!shape) return;
-  for (const ring of shape) {
-    if (!touchesFrame(ring)) continue;
-    const clipped = clipRing(project(ring));
-    if (clipped && clipped.length > 3) {
-      water.push({ name: row.FULLNAME || "", ring: clipped });
+for (const county of TOUR.counties) {
+  const waterShapes = readShp(`${SRC}/tl_2023_${county}_areawater.shp`);
+  const waterRows = readDbf(`${SRC}/tl_2023_${county}_areawater.dbf`);
+  waterRows.forEach((row, i) => {
+    const shape = waterShapes[i];
+    if (!shape) return;
+    for (const ring of shape) {
+      if (!touchesFrame(ring)) continue;
+      const clipped = clipRing(project(ring));
+      if (clipped && clipped.length > 3) {
+        water.push({ name: row.FULLNAME || "", ring: clipped });
+      }
     }
-  }
-});
+  });
+}
+
+const sources = TOUR.counties
+  .flatMap((c) => [`tl_2023_${c}_roads`, `tl_2023_${c}_areawater`])
+  .concat("tl_2023_us_rails")
+  .join(", ");
 
 const out = {
-  source:
-    "U.S. Census Bureau TIGER/Line 2023, tl_2023_17031_roads, tl_2023_17031_areawater, and tl_2023_us_rails (public domain)",
+  source: `U.S. Census Bureau TIGER/Line 2023, ${sources} (public domain)`,
   frame: F,
   viewBox: { w: W, h: H },
   water,
@@ -251,5 +303,7 @@ const out = {
 writeFileSync(OUT, JSON.stringify(out));
 const kb = Math.round(Buffer.byteLength(JSON.stringify(out)) / 1024);
 console.log(
-  `walk-geometry: ${water.length} water rings, ${arterials.length} arterials, ${locals.length} locals, ${alleys.length} alleys, ${rails.length} rail pieces, viewBox ${W}x${H}, ${kb} KB`
+  `${tourArg}: ${water.length} water rings, ${arterials.length} arterials, ` +
+    `${locals.length} locals, ${alleys.length} alleys, ${rails.length} rail pieces, ` +
+    `viewBox ${W}x${H}, ${kb} KB -> ${OUT}`
 );

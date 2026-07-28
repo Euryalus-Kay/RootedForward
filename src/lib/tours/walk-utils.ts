@@ -1,10 +1,15 @@
 // ------------------------------------------------------------------
-// Shared helpers for the walking tour map and location features.
-// The projection matches scripts/walk-prep-map.mjs exactly; the
-// geometry JSON's viewBox height already carries the cos(latMid)
+// Shared helpers for the walking tour maps and location features.
+// The projection matches scripts/walk-prep-map.mjs exactly; a
+// geometry file's viewBox height already carries the cos(latMid)
 // correction, so both axes stay metrically true.
+//
+// This used to hold one tour's frame as module constants, back when
+// Hyde Park was the only walk. Harlem made that impossible, so the
+// projection is now built per tour from its own geometry file and the
+// maths is unchanged. Each tour imports its geometry and calls
+// createProjection once.
 // ------------------------------------------------------------------
-import geometry from "./walk-geometry.json";
 
 export interface WalkFrame {
   latMin: number;
@@ -22,24 +27,80 @@ export interface WalkGeometry {
   rails: number[][][];
 }
 
-export const WALK_GEOMETRY = geometry as WalkGeometry;
+/** the printed plate a tour's map is drawn over, and everything set on
+ *  it. Per tour, because each walk has its own survey sheet, its own
+ *  neighborhood and street names, and its own parks to tint. These
+ *  used to be module constants inside WalkMap.tsx and WalkMapCanvas
+ *  .swift; they travel on the API payload now so the app can draw a
+ *  second city without an App Store release. */
+export interface WalkMapConfig {
+  /** path under /public to the cropped, toned survey sheet */
+  baseMapSrc: string;
+  /** the neighborhood, for the map's accessible description */
+  areaName: string;
+  /** neighborhood, park and water names */
+  placeLabels: { text: string; lat: number; lng: number; size: number }[];
+  /** street names, set along their streets like a printed map's fine type */
+  streetLabels: {
+    text: string;
+    lat: number;
+    lng: number;
+    rotate: number;
+    size: number;
+  }[];
+  /** soft green ground for the parks, as closed lat/lng rings */
+  parkAreas: [number, number][][];
+  /** warm tint for university and institutional ground */
+  campusAreas: [number, number][][];
+  /** where a stop's name sits relative to its marker, by stop id.
+   *  Anything unlisted sits below. */
+  stopLabelSide: Record<string, "below" | "left" | "right">;
+  /** the one-line note under the map when the detours are folded away,
+   *  naming where they actually go. Omit on a walk with no detours. */
+  detourLegend?: string;
+}
 
-const F = WALK_GEOMETRY.frame;
-const VB = WALK_GEOMETRY.viewBox;
+export interface WalkProjection {
+  geometry: WalkGeometry;
+  /** meters per viewBox unit, equal on both axes thanks to the
+   *  corrected aspect ratio */
+  metersPerUnit: number;
+  projectPoint(lat: number, lng: number): { x: number; y: number };
+  /** true when a point sits within `padMeters` of this tour's frame */
+  isNearFrame(lat: number, lng: number, padMeters?: number): boolean;
+}
 
-/** meters per viewBox unit (both axes, thanks to the corrected aspect) */
-export const METERS_PER_UNIT =
-  ((F.lngMax - F.lngMin) *
-    111320 *
-    Math.cos((((F.latMin + F.latMax) / 2) * Math.PI) / 180)) /
-  VB.w;
+export function createProjection(geometry: WalkGeometry): WalkProjection {
+  const F = geometry.frame;
+  const VB = geometry.viewBox;
+  const latMid = (F.latMin + F.latMax) / 2;
+  const cosLat = Math.cos((latMid * Math.PI) / 180);
 
-export function projectPoint(lat: number, lng: number): { x: number; y: number } {
+  const metersPerUnit = ((F.lngMax - F.lngMin) * 111320 * cosLat) / VB.w;
+
   return {
-    x: ((lng - F.lngMin) / (F.lngMax - F.lngMin)) * VB.w,
-    y: ((F.latMax - lat) / (F.latMax - F.latMin)) * VB.h,
+    geometry,
+    metersPerUnit,
+    projectPoint(lat, lng) {
+      return {
+        x: ((lng - F.lngMin) / (F.lngMax - F.lngMin)) * VB.w,
+        y: ((F.latMax - lat) / (F.latMax - F.latMin)) * VB.h,
+      };
+    },
+    isNearFrame(lat, lng, padMeters = 2500) {
+      const padLat = padMeters / 111320;
+      const padLng = padMeters / (111320 * cosLat);
+      return (
+        lat >= F.latMin - padLat &&
+        lat <= F.latMax + padLat &&
+        lng >= F.lngMin - padLng &&
+        lng <= F.lngMax + padLng
+      );
+    },
   };
 }
+
+/* ---- unit helpers, the same for every tour ---- */
 
 export function haversineMeters(
   aLat: number,
@@ -71,18 +132,4 @@ export function formatClock(totalSeconds: number): string {
   const m = Math.floor(s / 60);
   const r = s % 60;
   return `${m}:${r.toString().padStart(2, "0")}`;
-}
-
-/** true when a point sits within `padMeters` of the tour frame */
-export function isNearFrame(lat: number, lng: number, padMeters = 2500): boolean {
-  const padLat = padMeters / 111320;
-  const padLng =
-    padMeters /
-    (111320 * Math.cos((((F.latMin + F.latMax) / 2) * Math.PI) / 180));
-  return (
-    lat >= F.latMin - padLat &&
-    lat <= F.latMax + padLat &&
-    lng >= F.lngMin - padLng &&
-    lng <= F.lngMax + padLng
-  );
 }

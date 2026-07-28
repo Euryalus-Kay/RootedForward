@@ -31,6 +31,10 @@ const TOURS = {
     data: "src/lib/tours/jackson-park-walk.ts",
     out: "public/media/jackson-park-walk/audio",
   },
+  harlem: {
+    data: "src/lib/tours/harlem-walk.ts",
+    out: "public/media/harlem-walk/audio",
+  },
 };
 function argEarly(name, def = null) {
   const i = process.argv.indexOf(`--${name}`);
@@ -93,6 +97,26 @@ const TONE_SETS = {
     15: "The longest and hardest stop, and the one the whole walk has been building to. Level, controlled and unhurried throughout; the two-halves paragraph is the con explained one move at a time. Warmth for the block clubs and for the bars and the Compass Players. Then cool right down for Kimpton, Levi and the 1953 law; that stretch is a record being read out, not an accusation. Read the four thousand families and Baldwin's line plainly, no flourish. Real regret, quietly, for the businesses that never reopened, and let the shopping carts land as the small good thing it is. Read the Nichols Park paragraph slowly and let the Japanese American sentence sit without any push. End flat and certain.",
     16: "The finale, and after the weight of the last stop this one lifts. Let real affection in for the concession stands and the painters who took them over; that stretch is the warmest thing in the tour. Give the two-things-are-true paragraph room, evenhanded and unhurried. Slow for 'run the whole line once' and read that list with weight, one clean beat between each. End warm on the thanks.",
   },
+  harlem: {
+    0: "The day trip, and it sits outside the walk. Read it as a footnote that turns out to matter, calm and explanatory, a researcher telling you where the missing half of the story went. Plain and exact on the two court cases. Warm for Basie and Louis and Ella on those streets. End practical and quiet on the advice about walking a neighbourhood where people live.",
+    1: "The welcome, and the whole tour's frame. Settled and glad the listener came, letting them in on a history most visitors to this corner never hear. Enjoy the Theresa's glamour when it arrives, Joe Louis and Castro and the forty suites. Drop all the warmth for the twenty-seven years of refusing Black guests, and read the Ebony quote about dim hallways plainly, as the magazine's own words. The Love B. Woods correction is a researcher being straight with you, not a gotcha. End pointed and quiet looking east toward 5 West 125th.",
+    2: "Four fights on two hundred yards, so this one has momentum. Real energy for the Blumstein's picket and the sign that says We Won't Shop Where We Can't Work. Slow right down for Lino Rivera and the penknife; that paragraph is a chain of small accidents and each link needs its own beat. Level and unflinching for the three dead, and read Lloyd Hobbs's name and age without any push. Lift again for the Apollo reopening. End on the pattern, quietly.",
+    3: "The optional stop, and the voice can be a little cooler and more explanatory here, a guide who has walked you off the route on purpose. Real contempt held in check for the basement entrance and fifteen percent of the facilities; say Gym Crow the way the protesters said it. Wonder at the waterfall standing in the hole. End by pointing back toward the main walk.",
+    4: "The oldest row, and the prettiest thing on the tour. Genuine affection for the porches and the turned columns and the front yards, a guide who likes this block. Then flatten out completely for the Astors keeping it white by simply not selling; that is the quiet point of the stop and it needs no emphasis at all. Read the Claude McKay line with warmth. End level on what a covenant law cannot reach.",
+    5: "The shortest stop and the coldest. No warmth and no drama. Read the covenant's own wording slowly and let the fractions of ancestry sit; the words do the work. The YWCA sentence is a fact, not an outrage. The last paragraph, about a covenant costing money even when it fails, is the argument of the whole tour, so read it plainly and let it land.",
+    6: "Payton is the most enjoyable person on this walk, so let some admiration in for the nerve of it. Storyteller pace through the evictions and the counter-move. Then drop right down for the premium; that stretch is a mechanism being explained, one step at a time, anger held well back. Read the 1915 study's title as the title it is.",
+    7: "The block where Black Harlem began, and the tone should register that as an arrival rather than a landmark. Steady and warm. The subway correction is offhand, a researcher tidying up. Cool for the improvement corporation's fourth item and the phrase a proper environment.",
+    8: "The one unambiguously good thing on the route, and it is still here. Warm and unhurried throughout, real pleasure in Schomburg being told as a boy that Black people had no history and spending his life answering it. Let the closing sentence about the collection still being on this corner rest.",
+    9: "The churches that bought Harlem. Respect without reverence. Tandy and Foster's names get weight. Real relish for Mother AME Zion using an intermediary and paying less than half; that is the one moment on this tour where the mechanism runs the other way. The St. Philip's figure is attributed out loud to James Weldon Johnson, so read that attribution as an attribution.",
+    10: "Beauty first, unhurried, McKim Mead and White and the brown brick and the alleys. Then flat and exact for the sales policy; the correction that these houses carried no racial covenant matters, and it is more damning rather than less, so read it as a finding. End on the twenty-five years of appreciation that went somewhere else.",
+    11: "The heaviest numbers on the walk. Abyssinian gets warmth and scale. The Commission's findings are read the way you read a report, level and precise, no editorial in the voice at all, and slow for the density figures. Roberts and Frazier get their correct roles. End quiet.",
+    12: "Cold and controlled. Metropolitan Life built this after refusing to let Black tenants into Stuyvesant Town, and that sentence should be delivered without any lift. Read Ecker's line as reported speech. The defeated amendment is a fact of record. Let the closing sit without commentary.",
+    13: "Short, and about a thing that is gone. Let the Savoy be fun for a moment, the dancing and the two bandstands, because the loss only means something if the place does. Then flat for the clearance arithmetic. End on the plaque in the sidewalk, quiet, no swell.",
+    14: "The emotional centre of the tour and the one to hold steadiest. Genuine warmth for what Dunbar was, the garden, Du Bois and Robeson and Matthew Henson at the same address. Then absolute evenness for the foreclosure. Read the Landmarks Commission's wording exactly, the equity returned and the tenants placed on a rental basis, and let the sentence about five hundred families changing from owners to renters in one day stand entirely alone. No anger in the voice. It does not need any.",
+    15: "After Dunbar this one lifts, and it should. Real pleasure that the first federally built housing for Black tenants is good architecture with trees and courtyards. John Louis Wilson Jr. gets his name said properly. Careful and plain on the application figures and on naming which source gives which number. End warm.",
+    16: "Sugar Hill, so open with the view and the height and who lived here. Then the appraiser: read the form's own words, good condition and trend of desirability static to down, in a flat clerk's register, because the gap between what he saw and what he wrote is the whole point. Lift at the end for the tenants who own the building now.",
+    17: "The present tense, and the tour ends on a question rather than a verdict. Steady and careful with the population figures, including the caution about survey variation. The hearse down Lenox Avenue is described, not dramatised. Read the two June 2026 events side by side and let the listener decide. End open, and thank them.",
+  },
   "jackson-park": {
     1: "This is the welcome. Bright but settled, glad the listener showed up. Let the last paragraph slow slightly as the history opens up.",
     2: "Storyteller mode, enjoying the spectacle of the Ferris wheel. Drop the brightness completely for the sentence about people being put on display; read it level and unflinching, with a beat of silence after 'That happened on this lawn too.' Warm again for the playground.",
@@ -113,6 +137,16 @@ function paceText(text) {
   return text.replace(/([.!?])\s+/g, "$1\n");
 }
 
+/** Remove the page's markup so it is never spoken. `**bold**` carries
+ *  the history for readers and `*italic*` sets publication titles;
+ *  neither should change a syllable of the narration. */
+function stripMarkup(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/gs, "$1")
+    .replace(/\*(.+?)\*/gs, "$1")
+    .replace(/\*/g, "");
+}
+
 // ---- pull { number, transcript[] } for each stop out of the TS file ----
 function loadStops() {
   const src = readFileSync(DATA, "utf8");
@@ -127,9 +161,29 @@ function loadStops() {
     const strRe = /"((?:[^"\\]|\\.)*)"/g;
     let s;
     while ((s = strRe.exec(body)) !== null) {
-      strings.push(JSON.parse(`"${s[1]}"`).replace(/\*\*/g, ""));
+      strings.push(stripMarkup(JSON.parse(`"${s[1]}"`)));
     }
     if (strings.length) stops.push({ slug, number, text: strings.join("\n\n") });
+  }
+
+  // Harlem carries a day trip with its own audio, outside the numbered
+  // stops. Same treatment, so one run records the whole tour.
+  const dayTrip = /dayTrip:\s*\{[\s\S]*?body:\s*\[([\s\S]*?)\n\s*\],/.exec(src);
+  const audioSrc = /dayTrip:\s*\{[\s\S]*?audioSrc:\s*`\$\{MEDIA\}\/audio\/([a-z0-9-]+)\.mp3`/.exec(src);
+  if (dayTrip && audioSrc) {
+    const strings = [];
+    const strRe = /"((?:[^"\\]|\\.)*)"/g;
+    let s2;
+    while ((s2 = strRe.exec(dayTrip[1])) !== null) {
+      strings.push(stripMarkup(JSON.parse(`"${s2[1]}"`)));
+    }
+    if (strings.length) {
+      stops.push({
+        slug: audioSrc[1],
+        number: 0,
+        text: strings.join("\n\n"),
+      });
+    }
   }
   return stops;
 }

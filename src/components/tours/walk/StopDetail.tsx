@@ -12,6 +12,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
 import AudioPlayer from "./AudioPlayer";
+import Marked from "./Marked";
 
 interface StopDetailProps {
   stop: WalkStop;
@@ -36,22 +37,9 @@ interface StopDetailProps {
 export const gmapsWalkingUrl = (lat: number, lng: number) =>
   `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
-/** render `**bold**` spans inside a transcript paragraph */
+/** render `**bold**` and `*italic*` inside a transcript paragraph */
 function RichText({ text }: { text: string }) {
-  const parts = text.split(/\*\*(.+?)\*\*/g);
-  return (
-    <>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <strong key={i} className="font-semibold text-ink">
-            {part}
-          </strong>
-        ) : (
-          part
-        )
-      )}
-    </>
-  );
+  return <Marked text={text} />;
 }
 
 /** plates anchored to a given paragraph index */
