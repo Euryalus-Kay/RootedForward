@@ -94,7 +94,19 @@ export default function ToursPage() {
             </h2>
             <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
               {WALK_INTRO.paragraphs.map((para, i) => (
-                <p key={i}>{para}</p>
+                <p key={i}>
+                  {/* the bold spans carry the history on their own, so
+                      anyone skimming still gets the through-line */}
+                  {para.split(/\*\*(.+?)\*\*/g).map((part, j) =>
+                    j % 2 === 1 ? (
+                      <strong key={j} className="font-semibold text-ink">
+                        {part}
+                      </strong>
+                    ) : (
+                      part
+                    )
+                  )}
+                </p>
               ))}
             </div>
             <p className="mt-5 font-display text-[13px] italic text-ink/60">
