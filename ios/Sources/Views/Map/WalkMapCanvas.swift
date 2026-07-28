@@ -2,7 +2,8 @@ import SwiftUI
 
 // ------------------------------------------------------------------
 // The engraved tour map, drawn natively from the same TIGER-derived
-// geometry the site uses (already in viewBox units). Park and campus
+// geometry the site uses (already in viewBox units). City-agnostic:
+// the labels and grounds arrive on the payload. Park and campus
 // grounds, water with hatching, three weights of streets, the rail
 // line with cross ties, street names set along their streets, the
 // dotted rust route, named photograph-medallion stop markers that
@@ -15,8 +16,12 @@ struct WalkMapCanvas: View {
     let projection: WalkProjection
     let stops: [WalkStop]
     let route: [[Double]]
-    /// The 1929 USGS survey plate, cropped to the geometry frame.
+    /// The survey plate for this walk, cropped to the geometry frame.
     var baseMap: UIImage? = nil
+    /// This walk's labels, park outlines and legend, off the payload.
+    /// Nil only for a payload predating the second city, which can
+    /// only be Hyde Park, so the built-in values below stand in.
+    var mapConfig: WalkMapConfig? = nil
     /// Dashed spurs out to the optional detour stops.
     var detourRoutes: [[[Double]]]? = nil
     /// Region of the plate to show, in projected viewBox units. Nil
@@ -41,7 +46,7 @@ struct WalkMapCanvas: View {
     }
 
     // Committed site labels (WalkMap.tsx PLACE_LABELS)
-    private static let placeLabels: [PlaceLabel] = [
+    private static let fallbackPlaceLabels: [PlaceLabel] = [
         .init(text: "Lake Michigan", lat: 41.797, lng: -87.5755, size: 12),
         .init(text: "Hyde Park", lat: 41.7973, lng: -87.5975, size: 13),
         .init(text: "Midway Plaisance", lat: 41.78635, lng: -87.6005, size: 10),
@@ -54,7 +59,7 @@ struct WalkMapCanvas: View {
     ]
 
     // Street names in fine italic along their streets (WalkMap.tsx)
-    private static let streetLabels: [PlaceLabel] = [
+    private static let fallbackStreetLabels: [PlaceLabel] = [
         .init(text: "E Hyde Park Blvd", lat: 41.8026, lng: -87.5948, size: 8),
         .init(text: "E 53rd St", lat: 41.8001, lng: -87.591, size: 9),
         .init(text: "E 55th St", lat: 41.7957, lng: -87.5993, size: 9),
@@ -74,7 +79,7 @@ struct WalkMapCanvas: View {
 
     // Soft green ground for the parks; the lake polygon paints over
     // the eastern overhang (WalkMap.tsx PARK_AREAS)
-    private static let parkAreas: [[[Double]]] = [
+    private static let fallbackParkAreas: [[[Double]]] = [
         [[41.7936, -87.587], [41.7936, -87.566], [41.7737, -87.556], [41.7737, -87.587]],
         [[41.7872, -87.5868], [41.7872, -87.613], [41.7854, -87.613], [41.7854, -87.5868]],
         [[41.8045, -87.6063], [41.8045, -87.618], [41.7815, -87.618], [41.7815, -87.6063]],
@@ -84,13 +89,34 @@ struct WalkMapCanvas: View {
 
     // The university's main quadrangles, tinted brass like printed
     // maps mark institutions (WalkMap.tsx CAMPUS_AREAS)
-    private static let campusAreas: [[[Double]]] = [
+    private static let fallbackCampusAreas: [[[Double]]] = [
         [[41.7921, -87.6014], [41.7921, -87.5977], [41.7885, -87.5977], [41.7885, -87.6014]]
     ]
 
     // Where each stop's name sits relative to its marker; tuned for
     // phone scale, where the 53rd Street cluster runs tight
-    private static let stopLabelSide: [String: String] = [
+    /// Names and grounds for the walk in hand, falling back to the
+    /// Hyde Park tables above when an older payload carries none.
+    private var placeLabels: [PlaceLabel] {
+        guard let m = mapConfig else { return Self.fallbackPlaceLabels }
+        return m.placeLabels.map {
+            PlaceLabel(text: $0.text, lat: $0.lat, lng: $0.lng, size: CGFloat($0.size))
+        }
+    }
+
+    private var streetLabels: [PlaceLabel] {
+        guard let m = mapConfig else { return Self.fallbackStreetLabels }
+        return m.streetLabels.map {
+            PlaceLabel(text: $0.text, lat: $0.lat, lng: $0.lng,
+                       size: CGFloat($0.size), rotate: $0.rotate)
+        }
+    }
+
+    private var parkAreas: [[[Double]]] { mapConfig?.parkAreas ?? Self.fallbackParkAreas }
+    private var campusAreas: [[[Double]]] { mapConfig?.campusAreas ?? Self.fallbackCampusAreas }
+    private var areaName: String { mapConfig?.areaName ?? "Hyde Park" }
+
+    private static let fallbackStopLabelSide: [String: String] = [
         "cornells-stone": "above",
         "lake-park-tracks": "below",
         "robie-house": "right",
@@ -172,7 +198,7 @@ struct WalkMapCanvas: View {
                 Canvas { context, size in
                     draw(in: &context, size: size, scale: scale, spots: spots)
                 }
-                .accessibilityLabel("Map of Hyde Park with the walking route drawn between the stops")
+                .accessibilityLabel("Map of \(areaName) with the walking route drawn between the stops")
                 .accessibilityAddTraits(.isImage)
 
                 // Live markers over the drawing: each one is a real
@@ -216,7 +242,7 @@ struct WalkMapCanvas: View {
             Path(CGRect(x: 0, y: 0, width: geometry.viewBox.w, height: geometry.viewBox.h)),
             with: .color(RF.cream)
         )
-        // The 1929 survey plate under the drawing: period building
+        // The survey plate under the drawing: period building
         // fabric and shoreline engraving, flattened onto cream and
         // aligned to the same frame as the projection.
         if let baseMap {
@@ -390,10 +416,10 @@ struct WalkMapCanvas: View {
 
     /// Park and campus grounds under everything else.
     private func drawGrounds(in map: inout GraphicsContext) {
-        for ring in Self.parkAreas {
+        for ring in parkAreas {
             map.fill(projectedRing(ring), with: .color(RF.forest.opacity(0.07)))
         }
-        for ring in Self.campusAreas {
+        for ring in campusAreas {
             let p = projectedRing(ring)
             map.fill(p, with: .color(RF.mapBrass.opacity(0.07)))
             map.stroke(p, with: .color(RF.mapBrass.opacity(0.25)), lineWidth: 1)
@@ -422,7 +448,7 @@ struct WalkMapCanvas: View {
     }
 
     private func drawRoads(in map: inout GraphicsContext) {
-        // Alleys drop to a whisper now that the 1929 plate carries
+        // Alleys drop to a whisper now that the survey plate carries
         // the block fabric underneath
         for alley in geometry.roads.alleys {
             map.stroke(
@@ -479,7 +505,7 @@ struct WalkMapCanvas: View {
     }
 
     private func drawStreetLabels(in context: inout GraphicsContext, scale: CGFloat) {
-        for label in Self.streetLabels {
+        for label in streetLabels {
             let p = screen(projection.point(lat: label.lat, lng: label.lng), scale)
             var rotated = context
             rotated.translateBy(x: p.x, y: p.y)
@@ -500,7 +526,7 @@ struct WalkMapCanvas: View {
     private func drawPlaceLabels(in context: inout GraphicsContext, scale: CGFloat) {
         let canvasWidth = focus.width * scale
         let canvasHeight = focus.height * scale
-        for label in Self.placeLabels {
+        for label in placeLabels {
             let p = screen(projection.point(lat: label.lat, lng: label.lng), scale)
             // Labels for ground outside the cropped view stay off it.
             // Clamping without this test dragged "Lake Michigan" in
@@ -549,7 +575,7 @@ struct WalkMapCanvas: View {
                 .foregroundColor(i == currentIndex ? RF.rustDark : RF.inkLight)
             let width = context.resolve(text).measure(in: CGSize(width: 300, height: 30)).width
 
-            var side = Self.stopLabelSide[stop.id] ?? "below"
+            var side = (mapConfig?.stopLabelSide ?? Self.fallbackStopLabelSide)[stop.id] ?? "below"
             if side == "right", center.x + r + 7 + width > canvasWidth - 4 {
                 side = "left"
             } else if side == "left", center.x - r - 7 - width < 4 {

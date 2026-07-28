@@ -77,11 +77,23 @@ struct TourDetailView: View {
 
     // MARK: - Hero
 
+    /// The walk's name broken after the verb, so "Walk Hyde Park" sets
+    /// as two lines the way it was drawn, and "Walk Harlem" does the
+    /// same without needing its own layout.
+    private var titleLines: [String] {
+        let title = content.tour.title
+        guard title.hasPrefix("Walk "), title.count > 5 else { return [title] }
+        return ["Walk", String(title.dropFirst(5))]
+    }
+
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: -12) {
-                Text("Walk")
-                Text("Hyde Park")
+                // "Walk Hyde Park" and "Walk Harlem" both set as two
+                // lines, the verb over the place.
+                ForEach(Array(titleLines.enumerated()), id: \.offset) { _, line in
+                    Text(line)
+                }
             }
             .font(RF.display(48, weight: 600))
             .foregroundStyle(RF.forest)
@@ -89,7 +101,7 @@ struct TourDetailView: View {
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
 
-            Text("Hyde Park mirrors the practices of race-based discrimination that ran through Chicago and the country over the last two centuries.")
+            Text(content.tour.dek)
                 .font(RF.body(17))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .lineSpacing(6)
@@ -102,7 +114,7 @@ struct TourDetailView: View {
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            // The route's own 1929 survey plate, held still. Home
+            // The route's own survey plate, held still. Home
             // used to wear the identical drifting HOLC scan, so the
             // push landed on a screen that looked like the one it
             // came from.
@@ -110,7 +122,8 @@ struct TourDetailView: View {
                 .frame(height: 420)
                 .overlay {
                     MediaImage(
-                        sitePath: "/media/hyde-park-walk/map-base-1929.jpg",
+                        sitePath: content.map?.baseMapSrc
+                            ?? "/media/hyde-park-walk/map-base-1929.jpg",
                         contentMode: .fill
                     )
                     .scaleEffect(1.06)

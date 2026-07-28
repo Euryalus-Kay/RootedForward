@@ -14,6 +14,29 @@ struct WalkPayload: Codable, Equatable {
     let intro: WalkIntro
     let tour: WalkTour
     let geometry: WalkGeometry
+    /// Which walk this is. Absent in the single-tour payloads shipped
+    /// before Harlem, where it can only have been Hyde Park.
+    let slug: String?
+    /// Every walk the site currently has, so the app can list one it is
+    /// not holding. Absent in older payloads.
+    let tours: [WalkTourSummary]?
+    /// How this walk's map is dressed. Absent in older payloads, where
+    /// the canvas falls back to its built-in Hyde Park labels.
+    let map: WalkMapConfig?
+
+    var id: String { slug ?? "hyde-park" }
+}
+
+struct WalkTourSummary: Codable, Equatable, Identifiable {
+    let slug: String
+    let title: String
+    let dek: String
+    let startLabel: String
+    let stopCount: Int
+    let detourCount: Int
+    let distanceMiles: Double
+    let listenMinutes: Int
+    var id: String { slug }
 }
 
 struct WalkIntro: Codable, Equatable {
@@ -37,11 +60,60 @@ struct WalkTour: Codable, Equatable {
     /// The one-screen version of the detour warning; absent in older
     /// payloads, where the alert falls back to its own wording.
     let detourNotice: String?
+    /// A place worth going that is not walkable from the route, with
+    /// its own audio. Harlem has one; Hyde Park does not.
+    let dayTrip: WalkDayTrip?
+    /// The claims the research threw out, printed after the sources.
+    let checks: WalkChecks?
 
     /// The walk proper, without the two optional detours. Counting
     /// against this is what lets someone who finishes the walk
     /// actually reach the end of the number.
     var mainline: [WalkStop] { stops.filter { !$0.isDetour } }
+}
+
+struct WalkDayTrip: Codable, Equatable {
+    let title: String
+    let dek: String
+    let body: [String]
+    let audioSrc: String
+    let audioSeconds: Double
+    let sources: [WalkSource]?
+}
+
+struct WalkChecks: Codable, Equatable {
+    let title: String
+    let intro: String
+    let items: [String]
+}
+
+/// The printed plate a walk's map is drawn over and everything set on
+/// it. Travels on the payload so a second city needs no App Store
+/// release. Mirrors WalkMapConfig in src/lib/tours/walk-utils.ts.
+struct WalkMapConfig: Codable, Equatable {
+    let baseMapSrc: String
+    let areaName: String
+    let placeLabels: [WalkMapLabel]
+    let streetLabels: [WalkMapStreetLabel]
+    let parkAreas: [[[Double]]]
+    let campusAreas: [[[Double]]]
+    let stopLabelSide: [String: String]
+    let detourLegend: String?
+}
+
+struct WalkMapLabel: Codable, Equatable {
+    let text: String
+    let lat: Double
+    let lng: Double
+    let size: Double
+}
+
+struct WalkMapStreetLabel: Codable, Equatable {
+    let text: String
+    let lat: Double
+    let lng: Double
+    let rotate: Double
+    let size: Double
 }
 
 struct WalkPractical: Codable, Equatable, Identifiable {

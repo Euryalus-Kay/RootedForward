@@ -45,7 +45,7 @@ struct HomeView: View {
             }
             .background(RF.cream)
             .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(for: String.self) { _ in
+            .navigationDestination(for: String.self) { slug in
                 TourDetailView(
                     openTour: { index, plate in
                         tourTarget = TourTarget(index: index, plate: plate)
@@ -54,6 +54,10 @@ struct HomeView: View {
                         tourTarget = TourTarget(index: 0, plate: nil, onIntro: true)
                     }
                 )
+                // The detail screen and everything it pushes read the
+                // selected walk off the store, so point it here rather
+                // than threading a slug through every child.
+                .onAppear { content.select(slug) }
             }
         }
         // The chip contributes its own inset, so no screen has to
@@ -128,7 +132,7 @@ struct HomeView: View {
             // are at the same size as the mission itself.
             (Text("A student-run Chicago nonprofit. ")
                 .foregroundColor(RF.rust)
-                + Text("Rooted Forward educates people about racial inequality in Chicago and works to address it through education and political advocacy.")
+                + Text("Rooted Forward educates people about racial inequality in cities and works to address it through education and political advocacy.")
                 .foregroundColor(RF.forest))
                 .font(RF.display(26, weight: 600))
                 .lineSpacing(5)
@@ -174,6 +178,24 @@ struct HomeView: View {
 
     // MARK: - Tours
 
+    /// One plain line under a walk's name. Built from the walk's own
+    /// numbers so a third city needs no new copy here.
+    private static func line(for walk: WalkTourSummary) -> String {
+        let stops = "\(walk.stopCount) stops"
+        let miles = String(format: "%.1f", walk.distanceMiles)
+        return "\(stops), \(miles) miles, about \(walk.listenMinutes) minutes of audio."
+    }
+
+    /// The card's picture. Uses the walk's own first stop, so it is
+    /// always a photograph the walk actually ships.
+    private static func cover(for slug: String, tour: WalkTour?) -> String {
+        if slug == DEFAULT_SLUG {
+            return "/media/hyde-park-walk/hyde-park-aerial-1927.jpg"
+        }
+        guard let first = tour?.stops.first else { return "" }
+        return (first.images.first ?? first.nowImage)?.src ?? ""
+    }
+
     private var tours: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Self-guided tours")
@@ -181,21 +203,30 @@ struct HomeView: View {
                 .foregroundStyle(RF.forest)
                 .accessibilityAddTraits(.isHeader)
 
-            Text("Free audio tours walking you through the racial history of these locations.")
+            Text("Free audio tours walking you through the racial history of these neighborhoods.")
                 .font(RF.body(15.5))
                 .foregroundStyle(RF.ink.opacity(0.7))
                 .padding(.top, 6)
 
-            NavigationLink(value: "hyde-park-walk") {
-                TourCard(
-                    visited: progress.visitedCount(in: content.tour.mainline),
-                    total: content.tour.mainline.count,
-                    hasProgress: progress.hasProgress
-                )
+            ForEach(content.catalogue) { walk in
+                let held = content.payloads[walk.slug]?.tour
+                let mainline = held?.mainline ?? []
+                NavigationLink(value: walk.slug) {
+                    TourCard(
+                        title: walk.title,
+                        line: Self.line(for: walk),
+                        cover: Self.cover(for: walk.slug, tour: held),
+                        visited: progress.visitedCount(in: mainline),
+                        total: max(mainline.count, walk.stopCount),
+                        hasProgress: !mainline.isEmpty
+                            && progress.visitedCount(in: mainline) > 0
+                    )
+                }
+                .buttonStyle(PressablePlateStyle())
+                .accessibilityIdentifier(
+                    walk.slug == DEFAULT_SLUG ? "home-tour-card" : "home-tour-card-\(walk.slug)")
+                .padding(.top, 18)
             }
-            .buttonStyle(PressablePlateStyle())
-            .accessibilityIdentifier("home-tour-card")
-            .padding(.top, 18)
         }
         .padding(.horizontal, 24)
         .padding(.top, 52)
@@ -249,7 +280,12 @@ enum InfoSheet: String, Identifiable {
 /// The walk's listing card. A photograph, the title, one line, and
 /// once the walk is under way, how far along it is.
 private struct TourCard: View {
-    @EnvironmentObject private var content: ContentStore
+    let title: String
+    /// One line under the name, plain, the same job the blurb does on
+    /// the site's tours page.
+    let line: String
+    /// The card's picture, a site media path.
+    let cover: String
     let visited: Int
     let total: Int
     let hasProgress: Bool
@@ -257,7 +293,7 @@ private struct TourCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             MediaImage(
-                sitePath: "/media/hyde-park-walk/hyde-park-aerial-1927.jpg",
+                sitePath: cover,
                 contentMode: .fill
             )
             .frame(height: 168)
@@ -269,11 +305,11 @@ private struct TourCard: View {
             .padding(.bottom, 10)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text(content.tour.title)
+                Text(title)
                     .font(RF.display(26, weight: 600))
                     .foregroundStyle(RF.forest)
 
-                Text("A racial history of the neighborhood.")
+                Text(line)
                     .font(RF.body(15, weight: 600))
                     .foregroundStyle(RF.ink.opacity(0.85))
                     .lineSpacing(4)

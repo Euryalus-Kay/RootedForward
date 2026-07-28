@@ -18,6 +18,14 @@ struct MapSheetView: View {
 
     @State private var thumbs: [String: UIImage] = [:]
     @State private var baseMap: UIImage?
+
+    /// "Base map from the USGS survey of 1947." The year is carried in
+    /// the plate's own file name, which is the only place it lives.
+    private var baseMapCredit: String {
+        let src = content.map?.baseMapSrc ?? "map-base-1929.jpg"
+        let year = src.split(separator: "-").last?.prefix(4) ?? "1929"
+        return "Base map from the USGS survey of \(year)."
+    }
     /// The region of the plate on screen. This is the zoom state:
     /// pinching narrows the crop rather than scaling the drawing, so
     /// markers and type stay finger-sized and crowded stops actually
@@ -57,7 +65,8 @@ struct MapSheetView: View {
                 crop = progress.hasProgress ? focusCrop(around: currentIndex) : widestCrop
             }
             if baseMap == nil {
-                baseMap = await content.image(for: "/media/hyde-park-walk/map-base-1929.jpg")
+                baseMap = await content.image(
+                    for: content.map?.baseMapSrc ?? "/media/hyde-park-walk/map-base-1929.jpg")
             }
             await loadThumbs()
         }
@@ -102,7 +111,7 @@ struct MapSheetView: View {
     private var mapPlate: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Hyde Park")
+                Text(content.map?.areaName ?? "Hyde Park")
                     .font(RF.display(20, weight: 600))
                     .foregroundStyle(RF.ink)
                     .accessibilityAddTraits(.isHeader)
@@ -120,6 +129,7 @@ struct MapSheetView: View {
                 stops: content.tour.stops,
                 route: content.tour.route,
                 baseMap: baseMap,
+                mapConfig: content.map,
                 detourRoutes: content.tour.detourRoutes,
                 cropRect: crop ?? widestCrop,
                 currentIndex: currentIndex,
@@ -478,7 +488,7 @@ struct MapSheetView: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     stopList
-                    Text("Base map from the USGS survey of 1929.")
+                    Text(baseMapCredit)
                         .font(RF.display(11.5, weight: 400, italic: true))
                         .foregroundStyle(RF.warmGrayDark)
                 }
