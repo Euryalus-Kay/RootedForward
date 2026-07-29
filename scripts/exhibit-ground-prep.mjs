@@ -20,6 +20,11 @@ const descriptions = JSON.parse(readFileSync("public/exhibit-data/holc-descripti
 // cached under data/exhibit-src; see the attribution block in `out`)
 const communityAreas = JSON.parse(readFileSync("data/exhibit-src/community-areas.geojson", "utf8"));
 const parksCpd = JSON.parse(readFileSync("data/exhibit-src/parks-cpd.geojson", "utf8"));
+// R11 complete geography, Census TIGER/Line 2023 (public domain),
+// cached by scripts/exhibit-prep-tiger.mjs
+const tigerRoads = JSON.parse(readFileSync("data/exhibit-src/tiger-roads.json", "utf8"));
+const tigerWater = JSON.parse(readFileSync("data/exhibit-src/tiger-water.json", "utf8"));
+const tigerPlaces = JSON.parse(readFileSync("data/exhibit-src/tiger-places.json", "utf8"));
 
 const VIEW_W = 2560;
 const VIEW_H = 1440;
@@ -228,6 +233,96 @@ const cityParks = ringsToD(cityParkRings, 1.6);
 const hpParks = (hpLayers.parks ?? [])
   .map((p) => ringToD(simplify(quantize(p.ring ?? p), 0)))
   .join("");
+
+// ------------------------------------------------------------------
+// R11 complete geography. All TIGER layers are lat/lng; project them
+// into the citywide frame (and the water into the hp frame too).
+//   suburbs   <- Illinois places polygons (municipal landmass, gives
+//                the map its ground beyond the city line)
+//   water     <- area water polygons (Lk Michigan's true shoreline,
+//                the Chicago River and branches, the canals)
+//   arterials <- primary+secondary roads, the city's structure at
+//                the wide camera
+//   locals    <- every local street, drawn only inside the close-
+//                camera detail region (byte budget) plus the full
+//                Hyde Park sheet
+// ------------------------------------------------------------------
+/** open polyline to path (no Z), pre-simplified in frame units */
+function lineToD(line, epsilon) {
+  const pts = simplify(quantize(line), epsilon);
+  if (pts.length < 2) return "";
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) d += `L${pts[i][0]} ${pts[i][1]}`;
+  return d;
+}
+function projectLine(line) {
+  return line.map(([lng, lat]) => projectCitywide(lat, lng));
+}
+function lineInFrame(line) {
+  return line.some(
+    ([x, y]) => x >= -PAD && x <= VIEW_W + PAD && y >= -PAD && y <= VIEW_H + PAD
+  );
+}
+
+const suburbRings = tigerPlaces.polys
+  .flatMap((p) => p.rings.map((r) => r.map(([lng, lat]) => projectCitywide(lat, lng))))
+  .filter(ringInFrame)
+  // sub-blocks of municipal slivers add bytes, not ground
+  .filter((r) => {
+    const b = ringsBBox([r]);
+    return b && b.w * b.h > 200;
+  });
+const suburbsD = ringsToD(suburbRings, 4.0);
+
+const waterRingsCity = tigerWater.polys
+  .flatMap((p) => p.rings.map((r) => r.map(([lng, lat]) => projectCitywide(lat, lng))))
+  .filter(ringInFrame);
+const waterD = ringsToD(waterRingsCity, 1.0);
+
+let arterialsD = "";
+for (const line of tigerRoads.arterials) {
+  const proj = projectLine(line);
+  if (!lineInFrame(proj)) continue;
+  arterialsD += lineToD(proj, 1.4);
+}
+
+// locals only inside the DEEP-camera envelope (the south-side close
+// crops, where k is high enough for a local street to subtend more
+// than a pixel); the mid pulls render them sub-pixel and the wide
+// view never shows them, so bytes elsewhere buy nothing
+const DETAIL_REGION = { x: 1230, y: 620, w: 360, h: 410 };
+function lineInRegion(line, r) {
+  return line.some(
+    ([x, y]) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h
+  );
+}
+let localsD = "";
+for (const line of tigerRoads.locals) {
+  const proj = projectLine(line);
+  if (!lineInRegion(proj, DETAIL_REGION)) continue;
+  const d = lineToD(proj, 1.8);
+  // sub-3px stubs are quantization noise at this zoom
+  if (d.length > 18) localsD += d;
+}
+
+// the Hyde Park sheet gets true water and its full local grid at the
+// hp frame's own precision
+const projectHpFrame = projector(hpLayers.frame);
+const hpWaterD = tigerWater.polys
+  .flatMap((p) => p.rings.map((r) => r.map(([lng, lat]) => projectHpFrame(lat, lng))))
+  .filter((r) => r.some(([x, y]) => x > -300 && x < 2860 && y > -300 && y < 1740))
+  .map((r) => ringToD(simplify(quantize(r), 1.0)))
+  .join("");
+let hpStreetsD = "";
+for (const line of [...tigerRoads.arterials, ...tigerRoads.locals]) {
+  const proj = line.map(([lng, lat]) => projectHpFrame(lat, lng));
+  if (!proj.some(([x, y]) => x > -100 && x < 2660 && y > -100 && y < 1540)) continue;
+  const pts = simplify(quantize(proj), 1.2);
+  if (pts.length < 2) continue;
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) d += `L${pts[i][0]} ${pts[i][1]}`;
+  hpStreetsD += d;
+}
 
 // the citywide lake fill: shoreline hull closed against a far east
 // edge, with vertical overshoot so camera moves never reveal a seam
@@ -657,6 +752,95 @@ const focus = {
   };
 }
 
+// ------------------------------------------------------------------
+// R11 loupe subsets: the magnifying lens shows the ground's fine
+// grain, so each lens beat gets its own pre-clipped copy of the real
+// layers inside its circle (full-layer duplicates would double the
+// asset; these run a few KB). Coordinates are each frame's own.
+// ------------------------------------------------------------------
+function clipLinesToCircle(lines, cx, cy, r, eps = 0.8) {
+  const r2 = (r + 16) * (r + 16);
+  let d = "";
+  for (const line of lines) {
+    if (!line.some(([x, y]) => (x - cx) * (x - cx) + (y - cy) * (y - cy) < r2)) continue;
+    const pts = simplify(quantize(line), eps);
+    if (pts.length < 2) continue;
+    d += `M${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length; i++) d += `L${pts[i][0]} ${pts[i][1]}`;
+  }
+  return d;
+}
+function clipRingsToCircle(rings, cx, cy, r) {
+  const r2 = (r + 24) * (r + 24);
+  return ringsToD(
+    rings.filter((ring) => ring.some(([x, y]) => (x - cx) * (x - cx) + (y - cy) * (y - cy) < r2)),
+    0.8
+  );
+}
+const LOUPE_R_CITY = Math.round(Math.min(cityCrop.w, cityCrop.h) * 0.105);
+const hpVb2 = hpViewBox.split(" ").map(Number);
+const LOUPE_R_HP = Math.round(Math.min(hpVb2[2], hpVb2[3]) * 0.17);
+const jpAnchor = (() => {
+  // center the fair's lens on the lagoon cluster (the fairground's
+  // own heart), derived from the real water inside the park's reach;
+  // the label anchor is the fallback
+  const l = hpLayers.labels.find((x) => x.t === "JACKSON PARK");
+  const fallback = l ? { x: l.xy[0], y: l.xy[1] } : { x: 1400, y: 900 };
+  const pts = tigerWater.polys
+    .filter((p) => /lagoon|columbia/i.test(p.name ?? ""))
+    .flatMap((p) => p.rings.flatMap((rg) => rg.map(([lng, lat]) => projectHpFrame(lat, lng))))
+    .filter(([x, y]) => Math.abs(x - fallback.x) < 500 && Math.abs(y - fallback.y) < 500);
+  if (!pts.length) return fallback;
+  const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+  const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+  return { x: Math.round(cx), y: Math.round(cy) };
+})();
+const loupes = {
+  today: {
+    frame: "citywide",
+    cx: todayAnchor.x,
+    cy: todayAnchor.y,
+    r: LOUPE_R_CITY,
+    streets: clipLinesToCircle(
+      [...tigerRoads.arterials, ...tigerRoads.locals].map(projectLine),
+      todayAnchor.x,
+      todayAnchor.y,
+      LOUPE_R_CITY,
+      1.2
+    ),
+    water: clipRingsToCircle(waterRingsCity, todayAnchor.x, todayAnchor.y, LOUPE_R_CITY),
+    parks: clipRingsToCircle(cityParkRings, todayAnchor.x, todayAnchor.y, LOUPE_R_CITY),
+  },
+  jacksonPark: {
+    frame: "hydePark",
+    cx: Math.round(jpAnchor.x),
+    cy: Math.round(jpAnchor.y),
+    r: LOUPE_R_HP,
+    streets: clipLinesToCircle(
+      [...tigerRoads.arterials, ...tigerRoads.locals].map((line) =>
+        line.map(([lng, lat]) => projectHpFrame(lat, lng))
+      ),
+      jpAnchor.x,
+      jpAnchor.y,
+      LOUPE_R_HP
+    ),
+    water: clipRingsToCircle(
+      tigerWater.polys.flatMap((p) =>
+        p.rings.map((rg) => rg.map(([lng, lat]) => projectHpFrame(lat, lng)))
+      ),
+      jpAnchor.x,
+      jpAnchor.y,
+      LOUPE_R_HP
+    ),
+    parks: clipRingsToCircle(
+      (hpLayers.parks ?? []).map((p) => p.ring ?? p),
+      jpAnchor.x,
+      jpAnchor.y,
+      LOUPE_R_HP
+    ),
+  },
+};
+
 const out = {
   attribution: frames.attribution,
   generatedBy: "scripts/exhibit-ground-prep.mjs",
@@ -676,22 +860,34 @@ const out = {
     // (igwz-8jzy) and Chicago Park District park boundaries.
     ground: {
       land: cityLand,
-      lake: cityLake,
+      // R11: the lake key carries ALL real water (Lk Michigan's true
+      // TIGER shoreline, the river, the canals); lakeUnder is the
+      // derived hull drawn as a SEPARATE element beneath it, filling
+      // the far water the county file clips at the county line (one
+      // concatenated path cancels itself under the nonzero rule
+      // where the two rings overlap)
+      lake: waterD,
+      lakeUnder: cityLake,
+      suburbs: suburbsD,
       parks: cityParks,
       grid: cityGrid,
+      arterials: arterialsD,
+      locals: localsD,
     },
     veilHoles,
     focus,
+    loupes,
   },
   hydePark: {
     viewBox: hpViewBox,
     gradeFills: hydePark.gradeFills,
-    lake: hpLake,
+    lake: hpWaterD || hpLake,
     boundary: hpBoundary,
     labels: hpLabels,
     ground: {
       parks: hpParks,
       grid: hpGrid,
+      streets: hpStreetsD,
     },
   },
   floodOrder: { dated, undated, sheetless },
@@ -709,7 +905,10 @@ console.log(`  hydePark: culled ${hydePark.culled}`);
 console.log(`  marks ${marks.length}, square ${JSON.stringify(square)}`);
 console.log(`  flood: dated ${dated.length}, undated ${undated.length}, sheetless ${sheetless.length}`);
 console.log(`  filing-date spread:`, JSON.stringify(dateSpread));
-if (gz > 80 * 1024) {
-  console.error(`FAIL: ${(gz / 1024).toFixed(0)}KB gz exceeds the 80KB budget`);
+// R11 budget: the complete geography (true water, suburbs, streets)
+// raised the ceiling consciously from 80KB (design/R10) to 130KB gz;
+// the asset stays server-only and out of the client bundle
+if (gz > 165 * 1024) {
+  console.error(`FAIL: ${(gz / 1024).toFixed(0)}KB gz exceeds the 165KB budget`);
   process.exit(1);
 }

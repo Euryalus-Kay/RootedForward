@@ -130,9 +130,9 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 0) {
             // One headline, two inks. The rust sentence names who we
             // are at the same size as the mission itself.
-            (Text("A student-run Chicago nonprofit. ")
+            (Text("A student-run nonprofit started in Chicago. ")
                 .foregroundColor(RF.rust)
-                + Text("Rooted Forward educates people about racial inequality in cities and works to address it through education and political advocacy.")
+                + Text("Rooted Forward educates people about racial inequality in cities across the United States, and works to address it through education, awareness, and political advocacy.")
                 .foregroundColor(RF.forest))
                 .font(RF.display(26, weight: 600))
                 .lineSpacing(5)
@@ -274,11 +274,6 @@ struct TourTarget: Identifiable {
 /// The sheets behind the tour screen's info rows.
 enum InfoSheet: String, Identifiable {
     case plates, details
-    /// A place worth going that is not on the route, with its own
-    /// audio. Only walks that have one show the row.
-    case dayTrip
-    /// The claims the research threw out.
-    case checks
     var id: String { rawValue }
 }
 

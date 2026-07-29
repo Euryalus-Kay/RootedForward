@@ -382,6 +382,8 @@ export const scenarios = [
             tilt: st?.dataset.tilt,
             press: st?.dataset.press,
             veil: st?.dataset.veil,
+            loupeon: st?.getAttribute("data-loupeon"),
+            loupekey: st?.getAttribute("data-loupekey"),
             marksmode: st?.dataset.marksmode,
             grid: st?.dataset.gGrid,
             fabric: st?.dataset.gFabric,
@@ -428,6 +430,30 @@ export const scenarios = [
       const memorial = await at("#ch4", 1500);
       t.assert("the memorial is plumb, unveiled, unpressed in its own moment", memorial.tilt === "0" && memorial.veil === "off", JSON.stringify({ tilt: memorial.tilt, veil: memorial.veil }));
       t.assert("the memorial's stillness is stated for screen readers", memorial.sr.includes("Nothing on the map moves"), memorial.sr.slice(0, 100));
+      /* R11 filled ground: the complete geography ships in the sheet */
+      const geo = await page.evaluate(() => ({
+        suburbs: (document.querySelector("[data-suburbs]")?.getAttribute("d") ?? "").length,
+        arterials: (document.querySelector("[data-arterials]")?.getAttribute("d") ?? "").length,
+        locals: (document.querySelector("[data-locals]")?.getAttribute("d") ?? "").length,
+        hpStreets: (document.querySelector("[data-hp-streets]")?.getAttribute("d") ?? "").length,
+        river: (document.querySelector("[data-lake]")?.getAttribute("d") ?? "").length,
+      }));
+      t.assert(
+        "suburb landmass, street fabric, and true water are drawn",
+        geo.suburbs > 5000 && geo.arterials > 5000 && geo.locals > 5000 && geo.hpStreets > 3000 && geo.river > 5000,
+        JSON.stringify(geo)
+      );
+      /* R11 lens: the fair and the present-day beats carry the glass */
+      const lensFair = await at("#a1-fair", 1500);
+      t.assert("the fair's lens is on", lensFair.loupeon === "on", String(lensFair.loupeon));
+      const lensToday = await at("#ch11", 1700);
+      t.assert("the present-day lens is on with its scene", lensToday.loupeon === "on" && lensToday.loupekey === "today", JSON.stringify({ on: lensToday.loupeon, key: lensToday.loupekey }));
+      const lensParts = await page.evaluate(() => ({
+        ringR: Number(document.querySelector("[data-loupe-ring]")?.getAttribute("r") ?? 0),
+        streets: (document.querySelector('[data-loupe-scene="today"] [data-lp-streets]')?.getAttribute("d") ?? "").length,
+        veilLite: (document.querySelector("[data-veil-lite]")?.getAttribute("d") ?? "").length >= 0,
+      }));
+      t.assert("the lens has geometry inside the glass", lensParts.ringR > 50 && lensParts.streets > 2000, JSON.stringify(lensParts));
     },
   },
   {

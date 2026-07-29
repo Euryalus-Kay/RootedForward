@@ -38,8 +38,7 @@ final class ContentIntegrityTests: XCTestCase {
         // The seven red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
         XCTAssertEqual(interrupts.count, 7)
-        // Hyde Park has neither of the sections Harlem added
-        XCTAssertNil(tour.dayTrip)
+        // The corrections list is Harlem's alone
         XCTAssertNil(tour.checks)
     }
 
@@ -54,9 +53,6 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertEqual(tour.detourRoutes?.count, 1)
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
         XCTAssertEqual(interrupts.count, 8)
-        // The day trip is narrated, so it needs real audio behind it
-        XCTAssertEqual(tour.dayTrip?.title, "Addisleigh Park, St. Albans, Queens")
-        XCTAssertGreaterThan(tour.dayTrip?.audioSeconds ?? 0, 30)
         XCTAssertEqual(tour.checks?.items.count, 24)
     }
 
@@ -136,10 +132,7 @@ final class ContentIntegrityTests: XCTestCase {
 
     func testEveryAudioFileIsBundled() {
         for payload in Self.all {
-            var clips = payload.tour.stops.map { (id: $0.id, src: $0.audioSrc, seconds: $0.audioSeconds) }
-            if let trip = payload.tour.dayTrip {
-                clips.append((id: "day trip", src: trip.audioSrc, seconds: trip.audioSeconds))
-            }
+            let clips = payload.tour.stops.map { (id: $0.id, src: $0.audioSrc, seconds: $0.audioSeconds) }
             for clip in clips {
                 let name = (clip.src as NSString).lastPathComponent
                 let base = (name as NSString).deletingPathExtension

@@ -104,28 +104,11 @@ export interface WalkTour {
    *  stop. Shorter and blunter than the practical card, because it
    *  has to land on someone already standing on a sidewalk. */
   detourNotice?: string;
-  /** A place worth going that is not walkable from the route. Harlem
-   *  has one, because New York's racial covenants were taken to court
-   *  in Queens and not in Manhattan, so the legal half of that story
-   *  sits in another borough. Printed at the end of the tour page
-   *  with its own audio, outside the numbered stops. */
-  dayTrip?: WalkDayTrip;
   /** Claims the research rejected, printed under "How we checked
    *  this". Harlem attracts confident statistics that do not survive
    *  checking, and naming the ones we threw out is the honest way to
    *  publish the ones we kept. */
   checks?: WalkChecks;
-}
-
-export interface WalkDayTrip {
-  title: string;
-  /** one line under the title */
-  dek: string;
-  /** printed paragraphs */
-  body: string[];
-  audioSrc: string;
-  audioSeconds: number;
-  sources?: { label: string; url: string }[];
 }
 
 export interface WalkChecks {

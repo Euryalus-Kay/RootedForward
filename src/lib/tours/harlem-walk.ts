@@ -17,12 +17,13 @@ import type { WalkTour } from "./walk-types";
 // took the equity back out. Nearly every stop marks a place where
 // property was acquired and then lost value or lost ownership.
 //
-// Two things here have no counterpart in the Chicago file. The day
-// trip to Addisleigh Park carries its own audio, because New York's
-// racial covenants were litigated in Queens and not in Manhattan.
-// The checks list prints the claims the research threw out, which
-// matters more in Harlem than it did in Hyde Park, since Harlem
-// attracts confident statistics that do not survive checking.
+// One thing here has no counterpart in the Chicago file. The checks
+// list prints the claims the research threw out, which matters more
+// in Harlem than it did in Hyde Park, since Harlem attracts confident
+// statistics that do not survive checking. Addisleigh Park, where New
+// York's racial covenants actually reached the Court of Appeals, was
+// a standalone day trip for a few hours and is now one passage on the
+// covenant plate at stop five, which is where it belongs.
 //
 // Stop coordinates are read out of the same Census TIGER geometry
 // the map is drawn from (scripts/tiger-intersections.mjs), so every
@@ -38,7 +39,7 @@ const MEDIA = "/media/harlem-walk";
 
 export const HARLEM_WALK: WalkTour = {
   title: "Walk Harlem",
-  dek: "A free, self-guided audio tour from the Hotel Theresa to 145th Street, presented in chronological order. The main route includes sixteen stops and covers about five miles, with one optional detour and one separate day trip. The tour explains how Black New Yorkers entered a neighborhood built to exclude them and how a century of covenants, appraisals, clearance plans, and foreclosures affected the property they acquired.",
+  dek: "A free, self-guided audio tour from the Hotel Theresa to 145th Street, presented in chronological order. The main route includes sixteen stops and covers about five miles, with one optional detour. The tour explains how Black New Yorkers entered a neighborhood built to exclude them and how a century of covenants, appraisals, clearance plans, and foreclosures affected the property they acquired.",
   walkMinutes: 123,
   listenMinutes: 92,
   distanceMiles: 5.3,
@@ -55,9 +56,9 @@ export const HARLEM_WALK: WalkTour = {
         "Flat city sidewalks for most of the way, about five miles on the main line. The exception is the climb from Harlem River Houses up to Edgecombe Avenue, which is a genuine hill, and the walk back down 145th Street from Edgecombe to Lenox, which is long. The longest single leg is the nineteen minutes from 409 Edgecombe down to 145th and Lenox at the finish, and the 3 train covers most of it if you would rather ride. The busiest crossings are on 125th Street, along Lenox, and at 145th; use the marked crosswalks. Strivers' Row, the Dunbar courtyards and the Harlem River Houses courtyards are all open to walk through, and all three are people's homes, so keep your voice down and do not photograph into windows. The Schomburg Center is free and worth going inside.",
     },
     {
-      title: "The detour and the day trip",
+      title: "The detour",
       text:
-        "**There is only one optional detour on this walk, and it is deliberate.** Stop three, Morningside Park and Columbia, is drawn in green on the map because it sits southwest of everything else and adds about half an hour. It is there because our Chicago tour spends four stops on what a university did to a neighborhood, and this is New York's nearest equivalent. The main walk is complete without it. Separately, there is a **day trip to Addisleigh Park in St. Albans, Queens**, printed at the end of this document. It is not walkable from Harlem and is not part of the route. It is there because Addisleigh Park is where New York's racial covenants were actually taken to court, and Harlem's were not, so the legal half of this story lives in a different borough.",
+        "**There is only one optional detour on this walk, and it is deliberate.** Stop three, Morningside Park and Columbia, is drawn in green on the map because it sits southwest of everything else and adds about half an hour. It is there because our Chicago tour spends four stops on what a university did to a neighborhood, and this is New York's nearest equivalent. The main walk is complete without it.",
     },
     {
       title: "Listening",
@@ -67,22 +68,6 @@ export const HARLEM_WALK: WalkTour = {
   ],
   detourNotice:
     "This optional stop is southwest of the main route and adds about thirty minutes of walking for the round trip. It covers Morningside Park, Columbia University's abandoned gymnasium project, and the Manhattanville expansion. It is included because users of the Chicago tour often ask whether New York has a comparable example of a university shaping the surrounding neighborhood. The main route contains the complete central history, so the detour may be skipped without interrupting the sequence. Visitors who take it should look for the waterfall at the 114th Street end of Morningside Park, which was built in the excavation Columbia created for the gymnasium.",
-  dayTrip: {
-    title: "Addisleigh Park, St. Albans, Queens",
-    dek:
-      "The one place on this tour where a New York court was asked to enforce a racial covenant, an hour away in Queens",
-    body: [
-      "Harlem has a recorded covenant and no case that ever reached the state's highest court. Addisleigh Park has both, and it is the reason this tour can say what New York judges actually did with racial restrictions before 1948.",
-      "Addisleigh Park is a district of freestanding and attached houses in St. Albans, southeastern Queens, built mostly between the 1910s and the 1930s. The first deed restrictions there governed lot and building size. **The racial covenants came later, starting in late 1939, and were written by white owners reacting to Black families buying in.** White residents then sued twice to enforce them. In **Dury v. Neely** in 1942, and again in **Kemp v. Rubin** in 1947, **New York courts upheld the covenants both times**, and the Appellate Division affirmed Kemp that December.",
-      "In *Kemp*, Sophie Rubin's contract to sell her house to Samuel Richardson was found to violate a 1939 agreement that ran until the end of 1975. **The judge enforced it while writing that distinctions based on color and ancestry were inconsistent with American traditions, and that he was bound by precedent anyway.** The Landmarks Preservation Commission's designation report says he acknowledged that forty-eight Black families were already living in Addisleigh Park.",
-      "Then the Supreme Court decided **Shelley v. Kraemer** in May 1948. **That July the New York Court of Appeals reversed Kemp and threw the neighbors' case out**, with costs in all courts. A restriction that two New York courts had enforced was dead within ten weeks.",
-      "The neighborhood then became one of the most prominent Black suburbs in America. **Count Basie lived at 174-27 Adelaide Road. Joe Louis at 175-12 Murdock Avenue. Fats Waller on Sayres Avenue.** Lena Horne, Ella Fitzgerald, and Jackie Robinson all lived in the district. The **Landmarks Preservation Commission designated the Addisleigh Park Historic District on February 1, 2011**, covering roughly four hundred twenty houses.",
-      "Getting there means the Long Island Rail Road to St. Albans, or the E or F train to Jamaica and a bus east. Allow half a day. It is a quiet residential district, so walk it the way you would walk any neighborhood where people live.",
-      "One warning. A case sometimes cited as *Silsdorf v. City of New York*, 1948, said to have struck down the Addisleigh Park covenants, appears to be unreliable and conflicts with the better-documented record. **Do not use it.** The confirmed cases are *Dury v. Neely* and *Kemp v. Rubin*.",
-    ],
-    audioSrc: `${MEDIA}/audio/addisleigh-park.mp3`,
-    audioSeconds: 168, // measured after generation
-  },
   checks: {
     title: "How we checked this",
     intro:
@@ -464,7 +449,7 @@ export const HARLEM_WALK: WalkTour = {
           body: [
             "A racial covenant was **a restriction written into a property deed, or into a signed agreement among neighbors, prohibiting sale or rental to a Black person**. The restriction ran with the land and therefore applied to later owners, allowing one campaign to limit a block for many years. Covenants spread across the country during the 1910s and 1920s. In **1926, the Supreme Court allowed them to remain in Corrigan v. Buckley**, reasoning that they were private agreements between property owners rather than government action.",
             "Chicago used racial covenants on a much larger and more organized scale. In **1927, the Chicago Real Estate Board distributed a model racial covenant** drafted by counsel for the national realtors' association. More than **220 subdivisions in Cook County** adopted it, and one estimate found covenants covering **38 of Chicago's 85 square miles of residential land south of North Avenue**. New York's covenants were generally created locally and signed street by street. They are therefore harder to identify and did not remain effective as long. Harlem's covenant campaign was defeated within about a decade. Chicago's system lasted roughly twenty years and ended only after court action.",
-            "The national ruling came in **1948 with Shelley v. Kraemer**. The Supreme Court held that court enforcement of a racial covenant was state action and therefore unconstitutional. The decision made the covenants **unenforceable**, but it did not remove or invalidate the language in the property documents. That language remains in many records.",
+            "The national ruling came in **1948 with Shelley v. Kraemer**. The Supreme Court held that court enforcement of a racial covenant was state action and therefore unconstitutional. New York's own courts had gone the other way twice before that, both times over **Addisleigh Park in southeastern Queens**, upholding the restriction in *Dury v. Neely* in 1942 and again in *Kemp v. Rubin* in 1947. **The Court of Appeals reversed Kemp in July 1948, ten weeks after Shelley, and threw the neighbors' case out.** The decision made the covenants **unenforceable**, but it did not remove or invalidate the language in the property documents. That language remains in many records.",
             "**Section 327-a of New York's Real Property Law took effect on June 3, 2026.** A property owner may now record a \"restrictive covenant modification document,\" at **no charge**. The filing must include a complete copy of the original instrument **with the unlawful covenant stricken** and must be signed under penalty of law. The Register cross-indexes the new filing to the original book and page, preserving the historical record while removing the restriction. Sellers must remove these covenants at closing. Condominium, cooperative, and homeowners' association boards **must delete or amend unlawful restrictions by June 3, 2027**, one year after the law took effect, and may do so without owner approval. The 1912 agreement in Liber 159 is the type of document covered by this law.",
             "**Rooted Forward has identified an area for further research.** Chicago has the Chicago Covenants Project, Minneapolis has Mapping Prejudice, and Seattle and Washington, DC, have similar projects. **New York City does not have a comprehensive deed-based covenant-mapping project.** The only New York State project listed by the National Covenants Research Coalition covers Syracuse. As a result, researchers must examine the property records for these blocks parcel by parcel, and no complete study has been published. A student project could create the first covenant micro-map of a Harlem block. Contact information for anyone interested in helping appears on the tour page.",
           ],
@@ -472,6 +457,14 @@ export const HARLEM_WALK: WalkTour = {
         },
       ],
       images: [
+        {
+          src: `${MEDIA}/covenant-blocks-130th.jpg`,
+          alt: "A continuous row of brownstone-fronted houses on the north side of a Harlem street, stoops running down to the sidewalk, cornices along the roofline and small trees at the curb.",
+          credit:
+            "Numbers 19 to 43 West 130th Street today, the other street named in the 1912 agreement. Most of these houses were built in 1909 and 1910, two years before the covenant was recorded. Photograph by Beyond My Ken, 2014, via Wikimedia Commons. CC BY-SA 4.0.",
+          label: "West 130th",
+          after: 2,
+        },
       ],
       nowImage: {
         src: `${MEDIA}/covenant-blocks-today.jpg`,
@@ -559,6 +552,13 @@ export const HARLEM_WALK: WalkTour = {
           after: 7,
         },
       ],
+      nowImage: {
+        src: `${MEDIA}/payton-buildings-today.jpg`,
+        alt: "A row of five brick apartment houses on a Harlem corner, four to five storeys, with fire escapes down their fronts, stone lintels over the windows and shopfronts at street level. Cars are parked along the curb and bare street trees stand on the sidewalk.",
+        credit:
+          "Lenox Avenue at West 132nd Street today, on the corner of the block Payton advertised. These flats went up around 1910, while he was still leasing on these streets. Photograph by Beyond My Ken, 2014, via Wikimedia Commons. CC BY-SA 4.0.",
+        label: "Today",
+      },
       toNext: {
         text: "Return east to Lenox Avenue, turn north, and walk three blocks to West 135th Street. Turn east toward Fifth Avenue and stop partway along the block, in front of the modern buildings on the south side.",
         distanceMeters: 510,

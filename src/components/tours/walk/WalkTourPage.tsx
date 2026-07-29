@@ -2,7 +2,6 @@ import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import AppStoreButton from "@/components/app/AppStoreButton";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
-import DayTripCard from "@/components/tours/walk/DayTripCard";
 import { marked } from "@/components/tours/walk/Marked";
 import type { WalkTourBundle } from "@/lib/tours/registry";
 
@@ -241,11 +240,6 @@ export default function WalkTourPage({ bundle }: { bundle: WalkTourBundle }) {
           </div>
         </div>
       </section>
-
-      {/* A place worth going that is not on the route */}
-      {tour.dayTrip && (
-        <DayTripCard dayTrip={tour.dayTrip} />
-      )}
 
       {/* Sources */}
       <section className="border-t border-border bg-cream py-14 md:py-20">

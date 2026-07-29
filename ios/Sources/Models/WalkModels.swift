@@ -60,9 +60,6 @@ struct WalkTour: Codable, Equatable {
     /// The one-screen version of the detour warning; absent in older
     /// payloads, where the alert falls back to its own wording.
     let detourNotice: String?
-    /// A place worth going that is not walkable from the route, with
-    /// its own audio. Harlem has one; Hyde Park does not.
-    let dayTrip: WalkDayTrip?
     /// The claims the research threw out, printed after the sources.
     let checks: WalkChecks?
 
@@ -70,15 +67,6 @@ struct WalkTour: Codable, Equatable {
     /// against this is what lets someone who finishes the walk
     /// actually reach the end of the number.
     var mainline: [WalkStop] { stops.filter { !$0.isDetour } }
-}
-
-struct WalkDayTrip: Codable, Equatable {
-    let title: String
-    let dek: String
-    let body: [String]
-    let audioSrc: String
-    let audioSeconds: Double
-    let sources: [WalkSource]?
 }
 
 struct WalkChecks: Codable, Equatable {

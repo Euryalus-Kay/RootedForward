@@ -282,18 +282,6 @@ struct TourDetailView: View {
                 mapOpen = true
             }
             divider
-            if content.tour.dayTrip != nil {
-                infoRow("Not on the route", glyph: "tram") {
-                    infoSheet = .dayTrip
-                }
-            }
-
-            if content.tour.checks != nil {
-                infoRow("How we checked this", glyph: "checkmark.seal") {
-                    infoSheet = .checks
-                }
-            }
-
             infoRow("The tools of segregation", glyph: "square.stack") {
                 infoSheet = .plates
             }
