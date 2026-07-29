@@ -12,6 +12,10 @@ struct RootedForwardApp: App {
     @StateObject private var progress = ProgressStore()
     @StateObject private var audio = AudioEngine()
     @StateObject private var location = LocationService()
+    /// The proofreading pass. Always in the environment so the views
+    /// compile the same either way; it holds nothing and loads nothing
+    /// while Beta.editing is off.
+    @StateObject private var edits = EditStore()
 
     @Environment(\.scenePhase) private var scenePhase
 
@@ -32,6 +36,7 @@ struct RootedForwardApp: App {
                 .environmentObject(progress)
                 .environmentObject(audio)
                 .environmentObject(location)
+                .environmentObject(edits)
                 .tint(RF.rust)
                 .onAppear {
                     audio.onFinished = { [weak progress] stopID in

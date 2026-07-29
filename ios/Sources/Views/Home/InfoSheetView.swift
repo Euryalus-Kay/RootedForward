@@ -63,17 +63,25 @@ struct InfoSheetView: View {
             }
             .plate()
 
-            ForEach(tour.practical) { item in
+            ForEach(Array(tour.practical.enumerated()), id: \.element.id) { index, item in
                 VStack(alignment: .leading, spacing: 7) {
-                    Text(item.title)
-                        .font(RF.display(18, weight: 600))
-                        .foregroundStyle(RF.forest)
-                        .accessibilityAddTraits(.isHeader)
-                    Text(item.text)
-                        .font(RF.body(15.5))
-                        .foregroundStyle(RF.ink.opacity(0.8))
-                        .lineSpacing(5)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Editable(
+                        .practicalTitle(content.slug, index), original: item.title
+                    ) { title in
+                        Text(title)
+                            .font(RF.display(18, weight: 600))
+                            .foregroundStyle(RF.forest)
+                            .accessibilityAddTraits(.isHeader)
+                    }
+                    Editable(
+                        .practicalText(content.slug, index), original: item.text
+                    ) { text in
+                        Text(text)
+                            .font(RF.body(15.5))
+                            .foregroundStyle(RF.ink.opacity(0.8))
+                            .lineSpacing(5)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
         }

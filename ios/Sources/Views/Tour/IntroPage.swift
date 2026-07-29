@@ -17,34 +17,48 @@ import SwiftUI
 
 struct IntroPage: View {
     @EnvironmentObject private var content: ContentStore
+    @EnvironmentObject private var edits: EditStore
 
     let goNext: () -> Void
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text(content.intro.title)
-                    .font(RF.display(30, weight: 600))
-                    .foregroundStyle(RF.forest)
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
+                Editable(.introTitle(content.slug), original: content.intro.title) { title in
+                    Text(title)
+                        .font(RF.display(30, weight: 600))
+                        .foregroundStyle(RF.forest)
+                        .lineSpacing(3)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+                }
 
                 VStack(alignment: .leading, spacing: 18) {
-                    ForEach(Array(content.intro.paragraphs.enumerated()), id: \.offset) { _, paragraph in
-                        MarkedText(text: paragraph)
+                    ForEach(Array(content.intro.paragraphs.enumerated()), id: \.offset) { index, paragraph in
+                        Editable(
+                            .introParagraph(content.slug, index), original: paragraph
+                        ) { text in
+                            MarkedText(text: text)
+                        }
                     }
                 }
                 .padding(.top, 22)
 
-                Text(content.intro.byline)
-                    .font(RF.display(15, weight: 400, italic: true))
-                    .foregroundStyle(RF.warmGrayDark)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 22)
+                Editable(.introByline(content.slug), original: content.intro.byline) { byline in
+                    Text(byline)
+                        .font(RF.display(15, weight: 400, italic: true))
+                        .foregroundStyle(RF.warmGrayDark)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 22)
+                }
 
                 handOff
                     .padding(.top, 30)
+
+                NoteButton(
+                    makeTarget: { n in .introNote(content.slug, n) },
+                    existing: edits.noteCount(forIntro: content.slug)
+                )
             }
             .padding(.horizontal, 20)
             .padding(.top, 20)
@@ -64,11 +78,13 @@ struct IntroPage: View {
                 .foregroundStyle(RF.forest)
                 .accessibilityAddTraits(.isHeader)
 
-            Text(content.tour.startLabel)
-                .font(RF.body(15.5))
-                .foregroundStyle(RF.ink.opacity(0.8))
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
+            Editable(.startLabel(content.slug), original: content.tour.startLabel) { label in
+                Text(label)
+                    .font(RF.body(15.5))
+                    .foregroundStyle(RF.ink.opacity(0.8))
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             Text("\(content.tour.mainline.count) stops, about \(String(format: "%.0f", content.tour.distanceMiles)) miles, \(content.tour.listenMinutes) minutes of narration")
                 .font(RF.display(15, weight: 400, italic: true))

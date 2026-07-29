@@ -22,6 +22,9 @@ struct HomeView: View {
             // web page scrolls its header away; an app keeps it.
             VStack(spacing: 0) {
                 masthead
+                // Only ever drawn in a proofreading build, and loud on
+                // purpose so one cannot be mistaken for the app.
+                BetaBand()
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         mission

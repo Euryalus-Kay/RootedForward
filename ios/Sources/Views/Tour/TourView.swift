@@ -486,21 +486,27 @@ struct TourView: View {
 
             Spacer()
 
-            ShareLink(item: URL(string: "https://rooted-forward.org/tours")!) {
-                HStack(spacing: 5) {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 13, weight: .medium))
-                    Text("Share")
-                        .font(RF.body(15, weight: 500))
+            // A proofreading build puts the running count where Share
+            // sits, because that is the button being used all day.
+            if Beta.editing {
+                EditsChip()
+            } else {
+                ShareLink(item: URL(string: "https://rooted-forward.org/tours")!) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 13, weight: .medium))
+                        Text("Share")
+                            .font(RF.body(15, weight: 500))
+                    }
+                    .foregroundStyle(RF.ink.opacity(0.8))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 7)
+                    .background(.white)
+                    .overlay(Rectangle().strokeBorder(RF.border, lineWidth: 1))
+                    // Invisible extension up to the 44pt touch minimum
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
                 }
-                .foregroundStyle(RF.ink.opacity(0.8))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 7)
-                .background(.white)
-                .overlay(Rectangle().strokeBorder(RF.border, lineWidth: 1))
-                // Invisible extension up to the 44pt touch minimum
-                .frame(minHeight: 44)
-                .contentShape(Rectangle())
             }
         }
     }

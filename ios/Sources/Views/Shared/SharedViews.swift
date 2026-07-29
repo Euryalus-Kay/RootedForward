@@ -118,11 +118,31 @@ struct MediaImage: View {
 /// image, hairline border, small label under the photo, credit line
 /// in italic underneath. Tapping opens the full-screen photo room.
 struct FramedImage: View {
+    @EnvironmentObject private var edits: EditStore
     let image: WalkImage
     var showCredit = true
+    /// Set only in a proofreading build, and only where the photograph
+    /// belongs to a stop, which is what a caption edit is keyed to.
+    var photoEdit: PhotoEditContext? = nil
 
     @State private var viewerOpen = false
+    @State private var editorOpen = false
     @State private var pressed = false
+
+    /// The caption and credit as they should read, which is the owner's
+    /// wording once they have retyped it.
+    private var caption: String? {
+        guard let photoEdit else { return image.label }
+        let key = EditTarget.photo(photoEdit.slug, photoEdit.stop, photoEdit.index, .caption).key
+        let text = edits.text(key, image.label ?? "")
+        return text.isEmpty ? nil : text
+    }
+
+    private var credit: String {
+        guard let photoEdit else { return image.credit }
+        let key = EditTarget.photo(photoEdit.slug, photoEdit.stop, photoEdit.index, .credit).key
+        return edits.text(key, image.credit)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -144,8 +164,8 @@ struct FramedImage: View {
                                 .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.15), lineWidth: 1))
                                 .padding(6)
                         }
-                    if let label = image.label {
-                        Text(label)
+                    if let caption {
+                        Text(caption)
                             .font(RF.display(15, weight: 400, italic: true))
                             .foregroundStyle(RF.ink.opacity(0.65))
                     }
@@ -160,9 +180,38 @@ struct FramedImage: View {
             .fullScreenCover(isPresented: $viewerOpen) {
                 PhotoViewer(image: image)
             }
+            // A pencil in the corner rather than a long press. A press
+            // on a button still counts as a tap when the finger lifts,
+            // so a hidden gesture here would open the photo room too.
+            .overlay(alignment: .topLeading) {
+                if Beta.editing, photoEdit != nil {
+                    Button {
+                        Haptics.tap()
+                        editorOpen = true
+                    } label: {
+                        Image(systemName: "pencil.line")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(RF.plateRed)
+                            .padding(6)
+                            .background(RF.plateRedGround)
+                            .overlay(Rectangle().strokeBorder(RF.plateRed.opacity(0.5), lineWidth: 1))
+                            .padding(18)
+                            .contentShape(Rectangle())
+                    }
+                    .accessibilityLabel("Edit this photograph's caption and credit")
+                }
+            }
+            .sheet(isPresented: $editorOpen) {
+                if let photoEdit {
+                    PhotoEditSheet(
+                        slug: photoEdit.slug, stop: photoEdit.stop,
+                        index: photoEdit.index, image: image
+                    )
+                }
+            }
 
             if showCredit {
-                Text(image.credit)
+                Text(credit)
                     .font(RF.body(12))
                     .foregroundStyle(RF.warmGrayDark)
                     .fixedSize(horizontal: false, vertical: true)

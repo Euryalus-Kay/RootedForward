@@ -18,6 +18,7 @@ struct SettingsView: View {
             header
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
+                    betaPlate
                     tourPlate
                     aboutPlate
                 }
@@ -64,6 +65,35 @@ struct SettingsView: View {
         .padding(.bottom, 12)
         .overlay(alignment: .bottom) {
             Rectangle().fill(RF.border).frame(height: 1)
+        }
+    }
+
+    // MARK: - Proofreading
+
+    /// Present only in a proofreading build. The way out of a pass, and
+    /// the count, so the export is never hunted for mid-walk.
+    @ViewBuilder
+    private var betaPlate: some View {
+        if Beta.editing {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Proofreading")
+                    .font(RF.display(17, weight: 600))
+                    .foregroundStyle(RF.plateRed)
+                    .accessibilityAddTraits(.isHeader)
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("This build lets you retype anything in the app. Your changes stay on this phone until you export them.")
+                        .font(RF.body(13.5))
+                        .foregroundStyle(RF.ink.opacity(0.7))
+                        .lineSpacing(4)
+                        .fixedSize(horizontal: false, vertical: true)
+                    EditsChip()
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .plate()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 

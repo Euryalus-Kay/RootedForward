@@ -80,33 +80,36 @@ struct TourDetailView: View {
     /// The walk's name broken after the verb, so "Walk Hyde Park" sets
     /// as two lines the way it was drawn, and "Walk Harlem" does the
     /// same without needing its own layout.
-    private var titleLines: [String] {
-        let title = content.tour.title
+    private func titleLines(_ title: String) -> [String] {
         guard title.hasPrefix("Walk "), title.count > 5 else { return [title] }
         return ["Walk", String(title.dropFirst(5))]
     }
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: -12) {
-                // "Walk Hyde Park" and "Walk Harlem" both set as two
-                // lines, the verb over the place.
-                ForEach(Array(titleLines.enumerated()), id: \.offset) { _, line in
-                    Text(line)
+            Editable(.tourTitle(content.slug), original: content.tour.title) { title in
+                VStack(alignment: .leading, spacing: -12) {
+                    // "Walk Hyde Park" and "Walk Harlem" both set as two
+                    // lines, the verb over the place.
+                    ForEach(Array(titleLines(title).enumerated()), id: \.offset) { _, line in
+                        Text(line)
+                    }
                 }
+                .font(RF.display(48, weight: 600))
+                .foregroundStyle(RF.forest)
+                .padding(.top, 20)
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isHeader)
             }
-            .font(RF.display(48, weight: 600))
-            .foregroundStyle(RF.forest)
-            .padding(.top, 20)
-            .accessibilityElement(children: .combine)
-            .accessibilityAddTraits(.isHeader)
 
-            Text(content.tour.dek)
-                .font(RF.body(17))
-                .foregroundStyle(RF.ink.opacity(0.7))
-                .lineSpacing(6)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 18)
+            Editable(.tourDek(content.slug), original: content.tour.dek) { dek in
+                Text(dek)
+                    .font(RF.body(17))
+                    .foregroundStyle(RF.ink.opacity(0.7))
+                    .lineSpacing(6)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 18)
+            }
 
             startControls
                 .padding(.top, 26)

@@ -59,6 +59,9 @@ final class ContentStore: ObservableObject {
     var payload: WalkPayload {
         payloads[selected] ?? payloads.values.first!
     }
+    /// Which walk the screens are drawing, by the slug the site and the
+    /// API use. Older payloads carry none, and could only be Hyde Park.
+    var slug: String { payload.id }
     var tour: WalkTour { payload.tour }
     var intro: WalkIntro { payload.intro }
     var geometry: WalkGeometry { payload.geometry }

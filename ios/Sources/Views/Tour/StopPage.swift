@@ -10,6 +10,7 @@ import SwiftUI
 struct StopPage: View {
     @EnvironmentObject private var content: ContentStore
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var edits: EditStore
 
     let stop: WalkStop
     let isLast: Bool
@@ -49,6 +50,10 @@ struct StopPage: View {
                     trailingPlates
                     handOff
                     sources
+                    NoteButton(
+                        makeTarget: { n in .note(content.slug, stop, n) },
+                        existing: edits.noteCount(forStop: stop.id, slug: content.slug)
+                    )
                 }
                 .padding(.horizontal, 20)
                 // The chrome fades the text out over a gradient now,
@@ -99,31 +104,35 @@ struct StopPage: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Directions lives in the floating pill row next to Map.
-            Text(stop.title)
-                .font(RF.display(30, weight: 600))
-                .foregroundStyle(RF.forest)
-                .lineSpacing(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 16)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier("stop-title-\(stop.number)")
-                // Reports the title's bottom edge in the viewport so
-                // the top bar knows when the name has scrolled away.
-                .background(
-                    GeometryReader { geo in
-                        Color.clear.preference(
-                            key: TitleMaxYKey.self,
-                            value: geo.frame(in: .named("stop-scroll")).maxY
-                        )
-                    }
-                )
+            Editable(.stopTitle(content.slug, stop), original: stop.title) { title in
+                Text(title)
+                    .font(RF.display(30, weight: 600))
+                    .foregroundStyle(RF.forest)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 16)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("stop-title-\(stop.number)")
+                    // Reports the title's bottom edge in the viewport so
+                    // the top bar knows when the name has scrolled away.
+                    .background(
+                        GeometryReader { geo in
+                            Color.clear.preference(
+                                key: TitleMaxYKey.self,
+                                value: geo.frame(in: .named("stop-scroll")).maxY
+                            )
+                        }
+                    )
+            }
 
-            Text(stop.dek)
-                .font(RF.body(17))
-                .foregroundStyle(RF.ink.opacity(0.72))
-                .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+            Editable(.stopDek(content.slug, stop), original: stop.dek) { dek in
+                Text(dek)
+                    .font(RF.body(17))
+                    .foregroundStyle(RF.ink.opacity(0.72))
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+            }
         }
     }
 
@@ -160,7 +169,10 @@ struct StopPage: View {
                 ForEach(plates, id: \.src) { image in
                     // The full credit lives in the photo room; the
                     // plate keeps only its small date label.
-                    FramedImage(image: image, showCredit: false)
+                    FramedImage(
+                        image: image, showCredit: false,
+                        photoEdit: photoEdit(for: image)
+                    )
                 }
             }
             .padding(.top, 26)
@@ -172,6 +184,13 @@ struct StopPage: View {
         allImages.filter { $0.after == index }
     }
 
+    /// Where a photograph sits among this stop's plates, so a caption
+    /// edit has a key that survives being retyped.
+    private func photoEdit(for image: WalkImage) -> PhotoEditContext? {
+        guard Beta.editing, let index = allImages.firstIndex(of: image) else { return nil }
+        return PhotoEditContext(slug: content.slug, stop: stop, index: index)
+    }
+
     // MARK: - Transcript
 
     /// The story, with each red plate and each anchored photograph set
@@ -180,13 +199,18 @@ struct StopPage: View {
     private var transcript: some View {
         VStack(alignment: .leading, spacing: 18) {
             ForEach(Array(stop.transcript.enumerated()), id: \.offset) { index, paragraph in
-                MarkedText(text: paragraph)
-                ForEach(images(after: index), id: \.src) { image in
-                    FramedImage(image: image, showCredit: false)
-                        .padding(.top, 6)
+                Editable(.transcript(content.slug, stop, index), original: paragraph) { text in
+                    MarkedText(text: text)
                 }
-                ForEach(plates(after: index)) { interrupt in
-                    redPlate(interrupt)
+                ForEach(images(after: index), id: \.src) { image in
+                    FramedImage(
+                        image: image, showCredit: false,
+                        photoEdit: photoEdit(for: image)
+                    )
+                    .padding(.top, 6)
+                }
+                ForEach(plates(after: index), id: \.offset) { plate in
+                    redPlate(plate.element, at: plate.offset)
                         .padding(.top, 6)
                 }
             }
@@ -196,37 +220,49 @@ struct StopPage: View {
 
     // MARK: - Red plates
 
-    private func plates(after index: Int) -> [WalkInterrupt] {
-        (stop.interrupts ?? []).filter { $0.after == index }
+    /// Plates carry their position in the stop's own list, because that
+    /// is what a caption or a rewrite is keyed to.
+    private func plates(after index: Int) -> [(offset: Int, element: WalkInterrupt)] {
+        Array((stop.interrupts ?? []).enumerated()).filter { $0.element.after == index }
     }
 
     /// Plates with no anchor keep the older behavior and land after
     /// the whole story.
     @ViewBuilder
     private var trailingPlates: some View {
-        let loose = (stop.interrupts ?? []).filter {
-            $0.after == nil || ($0.after ?? 0) >= stop.transcript.count
+        let loose = Array((stop.interrupts ?? []).enumerated()).filter {
+            $0.element.after == nil || ($0.element.after ?? 0) >= stop.transcript.count
         }
         if !loose.isEmpty {
             VStack(alignment: .leading, spacing: 20) {
-                ForEach(loose) { interrupt in
-                    redPlate(interrupt)
+                ForEach(loose, id: \.offset) { plate in
+                    redPlate(plate.element, at: plate.offset)
                 }
             }
             .padding(.top, 28)
         }
     }
 
-    private func redPlate(_ interrupt: WalkInterrupt) -> some View {
+    private func redPlate(_ interrupt: WalkInterrupt, at plateIndex: Int) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(interrupt.title)
-                .font(RF.display(21, weight: 600))
-                .foregroundStyle(RF.plateRed)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityAddTraits(.isHeader)
+            Editable(
+                .plateTitle(content.slug, stop, plateIndex),
+                original: interrupt.title
+            ) { title in
+                Text(title)
+                    .font(RF.display(21, weight: 600))
+                    .foregroundStyle(RF.plateRed)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+            }
             VStack(alignment: .leading, spacing: 12) {
-                ForEach(Array(interrupt.body.enumerated()), id: \.offset) { _, paragraph in
-                    MarkedText(text: paragraph, size: 15.5, color: RF.ink.opacity(0.82))
+                ForEach(Array(interrupt.body.enumerated()), id: \.offset) { i, paragraph in
+                    Editable(
+                        .plateBody(content.slug, stop, plateIndex, i),
+                        original: paragraph
+                    ) { text in
+                        MarkedText(text: text, size: 15.5, color: RF.ink.opacity(0.82))
+                    }
                 }
             }
         }
@@ -247,11 +283,13 @@ struct StopPage: View {
                     .font(RF.display(17, weight: 600))
                     .foregroundStyle(RF.forest)
                     .accessibilityAddTraits(.isHeader)
-                Text(next.text)
-                    .font(RF.body(15.5))
-                    .foregroundStyle(RF.ink.opacity(0.8))
-                    .lineSpacing(5)
-                    .fixedSize(horizontal: false, vertical: true)
+                Editable(.directions(content.slug, stop), original: next.text) { text in
+                    Text(text)
+                        .font(RF.body(15.5))
+                        .foregroundStyle(RF.ink.opacity(0.8))
+                        .lineSpacing(5)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 Text("\(WalkFormat.distance(meters: next.distanceMeters)), about \(next.minutes) min")
                     .font(RF.display(15, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGrayDark)
