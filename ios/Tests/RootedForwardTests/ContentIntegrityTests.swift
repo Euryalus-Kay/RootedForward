@@ -38,8 +38,6 @@ final class ContentIntegrityTests: XCTestCase {
         // The seven red instrument plates
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
         XCTAssertEqual(interrupts.count, 7)
-        // The corrections list is Harlem's alone
-        XCTAssertNil(tour.checks)
     }
 
     func testHarlemShape() {
@@ -53,7 +51,6 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertEqual(tour.detourRoutes?.count, 1)
         let interrupts = tour.stops.flatMap { $0.interrupts ?? [] }
         XCTAssertEqual(interrupts.count, 8)
-        XCTAssertEqual(tour.checks?.items.count, 24)
     }
 
     /// Both walks pour into one flat Media folder, where ContentStore

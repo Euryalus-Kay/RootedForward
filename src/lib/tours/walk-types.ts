@@ -104,18 +104,4 @@ export interface WalkTour {
    *  stop. Shorter and blunter than the practical card, because it
    *  has to land on someone already standing on a sidewalk. */
   detourNotice?: string;
-  /** Claims the research rejected, printed under "How we checked
-   *  this". Harlem attracts confident statistics that do not survive
-   *  checking, and naming the ones we threw out is the honest way to
-   *  publish the ones we kept. */
-  checks?: WalkChecks;
-}
-
-export interface WalkChecks {
-  /** heading on the page, e.g. "How we checked this" */
-  title: string;
-  intro: string;
-  /** one rejected claim per entry, each opening with the correction
-   *  in bold so the list reads as answers rather than errors */
-  items: string[];
 }

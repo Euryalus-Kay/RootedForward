@@ -320,36 +320,6 @@ export default function WalkTourPage({ bundle }: { bundle: WalkTourBundle }) {
         </div>
       </section>
 
-      {/* What the research threw out */}
-      {tour.checks && (
-        <section
-          id="how-we-checked"
-          className="scroll-mt-16 border-t border-border bg-cream-dark/50 py-14 md:py-20"
-        >
-          <div className="mx-auto max-w-6xl px-6">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-ink/60">
-              Corrections
-            </p>
-            <h2 className="walk-title mt-3 text-3xl font-semibold text-forest md:text-4xl">
-              {tour.checks.title}
-            </h2>
-            <p className="mt-4 max-w-[62ch] font-body text-base leading-relaxed text-ink/70">
-              {marked(tour.checks.intro, "checks-intro")}
-            </p>
-            <ul className="mt-8 grid grid-cols-1 gap-x-12 gap-y-5 md:grid-cols-2">
-              {tour.checks.items.map((item, i) => (
-                <li
-                  key={i}
-                  className="border-l-2 border-rust/30 pl-4 font-body text-sm leading-relaxed text-ink/75"
-                >
-                  {marked(item, `check-${i}`)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
       {/* On your phone instead */}
       <section className="border-t border-border bg-cream-dark py-14 md:py-20">
         <div className="mx-auto max-w-4xl px-6 text-center">

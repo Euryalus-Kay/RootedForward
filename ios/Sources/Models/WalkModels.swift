@@ -60,19 +60,11 @@ struct WalkTour: Codable, Equatable {
     /// The one-screen version of the detour warning; absent in older
     /// payloads, where the alert falls back to its own wording.
     let detourNotice: String?
-    /// The claims the research threw out, printed after the sources.
-    let checks: WalkChecks?
 
     /// The walk proper, without the two optional detours. Counting
     /// against this is what lets someone who finishes the walk
     /// actually reach the end of the number.
     var mainline: [WalkStop] { stops.filter { !$0.isDetour } }
-}
-
-struct WalkChecks: Codable, Equatable {
-    let title: String
-    let intro: String
-    let items: [String]
 }
 
 /// The printed plate a walk's map is drawn over and everything set on

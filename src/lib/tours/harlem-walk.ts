@@ -17,13 +17,9 @@ import type { WalkTour } from "./walk-types";
 // took the equity back out. Nearly every stop marks a place where
 // property was acquired and then lost value or lost ownership.
 //
-// One thing here has no counterpart in the Chicago file. The checks
-// list prints the claims the research threw out, which matters more
-// in Harlem than it did in Hyde Park, since Harlem attracts confident
-// statistics that do not survive checking. Addisleigh Park, where New
-// York's racial covenants actually reached the Court of Appeals, was
-// a standalone day trip for a few hours and is now one passage on the
-// covenant plate at stop five, which is where it belongs.
+// Addisleigh Park, where New York's racial covenants actually reached
+// the Court of Appeals, is one passage on the covenant plate at stop
+// five rather than a section of its own.
 //
 // Stop coordinates are read out of the same Census TIGER geometry
 // the map is drawn from (scripts/tiger-intersections.mjs), so every
@@ -68,37 +64,6 @@ export const HARLEM_WALK: WalkTour = {
   ],
   detourNotice:
     "This optional stop is southwest of the main route and adds about thirty minutes of walking for the round trip. It covers Morningside Park, Columbia University's abandoned gymnasium project, and the Manhattanville expansion. It is included because users of the Chicago tour often ask whether New York has a comparable example of a university shaping the surrounding neighborhood. The main route contains the complete central history, so the detour may be skipped without interrupting the sequence. Visitors who take it should look for the waterfall at the 114th Street end of Morningside Park, which was built in the excavation Columbia created for the gymnasium.",
-  checks: {
-    title: "How we checked this",
-    intro:
-      "Harlem attracts confident statistics that do not survive checking. During research for this tour we found a number of widely repeated claims that are wrong, unsourced, or garbled. We are listing them because the corrections are more interesting than the errors, and because if you find one of these in another tour you will know what happened.",
-    items: [
-      "**Love B. Woods did not buy the Hotel Theresa in 1937.** The Sidenberg estate held it until 1948. Woods was the last manager and tried unsuccessfully to buy it. The hotel desegregated in 1940 after years of financial losses.",
-      "**Frank Schiffman did not desegregate the Apollo.** Sidney Cohen did, reopening the theater on January 26, 1934. Schiffman took over after Cohen died in late 1935.",
-      "**The Lenox Avenue subway opened November 23, 1904, not October.** October 27, 1904 is the first IRT line on the West Side. The Harlem branch, including the 135th Street station, opened a month later.",
-      "**The Hudson Realty evictions were spring 1904, not 1905.** The deed record and the contemporary press both put them in April and May 1904.",
-      "**The Strivers' Row houses did not carry racial covenants and did not sit empty for twenty-four years.** The recorded 1890 restrictions concerned stables, factories and alterations. Equitable Life rented the houses, sold thirty-one in 1905, and held the rest until 1919 and 1920, when they were sold to Black buyers. It was a sales policy, not a deed. The figure of eight thousand dollars per house traces only to Wikipedia and we do not use it.",
-      "**The 1935 uprising caused about two million dollars in damage, not two hundred million.** One widely cited history is wrong by three orders of magnitude.",
-      "**E. Franklin Frazier did not chair the Mayor's Commission.** Charles H. Roberts chaired it. Frazier was research director and principal author.",
-      "**The 1943 uprising damage figures range from $250,000 to $5 million across sources, a spread of twenty times.** We use the physical counts instead: 1,485 stores burglarized and 4,495 windows broken.",
-      "**There was no 1944 Brown-Isaacs amendment.** The 1943 effort was Isaacs-Davis, and it was defeated. Earl Brown was not elected to the Council until 1949.",
-      "**Harlem River Houses drew more than 15,000 applications by the government's own account, not 20,000.** The Landmarks Preservation Commission says 11,500. We name the source when we give the number.",
-      "**Harlem River Houses and Williamsburg Houses cost about the same per apartment**, roughly $7,700 to $7,900, so there is no funding disparity to narrate. The real difference is that Williamsburg cleared twelve blocks and Harlem River was built on vacant land.",
-      "**Drew-Hamilton Houses is named for Monsignor Cornelius J. Drew, not Dr. Charles Drew.**",
-      "**Lenox Terrace is not a Mitchell-Lama development and was not built by LeFrak.** It was Title I, and Olnick has owned it since 1958. Its 2019 and 2020 rezoning application was disapproved unanimously by a Council subcommittee in February 2020; there was no later approval.",
-      "**Polo Grounds Towers displaced nobody.** The federal survey documents record the site as vacant land. It was a ballpark.",
-      "**It is Local Law 45 of 1976 that cut the tax-arrears period, not a 1977 law.** The 1977 date comes from conflating it with a court decision that upheld the change.",
-      "**We could not verify the widely repeated claim that the City of New York owned sixty to sixty-five percent of Harlem's residential property in the late 1980s, and we do not use it.** At the citywide peak in February 1985 the city held 5,100 occupied buildings and 48,000 occupied apartments across every distressed neighborhood in five boroughs. The likely origin of the Harlem figure is that roughly sixty percent of what the city owned citywide was vacant.",
-      "**The arson statistics that circulate about Harlem are Bronx statistics.** Seven Bronx tracts lost more than ninety-seven percent of their buildings in the 1970s. Central Harlem lost a third of its population, which is severe and is not the same thing.",
-      "**Howard Cosell never said \"the Bronx is burning.\"** ESPN's producers reviewed the entire 1977 World Series Game 2 broadcast. It is not there.",
-      "**The Columbia gymnasium lease was about two acres for fifty years from 1960.** Figures of 2.1 acres, three thousand dollars a year, or thirty years do not check out.",
-      "**Kaur v. New York State Urban Development Corporation:** the three-to-two ruling against Columbia was the Appellate Division on December 3, 2009. The Court of Appeals reversed on June 24, 2010, unanimously in result, not five to two.",
-      "**\"Not majority Black since 2000\" refers to greater Harlem including East Harlem, not to Community District 10.** On the community district measure, Central Harlem's Black share crossed below fifty percent between the 2023 and 2024 American Community Survey estimates.",
-      "**The St. Philip's figure of $640,000 for ten buildings is corroborated in several books but we could not reach a primary source, and the claim that it was the largest Black real estate transaction to that date traces to James Weldon Johnson.** We attribute it to him out loud rather than stating it as established fact.",
-      "**Frazier's Commission report gives Harlem's population increase as \"more than 600 per cent\" over twenty-five years.** A city web page says 800 percent. We read the typescript at magnification; it says 600.",
-      "**We do not use the Nassau County versus Brooklyn per-capita FHA mortgage figures** that circulate from Kenneth Jackson's *Crabgrass Frontier*, because we were not able to open the printed table and confirm them.",
-    ],
-  },
   route: [
     [40.80897, -73.94833],
     [40.80961, -73.94983],
