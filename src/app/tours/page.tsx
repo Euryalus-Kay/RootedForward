@@ -28,7 +28,7 @@ import { TOUR_CATALOG } from "@/lib/tours/catalog";
 export const metadata: Metadata = {
   title: "Tours | Rooted Forward",
   description:
-    "Free self-guided audio tours of the neighborhoods we research, in the Rooted Forward iPhone app and free in any browser. Walk Hyde Park in Chicago and Walk Harlem in New York, twenty-nine stops between them.",
+    "Free self-guided audio tours of the neighborhoods we research, in the Rooted Forward iPhone app. Walk the route, listen as you go, and it all works without a signal.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -63,6 +63,15 @@ function SignalSlashIcon() {
 }
 
 /* ------------------------------------------------------------------ */
+
+/** "Hyde Park in Chicago is finished" / "Hyde Park in Chicago and Harlem
+ *  in New York are finished", read off the catalog so the release
+ *  switch in registry.ts is the only place a walk appears or does not. */
+const FINISHED = (() => {
+  const names = TOUR_CATALOG.map((t) => `${t.neighborhood} in ${t.city}`);
+  if (names.length === 1) return `${names[0]} is finished`;
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]} are finished`;
+})();
 
 const FEATURES = [
   {
@@ -130,9 +139,8 @@ export default function ToursPage() {
                 want.
               </p>
               <p className="mt-4 max-w-[52ch] font-body text-lg leading-relaxed text-ink/80">
-                The tours live in our iPhone app. Hyde Park in Chicago and Harlem in
-                New York are finished, and more neighborhoods are being
-                researched now.
+                The tours live in our iPhone app. {FINISHED}, and more
+                neighborhoods are being researched now.
               </p>
 
               <div className="mt-9 flex flex-wrap items-start gap-x-10 gap-y-5">

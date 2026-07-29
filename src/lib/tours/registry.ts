@@ -66,7 +66,21 @@ export interface WalkTourBundle {
   page: WalkPageConfig;
 }
 
-export const WALK_TOURS: WalkTourBundle[] = [
+/* ------------------------------------------------------------------ */
+/*  THE SWITCH.                                                        */
+/*                                                                     */
+/*  Walk Harlem is finished, recorded, photographed and in this repo,  */
+/*  but not announced. While this is false the site is exactly the     */
+/*  one-tour site it was: no card, no page, no sitemap row, and        */
+/*  /api/walk?tour=harlem answers 404, so a shipped app cannot         */
+/*  discover it either.                                                */
+/*                                                                     */
+/*  To release it: set this to true, commit, push, deploy. Nothing     */
+/*  else needs editing.                                                */
+/* ------------------------------------------------------------------ */
+export const HARLEM_LIVE = false;
+
+const ALL_WALKS: WalkTourBundle[] = [
   {
     slug: "hyde-park",
     path: "/tours/hyde-park-walk",
@@ -134,6 +148,10 @@ export const WALK_TOURS: WalkTourBundle[] = [
     },
   },
 ];
+
+export const WALK_TOURS: WalkTourBundle[] = ALL_WALKS.filter(
+  (t) => t.slug !== "harlem" || HARLEM_LIVE
+);
 
 /** The walk /api/walk serves when no tour is named. The iPhone build
  *  already with Apple asks for exactly that URL and knows nothing

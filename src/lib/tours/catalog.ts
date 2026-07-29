@@ -10,6 +10,8 @@
 /*  the page instead, without a route attached.                        */
 /* ------------------------------------------------------------------ */
 
+import { HARLEM_LIVE } from "./registry";
+
 export interface TourListing {
   slug: string;
   title: string;
@@ -27,7 +29,7 @@ export interface TourListing {
   image: { src: string; alt: string; credit: string };
 }
 
-export const TOUR_CATALOG: TourListing[] = [
+const ALL_LISTINGS: TourListing[] = [
   {
     slug: "hyde-park",
     title: "Walk Hyde Park",
@@ -72,3 +74,9 @@ export const TOUR_CATALOG: TourListing[] = [
     },
   },
 ];
+
+/** Only the walks that are actually announced. The switch lives in
+ *  registry.ts so there is one of it. */
+export const TOUR_CATALOG: TourListing[] = ALL_LISTINGS.filter(
+  (t) => t.slug !== "harlem" || HARLEM_LIVE
+);
