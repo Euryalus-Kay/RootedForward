@@ -24,6 +24,8 @@ import PageTransition from "@/components/layout/PageTransition";
 import AppStoreButton from "@/components/app/AppStoreButton";
 import { APP } from "@/lib/app-store";
 import { TOUR_CATALOG } from "@/lib/tours/catalog";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
+import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
 
 export const metadata: Metadata = {
   title: "Tours | Rooted Forward",
@@ -176,6 +178,27 @@ export default function ToursPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          THE FILM
+          Straight after the hero, before the feature list. Same video
+          as the home page, one line of copy over it and nothing else
+          (owner, July 2026).
+          ============================================================ */}
+      <section className="border-b border-border bg-cream-dark py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            Learn about our Hyde Park tour
+          </h2>
+          <div className="mt-8">
+            <YouTubeEmbed
+              id={HYDE_PARK_INTRO_VIDEO}
+              title="Hyde Park Rooted Forward tour intro"
+              tone="light"
+            />
           </div>
         </div>
       </section>

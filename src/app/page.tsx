@@ -261,24 +261,14 @@ export default function Home() {
               sitting in one, because YouTube picks its resolution from
               how big the player is and this video has a 4K master. */}
           <div className="mx-auto max-w-5xl px-6">
-            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
-              Watch the intro
-            </p>
-            <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
-              Self-guided Hyde Park tour
+            <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
+              Learn about our Hyde Park tour
             </h2>
-            <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-              The tour goes through the Chicago neighborhood of Hyde Park,
-              stopping at sites that reflect its deep racial history and the
-              inequality that still shapes the neighborhood today. It is about
-              four miles, on foot, and you guide yourself.
-            </p>
 
-            <div className="mt-10">
+            <div className="mt-8">
               <YouTubeEmbed
                 id={HYDE_PARK_INTRO_VIDEO}
                 title="Hyde Park Rooted Forward tour intro"
-                caption="A look at the route and what it covers before you walk it."
               />
             </div>
 

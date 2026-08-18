@@ -34,8 +34,6 @@
 /* ------------------------------------------------------------------ */
 
 import Link from "next/link";
-import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
-import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
 
@@ -119,48 +117,6 @@ export default function AboutPage() {
           <p className="mt-7 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
             We are currently based in Chicago, New York, and Washington, DC.
           </p>
-        </div>
-      </section>
-
-      {/* ============================================================
-          THE FILM
-          Sits between the mission and the founder's account on
-          purpose. The mission says what we do in the abstract and
-          this shows it on the ground before anyone has to read
-          another section. Same video as the home page.
-          ============================================================ */}
-      <section className="border-t border-border bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust">
-            Watch
-          </p>
-          <h2 className="mt-3 font-display text-3xl leading-tight text-forest md:text-4xl">
-            What the work looks like on the ground
-          </h2>
-          <p className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
-            Our Hyde Park tour is the clearest picture of how all of this
-            fits together. The research, the route, and what a person actually
-            walks away knowing.
-          </p>
-
-          <div className="mt-10">
-            <YouTubeEmbed
-              id={HYDE_PARK_INTRO_VIDEO}
-              title="Hyde Park Rooted Forward tour intro"
-              caption="A look at the route and what it covers before you walk it."
-              tone="light"
-            />
-          </div>
-
-          <Link
-            href="/tours"
-            className="group mt-8 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-          >
-            See the tours{" "}
-            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-              &rarr;
-            </span>
-          </Link>
         </div>
       </section>
 
