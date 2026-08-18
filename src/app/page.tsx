@@ -21,6 +21,8 @@
 import Link from "next/link";
 import { TOUR_CATALOG } from "@/lib/tours/catalog";
 import PageTransition from "@/components/layout/PageTransition";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
+import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
 
 /* ------------------------------------------------------------------ */
 /*  Line icons. Same heroicons-outline vocabulary the policy page      */
@@ -255,39 +257,37 @@ export default function Home() {
         /* One archival picture and one button, so the only tour has a
            door of its own without another wall of text. */
         <section className="bg-forest py-16 md:py-24">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
-              <div className="md:col-span-6">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/media/site/hyde-park-aerial-1928.jpg"
-                  alt="Aerial photograph of Hyde Park and the lakefront taken by the Chicago Aerial Survey Company in 1928"
-                  loading="lazy"
-                  className="w-full rounded-sm border border-cream/20 object-cover"
-                />
-                <p className="mt-2 font-body text-[11px] text-cream/65">
-                  Hyde Park and the lakefront from the air, 1928. Chicago Aerial
-                  Survey Co. Public domain.
-                </p>
-              </div>
-              <div className="md:col-span-6">
-                <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
-                  Self-guided Hyde Park tour
-                </h2>
-                <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                  The tour goes through the Chicago neighborhood of Hyde Park,
-                  stopping at sites that reflect its deep racial history and the
-                  inequality that still shapes the neighborhood today. It is
-                  about four miles, on foot, and you guide yourself.
-                </p>
-                <Link
-                  href="/tours"
-                  className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-                >
-                  Get the tour
-                </Link>
-              </div>
+          {/* The player runs the full width of the column rather than
+              sitting in one, because YouTube picks its resolution from
+              how big the player is and this video has a 4K master. */}
+          <div className="mx-auto max-w-5xl px-6">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.25em] text-rust-light">
+              Watch the intro
+            </p>
+            <h2 className="mt-3 font-display text-3xl leading-tight text-cream md:text-4xl">
+              Self-guided Hyde Park tour
+            </h2>
+            <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+              The tour goes through the Chicago neighborhood of Hyde Park,
+              stopping at sites that reflect its deep racial history and the
+              inequality that still shapes the neighborhood today. It is about
+              four miles, on foot, and you guide yourself.
+            </p>
+
+            <div className="mt-10">
+              <YouTubeEmbed
+                id={HYDE_PARK_INTRO_VIDEO}
+                title="Hyde Park Rooted Forward tour intro"
+                caption="A look at the route and what it covers before you walk it."
+              />
             </div>
+
+            <Link
+              href="/tours"
+              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+            >
+              Get the tour
+            </Link>
           </div>
         </section>
       ) : (
