@@ -24,6 +24,11 @@ interface YouTubeEmbedProps {
   id: string;
   /** Used as the accessible name for the play button. */
   title: string;
+  /** Which of YouTube's stills to use. "default" is the frame YouTube
+      picked, 1 to 3 are its alternates. The Hyde Park film opens on a
+      talking head and 1 is the archival photo collage, which reads far
+      better at a glance. */
+  frame?: "default" | "1" | "2" | "3";
   /** Which band it sits on, so the frame and caption pick up the
       right contrast. "dark" is the forest band, "light" is cream. */
   tone?: "dark" | "light";
@@ -32,8 +37,10 @@ interface YouTubeEmbedProps {
 export default function YouTubeEmbed({
   id,
   title,
+  frame = "default",
   tone = "dark",
 }: YouTubeEmbedProps) {
+  const still = frame === "default" ? "maxresdefault" : `maxres${frame}`;
   const [playing, setPlaying] = useState(false);
 
   const params = new URLSearchParams({
@@ -64,10 +71,10 @@ export default function YouTubeEmbed({
           aria-label={`Play ${title}`}
           className="group absolute inset-0 h-full w-full cursor-pointer"
         >
-          {/* maxres is 1280x720, so it stays sharp on a retina screen */}
+          {/* every maxres still is 1280x720, sharp on a retina screen */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
+            src={`https://i.ytimg.com/vi/${id}/${still}.jpg`}
             alt=""
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"

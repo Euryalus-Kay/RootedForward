@@ -140,7 +140,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/95 to-cream/85 md:to-cream/45" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-24 md:pb-32 md:pt-32">
+        <div className="relative mx-auto max-w-6xl px-6 pb-10 pt-12 md:pb-12 md:pt-14">
           <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tight text-forest sm:text-7xl md:text-8xl">
             Rooted Forward
           </h1>
@@ -185,6 +185,27 @@ export default function Home() {
           Residential Security Map of Chicago. Home Owners&rsquo; Loan
           Corporation, 1940. CC0.
         </p>
+      </section>
+
+      {/* ============================================================
+          THE FILM
+          Straight under the banner so the top of the player is on
+          screen the moment the page loads, which is the point of it
+          being here at all (owner, July 2026).
+          ============================================================ */}
+      <section className="bg-cream pb-16 pt-0 md:pb-20 md:pt-0">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
+            Learn about our Hyde Park tour
+          </h2>
+          <div className="mt-5">
+            <YouTubeEmbed
+              id={HYDE_PARK_INTRO_VIDEO}
+              title="Hyde Park Rooted Forward tour intro"
+              tone="light"
+            />
+          </div>
+        </div>
       </section>
 
       {/* ============================================================
@@ -257,27 +278,39 @@ export default function Home() {
         /* One archival picture and one button, so the only tour has a
            door of its own without another wall of text. */
         <section className="bg-forest py-16 md:py-24">
-          {/* The player runs the full width of the column rather than
-              sitting in one, because YouTube picks its resolution from
-              how big the player is and this video has a 4K master. */}
-          <div className="mx-auto max-w-5xl px-6">
-            <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
-              Learn about our Hyde Park tour
-            </h2>
-
-            <div className="mt-8">
-              <YouTubeEmbed
-                id={HYDE_PARK_INTRO_VIDEO}
-                title="Hyde Park Rooted Forward tour intro"
-              />
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
+              <div className="md:col-span-6">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/media/site/hyde-park-aerial-1928.jpg"
+                  alt="Aerial photograph of Hyde Park and the lakefront taken by the Chicago Aerial Survey Company in 1928"
+                  loading="lazy"
+                  className="w-full rounded-sm border border-cream/20 object-cover"
+                />
+                <p className="mt-2 font-body text-[11px] text-cream/65">
+                  Hyde Park and the lakefront from the air, 1928. Chicago Aerial
+                  Survey Co. Public domain.
+                </p>
+              </div>
+              <div className="md:col-span-6">
+                <h2 className="font-display text-3xl leading-tight text-cream md:text-4xl">
+                  Self-guided Hyde Park tour
+                </h2>
+                <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
+                  The tour goes through the Chicago neighborhood of Hyde Park,
+                  stopping at sites that reflect its deep racial history and the
+                  inequality that still shapes the neighborhood today. It is
+                  about four miles, on foot, and you guide yourself.
+                </p>
+                <Link
+                  href="/tours"
+                  className="mt-8 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Get the tour
+                </Link>
+              </div>
             </div>
-
-            <Link
-              href="/tours"
-              className="mt-10 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              Get the tour
-            </Link>
           </div>
         </section>
       ) : (
