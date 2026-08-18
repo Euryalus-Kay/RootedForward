@@ -138,9 +138,9 @@ export default function Home() {
             into the transparent end and line-ends land on map detail. Hold
             it near-opaque until there is room for the map beside the text. */}
         <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/95 to-cream/85 md:to-cream/45" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-cream via-cream to-transparent" />
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-10 pt-12 md:pb-12 md:pt-14">
+        <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-12 md:pb-16 md:pt-14">
           <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tight text-forest sm:text-7xl md:text-8xl">
             Rooted Forward
           </h1>
@@ -193,12 +193,16 @@ export default function Home() {
           screen the moment the page loads, which is the point of it
           being here at all (owner, July 2026).
           ============================================================ */}
-      <section className="bg-cream pb-16 pt-0 md:pb-20 md:pt-0">
-        <div className="mx-auto max-w-5xl px-6">
+      <section className="bg-cream pb-16 pt-4 md:pb-24 md:pt-6">
+        {/* max-w-6xl, the same as the banner, so the heading and the
+            player start on the banner's left edge instead of sitting
+            indented under it. The player is held narrower inside that
+            column so it does not eat the whole fold. */}
+        <div className="mx-auto max-w-6xl px-6">
           <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
             Learn about our Hyde Park tour
           </h2>
-          <div className="mt-5">
+          <div className="mt-6 max-w-4xl">
             <YouTubeEmbed
               id={HYDE_PARK_INTRO_VIDEO}
               title="Hyde Park Rooted Forward tour intro"
