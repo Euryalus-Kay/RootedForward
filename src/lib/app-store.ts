@@ -14,7 +14,8 @@
 /*  accessible in both states.                                         */
 /* ------------------------------------------------------------------ */
 
-export const APP_STORE_URL: string | null = null;
+export const APP_STORE_URL: string | null =
+  "https://apps.apple.com/us/app/rooted-forward/id6793979867";
 
 /** True once the link above is filled in. */
 export const APP_IS_LIVE = Boolean(APP_STORE_URL);
