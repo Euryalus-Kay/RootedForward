@@ -18,7 +18,11 @@
 # the check below fails loudly if they ever do.
 set -e
 cd "$(dirname "$0")"
-WALKS="hyde-park-walk harlem-walk"
+# The walks that ship inside the app. Keep this in step with
+# BUNDLED_SLUGS in Sources/Store/ContentStore.swift. Walk Harlem is
+# finished but unreleased, so it is deliberately not here, and the
+# prune step below keeps its files out of the bundle.
+WALKS="hyde-park-walk"
 CHECK=0
 [ "$1" = "--check" ] && CHECK=1
 
@@ -54,9 +58,34 @@ for w in $WALKS; do
   for f in "$SRC"/thumbs/*.jpg; do copy_one "$f" "Resources/Media/thumbs/$(basename "$f")"; done
 done
 
-# the washes behind each walk's opener, referenced by their site paths
+# the wash behind the opener, referenced by its site path
 copy_one ../public/media/site/holc-chicago-1940.jpg Resources/Media/images/holc-chicago-1940.jpg
-copy_one ../public/media/site/usgs-harlem-1900.jpg Resources/Media/images/usgs-harlem-1900.jpg
+
+# Anything left over from a walk that no longer ships. Without this the
+# bundle keeps carrying an unreleased tour's audio and plates, which is
+# 70 MB of download nobody can reach and content the App Store listing
+# does not describe.
+wanted=$(mktemp)
+for w in $WALKS; do
+  ls "../public/media/$w"/audio/*.mp3 "../public/media/$w"/*.jpg \
+     "../public/media/$w"/thumbs/*.jpg 2>/dev/null | xargs -n1 basename
+done > "$wanted"
+echo holc-chicago-1940.jpg >> "$wanted"
+pruned=0
+for f in Resources/Media/audio/* Resources/Media/images/* Resources/Media/thumbs/*; do
+  [ -e "$f" ] || continue
+  if ! grep -qxF "$(basename "$f")" "$wanted"; then
+    pruned=$((pruned + 1))
+    if [ "$CHECK" = "1" ]; then
+      echo "  stale: ${f#Resources/Media/}"
+      drift=$((drift + 1))
+    else
+      rm "$f"
+    fi
+  fi
+done
+rm -f "$wanted"
+[ "$pruned" -gt 0 ] && [ "$CHECK" != "1" ] && echo "pruned $pruned file(s) belonging to walks that do not ship"
 
 if [ "$CHECK" = "1" ]; then
   if [ "$drift" -gt 0 ]; then

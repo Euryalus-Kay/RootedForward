@@ -28,7 +28,7 @@ enum Beta {
     /*                                                                 */
     /*  false  the shipping app. Nothing below runs.                   */
     /* -------------------------------------------------------------- */
-    static let editing = true
+    static let editing = false
 
     /// Printed on the export so a document can be traced to a build.
     static var appVersion: String {

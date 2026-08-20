@@ -10,18 +10,27 @@ import XCTest
 
 final class ContentIntegrityTests: XCTestCase {
     private static func load(_ name: String) -> WalkPayload {
-        guard let url = Bundle.main.url(forResource: name, withExtension: "json", subdirectory: "Content"),
-              let data = try? Data(contentsOf: url),
-              let decoded = try? JSONDecoder().decode(WalkPayload.self, from: data) else {
+        guard let decoded = loadIfBundled(name) else {
             fatalError("Bundled \(name).json failed to decode")
         }
         return decoded
     }
 
+    /// Nil for a walk this build does not ship. Walk Harlem is finished
+    /// but unreleased, so it comes out of the bundle between releases
+    /// and its checks skip rather than fail.
+    private static func loadIfBundled(_ name: String) -> WalkPayload? {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "json", subdirectory: "Content"),
+              let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+        return try? JSONDecoder().decode(WalkPayload.self, from: data)
+    }
+
     /// Hyde Park keeps the file name it had when it was the only walk.
     private static let payload = load("tour")
-    private static let harlem = load("harlem")
-    private static let all: [WalkPayload] = [payload, harlem]
+    private static let harlem = loadIfBundled("harlem")
+    private static let all: [WalkPayload] = [payload] + (harlem.map { [$0] } ?? [])
 
     func testHydeParkShape() {
         let tour = Self.payload.tour
@@ -40,12 +49,15 @@ final class ContentIntegrityTests: XCTestCase {
         XCTAssertEqual(interrupts.count, 7)
     }
 
-    func testHarlemShape() {
-        let tour = Self.harlem.tour
+    func testHarlemShape() throws {
+        guard let harlem = Self.harlem else {
+            throw XCTSkip("Walk Harlem does not ship in this build")
+        }
+        let tour = harlem.tour
         XCTAssertEqual(tour.title, "Walk Harlem")
         XCTAssertEqual(tour.stops.count, 17)
         XCTAssertEqual(tour.stops.filter { $0.isDetour }.count, 1)
-        XCTAssertEqual(Self.harlem.intro.paragraphs.count, 9)
+        XCTAssertEqual(harlem.intro.paragraphs.count, 9)
         XCTAssertEqual(tour.practical.count, 4)
         // One spur, out to Morningside Park and back to the Apollo
         XCTAssertEqual(tour.detourRoutes?.count, 1)

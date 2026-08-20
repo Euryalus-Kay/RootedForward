@@ -22,7 +22,14 @@ let DEFAULT_SLUG = "hyde-park"
 
 /// The walks whose content and media ship inside the app, so they work
 /// with no signal. Anything else on the site is fetched on demand.
-let BUNDLED_SLUGS = [DEFAULT_SLUG, "harlem"]
+///
+/// Walk Harlem is finished and lives in this repo, but it is not
+/// released yet, so it is not in the shipped bundle and the app does
+/// not list it. This mirrors HARLEM_LIVE in src/lib/tours/registry.ts
+/// on the site. To ship it, add "harlem" back here, set WALKS in
+/// prep-media.sh to match, run ./prep-media.sh, and flip the site
+/// switch in the same release.
+let BUNDLED_SLUGS = [DEFAULT_SLUG]
 
 @MainActor
 final class ContentStore: ObservableObject {
