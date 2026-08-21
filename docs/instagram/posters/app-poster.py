@@ -27,17 +27,20 @@ body { background:#F5F0E8; display:flex; flex-direction:column;
 .banner .who { font-family:"RFSerif", Georgia, serif; font-weight:600; font-size:34px;
                color:#1B3A2D; letter-spacing:-.01em; }
 .page { flex:1 1 auto; display:flex; flex-direction:column; padding:30px 60px 46px; min-height:0; }
-.row { display:flex; gap:52px; flex:1 1 auto; min-height:0; margin-top:38px; }
+.stats { display:flex; gap:56px; margin-top:34px; }
+.stats .n { font-family:"RFSerif",serif; font-weight:600; font-size:58px; color:#1B3A2D; line-height:1; }
+.stats .l { font-size:21px; color:rgba(26,26,26,.62); margin-top:9px; }
+.row { display:flex; gap:52px; flex:1 1 auto; min-height:0; margin-top:42px; }
 .col { flex:1 1 auto; display:flex; flex-direction:column; min-width:0; }
-h1 { font-family:"RFSerif", Georgia, serif; font-weight:600; font-size:74px; line-height:1.03;
+h1 { font-family:"RFSerif", Georgia, serif; font-weight:600; font-size:104px; line-height:0.98;
      color:#1B3A2D; letter-spacing:-.018em; }
-.dek { font-size:28px; line-height:1.5; color:rgba(26,26,26,.78); margin-top:24px; max-width:840px; }
+.dek { font-size:29px; line-height:1.48; color:rgba(26,26,26,.78); margin-top:22px; max-width:900px; }
 ul { list-style:none; }
 li { font-size:26px; font-weight:500; color:rgba(26,26,26,.8); margin-bottom:20px;
      display:flex; gap:20px; align-items:baseline; }
 li:before { content:"\\2013"; color:#C45D3E; font-weight:600; flex:0 0 auto; }
 .cta { margin-top:auto; }
-.cta .store { font-family:"RFSerif",serif; font-weight:600; font-size:36px; color:#C45D3E; }
+.cta .store { font-family:"RFSerif",serif; font-weight:600; font-size:38px; color:#C45D3E; }
 .cta .sub { font-size:23px; color:rgba(26,26,26,.6); margin-top:10px; }
 .shot { flex:0 0 auto; align-self:stretch; }
 .shot img { height:100%%; width:auto; display:block; border-radius:30px; }
@@ -46,19 +49,24 @@ li:before { content:"\\2013"; color:#C45D3E; font-weight:600; flex:0 0 auto; }
 </style></head><body>
 <div class="banner"><img src="data:image/png;base64,%(logo)s"><div class="who">Rooted Forward</div></div>
 <div class="page">
-  <h1>Our walking tour app is out</h1>
-  <div class="dek">A free self-guided audio tour of Hyde Park, Chicago. Walk the route, listen as you go.</div>
+  <h1>Walk Hyde Park</h1>
+  <div class="dek">A free audio walking tour of how one Chicago neighborhood decided who could live in it. From Paul Cornell's stone to Harper Court.</div>
+  <div class="stats">
+    <div><div class="n">13</div><div class="l">stops</div></div>
+    <div><div class="n">4</div><div class="l">miles</div></div>
+    <div><div class="n">55</div><div class="l">minutes of audio</div></div>
+    <div><div class="n">3</div><div class="l">optional detours</div></div>
+  </div>
   <div class="row">
   <div class="col">
     <ul>
-      <li>Thirteen stops and three optional detours, about four miles</li>
-      <li>55 minutes of narration, with the full text on every stop</li>
+      <li>Narrated at every stop, with the full text there to read instead</li>
       <li>A map of the route with your own position on it</li>
-      <li>Works offline. No account, no ads.</li>
+      <li>Works offline, so it runs with no signal</li>
     </ul>
     <div class="cta">
       <div class="store">Free on the App Store</div>
-      <div class="sub">iPhone, iOS 17 or newer.</div>
+      <div class="sub">No ads, no account. iPhone, iOS 17 or newer.</div>
       <div class="site">rooted-forward.org</div>
     </div>
   </div>
