@@ -88,7 +88,9 @@ COVER = """<!doctype html><html><head><meta charset="utf-8"><style>%(css)s
          padding:52px 60px 46px; }
 h1 { font-size:%(size)spx; line-height:1.03; }
 ul { list-style:none; margin-top:40px; }
-li { font-size:28px; font-weight:500; color:rgba(26,26,26,.8); margin-bottom:20px; }
+li { font-size:28px; font-weight:500; color:rgba(26,26,26,.8); margin-bottom:20px;
+     display:flex; gap:20px; align-items:baseline; }
+li:before { content:"–"; color:#C45D3E; font-weight:600; flex:0 0 auto; }
 .foot { margin-top:auto; padding-top:30px; display:flex; justify-content:space-between;
         align-items:flex-end; gap:40px; }
 .foot .cred { max-width:760px; }

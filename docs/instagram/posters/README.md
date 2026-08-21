@@ -1,6 +1,6 @@
 # The tools of segregation, carousel posters
 
-Fourteen slides, two per tool, 1080 by 1350. Post each pair as a two
+Fifteen slides at 1080 by 1350. One announcing the app, then two per tool. Post each pair as a two
 slide carousel.
 
 Slide one is the cover. The logo banner, a photograph, the name, and
@@ -12,7 +12,11 @@ the Desktop, named so it sorts in order.
 
 ## Rebuilding
 
-    python3 docs/instagram/posters/build.py
+    python3 docs/instagram/posters/build.py        the seven tools
+    python3 docs/instagram/posters/app-poster.py   the app announcement
+
+The announcement uses a real screen from the shipping build rather
+than a mockup, so nothing on it is a thing the app does not do.
 
 Copy is in `tools.json`. Full credits for the cover pictures are in
 `credits.json` and the short form used on slide two is in
