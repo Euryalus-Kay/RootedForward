@@ -1,0 +1,240 @@
+[
+ {
+  "slug": "improvement-associations",
+  "title": "The improvement<br>associations",
+  "size": 74,
+  "cover": "hyde-park-aerial-1928.jpg",
+  "pos": "center 45%",
+  "items": [
+   "A club formed in 1908 to hold the colour line",
+   "Three hundred and fifty members, and a blacklist",
+   "Fifty-eight bombings between 1917 and 1921"
+  ],
+  "head": "Before the paperwork, there was a club",
+  "body": [
+   "In the autumn of 1908 an attorney named Francis Harper organised the Hyde Park Improvement Protective Club. It had three hundred and fifty members and an openly stated goal of maintaining the colour line.",
+   "Black doctors and teachers had already lived here for about fifteen years. Members promised to blacklist any realtor who sold to a Black buyer, and to buy houses back from Black owners.",
+   "When pressure failed, others used explosives. The banker Jesse Binga was among the targets, and he went on writing mortgages anyway."
+  ],
+  "stat": "58",
+  "statlabel": "bombings in Chicago at the homes of Black families and at the offices of agents who sold to them, July 1917 to March 1921",
+  "rail": [
+   [
+    "robie-1911.jpg",
+    "The Robie House, about 1911. Historic American Buildings Survey. Public domain."
+   ],
+   [
+    "del-prado-1900s.jpg",
+    "The Del Prado, a Hyde Park hotel of the same years. Newberry Library. Public domain."
+   ]
+  ],
+  "wide": [
+   "robie-today.jpg",
+   "The same blocks today. Photograph by Warren LeMay, 2023, via Wikimedia Commons. CC BY-SA 2.0."
+  ]
+ },
+ {
+  "slug": "article-34",
+  "title": "Article 34",
+  "size": 92,
+  "cover": "robie-1911.jpg",
+  "pos": "center 50%",
+  "items": [
+   "Adopted on June 6, 1924",
+   "The national code of ethics for realtors",
+   "Withdrawn in 1950. Apologised for in 2020."
+  ],
+  "head": "The rule was printed in the code of ethics",
+  "body": [
+   "On the sixth of June, 1924, the National Association of Real Estate Boards adopted Article 34 of its Code of Ethics. A realtor, it said, should never be instrumental in introducing into a neighborhood members of any race whose presence will clearly be detrimental to property values.",
+   "This was enforceable. Every member board had to adopt the code, agents could be disciplined, and boards that refused could be expelled.",
+   "Chicago had got there first. Its own board voted in 1921 to expel any member who sold to a Black buyer on a white block."
+  ],
+  "stat": "26",
+  "statlabel": "years the rule stood in the national code, from 1924 until the racial language was removed in 1950",
+  "rail": [
+   [
+    "cobb-hall-1900.jpg",
+    "Cobb Hall about 1900. Detroit Publishing Company, Library of Congress. No known restrictions."
+   ],
+   [
+    "drexel-1907.jpg",
+    "Drexel Boulevard about 1907. Detroit Publishing Company, Library of Congress."
+   ]
+  ],
+  "wide": [
+   "hyde-park-aerial-1928.jpg",
+   "Hyde Park from the air, 1928, four years after Article 34. Chicago Aerial Survey Co. Public domain."
+  ]
+ },
+ {
+  "slug": "restrictive-covenants",
+  "title": "Restrictive<br>covenants",
+  "size": 78,
+  "cover": "hansberry-house-today.jpg",
+  "pos": "center 40%",
+  "items": [
+   "A restriction written into the deed itself",
+   "Thirty-eight of Chicago's eighty-five square miles",
+   "Made unenforceable in 1948"
+  ],
+  "head": "A sentence in the deed, binding whoever came next",
+  "body": [
+   "A racial covenant was a restriction written into a property deed, and because it bound later owners, one campaign could lock a block down for decades.",
+   "In 1927 the Chicago Real Estate Board handed out a model covenant drafted by a lawyer named Nathan William MacChesney. It said that no part of the premises shall in any manner be used or occupied, directly or indirectly, by any negro or negroes.",
+   "The Supreme Court made them unenforceable in 1948. Nobody deleted the sentences, and they sit in Cook County deeds today."
+  ],
+  "stat": "38 of 85",
+  "statlabel": "square miles of Chicago's residential land south of North Avenue covered by covenants, on one estimate",
+  "rail": [
+   [
+    "robie-1911.jpg",
+    "The Robie House, about 1911. Historic American Buildings Survey. Public domain."
+   ],
+   [
+    "marshall-field-1900.jpg",
+    "The university's field about 1900. Cap and Gown, 1900. Public domain."
+   ]
+  ],
+  "wide": [
+   "del-prado-1900s.jpg",
+   "Hyde Park sold as an address. Newberry Library collection. Public domain, via Wikimedia Commons."
+  ]
+ },
+ {
+  "slug": "blockbusting",
+  "title": "Blockbusting",
+  "size": 86,
+  "cover": "drexel-1907.jpg",
+  "pos": "center 45%",
+  "items": [
+   "Fear, sold door to door, after 1948",
+   "Bought at twelve thousand, sold at twenty-two",
+   "Whole blocks turned over in a couple of years"
+  ],
+  "head": "The same industry, selling the other direction",
+  "body": [
+   "Once the courts stopped enforcing racial covenants in 1948, the operators who had profited from segregation found a way to profit from integration.",
+   "A speculator telephoned white homeowners in the evening, warning that Black families were moving in and values were about to collapse. A frightened owner sold cheap, perhaps at twelve thousand dollars. Days later the same house went to a Black family for twenty-two thousand, on a contract.",
+   "The seller got less than the house was worth. The buyer paid more. The man in the middle kept the difference."
+  ],
+  "stat": "$10,000",
+  "statlabel": "the gap on a single house between what the speculator paid a white owner and what a Black family was charged",
+  "rail": [
+   [
+    "kitchenette-1941.jpg",
+    "A Black Belt flat cut into kitchenettes, 1941. Russell Lee, Farm Security Administration. Public domain."
+   ],
+   [
+    "sutherland-today.jpg",
+    "The Sutherland today. Photograph by Teemu008, via Wikimedia Commons. CC BY-SA 3.0."
+   ]
+  ],
+  "wide": [
+   "drexel-today.jpg",
+   "The same boulevard today, near 50th Street. Photograph by Warren LeMay, 2024. CC BY-SA 4.0."
+  ]
+ },
+ {
+  "slug": "buying-on-contract",
+  "title": "Buying on<br>contract",
+  "size": 80,
+  "cover": "kitchenette-1941.jpg",
+  "pos": "center 42%",
+  "items": [
+   "No ownership until the very last payment",
+   "An average markup of eighty-four percent",
+   "Three to four billion dollars, in total"
+  ],
+  "head": "You paid every month and owned nothing",
+  "body": [
+   "A contract sale gave a buyer the obligations of ownership and none of its rights. You put money down and paid monthly, but held no interest in the property until the final payment.",
+   "Miss one, and the seller could evict you, keep everything already paid, and sell the same house to the next family on the same terms.",
+   "Researchers at Duke estimate that between seventy-five and ninety-five percent of homes bought by Black families here in the fifties and sixties were sold this way."
+  ],
+  "stat": "84%",
+  "statlabel": "average markup on a contract sale, over what the seller had paid for the same building",
+  "rail": [
+   [
+    "sixty-third-1973.jpg",
+    "63rd Street at Calumet, 1973. John H. White, EPA DOCUMERICA, National Archives. Public domain."
+   ],
+   [
+    "drexel-1907.jpg",
+    "Drexel Boulevard about 1907. Detroit Publishing Company, Library of Congress."
+   ]
+  ],
+  "wide": [
+   "sutherland-today.jpg",
+   "The Sutherland, affordable apartments since 1989. Photograph by Teemu008. CC BY-SA 3.0."
+  ]
+ },
+ {
+  "slug": "redlining",
+  "title": "Redlining",
+  "size": 92,
+  "cover": "holc-chicago-1940.jpg",
+  "pos": "center 30%",
+  "items": [
+   "Graded green, blue, yellow and red, in 1940",
+   "Three or four Black families could sink a block",
+   "One bank in two hundred and forty-three"
+  ],
+  "head": "The map told the banks where not to lend",
+  "body": [
+   "In 1939 and 1940 the federal Home Owners' Loan Corporation graded Chicago's neighborhoods in four colours, from green down to what it called hazardous.",
+   "The surveys came from local real estate agents and lenders, the same people trained on appraisal manuals that treated a Black neighbor as a defect in the property. Three or four Black families could mark a whole neighborhood hazardous.",
+   "Most of the Black Belt came out red. Hyde Park came out yellow, definitely declining, for sitting beside Black neighborhoods."
+  ],
+  "stat": "1 of 243",
+  "statlabel": "white-owned Chicago banks surveyed by the realtor Dempsey Travis that would lend to a Black family buying in a white neighborhood",
+  "rail": [
+   [
+    "holc-chicago-1940-city.jpg",
+    "The same survey, city sheet. Home Owners' Loan Corporation, 1940. CC0."
+   ],
+   [
+    "kitchenette-1941.jpg",
+    "A Black Belt flat cut into kitchenettes, 1941. Russell Lee, Farm Security Administration. Public domain."
+   ]
+  ],
+  "wide": [
+   "hyde-park-aerial-1928.jpg",
+   "Hyde Park from the air in 1928, graded yellow twelve years later. Chicago Aerial Survey Co. Public domain."
+  ]
+ },
+ {
+  "slug": "urban-renewal",
+  "title": "Urban renewal",
+  "size": 82,
+  "cover": "university-apartments-today.jpg",
+  "pos": "center 45%",
+  "items": [
+   "Approved on November 7, 1958",
+   "Forty million spent, four million recovered",
+   "Thirty-four units of public housing built"
+  ],
+  "head": "The first big one in the country was here",
+  "body": [
+   "Urban renewal let a government declare an area blighted, clear it with public money, and choose who built on the land afterwards.",
+   "The Hyde Park and Kenwood plan, approved on the seventh of November 1958, was the first large federally supported programme of its kind in the country. The University of Chicago's own South East Chicago Commission drove it.",
+   "Public agencies spent about forty million dollars buying and clearing land, then sold it to developers for about four million."
+  ],
+  "stat": "4,000",
+  "statlabel": "families displaced, against thirty-four units of public housing built inside the renewal area",
+  "rail": [
+   [
+    "55th-street-today.jpg",
+    "Renewal-era townhouses on the same block. Photograph by Warren LeMay. CC BY-SA 4.0."
+   ],
+   [
+    "harper-court-today.jpg",
+    "Harper Court today. Photograph by TonyTheTiger, 2025, via Wikimedia Commons. CC0."
+   ]
+  ],
+  "wide": [
+   "hyde-park-aerial-1928.jpg",
+   "The neighborhood in 1928, thirty years before the plan. Chicago Aerial Survey Co. Public domain."
+  ]
+ }
+]
