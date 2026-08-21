@@ -193,12 +193,12 @@ assume a 45 second cut and should shift with the real read.
 
 ---
 
-## Video 1. The improvement associations
+## Video 1. The Hyde Park Improvement Protective Club
 
 **Hook card, 0.0 to 1.2**
-> A club. To keep
-> people out.
-> 1908.
+> The Hyde Park
+> Improvement
+> Protective Club. 1908.
 
 **Beat sheet**
 
@@ -207,49 +207,49 @@ assume a 45 second cut and should shift with the real read.
 | 1.2 to 6 | Zain on camera, hook line | captions only |
 | 6 to 12 | `hyde-park-aerial-1928.jpg`, slow push | stat card, **350 members**, over the lower third |
 | 12 to 18 | Zain | captions |
-| 18 to 24 | Three quick cards, 2 seconds each, on cream. "Blacklist the realtor." "Buy the house back." "Fire the employee." Source Serif 600, 84 px, forest, each wiping in over 7 frames | as pictured |
+| 18 to 24 | Card on cream, the club's promise. "Blacklist any realtor who sold to a Black buyer." Source Serif 600, 84 px, forest, built in two wipes so "blacklist" lands alone first | as pictured |
 | 24 to 32 | Quotation card, plate red on cream, the Property Owners' Journal line, built one clause at a time in three wipes | quotation |
 | 32 to 38 | Cut to black for 6 frames, then a stat card, **58 bombings, 1917 to 1921** | stat card |
-| 38 to 45 | Zain for the Binga quote and the last line | captions, **thirty-eight** in rust |
+| 38 to 45 | Zain for Jesse Binga | captions, **I will not run** in rust |
 
-**The animated moment.** The three club promises. Three cards, hard cut
-between them, no transition, each one landing on the stressed word of
-the line being spoken. It should feel like three slaps, not a
-slideshow.
+**The animated moment.** The club's name. Set it in full across three
+lines, Source Serif 600, forest, and build it one word at a time on the
+beat as Zain says it. Improvement. Protective. Club. The euphemism is
+the point, so let the viewer read it slowly.
 
 **Do not** picture Jesse Binga or Fannie Barrier Williams. Set their
 names in type.
 
-**Sound.** Bed only. Paper turn on the cut into the bombing stat. Two
-full seconds of silence under the last line, "thirty-eight of them
-stayed", with the bed gone entirely.
+**Sound.** Bed only. Paper turn on the cut into the bombing stat. Bed
+out entirely under Binga's last line, so "the race is at stake and not
+himself" lands in silence.
 
 ---
 
 ## Video 2. The realtors' rulebook
 
 **Hook card**
-> The word Realtor
-> is a trademark.
-> It came with a rule.
+> The realtors' code
+> had a rule
+> about race.
 
 **Beat sheet**
 
 | Time | Picture | Text on screen |
 | --- | --- | --- |
 | 0 to 6 | Zain | captions |
-| 6 to 10 | Card, the word **Realtor** in Source Serif 600 at 200 px, forest, with a small registered mark beside it, on cream | 1916 in DM Sans beneath |
+| 6 to 10 | Card, **Article 34**, Source Serif 600 at 200 px, forest, on cream | June 6, 1924 in DM Sans beneath |
 | 10 to 22 | Quotation card for Article 34, set in plate red. Build it in two wipes, the second one landing on "members of any race or nationality" | the article text |
 | 22 to 28 | `robie-1911.jpg`, slow push, while the enforcement lines are read | caption: **boards had to adopt it** |
 | 28 to 34 | Card, **310 South Michigan Avenue**, forest, with "about seven miles from here" beneath | as pictured |
-| 34 to 40 | A three date strip that builds left to right, 1917, 1921, 1950 | dates in rust |
+| 34 to 40 | A date strip that builds left to right, 1924, 1921, 1950 | dates in rust |
 | 40 to 45 | Zain for the apology line | caption: **2020** in rust |
 
-**The animated moment.** The date strip. Three dates on one baseline,
-each arriving as it is spoken, the earlier ones dimming to 40 percent
-as the next lands. Then, on the last line, a fourth date, 2020, drops
-onto the same line in rust while the other three stay dim. The whole
-argument of the video is in that one graphic.
+**The animated moment.** The date strip. The dates sit on one baseline
+and arrive as they are spoken, each earlier one dimming to 40 percent as
+the next lands. Then, on the final line, 2020 drops onto the same
+baseline in rust while the rest stay dim. The whole argument of the
+video is in that one graphic.
 
 **Sound.** Bed drops 4 dB under Article 34 and stays down until the
 quotation ends.
@@ -269,7 +269,7 @@ quotation ends.
 | --- | --- | --- |
 | 0 to 7 | Zain | captions |
 | 7 to 13 | Card. A single line of type on cream, then a second line arriving underneath it, then a third, to show a restriction passing to the next owner and the next | caption: **it bound the next owner** |
-| 13 to 20 | Card, **1926**, and beneath it "the Supreme Court let them stand" | as pictured |
+| 13 to 20 | Card, **Nathan William MacChesney**, and beneath it "drafted the model covenant, 1927" | as pictured |
 | 20 to 30 | Quotation card, the model covenant text in plate red. Hold longer than feels comfortable. This is the sentence the whole video exists for | the covenant text |
 | 30 to 36 | `../site/holc-chicago-1940.jpg` used as a field, with **38 of 85 square miles** shaded over it | stat card |
 | 36 to 41 | `hansberry-house-today.jpg`, slow push | caption: **6140 South Rhodes** |
@@ -333,7 +333,7 @@ else moves. No coins, no arrows, no cash imagery.
 | 16 to 24 | Stat cards in sequence, **75 to 95 percent**, then **84 percent markup** | as pictured |
 | 24 to 34 | Zain for the Bolton story | caption: **three times** in rust |
 | 34 to 40 | Card, **Mark Satter, died at 49**, in Source Serif on cream | as pictured |
-| 40 to 46 | Card, **400 contracts renegotiated**, then the closing figure | **$3 to $4 billion** |
+| 40 to 46 | Card, the closing figure, held to the end card | **$3 to $4 billion** |
 
 **The animated moment.** The payment counter. A number counting up in
 Source Serif at 160 px, month by month, with a small "months paid"

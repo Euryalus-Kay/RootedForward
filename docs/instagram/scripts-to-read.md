@@ -1,280 +1,194 @@
 # The tools of segregation, seven scripts to read
 
-Seven short videos, one per red plate in the Walk Hyde Park tour. Every
-number and every quotation here is checked against the tour, so you can
-say it on camera without hedging.
+Seven short videos, one per red plate in the Walk Hyde Park tour.
 
-## How to read these
+## How this is set out
 
-Aim for 40 to 50 seconds each. That is about 130 words at a normal
-talking pace, and these are written to that length.
+Everything in square brackets is a direction. Do not say it.
 
-The line breaks are breathing marks. Stop at the end of a line. Do not
-run two of them together, because the pauses are where the editor cuts.
+Everything else is said exactly as written. There is no bold and no
+markup in the spoken text, because asterisks in the middle of a
+sentence are the reason a script stops reading like speech.
 
-**Bold** words are the ones to lean on. Everything else stays flat. If
-you push every sentence the same amount it starts to sound like an ad.
+Paragraph breaks are pauses. Take them. They are also where the editor
+cuts, so a rushed one costs a cut point.
 
-Read the quotations slightly slower and slightly quieter than the rest.
-Say the word "quote" before each one. It sounds odd in your ear and
-completely normal on camera.
+Numbers are written the way you say them, not the way you write them.
+Say "twelve thousand dollars", not "twelve thousand".
 
-Do not smile into the hook. Say the first line the way you would say it
-to one person standing in front of you.
+Quotations are folded into the sentence rather than announced, so you
+never have to say the word "quote" out loud. Drop your voice slightly
+and slow down for the words that came out of the document, then come
+back up.
 
-If you fluff a line, stop, breathe, and start that line again. Do not
-restart the whole take.
+Each script runs about fifty seconds.
 
 ---
 
-## 1. The improvement associations
+### 1. The Hyde Park Improvement Protective Club
 
-**Hook, say it flat**
+[ Hook. Flat. No smile. Straight down the lens. ]
 
-In 1908 this neighborhood started a club to keep Black families out.
+In 1908, people in this neighborhood started a club, and its purpose was keeping Black families out.
 
-**Body**
+[ Pause. ]
 
-A lawyer named Francis Harper ran it. **Three hundred and fifty
-members.**
+It was called the Hyde Park Improvement Protective Club. An attorney named Francis Harper organized it, and it had three hundred and fifty members. Members promised to blacklist any realtor who sold to a Black buyer.
 
-Black doctors and teachers had already lived in Hyde Park for about
-fifteen years. The club went after them anyway.
+[ Slow down here. ]
 
-Members agreed to **blacklist any realtor** who sold to a Black buyer.
-To buy houses back from Black owners. To fire their Black employees.
+Ten years later the neighborhood's own paper put the argument in writing. It said that every colored man who moves into Hyde Park is damaging his white neighbors' property, and is therefore making war on the white man.
 
-About ten years later the neighborhood paper said it outright. Quote,
-every colored man who moves into Hyde Park knows that he is damaging
-his white neighbors' property. Therefore he is making war on the white
-man.
+[ Back to normal pace. ]
 
-When the paperwork did not work, they used bombs. Between 1917 and
-1921 there were **fifty-eight bombings** in Chicago, at the homes of
-Black families and at the offices of the agents who sold to them.
+When that did not work, people used explosives. Between 1917 and 1921 there were fifty-eight bombings in Chicago at the homes of Black families.
 
-A Black banker named **Jesse Binga** was one of the targets. He kept
-writing mortgages. He told the commission, quote, I will not run. The
-race is at stake and not myself.
-
-Forty families were bombed. **Thirty-eight of them stayed.**
+One of the men they bombed was a banker named Jesse Binga. He kept writing mortgages, and told the commission that he would not run, because the race was at stake and not himself.
 
 ---
 
-## 2. The realtors' rulebook
+### 2. Article 34
 
-**Hook**
+[ Hook. ]
 
-The word Realtor is a trademark, and for twenty-six years it came with
-a rule about race.
+For twenty-six years, the national code of ethics for American realtors told them not to sell a house to a Black family in a white neighborhood.
 
-**Body**
+[ Pause. ]
 
-The trade association invented the word in 1916.
+On the sixth of June, 1924, the National Association of Real Estate Boards adopted Article 34. It said a realtor should never be instrumental in introducing into a neighborhood members of any race whose presence will clearly be detrimental to property values.
 
-On **June 6th, 1924**, the National Association of Real Estate Boards
-adopted **Article 34** of its code of ethics. It said a Realtor should
-never be instrumental in introducing into a neighborhood members of any
-race or nationality whose presence will clearly be detrimental to
-property values.
+That was a rule, not an opinion. Every member board had to adopt it, and boards that refused to enforce it could be thrown out.
 
-That was not a suggestion. Member boards had to adopt the code. Agents
-could be disciplined. Boards that refused to enforce it could be
-thrown out.
+The address printed in the booklet was 310 South Michigan Avenue, about seven miles north of where I am standing.
 
-The address printed in the booklet was **310 South Michigan Avenue**,
-about seven miles from where I am standing.
+Chicago had got there first. Its own real estate board voted in 1921 to expel any member who sold to a Black buyer on a white block.
 
-Chicago was already doing it. In **1917** the Chicago Real Estate Board
-approved filling the city block by block. In **1921** it voted to expel
-anyone who sold to a Black buyer on a white block.
+[ Beat. ]
 
-The racial language came out of the national code in **1950**.
-
-The association apologized in **2020**.
+The racial language came out of the code in 1950. The association apologized for it in 2020.
 
 ---
 
-## 3. Restrictive covenants
+### 3. Restrictive covenants
 
-**Hook**
+[ Hook. ]
 
-For about thirty years, the deed to a house on this street could say
-who was not allowed to live in it.
+For about thirty years, the deed to a house on this street could name who was not allowed to live in it.
 
-**Body**
+[ Pause. ]
 
-A racial covenant was a line written into the deed itself. It bound
-whoever owned the property next, so one campaign could lock a block for
-decades.
+A racial covenant was a restriction written into the deed itself, and because it bound whoever owned the property next, one campaign could lock a block down for decades.
 
-In **1926** the Supreme Court let them stand, because it called them
-private agreements.
+In 1927 the Chicago Real Estate Board handed out a model covenant, drafted by a lawyer named Nathan William MacChesney, and property owners' groups carried it from block to block.
 
-In **1927** the Chicago Real Estate Board handed out a model covenant.
-Churches and clubs and property owners' groups carried it block by
-block.
+[ Slow down. ]
 
-The text said, quote, no part of said premises shall in any manner be
-used or occupied directly or indirectly by any negro or negroes. It
-made an exception for servants.
+It said that no part of the premises shall in any manner be used or occupied, directly or indirectly, by any negro or negroes. It made an exception for servants.
 
-More than **220 subdivisions** in Cook County adopted language like it.
-One estimate found covenants across **38 of Chicago's 85 square miles**
-of residential land south of North Avenue.
+[ Back up. ]
 
-The University of Chicago paid to defend them in court.
+Covenants ended up across thirty-eight of Chicago's eighty-five square miles of housing south of North Avenue, and the University of Chicago spent tens of thousands of dollars defending them in court.
 
-**Shelley versus Kraemer** killed enforcement in 1948. Nobody went back
-and deleted the sentences. They are still sitting in Cook County deeds
-right now, including near here.
+The Supreme Court made them unenforceable in 1948. Nobody deleted the sentences, so they are still sitting in Cook County deeds today.
 
 ---
 
-## 4. Blockbusting
+### 4. Blockbusting
 
-**Hook**
+[ Hook. ]
 
-The same people who profited from keeping Black families out worked out
-how to profit from letting them in.
+The same industry that made money keeping Black families out worked out how to make money moving them in.
 
-**Body**
+[ Pause. ]
 
-Covenants stopped being enforceable in 1948. Speculators needed a new
-product, and fear was the product.
+Once the courts stopped enforcing racial covenants in 1948, speculators needed something new to sell, and what they sold was fear.
 
-Here is how it ran. A speculator calls white homeowners in the evening.
-Slides flyers under doors. Says Black families are moving in and the
-value of your house is about to collapse.
+A speculator would telephone white homeowners in the evening and put flyers under their doors, saying Black families were moving in and the value of their house was about to collapse.
 
-A frightened owner sells cheap. Say **twelve thousand dollars.**
+A frightened owner would sell cheap. Say twelve thousand dollars.
 
-Days or weeks later the same house is sold to a Black family for
-**twenty-two thousand**, on a contract, because redlining meant they
-could not get a normal mortgage.
+Days later that same house went to a Black family for twenty-two thousand, on a contract, because redlining meant they could not get an ordinary mortgage.
 
-It needed two lies at once. White sellers had to believe their
-neighbors would ruin the block. Black buyers had so few options they
-would pay almost anything to get in.
+[ Beat. ]
 
-The seller got less than the house was worth. The buyer paid far more
-than it was worth. The man in the middle kept the difference.
+It needed two beliefs at once. White sellers had to think their new neighbors would ruin the block, and Black buyers had so few places they were allowed to live that they would pay far above the market.
 
-Whole blocks turned over in a couple of years.
+The man in the middle kept the difference.
 
 ---
 
-## 5. Buying on contract
+### 5. Buying on contract
 
-**Hook**
+[ Hook. ]
 
-You could pay for a house in Chicago for ten years and still own
-nothing.
+A Black family in Chicago could pay for a house for ten years and still not own any part of it.
 
-**Body**
+[ Pause. ]
 
-It was called a contract sale. You put money down, you paid every
-month, and **you got no ownership at all until the very last payment.**
+It was called a contract sale. You put money down and you paid every month, but you held no ownership at all until the very last payment.
 
-Miss one, and the seller could evict you, keep everything you had paid,
-and sell the same house to the next family the same way.
+Miss one, and the seller could evict you, keep everything you had already paid, and sell the same house to the next family on the same terms.
 
-This was not rare. Duke researchers estimate that **75 to 95 percent**
-of homes bought by Black families in Chicago in the fifties and sixties
-were sold on contract. Average markup, **84 percent.**
+Researchers at Duke estimate that between seventy-five and ninety-five percent of homes bought by Black families here in the fifties and sixties were sold this way, at an average markup of eighty-four percent.
 
-A lawyer named **Mark Satter** got into this because of a couple named
-Sally and Albert Bolton. They paid on time for two years, missed one
-deadline, and got an eviction notice. Satter worked out they had paid
-**three times** what their seller paid for the building.
+A lawyer named Mark Satter took it on because of two clients, Sally and Albert Bolton, who paid on time for two years, missed one deadline, and got an eviction notice. They had paid three times what their seller paid for the building.
 
-He spent the rest of his life on it. He died at forty-nine.
+[ Beat. ]
 
-In the late sixties, families on the West Side formed the **Contract
-Buyers League** and went on strike. More than **400 contracts** were
-renegotiated.
-
-The total taken out of Black Chicago this way is estimated at **three
-to four billion dollars.**
+Duke puts the total taken out of Black Chicago at three to four billion dollars.
 
 ---
 
-## 6. Redlining
+### 6. Redlining
 
-**Hook**
+[ Hook. ]
 
-In 1940 the federal government made a map of Chicago and coloured my
-neighborhood yellow.
+In 1940 the federal government drew a map of Chicago telling banks which neighborhoods were safe to lend in, and it used race to decide.
 
-**Body**
+[ Pause. ]
 
-Redlining was grading neighborhoods for lending risk by race.
+The Home Owners' Loan Corporation graded the city in four colors. Green, blue, yellow and red, from the safest down to what they called hazardous.
 
-The Home Owners' Loan Corporation mapped the city in 1939 and 1940.
-Four colours. Green, blue, yellow, red. Best to hazardous.
+Those grades came from local real estate agents and lenders, the same people trained on appraisal manuals that treated a Black neighbor as a defect in the property.
 
-The surveys came from **local real estate agents and lenders**, the
-same people trained on appraisal manuals that treated Black neighbors
-as a defect.
+Three or four Black families on a block could be enough to get a whole neighborhood marked hazardous, and a bad grade could block the mortgages and the business loans for every property on it.
 
-**Three or four Black families** on a block could get a whole
-neighborhood marked hazardous.
+Most of the Black Belt came out red. Hyde Park came out yellow, definitely declining, for sitting next to Black neighborhoods.
 
-Most of the Black Belt came out red. Hyde Park and Kenwood came out
-yellow, definitely declining, partly for bordering Black
-neighborhoods.
+[ Slow right down for the last two lines. ]
 
-The Federal Housing Administration ran on the same logic. Its 1938
-manual told appraisers to look for, quote, incompatible racial and
-social groups, and recommended deed restrictions to keep them out.
-
-Here is what that meant on the ground. A Black realtor named **Dempsey
-Travis** surveyed 243 white-owned Chicago banks. **One** of them would
-lend to a Black family buying in a white neighborhood.
+A Black realtor named Dempsey Travis surveyed two hundred and forty-three white-owned banks in Chicago. One of them would lend to a Black family buying in a white neighborhood.
 
 One.
 
 ---
 
-## 7. Urban renewal
+### 7. Urban renewal
 
-**Hook**
+[ Hook. Shoot this one on 55th Street if you can. ]
 
-Four thousand families were moved off this street and the plan was
-federal policy.
+Nearly four thousand families were cleared off this part of Hyde Park, and it was the first program of its kind in the country.
 
-**Body**
+[ Pause. ]
 
-Urban renewal meant a government could call an area blighted, clear it
-with public money, and choose who built on the land afterwards.
+Urban renewal gave a government the power to declare an area blighted, clear it with public money, and choose who built on the land afterwards.
 
-The **Hyde Park and Kenwood plan** was approved on **November 7th,
-1958.** It was the **first big federally funded urban renewal program
-in the country.** The University of Chicago's own commission drove it.
+The Hyde Park and Kenwood plan was approved in November 1958, and the University of Chicago's own body, the South East Chicago Commission, drove it.
 
-An Illinois law passed in 1953, with the university's support, let
-planners condemn areas that only **might** become blighted later.
+Public agencies spent about forty million dollars buying and clearing the land here, then sold it to developers for about four million.
 
-Public money spent buying and clearing the land, about **forty million
-dollars.** It was sold on to developers for about **four million.**
+What went up is around me now. The townhouses, the towers standing in the middle of 55th Street, the shopping center two blocks north.
 
-What went up is around me. Townhouses. The towers in the middle of 55th
-Street. The shopping centre two blocks north.
+What went was the cheaper housing, most of the small businesses on this street, and nearly four thousand families.
 
-What went was the cheap housing and most of the small businesses on
-55th Street. The taverns. The hardware store.
+[ Beat. ]
 
-**Nearly four thousand families displaced.** The new housing was priced
-for people with more money.
-
-The university opposed public housing inside the renewal area. **Thirty
-four units** were built.
+The university opposed public housing inside the renewal area. Thirty-four units were built.
 
 ---
 
-## Sign-off, if you want one
+## Sign-off
 
-Use it on two or three of the seven, not all of them. The same closing
-line seven times in a row reads as a template.
+Use this on two or three of the seven, not on all of them.
 
 The whole walk is free in our app. Rooted Forward.
