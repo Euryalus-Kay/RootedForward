@@ -53,6 +53,16 @@ export const QR_LINKS: Record<string, QrLink> = {
     to: TOURS,
     printedOn: "6ft x 2ft vinyl outreach banner, first printed August 2026",
   },
+
+  /* The Ground Keeps Moving exhibition panels. Sheet 4 of both the
+     36x48 board series and the retractable banner series carries this
+     code next to the route map, inviting visitors to walk the tour,
+     so it lands on the Hyde Park walk itself rather than the hub. */
+  exhibit: {
+    to: `${SITE}/tours/hyde-park-walk`,
+    printedOn:
+      "The Ground Keeps Moving exhibition, sheet 4 of the 36x48 boards and the 33x81 retractable banners, built August 2026",
+  },
 };
 
 /** `/go` with no slug behaves like the banner code. */

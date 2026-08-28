@@ -285,7 +285,7 @@ export default function StopDetail({
           nothing is only available by video. */}
       {stop.video && (
         <div className="mt-6">
-          <h3 className="walk-title text-lg font-semibold text-forest">
+          <h3 className="walk-title text-2xl font-semibold text-forest">
             Watch this stop
           </h3>
           <div className="mt-3 overflow-hidden rounded-[2px] border border-border">
@@ -296,8 +296,8 @@ export default function StopDetail({
               tone="light"
             />
           </div>
-          <p className="mt-3 font-body text-sm text-ink/70">
-            Read more about this stop below.
+          <p className="mt-3 font-body text-lg font-semibold text-rust">
+            Read the full stop below
           </p>
         </div>
       )}
