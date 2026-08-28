@@ -26,6 +26,22 @@ const OUT = join(HERE, "assets/img");
 mkdirSync(OUT, { recursive: true });
 
 const TARGETS = {
+  "strip-ferris.jpg": [join(SCRATCH, "ferris-wheel-1893.jpg")],
+  "strip-midway.jpg": [join(SCRATCH, "midway-1893.jpg")],
+  "strip-fire.jpg": [join(SCRATCH, "white-city-fire-aftermath-1894.jpg")],
+  "strip-delprado.jpg": [join(SCRATCH, "del-prado-postcard.jpg")],
+  "strip-drexel.jpg": [join(SCRATCH, "drexel-1907.jpg")],
+  "strip-sisson.jpg": [join(SCRATCH, "sisson-hotel-1920.jpg")],
+  "strip-carlton.jpg": [join(SCRATCH, "cooper-carlton-postcard.jpg")],
+  "strip-quads.jpg": [join(SCRATCH, "lawrence-quads-1907.jpg")],
+  "strip-doorway.jpg": [join(SCRATCH, "kitchenette-doorway-1941.jpg")],
+  "strip-63rd.jpg": [join(SCRATCH, "sixty-third-1973.jpg")],
+  "strip-63bus.jpg": [join(SCRATCH, "sixty-third-bus-1973.jpg")],
+  "strip-univapts.jpg": [join(SCRATCH, "university-apartments-today.jpg")],
+  "strip-55th.jpg": [join(SCRATCH, "fifty-fifth-today.jpg")],
+  "strip-republic.jpg": [join(SCRATCH, "statue-republic.jpg")],
+  "strip-midway-today.jpg": [join(MEDIA, "hyde-park-walk/midway-today.jpg")],
+  "strip-metra.jpg": [join(MEDIA, "hyde-park-walk/metra-53rd-today.jpg")],
   "p1-hero-court-night.jpg": [
     join(SCRATCH, "court-night-1893.jpg"),
     join(MEDIA, "hyde-park-walk/court-night-1893.jpg"),

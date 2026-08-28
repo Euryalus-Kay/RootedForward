@@ -41,22 +41,16 @@ async function photo(name) {
   await sharp(src).resize({ width: w }).jpeg({ quality: 80, mozjpeg: true }).toFile(join(OUT, name));
 }
 const PHOTOS = [
-  "p1-hero-court-night.jpg", "p1-olmsted-plan.jpg", "p1-hp-aerial-1928.jpg",
-  "p2-bombing-map.jpg",
+  "p1-hero-court-night.jpg", "p1-olmsted-plan.jpg",
+  "p1-reason-why.jpg", "p2-bombing-map.jpg",
   "p3-kitchenette.jpg", "p3-hansberry-house.jpg", "p4-opc.jpg",
-  "p4-harper-court.jpg",
+  "strip-ferris.jpg", "strip-midway.jpg", "strip-delprado.jpg", "strip-fire.jpg",
+  "strip-carlton.jpg", "strip-drexel.jpg", "strip-quads.jpg", "strip-sisson.jpg",
+  "strip-doorway.jpg", "strip-63rd.jpg", "strip-63bus.jpg", "strip-univapts.jpg",
+  "strip-55th.jpg", "strip-republic.jpg", "strip-midway-today.jpg", "strip-metra.jpg",
 ];
 for (const p of PHOTOS) await photo(p);
 
-/* the pamphlet page may not have been fetched yet; make a labeled
-   placeholder frame if missing so the artboard never shows a broken
-   image (swapped out automatically when the real scan lands) */
-try {
-  await photo("p1-reason-why.jpg");
-} catch {
-  const ph = `<svg xmlns="http://www.w3.org/2000/svg" width="410" height="550"><rect width="410" height="550" fill="#E2D8C2"/><rect x="8" y="8" width="394" height="534" fill="none" stroke="#4A453D" stroke-width="2"/><text x="205" y="265" text-anchor="middle" font-family="Archivo Narrow, sans-serif" font-size="24" fill="#4A453D" letter-spacing="2">PAMPHLET SCAN</text><text x="205" y="295" text-anchor="middle" font-family="Archivo Narrow, sans-serif" font-size="24" fill="#4A453D" letter-spacing="2">TO COME</text></svg>`;
-  await sharp(Buffer.from(ph)).jpeg({ quality: 85 }).toFile(join(OUT, "p1-reason-why.jpg"));
-}
 
 /* maps and marks */
 execFileSync("rsvg-convert", ["-w", "1500", join(ASSETS, "holc-map.svg"), "-o", "/tmp/holc-canvas.png"]);

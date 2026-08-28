@@ -4,161 +4,130 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  /* Sheet 3 is the ledger sheet. The numbers are the hero; the
-     two-track timeline replaces the standard ledger foot because the
-     whole sheet is the ledger. */
-  .colL { position: absolute; left: 1.5in; top: 10.6in; width: 14.9in; }
-  .colR { position: absolute; left: 17.2in; top: 10.6in; width: 17.3in; }
-  .sec + .sec { margin-top: 0.62in; }
-  .crackrow { display: flex; gap: 0.45in; }
-  .ledger .lrow { padding: 0.165in 0; }
-  .voice.baldwin { font-size: 39pt; margin-top: 0.62in; width: 14.2in; }
-
-  /* two-track era band: lane names in their own left gutter, the
-     machinery above the rule, the resistance below it */
-  .tt { position: absolute; left: 1.5in; right: 1.5in; bottom: 3in; height: 5.35in; }
-  .tt .lanetag { position: absolute; left: 0; width: 3in; font-family: var(--narrow); font-weight: 700; font-size: 16pt; letter-spacing: 0.22em; color: var(--carbon-soft); }
-  .tt .track { position: absolute; left: 3.4in; right: 0; top: 0; bottom: 0; }
-  .tt .axis { position: absolute; left: -3.4in; right: 0; top: 2.52in; border-top: 2.25pt solid var(--carbon); }
-  .tt .item { position: absolute; width: 3.35in; font-family: var(--mono); }
-  .tt .item .y { font-weight: 600; font-size: 20pt; display: block; }
-  .tt .item .t { font-family: var(--narrow); font-size: 16pt; line-height: 1.24; display: block; margin-top: 0.06in; letter-spacing: 0.02em; }
-  .tt .item.above { bottom: 3.05in; }
-  .tt .item.below { top: 3.08in; }
-  .tt .item.endr { text-align: right; transform: translateX(-100%); padding-right: 0.0in; }
-  .tt .tick { position: absolute; width: 2.25pt; }
-  .tt .tick.above { top: 2.06in; height: 0.46in; background: var(--red); }
-  .tt .tick.below { top: 2.52in; height: 0.46in; background: var(--carbon); }
-  .tt .item.above .y { color: var(--red); }
+  .cols { display: flex; gap: 1.2in; margin-top: 0.55in; }
+  .cols .c { width: 13.55in; }
+  .bigword { left: 6.25in; right: 1.4in; top: 33.9in; }
+  .bigword .w { font-size: 150pt; }
+  .stripband { height: 9.7in; }
 </style>
 </head>
 <body>
 <div class="sheet board">
 
-  <div class="band">
-    <div class="left">Hyde Park, Chicago</div>
-    <div class="right">Sheet 3 of 4 · 1937 to 1971</div>
-  </div>
-
-  <div class="title" style="font-size:116pt;">Contract Sales and Urban Renewal</div>
-  <div class="deck" style="max-width:30.5in;">The Supreme Court ended covenant enforcement in
-    1948. Banks still refused Black borrowers, speculators resold houses
-    at nearly double the price on contract, and in 1958 the city approved
-    a clearance plan that displaced about 4,000 families.</div>
-
-  <div class="colL">
-    <div class="sec">
-      <div class="seclabel">Hansberry v. Lee <span class="yr">· 1937 to 1948</span></div>
-      <div class="crackrow" style="margin-top:0.22in;">
-        <div class="body" style="margin-top:0; width:8.5in;"><p>In 1937 Carl
-          Hansberry bought a brick three-flat at 6140 South Rhodes, inside a
-          covenant the university had helped defend. A mob gathered, and a
-          chunk of concrete nearly struck his daughter Lorraine, age seven.
-          Hansberry v. Lee reached the Supreme Court in 1940 and the
-          family won. The covenant's backers had never gathered the
-          signatures its own terms required. Shelley v. Kraemer ended
-          court enforcement everywhere in 1948. Lorraine Hansberry put
-          the mob outside the window into A Raisin in the Sun.</p></div>
-        <figure style="width:5.95in;">
-          <div style="height:7.6in;"><img src="../assets/img/p3-hansberry-house.jpg" alt=""></div>
-          <div class="cap">The Hansberry house at 6140 South Rhodes Avenue.</div>
-          <div class="credit">PHOTOGRAPH BY LEGIMET, 2025 · CC BY-SA 4.0</div>
-        </figure>
+  <div class="eband">
+    <div class="yrs">1937<span class="to">TO</span>1971</div>
+    <div class="etext">The Supreme Court ended covenant enforcement in
+      1948. Banks still refused Black borrowers, speculators resold
+      houses at nearly double the price on contract, and in 1958 the
+      city approved a clearance plan that displaced about 4,000
+      families.
+      <br><br>Sheet three of four.</div>
+    <div class="espacer"></div>
+    <div class="emark">
+      <img src="../assets/img/rf-logo.svg" alt="">
+      <div>
+        <div class="nm">Rooted Forward</div>
+        <div class="tg">Free self-guided audio tours<br>rooted-forward.org</div>
       </div>
     </div>
-
-    <div class="sec">
-      <div class="seclabel">Contract sales <span class="yr">· 1948 to 1968</span></div>
-      <div class="body"><p>Banks would not follow the ruling, so speculators
-        filled the gap. They bought cheap from fleeing white owners and
-        resold to Black families on installment contracts at prices they
-        set themselves. If a family missed one payment, the seller kept the house and
-        every dollar paid. Buildings were cut into one-room kitchenettes,
-        and the crowding that followed was blamed on the people paying the
-        markup.</p></div>
-    </div>
-
-    <div class="sec">
-      <div class="seclabel">Urban renewal <span class="yr">· 1949 to 1963</span></div>
-      <div class="body"><p>The university's answer to the changing
-        neighborhood was land clearance. Its South East Chicago Commission,
-        formed in 1952 under attorney Julian Levi, helped write an Illinois
-        law that let planners condemn blocks that only might become
-        blighted. Demolition began near 55th and Lake Park in 1955. On
-        November 7, 1958, City Council approved the Hyde Park-Kenwood plan,
-        the first large federally supported urban renewal program in the
-        country. The plan gave moving help to displaced renters and nothing to
-        displaced businesses. Most of the businesses never reopened.</p></div>
-    </div>
-
-    <div class="voice baldwin">"urban renewal, which means moving the
-      Negroes out&#8230; it means Negro removal, that is what it means"
-      <span class="attr">James Baldwin <span class="role">· 1963</span></span>
-    </div>
   </div>
 
-  <div class="colR">
-    <figure>
-      <div style="height:11.2in; overflow:hidden;"><img src="../assets/img/p3-kitchenette.jpg" alt="" style="transform:scale(1.07);"></div>
-      <div class="cap">An apartment building subdivided into kitchenettes,
-        Chicago, photographed by Edwin Rosskam in April 1941.</div>
-      <div class="credit">FARM SECURITY ADMINISTRATION · LIBRARY OF CONGRESS</div>
-    </figure>
+  <div class="field">
+    <div class="ftitle" style="font-size:64pt;">Contract Sales and Urban Renewal</div>
 
-    <div class="ledger" style="margin-top:0.5in;">
-      <div class="lhead">The numbers · 1948 to 1971</div>
-      <div class="lrow"><span class="llabel">Savings and loans that would lend to a Black family</span><span class="lvalue debit">1 of 241</span></div>
-      <div class="lrow"><span class="llabel">Homes sold to Black families on contract</span><span class="lvalue">75 to 95 in 100</span></div>
-      <div class="lrow"><span class="llabel">Average markup over the white price</span><span class="lvalue debit">+84%</span></div>
-      <div class="lrow"><span class="llabel">Taken from Black Chicago, in today's dollars</span><span class="lvalue debit">$3.2 to 4 billion</span></div>
-      <div class="lrow"><span class="llabel">Public money to assemble and clear 856 acres</span><span class="lvalue">$40 million</span></div>
-      <div class="lrow"><span class="llabel">The cleared land resold to developers for</span><span class="lvalue debit">$4 million</span></div>
-      <div class="lrow"><span class="llabel">Families displaced by the plan</span><span class="lvalue debit">about 4,000</span></div>
-      <div class="lrow"><span class="llabel">Public housing units built</span><span class="lvalue debit">34</span></div>
-      <div class="lrow"><span class="llabel">Displaced white families who stayed in Hyde Park</span><span class="lvalue">46 in 100</span></div>
-      <div class="lrow"><span class="llabel">Displaced Black families who stayed</span><span class="lvalue debit">17 in 100</span></div>
-      <div class="lrow"><span class="llabel">Contracts the Buyers League forced open by 1971</span><span class="lvalue" style="color:var(--forest)">155</span></div>
-    </div>
-  </div>
+    <div class="cols">
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">Hansberry v. Lee <span class="yr">· 1937 to 1948</span></div>
+          <div style="display:flex; gap:0.45in; margin-top:0.18in;">
+            <div class="body" style="margin-top:0; width:7.8in; font-size:25pt;"><p>In
+              1937 Carl Hansberry bought a brick three-flat at 6140 South
+              Rhodes, inside a covenant the university had helped defend.
+              A mob gathered, and a chunk of concrete nearly struck his
+              daughter Lorraine, age seven. Hansberry v. Lee reached the
+              Supreme Court in 1940 and the family won. The covenant's
+              backers had never gathered the signatures its own terms
+              required. Shelley v. Kraemer ended court enforcement
+              everywhere in 1948. Lorraine Hansberry put the mob outside
+              the window into A Raisin in the Sun.</p></div>
+            <figure style="width:5.3in;">
+              <div style="height:7.4in;"><img src="../assets/img/p3-hansberry-house.jpg" alt=""></div>
+              <div class="cap" style="font-size:15.5pt;">The Hansberry house at
+                6140 South Rhodes Avenue.</div>
+              <div class="credit">PHOTOGRAPH BY LEGIMET, 2025 · CC BY-SA 4.0</div>
+            </figure>
+          </div>
+        </div>
 
-  <div class="tt">
-    <div class="lanetag" style="top:1.45in;">CITY, STATE, AND<br>UNIVERSITY ACTION</div>
-    <div class="lanetag" style="top:3.1in;">RESIDENTS AND<br>THE COURTS</div>
-    <div class="track">
-      <div class="axis"></div>
+        <div class="sec">
+          <div class="rusthead">Contract sales <span class="yr">· 1948 to 1968</span></div>
+          <div class="body" style="font-size:25pt;"><p>Banks would not follow the
+            ruling, so speculators filled the gap. They bought cheap from
+            fleeing white owners and resold to Black families on
+            installment contracts at prices they set themselves. If a
+            family missed one payment, the seller kept the house and every
+            dollar paid. Buildings were cut into one-room kitchenettes,
+            and the crowding that followed was blamed on the people paying
+            the markup.</p></div>
+          <figure style="margin-top:0.3in; height:8.6in; overflow:hidden;"><img src="../assets/img/p3-kitchenette.jpg" alt="" style="transform:scale(1.07);"></figure>
+          <div class="cap">An apartment building subdivided into
+            kitchenettes, Chicago, photographed by Edwin Rosskam in April
+            1941.</div>
+          <div class="credit">FARM SECURITY ADMINISTRATION · LIBRARY OF CONGRESS</div>
+        </div>
+      </div>
 
-      <div class="tick above" style="left:47%"></div>
-      <div class="item above endr" style="left:47%"><span class="y">1953</span><span class="t">Illinois lets planners condemn blocks that might become blighted</span></div>
-      <div class="tick above" style="left:56%"></div>
-      <div class="item above" style="left:57%"><span class="y">1955</span><span class="t">Demolition begins at 55th and Lake Park</span></div>
-      <div class="tick above" style="left:78%"></div>
-      <div class="item above" style="left:79%"><span class="y">1958</span><span class="t">City Council approves the renewal plan</span></div>
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">Urban renewal <span class="yr">· 1949 to 1963</span></div>
+          <div class="body" style="font-size:25pt;"><p>The university's answer to
+            the changing neighborhood was land clearance. Its South East
+            Chicago Commission, formed in 1952 under attorney Julian Levi,
+            helped write an Illinois law that let planners condemn blocks
+            that only might become blighted. Demolition began near 55th
+            and Lake Park in 1955. On November 7, 1958, City Council
+            approved the Hyde Park-Kenwood plan, the first large federally
+            supported urban renewal program in the country. The plan gave
+            moving help to displaced renters and nothing to displaced
+            businesses. Most of the businesses never reopened.</p></div>
+        </div>
 
-      <div class="tick below" style="left:0%"></div>
-      <div class="item below" style="left:0%"><span class="y">1937</span><span class="t">The Hansberrys move to South Rhodes Avenue</span></div>
-      <div class="tick below" style="left:11%"></div>
-      <div class="item below" style="left:12.5%"><span class="y">1940</span><span class="t">Hansberry v. Lee wins at the Supreme Court</span></div>
-      <div class="tick below" style="left:32%"></div>
-      <div class="item below" style="left:33.5%"><span class="y">1948</span><span class="t">Shelley v. Kraemer ends court enforcement</span></div>
-      <div class="tick below" style="left:65%"></div>
-      <div class="item below" style="left:66.5%"><span class="y">1959</span><span class="t">A Raisin in the Sun opens on Broadway</span></div>
-      <div class="tick below" style="left:91%"></div>
-      <div class="item below endr" style="left:91%"><span class="y">1968</span><span class="t">The Contract Buyers League organizes</span></div>
-    </div>
-  </div>
+        <div class="sec">
+          <div class="ledger">
+            <div class="lhead">The numbers · 1948 to 1971</div>
+            <div class="lrow"><span class="llabel">Savings and loans that would lend to a Black family</span><span class="lvalue debit">1 of 241</span></div>
+            <div class="lrow"><span class="llabel">Homes sold to Black families on contract</span><span class="lvalue">75 to 95 in 100</span></div>
+            <div class="lrow"><span class="llabel">Average markup over the white price</span><span class="lvalue debit">+84%</span></div>
+            <div class="lrow"><span class="llabel">Taken from Black Chicago, in today's dollars</span><span class="lvalue debit">$3.2 to 4 billion</span></div>
+            <div class="lrow"><span class="llabel">Public money to assemble and clear 856 acres</span><span class="lvalue">$40 million</span></div>
+            <div class="lrow"><span class="llabel">The cleared land resold to developers for</span><span class="lvalue debit">$4 million</span></div>
+            <div class="lrow"><span class="llabel">Families displaced by the plan</span><span class="lvalue debit">about 4,000</span></div>
+            <div class="lrow"><span class="llabel">Public housing units built</span><span class="lvalue debit">34</span></div>
+            <div class="lrow"><span class="llabel">Displaced white families who stayed in Hyde Park</span><span class="lvalue">46 in 100</span></div>
+            <div class="lrow"><span class="llabel">Displaced Black families who stayed</span><span class="lvalue debit">17 in 100</span></div>
+            <div class="lrow"><span class="llabel">Contracts the Buyers League forced open by 1971</span><span class="lvalue" style="color:var(--forest)">155</span></div>
+          </div>
+        </div>
 
-  <div class="foot" style="bottom:1.05in;">
-    <div class="footrule"></div>
-    <div class="entries">
-      <div class="fe"><span class="yr">1937 TO 1971</span></div>
-      <div class="publisher" style="margin-left:auto;">
-        <img class="mark" src="../assets/img/rf-logo.svg" alt="">
-        <div>
-          <div class="pname">Rooted Forward</div>
-          <div class="pline">Free self-guided audio tours on the racial<br>history of American cities · rooted-forward.org</div>
+        <div class="sec">
+          <div class="voice" style="font-size:33pt;">"urban renewal, which means
+            moving the Negroes out&#8230; it means Negro removal, that is
+            what it means"
+            <span class="attr">James Baldwin <span class="role">· 1963</span></span>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="bigword"><span class="w">The Clearance</span><span class="dash"></span></div>
+
+  <div class="stripband">
+    <img src="../assets/img/strip-doorway.jpg" style="width:8.4in;" alt="">
+    <img src="../assets/img/strip-63rd.jpg" style="width:9.4in;" alt="">
+    <img src="../assets/img/strip-63bus.jpg" style="width:8.6in;" alt="">
+    <img src="../assets/img/strip-univapts.jpg" style="width:6.6in;" alt="">
+    <div class="stripcredit">KITCHENETTE HOUSING 1941, 63RD STREET 1973, UNIVERSITY APARTMENTS · LIBRARY OF CONGRESS, NATIONAL ARCHIVES, WIKIMEDIA COMMONS</div>
   </div>
 
 </div>

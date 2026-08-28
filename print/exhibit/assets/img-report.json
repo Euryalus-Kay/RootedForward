@@ -1,5 +1,133 @@
 [
  {
+  "target": "strip-ferris.jpg",
+  "source": "archive",
+  "px": [
+   2560,
+   1205
+  ]
+ },
+ {
+  "target": "strip-midway.jpg",
+  "source": "archive",
+  "px": [
+   2737,
+   1411
+  ]
+ },
+ {
+  "target": "strip-fire.jpg",
+  "source": "archive",
+  "px": [
+   1006,
+   1536
+  ]
+ },
+ {
+  "target": "strip-delprado.jpg",
+  "source": "archive",
+  "px": [
+   2560,
+   1645
+  ]
+ },
+ {
+  "target": "strip-drexel.jpg",
+  "source": "archive",
+  "px": [
+   5097,
+   4019
+  ]
+ },
+ {
+  "target": "strip-sisson.jpg",
+  "source": "archive",
+  "px": [
+   2048,
+   1183
+  ]
+ },
+ {
+  "target": "strip-carlton.jpg",
+  "source": "archive",
+  "px": [
+   2560,
+   1643
+  ]
+ },
+ {
+  "target": "strip-quads.jpg",
+  "source": "archive",
+  "px": [
+   1746,
+   680
+  ]
+ },
+ {
+  "target": "strip-doorway.jpg",
+  "source": "archive",
+  "px": [
+   4284,
+   3104
+  ]
+ },
+ {
+  "target": "strip-63rd.jpg",
+  "source": "archive",
+  "px": [
+   2560,
+   1717
+  ]
+ },
+ {
+  "target": "strip-63bus.jpg",
+  "source": "archive",
+  "px": [
+   3000,
+   2035
+  ]
+ },
+ {
+  "target": "strip-univapts.jpg",
+  "source": "archive",
+  "px": [
+   3648,
+   2736
+  ]
+ },
+ {
+  "target": "strip-55th.jpg",
+  "source": "archive",
+  "px": [
+   5321,
+   3991
+  ]
+ },
+ {
+  "target": "strip-republic.jpg",
+  "source": "archive",
+  "px": [
+   2048,
+   3084
+  ]
+ },
+ {
+  "target": "strip-midway-today.jpg",
+  "source": "repo",
+  "px": [
+   1600,
+   900
+  ]
+ },
+ {
+  "target": "strip-metra.jpg",
+  "source": "repo",
+  "px": [
+   1600,
+   1200
+  ]
+ },
+ {
   "target": "p1-hero-court-night.jpg",
   "source": "archive",
   "px": [

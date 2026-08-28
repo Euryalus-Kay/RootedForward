@@ -1,15 +1,17 @@
 /* ------------------------------------------------------------------ */
-/*  The Survey File. Shared system for the four exhibition sheets.     */
+/*  Exhibition system v2, rebuilt to the owner's reference panels.     */
 /*                                                                     */
-/*  Everything is in real inches and points. CSS pt is exactly 1/72in  */
-/*  in Chromium's print path, so the sizes written here are the sizes  */
-/*  on the board.                                                      */
+/*  The grammar, fused from the three references:                      */
+/*   - a full-height dark era band on each board carrying the years,   */
+/*     the intro paragraph, and the maker's mark (the timeline wall)   */
+/*   - a red-accented title with short titled sections and small       */
+/*     embedded images with captions (the wayside panels)              */
+/*   - specimen-framed documents, a giant keyword low on the sheet,    */
+/*     and a muted period-collage base with no reading content         */
+/*     (the immigration banners)                                       */
 /*                                                                     */
-/*  Palette discipline (from the site's exhibit tokens):               */
-/*    linen ground, carbon ink, HOLC blue and appraisal gold only      */
-/*    inside archival objects, red ONLY for the machinery's output     */
-/*    (grades, operative clauses, debits), rust ONLY where Rooted      */
-/*    Forward itself acts (the route, the code, the publisher line).   */
+/*  Palette and faces stay the site's own. All sizes are real print    */
+/*  points and inches.                                                 */
 /* ------------------------------------------------------------------ */
 
 @font-face {
@@ -59,6 +61,7 @@
   --blue: #4A6B8A;
   --gold: #C9A227;
   --rust: #C45D3E;
+  --rust-dark: #A8462A;
   --forest: #1B3A2D;
   --cream: #F5F0E8;
 
@@ -78,78 +81,83 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ---------- the sheet ---------- */
-/* Board sheets are 36x48. The .sheet is the trim; .bleed wraps it.    */
-.bleed { background: var(--linen); }
-.sheet {
-  position: relative;
-  background: var(--linen);
-  overflow: hidden;
-}
-.sheet.board { width: 36in; height: 48in; padding: 1.4in 1.5in 1.1in; }
-.sheet.banner { width: 33in; height: 81in; padding: 1.3in 1.35in 0; }
+.sheet { position: relative; background: var(--linen); overflow: hidden; }
+.sheet.board { width: 36in; height: 48in; }
+.sheet.banner { width: 33in; height: 81in; }
 
-/* ---------- running header, the plat-sheet band ---------- */
-.band {
+/* ---------- the era band (boards) ---------- */
+.eband {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4.7in;
+  background: var(--carbon);
+  color: var(--cream);
+  padding: 1.15in 0.55in 1.05in;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  border-top: 3pt solid var(--carbon);
-  border-bottom: 0.75pt solid var(--carbon);
-  padding: 0.14in 0 0.12in;
+  flex-direction: column;
 }
-.band .left, .band .right {
+.eband .yrs {
   font-family: var(--narrow);
   font-weight: 700;
-  font-size: 19pt;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  font-size: 118pt;
+  line-height: 1.02;
+  letter-spacing: 0.01em;
 }
-.band .right { font-weight: 400; letter-spacing: 0.2em; color: var(--carbon-soft); }
-
-/* ---------- titles ---------- */
-.title {
-  font-family: var(--serif);
-  font-weight: 620;
-  letter-spacing: -0.014em;
-  line-height: 0.98;
-  margin-top: 0.42in;
-}
-.board .title { font-size: 150pt; }
-.banner .title { font-size: 118pt; }
-
-.deck {
-  font-family: var(--serif);
+.eband .yrs .to {
+  display: block;
+  font-size: 22pt;
   font-weight: 400;
-  line-height: 1.24;
-  margin-top: 0.34in;
+  letter-spacing: 0.3em;
+  margin: 0.14in 0 0.1in 0.05in;
+  color: var(--linen-deep);
 }
-.board .deck { font-size: 42pt; max-width: 24.5in; }
-.banner .deck { font-size: 36pt; }
+.eband .etext {
+  font-family: var(--narrow);
+  font-weight: 400;
+  font-size: 22.5pt;
+  line-height: 1.42;
+  margin-top: 0.75in;
+  color: var(--cream);
+}
+.eband .etext b { font-weight: 700; }
+.eband .espacer { flex: 1; }
+.eband .emark { display: flex; align-items: center; gap: 0.22in; }
+.eband .emark img { width: 0.92in; height: 0.92in; }
+.eband .emark .nm { font-family: var(--serif); font-weight: 620; font-size: 22pt; }
+.eband .emark .tg { font-family: var(--narrow); font-size: 13.5pt; color: var(--linen-deep); margin-top: 0.04in; letter-spacing: 0.04em; }
 
-/* ---------- section structure ---------- */
-.seclabel {
+/* ---------- main field (boards) ---------- */
+.field {
+  position: absolute;
+  left: 6.25in; right: 1.4in; top: 1.3in;
+}
+.ftitle {
+  font-family: var(--serif);
+  font-weight: 640;
+  color: var(--rust-dark);
+  letter-spacing: -0.012em;
+  line-height: 1.0;
+}
+
+/* ---------- sections ---------- */
+.rusthead {
   font-family: var(--narrow);
   font-weight: 700;
-  font-size: 25pt;
-  letter-spacing: 0.22em;
+  font-size: 23.5pt;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  border-top: 2.25pt solid var(--carbon);
-  padding-top: 0.13in;
+  color: var(--rust-dark);
 }
-.seclabel .yr {
-  font-weight: 400;
-  color: var(--carbon-soft);
-  letter-spacing: 0.14em;
-}
+.rusthead .yr { color: var(--carbon-soft); font-weight: 400; letter-spacing: 0.12em; }
 .body {
-  font-size: 27.5pt;
-  line-height: 1.34;
-  font-weight: 410;
-  margin-top: 0.22in;
+  font-size: 26pt;
+  line-height: 1.36;
+  font-weight: 415;
+  margin-top: 0.18in;
 }
 .body b, .body strong { font-weight: 640; }
-.body p + p { margin-top: 0.18in; }
+.body p + p { margin-top: 0.16in; }
+.sec + .sec { margin-top: 0.55in; }
 
 /* ---------- images and captions ---------- */
 figure { position: relative; }
@@ -158,197 +166,159 @@ figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
   font-family: var(--serif);
   font-style: italic;
   font-weight: 430;
-  font-size: 19pt;
+  font-size: 17.5pt;
   line-height: 1.3;
-  margin-top: 0.14in;
+  margin-top: 0.12in;
 }
 .credit {
   font-family: var(--narrow);
-  font-size: 14.5pt;
+  font-size: 13.5pt;
   letter-spacing: 0.05em;
   color: var(--carbon-soft);
-  margin-top: 0.06in;
+  margin-top: 0.05in;
 }
 
-/* ---------- document objects ---------- */
-.doc {
-  background: var(--linen-deep);
-  border-top: 3.5pt solid var(--carbon);
-  padding: 0.34in 0.42in 0.3in;
-  position: relative;
+/* ---------- specimen-framed documents ---------- */
+.specimen {
+  background: var(--cream);
+  border: 1.5pt solid var(--carbon);
+  padding: 0.32in 0.38in 0.28in;
 }
-.doc .doctag {
+.specimen .doctag {
   font-family: var(--narrow);
   font-weight: 700;
-  font-size: 14.5pt;
-  letter-spacing: 0.26em;
+  font-size: 13.5pt;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--carbon-soft);
-  margin-bottom: 0.2in;
+  margin-bottom: 0.18in;
 }
-.doc .doctext {
-  font-family: var(--serif);
-  font-weight: 460;
-  line-height: 1.3;
-}
-.doc .doctext .op { color: var(--red); font-weight: 560; }
-.doc .tombstone {
+.specimen .doctext { font-family: var(--serif); font-weight: 470; line-height: 1.3; font-size: 27pt; }
+.specimen .doctext .op { color: var(--red); font-weight: 570; }
+.specimen .tombstone {
   font-family: var(--narrow);
-  font-size: 16.5pt;
-  letter-spacing: 0.07em;
-  color: var(--carbon);
-  margin-top: 0.22in;
+  font-size: 15pt;
+  letter-spacing: 0.06em;
+  margin-top: 0.2in;
   padding-top: 0.12in;
   border-top: 0.75pt solid var(--carbon);
 }
 
-/* ---------- verbatim voices ---------- */
-.voice {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 480;
-  line-height: 1.22;
-}
+/* ---------- voices ---------- */
+.voice { font-family: var(--serif); font-style: italic; font-weight: 480; line-height: 1.24; }
 .voice .attr {
-  display: block;
-  font-style: normal;
-  font-family: var(--narrow);
-  font-weight: 700;
-  font-size: 19pt;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  margin-top: 0.24in;
+  display: block; font-style: normal;
+  font-family: var(--narrow); font-weight: 700;
+  font-size: 17.5pt; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-top: 0.2in;
 }
-.voice .attr .role { font-weight: 400; letter-spacing: 0.1em; color: var(--carbon-soft); }
+.voice .attr .role { font-weight: 400; letter-spacing: 0.08em; color: var(--carbon-soft); }
 
-/* ---------- ledger ---------- */
-.ledger {
-  font-family: var(--mono);
-  border-top: 3.5pt solid var(--carbon);
+/* ---------- the numbers table ---------- */
+.ledger { font-family: var(--mono); border-top: 2.25pt solid var(--carbon); }
+.ledger .lhead {
+  font-family: var(--narrow); font-weight: 700; font-size: 16pt;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  padding: 0.13in 0 0.11in; border-bottom: 0.75pt solid var(--carbon);
 }
 .ledger .lrow {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5in;
-  padding: 0.155in 0;
-  border-bottom: 0.75pt solid rgba(28, 26, 23, 0.45);
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 0.4in; padding: 0.15in 0;
+  border-bottom: 0.75pt solid rgba(28, 26, 23, 0.4);
 }
 .ledger .lrow:last-child { border-bottom: 2.25pt solid var(--carbon); }
-.ledger .llabel { font-size: 21.5pt; letter-spacing: 0.01em; }
-.ledger .lvalue { font-size: 27pt; font-weight: 600; white-space: nowrap; }
+.ledger .llabel { font-size: 20pt; }
+.ledger .lvalue { font-size: 25pt; font-weight: 600; white-space: nowrap; }
 .ledger .debit { color: var(--red); }
-.ledger .lhead {
-  font-family: var(--narrow);
-  font-weight: 700;
-  font-size: 17pt;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  padding: 0.14in 0 0.12in;
-  border-bottom: 0.75pt solid var(--carbon);
+
+/* ---------- stats ---------- */
+.stat { font-family: var(--mono); }
+.stat .n { font-weight: 600; font-size: 60pt; line-height: 1; display: block; }
+.stat .lab {
+  font-family: var(--narrow); font-weight: 700; font-size: 15.5pt;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--carbon-soft);
+  display: block; margin-top: 0.09in;
 }
 
-/* ---------- the running ledger foot ---------- */
-.foot {
+/* ---------- the giant keyword ---------- */
+.bigword {
   position: absolute;
-  left: 1.5in; right: 1.5in; bottom: 1.05in;
-}
-.foot .footrule { border-top: 2.25pt solid var(--carbon); }
-.foot .entries {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
   gap: 0.55in;
-  padding-top: 0.13in;
 }
-.foot .fe { font-family: var(--mono); font-size: 15.5pt; line-height: 1.28; }
-.foot .fe .yr { font-weight: 600; }
-.foot .fe.debit { color: var(--red); }
-.foot .fe.credit { color: var(--forest); }
-
-/* ---------- the banner plinth ---------- */
-/* Every retractable sheet stands on the same deep-linen base. The
-   footrule, ledger entries, and publisher sit at its top edge, well
-   above the cassette; the rest is deliberate quiet, and the 33x88
-   variant simply continues it downward. */
-.plinth {
-  position: absolute;
-  left: 0; right: 0; bottom: 0; top: 64in;
-  background: var(--linen-deep);
-}
-.plinth .inner { padding: 0.65in 1.35in 0; }
-.plinth .footrule { border-top: 2.25pt solid var(--carbon); }
-.plinth .entries {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.6in;
-  padding-top: 0.22in;
-}
-.plinth .fe { font-family: var(--mono); font-size: 17pt; white-space: nowrap; }
-.plinth .fe .yr { font-weight: 600; }
-.plinth .fe.debit { color: var(--red); }
-
-/* ---------- publisher block ---------- */
-.publisher {
-  display: flex;
-  align-items: center;
-  gap: 0.28in;
-}
-.publisher .mark { width: 0.95in; height: 0.95in; flex: none; }
-.publisher .pname {
+.bigword .w {
   font-family: var(--serif);
-  font-weight: 620;
-  font-size: 27pt;
-  letter-spacing: -0.01em;
+  font-weight: 640;
+  font-size: 170pt;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  color: var(--carbon);
   white-space: nowrap;
 }
-.publisher .pline {
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 14.5pt;
-  color: var(--carbon-soft);
-  line-height: 1.3;
+.bigword .dash { flex: 1; height: 0.09in; background: var(--carbon); transform: translateY(-0.55in); }
+
+/* ---------- the collage base ---------- */
+.stripband {
+  position: absolute;
+  left: 4.7in; right: 0; bottom: 0;
+  display: flex;
+  gap: 0.12in;
+  background: var(--linen-deep);
+  border-top: 1.5pt solid var(--carbon);
+  overflow: hidden;
 }
+.stripband img {
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.16) saturate(0.8) contrast(0.96);
+  display: block;
+  flex: none;
+}
+.stripcredit {
+  position: absolute;
+  right: 0.25in; bottom: 0.18in;
+  font-family: var(--narrow);
+  font-size: 12.5pt;
+  letter-spacing: 0.06em;
+  color: var(--carbon);
+  background: var(--linen);
+  padding: 0.07in 0.14in;
+  opacity: 0.92;
+}
+
+/* ---------- banner header ---------- */
+.bhead {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1.5pt solid var(--carbon);
+  padding: 0 0 0.14in;
+  font-family: var(--narrow); font-weight: 700; font-size: 18pt;
+  letter-spacing: 0.24em; text-transform: uppercase;
+}
+.bhead .r { font-weight: 400; color: var(--carbon-soft); letter-spacing: 0.16em; }
 
 /* ---------- map furniture ---------- */
-.mapframe { border: 2.25pt solid var(--carbon); background: var(--linen); }
+.mapframe { border: 1.5pt solid var(--carbon); background: var(--linen); }
 .legend {
-  display: flex;
-  gap: 0.42in;
-  align-items: center;
-  font-family: var(--narrow);
-  font-size: 17.5pt;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  display: flex; gap: 0.38in; align-items: center;
+  font-family: var(--narrow); font-size: 16.5pt; letter-spacing: 0.09em; text-transform: uppercase;
 }
 .legend .sw {
-  display: inline-block;
-  width: 0.34in; height: 0.24in;
-  margin-right: 0.12in;
-  vertical-align: -0.03in;
-  border: 0.75pt solid rgba(28,26,23,0.55);
+  display: inline-block; width: 0.32in; height: 0.23in; margin-right: 0.11in;
+  vertical-align: -0.03in; border: 0.75pt solid rgba(28,26,23,0.55);
 }
 
-/* ---------- stat pairs ---------- */
-.stat { font-family: var(--mono); }
-.stat .n { font-weight: 600; font-size: 66pt; line-height: 1; display: block; }
-.stat .lab {
-  font-family: var(--narrow);
-  font-weight: 700;
-  font-size: 17pt;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--carbon-soft);
-  display: block;
-  margin-top: 0.1in;
+/* ---------- pressure rows ---------- */
+.pressure { font-family: var(--mono); border-top: 2.25pt solid var(--carbon); }
+.pressure .prow {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.12in 0; border-bottom: 0.75pt solid rgba(28,26,23,0.4); gap: 0.3in;
 }
+.pressure .pl { font-family: var(--narrow); font-size: 16pt; letter-spacing: 0.04em; line-height: 1.2; }
+.pressure .pv { font-weight: 600; font-size: 28pt; white-space: nowrap; }
 
-/* ---------- utility ---------- */
-.rule-h { border-top: 0.75pt solid var(--carbon); }
-.smallcaps {
-  font-family: var(--narrow);
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-img { image-rendering: auto; }
+/* ---------- QR ---------- */
+.qrtile { background: var(--cream); border: 1.5pt solid var(--carbon); padding: 0.26in; }
+.qrtile img { display: block; }
+
+.smallcaps { font-family: var(--narrow); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }

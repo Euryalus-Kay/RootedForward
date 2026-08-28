@@ -4,161 +4,145 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  /* Sheet 4 covers the present and hands the visitor the walking
-     tour. Rust appears wherever the organization itself acts. */
-  .colL { position: absolute; left: 1.5in; top: 9.9in; width: 14.9in; }
-  .colR { position: absolute; left: 17.2in; top: 9.9in; width: 17.3in; }
-  .sec + .sec { margin-top: 0.5in; }
-  .centerrow { display: flex; gap: 0.42in; margin-top: 0.24in; }
-  .pressure { font-family: var(--mono); border-top: 2.25pt solid var(--carbon); margin-top: 0.24in; }
-  .pressure .prow { display: flex; justify-content: space-between; align-items: baseline; padding: 0.13in 0; border-bottom: 0.75pt solid rgba(28,26,23,0.45); gap: 0.3in; }
-  .pressure .pl { font-family: var(--narrow); font-size: 16.5pt; letter-spacing: 0.04em; line-height: 1.2; }
-  .pressure .pv { font-weight: 600; font-size: 30pt; white-space: nowrap; }
-  .voice.butler { font-size: 31pt; margin-top: 0.4in; }
-
-  .walk { position: absolute; left: 1.5in; right: 1.5in; top: 28.2in; }
-  .mapwrap { position: absolute; left: 0; top: 0.9in; width: 19.6in; }
-  .keycol { position: absolute; left: 20.4in; top: 0.9in; width: 12.6in; }
-  .stopkey { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.5in; row-gap: 0.08in; margin-top: 0.18in; }
-  .stopkey .k { font-family: var(--narrow); font-size: 17pt; letter-spacing: 0.02em; display: flex; gap: 0.14in; align-items: baseline; }
-  .stopkey .k .n { font-weight: 700; color: var(--rust); min-width: 0.42in; text-align: right; }
+  .cols { display: flex; gap: 1.2in; margin-top: 0.55in; }
+  .cols .c { width: 13.55in; }
+  .walkrow { display: flex; gap: 1.0in; margin-top: 0.6in; }
+  .stopkey { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.4in; row-gap: 0.07in; margin-top: 0.16in; }
+  .stopkey .k { font-family: var(--narrow); font-size: 15.5pt; letter-spacing: 0.02em; display: flex; gap: 0.12in; align-items: baseline; }
+  .stopkey .k .n { font-weight: 700; color: var(--rust-dark); min-width: 0.38in; text-align: right; }
   .stopkey .k.opt .n::after { content: "°"; }
-  .qrrow { display: flex; gap: 0.5in; margin-top: 0.45in; align-items: center; }
-  .qrtile { background: var(--cream); border: 2.25pt solid var(--carbon); padding: 0.3in; flex: none; }
-  .qrtile img { width: 3.15in; height: 3.15in; display: block; }
+  .bigword { left: 6.25in; right: 1.4in; top: 34.4in; }
+  .bigword .w { font-size: 170pt; }
+  .stripband { height: 9.7in; }
 </style>
 </head>
 <body>
 <div class="sheet board">
 
-  <div class="band">
-    <div class="left">Hyde Park, Chicago</div>
-    <div class="right">Sheet 4 of 4 · 1962 to 2026</div>
-  </div>
-
-  <div class="title">Hyde Park Today</div>
-  <div class="deck" style="max-width:30.5in;">Hyde Park stayed integrated when almost no
-    American neighborhood did. The families displaced for that outcome
-    never shared in it, and rents near the Obama Center are now rising
-    faster than Chicago's.</div>
-
-  <div class="colL">
-    <div class="sec">
-      <div class="seclabel">After renewal <span class="yr">· 1962</span></div>
-      <div class="body"><p>After renewal, Hyde Park held for decades at
-        roughly one-third Black and one-half white, one of the few
-        substantially integrated neighborhoods in the country. The
-        integration was real. It came at the expense of the renters and
-        small businesses the plan removed. In 1962, after paired Black and
-        white testers proved the university was still refusing Black
-        tenants in its own buildings, students occupied the administration
-        building for two weeks. The university changed the policy.</p></div>
-    </div>
-
-    <div class="sec">
-      <div class="seclabel">Harper Court <span class="yr">· 1962 to 2007</span></div>
-      <div class="centerrow">
-        <div class="body" style="margin-top:0; width:8.2in;"><p>In 1891
-          Frederick Gibbs built twenty-six wooden shops at 57th Street for
-          fair visitors. Artists rented them for fifty years. The Land
-          Clearance Commission razed the row in 1962, and residents raised
-          the money to build Harper Court in 1965, rents under one hundred
-          dollars, so the artisans could stay. In 2007 the university
-          bought Harper Court for $6.8 million. A glass office tower
-          stands there now.</p></div>
-        <figure style="width:6.25in;">
-          <div style="height:6.7in;"><img src="../assets/img/p4-harper-court.jpg" alt="" style="object-position:78% 50%;"></div>
-          <div class="cap">Harper Court at 53rd Street and Harper Avenue,
-            photographed in 2025.</div>
-          <div class="credit">PHOTOGRAPH BY TONYTHETIGER · CC0</div>
-        </figure>
+  <div class="eband">
+    <div class="yrs">1962<span class="to">TO</span>2026</div>
+    <div class="etext">Hyde Park stayed integrated when almost no
+      American neighborhood did. The families displaced for that outcome
+      never shared in it, and rents near the Obama Center are now rising
+      faster than Chicago's.
+      <br><br>The walking tour on this sheet visits the ground on all
+      four. Sheet four of four.</div>
+    <div class="espacer"></div>
+    <div class="emark">
+      <img src="../assets/img/rf-logo.svg" alt="">
+      <div>
+        <div class="nm">Rooted Forward</div>
+        <div class="tg">Free self-guided audio tours<br>rooted-forward.org</div>
       </div>
     </div>
   </div>
 
-  <div class="colR">
-    <div class="seclabel">The Obama Center <span class="yr">· 2026</span></div>
-    <div class="centerrow">
-      <figure style="width:10.45in; flex:none;">
-        <div style="height:12.6in;"><img src="../assets/img/p4-opc.jpg" alt=""></div>
-        <div class="cap">The Obama Presidential Center museum tower on
-          opening day, June 19, 2026.</div>
-        <div class="credit">PHOTOGRAPH BY ALPHABETA135 · CC0</div>
-      </figure>
-      <div style="flex:1;">
-        <div class="body" style="margin-top:0;"><p>The Center opened on
-          Juneteenth 2026, on the ground where the 1893 fair stood.
-          Lakeside Alliance, a construction team led by four Black-owned
-          Chicago firms, built it. Lines from the 2015 Selma speech are
-          carved into the granite where Wells and Douglass once handed
-          out their pamphlet.</p></div>
-        <div class="pressure">
-          <div class="prow"><span class="pl">Median rents near the Center<br>since 2015</span><span class="pv" style="color:var(--red)">+43%</span></div>
-          <div class="prow"><span class="pl">Across Chicago<br>over the same years</span><span class="pv">+14%</span></div>
-          <div class="prow"><span class="pl">The median East Woodlawn house,<br>doubled since 2019</span><span class="pv">$440,000</span></div>
+  <div class="field">
+    <div class="ftitle" style="font-size:76pt;">Hyde Park Today</div>
+
+    <div class="cols">
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">After renewal <span class="yr">· 1962</span></div>
+          <div class="body" style="font-size:25pt;"><p>After renewal, Hyde Park held
+            for decades at roughly one-third Black and one-half white, one
+            of the few substantially integrated neighborhoods in the
+            country. The integration was real. It came at the expense of
+            the renters and small businesses the plan removed. In 1962,
+            after paired Black and white testers proved the university was
+            still refusing Black tenants in its own buildings, students
+            occupied the administration building for two weeks. The
+            university changed the policy.</p></div>
         </div>
-        <div class="voice butler">"I want to stay. I don't want to be
-          forced out."
-          <span class="attr">Kyana Butler <span class="role">· Woodlawn renter, 2026</span></span>
+        <div class="sec">
+          <div class="rusthead">Harper Court <span class="yr">· 1962 to 2007</span></div>
+          <div class="body" style="font-size:25pt;"><p>In 1891 Frederick Gibbs built
+            twenty-six wooden shops at 57th Street for fair visitors.
+            Artists rented them for fifty years. The Land Clearance
+            Commission razed the row in 1962, and residents raised the
+            money to build Harper Court in 1965, rents under one hundred
+            dollars, so the artisans could stay. In 2007 the university
+            bought Harper Court for $6.8 million. A glass office tower
+            stands there now.</p></div>
+        </div>
+        <div class="sec">
+          <div class="rusthead">The Obama Center <span class="yr">· 2026</span></div>
+          <div style="display:flex; gap:0.45in; margin-top:0.18in;">
+            <figure style="width:6.4in; flex:none;">
+              <div style="height:8.2in;"><img src="../assets/img/p4-opc.jpg" alt=""></div>
+              <div class="cap" style="font-size:15.5pt;">The Obama Presidential Center
+                museum tower on opening day, June 19, 2026.</div>
+              <div class="credit">PHOTOGRAPH BY ALPHABETA135 · CC0</div>
+            </figure>
+            <div class="body" style="margin-top:0; font-size:25pt; flex:1;"><p>The
+              Center opened on Juneteenth 2026, on the ground where the
+              1893 fair stood. Lakeside Alliance, a construction team led
+              by four Black-owned Chicago firms, built it. Lines from the
+              2015 Selma speech are carved into the granite where Wells
+              and Douglass once handed out their pamphlet.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">Rents since 2015</div>
+          <div class="pressure" style="margin-top:0.2in;">
+            <div class="prow"><span class="pl">Median rents near the Center since 2015</span><span class="pv" style="color:var(--red)">+43%</span></div>
+            <div class="prow"><span class="pl">Across Chicago over the same years</span><span class="pv">+14%</span></div>
+            <div class="prow"><span class="pl">The median East Woodlawn house, doubled since 2019</span><span class="pv">$440,000</span></div>
+          </div>
+          <div class="voice" style="font-size:30pt; margin-top:0.4in;">"I want to stay.
+            I don't want to be forced out."
+            <span class="attr">Kyana Butler <span class="role">· Woodlawn renter, 2026</span></span>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="rusthead">The walking tour <span class="yr">· thirteen stops, three detours, four miles</span></div>
+          <div class="mapframe" style="margin-top:0.24in; width:13.55in;"><img src="../assets/route-map.svg" style="display:block;width:100%;" alt=""></div>
+          <div class="credit" style="margin-top:0.1in;">THE WALK HYDE PARK ROUTE · STREETS FROM U.S. CENSUS TIGER/LINE · DETOURS MARKED °</div>
+          <div style="display:flex; gap:0.5in; margin-top:0.34in; align-items:center;">
+            <div class="qrtile" style="flex:none;"><img src="../assets/qr-exhibit.svg" style="width:2.7in; height:2.7in;" alt=""></div>
+            <div>
+              <div class="smallcaps" style="font-size:20pt; color:var(--rust-dark);">Scan for the free audio tour</div>
+              <div class="body" style="font-size:18.5pt; margin-top:0.1in;">Researched and written by
+                students. The tour gives the source for every number on
+                these sheets. Illinois now lets homeowners file to strike
+                racist covenant language from their deeds.</div>
+            </div>
+          </div>
+          <div class="stopkey">
+            <div class="k"><span class="n">1</span>Cornell's stone</div>
+            <div class="k"><span class="n">9</span>The Robie House</div>
+            <div class="k"><span class="n">2</span>The Del Prado</div>
+            <div class="k"><span class="n">10</span>The University of Chicago</div>
+            <div class="k"><span class="n">3</span>The tracks at Lake Park</div>
+            <div class="k"><span class="n">11</span>Stagg Field and the pile</div>
+            <div class="k"><span class="n">4</span>The White City</div>
+            <div class="k opt"><span class="n">12</span>The Hansberry house</div>
+            <div class="k"><span class="n">5</span>The Obama Center</div>
+            <div class="k opt"><span class="n">13</span>Daley's Restaurant</div>
+            <div class="k"><span class="n">6</span>The first Del Prado</div>
+            <div class="k"><span class="n">14</span>Fifty-Fifth Street</div>
+            <div class="k"><span class="n">7</span>The Midway line</div>
+            <div class="k opt"><span class="n">15</span>Drexel Boulevard</div>
+            <div class="k"><span class="n">8</span>Rockefeller Chapel</div>
+            <div class="k"><span class="n">16</span>Harper Court</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="walk">
-    <div class="seclabel">The walking tour <span class="yr">· thirteen stops, three detours, about four miles</span></div>
-    <div class="mapwrap">
-      <div class="mapframe"><img src="../assets/route-map.svg" style="display:block;width:100%;" alt=""></div>
-      <div class="credit" style="margin-top:0.14in;">THE WALK HYDE PARK ROUTE · STREETS FROM U.S. CENSUS TIGER/LINE · DETOURS MARKED °</div>
-    </div>
-    <div class="keycol">
-      <div class="stopkey">
-        <div class="k"><span class="n">1</span>Cornell's stone</div>
-        <div class="k"><span class="n">9</span>The Robie House</div>
-        <div class="k"><span class="n">2</span>The Del Prado</div>
-        <div class="k"><span class="n">10</span>The University of Chicago</div>
-        <div class="k"><span class="n">3</span>The tracks at Lake Park</div>
-        <div class="k"><span class="n">11</span>Stagg Field and the pile</div>
-        <div class="k"><span class="n">4</span>The White City</div>
-        <div class="k opt"><span class="n">12</span>The Hansberry house</div>
-        <div class="k"><span class="n">5</span>The Obama Center</div>
-        <div class="k opt"><span class="n">13</span>Daley's Restaurant</div>
-        <div class="k"><span class="n">6</span>The first Del Prado</div>
-        <div class="k"><span class="n">14</span>Fifty-Fifth Street</div>
-        <div class="k"><span class="n">7</span>The Midway line</div>
-        <div class="k opt"><span class="n">15</span>Drexel Boulevard</div>
-        <div class="k"><span class="n">8</span>Rockefeller Chapel</div>
-        <div class="k"><span class="n">16</span>Harper Court</div>
-      </div>
-      <div class="qrrow">
-        <div class="qrtile"><img src="../assets/qr-exhibit.svg" alt=""></div>
-        <div>
-          <div class="smallcaps" style="font-size:23pt; color:var(--rust);">Scan for the free audio tour</div>
-          <div class="body" style="font-size:21.5pt; margin-top:0.14in;">Researched and written by students.
-            The tour gives the source for every number on these sheets.</div>
-        </div>
-      </div>
-      <div class="body" style="font-size:21.5pt; margin-top:0.4in;"><p>Illinois
-        now lets homeowners file to strike racist covenant language from
-        their deeds.</p></div>
-    </div>
-  </div>
+  <div class="bigword"><span class="w">Today</span><span class="dash"></span></div>
 
-  <div class="foot">
-    <div class="footrule"></div>
-    <div class="entries">
-      <div class="fe"><span class="yr">2007</span> · THE UNIVERSITY BUYS HARPER COURT</div>
-      <div class="fe"><span class="yr">2020</span> · THE WOODLAWN ORDINANCE PASSES</div>
-      <div class="fe"><span class="yr">2022</span> · ILLINOIS OPENS COVENANT REMOVAL</div>
-      <div class="fe"><span class="yr">2026</span> · THE CENTER OPENS</div>
-      <div class="publisher" style="margin-left:auto;">
-        <img class="mark" src="../assets/img/rf-logo.svg" alt="">
-        <div>
-          <div class="pname">Rooted Forward</div>
-          <div class="pline">Free self-guided audio tours on the racial<br>history of American cities · rooted-forward.org</div>
-        </div>
-      </div>
-    </div>
+  <div class="stripband">
+    <img src="../assets/img/strip-55th.jpg" style="width:9.6in;" alt="">
+    <img src="../assets/img/strip-republic.jpg" style="width:5.2in;" alt="">
+    <img src="../assets/img/strip-midway-today.jpg" style="width:9.2in;" alt="">
+    <img src="../assets/img/strip-metra.jpg" style="width:9.0in;" alt="">
+    <div class="stripcredit">55TH STREET, THE STATUE OF THE REPUBLIC, THE MIDWAY, THE 53RD STREET STATION TODAY · WARREN LEMAY CC BY-SA 4.0, BRADHOC CC BY 2.0, WIKIMEDIA COMMONS</div>
   </div>
 
 </div>

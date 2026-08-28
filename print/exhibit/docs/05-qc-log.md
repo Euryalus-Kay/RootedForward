@@ -90,3 +90,17 @@ project memory. This pass renamed the exhibition itself.
   same as the shipped flyer and banner). PDFs deliver in RGB with
   fonts outlined; large-format shops convert at RIP. Note carried in
   the production spec.
+
+## Restart to the owner's reference panels (August 28)
+
+The owner supplied three reference photographs (NPS-style wayside
+panels, a keyword-anchored immigration banner system, a decade-band
+collage wall) and asked for a restart. The v2 system fuses them: a
+full-height dark era band carrying the years and the intro on every
+board, a red serif title with red-capped titled sections and small
+embedded images, documents in cream specimen frames, one giant
+keyword low on the sheet (The Resort, The Rules, The Clearance,
+Today), and a muted period-photo collage base with no reading
+content. Banners follow the same grammar without the era band, and
+sheet 4's base is the route map instead of a collage. The denser
+layout also lifted every image placement above 150dpi effective.

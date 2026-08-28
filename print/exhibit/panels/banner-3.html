@@ -4,111 +4,116 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  /* Banner 3. The ledger owns the standing eye zone, Baldwin closes
-     it, and the kitchenette photograph runs full bleed into the low
-     register with its caption above it. */
-  .title { font-size: 96pt; }
-  .banner .body { font-size: 26.5pt; }
-  .crack { position: absolute; left: 1.35in; top: 7in; width: 30.3in; }
-  .ledgerz { position: absolute; left: 1.35in; top: 12.1in; width: 30.3in; }
-  .ledgerz .lhead { font-size: 20pt; }
-  .ledgerz .lrow { padding: 0.26in 0; }
+  .inner { position: absolute; left: 1.35in; right: 1.35in; top: 1.25in; }
+  .banner .body { font-size: 28pt; }
+  .lede { font-family: var(--serif); font-size: 30pt; line-height: 1.3; font-weight: 430; margin-top: 0.4in; max-width: 29.5in; }
+  .hrow { display: flex; gap: 0.8in; margin-top: 0.7in; }
+  .ledgerz { margin-top: 0.9in; }
+  .ledgerz .lhead { font-size: 18pt; }
+  .ledgerz .lrow { padding: 0.3in 0; }
   .ledgerz .llabel { font-size: 24.5pt; }
-  .ledgerz .lvalue { font-size: 32pt; }
-  .voiceB { position: absolute; left: 1.35in; top: 27.2in; width: 29in; }
-  .voiceB .voice { font-size: 40pt; }
-  .cols { position: absolute; left: 1.35in; top: 33.6in; width: 30.3in; display: flex; gap: 0.55in; }
-  .cols .c { width: 14.9in; }
-  .photocap { position: absolute; left: 1.35in; top: 40.9in; width: 30.3in; display: flex; gap: 0.4in; align-items: baseline; }
-  .photo { position: absolute; left: 0; right: 0; top: 42.3in; height: 21.7in; overflow: hidden; }
-  .photo img { display: block; width: 33in; height: 21.7in; object-fit: cover; object-position: 72% 32%; transform: scale(1.06); }
+  .ledgerz .lvalue { font-size: 31pt; }
+  .tailrow { display: flex; gap: 1.1in; margin-top: 0.9in; }
+  .bigword { left: 1.35in; right: 1.35in; top: 47.9in; }
+  .bigword .w { font-size: 148pt; }
+  .stripband { left: 0; height: 27.6in; }
+  .pubchip { position: absolute; left: 0.35in; top: 0.35in; background: var(--linen); padding: 0.18in 0.26in; display: flex; align-items: center; gap: 0.2in; opacity: 0.95; }
+  .pubchip img { width: 0.8in; height: 0.8in; }
+  .pubchip .nm { font-family: var(--serif); font-weight: 620; font-size: 19pt; color: var(--carbon); }
+  .pubchip .tg { font-family: var(--narrow); font-size: 12.5pt; color: var(--carbon-soft); }
 </style>
 </head>
 <body>
 <div class="sheet banner">
 
-  <div class="band">
-    <div class="left">Hyde Park, Chicago</div>
-    <div class="right">Sheet 3 of 4 · 1937 to 1971</div>
-  </div>
-
-  <div class="title">Contract Sales and Urban Renewal</div>
-  <div class="deck">The Supreme Court ended covenant enforcement in
-    1948. Banks still refused Black borrowers, speculators resold houses
-    at nearly double the price on contract, and in 1958 the city
-    approved a clearance plan that displaced about 4,000 families.</div>
-
-  <div class="crack">
-    <div class="body"><p>In 1937 Carl Hansberry bought a three-flat at 6140
-      South Rhodes, inside a covenant the university had helped defend. A
-      mob gathered, and a chunk of concrete nearly struck his daughter
-      Lorraine, age seven. The family won Hansberry v. Lee at the Supreme Court in 1940,
-      Shelley v. Kraemer ended enforcement everywhere in 1948, and Lorraine
-      Hansberry put the mob outside the window into A Raisin in the Sun.</p></div>
-  </div>
-
-  <div class="ledgerz">
-    <div class="ledger">
-      <div class="lhead">The numbers · 1948 to 1971</div>
-      <div class="lrow"><span class="llabel">Savings and loans that would lend to a Black family</span><span class="lvalue debit">1 of 241</span></div>
-      <div class="lrow"><span class="llabel">Homes sold to Black families on contract</span><span class="lvalue">75 to 95 in 100</span></div>
-      <div class="lrow"><span class="llabel">Average markup over the white price</span><span class="lvalue debit">+84%</span></div>
-      <div class="lrow"><span class="llabel">Taken from Black Chicago, in today's dollars</span><span class="lvalue debit">$3.2 to 4 billion</span></div>
-      <div class="lrow"><span class="llabel">Public money to assemble and clear 856 acres</span><span class="lvalue">$40 million</span></div>
-      <div class="lrow"><span class="llabel">The cleared land resold to developers for</span><span class="lvalue debit">$4 million</span></div>
-      <div class="lrow"><span class="llabel">Families displaced by the plan · public housing built</span><span class="lvalue"><span class="debit">about 4,000</span> · 34 units</span></div>
-      <div class="lrow"><span class="llabel">Displaced white families who stayed · Black families</span><span class="lvalue">46 in 100 · <span class="debit">17 in 100</span></span></div>
-      <div class="lrow"><span class="llabel">Contracts the Buyers League forced open by 1971</span><span class="lvalue" style="color:var(--forest)">155</span></div>
+  <div class="inner">
+    <div class="bhead">
+      <div>Hyde Park, Chicago</div>
+      <div class="r">Sheet 3 of 4 · 1937 to 1971</div>
     </div>
-  </div>
 
-  <div class="voiceB">
-    <div class="voice">"urban renewal, which means moving the Negroes
-      out&#8230; it means Negro removal, that is what it means"
-      <span class="attr">James Baldwin <span class="role">· 1963</span></span>
+    <div class="ftitle" style="font-size:74pt; margin-top:0.5in;">Contract Sales and Urban Renewal</div>
+    <div class="lede">The Supreme Court ended covenant enforcement in
+      1948. Banks still refused Black borrowers, speculators resold
+      houses at nearly double the price on contract, and in 1958 the
+      city approved a clearance plan that displaced about 4,000
+      families.</div>
+
+    <div class="hrow">
+      <div style="width:19.4in;">
+        <div class="rusthead">Hansberry v. Lee <span class="yr">· 1937 to 1948</span></div>
+        <div class="body"><p>In 1937 Carl Hansberry bought a three-flat
+          at 6140 South Rhodes, inside a covenant the university had
+          helped defend. A mob gathered, and a chunk of concrete nearly
+          struck his daughter Lorraine, age seven. Hansberry v. Lee
+          reached the Supreme Court in 1940 and the family won. Shelley
+          v. Kraemer ended enforcement everywhere in 1948, and Lorraine
+          Hansberry put the mob outside the window into A Raisin in the
+          Sun.</p></div>
+        <div class="rusthead" style="margin-top:0.55in;">Contract sales <span class="yr">· 1948 to 1968</span></div>
+        <div class="body"><p>Banks would not follow the ruling, so
+          speculators resold houses to Black families on installment
+          contracts at prices they set themselves. If a family missed
+          one payment, the seller kept the house and every dollar
+          paid.</p></div>
+      </div>
+      <figure style="width:9.9in;">
+        <div style="height:14.6in;"><img src="../assets/img/p3-hansberry-house.jpg" alt=""></div>
+        <div class="cap" style="font-size:16pt;">The Hansberry house at 6140 South
+          Rhodes Avenue.</div>
+        <div class="credit">PHOTOGRAPH BY LEGIMET, 2025 · CC BY-SA 4.0</div>
+      </figure>
     </div>
-  </div>
 
-  <div class="cols">
-    <div class="c">
-      <div class="seclabel">Contract sales</div>
-      <div class="body"><p>Banks would not follow the ruling, so speculators
-        filled the gap, reselling to Black families on installment
-        contracts at prices they set themselves. If a family missed one payment,
-        the seller kept the house and every dollar paid.</p></div>
+    <div class="ledgerz">
+      <div class="ledger">
+        <div class="lhead">The numbers · 1948 to 1971</div>
+        <div class="lrow"><span class="llabel">Savings and loans that would lend to a Black family</span><span class="lvalue debit">1 of 241</span></div>
+        <div class="lrow"><span class="llabel">Homes sold to Black families on contract</span><span class="lvalue">75 to 95 in 100</span></div>
+        <div class="lrow"><span class="llabel">Average markup over the white price</span><span class="lvalue debit">+84%</span></div>
+        <div class="lrow"><span class="llabel">Taken from Black Chicago, in today's dollars</span><span class="lvalue debit">$3.2 to 4 billion</span></div>
+        <div class="lrow"><span class="llabel">Public money to clear 856 acres · the land resold for</span><span class="lvalue">$40 million · <span class="debit">$4 million</span></span></div>
+        <div class="lrow"><span class="llabel">Families displaced by the plan · public housing built</span><span class="lvalue"><span class="debit">about 4,000</span> · 34 units</span></div>
+        <div class="lrow"><span class="llabel">Displaced white families who stayed · Black families</span><span class="lvalue">46 in 100 · <span class="debit">17 in 100</span></span></div>
+        <div class="lrow"><span class="llabel">Contracts the Buyers League forced open by 1971</span><span class="lvalue" style="color:var(--forest)">155</span></div>
+      </div>
     </div>
-    <div class="c">
-      <div class="seclabel">Urban renewal</div>
-      <div class="body"><p>The university's South East Chicago Commission
-        drove the Hyde Park-Kenwood plan, approved November 7, 1958, the
-        first large federally supported urban renewal program in the
-        country. Displaced businesses got nothing, and most never
-        reopened.</p></div>
-    </div>
-  </div>
 
-  <div class="photocap">
-    <div class="cap" style="margin-top:0;">An apartment building subdivided into
-      kitchenettes, Chicago, photographed by Edwin Rosskam in April 1941.</div>
-    <div class="credit" style="margin-top:0; white-space:nowrap;">FARM SECURITY ADMINISTRATION · LIBRARY OF CONGRESS</div>
-  </div>
-  <div class="photo"><img src="../assets/img/p3-kitchenette.jpg" alt=""></div>
-
-  <div class="plinth">
-    <div class="inner">
-      <div class="footrule"></div>
-      <div class="entries">
-        <div class="fe"><span class="yr">1948</span> · COVENANTS RULED UNENFORCEABLE</div>
-        <div class="fe debit"><span class="yr">1958</span> · THE RENEWAL PLAN IS APPROVED</div>
-        <div class="publisher">
-          <img class="mark" src="../assets/img/rf-logo.svg" alt="">
-          <div>
-            <div class="pname">Rooted Forward</div>
-            <div class="pline">Free self-guided audio tours · rooted-forward.org</div>
-          </div>
+    <div class="tailrow">
+      <div style="width:15.4in;">
+        <div class="rusthead">Urban renewal <span class="yr">· 1949 to 1963</span></div>
+        <div class="body" style="font-size:25pt;"><p>The university's South East
+          Chicago Commission drove the Hyde Park-Kenwood plan, approved
+          November 7, 1958, the first large federally supported urban
+          renewal program in the country. The plan gave moving help to
+          displaced renters and nothing to displaced businesses. Most of
+          the businesses never reopened.</p></div>
+      </div>
+      <div style="flex:1;">
+        <div class="voice" style="font-size:36pt;">"urban renewal, which
+          means moving the Negroes out&#8230; it means Negro removal,
+          that is what it means"
+          <span class="attr">James Baldwin <span class="role">· 1963</span></span>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="bigword"><span class="w">The Clearance</span><span class="dash"></span></div>
+
+  <div class="stripband">
+    <img src="../assets/img/p3-kitchenette.jpg" style="width:12.6in;" alt="">
+    <img src="../assets/img/strip-doorway.jpg" style="width:7.8in;" alt="">
+    <img src="../assets/img/strip-63rd.jpg" style="width:7.6in;" alt="">
+    <img src="../assets/img/strip-univapts.jpg" style="width:5.4in;" alt="">
+    <div class="pubchip">
+      <img src="../assets/img/rf-logo.svg" alt="">
+      <div>
+        <div class="nm">Rooted Forward</div>
+        <div class="tg">Free self-guided audio tours · rooted-forward.org</div>
+      </div>
+    </div>
+    <div class="stripcredit" style="bottom:auto; top:0.35in;">KITCHENETTE HOUSING 1941, 63RD STREET 1973, UNIVERSITY APARTMENTS · LOC, NATIONAL ARCHIVES, WIKIMEDIA COMMONS</div>
   </div>
 
 </div>

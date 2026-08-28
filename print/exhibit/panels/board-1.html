@@ -4,118 +4,129 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  /* Sheet 1 carries the exhibition masthead. Titles, decks, and
-     captions are literal by house rule: they say what happened or
-     what is pictured, nothing else. */
-  .title { font-size: 138pt; }
-  .hero { position: absolute; left: 1.5in; top: 7.55in; width: 33in; height: 18.6in; }
-  .herocap { position: absolute; left: 1.5in; top: 26.35in; width: 20in; }
-  .colA { position: absolute; left: 1.5in;  top: 28.35in; width: 10.33in; }
-  .colB { position: absolute; left: 12.83in; top: 28.35in; width: 10.33in; }
-  .colC { position: absolute; left: 24.17in; top: 28.35in; width: 10.33in; }
-  .aerialFig { position: absolute; left: 1.5in; bottom: 3.35in; width: 10.33in; }
-  .voiceBand { position: absolute; left: 12.83in; bottom: 3.75in; width: 19.2in; }
-  .voiceBand .voice { font-size: 35pt; }
-  .partband { margin-top: 0.5in; }
+  .field { top: 1.25in; }
+  .cols { display: flex; gap: 1.35in; margin-top: 0.55in; }
+  .cols .c { width: 13.5in; }
+  .bigword { left: 6.25in; right: 1.4in; top: 33.2in; }
+  .stripband { height: 10.1in; }
+  .wells { margin-top: 0.75in; width: 26.5in; }
+  .wells .voice { font-size: 32pt; }
 </style>
 </head>
 <body>
 <div class="sheet board">
 
-  <div class="band">
-    <div class="left">Hyde Park, Chicago</div>
-    <div class="right">Sheet 1 of 4 · A Rooted Forward Exhibition</div>
-  </div>
-
-  <div class="title">Who Could Live in Hyde Park</div>
-  <div class="deck">For a century, real estate boards, property owners,
-    federal agencies, and the University of Chicago set the rules for who
-    could live in this neighborhood. These four sheets show the rules,
-    the people who wrote them, and what they cost.</div>
-
-  <div class="seclabel partband">The Resort and the Fair &nbsp;<span class="yr">1853 to 1893</span></div>
-
-  <figure class="hero" style="overflow:hidden;"><img src="../assets/img/p1-hero-court-night.jpg" alt="" style="transform:scale(1.09);"></figure>
-  <div class="herocap">
-    <div class="cap">The Grand Court of the World's Columbian Exposition
-      at night, drawn by Charles Graham, 1893.</div>
-    <div class="credit">LIBRARY OF CONGRESS PRINTS AND PHOTOGRAPHS DIVISION</div>
-  </div>
-
-  <div class="colA">
-    <div class="seclabel">The resort <span class="yr">· 1853 to 1856</span></div>
-    <div class="body"><p>Paul Cornell, a young Chicago lawyer, bought sixty
-      lakefront acres of farm and tavern land in August 1853 and kept
-      buying until he held about 300 acres between 51st and 55th Streets.
-      He named the area Hyde Park to give it a refined image and sold it
-      as an escape from a city that drained its sewage into the lake. In
-      1856 he gave the Illinois Central sixty acres for a station at 53rd
-      Street and a guarantee of daily trains. The families he recruited
-      were wealthy and white.</p></div>
-  </div>
-
-  <div class="colB">
-    <div class="seclabel">The South Park plan <span class="yr">· 1869 to 1871</span></div>
-    <div class="body"><p>Cornell then led the campaign for public parks
-      beside his own land, and the legislature passed the South Park act
-      in 1869. The commissioners bought 1,055 acres of sandbar and marsh
-      and hired Frederick Law Olmsted and Calvert Vaux, the designers of
-      Central Park. Their 1871 plan showed lagoons, a canal down the
-      Midway, and thirty miles of paths. The Great Fire burned the
-      drawings that October. Jackson Park sat mostly unfinished for
-      twenty years, and that open public land is why the World's Fair
-      was placed there.</p></div>
-    <figure style="margin-top:0.32in; height: 4.55in;"><img src="../assets/img/p1-olmsted-plan.jpg" alt="" style="object-position:92% 27%;"></figure>
-    <div class="cap">Olmsted, Vaux &amp; Co., plan for the South Park,
-      drawn for the Chicago South Park Commission, 1871. North is to
-      the left.</div>
-    <div class="credit">NORMAN B. LEVENTHAL MAP &amp; EDUCATION CENTER, BOSTON PUBLIC LIBRARY</div>
-  </div>
-
-  <div class="colC">
-    <div class="seclabel">The World's Fair <span class="yr">· 1893</span></div>
-    <div class="body"><p>Chicago built the World's Columbian Exposition in
-      about two years, steel frames covered in white plaster. It drew
-      about 27 million visits in a country of 65 million people. Black
-      Americans were shut out of its planning, its exhibit halls, and
-      nearly all of its jobs. At the gates, Ida B. Wells and Frederick
-      Douglass handed out a pamphlet titled The Reason Why the Colored
-      American Is Not in the World's Columbian Exposition.</p></div>
-    <figure style="margin-top:0.32in; height: 5.5in; width: 4.1in;"><img src="../assets/img/p1-reason-why.jpg" alt="" style="object-fit: contain; object-position: left top;"></figure>
-    <div class="cap" style="max-width: 9.5in;">Title page of The Reason Why the Colored
-      American Is Not in the World's Columbian Exposition, 1893.</div>
-  </div>
-
-  <figure class="aerialFig">
-    <div style="height: 7.5in;"><img src="../assets/img/p1-hp-aerial-1928.jpg" alt=""></div>
-    <div class="cap">The Hyde Park lakefront photographed from the air,
-      August 1928.</div>
-    <div class="credit">CHICAGO AERIAL SURVEY · NEWBERRY LIBRARY · PUBLIC DOMAIN</div>
-  </figure>
-
-  <div class="voiceBand">
-    <div class="voice">"The exhibit of the progress made by a race in 25
-      years of freedom as against 250 years of slavery, would have been the
-      greatest tribute to the greatness and progressiveness of American
-      institutions which could have been shown the world."
-      <span class="attr">Ida B. Wells &nbsp;<span class="role">preface to The Reason Why, 1893</span></span>
+  <div class="eband">
+    <div class="yrs">1853<span class="to">TO</span>1893</div>
+    <div class="etext">For a century, real estate boards, property
+      owners, federal agencies, and the University of Chicago set the
+      rules for who could live in this neighborhood. These four sheets
+      show the rules, the people who wrote them, and what they cost.
+      <br><br>It began as a resort. Paul Cornell assembled the land,
+      recruited wealthy white families, and a world's fair made the
+      neighborhood famous.</div>
+    <div class="espacer"></div>
+    <div class="emark">
+      <img src="../assets/img/rf-logo.svg" alt="">
+      <div>
+        <div class="nm">Rooted Forward</div>
+        <div class="tg">Free self-guided audio tours<br>rooted-forward.org</div>
+      </div>
     </div>
   </div>
 
-  <div class="foot">
-    <div class="footrule"></div>
-    <div class="entries">
-      <div class="fe debit"><span class="yr">1833</span> · THE POTAWATOMI CEDE FIVE MILLION ACRES</div>
-      <div class="fe"><span class="yr">1856</span> · THE RAILROAD GETS SIXTY ACRES FOR A STATION</div>
-      <div class="fe"><span class="yr">1893</span> · THE FAIR OPENS FOR SIX MONTHS</div>
-      <div class="publisher" style="margin-left:auto;">
-        <img class="mark" src="../assets/img/rf-logo.svg" alt="">
-        <div>
-          <div class="pname">Rooted Forward</div>
-          <div class="pline">Free self-guided audio tours on the racial<br>history of American cities · rooted-forward.org</div>
+  <div class="field">
+    <div class="ftitle" style="font-size:84pt;">Who Could Live in Hyde Park</div>
+
+    <div class="cols">
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">The resort <span class="yr">· 1853 to 1856</span></div>
+          <div class="body"><p>Paul Cornell, a young Chicago lawyer, bought
+            sixty lakefront acres of farm and tavern land in August 1853
+            and kept buying until he held about 300 acres between 51st and
+            55th Streets. He named the area Hyde Park to give it a refined
+            image and sold it as an escape from a city that drained its
+            sewage into the lake. In 1856 he gave the Illinois Central
+            sixty acres for a station at 53rd Street and a guarantee of
+            daily trains. The families he recruited were wealthy and
+            white.</p></div>
+        </div>
+        <div class="sec">
+          <div class="rusthead">The parks and Cornell's stake <span class="yr">· 1866 to 1871</span></div>
+          <div class="body"><p>Cornell then led the campaign for public
+            parks beside his own land. The campaign was run by landowners
+            whose property the parks would raise in value, and Cornell
+            held 300 acres beside the ground he was asking the state to
+            improve. The law passed in 1869, and the commissioners bought
+            1,055 acres of sandbar and marsh and hired Frederick Law
+            Olmsted and Calvert Vaux. Their 1871 plan showed lagoons, a
+            canal down the Midway, and thirty miles of paths. The Great
+            Fire burned the drawings that October, and Jackson Park sat
+            mostly unfinished for twenty years.</p></div>
+          <figure style="margin-top:0.3in; height: 5.3in;"><img src="../assets/img/p1-olmsted-plan.jpg" alt="" style="object-position:92% 27%;"></figure>
+          <div class="cap">Olmsted, Vaux &amp; Co., plan for the South
+            Park, drawn for the Chicago South Park Commission, 1871.
+            North is to the left.</div>
+          <div class="credit">NORMAN B. LEVENTHAL MAP &amp; EDUCATION CENTER, BOSTON PUBLIC LIBRARY</div>
+        </div>
+      </div>
+
+      <div class="c">
+        <div class="sec">
+          <div class="rusthead">The fair <span class="yr">· 1893</span></div>
+          <div class="body"><p>Chicago won the World's Fair over New York,
+            Washington, and St. Louis, and Daniel Burnham placed it on the
+            unfinished park. Crews raised the White City in about two
+            years, steel frames covered in white plaster. It drew about 27
+            million visits in a country of 65 million people, and nearby
+            land values began rising as soon as the site was
+            announced.</p></div>
+          <figure style="margin-top:0.3in; height: 7.8in; overflow:hidden;"><img src="../assets/img/p1-hero-court-night.jpg" alt="" style="transform:scale(1.09);"></figure>
+          <div class="cap">The Grand Court of the World's Columbian
+            Exposition at night, drawn by Charles Graham, 1893.</div>
+          <div class="credit">LIBRARY OF CONGRESS PRINTS AND PHOTOGRAPHS DIVISION</div>
+        </div>
+        <div class="sec">
+          <div class="rusthead">Shut out at the gates <span class="yr">· 1893</span></div>
+          <div style="display:flex; gap:0.4in; margin-top:0.18in;">
+            <div class="body" style="margin-top:0; width:9.4in;"><p>Black
+              Americans were shut out of the fair's planning, its exhibit
+              halls, and nearly all of its jobs. Organizers offered one
+              Colored American Day late in the summer. Frederick Douglass
+              worked the season from the Haiti Pavilion, the one building
+              that presented Black achievement, and with Ida B. Wells
+              handed out The Reason Why the Colored American Is Not in
+              the World's Columbian Exposition at the gates.</p></div>
+            <figure style="width:3.7in;">
+              <div style="height:5.6in;"><img src="../assets/img/p1-reason-why.jpg" alt="" style="object-fit:contain; object-position:left top;"></div>
+              <div class="cap" style="font-size:15.5pt;">Title page of The
+                Reason Why, 1893.</div>
+            </figure>
+          </div>
         </div>
       </div>
     </div>
+
+    <div class="wells">
+      <div class="voice">"The exhibit of the progress made by a race in
+        25 years of freedom as against 250 years of slavery, would have
+        been the greatest tribute to the greatness and progressiveness
+        of American institutions which could have been shown the world."
+        <span class="attr">Ida B. Wells &nbsp;<span class="role">preface to The Reason Why, 1893</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bigword"><span class="w">The Resort</span><span class="dash"></span></div>
+
+  <div class="stripband">
+    <img src="../assets/img/strip-ferris.jpg" style="width:9.7in;" alt="">
+    <img src="../assets/img/strip-midway.jpg" style="width:8.7in;" alt="">
+    <img src="../assets/img/strip-delprado.jpg" style="width:8.1in;" alt="">
+    <img src="../assets/img/strip-fire.jpg" style="width:4.4in;" alt="">
+    <img src="../assets/img/strip-carlton.jpg" style="width:5.8in;" alt="">
+    <div class="stripcredit">THE FERRIS WHEEL, THE MIDWAY, THE HOTELS, THE 1894 FIRE · LIBRARY OF CONGRESS, RIJKSMUSEUM, NEWBERRY LIBRARY · PUBLIC DOMAIN</div>
   </div>
 
 </div>

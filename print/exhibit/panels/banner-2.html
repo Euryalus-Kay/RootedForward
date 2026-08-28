@@ -4,114 +4,120 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  /* Banner 2. The two documents read first at standing eye height,
-     the club and the bombings follow, and the federal survey map runs
-     nearly full width down to the plinth. Its far south side sits
-     low, which costs nothing. */
-  .title { font-size: 96pt; }
-  .doczone { position: absolute; left: 1.35in; top: 9.4in; width: 30.3in; }
-  .doc .doctext { font-size: 33pt; }
-  .doc + .doc { margin-top: 0.45in; }
-  .clubrow { position: absolute; left: 1.35in; top: 17.4in; width: 30.3in; display: flex; gap: 0.7in; }
-  .banner .body { font-size: 28.5pt; }
-  .statmini { display: flex; gap: 0.85in; }
-  .statmini .stat .n { font-size: 62pt; }
-  .maphead { position: absolute; left: 1.35in; top: 23.5in; width: 30.3in; }
-  .maphead .legend { margin-top: 0.3in; font-size: 19pt; }
-  .mapwrap { position: absolute; left: 1.35in; top: 27.2in; }
+  .inner { position: absolute; left: 1.35in; right: 1.35in; top: 1.25in; }
+  .banner .body { font-size: 26pt; }
+  .lede { font-family: var(--serif); font-size: 30pt; line-height: 1.3; font-weight: 430; margin-top: 0.4in; max-width: 29.5in; }
+  .specimen + .specimen { margin-top: 0.45in; }
+  .specrow { margin-top: 0.6in; }
+  .clubrow { display: flex; gap: 0.9in; margin-top: 0.65in; }
+  .maplabel { position: absolute; left: 1.35in; top: 27.7in; width: 30.3in; }
+  .mapwrap { position: absolute; left: 1.35in; top: 29.1in; }
+  .maprail { position: absolute; left: 21.35in; top: 29.7in; width: 10.3in; }
+  .maprail .legend { display: block; }
+  .maprail .legend > span { display: flex; align-items: center; margin-bottom: 0.22in; }
+  .bigword { left: 1.35in; right: 1.35in; top: 56.0in; }
+  .bigword .w { font-size: 160pt; }
+  .stripband { left: 0; height: 19.4in; }
+  .pubchip { position: absolute; left: 0.35in; top: 0.35in; background: var(--linen); padding: 0.18in 0.26in; display: flex; align-items: center; gap: 0.2in; opacity: 0.95; }
+  .pubchip img { width: 0.8in; height: 0.8in; }
+  .pubchip .nm { font-family: var(--serif); font-weight: 620; font-size: 19pt; color: var(--carbon); }
+  .pubchip .tg { font-family: var(--narrow); font-size: 12.5pt; color: var(--carbon-soft); }
 </style>
 </head>
 <body>
 <div class="sheet banner">
 
-  <div class="band">
-    <div class="left">Hyde Park, Chicago</div>
-    <div class="right">Sheet 2 of 4 · 1908 to 1947</div>
-  </div>
-
-  <div class="title">The Rules That Kept Hyde Park White</div>
-  <div class="deck">Between 1908 and 1947, a neighborhood club, the
-    realtors' association, Cook County property owners, and federal
-    surveyors each
-    put the color line in writing. The documents on this sheet are
-    quoted from the originals.</div>
-
-  <div class="doczone">
-    <div class="doc">
-      <div class="doctag">Set from the original text · Article 34, Code of Ethics,
-        National Association of Real Estate Boards, 1924</div>
-      <div class="doctext">"A Realtor should never be instrumental in
-        introducing into a neighborhood a character of property or
-        occupancy, <span class="op">members of any race or nationality</span>,
-        or any individuals whose presence will clearly be detrimental to
-        property values in that neighborhood."</div>
+  <div class="inner">
+    <div class="bhead">
+      <div>Hyde Park, Chicago</div>
+      <div class="r">Sheet 2 of 4 · 1908 to 1947</div>
     </div>
-    <div class="doc">
-      <div class="doctag">Set from the original text · the model covenant drafted for
-        the association, 1927</div>
-      <div class="doctext">"<span class="op">No part of said premises shall in
-        any manner be used or occupied directly or indirectly by any negro
-        or negroes.</span>" The University of Chicago spent
-        <span style="color:var(--red)">$83,597.46</span> defending covenants
-        in court, 1933 to 1947.</div>
-    </div>
-  </div>
 
-  <div class="clubrow">
-    <div style="width:16.9in;">
-      <div class="seclabel">The club <span class="yr">· 1908</span></div>
-      <div class="body"><p>In 1908, attorney Francis Harper organized the
-        Hyde Park Improvement Protective Club, 350 members with an openly
-        stated goal of maintaining the color line. Members pledged to
-        blacklist realtors who sold to Black buyers. When pressure did not
-        work, there were bombings. Jesse Binga, whose home and office were
-        bombed again and again, told the riot commission, "I will not run.
-        The race is at stake and not myself."</p></div>
+    <div class="ftitle" style="font-size:74pt; margin-top:0.5in;">The Rules That Kept Hyde Park White</div>
+    <div class="lede">Between 1908 and 1947, a neighborhood club, the
+      realtors' association, Cook County property owners, and federal
+      surveyors each put the color line in writing. The documents are
+      quoted from the originals.</div>
+
+    <div class="specrow">
+      <div class="specimen">
+        <div class="doctag">Set from the original text · Article 34, Code of Ethics,
+          National Association of Real Estate Boards, adopted June 6, 1924</div>
+        <div class="doctext" style="font-size:29pt;">"A Realtor should never be
+          instrumental in introducing into a neighborhood a character of
+          property or occupancy, <span class="op">members of any race or
+          nationality</span>, or any individuals whose presence will
+          clearly be detrimental to property values in that
+          neighborhood."</div>
+        <div class="tombstone">ENFORCED FROM 310 SOUTH MICHIGAN AVENUE, SEVEN MILES FROM HYDE PARK</div>
+      </div>
+      <div class="specimen">
+        <div class="doctag">Set from the original text · the model covenant drafted for
+          the association, 1927</div>
+        <div class="doctext" style="font-size:29pt;">"<span class="op">No part of said
+          premises shall in any manner be used or occupied directly or
+          indirectly by any negro or negroes</span>," excepting janitors,
+          chauffeurs, and house servants.</div>
+        <div class="tombstone">DRAFTED BY NATHAN WILLIAM MACCHESNEY · THE UNIVERSITY OF CHICAGO SPENT
+          <span style="color:var(--red)">$83,597.46</span> DEFENDING COVENANTS IN COURT, 1933 TO 1947</div>
+      </div>
     </div>
-    <div style="width:12.7in; padding-top:0.85in;">
-      <div class="statmini">
-        <div class="stat"><span class="n" style="color:var(--red)">58</span><span class="lab">bombings of Black homes<br>July 1917 to March 1921</span></div>
-        <div class="stat"><span class="n">0</span><span class="lab">convictions<br>&nbsp;</span></div>
+
+    <div class="clubrow">
+      <div style="width:17.4in;">
+        <div class="rusthead">The club <span class="yr">· 1908</span></div>
+        <div class="body"><p>In 1908, attorney Francis Harper organized
+          the Hyde Park Improvement Protective Club, 350 members with an
+          openly stated goal of maintaining the color line. Members
+          pledged to blacklist realtors who sold to Black buyers. When
+          pressure did not work, there were bombings. Jesse Binga, whose
+          home and office were bombed again and again, told the riot
+          commission, "I will not run. The race is at stake and not
+          myself."</p></div>
+      </div>
+      <div style="flex:1; display:flex; gap:0.7in; padding-top:0.5in;">
+        <div class="stat"><span class="n" style="color:var(--red)">58</span><span class="lab">bombings of<br>Black homes<br>1917 to 1921</span></div>
+        <div class="stat"><span class="n">0</span><span class="lab">convictions</span></div>
       </div>
     </div>
   </div>
 
-  <div class="maphead">
-    <div class="seclabel">The map <span class="yr">· 1939 to 1940</span></div>
-    <div class="body" style="font-size:24.5pt; max-width:30.3in; margin-top:0.2in;"><p>Federal
-      surveyors graded every Chicago block for mortgage risk. The printed form put the
-      blank for residents' race before the blanks for the condition of
-      the houses, and lenders refused ordinary mortgages for every house
-      on a red or yellow block. All 703 areas are redrawn here from
-      the government's files.</p></div>
-    <div class="legend">
+  <div class="maplabel rusthead">The federal map <span class="yr">· 1939 to 1940 · all 703 areas, redrawn from the government's files</span></div>
+  <div class="mapwrap">
+    <div class="mapframe" style="width:18.6in;"><img src="../assets/holc-map.svg" style="display:block;width:100%;" alt=""></div>
+  </div>
+  <div class="maprail">
+    <div class="body" style="font-size:24pt;"><p>Federal surveyors graded
+      every Chicago block for mortgage risk, race first on the printed
+      form. Lenders refused ordinary mortgages on red and yellow blocks.
+      Hyde Park was graded yellow because Black neighborhoods bordered
+      it.</p></div>
+    <div class="legend" style="margin-top:0.45in; font-size:17pt;">
       <span><span class="sw" style="background:#83987B"></span>A · Best</span>
       <span><span class="sw" style="background:#7E93A8"></span>B · Still desirable</span>
       <span><span class="sw" style="background:#D2AE4A"></span>C · Declining</span>
       <span style="color:var(--red); font-weight:700;"><span class="sw" style="background:#B0322B"></span>D · Hazardous</span>
-      <span class="credit" style="margin:0 0 0 auto;">HOLC RECORDS VIA MAPPING INEQUALITY · STREETS FROM U.S. CENSUS TIGER/LINE · GRADE NAMES QUOTED FROM THE SURVEY</span>
     </div>
+    <div class="credit" style="margin-top:0.4in;">HOLC RECORDS VIA MAPPING
+      INEQUALITY, UNIVERSITY OF RICHMOND · STREETS FROM U.S. CENSUS
+      TIGER/LINE · GRADE NAMES QUOTED FROM THE SURVEY</div>
   </div>
 
-  <div class="mapwrap">
-    <div class="mapframe" style="width:26in;"><img src="../assets/holc-map.svg" style="display:block;width:100%;" alt=""></div>
-  </div>
+  <div class="bigword"><span class="w">The Rules</span><span class="dash"></span></div>
 
-  <div class="plinth">
-    <div class="inner">
-      <div class="footrule"></div>
-      <div class="entries">
-        <div class="fe debit"><span class="yr">1908</span> · THE PROTECTIVE CLUB FORMS</div>
-        <div class="fe debit"><span class="yr">1940</span> · THE SURVEY MAP IS ISSUED</div>
-        <div class="publisher">
-          <img class="mark" src="../assets/img/rf-logo.svg" alt="">
-          <div>
-            <div class="pname">Rooted Forward</div>
-            <div class="pline">Free self-guided audio tours · rooted-forward.org</div>
-          </div>
-        </div>
+  <div class="stripband">
+    <img src="../assets/img/strip-drexel.jpg" style="width:9.8in;" alt="">
+    <img src="../assets/img/strip-quads.jpg" style="width:12.0in;" alt="">
+    <img src="../assets/img/strip-sisson.jpg" style="width:7.2in;" alt="">
+    <img src="../assets/img/strip-carlton.jpg" style="width:4.5in;" alt="">
+    <div class="pubchip">
+      <img src="../assets/img/rf-logo.svg" alt="">
+      <div>
+        <div class="nm">Rooted Forward</div>
+        <div class="tg">Free self-guided audio tours · rooted-forward.org</div>
       </div>
     </div>
+    <div class="stripcredit" style="bottom:auto; top:0.35in;">DREXEL BOULEVARD 1907, THE QUADRANGLES 1907, THE SISSON HOTEL ABOUT 1920 · PUBLIC DOMAIN</div>
   </div>
 
 </div>

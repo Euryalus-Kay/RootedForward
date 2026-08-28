@@ -311,13 +311,13 @@ const bboxTouches = (ring, f) => {
   let stopMarks = "";
   for (const [n, optional, lat, lng] of stops) {
     const [x, y] = proj.pt([lng, lat]);
-    const r = 24;
+    const r = 31;
     if (optional) {
       stopMarks += `<circle cx="${x}" cy="${y}" r="${r}" fill="${LINEN}" stroke="${RUST}" stroke-width="5"/>` +
-        `<text x="${x}" y="${y + 10}" text-anchor="middle" font-size="30" font-weight="700" fill="${RUST}" font-family="RF Narrow, Archivo Narrow, sans-serif">${n}</text>`;
+        `<text x="${x}" y="${y + 10}" text-anchor="middle" font-size="38" font-weight="700" fill="${RUST}" font-family="RF Narrow, Archivo Narrow, sans-serif">${n}</text>`;
     } else {
       stopMarks += `<circle cx="${x}" cy="${y}" r="${r}" fill="${RUST}"/>` +
-        `<text x="${x}" y="${y + 10}" text-anchor="middle" font-size="30" font-weight="700" fill="${CREAM}" font-family="RF Narrow, Archivo Narrow, sans-serif">${n}</text>`;
+        `<text x="${x}" y="${y + 10}" text-anchor="middle" font-size="38" font-weight="700" fill="${CREAM}" font-family="RF Narrow, Archivo Narrow, sans-serif">${n}</text>`;
     }
   }
 
@@ -348,36 +348,36 @@ const bboxTouches = (ring, f) => {
   <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
   ${stopMarks}
 
-  ${label(-87.5723, 41.8008, "LAKE MICHIGAN", 34, 'letter-spacing="0.3em" fill="' + CARBON_SOFT + '"')}
-  ${label(-87.5838, 41.7862, "JACKSON PARK", 27)}
-  ${label(-87.6178, 41.7912, "WASHINGTON", 27)}
-  ${label(-87.6178, 41.7892, "PARK", 27)}
-  ${label(-87.6008, 41.78685, "MIDWAY PLAISANCE", 23)}
-  ${label(-87.6045, 41.7962, "HYDE PARK", 34, 'font-weight="700" letter-spacing="0.24em"')}
-  ${label(-87.6045, 41.7799, "WOODLAWN", 27)}
-  ${label(-87.6125, 41.8042, "KENWOOD", 27)}
-  ${label(-87.60115, 41.79135, "UNIVERSITY OF CHICAGO", 21)}
-  ${label(-87.5975, 41.80115, "E 53RD ST", 22)}
-  ${label(-87.5998, 41.79585, "E 55TH ST", 22)}
-  ${label(-87.5935, 41.79225, "E 57TH ST", 22)}
-  ${label(-87.6008, 41.78465, "E 60TH ST", 22)}
-  ${label(-87.5995, 41.78075, "E 63RD ST", 22)}
-  ${vlabel(-87.6068, 41.7858, "COTTAGE GROVE AVE", 22)}
-  ${vlabel(-87.59485, 41.78475, "WOODLAWN AVE", 22)}
-  ${vlabel(-87.58755, 41.80425, "LAKE PARK AVE", 22)}
-  ${vlabel(-87.58635, 41.7841, "STONY ISLAND AVE", 22)}
-  ${vlabel(-87.6089, 41.7985, "DREXEL BLVD", 22)}
+  ${label(-87.5723, 41.8008, "LAKE MICHIGAN", 44, 'letter-spacing="0.3em" fill="' + CARBON_SOFT + '"')}
+  ${label(-87.5838, 41.7862, "JACKSON PARK", 36)}
+  ${label(-87.6178, 41.7912, "WASHINGTON", 36)}
+  ${label(-87.6178, 41.7889, "PARK", 36)}
+  ${label(-87.6008, 41.78685, "MIDWAY PLAISANCE", 30)}
+  ${label(-87.6045, 41.7962, "HYDE PARK", 46, 'font-weight="700" letter-spacing="0.24em"')}
+  ${label(-87.6045, 41.7799, "WOODLAWN", 36)}
+  ${label(-87.6125, 41.8042, "KENWOOD", 36)}
+  ${label(-87.60115, 41.79135, "UNIVERSITY OF CHICAGO", 28)}
+  ${label(-87.5975, 41.80115, "E 53RD ST", 29)}
+  ${label(-87.5998, 41.79585, "E 55TH ST", 29)}
+  ${label(-87.5935, 41.79225, "E 57TH ST", 29)}
+  ${label(-87.6008, 41.78465, "E 60TH ST", 29)}
+  ${label(-87.5995, 41.78075, "E 63RD ST", 29)}
+  ${vlabel(-87.6068, 41.7858, "COTTAGE GROVE AVE", 29)}
+  ${vlabel(-87.59485, 41.78475, "WOODLAWN AVE", 29)}
+  ${vlabel(-87.58755, 41.80425, "LAKE PARK AVE", 29)}
+  ${vlabel(-87.58635, 41.7841, "STONY ISLAND AVE", 29)}
+  ${vlabel(-87.6089, 41.7985, "DREXEL BLVD", 29)}
 
   <g stroke="${CARBON}" stroke-width="2.5">
     <line x1="80" y1="${proj.H - 80}" x2="${80 + halfMile}" y2="${proj.H - 80}"/>
     <line x1="80" y1="${proj.H - 92}" x2="80" y2="${proj.H - 68}"/>
     <line x1="${80 + halfMile}" y1="${proj.H - 92}" x2="${80 + halfMile}" y2="${proj.H - 68}"/>
   </g>
-  <text class="lbl" x="${80 + halfMile / 2}" y="${proj.H - 102}" font-size="22" text-anchor="middle">HALF MILE</text>
+  <text class="lbl" x="${80 + halfMile / 2}" y="${proj.H - 102}" font-size="30" text-anchor="middle">HALF MILE</text>
   <g transform="translate(${proj.W - 100}, ${proj.H - 150})">
     <line x1="0" y1="60" x2="0" y2="-10" stroke="${CARBON}" stroke-width="3"/>
     <path d="M0 -22 L11 2 L0 -6 L-11 2 Z" fill="${CARBON}"/>
-    <text class="lbl" y="90" text-anchor="middle" font-size="24" font-weight="700">N</text>
+    <text class="lbl" y="96" text-anchor="middle" font-size="32" font-weight="700">N</text>
   </g>
 </svg>`;
   writeFileSync(join(OUT, "route-map.svg"), svg);
