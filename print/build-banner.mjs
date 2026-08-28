@@ -19,6 +19,9 @@
 /*    npm install --no-save qrcode jsqr                                */
 /*    node print/build-banner.mjs                                      */
 /*                                                                     */
+/*  Also needs poppler and librsvg on PATH (pdftocairo, rsvg-convert),*/
+/*  which outline the type. See the note on outline() below.           */
+/*                                                                     */
 /*  Those two are not site dependencies and are deliberately kept out  */
 /*  of package.json. qrcode draws the code, jsqr reads it back off the */
 /*  rendered pixels so a banner that will not scan fails the build     */
@@ -31,6 +34,8 @@ import QRCode from "qrcode";
 import puppeteer from "/Users/zainzaidi/Desktop/Rooted Forward/node_modules/puppeteer/lib/esm/puppeteer/puppeteer.js";
 import sharp from "sharp";
 import jsQR from "jsqr";
+import { execFileSync } from "node:child_process";
+import { unlinkSync } from "node:fs";
 
 const SITE = "/Users/zainzaidi/Desktop/Rooted Forward";
 const OUT = join(SITE, "print");
@@ -43,7 +48,11 @@ const H = 24;
    an inch more, so nothing that has to survive goes near the edge. */
 const PAD_X = 3.25;
 const PAD_Y = 2.5;
-const BLEED = 0.25;
+/* One inch, not the usual quarter. A hemmed vinyl banner folds its own
+   edge over, so VistaPrint's canvas for a 72x24 finished banner is
+   74x26 and it wants artwork filling all of it. At this bleed the file
+   drops onto their canvas at 100% with nothing to scale or nudge. */
+const BLEED = 1;
 
 /* ---------- palette ---------- */
 /* Site tokens. rust-light is used instead of rust wherever a shape is
@@ -356,6 +365,49 @@ if (decoded.data !== QR_URL) {
   throw new Error(`QR decoded to ${decoded.data}, expected ${QR_URL}`);
 }
 console.log("QR read back    ", decoded.data, "(scans)");
+
+/* ---------- outline the type ---------- */
+/* Chrome writes its text as Type3 fonts. The glyphs really are vector
+   outlines, but a Type3 font carries no embedded font program, and a
+   print shop's preflight reads that as "un-embedded fonts" and rejects
+   the file. VistaPrint does exactly that.
+
+   Round-tripping through Cairo's SVG writer converts every glyph into
+   a plain path, so the finished PDF contains no fonts at all and
+   nothing is left to embed or substitute. It stays fully vector. */
+function outline(pdfPath) {
+  const svgPath = pdfPath.replace(/\.pdf$/, ".outline.svg");
+  execFileSync("pdftocairo", ["-svg", pdfPath, svgPath]);
+  execFileSync("rsvg-convert", ["-f", "pdf", "-o", pdfPath, svgPath]);
+  unlinkSync(svgPath);
+
+  const bytes = readFileSync(pdfPath);
+  for (const marker of ["/BaseFont", "/FontFile", "/Type3"]) {
+    if (bytes.includes(marker)) {
+      throw new Error(`${pdfPath} still contains ${marker} after outlining`);
+    }
+  }
+}
+
+const TRIM = join(OUT, "rooted-forward-banner-72x24.pdf");
+const BLEED_PDF = join(OUT, "rooted-forward-banner-72x24-bleed.pdf");
+outline(TRIM);
+outline(BLEED_PDF);
+
+/* ---------- read the code back off the real print file ---------- */
+/* The PNG check above proves the layout was right. This one proves the
+   file that actually goes to the printer is right, after the outlining
+   pass has rewritten every shape on it. */
+const probe = join(OUT, ".qr-probe");
+execFileSync("pdftoppm", ["-png", "-r", "100", TRIM, probe]);
+const probePng = `${probe}-1.png`;
+const shot = await sharp(probePng).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+const fromPdf = jsQR(new Uint8ClampedArray(shot.data), shot.info.width, shot.info.height);
+unlinkSync(probePng);
+if (!fromPdf || fromPdf.data !== QR_URL) {
+  throw new Error(`The outlined PDF's QR reads ${fromPdf?.data ?? "nothing"}. Do not print this.`);
+}
+console.log("outlined PDFs   ", "no fonts, QR still scans");
 console.log("widths (in)     ", JSON.stringify(metrics));
 
 console.log("QR encodes      ", QR_URL);
