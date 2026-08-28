@@ -26,8 +26,6 @@
 /*  would defeat the whole point of the system.                        */
 /* ------------------------------------------------------------------ */
 
-import { APP_STORE_URL } from "@/lib/app-store";
-
 export const SITE = "https://rooted-forward.org";
 
 /** Where non-iPhone scanners land. The App Store link is useless on an
@@ -46,10 +44,13 @@ export type QrLink = {
 };
 
 export const QR_LINKS: Record<string, QrLink> = {
-  /* The 6ft by 2ft outreach banner. Built by print/build-banner.mjs. */
+  /* The 6ft by 2ft outreach banner. Built by print/build-banner.mjs.
+     Points at our own tour page rather than straight at the App Store,
+     so every phone that scans it lands on the same thing and the page
+     itself can carry more than one route later. Swap this one line to
+     send the printed banner somewhere else. */
   banner: {
-    to: APP_STORE_URL ?? TOURS,
-    otherwise: TOURS,
+    to: TOURS,
     printedOn: "6ft x 2ft vinyl outreach banner, first printed August 2026",
   },
 };

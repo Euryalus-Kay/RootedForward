@@ -238,13 +238,13 @@ const html = `<!doctype html>
         <div class="wordmark">Rooted&nbsp;Forward</div>
       </div>
       <div class="rule"></div>
-      <div class="tagline">Free self-guided audio tours<br>of the neighborhoods we research.</div>
+      <div class="tagline">Free self-guided audio tours<br>on the racial history of American cities.</div>
       <div class="who">A student-run nonprofit</div>
     </div>
 
     <div class="tile">
       <svg class="qr" viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg>
-      <div class="cap">Scan for the<br>free app</div>
+      <div class="cap">Scan for the<br>free tours</div>
       <div class="url">rooted-forward.org</div>
     </div>
   </div>
@@ -301,6 +301,31 @@ await el.screenshot({ path: PNG, type: "png" });
 /* A QR that does not decode is the one mistake on this banner that
    costs money to find out about, so it gets read back off the actual
    rendered pixels rather than trusted because the encoder ran. */
+const metrics = await page.evaluate(() => {
+  const b = document.querySelector(".banner").getBoundingClientRect();
+  const px2in = (v) => +(v / 96).toFixed(2);
+  const r = (sel) => {
+    const e = document.querySelector(sel);
+    const g = e.getBoundingClientRect();
+    return { left: px2in(g.x - b.x), right: px2in(g.right - b.x) };
+  };
+  /* widest rendered line inside the tagline */
+  const t = document.querySelector(".tagline");
+  const range = document.createRange();
+  let widest = 0;
+  t.childNodes.forEach((n) => {
+    if (n.nodeType !== 3) return;
+    range.selectNodeContents(n);
+    for (const rect of range.getClientRects()) widest = Math.max(widest, rect.width);
+  });
+  return {
+    wordmarkRight: r(".wordmark").right,
+    taglineWidest: px2in(widest),
+    taglineRight: +(r(".tagline").left + px2in(widest)).toFixed(2),
+    tileLeft: r(".tile").left,
+  };
+});
+
 const box = await page.evaluate(() => {
   const q = document.querySelector(".qr").getBoundingClientRect();
   const b = document.querySelector(".banner").getBoundingClientRect();
@@ -331,6 +356,7 @@ if (decoded.data !== QR_URL) {
   throw new Error(`QR decoded to ${decoded.data}, expected ${QR_URL}`);
 }
 console.log("QR read back    ", decoded.data, "(scans)");
+console.log("widths (in)     ", JSON.stringify(metrics));
 
 console.log("QR encodes      ", QR_URL);
 console.log("QR modules      ", qrModules, "x", qrModules);
