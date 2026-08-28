@@ -74,6 +74,9 @@ const PLAYER_VARS = {
   playsinline: 1,
   cc_load_policy: 0,
   iv_load_policy: 3,
+  /* the control is on by default, but say so, because the player the
+     API builds is not the same element as the fallback iframe below */
+  fs: 1,
 } as const;
 
 /** Loads the IFrame API once per page and resolves when YT is usable. */

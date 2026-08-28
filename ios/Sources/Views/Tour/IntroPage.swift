@@ -41,7 +41,7 @@ struct IntroPage: View {
                 // tap down, because a poster you cannot play is a dead
                 // end on a phone with no signal.
                 if let video = content.intro.video {
-                    VideoPlate(video: video, label: nil)
+                    VideoPlate(video: video, label: nil, note: nil)
                         .padding(.top, 22)
 
                     DisclosureGroup(isExpanded: $reading) {

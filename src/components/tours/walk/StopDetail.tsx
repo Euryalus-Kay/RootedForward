@@ -296,8 +296,8 @@ export default function StopDetail({
               tone="light"
             />
           </div>
-          <p className="mt-3 font-display text-[13px] italic text-ink/60">
-            Or read and listen below.
+          <p className="mt-3 font-body text-sm text-ink/70">
+            Read more about this stop below.
           </p>
         </div>
       )}

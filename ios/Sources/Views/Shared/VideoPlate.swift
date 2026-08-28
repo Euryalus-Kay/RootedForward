@@ -26,6 +26,9 @@ struct VideoPlate: View {
     /// The line above the plate. Nil on the opening page, where the
     /// film is the page and needs no label.
     var label: String? = "Watch this stop"
+    /// The line under it, saying what is further down the page. Nil on
+    /// the opening page, where there is nothing further down.
+    var note: String? = "Read more about this stop below."
 
     @State private var open = false
 
@@ -61,6 +64,13 @@ struct VideoPlate: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Play the film, \(video.title)")
             .accessibilityIdentifier("stop-video")
+
+            if let note {
+                Text(note)
+                    .font(RF.body(14))
+                    .foregroundStyle(RF.ink.opacity(0.7))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .fullScreenCover(isPresented: $open) {
             VideoScreen(video: video)
@@ -105,6 +115,8 @@ private struct YouTubePlayer: UIViewRepresentable {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
+        // lets YouTube's own fullscreen control actually expand
+        config.preferences.isElementFullscreenEnabled = true
         let view = WKWebView(frame: .zero, configuration: config)
         view.isOpaque = false
         view.backgroundColor = .black
@@ -135,7 +147,7 @@ private struct YouTubePlayer: UIViewRepresentable {
               host: 'https://www.youtube-nocookie.com',
               playerVars: {
                 playsinline: 1, autoplay: 1, rel: 0, modestbranding: 1,
-                cc_load_policy: 0, iv_load_policy: 3
+                cc_load_policy: 0, iv_load_policy: 3, fs: 1
               },
               events: {
                 onReady: function (e) {
