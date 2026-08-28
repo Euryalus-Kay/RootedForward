@@ -43,6 +43,10 @@ struct WalkIntro: Codable, Equatable {
     let title: String
     let paragraphs: [String]
     let byline: String
+    /// When a walk has a film for its opening, the film is the
+    /// opening. The paragraphs stay so the page still says something
+    /// with no signal.
+    let video: WalkVideo?
 }
 
 struct WalkTour: Codable, Equatable {
@@ -118,11 +122,21 @@ struct WalkStop: Codable, Equatable, Identifiable {
     let interrupts: [WalkInterrupt]?
     let toNext: WalkDirections?
     let mapLabel: String
+    /// a film for this stop, set above the narration
+    let video: WalkVideo?
     let sources: [WalkSource]?
     /// True for detour stops off the main route; absent in older payloads.
     let optional: Bool?
 
     var isDetour: Bool { optional == true }
+}
+
+/// A film that stands beside the writing. Absent in older payloads.
+struct WalkVideo: Codable, Equatable {
+    let youtubeId: String
+    let title: String
+    /// a still under /media, bundled, so the plate is complete offline
+    let poster: String
 }
 
 struct WalkImage: Codable, Equatable, Hashable {

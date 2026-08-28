@@ -21,6 +21,9 @@ struct IntroPage: View {
 
     let goNext: () -> Void
 
+    /// The essay stays closed until someone asks for it.
+    @State private var reading = false
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -33,22 +36,26 @@ struct IntroPage: View {
                         .accessibilityAddTraits(.isHeader)
                 }
 
-                VStack(alignment: .leading, spacing: 18) {
-                    ForEach(Array(content.intro.paragraphs.enumerated()), id: \.offset) { index, paragraph in
-                        Editable(
-                            .introParagraph(content.slug, index), original: paragraph
-                        ) { text in
-                            MarkedText(text: text)
-                        }
-                    }
-                }
-                .padding(.top, 22)
+                // Where a walk has a film for its opening, the film is
+                // the opening. The written version is still here, one
+                // tap down, because a poster you cannot play is a dead
+                // end on a phone with no signal.
+                if let video = content.intro.video {
+                    VideoPlate(video: video, label: nil)
+                        .padding(.top, 22)
 
-                Editable(.introByline(content.slug), original: content.intro.byline) { byline in
-                    Text(byline)
-                        .font(RF.display(15, weight: 400, italic: true))
-                        .foregroundStyle(RF.warmGrayDark)
-                        .fixedSize(horizontal: false, vertical: true)
+                    DisclosureGroup(isExpanded: $reading) {
+                        written
+                            .padding(.top, 14)
+                    } label: {
+                        Text("Read it instead")
+                            .font(RF.body(14, weight: 600))
+                            .foregroundStyle(RF.warmGrayDark)
+                    }
+                    .tint(RF.warmGrayDark)
+                    .padding(.top, 22)
+                } else {
+                    written
                         .padding(.top, 22)
                 }
 
@@ -67,6 +74,27 @@ struct IntroPage: View {
             .padding(.bottom, 150)
         }
         .background(RF.cream)
+    }
+
+    /// The essay, which is the opening on a walk with no film and the
+    /// fallback on one that has it.
+    private var written: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            ForEach(Array(content.intro.paragraphs.enumerated()), id: \.offset) { index, paragraph in
+                Editable(
+                    .introParagraph(content.slug, index), original: paragraph
+                ) { text in
+                    MarkedText(text: text)
+                }
+            }
+            Editable(.introByline(content.slug), original: content.intro.byline) { byline in
+                Text(byline)
+                    .font(RF.display(15, weight: 400, italic: true))
+                    .foregroundStyle(RF.warmGrayDark)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 4)
+            }
+        }
     }
 
     /// The same plate that closes every stop, so the walk starts the

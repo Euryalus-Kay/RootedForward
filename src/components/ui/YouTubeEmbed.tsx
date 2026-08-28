@@ -35,6 +35,11 @@ interface YouTubeEmbedProps {
   frame?: "default" | "1" | "2" | "3";
   /** Which band it sits on, so the frame picks up the right contrast. */
   tone?: "dark" | "light";
+  /** A still we host ourselves, used instead of YouTube's. The walking
+      tour uses this so nothing is fetched from YouTube until someone
+      actually presses play, and so the app and the page show the same
+      frame. */
+  poster?: string;
 }
 
 /* Minimal shape of the bits of the IFrame API this file touches. */
@@ -129,6 +134,7 @@ export default function YouTubeEmbed({
   title,
   frame = "default",
   tone = "dark",
+  poster,
 }: YouTubeEmbedProps) {
   const [playing, setPlaying] = useState(false);
   /* Set only when the API route fails, so the plain iframe takes over. */
@@ -137,6 +143,7 @@ export default function YouTubeEmbed({
   const playerRef = useRef<YTPlayer | null>(null);
 
   const still = frame === "default" ? "maxresdefault" : `maxres${frame}`;
+  const posterSrc = poster ?? `https://i.ytimg.com/vi/${id}/${still}.jpg`;
 
   useEffect(() => {
     if (!playing || fallback || playerRef.current) return;
@@ -207,7 +214,7 @@ export default function YouTubeEmbed({
           {/* every maxres still is 1280x720, sharp on a retina screen */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`https://i.ytimg.com/vi/${id}/${still}.jpg`}
+            src={posterSrc}
             alt=""
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"

@@ -25,6 +25,20 @@ export interface WalkImage {
   after?: number;
 }
 
+/** A film that stands in the tour beside the writing. YouTube hosts
+ *  it, so the app and the site both need a signal to play one, and
+ *  both fall back to the poster when there is none. The poster is a
+ *  still from the film itself, chosen by hand and bundled, so the
+ *  page still looks finished offline. */
+export interface WalkVideo {
+  /** the bare YouTube id, never a URL */
+  youtubeId: string;
+  /** the accessible name of the play control */
+  title: string;
+  /** a still under /public, shown until someone presses play */
+  poster: string;
+}
+
 export interface WalkDirections {
   /** plain spoken-style walking directions to the next stop */
   text: string;
@@ -75,6 +89,8 @@ export interface WalkStop {
   toNext?: WalkDirections;
   /** short label for the map, e.g. "Statue of the Republic" */
   mapLabel: string;
+  /** a film for this stop, set above the narration */
+  video?: WalkVideo;
   /** works consulted for this stop, printed in the Sources section */
   sources?: { label: string; url: string }[];
   /** true for detour stops that sit off the main route (the walk is

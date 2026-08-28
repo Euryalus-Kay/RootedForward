@@ -22,6 +22,11 @@ export const WALK_INTRO = {
     "In 1893, Black Chicagoans were told that they had no place in the future represented on this ground. On Juneteenth, the Center sent a different message. This walk covers both the policies that created exclusion and the efforts now being made to address their effects.",
     "I started Rooted Forward after learning that **many people, including longtime Chicago residents, had never been taught this history**. Students research and write these tours, and we provide them free because history has little effect when people do not know it.",
   ],
+  video: {
+    youtubeId: "9L6I2n3bcuA",
+    title: "Why this tour",
+    poster: "/media/hyde-park-walk/video-intro.jpg",
+  },
   byline:
     "Zain Zaidi is a sophomore at the University of Chicago Laboratory Schools and the founder of Rooted Forward, a youth-led nonprofit documenting Chicago's history of housing discrimination.",
 };

@@ -32,6 +32,7 @@
 		A5DD44F579DED3383C750C0E /* EditableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA87984968058775865BDD9 /* EditableText.swift */; };
 		BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */; };
 		CF059D3B16C1381EB501B6FF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = E16CB38A946AB51CC5FB8F11 /* Fonts */; };
+		D615C9049ECB482C332103F7 /* VideoPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94C28B4DC6DC0CFFFB56D50 /* VideoPlate.swift */; };
 		E0E605006D56CD7804AD6812 /* BetaEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA72944C40DDAC5869AB77F /* BetaEditing.swift */; };
 		E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318671872CB1E95D76C5579 /* WalkMapCanvas.swift */; };
 		E36CE8ECCCF9CF78B24295EC /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E907FBC06E8B34CDCAC3E91 /* Theme.swift */; };
@@ -80,6 +81,7 @@
 		966145B70FE859167851BD25 /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		9EA9425CFB508607C323419F /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Resources/Media; sourceTree = SOURCE_ROOT; };
 		A7D88B0725705C7778739E87 /* StopPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopPage.swift; sourceTree = "<group>"; };
+		A94C28B4DC6DC0CFFFB56D50 /* VideoPlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlate.swift; sourceTree = "<group>"; };
 		A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomPan.swift; sourceTree = "<group>"; };
 		B26B3DC3B417430FA3328484 /* TourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourView.swift; sourceTree = "<group>"; };
 		B2EFDA4FD0D683B5E271E4B3 /* ContentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStore.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			children = (
 				D25A37294A4B286DEFEB726A /* PhotoViewer.swift */,
 				09336D0FD9B4DD597D6C0E3C /* SharedViews.swift */,
+				A94C28B4DC6DC0CFFFB56D50 /* VideoPlate.swift */,
 				A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */,
 			);
 			path = Shared;
@@ -401,6 +404,7 @@
 				E36CE8ECCCF9CF78B24295EC /* Theme.swift in Sources */,
 				82160D1EF38EB5CB2F4E029E /* TourDetailView.swift in Sources */,
 				5AAAE99D69084DE9BABA2EE9 /* TourView.swift in Sources */,
+				D615C9049ECB482C332103F7 /* VideoPlate.swift in Sources */,
 				E1D555E717872509FDA821CD /* WalkMapCanvas.swift in Sources */,
 				10B186EA70E04243D581BDA2 /* WalkModels.swift in Sources */,
 				BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */,

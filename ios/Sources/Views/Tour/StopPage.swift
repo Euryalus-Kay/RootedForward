@@ -43,6 +43,10 @@ struct StopPage: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                         .id("top")
+                    if let video = stop.video {
+                        VideoPlate(video: video)
+                            .padding(.top, 22)
+                    }
                     listenCard
                         .padding(.top, 22)
                     imagePlates

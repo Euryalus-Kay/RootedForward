@@ -13,6 +13,7 @@ import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
 import AudioPlayer from "./AudioPlayer";
 import Marked from "./Marked";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 
 interface StopDetailProps {
   stop: WalkStop;
@@ -278,6 +279,28 @@ export default function StopDetail({
         {stop.title}
       </h2>
       <p className="mt-2 font-body text-lg text-ink/70">{stop.dek}</p>
+
+      {/* Where a stop has a film, it opens the stop. The written and
+          spoken versions of the same ground follow underneath, so
+          nothing is only available by video. */}
+      {stop.video && (
+        <div className="mt-6">
+          <h3 className="walk-title text-lg font-semibold text-forest">
+            Watch this stop
+          </h3>
+          <div className="mt-3 overflow-hidden rounded-[2px] border border-border">
+            <YouTubeEmbed
+              id={stop.video.youtubeId}
+              title={stop.video.title}
+              poster={stop.video.poster}
+              tone="light"
+            />
+          </div>
+          <p className="mt-3 font-display text-[13px] italic text-ink/60">
+            Or read and listen below.
+          </p>
+        </div>
+      )}
 
       {/* photographs with no paragraph anchor stay at the top of the
           stop, the historic view paired with the same ground today */}

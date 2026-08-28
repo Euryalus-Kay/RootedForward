@@ -2,6 +2,7 @@ import Link from "next/link";
 import SurveyRule from "@/components/ui/SurveyRule";
 import AppStoreButton from "@/components/app/AppStoreButton";
 import WalkExperience from "@/components/tours/walk/WalkExperience";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { marked } from "@/components/tours/walk/Marked";
 import type { WalkTourBundle } from "@/lib/tours/registry";
 
@@ -98,19 +99,36 @@ export default function WalkTourPage({ bundle }: { bundle: WalkTourBundle }) {
             <h2 className="walk-title mt-3 text-2xl font-semibold leading-snug text-forest md:text-3xl">
               {intro.title}
             </h2>
-            <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
-              {intro.paragraphs.map((para, i) => (
-                <p key={i}>
-                  {/* the bold spans carry the history on their own, so
-                      anyone skimming still gets the through-line */}
-                  {marked(para, `intro-${i}`)}
-                </p>
-              ))}
-            </div>
-            <p className="mt-5 font-display text-[13px] italic text-ink/60">
-              {intro.byline}
-            </p>
           </div>
+          {intro.video ? (
+            /* The film is the opening for this walk. The written
+               version stays in the data and the app falls back to it
+               with no signal, but here the video is the whole
+               section. */
+            <div className="mt-6 max-w-3xl overflow-hidden rounded-[2px] border border-border">
+              <YouTubeEmbed
+                id={intro.video.youtubeId}
+                title={intro.video.title}
+                poster={intro.video.poster}
+                tone="light"
+              />
+            </div>
+          ) : (
+            <div className="max-w-[62ch]">
+              <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-ink/80">
+                {intro.paragraphs.map((para, i) => (
+                  <p key={i}>
+                    {/* the bold spans carry the history on their own, so
+                        anyone skimming still gets the through-line */}
+                    {marked(para, `intro-${i}`)}
+                  </p>
+                ))}
+              </div>
+              <p className="mt-5 font-display text-[13px] italic text-ink/60">
+                {intro.byline}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

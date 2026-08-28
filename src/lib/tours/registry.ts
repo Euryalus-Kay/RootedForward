@@ -12,7 +12,7 @@
 /*  add one entry. Nothing else needs editing.                          */
 /* ------------------------------------------------------------------ */
 
-import type { WalkTour } from "./walk-types";
+import type { WalkTour, WalkVideo } from "./walk-types";
 import type { WalkGeometry, WalkMapConfig } from "./walk-utils";
 import { HYDE_PARK_WALK } from "./hyde-park-walk";
 import { HARLEM_WALK } from "./harlem-walk";
@@ -27,6 +27,11 @@ export interface WalkIntroDoc {
   title: string;
   paragraphs: string[];
   byline: string;
+  /** When a walk has a film for its opening, the film is the opening.
+   *  The paragraphs stay in the data because they are the written
+   *  version of the same thing, and the app falls back to them when
+   *  there is no signal to play a video. */
+  video?: WalkVideo;
 }
 
 /** the parts of a tour page that are not the tour itself. Everything

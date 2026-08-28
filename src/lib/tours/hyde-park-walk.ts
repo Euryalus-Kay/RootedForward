@@ -124,6 +124,11 @@ export const HYDE_PARK_WALK: WalkTour = {
   stops: [
     {
       id: "cornells-stone",
+      video: {
+        youtubeId: "ePezpj_3OFE",
+        title: "Paul Cornell's stone",
+        poster: `${MEDIA}/video-cornell.jpg`,
+      },
       number: 1,
       title: "Paul Cornell's stone",
       dek: "A stone in the park marks the approximate starting point of Hyde Park",
@@ -191,6 +196,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "del-prado",
+      video: {
+        youtubeId: "zzkHQ4cla9U",
+        title: "The Del Prado",
+        poster: `${MEDIA}/video-del-prado.jpg`,
+      },
       number: 2,
       title: "The Del Prado",
       dek: "A surviving hotel from Hyde Park's resort period",
@@ -299,6 +309,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "white-city",
+      video: {
+        youtubeId: "IeJhFLTrXIc",
+        title: "The White City",
+        poster: `${MEDIA}/video-white-city.jpg`,
+      },
       number: 4,
       title: "The White City",
       dek: "The park came before the fair and later became a major site of exclusion",
