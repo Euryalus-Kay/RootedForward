@@ -26,6 +26,7 @@ const OUT = join(HERE, "assets/img");
 mkdirSync(OUT, { recursive: true });
 
 const TARGETS = {
+  "p1-fair-burning.jpg": [join(SCRATCH, "white-city-fire-aftermath-1894.jpg"), join(MEDIA, "hyde-park-walk/white-city-burning-1894.jpg")],
   "strip-ferris.jpg": [join(SCRATCH, "ferris-wheel-1893.jpg")],
   "strip-midway.jpg": [join(SCRATCH, "midway-1893.jpg")],
   "strip-fire.jpg": [join(SCRATCH, "white-city-fire-aftermath-1894.jpg")],

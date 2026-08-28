@@ -183,7 +183,7 @@ if (FINAL && files.some((f) => f.includes("4"))) {
     const pdf = join(OUT, `${name}.pdf`);
     if (!existsSync(pdf)) continue;
     const probe = join(OUT, ".qr-probe");
-    execFileSync("pdftoppm", ["-png", "-r", "40", pdf, probe]);
+    execFileSync("pdftoppm", ["-png", "-r", "72", pdf, probe]);
     const probePng = `${probe}-1.png`;
     const shot = await sharp(probePng).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
     const decoded = jsQR(new Uint8ClampedArray(shot.data), shot.info.width, shot.info.height);

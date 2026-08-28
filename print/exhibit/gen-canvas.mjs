@@ -43,7 +43,7 @@ async function photo(name) {
 const PHOTOS = [
   "p1-hero-court-night.jpg", "p1-olmsted-plan.jpg",
   "p1-reason-why.jpg", "p2-bombing-map.jpg",
-  "p3-kitchenette.jpg", "p3-hansberry-house.jpg", "p4-opc.jpg",
+  "p3-kitchenette.jpg", "p3-hansberry-house.jpg", "p4-opc.jpg", "p4-harper-court.jpg", "p1-fair-burning.jpg",
   "strip-ferris.jpg", "strip-midway.jpg", "strip-delprado.jpg", "strip-fire.jpg",
   "strip-carlton.jpg", "strip-drexel.jpg", "strip-quads.jpg", "strip-sisson.jpg",
   "strip-doorway.jpg", "strip-63rd.jpg", "strip-63bus.jpg", "strip-univapts.jpg",
