@@ -296,7 +296,7 @@ export default function StopDetail({
               tone="light"
             />
           </div>
-          <p className="mt-3 font-body text-lg font-semibold text-rust">
+          <p className="walk-title mt-4 text-2xl font-semibold text-rust">
             Read the full stop below
           </p>
         </div>

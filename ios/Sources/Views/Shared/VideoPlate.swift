@@ -67,8 +67,9 @@ struct VideoPlate: View {
 
             if let note {
                 Text(note)
-                    .font(RF.body(17, weight: 600))
+                    .font(RF.display(22, weight: 600))
                     .foregroundStyle(RF.rust)
+                    .padding(.top, 2)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
