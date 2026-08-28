@@ -4,138 +4,164 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  .cols { display: flex; gap: 1.2in; margin-top: 0.55in; }
-  .colA { width: 12.4in; }
-  .colB { width: 14.75in; }
-  .specimen + .specimen { margin-top: 0.5in; }
-  .bigword { left: 6.25in; right: 1.4in; top: 37.0in; }
-  .bigword .w { font-size: 140pt; }
-  .stripband { height: 7.6in; }
+  /* 48x36 landscape, the policy sheet. */
+  .ghead { position: absolute; left: 0; top: 0; right: 0; height: 5.4in; background: var(--forest); color: var(--cream); display: flex; align-items: center; gap: 0.6in; padding: 0 1.0in; }
+  .ghead .gnum { font-size: 120pt; }
+  .ghead .gtitle { font-size: 58pt; }
+  .ghead .gyears { margin-top: 0.12in; }
+  .ghead .hq { margin-left: auto; width: 12.6in; font-family: var(--serif); font-style: italic; font-size: 21pt; line-height: 1.35; color: var(--cream); }
+  .ghead .hq .qa { display: block; font-family: var(--narrow); font-style: normal; font-weight: 700; font-size: 15pt; letter-spacing: 0.08em; margin-top: 0.14in; color: var(--linen-deep); }
+
+  .colL { position: absolute; left: 0.95in; top: 6.4in; width: 10.6in; }
+  .colC { position: absolute; left: 12.7in; top: 6.4in; width: 13.2in; }
+  .colR { position: absolute; left: 27.1in; top: 6.4in; width: 9.6in; }
+  .colR2 { position: absolute; left: 37.8in; top: 6.4in; width: 9.2in; }
+  .flowzone { position: absolute; left: 0.95in; top: 19.0in; width: 17.4in; }
+  .platezone { position: absolute; left: 19.5in; top: 19.0in; width: 8.2in; }
+  .bingazone { position: absolute; left: 28.9in; top: 19.0in; width: 8.0in; }
+  .daviszone { position: absolute; left: 38.0in; top: 19.0in; width: 9.0in; }
+  .scrap.mono { font-size: 17.5pt; }
 </style>
 </head>
 <body>
 <div class="sheet board">
 
-  <div class="eband">
-    <div class="yrs">1908<span class="to">TO</span>1947</div>
-    <div class="etext">Between 1908 and 1947, a neighborhood club, the
-      realtors' association, Cook County property owners, and federal
-      surveyors each put the color line in writing.
-      <br><br>The documents on this sheet are quoted from the
-      originals, and the map is redrawn from the government's files.
-      Sheet two of four.</div>
-    <div class="espacer"></div>
-    <div class="emark">
-      <img src="../assets/img/rf-logo.svg" alt="">
-      <div>
-        <div class="nm">Rooted Forward</div>
-        <div class="tg">Free self-guided audio tours<br>rooted-forward.org</div>
+  <div class="ghead">
+    <div class="gnum gold">2</div>
+    <div>
+      <div class="gtitle">Exclusion Becomes Policy</div>
+      <div class="gyears">1908–1948</div>
+    </div>
+    <div class="hq">"like a marvelous delicately woven chain of armor"
+      <span class="qa">THE HYDE PARK HERALD, 1928, PRAISING THE COVENANTS AROUND THE NEIGHBORHOOD</span>
+    </div>
+  </div>
+
+  <div class="colL">
+    <div class="stext" style="margin-top:0;">As pressure grew to keep the
+      neighborhood "exclusive," so did the tools. Exclusion stopped being
+      only a belief. It became written policy.</div>
+    <div class="tl" style="margin-top:0.35in;">
+      <div class="trow"><div class="ty">1908</div><div class="tt">The Hyde Park Improvement Protective Club forms, 350 members pledged to hold the color line.</div></div>
+      <div class="trow"><div class="ty">1917</div><div class="tt">The Chicago Real Estate Board adopts a block-by-block segregation plan.</div></div>
+      <div class="trow"><div class="ty">1917–21</div><div class="tt">White Chicagoans set off 58 bombs at Black homes and at agents who sold to Black families. No one is convicted.</div></div>
+      <div class="trow"><div class="ty">1924</div><div class="tt">The National Association of Real Estate Boards adopts Article 34.</div></div>
+      <div class="trow"><div class="ty">1927</div><div class="tt">A model racial covenant is drafted and promoted block by block throughout Chicago.</div></div>
+      <div class="trow"><div class="ty">1937</div><div class="tt">Carl Hansberry buys a home. Neighbors sue him under a covenant.</div></div>
+      <div class="trow"><div class="ty">1948</div><div class="tt">In Shelley v. Kraemer the U.S. Supreme Court rules racial covenants unenforceable.</div></div>
+    </div>
+  </div>
+
+  <div class="colC">
+    <div class="shead">The rule in writing · Article 34, 1924</div>
+    <div class="stext">Realtors made the color line a professional duty.
+      Selling to the "wrong" buyer could cost an agent their career, and
+      the rule was enforced from 310 South Michigan Avenue, seven miles
+      from these blocks.</div>
+    <div class="scrap mono deckle" style="margin-top:0.34in; transform:rotate(0.8deg);">
+      <div class="shd">ARTICLE 34.</div>
+      "A Realtor should never be instrumental in introducing into a
+      neighborhood a character of property or occupancy, members of any
+      race or nationality, or any individuals whose presence will
+      clearly be detrimental to property values in that neighborhood."
+      <div class="sattr">National Association of Real Estate Boards,
+        Code of Ethics, adopted June 6, 1924</div>
+    </div>
+    <div class="stext" style="margin-top:0.34in;"><b>The money followed
+      the rule.</b> The University of Chicago spent $83,597.46 defending
+      racial covenants in court between 1933 and 1947.</div>
+  </div>
+
+  <div class="colR">
+    <div class="shead">A covenant in its own words</div>
+    <div class="scrap mono deckle" style="margin-top:0.3in; transform:rotate(-1.2deg);">
+      "No part of said premises shall in any manner be used or occupied
+      directly or indirectly by any negro or negroes," excepting
+      janitors, chauffeurs, and house servants.
+      <div class="sattr">Model racial covenant drafted for the
+        association by Nathan William MacChesney, 1927</div>
+    </div>
+    <div class="stext" style="margin-top:0.3in;">Hundreds of Cook County
+      subdivisions carried language like this by the 1940s. The promise
+      bound every later owner of the property.</div>
+  </div>
+
+  <div class="colR2">
+    <div class="shead">A family's fight</div>
+    <figure style="margin-top:0.28in;">
+      <div style="height:6.6in;"><img src="../assets/img/p3-hansberry-house.jpg" alt="" style="object-position:50% 30%;"></div>
+      <div class="credit tiny" style="margin-top:0.08in;">PHOTOGRAPH BY LEGIMET, 2025 · CC BY-SA 4.0</div>
+    </figure>
+    <div class="stext" style="margin-top:0.2in;">Carl Hansberry's 1937
+      purchase at 6140 South Rhodes became Hansberry v. Lee (1940), and
+      the family won. His daughter Lorraine, seven when a chunk of
+      concrete came through the window, later used that experience in A
+      Raisin in the Sun.</div>
+  </div>
+
+  <div class="platezone">
+    <div class="shead">Mapped by the riot commission</div>
+    <figure style="margin-top:0.26in;">
+      <div style="height:10.6in;"><img src="../assets/img/p2-bombing-map.jpg" alt="" style="object-fit:contain; object-position:center top;"></div>
+      <div class="cap" style="font-size:14pt;">Homes bombed in race
+        conflicts over housing, July 1, 1917 to March 1, 1921.</div>
+      <div class="credit tiny">THE NEGRO IN CHICAGO, 1922 · PUBLIC DOMAIN</div>
+    </figure>
+  </div>
+
+  <div class="bingazone">
+    <div style="display:flex; gap:0.6in;">
+      <div class="stat"><span class="n" style="color:var(--red)">58</span><span class="lab">bombings of<br>Black homes</span></div>
+      <div class="stat"><span class="n">0</span><span class="lab">convictions</span></div>
+    </div>
+    <div class="voice" style="font-size:24pt; margin-top:0.5in;">"I will
+      not run. The race is at stake and not myself."
+      <span class="attr" style="font-size:15pt;">Jesse Binga <span class="role">· banker, bombed repeatedly, 1920</span></span>
+    </div>
+  </div>
+
+  <div class="daviszone">
+    <div class="shead">The wall held even for a professor</div>
+    <div class="stext">In 1942 the university gave William Allison Davis
+      tenure, the first for a Black scholar at a major white university.
+      No landlord in Hyde Park or Kenwood would rent to his family, so
+      he commuted from across the color line his own employer had helped
+      defend in court.</div>
+  </div>
+
+  <div class="flowzone">
+    <div class="shead">How it worked</div>
+    <div class="flow" style="margin-top:0.26in;">
+      <div class="fbox">
+        <div class="fic"><svg viewBox="0 0 24 24" style="width:1.0in;" fill="none" stroke="#1C1A17" stroke-width="1.6"><path d="M6 2.8 H15 L19 6.8 V21.2 H6 Z"/><path d="M15 2.8 V6.8 H19"/><line x1="8.6" y1="10.4" x2="16.4" y2="10.4"/><line x1="8.6" y1="13.4" x2="16.4" y2="13.4"/><line x1="8.6" y1="16.4" x2="14.2" y2="16.4"/></svg></div>
+        <div class="fl1">COVENANTS</div>
+        <div class="fl2">written into deeds</div>
+      </div>
+      <div class="farrow">→</div>
+      <div class="fbox">
+        <div class="fic"><svg viewBox="0 0 34 24" style="width:1.35in;" fill="none" stroke="#1C1A17" stroke-width="1.6"><path d="M2.6 12 L9 6.4 L15.4 12 M4.4 10.6 V20 H13.6 V10.6"/><path d="M18.6 12 L25 6.4 L31.4 12 M20.4 10.6 V20 H29.6 V10.6"/></svg></div>
+        <div class="fl1">NEIGHBORS + REALTORS</div>
+        <div class="fl2">enforce the rules</div>
+      </div>
+      <div class="farrow">→</div>
+      <div class="fbox">
+        <div class="fic"><svg viewBox="0 0 24 24" style="width:1.0in;" fill="none" stroke="#1C1A17" stroke-width="1.6"><path d="M7.4 10.2 L13.2 4.4 L16 7.2 L10.2 13 Z"/><line x1="12.4" y1="10.8" x2="19.4" y2="17.8"/><line x1="4" y1="20.6" x2="14" y2="20.6"/></svg></div>
+        <div class="fl1">COURTS</div>
+        <div class="fl2">uphold the system, 1926 to 1948</div>
       </div>
     </div>
   </div>
 
-  <div class="field">
-    <div class="ftitle" style="font-size:64pt;">The Rules That Kept Hyde Park White</div>
-
-    <div class="cols">
-      <div class="colA">
-        <div class="sec">
-          <div class="rusthead">The club <span class="yr">· 1908</span></div>
-          <div class="body"><p><b>In the autumn of 1908,</b> attorney
-            Francis Harper organized the Hyde Park Improvement Protective
-            Club, 350 members with an openly stated goal of maintaining
-            the color line. Members pledged to blacklist realtors who
-            sold to Black buyers. Black doctors, teachers, and business
-            owners had lived in Hyde Park for fifteen years. The club
-            targeted them anyway. When pressure did not work, there were
-            bombings.</p></div>
-          <div style="display:flex; gap:0.55in; margin-top:0.3in; align-items:flex-start;">
-            <figure style="width:5.6in;">
-              <div style="height:10.4in;"><img src="../assets/img/p2-bombing-map.jpg" alt="" style="object-fit:contain; object-position:center top;"></div>
-              <div class="cap" style="font-size:15.5pt;">Homes bombed in race conflicts
-                over housing, July 1, 1917 to March 1, 1921, mapped by the
-                Chicago Commission on Race Relations, 1922.</div>
-              <div class="credit">THE NEGRO IN CHICAGO, 1922 · PUBLIC DOMAIN</div>
-            </figure>
-            <div style="flex:1; padding-top:0.3in;">
-              <div class="stat"><span class="n" style="color:var(--red)">58</span><span class="lab">bombings of<br>Black homes<br>1917 to 1921</span></div>
-              <div class="stat" style="margin-top:0.55in;"><span class="n">0</span><span class="lab">convictions</span></div>
-            </div>
-          </div>
-          <div class="voice" style="font-size:29pt; margin-top:0.4in;">"I will not run. The race
-            is at stake and not myself."
-            <span class="attr">Jesse Binga <span class="role">· banker, bombed repeatedly, to the riot commission, 1920</span></span>
-          </div>
-        </div>
-
-        <div class="sec">
-          <div class="specimen" style="margin-bottom:0.5in;">
-            <div class="doctext" style="font-size:26pt;">"like a marvelous
-              delicately woven chain of armor"</div>
-            <div class="tombstone">THE HYDE PARK HERALD, 1928, DESCRIBING THE COVENANT NETWORK AROUND THE NEIGHBORHOOD</div>
-          </div>
-          <div class="rusthead">William Allison Davis <span class="yr">· 1942</span></div>
-          <div class="body"><p><b>The university gave William
-            Allison Davis tenure</b>, the first for a Black scholar at a major
-            white university. No landlord in Hyde Park or Kenwood would
-            rent to his family. He commuted from across the color line his
-            own employer had helped defend in court.</p></div>
-        </div>
-      </div>
-
-      <div class="colB">
-        <div class="specimen">
-          <div class="doctag">Set from the original text · Article 34, Code of Ethics,
-            National Association of Real Estate Boards, adopted June 6, 1924</div>
-          <div class="doctext" style="font-size:26.5pt;">"A Realtor should never be
-            instrumental in introducing into a neighborhood a character of
-            property or occupancy, <span class="op">members of any race or
-            nationality</span>, or any individuals whose presence will
-            clearly be detrimental to property values in that
-            neighborhood."</div>
-          <div class="tombstone">ENFORCED FROM 310 SOUTH MICHIGAN AVENUE, SEVEN MILES FROM HYDE PARK</div>
-        </div>
-
-        <div class="specimen">
-          <div class="doctag">Set from the original text · the model covenant drafted for
-            the association, 1927</div>
-          <div class="doctext" style="font-size:26.5pt;">"<span class="op">No part of said
-            premises shall in any manner be used or occupied directly or
-            indirectly by any negro or negroes</span>," excepting janitors,
-            chauffeurs, and house servants.</div>
-          <div class="tombstone">DRAFTED BY NATHAN WILLIAM MACCHESNEY · THE UNIVERSITY OF CHICAGO SPENT
-            <span style="color:var(--red)">$83,597.46</span> DEFENDING COVENANTS IN COURT, 1933 TO 1947</div>
-        </div>
-
-        <div class="sec">
-          <div class="rusthead">The federal map <span class="yr">· 1939 to 1940</span></div>
-          <div class="body" style="font-size:25.5pt;"><p><b>Federal surveyors graded
-            every Chicago block for mortgage risk</b>, race first on the
-            printed form. Lenders refused ordinary mortgages on red and
-            yellow blocks, and Hyde Park was graded yellow because Black
-            neighborhoods bordered it.</p></div>
-          <div class="mapframe" style="margin-top:0.28in; width:12.5in;"><img src="../assets/holc-map.svg" style="display:block;width:100%;" alt=""></div>
-          <div class="legend" style="margin-top:0.18in; font-size:14.5pt; gap:0.28in;">
-            <span><span class="sw" style="background:#83987B"></span>A · Best</span>
-            <span><span class="sw" style="background:#7E93A8"></span>B · Desirable</span>
-            <span><span class="sw" style="background:#D2AE4A"></span>C · Declining</span>
-            <span style="color:var(--red); font-weight:700;"><span class="sw" style="background:#B0322B"></span>D · Hazardous</span>
-          </div>
-          <div class="credit" style="margin-top:0.1in;">ALL 703 AREAS OF THE 1939 TO 1940 SURVEY · HOLC RECORDS VIA MAPPING
-            INEQUALITY · GRADE NAMES QUOTED FROM THE SURVEY</div>
-        </div>
-      </div>
+  <div class="footband">
+    <div class="fbicon"><svg viewBox="0 0 24 24" style="width:0.85in;" fill="none" stroke="#F5F0E8" stroke-width="1.7"><path d="M6 3 H15 L19 7 V21 H6 Z"/><line x1="9" y1="11" x2="16" y2="11"/><line x1="9" y1="14.5" x2="16" y2="14.5"/><line x1="9" y1="18" x2="13.5" y2="18"/></svg></div>
+    <div>
+      <div class="fbig gold" style="max-width:26in;">Exclusion was written down, enforced, and funded by institutions.</div>
+      <div class="fsub"><i>It wasn't accidental. It was organized.</i></div>
     </div>
-  </div>
-
-  <div class="bigword"><span class="w">The Rules</span><span class="dash"></span></div>
-
-  <div class="stripband">
-    <img src="../assets/img/strip-drexel.jpg" style="width:9.4in;" alt="">
-    <img src="../assets/img/strip-quads.jpg" style="width:11.6in;" alt="">
-    <img src="../assets/img/strip-sisson.jpg" style="width:7.4in;" alt="">
-    <img src="../assets/img/strip-carlton.jpg" style="width:4.4in;" alt="">
-    <div class="stripcredit">DREXEL BOULEVARD 1907, THE QUADRANGLES 1907, THE SISSON HOTEL ABOUT 1920 · LIBRARY OF CONGRESS, NEWBERRY LIBRARY · PUBLIC DOMAIN</div>
+    <div class="rfmark">
+      <div class="rfn">ROOTED<br>FORWARD</div>
+      <div class="rfu">rooted-forward.org</div>
+    </div>
   </div>
 
 </div>

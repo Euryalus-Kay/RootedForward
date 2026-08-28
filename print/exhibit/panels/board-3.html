@@ -4,145 +4,156 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="system.css">
 <style>
-  .cols { display: flex; gap: 1.2in; margin-top: 0.55in; }
-  .cols .c { width: 13.55in; }
-  .bigword { left: 6.25in; right: 1.4in; top: 37.0in; }
-  .bigword .w { font-size: 126pt; }
-  .stripband { height: 7.6in; }
+  /* 48x36 landscape, the market sheet. */
+  .gblock { left: 0; top: 0; width: 12.6in; height: 10.6in; padding: 0.95in 0.85in 0.7in; }
+  .gblock .gtitle { font-size: 52pt; }
+  .colL { position: absolute; left: 0.95in; top: 11.5in; width: 10.7in; }
+  .mapcol { position: absolute; left: 13.4in; top: 1.0in; width: 13.1in; }
+  .colC { position: absolute; left: 27.6in; top: 1.0in; width: 9.2in; }
+  .colR { position: absolute; left: 37.9in; top: 1.0in; width: 9.2in; }
+  .rowB { position: absolute; left: 13.4in; top: 22.6in; width: 33.7in; display: flex; gap: 1.0in; }
+  .rowB .rb { width: 10.55in; }
+  .moneyrow { display: flex; align-items: center; gap: 0.16in; margin-top: 0.28in; }
+  .mbox { border: 1.5pt solid var(--carbon); background: var(--cream); padding: 0.16in 0.14in; text-align: center; flex: 1; }
+  .mbox .m1 { font-family: var(--narrow); font-weight: 700; font-size: 14.5pt; letter-spacing: 0.04em; }
+  .mbox .m2 { font-family: var(--mono); font-weight: 600; font-size: 19pt; margin-top: 0.05in; }
+  .mbox .m3 { font-family: var(--sans); font-size: 12pt; color: var(--carbon-soft); margin-top: 0.04in; }
+  .marrow { font-family: var(--narrow); font-weight: 700; font-size: 24pt; }
+  .legend2 { display: flex; flex-wrap: wrap; gap: 0.22in 0.45in; font-family: var(--narrow); font-size: 15.5pt; letter-spacing: 0.05em; margin-top: 0.2in; }
+  .legend2 .sw { display: inline-block; width: 0.3in; height: 0.22in; margin-right: 0.1in; vertical-align: -0.03in; border: 0.75pt solid rgba(28,26,23,0.55); }
 </style>
 </head>
 <body>
 <div class="sheet board">
 
-  <div class="eband">
-    <div class="yrs">1937<span class="to">TO</span>1971</div>
-    <div class="etext">The Supreme Court ended covenant enforcement in
-      1948. Banks still refused Black borrowers, speculators resold
-      houses at nearly double the price on contract, and in 1958 the
-      city approved a clearance plan that displaced about 4,000
-      families.
-      <br><br>Sheet three of four.</div>
-    <div class="espacer"></div>
-    <div class="emark">
-      <img src="../assets/img/rf-logo.svg" alt="">
+  <div class="gblock">
+    <div class="gnumrow">
+      <div class="gnum">3</div>
       <div>
-        <div class="nm">Rooted Forward</div>
-        <div class="tg">Free self-guided audio tours<br>rooted-forward.org</div>
+        <div class="gtitle">The Rules Change.<br>The Market Does Not.</div>
+        <div class="gyears">1948–1968</div>
       </div>
+    </div>
+    <div class="gbody" style="margin-top:0.45in;">Even after courts made
+      racial covenants unenforceable, new rules kept Black families out
+      and took wealth from the neighborhoods they built.</div>
+  </div>
+
+  <div class="colL">
+    <div class="shead">Blockbusting spread fear</div>
+    <div class="stext">Speculators told white homeowners that Black
+      families moving in would "ruin" the block, then offered to buy
+      their homes for less. The same operators resold those homes to
+      Black buyers at nearly double the price, because banks would not
+      lend across the color line.</div>
+    <div style="display:flex; gap:0.7in; margin-top:0.4in;">
+      <div class="stat"><span class="n" style="font-size:56pt; color:var(--red);">1 of 241</span><span class="lab">savings and loans would<br>lend to a Black family</span></div>
+      <div class="stat"><span class="n" style="font-size:56pt; color:var(--red);">+84%</span><span class="lab">average markup<br>on contract sales</span></div>
+    </div>
+    <figure style="margin-top:0.42in;">
+      <div style="height:7.6in; overflow:hidden; position:relative;"><img src="../assets/img/p3-kitchenette.jpg" alt="" style="transform:scale(1.07);"><span class="yearchip">1941</span></div>
+      <div class="cap" style="font-size:15pt;">An apartment building
+        subdivided into one-room kitchenettes, photographed by Edwin
+        Rosskam.</div>
+      <div class="credit tiny">FARM SECURITY ADMINISTRATION · LIBRARY OF CONGRESS</div>
+    </figure>
+  </div>
+
+  <div class="mapcol">
+    <div class="shead">The map lenders used</div>
+    <div class="mapframe" style="margin-top:0.24in;"><img src="../assets/holc-map.svg" style="display:block;width:100%;" alt=""></div>
+    <div class="legend2">
+      <span><span class="sw" style="background:#83987B"></span>A · Best</span>
+      <span><span class="sw" style="background:#7E93A8"></span>B · Still desirable</span>
+      <span><span class="sw" style="background:#D2AE4A"></span>C · Declining</span>
+      <span style="color:var(--red); font-weight:700;"><span class="sw" style="background:#B0322B"></span>D · Hazardous</span>
+    </div>
+    <div class="credit tiny" style="margin-top:0.12in;">ALL 703 AREAS OF THE 1939–1940 FEDERAL
+      SURVEY, REDRAWN FROM HOLC RECORDS VIA MAPPING INEQUALITY · GRADE
+      NAMES QUOTED FROM THE SURVEY</div>
+  </div>
+
+  <div class="colC">
+    <div class="shead">The Black Belt</div>
+    <div class="stext">This narrow South Side corridor, graded red on
+      the survey, held Black Chicago's homes, businesses, churches, and
+      culture, built and sustained despite the barriers. Redlining shut
+      off ordinary mortgages for nearly every block of it, and
+      overcrowding followed.</div>
+    <div class="scrap mono deckle" style="margin-top:0.36in; transform:rotate(-1deg); font-size:16.5pt;">
+      Banking policy and "the wicked speculators exacted a fearful
+      tribute from the Negro man and his family."
+      <div class="sattr">Attorney Mark Satter, who spent his career
+        fighting contract sellers</div>
+    </div>
+    <figure style="margin-top:0.36in;">
+      <div style="height:6.2in; position:relative;"><img src="../assets/img/strip-63bus.jpg" alt=""><span class="yearchip">1973</span></div>
+      <div class="cap" style="font-size:14.5pt;">Waiting for the bus on the
+        South Side, photographed by John H. White in 1973.</div>
+      <div class="credit tiny">DOCUMERICA · NATIONAL ARCHIVES</div>
+    </figure>
+  </div>
+
+  <div class="colR">
+    <div class="shead">Contract buying kept prices high</div>
+    <div class="stext">Speculators bought homes cheaply, then resold
+      them using high-risk installment contracts. Buyers made big
+      payments, but never built equity.</div>
+    <div class="moneyrow">
+      <div class="mbox"><div class="m1">WHITE SELLER</div><div class="m2">$12,000</div><div class="m3">pressured to sell low</div></div>
+      <div class="marrow">→</div>
+      <div class="mbox"><div class="m1">SPECULATOR</div><div class="m2">&nbsp;</div><div class="m3">buys low, sells high</div></div>
+      <div class="marrow">→</div>
+      <div class="mbox"><div class="m1">BLACK BUYER</div><div class="m2">$22,000+</div><div class="m3">on contract</div></div>
+    </div>
+    <div class="stext ital" style="margin-top:0.24in; font-size:16pt;">No equity until the
+      final payment. Miss one payment, face eviction, and the seller
+      keeps every dollar already paid.</div>
+    <div class="shead" style="margin-top:0.5in;">Wealth was extracted</div>
+    <ul class="bullets" style="margin-top:0.2in; font-size:16.5pt;">
+      <li>Overpriced contracts, lost down payments</li>
+      <li>Denied loans, discriminatory appraisals</li>
+      <li>Neglected services despite full taxes</li>
+    </ul>
+    <div class="shead" style="margin-top:0.5in;">The buyers fight back</div>
+    <div class="stext">In the late 1960s, families formed the Contract
+      Buyers League, confronted sellers as a group, and held payments in
+      escrow through a strike. By 1971 they had forced 155 contracts
+      open.</div>
+  </div>
+
+  <div class="rowB">
+    <div class="rb" style="width:14.8in; flex:none;">
+      <figure>
+        <div style="height:6.6in; position:relative;"><img src="../assets/img/strip-63rd.jpg" alt=""><span class="yearchip">1973</span></div>
+        <div class="cap" style="font-size:15pt;">63rd Street under the L,
+          one of Black Chicago's busiest commercial corridors,
+          photographed by John H. White in July 1973.</div>
+        <div class="credit tiny">DOCUMERICA · NATIONAL ARCHIVES</div>
+      </figure>
+    </div>
+    <div class="rb" style="padding-top:0.5in;">
+      <div style="display:flex; gap:1.0in;">
+        <div class="stat"><span class="n" style="font-size:52pt;">75–95</span><span class="lab">of every 100 homes sold to<br>Black families went on contract</span></div>
+        <div class="stat"><span class="n" style="font-size:52pt; color:var(--red);">$3.2–4B</span><span class="lab">taken from Black Chicago,<br>in today's dollars</span></div>
+        <div class="stat"><span class="n" style="font-size:52pt; color:var(--forest);">155</span><span class="lab">contracts forced open<br>by the League, by 1971</span></div>
+      </div>
+      <div class="stext ital" style="margin-top:0.55in; font-size:19pt;">Policies may change.
+        The system found new ways to profit from inequality.</div>
     </div>
   </div>
 
-  <div class="field">
-    <div class="ftitle" style="font-size:64pt;">Contract Sales and Urban Renewal</div>
-
-    <div class="cols">
-      <div class="c">
-        <div class="sec">
-          <div class="rusthead">Hansberry v. Lee <span class="yr">· 1937 to 1948</span></div>
-          <div style="display:flex; gap:0.45in; margin-top:0.18in;">
-            <div class="body" style="margin-top:0; width:7.8in;"><p><b>In
-              1937 Carl Hansberry bought a brick three-flat at 6140 South
-              Rhodes</b>, inside a covenant the university had helped defend.
-              A mob gathered, and a chunk of concrete nearly struck his
-              daughter Lorraine, age seven. Hansberry v. Lee reached the
-              Supreme Court in 1940 and the family won. The covenant's
-              backers had never gathered the signatures its own terms
-              required. Shelley v. Kraemer ended court enforcement
-              everywhere in 1948. Lorraine Hansberry put the mob outside
-              the window into A Raisin in the Sun.</p></div>
-            <figure style="width:5.3in;">
-              <div style="height:7.4in;"><img src="../assets/img/p3-hansberry-house.jpg" alt=""></div>
-              <div class="cap" style="font-size:15.5pt;">The Hansberry house at
-                6140 South Rhodes Avenue.</div>
-              <div class="credit">PHOTOGRAPH BY LEGIMET, 2025 · CC BY-SA 4.0</div>
-            </figure>
-          </div>
-        </div>
-
-        <div class="sec">
-          <div class="rusthead">Contract sales <span class="yr">· 1948 to 1968</span></div>
-          <div class="body"><p><b>Banks would not follow the ruling</b>, so
-            speculators filled the gap. They bought cheap from
-            fleeing white owners and resold to Black families on
-            installment contracts at prices they set themselves. If a
-            family missed one payment, the seller kept the house and every
-            dollar paid. Buildings were cut into one-room kitchenettes,
-            and the crowding that followed was blamed on the people paying
-            the markup.</p></div>
-          <figure style="margin-top:0.3in; height:9.6in; overflow:hidden;"><img src="../assets/img/p3-kitchenette.jpg" alt="" style="transform:scale(1.07);"></figure>
-          <div class="cap">An apartment building subdivided into
-            kitchenettes, Chicago, photographed by Edwin Rosskam in April
-            1941.</div>
-          <div class="credit">FARM SECURITY ADMINISTRATION · LIBRARY OF CONGRESS</div>
-        </div>
-      </div>
-
-      <div class="c">
-        <div class="sec">
-          <div class="rusthead">Urban renewal <span class="yr">· 1949 to 1963</span></div>
-          <div class="body"><p><b>The university's answer to
-            the changing neighborhood was land clearance.</b> Its South East
-            Chicago Commission, formed in 1952 under attorney Julian Levi,
-            helped write an Illinois law that let planners condemn blocks
-            that only might become blighted. Demolition began near 55th
-            and Lake Park in 1955. On November 7, 1958, City Council
-            approved the Hyde Park-Kenwood plan, the first large federally
-            supported urban renewal program in the country. The plan gave
-            moving help to displaced renters and nothing to displaced
-            businesses. Most of the businesses never reopened.</p></div>
-        </div>
-
-        <div class="sec">
-          <div class="ledger">
-            <div class="lhead">The numbers · 1948 to 1971</div>
-            <div class="lrow"><span class="llabel">Savings and loans that would lend to a Black family</span><span class="lvalue debit">1 of 241</span></div>
-            <div class="lrow"><span class="llabel">Homes sold to Black families on contract</span><span class="lvalue">75 to 95 in 100</span></div>
-            <div class="lrow"><span class="llabel">Average markup over the white price</span><span class="lvalue debit">+84%</span></div>
-            <div class="lrow"><span class="llabel">Taken from Black Chicago, in today's dollars</span><span class="lvalue debit">$3.2 to 4 billion</span></div>
-            <div class="lrow"><span class="llabel">Public money to assemble and clear 856 acres</span><span class="lvalue">$40 million</span></div>
-            <div class="lrow"><span class="llabel">The cleared land resold to developers for</span><span class="lvalue debit">$4 million</span></div>
-            <div class="lrow"><span class="llabel">Families displaced by the plan</span><span class="lvalue debit">about 4,000</span></div>
-            <div class="lrow"><span class="llabel">Public housing units built</span><span class="lvalue debit">34</span></div>
-            <div class="lrow"><span class="llabel">Displaced white families who stayed in Hyde Park</span><span class="lvalue">46 in 100</span></div>
-            <div class="lrow"><span class="llabel">Displaced Black families who stayed</span><span class="lvalue debit">17 in 100</span></div>
-            <div class="lrow"><span class="llabel">Contracts the Buyers League forced open by 1971</span><span class="lvalue" style="color:var(--forest)">155</span></div>
-          </div>
-        </div>
-
-        <div class="sec">
-          <div style="display:flex; gap:0.5in;">
-            <figure style="width:6.6in; flex:none;">
-              <div style="height:4.6in;"><img src="../assets/img/strip-univapts.jpg" alt=""></div>
-              <div class="cap" style="font-size:16pt;">The University
-                Apartments, built 1961 in the middle of 55th Street on
-                cleared land.</div>
-              <div class="credit">PHOTOGRAPH BY TEEMU008 · CC BY-SA 2.0</div>
-            </figure>
-            <figure style="flex:1;">
-              <div style="height:4.6in;"><img src="../assets/img/strip-63rd.jpg" alt=""></div>
-              <div class="cap" style="font-size:16pt;">63rd Street under
-                the L, photographed by John H. White in July 1973.</div>
-              <div class="credit">DOCUMERICA · NATIONAL ARCHIVES</div>
-            </figure>
-          </div>
-          <div class="voice" style="font-size:33pt; margin-top:0.5in;">"urban renewal, which means
-            moving the Negroes out&#8230; it means Negro removal, that is
-            what it means"
-            <span class="attr">James Baldwin <span class="role">· 1963</span></span>
-          </div>
-        </div>
-      </div>
+  <div class="footband">
+    <div class="fbicon"><svg viewBox="0 0 30 24" style="width:1.0in;" fill="#F5F0E8"><circle cx="8" cy="6.4" r="2.7"/><path d="M3.4 20.6 V13.4 Q3.4 10.4 6.2 10.4 H9.8 Q12.6 10.4 12.6 13.4 V20.6 Z"/><circle cx="22" cy="6.4" r="2.7"/><path d="M17.4 20.6 V13.4 Q17.4 10.4 20.2 10.4 H23.8 Q26.6 10.4 26.6 13.4 V20.6 Z"/></svg></div>
+    <div>
+      <div class="fbig">Systems adapt. Inequality persists.</div>
     </div>
-  </div>
-
-  <div class="bigword"><span class="w">The Clearance</span><span class="dash"></span></div>
-
-  <div class="stripband">
-    <img src="../assets/img/strip-doorway.jpg" style="width:8.4in;" alt="">
-    <img src="../assets/img/strip-63rd.jpg" style="width:9.4in;" alt="">
-    <img src="../assets/img/strip-63bus.jpg" style="width:8.6in;" alt="">
-    <img src="../assets/img/strip-univapts.jpg" style="width:6.6in;" alt="">
-    <div class="stripcredit">KITCHENETTE HOUSING 1941, 63RD STREET 1973, UNIVERSITY APARTMENTS · LIBRARY OF CONGRESS, NATIONAL ARCHIVES, WIKIMEDIA COMMONS</div>
+    <div class="fsub" style="max-width:16in;">When the law changed, the
+      market kept Black families from building wealth.</div>
+    <div class="rfmark">
+      <div class="rfn">ROOTED<br>FORWARD</div>
+      <div class="rfu">rooted-forward.org</div>
+    </div>
   </div>
 
 </div>

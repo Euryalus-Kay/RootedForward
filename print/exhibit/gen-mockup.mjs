@@ -22,7 +22,7 @@ const FIGURE = (h) => `<svg viewBox="0 0 26 96" style="height:${px(h)};display:b
 </svg>`;
 
 function boardOnStand(img) {
-  return `<div style="position:relative; width:${px(36)};">
+  return `<div style="position:relative; width:${px(48)};">
     <div style="position:absolute; left:${px(5)}; bottom:0; width:${px(2.2)}; height:${px(31)}; background:#191919;"></div>
     <div style="position:absolute; right:${px(5)}; bottom:0; width:${px(2.2)}; height:${px(31)}; background:#191919;"></div>
     <div style="position:absolute; left:${px(2)}; bottom:0; width:${px(8)}; height:${px(1.4)}; background:#191919;"></div>
@@ -76,7 +76,7 @@ const html = `<!doctype html><meta charset="utf-8">
 writeFileSync(join(OUT, "installation.html"), html);
 const browser = await puppeteer.launch({ headless: true });
 const page = await browser.newPage();
-const W = Math.ceil((8 + 36 * 4 + 14 * 3 + 14 + 8 + 10) * S);
+const W = Math.ceil((8 + 48 * 4 + 14 * 3 + 14 + 8 + 10) * S);
 await page.setViewport({ width: W, height: Math.ceil(200 * S), deviceScaleFactor: 1 });
 await page.goto("file://" + join(OUT, "installation.html"), { waitUntil: "networkidle0" });
 const body = await page.$("body");

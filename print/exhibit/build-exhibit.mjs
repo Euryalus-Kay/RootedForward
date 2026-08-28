@@ -32,7 +32,7 @@ const only = args.filter((a) => !a.startsWith("--"));
 
 /* sheet geometry by prefix */
 const GEOM = {
-  board: { w: 36, h: 48, bleed: 0.25 },
+  board: { w: 48, h: 36, bleed: 0.25 },
   banner: { w: 33, h: 81, bleed: 0.25, extendBottom: 7 }, // 33x88 variant
 };
 
@@ -110,7 +110,7 @@ for (const f of files) {
   if (overflow.length) console.warn(`  OVERFLOW on ${name}:`, overflow);
 
   /* screen-res preview PNG */
-  const previewScale = kind === "board" ? 1250 / (g.w * 96) : 900 / (g.w * 96);
+  const previewScale = kind === "board" ? 1500 / (g.w * 96) : 900 / (g.w * 96);
   await page.setViewport({
     width: Math.ceil(g.w * 96),
     height: Math.ceil(g.h * 96),

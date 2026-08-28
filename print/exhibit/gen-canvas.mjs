@@ -43,7 +43,7 @@ async function photo(name) {
 const PHOTOS = [
   "p1-hero-court-night.jpg", "p1-olmsted-plan.jpg",
   "p1-reason-why.jpg", "p2-bombing-map.jpg",
-  "p3-kitchenette.jpg", "p3-hansberry-house.jpg", "p4-opc.jpg", "p4-harper-court.jpg", "p1-fair-burning.jpg",
+  "p3-kitchenette.jpg", "p3-hansberry-house.jpg", "p4-opc.jpg", "p4-harper-court.jpg", "p1-fair-burning.jpg", "p1-hp-aerial-1928.jpg", "p3-university-apartments.jpg",
   "strip-ferris.jpg", "strip-midway.jpg", "strip-delprado.jpg", "strip-fire.jpg",
   "strip-carlton.jpg", "strip-drexel.jpg", "strip-quads.jpg", "strip-sisson.jpg",
   "strip-doorway.jpg", "strip-63rd.jpg", "strip-63bus.jpg", "strip-univapts.jpg",
@@ -105,15 +105,15 @@ convert("banner-3.html", "Banner3.dc.html");
 convert("banner-4.html", "Banner4.dc.html");
 
 /* ---------- layout ---------- */
-const BW = 36 * 96, BH = 48 * 96;      // 3456 x 4608
+const BW = 48 * 96, BH = 36 * 96;      // 4608 x 3456
 const NW = 33 * 96, NH = 81 * 96;      // 3168 x 7776
 const GAP = 220;
 const canvas = {
   artboards: [
-    { file: "Main.dc.html",    x: 0,                y: 0, w: BW, h: BH, title: "Board 1 · 36×48 in" },
-    { file: "Board2.dc.html",  x: (BW + GAP),       y: 0, w: BW, h: BH, title: "Board 2 · 36×48 in" },
-    { file: "Board3.dc.html",  x: (BW + GAP) * 2,   y: 0, w: BW, h: BH, title: "Board 3 · 36×48 in" },
-    { file: "Board4.dc.html",  x: (BW + GAP) * 3,   y: 0, w: BW, h: BH, title: "Board 4 · 36×48 in" },
+    { file: "Main.dc.html",    x: 0,                y: 0, w: BW, h: BH, title: "Board 1 · 48×36 in" },
+    { file: "Board2.dc.html",  x: (BW + GAP),       y: 0, w: BW, h: BH, title: "Board 2 · 48×36 in" },
+    { file: "Board3.dc.html",  x: (BW + GAP) * 2,   y: 0, w: BW, h: BH, title: "Board 3 · 48×36 in" },
+    { file: "Board4.dc.html",  x: (BW + GAP) * 3,   y: 0, w: BW, h: BH, title: "Board 4 · 48×36 in" },
     { file: "Banner1.dc.html", x: 0,                y: BH + 400, w: NW, h: NH, title: "Banner 1 · 33×81 in" },
     { file: "Banner2.dc.html", x: (BW + GAP),       y: BH + 400, w: NW, h: NH, title: "Banner 2 · 33×81 in" },
     { file: "Banner3.dc.html", x: (BW + GAP) * 2,   y: BH + 400, w: NW, h: NH, title: "Banner 3 · 33×81 in" },

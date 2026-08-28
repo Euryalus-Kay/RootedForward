@@ -104,3 +104,22 @@ Today), and a muted period-photo collage base with no reading
 content. Banners follow the same grammar without the era band, and
 sheet 4's base is the route map instead of a collage. The denser
 layout also lifted every image placement above 150dpi effective.
+
+## Rebuilt to the owner's own mockup (August 28, late)
+
+The owner supplied a four-panel mockup: 48x36 landscape, forest-green
+number blocks and footer takeaway bands, gold years, timeline rails,
+typewriter document scraps, diagram boxes, photo caption cards, and a
+handwritten sticky note. The boards were rebuilt to it directly,
+keeping the mockup's own copy where accurate and correcting it
+against the fact registry where not: Cornell bought 60 acres in 1853
+and grew to 300; Article 34 and the 1927 covenant are quoted from the
+real texts rather than the mockup's paraphrases; Shelley made
+covenants unenforceable, not unconstitutional; Harper Court was
+community-built artisan retail, not public housing; the rights-blocked
+1955/1961 55th Street pair is replaced by the University Apartments
+and the street today. The Grand Court lithograph runs 39in wide on
+sheet 1 at 97dpi effective, accepted deliberately: it is the largest
+scan LOC publishes, a drawn lithograph, and reads correctly at
+viewing distance. Both QR codes verify on the final PDFs. The banner
+set still carries the previous system pending the owner's direction.
