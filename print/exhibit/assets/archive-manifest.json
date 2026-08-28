@@ -1,0 +1,500 @@
+{
+  "items": [
+    {
+      "file": "court-night-1893.jpg",
+      "px": [
+        4096,
+        3278
+      ],
+      "bytes": 5987049,
+      "title": "Columbian Exposition, the grand court at night; electrical illumination of MacMonnies's fountain and the Administration Building",
+      "creator": "Charles Graham",
+      "date": "1893",
+      "source": "Library of Congress Prints and Photographs Division (cph 3c00741, LCCN 90713957)",
+      "sourceUrl": "https://www.loc.gov/item/90713957/",
+      "license": "Public domain (LOC: no known restrictions)",
+      "creditLine": "Charles Graham, 1893. Library of Congress Prints and Photographs Division.",
+      "note": "LOC master scan (grayscale); TIFF master saved alongside as court-night-1893.tif."
+    },
+    {
+      "file": "olmsted-plan-1871.jpg",
+      "px": [
+        4686,
+        5896
+      ],
+      "bytes": 4243329,
+      "title": "Plan of the South Open Ground, the Upper Plaisance, the Midway Plaisance, the Lake Open Ground, the Parkway Quadrant and Lagoon Plaisance (Chicago South Park)",
+      "creator": "Olmsted, Vaux & Co., landscape architects",
+      "date": "1871",
+      "source": "Norman B. Leventhal Map & Education Center, Boston Public Library, via Digital Commonwealth (commonwealth:4m90f747w)",
+      "sourceUrl": "https://www.digitalcommonwealth.org/search/commonwealth:4m90f747w",
+      "license": "No known copyright restrictions",
+      "creditLine": "Olmsted, Vaux & Co., 1871. Norman B. Leventhal Map & Education Center, Boston Public Library.",
+      "note": "Full-resolution IIIF image (4686x5896)."
+    },
+    {
+      "file": "holc-chicago-1940.jpg",
+      "px": [
+        13702,
+        10816
+      ],
+      "bytes": 34499821,
+      "title": "Residential Security Map of Chicago, Home Owners' Loan Corporation (full colored sheet, legend and title block included)",
+      "creator": "Home Owners' Loan Corporation",
+      "date": "1940",
+      "source": "Wikimedia Commons (File:Holc-chicago.jpg), scan of the federal HOLC map",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Holc-chicago.jpg",
+      "license": "Public domain (U.S. federal government work; upload marked CC0)",
+      "creditLine": "Home Owners' Loan Corporation, 1940. Via Wikimedia Commons.",
+      "note": "13702x10816 master scan; no separate legend sheet exists, the legend is on this sheet (lower area)."
+    },
+    {
+      "file": "kitchenette-1941.jpg",
+      "px": [
+        4309,
+        3079
+      ],
+      "bytes": 3657415,
+      "title": "Apartment building now subdivided into \"kitchenettes,\" Chicago, Illinois (sign reads Steinmann Furnished Apartments, 1-2-3 Rooms)",
+      "creator": "Edwin Rosskam",
+      "date": "April 1941",
+      "source": "Library of Congress, FSA/OWI Collection (fsa 8a15811, item 2017729580)",
+      "sourceUrl": "https://www.loc.gov/item/2017729580/",
+      "license": "Public domain (FSA/OWI: no known restrictions)",
+      "creditLine": "Edwin Rosskam, April 1941. Library of Congress, FSA/OWI Collection.",
+      "note": "LOC credits this photo to Edwin Rosskam, not Russell Lee; no 'Park Vista' sign photo exists in the LOC FSA Chicago set. TIFF master alongside."
+    },
+    {
+      "file": "kitchenette-doorway-1941.jpg",
+      "px": [
+        4284,
+        3104
+      ],
+      "bytes": 4562816,
+      "title": "\"Kitchenette\" apartment house, Black Belt, Chicago, Illinois (women at converted mansion doorway)",
+      "creator": "Edwin Rosskam",
+      "date": "April 1941",
+      "source": "Library of Congress, FSA/OWI Collection (fsa 8a15886, item 2017729657)",
+      "sourceUrl": "https://www.loc.gov/item/2017729657/",
+      "license": "Public domain (FSA/OWI: no known restrictions)",
+      "creditLine": "Edwin Rosskam, April 1941. Library of Congress, FSA/OWI Collection.",
+      "note": "Stands in for the kitchenette interior, which was not located; see missing. TIFF master alongside."
+    },
+    {
+      "file": "ccrr-bombing-map-1922.jpg",
+      "px": [
+        2002,
+        3322
+      ],
+      "bytes": 611898,
+      "title": "Homes Bombed in Race Conflicts over Housing, July 1, 1917 to March 1, 1921 (map plate facing p. 124 of The Negro in Chicago)",
+      "creator": "Chicago Commission on Race Relations",
+      "date": "1922",
+      "source": "Internet Archive (negroinchicagost00chic, leaf 209), University of Chicago Press, 1922",
+      "sourceUrl": "https://archive.org/details/negroinchicagost00chic",
+      "license": "Public domain (published 1922)",
+      "creditLine": "Chicago Commission on Race Relations, The Negro in Chicago, 1922. Internet Archive."
+    },
+    {
+      "file": "ccrr-title-1922.jpg",
+      "px": [
+        2002,
+        3322
+      ],
+      "bytes": 400902,
+      "title": "The Negro in Chicago: A Study of Race Relations and a Race Riot (title page)",
+      "creator": "Chicago Commission on Race Relations",
+      "date": "1922",
+      "source": "Internet Archive (negroinchicagost00chic, leaf 13)",
+      "sourceUrl": "https://archive.org/details/negroinchicagost00chic",
+      "license": "Public domain (published 1922)",
+      "creditLine": "Chicago Commission on Race Relations, The Negro in Chicago, 1922. Internet Archive."
+    },
+    {
+      "file": "lawrence-quads-1907.jpg",
+      "px": [
+        1746,
+        680
+      ],
+      "bytes": 387193,
+      "title": "[View of University of Chicago] (panoramic photograph)",
+      "creator": "Geo. R. Lawrence Co.",
+      "date": "c. 1907",
+      "source": "Library of Congress, Panoramic Photographs Collection (pan 6a34605, item 2007663919)",
+      "sourceUrl": "https://www.loc.gov/item/2007663919/",
+      "license": "Public domain (LOC: no known restrictions)",
+      "creditLine": "Geo. R. Lawrence Co., c. 1907. Library of Congress, Panoramic Photographs Collection.",
+      "note": "Best found: LOC's own master scan is only 1746x680. TIFF master alongside."
+    },
+    {
+      "file": "hp-aerial-1928.jpg",
+      "px": [
+        3600,
+        2949
+      ],
+      "bytes": 1385520,
+      "title": "Aerial View of Chicago, Hyde Park, Chicago Beach, 1928",
+      "creator": "Chicago Aerial Survey Co.",
+      "date": "August 25, 1928",
+      "source": "Newberry Library (NBY 5351), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aerial_View_of_Chicago,_Hyde_Park,_Chicago_Beach,_1928_(NBY_5351).jpg",
+      "license": "Public domain",
+      "creditLine": "Chicago Aerial Survey Co., 1928. Newberry Library, via Wikimedia Commons."
+    },
+    {
+      "file": "reason-why-1893.jpg",
+      "px": [
+        1596,
+        2485
+      ],
+      "bytes": 403411,
+      "title": "The Reason Why the Colored American Is Not in the World's Columbian Exposition (title page; address of Miss Ida B. Wells, 128 S. Clark Street, Chicago)",
+      "creator": "Ida B. Wells, ed.",
+      "date": "1893",
+      "source": "Internet Archive (reasonwhycolored00unse, leaf 1)",
+      "sourceUrl": "https://archive.org/details/reasonwhycolored00unse",
+      "license": "Public domain (published 1893)",
+      "creditLine": "Ida B. Wells, ed., 1893. Internet Archive."
+    },
+    {
+      "file": "white-city-fire-aftermath-1894.jpg",
+      "px": [
+        1006,
+        1536
+      ],
+      "bytes": 395876,
+      "title": "The World's Fair grounds the morning after the great fire, July 5, 1894 (drawn from photographs by J.W. Taylor)",
+      "creator": "After photographs by J.W. Taylor",
+      "date": "July 1894",
+      "source": "Library of Congress Prints and Photographs Division (cph 3b42611, item 89708509)",
+      "sourceUrl": "https://www.loc.gov/item/89708509/",
+      "license": "Public domain (LOC: no known restrictions)",
+      "creditLine": "After J.W. Taylor, 1894. Library of Congress Prints and Photographs Division.",
+      "note": "Aftermath engraving; a PD photograph of the buildings actually burning was not located, see missing."
+    },
+    {
+      "file": "ferris-wheel-1893.jpg",
+      "px": [
+        2560,
+        1205
+      ],
+      "bytes": 592536,
+      "title": "The wonderful Ferris Wheel, Midway Plaisance, Columbian Exposition (stereograph)",
+      "creator": "Unrecorded stereograph publisher (Rijksmuseum RP-F-F10978)",
+      "date": "1893",
+      "source": "Rijksmuseum, via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Reuzenrad_op_de_Wereldtentoonstelling_van_1893_The_wonderful_Ferris_Wheel,_Midway_Plaisance,_Columbia_Exposition_(titel_op_object),_RP-F-F10978.jpg",
+      "license": "CC0 (Rijksmuseum)",
+      "creditLine": "Stereograph, 1893. Rijksmuseum, via Wikimedia Commons (CC0).",
+      "note": "2560px cached rendition; 4904x2308 original blocked by rate limit at capture time, re-pull from the same URL."
+    },
+    {
+      "file": "midway-1893.jpg",
+      "px": [
+        2737,
+        1411
+      ],
+      "bytes": 1354215,
+      "title": "Cairo streets, Midway Plaisance, World's Fair, Chicago (stereograph, crowd on the Midway)",
+      "creator": "B. W. Kilburn",
+      "date": "1893",
+      "source": "Wikimedia Commons (DPLA-sourced Kilburn stereograph)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cairo_streets,_Midway_Plaisance,_World%27s_Fair,_Chicago,_by_Kilburn,_B._W._(Benjamin_West),_1827-1909.jpg",
+      "license": "Public domain",
+      "creditLine": "B. W. Kilburn, 1893. Via Wikimedia Commons."
+    },
+    {
+      "file": "drexel-1907.jpg",
+      "px": [
+        5097,
+        4019
+      ],
+      "bytes": 5644523,
+      "title": "Drexel Boulevard, Chicago, Ill.",
+      "creator": "Detroit Publishing Co.",
+      "date": "c. 1907",
+      "source": "Library of Congress, Detroit Publishing Co. Collection (det 4a22375, item 2016813810)",
+      "sourceUrl": "https://www.loc.gov/item/2016813810/",
+      "license": "Public domain (LOC: no known restrictions)",
+      "creditLine": "Detroit Publishing Co., c. 1907. Library of Congress.",
+      "note": "TIFF master alongside."
+    },
+    {
+      "file": "cobb-hall-1900.jpg",
+      "px": [
+        5114,
+        4061
+      ],
+      "bytes": 5684171,
+      "title": "[Cobb Lecture Hall, University of Chicago, Chicago, Ill.]",
+      "creator": "Hans Behm, for Detroit Publishing Co.",
+      "date": "between 1900 and 1915",
+      "source": "Library of Congress, Detroit Publishing Co. Collection (det 4a19708, item 2016811004)",
+      "sourceUrl": "https://www.loc.gov/item/2016811004/",
+      "license": "Public domain (LOC: no known restrictions)",
+      "creditLine": "Detroit Publishing Co., c. 1900-1915. Library of Congress.",
+      "note": "TIFF master alongside."
+    },
+    {
+      "file": "robie-1911.jpg",
+      "px": [
+        4898,
+        3641
+      ],
+      "bytes": 7393645,
+      "title": "Frederick C. Robie House, 5757 Woodlawn Avenue, Chicago (HABS IL-1005, photocopy of c. 1911 published photograph, south front from southwest)",
+      "creator": "Historic American Buildings Survey",
+      "date": "photograph c. 1911; HABS documentation after 1933",
+      "source": "Library of Congress, HABS ILL,16-CHIG,33- (item il0039, photo 061027p)",
+      "sourceUrl": "https://www.loc.gov/item/il0039/",
+      "license": "Public domain (HABS; underlying photograph published c. 1911)",
+      "creditLine": "Historic American Buildings Survey, Library of Congress.",
+      "note": "TIFF master alongside."
+    },
+    {
+      "file": "sixty-third-1973.jpg",
+      "px": [
+        2560,
+        1717
+      ],
+      "bytes": 520794,
+      "title": "Once one of Chicago's busy thoroughfares, 63rd Street has changed with the character of the city (DOCUMERICA)",
+      "creator": "John H. White",
+      "date": "July 1973",
+      "source": "National Archives (DOCUMERICA, NAID 556202), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:ONCE_ONE_OF_CHICAGO%27S_BUSY_THOROUGHFARES,_63RD_STREET_HAS_CHANGED_WITH_THE_CHARACTER_OF_THE_CITY._MANY_FIRES_HAVE..._-_NARA_-_556202.jpg",
+      "license": "Public domain (U.S. National Archives)",
+      "creditLine": "John H. White, July 1973. National Archives, DOCUMERICA.",
+      "note": "2560px cached rendition of the 3000px scan (rate limit at capture time); re-pull original from same URL."
+    },
+    {
+      "file": "sixty-third-bus-1973.jpg",
+      "px": [
+        3000,
+        2035
+      ],
+      "bytes": 732332,
+      "title": "Blacks using bus transportation on 63rd Street in Chicago, 1973 (DOCUMERICA; second White street scene, with people)",
+      "creator": "John H. White",
+      "date": "July 1973",
+      "source": "National Archives (DOCUMERICA, NAID 556203), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:BLACKS_USING_BUS_TRANSPORTATION_ON_63RD_STREET_IN_CHICAGO_DURING_1973_THERE_WERE_272,803,082_PEOPLE_WHO_RODE_THIS..._-_NARA_-_556203.jpg",
+      "license": "Public domain (U.S. National Archives)",
+      "creditLine": "John H. White, July 1973. National Archives, DOCUMERICA."
+    },
+    {
+      "file": "opc-opening-2026.jpg",
+      "px": [
+        4592,
+        6887
+      ],
+      "bytes": 7056639,
+      "title": "Obama Presidential Center, museum tower south elevation on opening day",
+      "creator": "AlphaBeta135",
+      "date": "June 19, 2026",
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Obama_Center_south_elevation_2_(opening_day)_-_Chicago,_IL_-_June_2026.jpg",
+      "license": "CC0",
+      "creditLine": "Photo: AlphaBeta135, June 19, 2026 (CC0). Via Wikimedia Commons."
+    },
+    {
+      "file": "fifty-fifth-today.jpg",
+      "px": [
+        5321,
+        3991
+      ],
+      "bytes": 9506317,
+      "title": "55th Street, Hyde Park, Chicago, IL",
+      "creator": "Warren LeMay",
+      "date": "November 11, 2023",
+      "source": "Wikimedia Commons (Flickr 54825433377)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:55th_Street,_Hyde_Park,_Chicago,_IL_(54825433377).jpg",
+      "license": "CC BY-SA 4.0 (per file page)",
+      "creditLine": "Photo: Warren LeMay, 2023 (CC BY-SA 4.0). Via Wikimedia Commons."
+    },
+    {
+      "file": "university-apartments-today.jpg",
+      "px": [
+        3648,
+        2736
+      ],
+      "bytes": 4080019,
+      "title": "University Apartments, 55th Street, Hyde Park (I.M. Pei)",
+      "creator": "Teemu008",
+      "date": "2012 (EXIF 2010-11-23)",
+      "source": "Wikimedia Commons (Flickr 7375178340)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_Apartments_(7375178340).jpg",
+      "license": "CC BY-SA 2.0",
+      "creditLine": "Photo: Teemu008, 2012 (CC BY-SA 2.0). Via Wikimedia Commons."
+    },
+    {
+      "file": "hansberry-house.jpg",
+      "px": [
+        1869,
+        2782
+      ],
+      "bytes": 1050815,
+      "title": "Lorraine Hansberry House, 6140 S. Rhodes Avenue, Chicago",
+      "creator": "Legimet",
+      "date": "May 11, 2025",
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lorraine_Hansberry_House.jpg",
+      "license": "CC BY-SA 4.0",
+      "creditLine": "Photo: Legimet, 2025 (CC BY-SA 4.0). Via Wikimedia Commons.",
+      "note": "1869x2782; best free photo found of the house."
+    },
+    {
+      "file": "sutherland-today.jpg",
+      "px": [
+        3648,
+        2736
+      ],
+      "bytes": 4610959,
+      "title": "Sutherland Hotel (The Sutherland), 4659 S. Drexel Boulevard, Chicago",
+      "creator": "Teemu08",
+      "date": "November 2010",
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sutherland_Hotel.jpg",
+      "license": "CC BY-SA 3.0",
+      "creditLine": "Photo: Teemu08, 2010 (CC BY-SA 3.0). Via Wikimedia Commons."
+    },
+    {
+      "file": "harper-court-2025.jpg",
+      "px": [
+        2560,
+        1920
+      ],
+      "bytes": 1583206,
+      "title": "53rd Street side of Harper Court, winter",
+      "creator": "TonyTheTiger",
+      "date": "November 30, 2025",
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20251130_53rd_Street_side_of_Harper_Court_01.jpg",
+      "license": "CC0 (per file page)",
+      "creditLine": "Photo: TonyTheTiger, 2025 (CC0). Via Wikimedia Commons.",
+      "note": "2560px cached rendition of 4032px original (rate limit at capture time); re-pull from same URL."
+    },
+    {
+      "file": "statue-republic.jpg",
+      "px": [
+        2048,
+        3084
+      ],
+      "bytes": 625286,
+      "title": "The Statue of the Republic, Jackson Park, Chicago",
+      "creator": "bradhoc",
+      "date": "September 22, 2013",
+      "source": "Wikimedia Commons (Flickr 9964974406)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Statue_of_the_Republic_(9964974406).jpg",
+      "license": "CC BY 2.0",
+      "creditLine": "Photo: bradhoc, 2013 (CC BY 2.0). Via Wikimedia Commons.",
+      "note": "2048px cached rendition of 2600x3915 original (rate limit); artistmac photo exists but this was the better free image found."
+    },
+    {
+      "file": "del-prado-postcard.jpg",
+      "px": [
+        2560,
+        1645
+      ],
+      "bytes": 1341211,
+      "title": "Del Prado Hotel, Chicago (linen postcard)",
+      "creator": "Unknown (postcard publisher)",
+      "date": "c. 1900s-1940s (Newberry dates 1900/1992)",
+      "source": "Newberry Library (NBY 8440), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Del_Prado_Hotel_(NBY_8440).jpg",
+      "license": "Public domain",
+      "creditLine": "Postcard, Newberry Library (NBY 8440), via Wikimedia Commons.",
+      "note": "2560px cached rendition of 3600px original (rate limit); re-pull from same URL."
+    },
+    {
+      "file": "cooper-carlton-postcard.jpg",
+      "px": [
+        2560,
+        1643
+      ],
+      "bytes": 1277929,
+      "title": "Cooper-Carlton Hotel, Chicago (postcard, front)",
+      "creator": "Unknown (postcard publisher)",
+      "date": "1924",
+      "source": "Newberry Library (NBY 8237), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cooper_Carlton_Hotel,_Chicago_(NBY_8237).jpg",
+      "license": "Public domain",
+      "creditLine": "Postcard, 1924. Newberry Library (NBY 8237), via Wikimedia Commons.",
+      "note": "2560px cached rendition of 3600px original (rate limit)."
+    },
+    {
+      "file": "cooper-carlton-back.jpg",
+      "px": [
+        2560,
+        1628
+      ],
+      "bytes": 771605,
+      "title": "Cooper-Carlton Hotel, Chicago (postcard, back)",
+      "creator": "Unknown (postcard publisher)",
+      "date": "1924",
+      "source": "Newberry Library (NBY 8238), via Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cooper_Carlton_Hotel,_Chicago_(NBY_8238).jpg",
+      "license": "Public domain",
+      "creditLine": "Postcard back, 1924. Newberry Library (NBY 8238), via Wikimedia Commons.",
+      "note": "2560px cached rendition of 3600px original (rate limit)."
+    },
+    {
+      "file": "sisson-hotel-1920.jpg",
+      "px": [
+        2048,
+        1183
+      ],
+      "bytes": 667585,
+      "title": "Sisson Hotel, Chicago",
+      "creator": "Max Rigot Selling Company, Chicago",
+      "date": "c. 1920",
+      "source": "Wikimedia Commons (scan cited to Host & Portmann, Early Chicago Hotels, Arcadia)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sisson_Hotel.JPG",
+      "license": "Public domain (pre-1929 publication)",
+      "creditLine": "Max Rigot Selling Co., c. 1920. Via Wikimedia Commons.",
+      "note": "2048px cached rendition of 2119px original (rate limit)."
+    },
+    {
+      "file": "hyde-park-house-1870s.jpg",
+      "px": [
+        1024,
+        806
+      ],
+      "bytes": 214646,
+      "title": "Paul Cornell's Hyde Park House hotel, 53rd Street and Lake Michigan",
+      "creator": "Unknown",
+      "date": "1870s",
+      "source": "Wikimedia Commons (print credited to Chicago Historical Society)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hyde_Park_House.JPG",
+      "license": "Public domain (19th-century photograph)",
+      "creditLine": "Hyde Park House, 1870s. Via Wikimedia Commons (Chicago History Museum print).",
+      "note": "1024px cached rendition of 1149px original; small, best found on Commons."
+    }
+  ],
+  "missing": [
+    {
+      "id": "nareb-code-1924",
+      "tried": "Internet Archive advancedsearch: title:(annals of real estate practice); creator:(national association of real estate); title:(code of ethics) 1913-1930; \"real estate practice\" 1923-1926; \"national real estate journal\". No period scan on IA. HathiTrust catalog search and babel full-text search both returned bot-gate pages from this environment. Lead: HathiTrust holds Annals of Real Estate Practice (1924/1925, full view) with the 1924 Code including Article 34; retry from a normal browser session."
+    },
+    {
+      "id": "covenant-deed",
+      "tried": "chicagocovenants.com (home and /resources): documents live only inside an ArcGIS Experience viewer, no direct scan downloads, and the project site is not rights-cleared for reuse. Commons searches (Washington Park subdivision covenant, racially restrictive covenant Chicago) and IA advancedsearch (\"washington park subdivision\", \"restrictive covenant\" AND chicago) found nothing downloadable. No fabrication; needs a Cook County records pull or permission from the Chicago Covenants Project."
+    },
+    {
+      "id": "defender-masthead",
+      "tried": "Commons and enwiki searches (Chicago Defender 1917/1919/front page/masthead; category Chicago Defender) and IA (title:(chicago defender); sim_chicago-defender*; texts 1915-1928). Found only a 1922 article clipping (1200px), a 1923 Joyland Park ad page (dcc-290339), a 1927 comic, and a 1948 front page (not PD-safe). Pre-1929 Defender front pages appear locked in ProQuest microfilm, which is rights-restricted. Not delivered."
+    },
+    {
+      "id": "kitchenette-interior-1941",
+      "tried": "LOC photos search kitchenette chicago (both pages), kitchenette family chicago, kitchenette interior. The April 1941 FSA Chicago kitchenette captions in LOC are exteriors and doorways by Edwin Rosskam; no interior captioned kitchenette surfaced. Delivered kitchenette-doorway-1941.jpg instead; Russell Lee interiors of the assignment exist under other captions and could be found with more search time."
+    },
+    {
+      "id": "white-city-burning-1894 (photo of buildings burning)",
+      "tried": "LOC photo searches (fire world's fair 1894, peristyle fire, ruins). Best PD find was the morning-after engraving (delivered as white-city-fire-aftermath-1894.jpg). Also located IA vanishingfair00vanm (The Vanishing Fair, 1894) with halftone fire illustrations, leaf 18 shows the burning dome; usable as a follow-up if an illustration is acceptable."
+    },
+    {
+      "id": "holc-legend-detail",
+      "tried": "No separate legend/title-block scan exists at Commons or Mapping Inequality; the legend is included on the delivered 13702x10816 full sheet and can be cropped losslessly."
+    }
+  ]
+}

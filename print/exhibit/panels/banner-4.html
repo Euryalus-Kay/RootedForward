@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="system.css">
+<style>
+  /* Banner 4. The invitation. QR and the stop key hold the standing
+     eye zone; the route map runs full bleed into the low register as
+     the browse object, its credit above it. */
+  .title { font-size: 118pt; }
+  .banner .body { font-size: 28pt; }
+  .toprow { position: absolute; left: 1.35in; top: 7.4in; width: 30.3in; display: flex; gap: 0.65in; }
+  .pressure { font-family: var(--mono); border-top: 2.25pt solid var(--carbon); margin-top: 0.28in; }
+  .pressure .prow { display: flex; justify-content: space-between; align-items: baseline; padding: 0.14in 0; border-bottom: 0.75pt solid rgba(28,26,23,0.45); gap: 0.3in; }
+  .pressure .pl { font-family: var(--narrow); font-size: 18.5pt; letter-spacing: 0.04em; line-height: 1.2; }
+  .pressure .pv { font-weight: 600; font-size: 31pt; white-space: nowrap; }
+  .walkz { position: absolute; left: 1.35in; top: 26.6in; width: 30.3in; }
+  .qrrow { display: flex; gap: 0.55in; margin-top: 0.34in; align-items: center; }
+  .qrtile { background: var(--cream); border: 2.25pt solid var(--carbon); padding: 0.3in; flex: none; }
+  .qrtile img { width: 4.1in; height: 4.1in; display: block; }
+  .stopkey { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.5in; row-gap: 0.14in; }
+  .stopkey .k { font-family: var(--narrow); font-size: 17.5pt; letter-spacing: 0.02em; display: flex; gap: 0.13in; align-items: baseline; }
+  .stopkey .k .n { font-weight: 700; color: var(--rust); min-width: 0.42in; text-align: right; }
+  .stopkey .k.opt .n::after { content: "°"; }
+  .mapcap { position: absolute; left: 1.35in; top: 37.5in; width: 30.3in; }
+  .mapz { position: absolute; left: 0; right: 0; top: 38.2in; height: 25.8in; overflow: hidden; }
+  .mapz img { display: block; width: 33in; }
+</style>
+</head>
+<body>
+<div class="sheet banner">
+
+  <div class="band">
+    <div class="left">Hyde Park, Chicago</div>
+    <div class="right">Sheet 4 of 4 · 1962 to 2026</div>
+  </div>
+
+  <div class="title">Hyde Park Today</div>
+  <div class="deck">Hyde Park stayed integrated when almost no American
+    neighborhood did. The families displaced for that outcome never
+    shared in it, and rents near the Obama Center are now rising faster
+    than Chicago's.</div>
+
+  <div class="toprow">
+    <figure style="width:13.1in; flex:none;">
+      <div style="height:15.6in;"><img src="../assets/img/p4-opc.jpg" alt=""></div>
+      <div class="cap">The Obama Presidential Center museum tower on
+        opening day, June 19, 2026.</div>
+      <div class="credit">PHOTOGRAPH BY ALPHABETA135 · CC0</div>
+    </figure>
+    <div style="flex:1;">
+      <div class="body"><p>After renewal, Hyde Park held for decades at
+        roughly one-third Black and one-half white. The integration was
+        real. It came at the expense of the renters and small businesses
+        the plan removed. The Obama Center, built by Lakeside Alliance, a
+        construction team led by four Black-owned Chicago firms, opened
+        on the old fairground on Juneteenth 2026.</p></div>
+      <div class="pressure">
+        <div class="prow"><span class="pl">Median rents near the Center since 2015</span><span class="pv" style="color:var(--red)">+43%</span></div>
+        <div class="prow"><span class="pl">Across Chicago over the same years</span><span class="pv">+14%</span></div>
+        <div class="prow"><span class="pl">The median East Woodlawn house, doubled since 2019</span><span class="pv">$440,000</span></div>
+      </div>
+      <div class="voice" style="font-size:33pt; margin-top:0.45in;">"I want
+        to stay. I don't want to be forced out."
+        <span class="attr" style="font-size:18pt;">Kyana Butler <span class="role">· Woodlawn renter, 2026</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="walkz">
+    <div class="seclabel">The walking tour <span class="yr">· thirteen stops, three detours, about four miles</span></div>
+    <div class="qrrow">
+      <div class="qrtile"><img src="../assets/qr-exhibit.svg" alt=""></div>
+      <div style="width:10.9in;">
+        <div class="smallcaps" style="font-size:23pt; color:var(--rust);">Scan for the free audio tour</div>
+        <div class="body" style="font-size:21.5pt; margin-top:0.16in;">Researched and written by
+          students. The tour gives the source for every number on these
+          sheets. Illinois now lets homeowners file to strike racist
+          covenant language from their deeds.</div>
+      </div>
+      <div class="stopkey" style="flex:1;">
+        <div class="k"><span class="n">1</span>Cornell's stone</div>
+        <div class="k"><span class="n">9</span>The Robie House</div>
+        <div class="k"><span class="n">2</span>The Del Prado</div>
+        <div class="k"><span class="n">10</span>The University of Chicago</div>
+        <div class="k"><span class="n">3</span>The tracks at Lake Park</div>
+        <div class="k"><span class="n">11</span>Stagg Field and the pile</div>
+        <div class="k"><span class="n">4</span>The White City</div>
+        <div class="k opt"><span class="n">12</span>The Hansberry house</div>
+        <div class="k"><span class="n">5</span>The Obama Center</div>
+        <div class="k opt"><span class="n">13</span>Daley's Restaurant</div>
+        <div class="k"><span class="n">6</span>The first Del Prado</div>
+        <div class="k"><span class="n">14</span>Fifty-Fifth Street</div>
+        <div class="k"><span class="n">7</span>The Midway line</div>
+        <div class="k opt"><span class="n">15</span>Drexel Boulevard</div>
+        <div class="k"><span class="n">8</span>Rockefeller Chapel</div>
+        <div class="k"><span class="n">16</span>Harper Court</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mapcap">
+    <div class="credit" style="margin-top:0;">THE WALK HYDE PARK ROUTE · STREETS FROM U.S. CENSUS TIGER/LINE · DETOURS MARKED °</div>
+  </div>
+  <div class="mapz"><img src="../assets/route-map.svg" alt=""></div>
+
+  <div class="plinth">
+    <div class="inner">
+      <div class="footrule"></div>
+      <div class="entries">
+        <div class="fe"><span class="yr">2022</span> · ILLINOIS OPENS COVENANT REMOVAL</div>
+        <div class="fe"><span class="yr">2026</span> · THE CENTER OPENS</div>
+        <div class="publisher">
+          <img class="mark" src="../assets/img/rf-logo.svg" alt="">
+          <div>
+            <div class="pname">Rooted Forward</div>
+            <div class="pline">Free self-guided audio tours · rooted-forward.org</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

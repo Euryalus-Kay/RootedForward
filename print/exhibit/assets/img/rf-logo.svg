@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <clipPath id="c">
+      <circle cx="200" cy="200" r="188"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="200" cy="200" r="188" fill="#1B3A2D"/>
+
+  <!-- Root system with horizontal crossbars but no messy overlaps -->
+  <!-- Using filled shapes instead of overlapping strokes -->
+  <g clip-path="url(#c)">
+    <!-- Main horizontal root bar -->
+    <path d="M12 332 C80 326, 140 322, 200 320 C260 322, 320 326, 388 332 L388 338 C320 332, 260 328, 200 326 C140 328, 80 332, 12 338Z" fill="#3D6B58"/>
+
+    <!-- Second horizontal root bar -->
+    <path d="M40 356 C100 350, 150 347, 200 346 C250 347, 300 350, 360 356 L360 360 C300 354, 250 351, 200 350 C150 351, 100 354, 40 360Z" fill="#3D6B58"/>
+
+    <!-- Third horizontal root bar -->
+    <path d="M70 378 C120 373, 160 370, 200 369 C240 370, 280 373, 330 378 L330 381 C280 376, 240 373, 200 372 C160 373, 120 376, 70 381Z" fill="#3D6B58"/>
+
+    <!-- Downward roots — thicker, fewer, no overlap with each other -->
+    <g fill="none" stroke="#3D6B58" stroke-linecap="round">
+      <path d="M70 330 C55 355, 38 378, 18 400" stroke-width="7"/>
+      <path d="M135 324 C118 352, 98 378, 78 400" stroke-width="6"/>
+      <path d="M200 320 C198 350, 192 375, 185 400" stroke-width="5"/>
+      <path d="M200 320 C202 350, 208 375, 215 400" stroke-width="5"/>
+      <path d="M265 324 C282 352, 302 378, 322 400" stroke-width="6"/>
+      <path d="M330 330 C345 355, 362 378, 382 400" stroke-width="7"/>
+    </g>
+  </g>
+
+  <!-- R -->
+  <path d="
+    M79 88 L79 308 L101 308 L101 200 L148 200 L200 308 L226 308
+    L172 197 C202 190 218 168 218 144 C218 114 198 88 164 88 Z
+    M101 110 L161 110 C186 110 196 124 196 144 C196 164 186 178 161 178 L101 178 Z
+  " fill="#E8DCC8" fill-rule="evenodd"/>
+
+  <!-- F -->
+  <path d="
+    M232 88 L232 308 L254 308 L254 200 L321 200 L321 182 L254 182 L254 110 L321 110 L321 88 Z
+  " fill="#C45D3E"/>
+</svg>
