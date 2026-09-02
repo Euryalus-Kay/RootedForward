@@ -253,6 +253,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "lake-park-tracks",
+      video: {
+        youtubeId: "0ZizvgVFohg",
+        title: "The tracks and Lake Park",
+        poster: `${MEDIA}/video-lake-park-tracks.jpg`,
+      },
       number: 3,
       title: "The tracks and Lake Park",
       dek: "The railroad served downtown Chicago and the South",
@@ -420,6 +425,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "obama-center",
+      video: {
+        youtubeId: "UxJu_-t6CC0",
+        title: "The Obama Center",
+        poster: `${MEDIA}/video-obama-center.jpg`,
+      },
       number: 5,
       title: "The Obama Center",
       dek: "A deliberate break from the tour's chronological order",
@@ -462,6 +472,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "old-del-prado",
+      video: {
+        youtubeId: "UdU3NCPCUUw",
+        title: "The first Del Prado",
+        poster: `${MEDIA}/video-old-del-prado.jpg`,
+      },
       number: 6,
       title: "The first Del Prado",
       dek: "The site of a fair-era hotel later became International House",
@@ -505,6 +520,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "midway-line",
+      video: {
+        youtubeId: "zgzXimXYq4M",
+        title: "The Midway line",
+        poster: `${MEDIA}/video-midway-line.jpg`,
+      },
       number: 7,
       title: "The Midway line",
       dek: "A planned canal became a long-standing neighborhood boundary",
@@ -568,6 +588,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "rockefeller-chapel",
+      video: {
+        youtubeId: "oBE2ArlQHq0",
+        title: "Rockefeller Chapel",
+        poster: `${MEDIA}/video-rockefeller-chapel.jpg`,
+      },
       number: 8,
       title: "Rockefeller Chapel",
       dek: "The university's tallest building replaced a row of homes",
@@ -612,6 +637,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "robie-house",
+      video: {
+        youtubeId: "5VCReofaEp0",
+        title: "The Robie House",
+        poster: `${MEDIA}/video-robie-house.jpg`,
+      },
       number: 9,
       title: "The Robie House",
       dek: "The organizations and rules used to keep Hyde Park white",
@@ -678,6 +708,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "cobb-hall",
+      video: {
+        youtubeId: "5k43bp-W4XE",
+        title: "The University of Chicago",
+        poster: `${MEDIA}/video-cobb-hall.jpg`,
+      },
       number: 10,
       title: "The University of Chicago",
       dek: "A new university designed to appear centuries old",
@@ -746,6 +781,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "stagg-field",
+      video: {
+        youtubeId: "BKXcZRw3Wfk",
+        title: "Stagg Field and the pile",
+        poster: `${MEDIA}/video-stagg-field.jpg`,
+      },
       number: 11,
       title: "Stagg Field and the pile",
       dek: "A football stadium later became the site of the first nuclear chain reaction",
@@ -873,6 +913,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "daleys",
+      video: {
+        youtubeId: "4Zs_uMIyFOE",
+        title: "Daley's Restaurant",
+        poster: `${MEDIA}/video-daleys.jpg`,
+      },
       number: 13,
       title: "Daley's Restaurant",
       dek: "Chicago's oldest restaurant has operated near this corner since 1892",
@@ -908,6 +953,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "drexel-boulevard",
+      video: {
+        youtubeId: "CkYzpj1UsAs",
+        title: "Drexel Boulevard",
+        poster: `${MEDIA}/video-drexel-boulevard.jpg`,
+      },
       number: 14,
       title: "Drexel Boulevard",
       dek: "One mile of Drexel Boulevard shows the neighborhood's major housing changes",
@@ -1009,6 +1059,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "fifty-fifth",
+      video: {
+        youtubeId: "5kXwDdvHc7A",
+        title: "Fifty-Fifth Street",
+        poster: `${MEDIA}/video-fifty-fifth.jpg`,
+      },
       number: 15,
       title: "Fifty-Fifth Street",
       dek: "After covenants became unenforceable, speculation was followed by urban renewal",
@@ -1124,6 +1179,11 @@ export const HYDE_PARK_WALK: WalkTour = {
     },
     {
       id: "harper-court",
+      video: {
+        youtubeId: "5UGJQfV9CdU",
+        title: "Harper Court",
+        poster: `${MEDIA}/video-harper-court.jpg`,
+      },
       number: 16,
       title: "Harper Court",
       dek: "The route ends close to where Hyde Park's development began",
