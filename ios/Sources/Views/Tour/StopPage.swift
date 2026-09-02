@@ -388,7 +388,7 @@ struct StopPage: View {
     }
 }
 
-/// "Listen to this stop", or the live wave while it narrates.
+/// "Listen", or the live wave while it narrates.
 struct ListenCardTitle: View {
     @EnvironmentObject private var audio: AudioEngine
     let stop: WalkStop
@@ -401,7 +401,7 @@ struct ListenCardTitle: View {
                     .font(RF.body(15, weight: 600))
                     .foregroundStyle(RF.rustDark)
             } else {
-                Text("Listen to this stop")
+                Text("Listen")
                     .font(RF.body(15, weight: 600))
                     .foregroundStyle(RF.ink)
             }
@@ -459,7 +459,7 @@ struct AudioTimeline: View {
                     audio.cycleRate()
                 } label: {
                     Text(rateLabel)
-                        .font(RF.body(12, weight: 700))
+                        .font(RF.body(12, weight: 700, maxScale: 1.15))
                         .foregroundStyle(isCurrent ? RF.forest : RF.warmGrayLight)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 3)
@@ -482,7 +482,7 @@ struct AudioTimeline: View {
                 Text(WalkFormat.clock(seconds: duration))
                     .monospacedDigit()
             }
-            .font(RF.body(12))
+            .font(RF.body(12, maxScale: 1.15))
             // Dark enough for AA at this size; warmGray sits at 3.5:1
             .foregroundStyle(RF.ink.opacity(0.62))
         }

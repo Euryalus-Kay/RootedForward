@@ -43,16 +43,32 @@ enum RF {
     static let mapRail = Color(rfHex: 0x6E6A5E)
 
     // Type
-    static func display(_ size: CGFloat, weight: CGFloat = 600, italic: Bool = false) -> Font {
+    /// `maxScale` is how far the type may grow under Dynamic Type, as
+    /// a multiple of its own size. The defaults are generous, because
+    /// the tour's writing should scale the whole way. Chrome that has
+    /// to fit a fixed strip passes something tight, around 1.15.
+    ///
+    /// The cap belongs here rather than at the call site. These faces
+    /// are resolved through UIFontMetrics before SwiftUI ever sees
+    /// them, so a `.dynamicTypeSize(...)` modifier further down the
+    /// view tree does nothing at all to them.
+    static func display(
+        _ size: CGFloat, weight: CGFloat = 600, italic: Bool = false,
+        maxScale: CGFloat = 1.5
+    ) -> Font {
         // Track the optical size axis with the point size, clamped to
         // the range the face actually ships, 8 through 60.
         BrandFonts.font(
             family: "Source Serif 4", size: size, weight: weight,
-            italic: italic, opticalSize: min(max(size, 8), 60)
+            italic: italic, opticalSize: min(max(size, 8), 60), maxScale: maxScale
         )
     }
-    static func body(_ size: CGFloat, weight: CGFloat = 400, italic: Bool = false) -> Font {
-        BrandFonts.font(family: "DM Sans", size: size, weight: weight, italic: italic)
+    static func body(
+        _ size: CGFloat, weight: CGFloat = 400, italic: Bool = false,
+        maxScale: CGFloat = 2.0
+    ) -> Font {
+        BrandFonts.font(family: "DM Sans", size: size, weight: weight,
+                        italic: italic, maxScale: maxScale)
     }
 }
 
@@ -117,7 +133,8 @@ enum BrandFonts {
         size: CGFloat,
         weight: CGFloat,
         italic: Bool = false,
-        opticalSize: CGFloat? = nil
+        opticalSize: CGFloat? = nil,
+        maxScale: CGFloat? = nil
     ) -> Font {
         var variations: [Int: CGFloat] = [0x77676874: weight] // 'wght'
         if let opsz = opticalSize {
@@ -139,8 +156,9 @@ enum BrandFonts {
         let uiFont = UIFont(descriptor: descriptor, size: size)
         if uiFont.familyName.caseInsensitiveCompare(family) == .orderedSame {
             // Dynamic Type: body copy scales up to 2x, display type up
-            // to 1.5x so large headlines cannot explode the layout.
-            let cap = family == "DM Sans" ? size * 2.0 : size * 1.5
+            // to 1.5x so large headlines cannot explode the layout, and
+            // a caller may ask for less.
+            let cap = size * (maxScale ?? (family == "DM Sans" ? 2.0 : 1.5))
             let metrics = UIFontMetrics(forTextStyle: .body)
             return Font(metrics.scaledFont(for: uiFont, maximumPointSize: cap))
         }

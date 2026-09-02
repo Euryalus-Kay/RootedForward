@@ -340,6 +340,7 @@ struct TourDetailView: View {
 /// sequence. No photograph and no clock, because it is neither a place
 /// nor a recording.
 private struct IntroRow: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let title: String
 
     var body: some View {
@@ -348,14 +349,16 @@ private struct IntroRow: View {
                 .fill(Color.clear)
                 .frame(width: 3)
 
-            ZStack {
-                Rectangle().fill(RF.forest.opacity(0.07))
-                Image(systemName: "text.alignleft")
-                    .font(.system(size: 19, weight: .regular))
-                    .foregroundStyle(RF.forest.opacity(0.75))
+            if !typeSize.isAccessibilitySize {
+                ZStack {
+                    Rectangle().fill(RF.forest.opacity(0.07))
+                    Image(systemName: "text.alignleft")
+                        .font(.system(size: 19, weight: .regular))
+                        .foregroundStyle(RF.forest.opacity(0.75))
+                }
+                .frame(width: 52, height: 52)
+                .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
             }
-            .frame(width: 52, height: 52)
-            .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
 
             Text("0")
                 .font(RF.display(19, weight: 600))
@@ -366,7 +369,7 @@ private struct IntroRow: View {
                 Text(title)
                     .font(RF.body(15, weight: 500))
                     .foregroundStyle(RF.ink.opacity(0.85))
-                    .lineLimit(1)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text("Start here, before stop one")
                     .font(RF.display(12, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGrayDark)
@@ -382,6 +385,7 @@ private struct IntroRow: View {
 }
 
 private struct StopRow: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let stop: WalkStop
     let visited: Bool
     /// The stop the Resume button would open, marked so "where am I"
@@ -394,13 +398,18 @@ private struct StopRow: View {
                 .fill(isResume ? RF.rust : Color.clear)
                 .frame(width: 3)
 
-            MediaImage(
-                sitePath: ContentStore.thumbPath(for: (stop.nowImage ?? stop.images.first)?.src ?? ""),
-                contentMode: .fill
-            )
-            .frame(width: 52, height: 52)
-            .clipped()
-            .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+            // At accessibility sizes the plate is given up so the
+            // stop's name has the width to be read in full. A name cut
+            // to "Rockefeller C..." is no use for choosing a stop.
+            if !typeSize.isAccessibilitySize {
+                MediaImage(
+                    sitePath: ContentStore.thumbPath(for: (stop.nowImage ?? stop.images.first)?.src ?? ""),
+                    contentMode: .fill
+                )
+                .frame(width: 52, height: 52)
+                .clipped()
+                .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+            }
 
             Text("\(stop.number)")
                 .font(RF.display(19, weight: 600))
@@ -411,7 +420,7 @@ private struct StopRow: View {
                 Text(stop.title)
                     .font(RF.body(15, weight: 500))
                     .foregroundStyle(RF.ink.opacity(0.85))
-                    .lineLimit(1)
+                    .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 6) {
                     Text(WalkFormat.clock(seconds: stop.audioSeconds))
                         .font(RF.body(13))

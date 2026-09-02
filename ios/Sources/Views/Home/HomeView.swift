@@ -401,7 +401,7 @@ struct ListeningChip: View {
             } label: {
                 HStack(spacing: 8) {
                     Text(audio.currentStopTitle)
-                        .font(RF.body(14, weight: 600))
+                        .font(RF.body(14, weight: 600, maxScale: 1.15))
                         .foregroundStyle(RF.ink)
                         .lineLimit(1)
                     Spacer(minLength: 0)

@@ -28,7 +28,7 @@ struct VideoPlate: View {
     var label: String? = "Watch this stop"
     /// The line under it, saying what is further down the page. Nil on
     /// the opening page, where there is nothing further down.
-    var note: String? = "Read the full stop below"
+    var note: String? = "Read more in depth below"
 
     @State private var open = false
 
@@ -37,7 +37,10 @@ struct VideoPlate: View {
             if let label {
                 Text(label)
                     .font(RF.display(22, weight: 600))
-                    .foregroundStyle(RF.forest)
+                    .foregroundStyle(RF.cream)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 12)
+                    .background(RF.forest)
                     .accessibilityAddTraits(.isHeader)
             }
             Button {

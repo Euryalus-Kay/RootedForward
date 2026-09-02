@@ -37,7 +37,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.rootedforward.walk
         PRODUCT_NAME: RootedForward
         MARKETING_VERSION: "1.2"
-        CURRENT_PROJECT_VERSION: 20
+        CURRENT_PROJECT_VERSION: 22
         TARGETED_DEVICE_FAMILY: "1"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         CODE_SIGN_STYLE: Automatic

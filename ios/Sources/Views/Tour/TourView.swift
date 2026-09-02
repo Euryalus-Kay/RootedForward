@@ -410,12 +410,12 @@ struct TourView: View {
         VStack(spacing: 5) {
             topBarRow
             Text(showPinnedTitle && !onIntro ? stops[safeIndex].title : " ")
-                .font(RF.display(17, weight: 600))
+                .font(RF.display(17, weight: 600, maxScale: 1.15))
                 .foregroundStyle(RF.forest)
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .frame(maxWidth: .infinity)
-                .frame(height: 22)
+                .frame(minHeight: 22)
                 .opacity(showPinnedTitle ? 1 : 0)
                 .accessibilityIdentifier("pinned-stop-title")
                 .accessibilityHidden(!showPinnedTitle)
@@ -460,7 +460,7 @@ struct TourView: View {
                 // No chevron: this is a modal dismissal, not a pop,
                 // so promising a back gesture would be a lie.
                 Text("Exit")
-                    .font(RF.body(16, weight: 500))
+                    .font(RF.body(16, weight: 500, maxScale: 1.15))
                     .foregroundStyle(RF.ink.opacity(0.7))
                     .frame(minWidth: 44, minHeight: 44, alignment: .leading)
                     .contentShape(Rectangle())
@@ -471,7 +471,7 @@ struct TourView: View {
 
             VStack(spacing: 5) {
                 Text(counterLabel)
-                    .font(RF.body(14, weight: 600))
+                    .font(RF.body(14, weight: 600, maxScale: 1.15))
                     .foregroundStyle(RF.ink.opacity(0.8))
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
@@ -496,7 +496,7 @@ struct TourView: View {
                         Image(systemName: "square.and.arrow.up")
                             .font(.system(size: 13, weight: .medium))
                         Text("Share")
-                            .font(RF.body(15, weight: 500))
+                            .font(RF.body(15, weight: 500, maxScale: 1.15))
                     }
                     .foregroundStyle(RF.ink.opacity(0.8))
                     .padding(.horizontal, 12)
@@ -549,7 +549,7 @@ struct TourView: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(RF.rust)
                 Text("Directions")
-                    .font(RF.body(16, weight: 600))
+                    .font(RF.body(16, weight: 600, maxScale: 1.15))
                     .foregroundStyle(RF.ink.opacity(0.85))
             }
             .padding(.horizontal, 16)
@@ -571,7 +571,7 @@ struct TourView: View {
                 Image(systemName: "map")
                     .font(.system(size: 14, weight: .semibold))
                 Text("Map")
-                    .font(RF.body(16, weight: 600))
+                    .font(RF.body(16, weight: 600, maxScale: 1.15))
             }
             .foregroundStyle(RF.cream)
             .padding(.horizontal, 18)
@@ -600,7 +600,7 @@ struct TourView: View {
                     Image(systemName: "location.fill")
                         .font(.system(size: 11, weight: .semibold))
                     Text("You are near stop \(near.stop.number). Jump there")
-                        .font(RF.body(13, weight: 600))
+                        .font(RF.body(13, weight: 600, maxScale: 1.15))
                 }
                 .foregroundStyle(RF.forest)
                 .padding(.horizontal, 14)
@@ -663,7 +663,7 @@ struct TransportBar: View {
                 } label: {
                     HStack(spacing: 7) {
                         Text("\(stop.number). \(stop.title)")
-                            .font(RF.body(15, weight: 600))
+                            .font(RF.body(15, weight: 600, maxScale: 1.15))
                             .foregroundStyle(RF.ink)
                             .lineLimit(1)
                         Image(systemName: "chevron.up")
