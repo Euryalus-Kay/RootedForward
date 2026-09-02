@@ -30,7 +30,9 @@
 		9A7BCFB0C6B609A1BE995B27 /* EditStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A758C754C6A81941C05FC3 /* EditStore.swift */; };
 		9DE188836959141CCF8C756E /* RootedForwardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA93164BBB51AFC9B88616D /* RootedForwardApp.swift */; };
 		A5DD44F579DED3383C750C0E /* EditableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA87984968058775865BDD9 /* EditableText.swift */; };
+		B023FFDD895EFF32CC2E6DE9 /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DA49CAA447A4524E9096B /* ReviewPrompt.swift */; };
 		BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */; };
+		C56E42FE04362158F82E5CCC /* ReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0CA3DF6AF096DBEFB27955 /* ReviewPromptTests.swift */; };
 		CF059D3B16C1381EB501B6FF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = E16CB38A946AB51CC5FB8F11 /* Fonts */; };
 		D615C9049ECB482C332103F7 /* VideoPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94C28B4DC6DC0CFFFB56D50 /* VideoPlate.swift */; };
 		E0E605006D56CD7804AD6812 /* BetaEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA72944C40DDAC5869AB77F /* BetaEditing.swift */; };
@@ -73,6 +75,8 @@
 		41860DE2B10E64E8C18F61C8 /* BetaEditingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaEditingTests.swift; sourceTree = "<group>"; };
 		42105EED930027414B57A88D /* ContentIntegrityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentIntegrityTests.swift; sourceTree = "<group>"; };
 		57A758C754C6A81941C05FC3 /* EditStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStore.swift; sourceTree = "<group>"; };
+		5F0CA3DF6AF096DBEFB27955 /* ReviewPromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTests.swift; sourceTree = "<group>"; };
+		602DA49CAA447A4524E9096B /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPrompt.swift; sourceTree = "<group>"; };
 		61F799B770CC0D56958B1860 /* MapSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSheetView.swift; sourceTree = "<group>"; };
 		698A5224186848ADB6559543 /* RootedForwardUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RootedForwardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DA72944C40DDAC5869AB77F /* BetaEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaEditing.swift; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 			children = (
 				41860DE2B10E64E8C18F61C8 /* BetaEditingTests.swift */,
 				42105EED930027414B57A88D /* ContentIntegrityTests.swift */,
+				5F0CA3DF6AF096DBEFB27955 /* ReviewPromptTests.swift */,
 			);
 			path = RootedForwardTests;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 				B2EFDA4FD0D683B5E271E4B3 /* ContentStore.swift */,
 				D75C9782F9F0F254E31D7B10 /* LocationService.swift */,
 				966145B70FE859167851BD25 /* ProgressStore.swift */,
+				602DA49CAA447A4524E9096B /* ReviewPrompt.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -397,6 +403,7 @@
 				3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */,
 				443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */,
 				FB21ED00E16D03FB208DC98D /* ProgressStore.swift in Sources */,
+				B023FFDD895EFF32CC2E6DE9 /* ReviewPrompt.swift in Sources */,
 				9DE188836959141CCF8C756E /* RootedForwardApp.swift in Sources */,
 				789E5695A02879C331B85820 /* SettingsView.swift in Sources */,
 				7727F52E3E169729C1AA62F8 /* SharedViews.swift in Sources */,
@@ -427,6 +434,7 @@
 			files = (
 				F7A5BCC31108CEB257DF92EC /* BetaEditingTests.swift in Sources */,
 				8B60F44BF017217E0932BFA3 /* ContentIntegrityTests.swift in Sources */,
+				C56E42FE04362158F82E5CCC /* ReviewPromptTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,7 +525,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Q3J68NFZCP;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -527,7 +535,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.rootedforward.walk;
 				PRODUCT_NAME = RootedForward;
 				SDKROOT = iphoneos;
@@ -560,7 +568,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Q3J68NFZCP;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -570,7 +578,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.rootedforward.walk;
 				PRODUCT_NAME = RootedForward;
 				SDKROOT = iphoneos;

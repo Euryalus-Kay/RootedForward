@@ -17,8 +17,9 @@ struct TourDetailView: View {
     @State private var infoSheet: InfoSheet?
     @State private var mapOpen = false
     @State private var confirmRestart = false
+    @EnvironmentObject private var audio: AudioEngine
     @Environment(\.requestReview) private var requestReview
-    @AppStorage("rf-review-asked") private var reviewAsked = false
+    private let review = ReviewPrompt()
 
     var body: some View {
         ScrollView {
@@ -48,13 +49,21 @@ struct TourDetailView: View {
             }
         }
         .onAppear {
-            // One polite ask, and only once the walk is essentially
-            // done. Asking at three stops landed the app's single
-            // lifetime prompt on someone standing on a sidewalk a
-            // fifth of the way through a three-hour walk.
-            let done = progress.visitedCount(in: mainline)
-            if !reviewAsked, done >= max(mainline.count - 1, 3) {
-                reviewAsked = true
+            // The walk screen is the calm moment. The rules for which
+            // moment is worth spending the prompt on live in
+            // ReviewPrompt, so they can be reasoned about and tested
+            // rather than buried in a view.
+            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+            guard review.shouldAsk(
+                stopsVisited: progress.visitedCount(in: mainline),
+                mainlineCount: mainline.count,
+                audioPlaying: audio.isPlaying,
+                version: version
+            ) else { return }
+            review.recordAsked(version: version)
+            // A beat, so the ask arrives after the screen has settled
+            // rather than on top of it.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 requestReview()
             }
         }

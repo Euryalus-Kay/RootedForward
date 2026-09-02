@@ -39,6 +39,9 @@ struct RootedForwardApp: App {
                 .environmentObject(edits)
                 .tint(RF.rust)
                 .onAppear {
+                    // How many separate days the app has been opened,
+                    // which is what the review prompt leans on.
+                    ReviewPrompt().noteLaunch()
                     audio.onFinished = { [weak progress] stopID in
                         progress?.markVisited(stopID)
                         Haptics.success()
