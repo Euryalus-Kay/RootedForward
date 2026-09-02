@@ -6,8 +6,39 @@ import SwiftUI
 // comes to the foreground, so site edits flow into the app.
 // ------------------------------------------------------------------
 
+// ------------------------------------------------------------------
+// The app is a portrait app. The one exception is the film, which is
+// 16:9 and unreadable letterboxed into a portrait strip, so the player
+// is allowed to turn and the rest of the app is not. The delegate is
+// the only place iOS will ask, so the gate lives here.
+// ------------------------------------------------------------------
+
+final class OrientationGate: NSObject, UIApplicationDelegate {
+    /// Portrait everywhere until the film screen opens.
+    static var mask: UIInterfaceOrientationMask = .portrait
+
+    func application(
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        Self.mask
+    }
+
+    /// Opens or closes the gate and asks the window to act on it.
+    @MainActor
+    static func set(_ mask: UIInterfaceOrientationMask) {
+        self.mask = mask
+        guard let scene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene }).first else { return }
+        scene.requestGeometryUpdate(.iOS(interfaceOrientations: mask))
+        scene.keyWindow?.rootViewController?
+            .setNeedsUpdateOfSupportedInterfaceOrientations()
+    }
+}
+
 @main
 struct RootedForwardApp: App {
+    @UIApplicationDelegateAdaptor(OrientationGate.self) private var orientation
     @StateObject private var content: ContentStore
     @StateObject private var progress = ProgressStore()
     @StateObject private var audio = AudioEngine()

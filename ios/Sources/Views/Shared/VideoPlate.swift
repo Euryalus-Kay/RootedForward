@@ -85,7 +85,9 @@ struct VideoPlate: View {
     }
 }
 
-/// The player itself, black, with one way out.
+/// The player itself, black, with one way out. This is the only
+/// screen in the app that may turn, because a 16:9 film in a portrait
+/// phone is a strip across the middle with black above and below.
 private struct VideoScreen: View {
     @Environment(\.dismiss) private var dismiss
     let video: WalkVideo
@@ -94,7 +96,7 @@ private struct VideoScreen: View {
         ZStack(alignment: .topLeading) {
             Color.black.ignoresSafeArea()
             YouTubePlayer(videoID: video.youtubeId)
-                .ignoresSafeArea(edges: .bottom)
+                .ignoresSafeArea()
             Button {
                 dismiss()
             } label: {
@@ -109,6 +111,13 @@ private struct VideoScreen: View {
             .accessibilityLabel("Close the film")
             .accessibilityIdentifier("video-close")
         }
+        // Turn on the way in and land in landscape, which is what the
+        // film wants. Turning the phone back upright still works, and
+        // the gate shuts again on the way out so no other screen is
+        // left able to rotate.
+        .onAppear { OrientationGate.set(.landscape) }
+        .onDisappear { OrientationGate.set(.portrait) }
+        .statusBarHidden()
     }
 }
 
@@ -141,8 +150,12 @@ private struct YouTubePlayer: UIViewRepresentable {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <style>
           html,body { margin:0; padding:0; height:100%; background:#000; overflow:hidden; }
-          #p { position:absolute; top:50%; left:0; width:100%; aspect-ratio:16/9;
-               transform:translateY(-50%); }
+          /* Largest 16:9 box that fits, so the film fills the width
+             in portrait and the height in landscape. */
+          #p { position:absolute; top:50%; left:50%;
+               transform:translate(-50%,-50%);
+               width:100vw; height:56.25vw;
+               max-height:100vh; max-width:177.78vh; }
           #p iframe { width:100%; height:100%; border:0; display:block; }
         </style></head><body>
         <div id="p"></div>

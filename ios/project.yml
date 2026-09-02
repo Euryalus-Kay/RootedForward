@@ -37,7 +37,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.rootedforward.walk
         PRODUCT_NAME: RootedForward
         MARKETING_VERSION: "2.0"
-        CURRENT_PROJECT_VERSION: 24
+        CURRENT_PROJECT_VERSION: 25
         TARGETED_DEVICE_FAMILY: "1"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         CODE_SIGN_STYLE: Automatic
@@ -68,6 +68,8 @@ targets:
           UIColorName: LaunchBackground
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
         UIBackgroundModes:
           - audio
         UIUserInterfaceStyle: Light
