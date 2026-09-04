@@ -1,8 +1,12 @@
 # ------------------------------------------------------------------
 # Rooted Forward iOS app. Run `xcodegen generate` in this folder to
 # produce RootedForward.xcodeproj, then open it in Xcode. The app is
-# the Walk Hyde Park self-guided audio tour, native SwiftUI, no
-# third-party dependencies. Content ships bundled (Resources/) and
+# the Walk Hyde Park self-guided audio tour, native SwiftUI. Its one
+# third-party dependency is Firebase Analytics, which exists solely so
+# Google Ads can measure installs from the App campaign; the
+# WithoutAdIdSupport product is deliberate, because it excludes the
+# advertising identifier and so needs no tracking permission prompt.
+# Content ships bundled (Resources/) and
 # refreshes from https://rooted-forward.org/api/walk so site edits
 # reach the app without an App Store update.
 # ------------------------------------------------------------------
@@ -16,10 +20,20 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_LANGUAGE: en
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: "11.0.0"
 targets:
   RootedForward:
     type: application
     platform: iOS
+    dependencies:
+      # WithoutAdIdSupport, not the default product. It leaves out
+      # AdSupport and the IDFA entirely, which is what keeps the app
+      # clear of App Tracking Transparency.
+      - package: Firebase
+        product: FirebaseAnalyticsWithoutAdIdSupport
     sources:
       - path: Sources
       - path: Assets.xcassets
@@ -32,6 +46,11 @@ targets:
       - path: Resources/Fonts
         type: folder
         buildPhase: resources
+      # Firebase reads this at configure time. It is git-ignored, so a
+      # fresh clone builds without it and simply runs with analytics
+      # off rather than failing.
+      - path: GoogleService-Info.plist
+        optional: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: org.rootedforward.walk
@@ -73,6 +92,11 @@ targets:
         UIBackgroundModes:
           - audio
         UIUserInterfaceStyle: Light
+        # Measurement is for the advert, not for the walker. No
+        # personalised-ads signals, and no Google Analytics
+        # advertising features.
+        GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS: false
+        GOOGLE_ANALYTICS_ADID_COLLECTION_ENABLED: false
         NSLocationWhenInUseUsageDescription: >-
           Your location is used only to draw your dot on the tour map and
           tell you when you are near a stop. It stays on your phone and is

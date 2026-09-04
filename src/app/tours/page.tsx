@@ -89,7 +89,7 @@ const FEATURES = [
   {
     icon: SignalSlashIcon,
     title: "Works without a signal",
-    body: "Everything downloads with the app, so a dead zone does not end the walk. No account, no ads, no tracking.",
+    body: "Everything downloads with the app, so a dead zone does not end the walk. No account, no ads, and nothing recorded about your walk.",
   },
 ];
 

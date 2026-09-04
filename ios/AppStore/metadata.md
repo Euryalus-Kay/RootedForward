@@ -59,7 +59,7 @@ WHAT YOU GET
 
 Location is optional and is used only to draw your dot on the map
 and tell you when you are near a stop. It never leaves your phone.
-No ads, no tracking, no account required.
+No ads and no account required.
 
 The tour was researched and written by Rooted Forward. Sources are
 listed on every stop. The narration is also published free at
@@ -102,6 +102,17 @@ Expected rating 12+.
 ## App privacy (nutrition label)
 
 Data collection answers, matching what the code actually does.
+
+OUT OF DATE as of the Firebase change. The app now includes Google
+Analytics for Firebase for install measurement, so the label can no
+longer say Data Not Collected. Declare, all as **not linked to the
+user** and **not used for tracking**, Identifiers (the Firebase
+installation ID), Usage Data (first_open and session_start), and
+Diagnostics if crash-free-users reporting is left on. The advertising
+identifier is NOT collected, because the app links
+FirebaseAnalyticsWithoutAdIdSupport, so App Tracking Transparency does
+not apply. The paragraph below describes the app as it was before that
+change and is kept only as a record.
 
 Answer **Data Not Collected** for the whole label. Nothing in this
 app is collected, and the table below is the itemized version of why.
@@ -160,7 +171,7 @@ Planned set, in order.
       identity table above
 - [ ] Paste description, promotional text, keywords, notes
 - [ ] Upload the 6.9 inch screenshots
-- [ ] Privacy: answer Data Not Collected, per the table above
+- [ ] Privacy: DO NOT answer Data Not Collected any more. See the note above the table.
 - [ ] Age rating questionnaire from the table above
 - [ ] App uses non-exempt encryption, answer No (already in
       Info.plist as ITSAppUsesNonExemptEncryption)

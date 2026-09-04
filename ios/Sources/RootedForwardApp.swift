@@ -57,6 +57,9 @@ struct RootedForwardApp: App {
             UserDefaults.standard.removePersistentDomain(forName: domain)
         }
         BrandFonts.registerAll()
+        // Before any view exists, because Firebase records first_open
+        // at configure time and that is the install Google counts.
+        Measurement.start()
         _content = StateObject(wrappedValue: ContentStore())
     }
 
@@ -73,6 +76,9 @@ struct RootedForwardApp: App {
                     // How many separate days the app has been opened,
                     // which is what the review prompt leans on.
                     ReviewPrompt().noteLaunch()
+                    // Lets Apple count this install against an advert
+                    // if there was one. Adds no SDK and no identifier.
+                    Task { await InstallAttribution().countInstall() }
                     audio.onFinished = { [weak progress] stopID in
                         progress?.markVisited(stopID)
                         Haptics.success()

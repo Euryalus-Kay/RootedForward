@@ -95,8 +95,9 @@ const SECTIONS: Section[] = [
       {
         heading: "2.3 Information Collected Through the Mobile Application",
         paragraphs: [
-          "None. The Walk Hyde Park application collects no personal information of any kind.",
-          "The entire tour, including every stop, photograph and audio file, is contained in the application when you install it, so it operates offline. The application contains no account system, no sign-in screen, no registration, no analytics library, no crash-reporting library, no advertising identifier and no tracking technology.",
+          "Almost none, and none of it identifies you. The application asks for no name, no email address and no account, and it records nothing about how you use the walk.",
+          "The entire tour, including every stop, photograph and audio file, is contained in the application when you install it, so it operates offline. The application contains no account system, no sign-in screen, no registration, no crash-reporting library and no advertising identifier.",
+          "There is one exception, and it exists because we advertise the application. The application includes Google Analytics for Firebase, which is there so we can tell whether an advertisement led to somebody installing it. When the application is first opened it sends Google a record that an install happened, along with the model of phone, the operating system version, the country and a random identifier generated for that installation. We have defined no events of our own, so which stops you open, how far you walk, what you listen to and how long you stay are not measured and are not sent. The advertising identifier is not collected. That software is not in the application, which is why the application never asks for permission to track you, and the random installation identifier is erased when you delete the application.",
           "Two categories of information exist while you use the application, and both remain on your device. Neither is transmitted to us or to any other party.",
         ],
         defs: [
@@ -526,10 +527,13 @@ export default function PrivacyPage() {
               ]}
             />
             <p className="mt-4 font-body text-[15px] font-semibold leading-[1.75] text-forest">
-              The Walk Hyde Park application collects no personal information of
-              any kind. It contains no account, no sign-in, no analytics and no
-              tracking technology. The provisions below concerning accounts,
-              stored records and disclosure apply to the website only.
+              The Walk Hyde Park application has no account and no sign-in,
+              and it records nothing about how you use the walk. It does
+              report to Google that an install happened, so we can tell
+              whether an advertisement worked, and Section 2.3 sets out
+              exactly what that report contains. The provisions below
+              concerning accounts, stored records and disclosure apply to
+              the website only.
             </p>
           </div>
 

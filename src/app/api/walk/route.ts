@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import {
-  DEFAULT_WALK_SLUG,
-  WALK_TOURS,
-  type WalkTourBundle,
-} from "@/lib/tours/registry";
+import { DEFAULT_WALK_SLUG, type WalkTourBundle } from "@/lib/tours/registry";
+import { loadWalkBundles } from "@/lib/tours/store";
 
 /* ------------------------------------------------------------------ */
 /*  GET /api/walk                 the default walk (Hyde Park)         */
@@ -21,7 +18,19 @@ import {
 /*  safe, since Swift ignores what it does not model; removing or      */
 /*  renaming one is not. `tours` is such a key, and it is how a newer  */
 /*  build discovers Harlem without a second round trip.                */
+/*                                                                     */
+/*  The walks themselves now come from loadWalkBundles(), which reads  */
+/*  the walk_tours table and falls back to the compiled registry when  */
+/*  the database is unreachable. That is why the payloads are built    */
+/*  per request instead of once at import. A module-level map froze    */
+/*  the content to whatever was compiled into the deploy, which is     */
+/*  exactly what the owner should no longer have to redeploy to fix.   */
 /* ------------------------------------------------------------------ */
+
+/** Supabase reads and a per-request payload, so nothing here can be
+ *  rendered once and cached into the build output. */
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const MEDIA_BASE = "https://rooted-forward.org";
 
@@ -36,18 +45,22 @@ function contentVersion(payload: unknown): string {
 
 /** The catalogue every payload carries, so the app can list the walks
  *  it is not currently holding and fetch one on demand. */
-const TOUR_INDEX = WALK_TOURS.map((t) => ({
-  slug: t.slug,
-  title: t.tour.title,
-  dek: t.tour.dek,
-  startLabel: t.tour.startLabel,
-  stopCount: t.tour.stops.filter((s) => !s.optional).length,
-  detourCount: t.tour.stops.filter((s) => s.optional).length,
-  distanceMiles: t.tour.distanceMiles,
-  listenMinutes: t.tour.listenMinutes,
-}));
+function tourIndex(bundles: WalkTourBundle[]) {
+  return bundles.map((t) => ({
+    slug: t.slug,
+    title: t.tour.title,
+    dek: t.tour.dek,
+    startLabel: t.tour.startLabel,
+    stopCount: t.tour.stops.filter((s) => !s.optional).length,
+    detourCount: t.tour.stops.filter((s) => s.optional).length,
+    distanceMiles: t.tour.distanceMiles,
+    listenMinutes: t.tour.listenMinutes,
+  }));
+}
 
-function buildPayload(bundle: WalkTourBundle) {
+type TourIndex = ReturnType<typeof tourIndex>;
+
+function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
   const body = {
     slug: bundle.slug,
     intro: bundle.intro,
@@ -56,37 +69,53 @@ function buildPayload(bundle: WalkTourBundle) {
     map: bundle.map,
   };
   return {
-    version: contentVersion(body),
+    // The version covers the body AND the catalogue, and the second
+    // half is the whole point. An installed app only refetches the
+    // walk it holds, sees a version it already has, and stops. When
+    // the version ignored `tours`, a brand new tour added on the site
+    // stayed invisible until the default walk's own words happened to
+    // change, which could be never. Hashing the catalogue too means
+    // adding a tour moves every walk's version, so the next foreground
+    // pulls the new payload and the new tour appears in the list.
+    version: contentVersion({ body, tours }),
     mediaBase: MEDIA_BASE,
-    tours: TOUR_INDEX,
+    tours,
     ...body,
   };
 }
 
-const PAYLOADS = new Map(
-  WALK_TOURS.map((t) => [t.slug, buildPayload(t)] as const)
-);
-
 /** exported so the iOS snapshot exporter writes the same bytes the
- *  network would return */
-export function walkPayload(slug: string) {
-  return PAYLOADS.get(slug);
+ *  network would return. Async now, because the walks are read from
+ *  the database on demand rather than compiled in. */
+export async function walkPayload(slug: string) {
+  const bundles = await loadWalkBundles();
+  const bundle = bundles.find((b) => b.slug === slug);
+  if (!bundle) return undefined;
+  return buildPayload(bundle, tourIndex(bundles));
 }
 
 export async function GET(request: Request) {
   const slug =
     new URL(request.url).searchParams.get("tour") ?? DEFAULT_WALK_SLUG;
-  const payload = PAYLOADS.get(slug);
-  if (!payload) {
+
+  const bundles = await loadWalkBundles();
+  const bundle = bundles.find((b) => b.slug === slug);
+  if (!bundle) {
     return NextResponse.json(
-      { error: "unknown tour", available: WALK_TOURS.map((t) => t.slug) },
+      { error: "unknown tour", available: bundles.map((b) => b.slug) },
       { status: 404, headers: { "Access-Control-Allow-Origin": "*" } }
     );
   }
-  return NextResponse.json(payload, {
+
+  return NextResponse.json(buildPayload(bundle, tourIndex(bundles)), {
     status: 200,
     headers: {
-      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+      // A minute at the edge, because the owner now edits tours in a
+      // browser and needs to see the change on a phone while still
+      // standing at the stop. The long stale-while-revalidate window
+      // keeps the app answered from cache while the edge refetches, so
+      // a slow database never becomes a slow launch.
+      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=86400",
       "Access-Control-Allow-Origin": "*",
     },
   });

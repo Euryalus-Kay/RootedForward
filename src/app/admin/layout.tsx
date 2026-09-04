@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   MapPin,
+  Footprints,
   Headphones,
   Building2,
   FileText,
@@ -30,6 +31,7 @@ import toast from "react-hot-toast";
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/tours", label: "Tours", icon: MapPin },
+  { href: "/admin/walks", label: "Walks", icon: Footprints },
   { href: "/admin/immersive", label: "Immersive", icon: Waves },
   { href: "/admin/studio", label: "Studio", icon: Clapperboard },
   { href: "/admin/podcasts", label: "Podcasts", icon: Headphones },
