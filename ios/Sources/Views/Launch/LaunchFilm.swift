@@ -32,6 +32,9 @@ struct LaunchFilm: UIViewRepresentable {
     func makeUIView(context: Context) -> PlayerView {
         let view = PlayerView()
         view.backgroundColor = .clear
+        // Decoration only. Touches belong to the opening above it, which
+        // uses a tap to skip ahead.
+        view.isUserInteractionEnabled = false
         guard let url = Self.url else {
             onUnavailable()
             return view

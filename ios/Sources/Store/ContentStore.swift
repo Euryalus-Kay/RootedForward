@@ -287,8 +287,13 @@ final class ContentStore: ObservableObject {
         remote: URL,
         cacheTarget: URL
     ) async -> UIImage? {
+        // UIImage(contentsOfFile:) only reads the file. The JPEG is
+        // decoded the first time it is drawn, on the main thread, which
+        // for a full survey sheet is a dropped frame or three at the
+        // exact moment the picture appears. Decode here, off the main
+        // actor, so the first draw is a texture upload and nothing more.
         if let local, let image = UIImage(contentsOfFile: local.path) {
-            return image
+            return await image.byPreparingForDisplay() ?? image
         }
         guard let (data, response) = try? await URLSession.shared.data(from: remote),
               let http = response as? HTTPURLResponse, http.statusCode == 200,
@@ -296,6 +301,6 @@ final class ContentStore: ObservableObject {
             return nil
         }
         try? data.write(to: cacheTarget, options: .atomic)
-        return image
+        return await image.byPreparingForDisplay() ?? image
     }
 }

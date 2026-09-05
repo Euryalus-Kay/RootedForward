@@ -43,13 +43,14 @@ struct RootedMark: View {
             let dy = (geo.size.height - side) / 2
 
             ZStack {
-                // The ring. A stroke while it draws, a fill once it has.
+                // The ring. A stroke while it draws, then ink pooling out
+                // from the centre until it meets the line.
                 Self.ringPath(s)
-                    .fill(RF.forest.opacity(ringFill))
+                    .fill(RF.forest)
+                    .scaleEffect(max(0.001, ringFill))
                 Self.ringPath(s)
                     .trim(from: 0, to: ring)
                     .stroke(RF.forest, style: StrokeStyle(lineWidth: 5 * s, lineCap: .round))
-                    .opacity(1 - ringFill * 0.999)
 
                 // The roots, held inside the ring the way the SVG clips them.
                 ZStack {
@@ -73,17 +74,19 @@ struct RootedMark: View {
                 }
                 .clipShape(Self.ringPath(s))
 
-                // R, traced then filled.
+                // R, traced, then ink rising from the baseline.
                 Self.rPath(s)
-                    .fill(Self.letterCream.opacity(letterFill), style: FillStyle(eoFill: true))
+                    .fill(Self.letterCream, style: FillStyle(eoFill: true))
+                    .mask(inkRise(s))
                 Self.rPath(s)
                     .trim(from: 0, to: rStroke)
                     .stroke(Self.letterCream, style: StrokeStyle(lineWidth: 2.5 * s, lineCap: .round, lineJoin: .round))
                     .opacity(1 - letterFill)
 
-                // F, traced then filled.
+                // F, the same.
                 Self.fPath(s)
-                    .fill(RF.rust.opacity(letterFill))
+                    .fill(RF.rust)
+                    .mask(inkRise(s))
                 Self.fPath(s)
                     .trim(from: 0, to: fStroke)
                     .stroke(RF.rust, style: StrokeStyle(lineWidth: 2.5 * s, lineCap: .round, lineJoin: .round))
@@ -92,6 +95,16 @@ struct RootedMark: View {
             .offset(x: dx, y: dy)
         }
         .accessibilityHidden(true)
+    }
+
+    /// The letters run from y 88 to 308 in logo units. This rectangle
+    /// sits on their baseline and grows upward with letterFill, so the
+    /// colour reads as ink rising through the traced outline.
+    private func inkRise(_ s: CGFloat) -> some View {
+        Rectangle()
+            .frame(width: 400 * s, height: max(0, letterFill) * 224 * s)
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .offset(y: -90 * s)
     }
 
     // MARK: - Geometry, in the SVG's 400 by 400 space
