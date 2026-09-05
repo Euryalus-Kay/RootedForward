@@ -41,6 +41,14 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rooted-forward.org"),
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
   title: "Rooted Forward | Chicago Neighborhood History and Policy",
   description:
     "Rooted Forward is a student-run Chicago nonprofit. Walking tours of Hyde Park, an online exhibit built from the original documents, a podcast, and housing policy tools.",
