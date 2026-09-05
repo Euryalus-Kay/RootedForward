@@ -15,6 +15,9 @@ struct HomeView: View {
     @State private var showSettings = false
     @State private var scrolled = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// True while the opening is drawing the mark. The masthead keeps
+    /// its own logo invisible until the drawn one has landed on it.
+    @Environment(\.launchInProgress) private var launchInProgress
 
     var body: some View {
         NavigationStack {
@@ -97,6 +100,18 @@ struct HomeView: View {
             Image("LogoMark")
                 .resizable()
                 .frame(width: 28, height: 28)
+                // The opening flies its drawn mark to this exact
+                // rectangle, so it needs to know where that is and
+                // needs this copy out of the way until it arrives.
+                .opacity(launchInProgress ? 0 : 1)
+                .background(
+                    GeometryReader { geo in
+                        Color.clear.preference(
+                            key: MastheadLogoFrameKey.self,
+                            value: geo.frame(in: .global)
+                        )
+                    }
+                )
                 .accessibilityHidden(true)
             Text("Rooted Forward")
                 .font(RF.display(17, weight: 600))

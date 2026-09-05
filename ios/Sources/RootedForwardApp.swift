@@ -65,7 +65,9 @@ struct RootedForwardApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            // Home underneath from the first frame, the opening on top
+            // until it has handed the mark to the masthead.
+            LaunchGate()
                 .environmentObject(content)
                 .environmentObject(progress)
                 .environmentObject(audio)
