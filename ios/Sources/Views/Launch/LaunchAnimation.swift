@@ -10,10 +10,13 @@ import SwiftUI
 // masthead and the survey sheet to the mission, in place, so the home
 // screen is simply what is left when it finishes.
 //
-// Everything is drawn, nothing is played. The mark is vector, the
-// sheet is the same 1940 survey the mission sits on, the grain and
-// the grid are a few hundred rectangles. That is why it is exactly on
-// palette, weighs nothing, and lands to the pixel.
+// The mark is drawn, not played. It is vector, ported path for path
+// from the logo, which is why it is exactly on palette and lands on
+// the masthead to the pixel. The grain and the grid are a few hundred
+// rectangles. The one thing played is the sheet: four silent seconds
+// of the same 1940 survey the mission sits on, with a light passing
+// over it, and it dissolves into the still copy before the handoff
+// so the home screen never sees a frame of film.
 //
 // Under Reduce Motion nothing travels. The finished mark holds for a
 // beat and the screen dissolves into the home page.
@@ -64,6 +67,11 @@ struct LaunchAnimation: View {
     @State private var sceneIn = 0.0
     @State private var sheetScale = 1.42
     @State private var sheetOpacity = 0.0
+    /// The film plays under the mark while it draws, then dissolves
+    /// into the still before the handoff. Absent under Reduce Motion,
+    /// and it drops out if the file is missing or will not decode.
+    @State private var film = LaunchFilm.url != nil
+    @State private var filmOpacity = 0.0
     @State private var gridDrift: CGFloat = 10
     @State private var settle = 1.0
     // the handoff
@@ -92,9 +100,15 @@ struct LaunchAnimation: View {
                 // The survey sheet, placed exactly where the mission
                 // keeps it, so the dissolve at the end is between two
                 // copies of the same picture.
-                sheet(width: width)
-                    .padding(.top, 40)
-                    .opacity(sheetOpacity * sceneOut)
+                ZStack {
+                    sheet(width: width)
+                        .opacity(sheetOpacity * sceneOut)
+                    if film && !reduceMotion {
+                        filmSheet(width: width)
+                            .opacity(filmOpacity * sceneOut)
+                    }
+                }
+                .padding(.top, 40)
 
                 RootedMark(
                     ring: ring, ringFill: ringFill, roots: roots,
@@ -135,6 +149,36 @@ struct LaunchAnimation: View {
                     contentMode: .fill
                 )
                 .scaleEffect(sheetScale)
+                .offset(x: 4, y: -30)
+            }
+            .clipped()
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .clear, location: 0),
+                        .init(color: .black, location: 0.18),
+                        .init(color: .black, location: 0.62),
+                        .init(color: .clear, location: 1),
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+            )
+            .accessibilityHidden(true)
+    }
+
+    /// The film, framed the same way as the still so the dissolve
+    /// between them is between two copies of one picture.
+    private func filmSheet(width: CGFloat) -> some View {
+        Color.clear
+            .frame(width: width, height: 380)
+            .overlay {
+                LaunchFilm(onUnavailable: {
+                    // Fall back to the still, and if the film was the
+                    // thing on screen, bring the still up in its place.
+                    film = false
+                    withAnimation(.easeOut(duration: 0.4)) { sheetOpacity = 0.2 }
+                })
+                .scaleEffect(1.08)
                 .offset(x: 4, y: -30)
             }
             .clipped()
@@ -211,9 +255,19 @@ struct LaunchAnimation: View {
             sceneIn = 1
             gridDrift = 0
         }
-        withAnimation(.easeOut(duration: LaunchTimeline.handoff)) {
-            sheetOpacity = 0.2
+        if film {
+            // The film has its own drift. The still waits, already at
+            // the film's framing, for the dissolve.
             sheetScale = 1.08
+            // A touch stronger than the home screen's 0.2 while the mark
+            // draws, so the light crossing the sheet reads. It dissolves
+            // down to the still at 0.2 before the handoff.
+            withAnimation(.easeOut(duration: 0.7)) { filmOpacity = 0.3 }
+        } else {
+            withAnimation(.easeOut(duration: LaunchTimeline.handoff)) {
+                sheetOpacity = 0.2
+                sheetScale = 1.08
+            }
         }
         // 0.10  The ring draws itself.
         await pause(until: LaunchTimeline.ring)
@@ -229,9 +283,17 @@ struct LaunchAnimation: View {
         withAnimation(.easeInOut(duration: LaunchTimeline.rDuration)) { rStroke = 1 }
         await pause(until: LaunchTimeline.fStroke)
         withAnimation(.easeInOut(duration: LaunchTimeline.fDuration)) { fStroke = 1 }
-        // 1.50  Colour.
+        // 1.50  Colour. The film dissolves into the still here too, so
+        //       by the handoff the sheet is the same still the home
+        //       screen draws and nothing is left playing.
         await pause(until: LaunchTimeline.letterFill)
         withAnimation(.easeOut(duration: 0.32)) { letterFill = 1 }
+        if film {
+            withAnimation(.easeInOut(duration: 0.42)) {
+                filmOpacity = 0
+                sheetOpacity = 0.2
+            }
+        }
         // 1.72  A breath. The mark settles and the phone says so.
         await pause(until: LaunchTimeline.settle)
         Haptics.tap()

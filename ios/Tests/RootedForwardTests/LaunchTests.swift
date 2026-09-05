@@ -44,6 +44,15 @@ final class LaunchTests: XCTestCase {
         XCTAssertLessThan(LaunchTimeline.reducedHold + LaunchTimeline.reducedDissolve, LaunchTimeline.total)
     }
 
+    // MARK: - The film
+
+    func testTheFilmShipsInTheBundle() {
+        // Silent HEVC under Resources/Launch. If this fails the opening
+        // still runs on the still, but that is a quieter launch than
+        // the one that was signed off.
+        XCTAssertNotNil(LaunchFilm.url, "launch-sheet.mp4 is missing from the app bundle")
+    }
+
     // MARK: - The mark
 
     func testEveryPathStaysInsideTheLogoBox() {
