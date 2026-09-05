@@ -47,7 +47,7 @@ struct LaunchFilm: UIViewRepresentable {
         try? AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
         view.playerLayer.player = player
         view.playerLayer.videoGravity = .resizeAspectFill
-        context.coordinator.watch(item, onUnavailable: onUnavailable)
+        context.coordinator.watch(item, player: player, onUnavailable: onUnavailable)
         player.play()
         return view
     }
@@ -58,12 +58,30 @@ struct LaunchFilm: UIViewRepresentable {
 
     final class Coordinator {
         private var observation: NSKeyValueObservation?
-        func watch(_ item: AVPlayerItem, onUnavailable: @escaping () -> Void) {
-            observation = item.observe(\.status, options: [.new]) { item, _ in
+        private var gaveUp = false
+
+        func watch(_ item: AVPlayerItem, player: AVPlayer, onUnavailable: @escaping () -> Void) {
+            observation = item.observe(\.status, options: [.new]) { [weak self] item, _ in
                 if item.status == .failed {
-                    DispatchQueue.main.async { onUnavailable() }
+                    DispatchQueue.main.async { self?.giveUp(player, onUnavailable) }
                 }
             }
+            // The film is decoration. If a device has not started
+            // playing it within a moment, the opening carries on with
+            // the still rather than wait on it.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                guard let self, !self.gaveUp else { return }
+                if player.timeControlStatus != .playing {
+                    self.giveUp(player, onUnavailable)
+                }
+            }
+        }
+
+        private func giveUp(_ player: AVPlayer, _ onUnavailable: () -> Void) {
+            guard !gaveUp else { return }
+            gaveUp = true
+            player.pause()
+            onUnavailable()
         }
     }
 

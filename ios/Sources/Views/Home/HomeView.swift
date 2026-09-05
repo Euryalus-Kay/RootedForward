@@ -18,6 +18,9 @@ struct HomeView: View {
     /// True while the opening is drawing the mark. The masthead keeps
     /// its own logo invisible until the drawn one has landed on it.
     @Environment(\.launchInProgress) private var launchInProgress
+    /// 0 until the opening hands off, then 1. The wordmark and the
+    /// sections ease in on it, each a beat after the last.
+    @Environment(\.launchReveal) private var reveal
 
     var body: some View {
         NavigationStack {
@@ -32,7 +35,9 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         mission
                         tours
+                            .modifier(LaunchReveal(order: 3))
                         footer
+                            .modifier(LaunchReveal(order: 4))
                     }
                     .background(scrollWatcher)
                 }
@@ -116,6 +121,10 @@ struct HomeView: View {
             Text("Rooted Forward")
                 .font(RF.display(17, weight: 600))
                 .foregroundStyle(RF.forest)
+                // Arrives from behind the mark once it has landed.
+                .opacity(reveal)
+                .offset(x: reduceMotion ? 0 : (1 - reveal) * -10)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.45).delay(0.18), value: reveal)
             Spacer()
             Button {
                 showSettings = true
@@ -130,6 +139,7 @@ struct HomeView: View {
             .padding(.trailing, -11)
             .accessibilityLabel("Settings")
             .accessibilityIdentifier("home-settings")
+            .modifier(LaunchReveal(order: 2))
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 6)
@@ -157,6 +167,7 @@ struct HomeView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 44)
                 .accessibilityAddTraits(.isHeader)
+                .modifier(LaunchReveal(order: 1))
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
