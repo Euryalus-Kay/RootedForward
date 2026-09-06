@@ -76,6 +76,14 @@ chicago,hyde park,walking tour,audio tour,history,redlining,obama center,archite
 The first release. Thirteen stops plus three detours, the full audio,
 the 1929 survey map, and offline support.
 
+## What's New (version 2.1, build 26)
+
+Improved site content, analytics and backend speed.
+
+## What's New (version 2.2, build 27)
+
+New opening animation and performance improvements.
+
 ---
 
 ## Age rating questionnaire
