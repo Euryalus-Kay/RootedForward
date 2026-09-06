@@ -11,13 +11,15 @@ no colons inside sentences or titles).
 | Field | Value |
 |---|---|
 | App name | Rooted Forward |
-| Subtitle | Walk Hyde Park audio tour |
+| Subtitle | Self-guided audio tours |
 | Bundle ID | org.rootedforward.walk |
 | SKU | rootedforward-walk-001 |
 | Primary language | English (U.S.) |
 | Primary category | Education |
 | Secondary category | Travel |
 | Price | Free |
+
+Apple counts the word "free" as a price reference (Guideline 2.3.7). It rejected 2.1 on 6 September 2026 for a subtitle that said "Free self-guided audio tours". Keep price words out of the name, subtitle and keywords. The description may say the tours are free.
 | Support URL | https://rooted-forward.org/contact |
 | Marketing URL | https://rooted-forward.org/tours |
 | Privacy policy URL | https://rooted-forward.org/privacy |
