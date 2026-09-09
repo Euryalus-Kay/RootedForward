@@ -175,7 +175,7 @@ const ALL_WALKS: WalkTourBundle[] = [
     page: {
       metaTitle: "Columbia and West Harlem Walking Tour | Rooted Forward",
       metaDescription:
-        "A free self-guided audio tour of Morningside Heights and West Harlem, told in the order it happened, from Columbia's gate on Broadway to the Hudson at West Harlem Piers. Six stops over two and a half miles on how a university, a church and a city decided what would happen to the ground around them, and how the people beside them answered.",
+        "A free self-guided audio tour of Morningside Heights and West Harlem, told in the order it happened, from Columbia's gate on Broadway to the Hudson at West Harlem Piers. Thirteen stops and a detour to City College, on how a university, a church and a city decided what would happen to the ground around them, and how the people living beside them answered.",
       terrain: "sidewalks with real slopes",
       wash: {
         src: "/media/site/columbia-1897-plan.jpg",

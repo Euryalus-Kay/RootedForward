@@ -34,8 +34,6 @@ export const WEST_HARLEM_MAP: WalkMapConfig = {
     { text: "Sakura Park", lat: 40.8129, lng: -73.9622, size: 7 },
     { text: "Columbia University", lat: 40.8072, lng: -73.9622, size: 8 },
     { text: "Grant's Tomb", lat: 40.8134, lng: -73.9645, size: 7 },
-    { text: "Grant Houses", lat: 40.8138, lng: -73.9553, size: 7 },
-    { text: "Morningside Gardens", lat: 40.8117, lng: -73.9585, size: 7 },
   ],
 
   streetLabels: [
@@ -226,11 +224,22 @@ export const WEST_HARLEM_MAP: WalkMapConfig = {
 
   // below unless a neighbor would collide with the label
   stopLabelSide: {
-    "columbia-campus": "left",
+    "columbia-gate": "left",
+    "furnald-hall": "left",
+    "hamilton-hall": "right",
+    "morningside-overlook": "right",
     "morningside-park": "right",
-    "gardens-grant": "right",
+    "institutions": "left",
     "riverside-church": "left",
+    "morningside-gardens": "left",
+    "grant-houses": "right",
+    "city-college": "right",
+    "prentis-hall": "left",
     "manhattanville": "right",
+    "under-the-viaduct": "left",
     "west-harlem-piers": "left",
   },
+
+  detourLegend:
+    "The green detour runs north on Amsterdam Avenue to City College",
 };

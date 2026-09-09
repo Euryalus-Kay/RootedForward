@@ -80,11 +80,11 @@ const ALL_LISTINGS: TourListing[] = [
     neighborhood: "West Harlem",
     path: "/tours/west-harlem-walk",
     blurb:
-      "The tour goes through Morningside Heights and the West Harlem blocks below it, stopping where Columbia University, Riverside Church and the city decided what would happen to the ground around them and where the people living beside them answered. It starts at Columbia's gate on Broadway and ends on the Hudson at West Harlem Piers.",
+      "The tour goes through Morningside Heights and the West Harlem blocks below it, stopping at the places where Columbia University, Riverside Church and the city decided what would happen to the ground around them, and where the people living beside them answered. It starts at Columbia's gate on Broadway, goes around the campus and down to Morningside Park, and ends on the Hudson at West Harlem Piers.",
     facts: [
-      { label: "Stops", value: "6" },
-      { label: "On foot", value: "About 2.5 miles" },
-      { label: "Audio", value: "About 20 minutes" },
+      { label: "Stops", value: "13, plus 1 detour" },
+      { label: "On foot", value: "About 3 miles" },
+      { label: "Audio", value: "About 36 minutes" },
       { label: "Price", value: "Free" },
     ],
     image: {
