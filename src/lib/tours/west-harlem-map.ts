@@ -22,7 +22,7 @@ export const WEST_HARLEM_MAP: WalkMapConfig = {
   // ink. It still shows the 125th Street ferry and the blocks that
   // Morningside Gardens and Grant Houses replaced.
   baseMapSrc: "/media/west-harlem-walk/map-base-1947.jpg",
-  areaName: "Morningside Heights and West Harlem",
+  areaName: "West Harlem",
 
   placeLabels: [
     { text: "Hudson River", lat: 40.8135, lng: -73.9695, size: 12 },
