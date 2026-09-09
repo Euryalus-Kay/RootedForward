@@ -1,16 +1,8 @@
 {
-  "columbia-gate": 127,
-  "furnald-hall": 162,
-  "hamilton-hall": 154,
-  "morningside-overlook": 136,
-  "morningside-park": 138,
-  "institutions": 161,
-  "riverside-church": 169,
-  "morningside-gardens": 229,
-  "grant-houses": 161,
-  "city-college": 165,
-  "prentis-hall": 100,
-  "manhattanville": 200,
-  "under-the-viaduct": 102,
-  "west-harlem-piers": 142
+  "furnald-hall": 211,
+  "morningside-park": 285,
+  "riverside-church": 220,
+  "gardens-grant": 313,
+  "manhattanville": 295,
+  "west-harlem-piers": 157
 }

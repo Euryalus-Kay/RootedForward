@@ -224,22 +224,11 @@ export const WEST_HARLEM_MAP: WalkMapConfig = {
 
   // below unless a neighbor would collide with the label
   stopLabelSide: {
-    "columbia-gate": "left",
     "furnald-hall": "left",
-    "hamilton-hall": "right",
-    "morningside-overlook": "right",
     "morningside-park": "right",
-    "institutions": "left",
     "riverside-church": "left",
-    "morningside-gardens": "left",
-    "grant-houses": "right",
-    "city-college": "right",
-    "prentis-hall": "left",
+    "gardens-grant": "right",
     "manhattanville": "right",
-    "under-the-viaduct": "left",
     "west-harlem-piers": "left",
   },
-
-  detourLegend:
-    "The green detour runs north on Amsterdam Avenue to City College",
 };
