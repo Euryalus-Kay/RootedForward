@@ -10,7 +10,7 @@
 /*  the page instead, without a route attached.                        */
 /* ------------------------------------------------------------------ */
 
-import { HARLEM_LIVE } from "./registry";
+import { HARLEM_LIVE, WEST_HARLEM_LIVE } from "./registry";
 
 export interface TourListing {
   slug: string;
@@ -73,10 +73,33 @@ const ALL_LISTINGS: TourListing[] = [
         "The Hotel Theresa in 1913, the year it opened and the first stop on the walk. Published in Architecture and Building, November 1913, via Wikimedia Commons. Public domain.",
     },
   },
+  {
+    slug: "west-harlem",
+    title: "Walk Columbia and West Harlem",
+    city: "New York",
+    neighborhood: "West Harlem",
+    path: "/tours/west-harlem-walk",
+    blurb:
+      "The tour goes through Morningside Heights and the West Harlem blocks below it, stopping where Columbia University, Riverside Church and the city decided what would happen to the ground around them and where the people living beside them answered. It starts at Columbia's gate on Broadway and ends on the Hudson at West Harlem Piers.",
+    facts: [
+      { label: "Stops", value: "6" },
+      { label: "On foot", value: "About 2.5 miles" },
+      { label: "Audio", value: "About 20 minutes" },
+      { label: "Price", value: "Free" },
+    ],
+    image: {
+      src: "/media/west-harlem-walk/manhattanville-1937-abbott.jpg",
+      alt: "A black and white photograph beneath the Riverside Drive viaduct at 125th Street and 12th Avenue in 1937, its steel structure overhead and the signs of wholesalers below",
+      credit:
+        "Under the Riverside Drive viaduct at 125th Street, 1937, on the route to the last stop. Photograph by Berenice Abbott for Changing New York. New York Public Library, via Wikimedia Commons. Public domain.",
+    },
+  },
 ];
 
 /** Only the walks that are actually announced. The switch lives in
  *  registry.ts so there is one of it. */
-export const TOUR_CATALOG: TourListing[] = ALL_LISTINGS.filter(
-  (t) => t.slug !== "harlem" || HARLEM_LIVE
-);
+export const TOUR_CATALOG: TourListing[] = ALL_LISTINGS.filter((t) => {
+  if (t.slug === "harlem") return HARLEM_LIVE;
+  if (t.slug === "west-harlem") return WEST_HARLEM_LIVE;
+  return true;
+});

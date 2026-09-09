@@ -57,6 +57,11 @@ const TOURS = {
     counties: ["36061", "36005"],
     frame: { latMin: 40.798, latMax: 40.838, lngMin: -73.975, lngMax: -73.92 },
   },
+  "west-harlem": {
+    out: "src/lib/tours/west-harlem-geometry.json",
+    counties: ["36061"],
+    frame: { latMin: 40.798, latMax: 40.824, lngMin: -73.975, lngMax: -73.945 },
+  },
 };
 
 const tourArg = (() => {

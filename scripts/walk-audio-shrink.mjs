@@ -20,7 +20,7 @@ import { readdirSync, statSync, renameSync, unlinkSync } from "node:fs";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
-const WALKS = ["hyde-park-walk", "harlem-walk"];
+const WALKS = ["hyde-park-walk", "harlem-walk", "west-harlem-walk"];
 const BITRATE = "64k";
 const RATE = "32000";
 const CHECK = process.argv.includes("--check");

@@ -35,6 +35,10 @@ const TOURS = {
     data: "src/lib/tours/harlem-walk.ts",
     out: "public/media/harlem-walk/audio",
   },
+  "west-harlem": {
+    data: "src/lib/tours/west-harlem-walk.ts",
+    out: "public/media/west-harlem-walk/audio",
+  },
 };
 function argEarly(name, def = null) {
   const i = process.argv.indexOf(`--${name}`);
@@ -71,10 +75,12 @@ if (!key) {
 }
 
 // A guide walking beside you, not a documentary narrator.
+// The city, so the base read does not call Harlem a Chicago neighborhood.
+const CITY = { "hyde-park": "Chicago", "jackson-park": "Chicago", harlem: "New York", "west-harlem": "New York" }[tourName];
 const BASE_INSTRUCTIONS =
-  "You are a friendly, knowledgeable local guide leading a self-paced walking tour of a Chicago neighborhood, speaking to one listener through their headphones. " +
+  `You are a friendly, knowledgeable local guide leading a self-paced walking tour of a ${CITY} neighborhood, speaking to one listener through their headphones. ` +
   "Warm, unhurried, conversational, like showing a friend around a place you love. Natural pauses between sentences; a slightly longer, easy breath between paragraphs. " +
-  "Serious and quiet on the painful history, never solemn or theatrical. Never chirpy, never robotic, never salesy. Plain American English; pronounce Chicago names naturally. " +
+  `Serious and quiet on the painful history, never solemn or theatrical. Never chirpy, never robotic, never salesy. Plain American English; pronounce ${CITY} names naturally. ` +
   "Numbers and years read out clearly and calmly. ";
 
 // Per-stop coloring on top of the base read. Keyed by tour, then stop.
@@ -116,6 +122,14 @@ const TONE_SETS = {
     15: "After Dunbar this one lifts, and it should. Real pleasure that the first federally built housing for Black tenants is good architecture with trees and courtyards. John Louis Wilson Jr. gets his name said properly. Careful and plain on the application figures and on naming which source gives which number. End warm.",
     16: "Sugar Hill, so open with the view and the height and who lived here. Then the appraiser: read the form's own words, good condition and trend of desirability static to down, in a flat clerk's register, because the gap between what he saw and what he wrote is the whole point. Lift at the end for the tenants who own the building now.",
     17: "The present tense, and the tour ends on a question rather than a verdict. Steady and careful with the population figures, including the caution about survey variation. The hearse down Lenox Avenue is described, not dramatised. Read the two June 2026 events side by side and let the listener decide. End open, and thank them.",
+  },
+  "west-harlem": {
+    1: "The welcome, outside a gate the listener cannot go through. Settled and glad they came, a guide who knows the campus from the sidewalk. Enjoy the 1897 guide's confidence about raising the ground so the buildings would show above the street. Then slow and steady for Wells; the cross burning is read plainly, no drama, and 'He stayed in his room' stands alone. The race question on the 1925 application is a record being read out. End quiet and pointed toward the park.",
+    2: "Start with the ground, the drop and the rock, so the listener looks down at the pond before they know what it is. Explain the cross-section like someone tracing it with a finger, and say Gym Crow the way the protesters said it, without a sneer. Real respect for Suki Terada Ports and Christiane Collins and the West Harlem Community Organization, who were there first. Steady on the Hamilton Hall split; that is a decision being explained, not a quarrel. Let 'The pond occupies the site of the gym that residents and students stopped' land and stop.",
+    3: "The longest stop and the most careful. Even and exact throughout. The Munnecke paragraph is the hinge of the whole project, so read the last two sentences slowly; the second one is an instruction being quoted back. The Guardian and the letter that answered it get equal weight, two neighbors disagreeing about how to get a better home. Read the cooperative figures like a clerk, $750 and $21 and $3,000 and $84, each number clean. The twenty percent paragraph is level, no editorial. Warm at last for Antonia Pantoja in her living room.",
+    4: "Scale first, the tallest thing on the ridge, then the two sentences about fellowship and land read without any lift. Real weight for King, unhurried, and the paragraph about the condemnation is a fact of record. Forman arrives as an interruption, so let the pace change; the manifesto's demands are read straight, including the sentence about force, without softening or relish. The organ playing over him is described, not dramatised. End on the disagreement that remained, quiet.",
+    5: "Under the elevated, so the voice can be a little brighter and closer to the street. Enjoy the stable and the milk horses. Then a planner's evenness for the seventeen acres and the community board's plan, two proposals side by side. The court decision is read as a decision. The dollar figures in the agreement are read cleanly and the caution after them is part of the sentence, not an aside. Warm and slow for Hilda Muentes photographing her kitchen window, and let the last sentence about the different building farther uptown sit.",
+    6: "The finale, on the river, and after five stops of institutions this one belongs to residents. Open easy, glad the walk ends somewhere pleasant. The hotel and the motel are named plainly. Real pleasure that Sarah Martin and Joan Levine turn up here, connecting the walk to the third stop. Gentle on the ribbon-cutting and the paddles and the sculptures. Read the closing sentence about a decision and a response slowly, with a beat before it, and end warm on the thanks.",
   },
   "jackson-park": {
     1: "This is the welcome. Bright but settled, glad the listener showed up. Let the last paragraph slow slightly as the history opens up.",

@@ -18,10 +18,14 @@ import { HYDE_PARK_WALK } from "./hyde-park-walk";
 import { HARLEM_WALK } from "./harlem-walk";
 import { HYDE_PARK_MAP } from "./hyde-park-map";
 import { HARLEM_MAP } from "./harlem-map";
+import { WEST_HARLEM_WALK } from "./west-harlem-walk";
+import { WEST_HARLEM_MAP } from "./west-harlem-map";
 import { WALK_INTRO } from "@/components/tours/walk/WalkIntro";
 import { HARLEM_INTRO } from "@/components/tours/walk/HarlemIntro";
+import { WEST_HARLEM_INTRO } from "@/components/tours/walk/WestHarlemIntro";
 import hydeParkGeometry from "./hyde-park-geometry.json";
 import harlemGeometry from "./harlem-geometry.json";
+import westHarlemGeometry from "./west-harlem-geometry.json";
 
 export interface WalkIntroDoc {
   title: string;
@@ -84,6 +88,14 @@ export interface WalkTourBundle {
 /*  else needs editing.                                                */
 /* ------------------------------------------------------------------ */
 export const HARLEM_LIVE = false;
+
+/* ------------------------------------------------------------------ */
+/*  Walk Columbia and West Harlem is the New York walk. It replaced   */
+/*  the earlier Harlem route above, which stays in the repo behind   */
+/*  its switch. This one has its own, so it can be built and served  */
+/*  locally before it is announced.                                  */
+/* ------------------------------------------------------------------ */
+export const WEST_HARLEM_LIVE = true;
 
 const ALL_WALKS: WalkTourBundle[] = [
   {
@@ -152,11 +164,44 @@ const ALL_WALKS: WalkTourBundle[] = [
       },
     },
   },
+  {
+    slug: "west-harlem",
+    path: "/tours/west-harlem-walk",
+    mediaDir: "/media/west-harlem-walk",
+    tour: WEST_HARLEM_WALK,
+    intro: WEST_HARLEM_INTRO,
+    geometry: westHarlemGeometry as WalkGeometry,
+    map: WEST_HARLEM_MAP,
+    page: {
+      metaTitle: "Columbia and West Harlem Walking Tour | Rooted Forward",
+      metaDescription:
+        "A free self-guided audio tour of Morningside Heights and West Harlem, told in the order it happened, from Columbia's gate on Broadway to the Hudson at West Harlem Piers. Six stops over two and a half miles on how a university, a church and a city decided what would happen to the ground around them, and how the people beside them answered.",
+      terrain: "sidewalks with real slopes",
+      wash: {
+        src: "/media/site/columbia-1897-plan.jpg",
+        alt: "The plan of Columbia's new campus site between Riverside Park and Morningside Park, from the university's 1897 guide",
+      },
+      related: {
+        heading: "The other walk",
+        body: "Walk Hyde Park covers the same century on Chicago's South Side, from Paul Cornell's stone to Harper Court. The University of Chicago's adviser to Morningside Heights appears on both.",
+        links: [
+          {
+            label: "Walk Hyde Park",
+            href: "/tours/hyde-park-walk",
+            primary: true,
+          },
+          { label: "Read the Chicago exhibit", href: "/tours/chicago/hyde-park" },
+        ],
+      },
+    },
+  },
 ];
 
-export const WALK_TOURS: WalkTourBundle[] = ALL_WALKS.filter(
-  (t) => t.slug !== "harlem" || HARLEM_LIVE
-);
+export const WALK_TOURS: WalkTourBundle[] = ALL_WALKS.filter((t) => {
+  if (t.slug === "harlem") return HARLEM_LIVE;
+  if (t.slug === "west-harlem") return WEST_HARLEM_LIVE;
+  return true;
+});
 
 /** The walk /api/walk serves when no tour is named. The iPhone build
  *  already with Apple asks for exactly that URL and knows nothing
