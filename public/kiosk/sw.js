@@ -10,12 +10,25 @@
 /*  forever.                                                           */
 /* ------------------------------------------------------------------ */
 
-const CACHE = "rf-kiosk-v1";
+const CACHE = "rf-kiosk-v2";
 const ASSETS = ["/kiosk/map", "/kiosk/map-kiosk.html"];
 
+/* Precache with cache:"reload" rather than addAll. addAll goes through the
+   browser's own HTTP cache, so a returning machine could install a brand new
+   service worker and then fill it with the PREVIOUS bundle, which is the one
+   failure that looks exactly like a deploy that did not happen. */
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches
+      .open(CACHE)
+      .then((c) =>
+        Promise.all(
+          ASSETS.map((u) =>
+            fetch(u, { cache: "reload" }).then((r) => (r.ok ? c.put(u, r) : null))
+          )
+        )
+      )
+      .then(() => self.skipWaiting())
   );
 });
 
