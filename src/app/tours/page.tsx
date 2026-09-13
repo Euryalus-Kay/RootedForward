@@ -352,13 +352,12 @@ export default function ToursPage() {
           <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
             <div>
               <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
-                Or walk Hyde Park with a guide
+                Or take a walking tour of Hyde Park with us
               </h2>
               <p className="mt-5 max-w-[52ch] font-body text-base leading-relaxed text-ink/75">
-                Our student researchers run the same route in person for small
-                groups, about two hours, working from the documents the app is
-                built on. You can ask them questions the recording cannot
-                answer.
+                At Rooted Forward we run walking tours of the same areas of Hyde
+                Park the app covers. Our student researchers lead them and they
+                run about two hours.
               </p>
               <a
                 href="https://www.viator.com/tours/Chicago/Hyde-Park-Walking-Tour-History-Race-and-Urban-Change/d673-5645710P1"
