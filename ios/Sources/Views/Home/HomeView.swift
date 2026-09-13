@@ -12,6 +12,8 @@ struct HomeView: View {
     @EnvironmentObject private var progress: ProgressStore
 
     @State private var tourTarget: TourTarget?
+    /// The feature plate's information sheet, which leads to the map.
+    @State private var featureTarget: WalkFeature?
     @State private var showSettings = false
     @State private var scrolled = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -34,10 +36,11 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         mission
+                        onView
                         tours
-                            .modifier(LaunchReveal(order: 3))
-                        footer
                             .modifier(LaunchReveal(order: 4))
+                        footer
+                            .modifier(LaunchReveal(order: 5))
                     }
                     .background(scrollWatcher)
                 }
@@ -80,6 +83,9 @@ struct HomeView: View {
         }
         .fullScreenCover(item: $tourTarget) { target in
             TourView(startAt: target.index, openPlate: target.plate, startOnIntro: target.onIntro)
+        }
+        .sheet(item: $featureTarget) { feature in
+            LookCloserIntro(feature: feature)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -202,6 +208,25 @@ struct HomeView: View {
                     )
                 )
                 .accessibilityHidden(true)
+        }
+    }
+
+    // MARK: - On view
+
+    /// What the site is putting on the front door besides the walks,
+    /// today the 1931 map on the Chicago Maritime Museum's wall. One
+    /// short plate, not a full card, because the tours heading has to
+    /// stay on the first screen under it: a visitor should see that
+    /// there is a map and that there are walks without scrolling.
+    @ViewBuilder
+    private var onView: some View {
+        if let feature = content.featured {
+            FeaturePlate(feature: feature) {
+                featureTarget = feature
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 36)
+            .modifier(LaunchReveal(order: 3))
         }
     }
 

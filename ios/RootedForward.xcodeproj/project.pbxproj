@@ -42,6 +42,7 @@
 		B023FFDD895EFF32CC2E6DE9 /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DA49CAA447A4524E9096B /* ReviewPrompt.swift */; };
 		B4AA33BF8A9AA740C036FD1E /* LaunchAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A004314EF6C7981229550FB /* LaunchAnimation.swift */; };
 		BA0B2EED505EE50DF1813E71 /* ZoomPan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EE6FF58C72D1ABE36BB51F /* ZoomPan.swift */; };
+		BB939E6B7A55219CC7F3B29D /* LookCloserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC3951C6F369EEE95184C7F /* LookCloserScreen.swift */; };
 		C56E42FE04362158F82E5CCC /* ReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0CA3DF6AF096DBEFB27955 /* ReviewPromptTests.swift */; };
 		CF059D3B16C1381EB501B6FF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = E16CB38A946AB51CC5FB8F11 /* Fonts */; };
 		D615C9049ECB482C332103F7 /* VideoPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94C28B4DC6DC0CFFFB56D50 /* VideoPlate.swift */; };
@@ -84,6 +85,7 @@
 		24F7BCB31C56F323925CB65F /* LaunchFilm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchFilm.swift; sourceTree = "<group>"; };
 		2A3CEF6483FAE221E268D250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E907FBC06E8B34CDCAC3E91 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		2FC3951C6F369EEE95184C7F /* LookCloserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookCloserScreen.swift; sourceTree = "<group>"; };
 		3A004314EF6C7981229550FB /* LaunchAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAnimation.swift; sourceTree = "<group>"; };
 		407C1BACCEEAAD9A997CCBDA /* IntroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPage.swift; sourceTree = "<group>"; };
 		41860DE2B10E64E8C18F61C8 /* BetaEditingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaEditingTests.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			children = (
 				1E9F27DBE57BA6C13F4A1E43 /* HomeView.swift */,
 				230B46FA53532098F1F96766 /* InfoSheetView.swift */,
+				2FC3951C6F369EEE95184C7F /* LookCloserScreen.swift */,
 				E2F8AA06FC9E48322A85E49E /* TourDetailView.swift */,
 			);
 			path = Home;
@@ -461,6 +464,7 @@
 				D8E27288F9C87C00F2D89D68 /* LaunchFilm.swift in Sources */,
 				1977D4E6E3C01C61F8E7C48C /* LaunchGate.swift in Sources */,
 				4698EBC9F5FAEC9B1B2ADFC8 /* LocationService.swift in Sources */,
+				BB939E6B7A55219CC7F3B29D /* LookCloserScreen.swift in Sources */,
 				3B31FB6C6CAAAA0CB29C73EC /* MapSheetView.swift in Sources */,
 				649BAC5C02C60B2A02387100 /* Measurement.swift in Sources */,
 				443D423CC87E0E8E14431C61 /* PhotoViewer.swift in Sources */,
@@ -590,7 +594,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = Q3J68NFZCP;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -600,7 +604,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.rootedforward.walk;
 				PRODUCT_NAME = RootedForward;
 				SDKROOT = iphoneos;
@@ -633,7 +637,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = Q3J68NFZCP;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -643,7 +647,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.rootedforward.walk;
 				PRODUCT_NAME = RootedForward;
 				SDKROOT = iphoneos;

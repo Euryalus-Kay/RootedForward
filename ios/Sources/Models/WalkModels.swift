@@ -23,8 +23,50 @@ struct WalkPayload: Codable, Equatable {
     /// How this walk's map is dressed. Absent in older payloads, where
     /// the canvas falls back to its built-in Hyde Park labels.
     let map: WalkMapConfig?
+    /// What the front door shows above the walks while something is
+    /// on, today the 1931 map on the Chicago Maritime Museum's wall.
+    /// Absent in older payloads and whenever the site has nothing on.
+    let featured: WalkFeature?
 
     var id: String { slug ?? "hyde-park" }
+}
+
+/// A thing the site wants on the app's front door besides the walks,
+/// and the partner it belongs to. Mirrors LOOK_CLOSER_FEATURE in
+/// src/lib/look-closer.ts, so the wording is the site's to change.
+struct WalkFeature: Codable, Equatable, Identifiable {
+    let id: String
+    let title: String
+    /// one plain line under the title
+    let line: String
+    /// the short flag over the title, "Now on view"
+    let note: String
+    /// a site media path, the whole map
+    let image: String
+    let imageAlt: String
+    /// the page the feature opens, full screen and sideways
+    let url: String
+    let partner: WalkFeaturePartner
+    /// the paragraphs of the information sheet, the map and the
+    /// collaboration in the site's words; absent in older payloads
+    let about: [String]?
+    /// the map's credit line, printed small under the sheet
+    let credit: String?
+}
+
+struct WalkFeaturePartner: Codable, Equatable {
+    let name: String
+    /// a site media path, the partner's round mark
+    let logo: String
+    let url: String
+    /// the partner's own ink as a hex string, "#0076B4"
+    let accent: String
+    /// where to plan the in-person visit; falls back to `url`
+    let visitUrl: String?
+    /// the place, short, "1200 West 35th Street, Bridgeport"
+    let place: String?
+    /// the hours, short, "Tuesday to Sunday, 10 to 4"
+    let hours: String?
 }
 
 struct WalkTourSummary: Codable, Equatable, Identifiable {

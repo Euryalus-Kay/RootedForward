@@ -101,6 +101,13 @@ export const HARLEM_LIVE = false;
 /* ------------------------------------------------------------------ */
 export const WEST_HARLEM_LIVE = true;
 
+/** Walks the site shows but the app must not, by slug. The app lists
+ *  whatever /api/walk's index carries, so a walk here never reaches a
+ *  phone, installed builds included, even while its page stays up on
+ *  the site. The Columbia and West Harlem walk is here because its
+ *  words are still out for editing (owner, September 13, 2026). */
+export const APP_HIDDEN_SLUGS: string[] = ["west-harlem"];
+
 /* ------------------------------------------------------------------ */
 /*  Walk Dallas is the third city. Six stops from Deep Ellum to       */
 /*  Freedman's Memorial. Same switch as the others, so it can be      */

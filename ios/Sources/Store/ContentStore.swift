@@ -40,6 +40,13 @@ final class ContentStore: ObservableObject {
     @Published private(set) var selected: String
     @Published private(set) var lastRefresh: Date?
 
+    /// What the site is putting on the front door besides the walks.
+    /// Every payload carries the same one, so the default walk's copy
+    /// is read first and any other stands in when that one is old.
+    var featured: WalkFeature? {
+        payloads[DEFAULT_SLUG]?.featured ?? payloads.values.compactMap(\.featured).first
+    }
+
     /// The walks on offer, whether or not they are loaded yet. Read off
     /// whichever payload carries the index; older ones carry none, so
     /// this falls back to what is actually in hand.
