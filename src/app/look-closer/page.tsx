@@ -71,9 +71,9 @@ export default function LookCloserPage() {
                 </p>
               ))}
 
-              {/* The door to the map. The kiosk is a 16:9 stage, so a
-                  phone has to be turned; the map page says so itself in
-                  portrait, and this says so first. */}
+              {/* The door to the map. The kiosk is a 16:9 stage built
+                  for a big screen; on the site a phone is turned away to
+                  the app, and the map page says so itself. */}
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <Link
                   href={MAP_PATH}
@@ -81,8 +81,8 @@ export default function LookCloserPage() {
                 >
                   Open the map
                 </Link>
-                <p className="max-w-[26ch] font-body text-sm leading-snug text-ink/70">
-                  On a phone, turn it sideways. The map only opens the long way round.
+                <p className="max-w-[30ch] font-body text-sm leading-snug text-ink/70">
+                  Built for a desktop screen. On a phone, open it in the Rooted Forward app.
                 </p>
               </div>
 

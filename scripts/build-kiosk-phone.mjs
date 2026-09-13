@@ -2,9 +2,12 @@
 /* ------------------------------------------------------------------ */
 /*  build-kiosk-phone.mjs                                              */
 /*                                                                     */
-/*  The phone copy of the map kiosk. The owner wants the software on   */
-/*  the museum's wall, unchanged, to be what a phone opens too, with   */
-/*  the exhibit's words on a page of their own. This takes the built   */
+/*  The map kiosk for the site and the app. The owner wants the       */
+/*  software on the museum's wall, unchanged, to be what opens from   */
+/*  the site and the app, with the exhibit's words on a page of their  */
+/*  own. On the site a phone is turned away: the stage is built for a  */
+/*  big screen, so a phone in a browser gets a notice to view it on a  */
+/*  desktop or in the app. The app opens it sideways. This takes the built   */
 /*  kiosk (public/kiosk/map-kiosk.html), removes the wall's behaviour   */
 /*  that makes no sense in a hand, the four-minute idle reset, the     */
 /*  fullscreen grab, the service worker and the nightly update pull,   */
@@ -56,20 +59,36 @@ const css = [
   "#rf-rotate .ask{font-weight:600;font-size:17px;line-height:1.3;color:#1E1D1B;margin:32px 0 0}",
   "#rf-rotate .note{font-size:13px;line-height:1.45;color:#6B675D;margin:10px 0 0;max-width:34ch}",
   "#rf-rotate a{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;color:#B04E31;font-weight:600;text-decoration:none;font-size:14px}",
+  "#rf-rotate.deny{display:flex}",
+  "#rf-rotate .desk{width:64px;height:44px;margin:34px auto 0;border:3px solid #1E1D1B;border-radius:6px;position:relative}",
+  "#rf-rotate .desk:after{content:'';position:absolute;left:50%;bottom:-14px;width:28px;height:11px;margin-left:-14px;border:3px solid #1E1D1B;border-top:0;border-radius:0 0 4px 4px}",
+  "#rf-rotate .links{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:22px}",
+  "#rf-rotate .links a{position:static}",
 ].join("");
 
 const phoneBlock = `${PHONE_MARK}
 <script>
 (function () {
   var inApp = /[?&]app=1(&|$)/.test(location.search);
+  // a phone: a touch screen whose longer side is under a tablet's
+  var phone = false;
+  try { phone = window.matchMedia("(pointer: coarse)").matches && Math.max(screen.width, screen.height) < 960; } catch (e) {}
+  var deny = phone && !inApp;
   var CSS = ${JSON.stringify(css)};
-  var HTML = '<div class="marks"><img src="/logo.svg" alt="Rooted Forward"><span class="amp">&amp;</span><img src="/media/look-closer/cmm-logo.png" alt="Chicago Maritime Museum"></div>'
+  var HEAD = '<div class="marks"><img src="/logo.svg" alt="Rooted Forward"><span class="amp">&amp;</span><img src="/media/look-closer/cmm-logo.png" alt="Chicago Maritime Museum"></div>'
     + '<h1>Look Closer</h1>'
-    + '<p class="sub">An Illustrated Map of Chicago, 1931, on view at the Chicago Maritime Museum</p>'
-    + '<div class="phone" aria-hidden="true"></div>'
-    + '<p class="ask">Turn your phone sideways to open the map.</p>'
-    + '<p class="note">The map is wider than it is tall, and every joke on it is small. It only opens the long way round.</p>'
-    + (inApp ? '' : '<a href="/look-closer">Back to Look Closer</a>');
+    + '<p class="sub">An Illustrated Map of Chicago, 1931, on view at the Chicago Maritime Museum</p>';
+  var HTML = deny
+    ? HEAD
+      + '<div class="desk" aria-hidden="true"></div>'
+      + '<p class="ask">Please view the map on a desktop.</p>'
+      + '<p class="note">The interactive map is built for a large screen. On a phone, open it in the Rooted Forward app instead.</p>'
+      + '<div class="links"><a href="/look-closer">Back to Look Closer</a><a href="/tours">Get the app</a></div>'
+    : HEAD
+      + '<div class="phone" aria-hidden="true"></div>'
+      + '<p class="ask">Turn your phone sideways to open the map.</p>'
+      + '<p class="note">The map is wider than it is tall, and every joke on it is small. It only opens the long way round.</p>'
+      + (inApp ? '' : '<a href="/look-closer">Back to Look Closer</a>');
   function ensure() {
     try {
       if (document.getElementById("rf-rotate")) return;
@@ -78,6 +97,7 @@ const phoneBlock = `${PHONE_MARK}
       st.textContent = CSS;
       var d = document.createElement("div");
       d.id = "rf-rotate";
+      if (deny) d.className = "deny";
       d.innerHTML = HTML;
       (document.head || document.documentElement).appendChild(st);
       (document.body || document.documentElement).appendChild(d);
