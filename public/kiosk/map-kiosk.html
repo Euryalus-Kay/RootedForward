@@ -33,7 +33,7 @@
     lastOutcome: null
   });
   var timer = null;
-  var wentFullscreen = false;
+  var lastFullscreenTry = 0;
   // Set when a newer build has been pulled and cached but not yet shown.
   // It is applied at the next natural break rather than under someone's hand.
   var pendingUpdate = false;
@@ -92,13 +92,21 @@
     window.addEventListener(ev, arm, true);
   });
 
+  // Asked for on every touch that finds the page out of fullscreen, not
+  // only the first one. A reload drops the fullscreen state, and since no
+  // browser grants fullscreen without a gesture, the next touch is the only
+  // chance to take it back. Chrome launched with --kiosk, which is how the
+  // museum machine runs, is fullscreen at the window level and never loses
+  // it here; this is the safety net for every other way of opening the page.
   window.addEventListener(
     "pointerdown",
     function () {
-      if (wentFullscreen) return;
-      wentFullscreen = true;
+      if (document.fullscreenElement) return;
+      var now = Date.now();
+      if (now - lastFullscreenTry < 3000) return; // do not hammer a refusal
+      lastFullscreenTry = now;
       var el = document.documentElement;
-      if (!document.fullscreenElement && el && el.requestFullscreen) {
+      if (el && el.requestFullscreen) {
         el.requestFullscreen().catch(function () {});
       }
     },
@@ -151,13 +159,35 @@
   function pullUpdate() {
     // The double-click copy has no server behind it and nothing to pull.
     if (location.protocol.indexOf("http") !== 0) return Promise.resolve("offline-copy");
+    // Cheap early out. Saves reading and comparing seven megabytes out of
+    // the cache every time the check runs with the cable unplugged.
+    if (navigator.onLine === false) return Promise.resolve("unreachable");
     api.lastCheck = Date.now();
+
+    // A captive portal can accept the connection and then never answer.
+    // Without this the check would hang forever and never retry.
+    var abort = null;
+    var timer = null;
+    try {
+      abort = new AbortController();
+      timer = setTimeout(function () {
+        abort.abort();
+      }, 30000);
+    } catch (e) {}
 
     // rf-fresh is the door in the service worker that reaches the network.
     // Without it the worker answers from cache and the check is worthless.
-    return fetch(KIOSK_PATH + "?rf-fresh=" + Date.now(), { cache: "reload" })
+    return fetch(KIOSK_PATH + "?rf-fresh=" + Date.now(), {
+      cache: "reload",
+      signal: abort ? abort.signal : undefined
+    })
       .then(function (res) {
+        if (timer) clearTimeout(timer);
         if (!res || !res.ok) return "unreachable";
+        // The worker sets this when the network failed and it answered from
+        // the cache instead. Comparing that against the cache would always
+        // say "unchanged" and wrongly count as a completed check.
+        if (res.headers && res.headers.get("X-RF-From-Cache")) return "unreachable";
         return res.text().then(function (fresh) {
           if (!fresh || fresh.length < MIN_CHARS) return "bad-response";
           return kioskCache().then(function (c) {
@@ -184,6 +214,7 @@
         });
       })
       .catch(function () {
+        if (timer) clearTimeout(timer);
         return "unreachable";
       });
   }
@@ -225,13 +256,48 @@
 
   // Polled on an interval rather than armed with one long timeout, so the
   // check still lands after a reboot, a clock change or a throttled tab.
-  var lastCheckedDay = new Date().toDateString();
-  setInterval(function () {
+  //
+  // A check that never reached the server leaves the day still owed, so an
+  // exhibit that was offline at midnight tries again every few minutes and
+  // again the moment the network comes back, instead of waiting a whole
+  // day. Nothing else is affected by being offline. The worker is already
+  // answering from the cache, so the map, the twelve details, the idle
+  // reset and fullscreen all carry on exactly as they do online.
+  var lastSeenDay = new Date().toDateString();
+  var updateOwed = false;
+  var checking = false;
+
+  function tick() {
     var today = new Date().toDateString();
-    if (today === lastCheckedDay) return;
-    lastCheckedDay = today;
-    checkForUpdate();
-  }, 5 * 60 * 1000);
+    if (today !== lastSeenDay) {
+      lastSeenDay = today;
+      updateOwed = true;
+    }
+    if (!updateOwed || checking) return;
+    checking = true;
+    checkForUpdate().then(function (outcome) {
+      checking = false;
+      // Only an answer that actually came from the server settles the day.
+      // "no-cache" counts because without a cache the page is being served
+      // live anyway, so there is nothing left for this to do.
+      if (
+        outcome === "updated" ||
+        outcome === "unchanged" ||
+        outcome === "offline-copy" ||
+        outcome === "no-cache"
+      ) {
+        updateOwed = false;
+      }
+    });
+  }
+  api.tick = tick;
+  api.updateOwed = function () {
+    return updateOwed;
+  };
+
+  setInterval(tick, 5 * 60 * 1000);
+  // Reconnecting is the obvious moment to retry a check that could not run.
+  window.addEventListener("online", tick);
 })();
 </script>
 </head>

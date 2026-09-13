@@ -10,7 +10,7 @@
 /*  forever.                                                           */
 /* ------------------------------------------------------------------ */
 
-const CACHE = "rf-kiosk-v3";
+const CACHE = "rf-kiosk-v4";
 const ASSETS = ["/kiosk/map", "/kiosk/map-kiosk.html"];
 
 /* Precache with cache:"reload" rather than addAll. addAll goes through the
@@ -58,9 +58,20 @@ self.addEventListener("fetch", (event) => {
       fetch(event.request).catch(() =>
         caches
           .match(event.request, { ignoreSearch: true })
-          // respondWith(undefined) is itself an error, so a miss with the
-          // network already down has to answer with something real.
-          .then((hit) => hit || new Response("", { status: 504 }))
+          .then((hit) => {
+            // respondWith(undefined) is itself an error, so a miss with the
+            // network already down has to answer with something real.
+            if (!hit) return new Response("", { status: 504 });
+            // Say plainly that this came from the cupboard. Otherwise the
+            // page compares the cache against itself, concludes nothing has
+            // changed, and marks the day's check done, so a kiosk that was
+            // offline at midnight would wait a whole day to try again.
+            return hit.blob().then((body) => {
+              const headers = new Headers(hit.headers);
+              headers.set("X-RF-From-Cache", "1");
+              return new Response(body, { status: 200, headers });
+            });
+          })
       )
     );
     return;
