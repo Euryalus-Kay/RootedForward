@@ -10,7 +10,7 @@
 /*  the page instead, without a route attached.                        */
 /* ------------------------------------------------------------------ */
 
-import { HARLEM_LIVE, WEST_HARLEM_LIVE } from "./registry";
+import { DALLAS_LIVE, HARLEM_LIVE, WEST_HARLEM_LIVE } from "./registry";
 
 export interface TourListing {
   slug: string;
@@ -22,6 +22,12 @@ export interface TourListing {
   /** whether the tours page offers the browser player beside the app
    *  button. Off for a walk we would rather people took on a phone. */
   offerBrowser?: boolean;
+  /** false while a walk is on the site but not yet in the app, which
+   *  is the case until its narration is recorded (/api/walk lists a
+   *  walk the day every stop has audio). The page then offers the
+   *  browser player alone and leaves the walk out of the "finished"
+   *  sentence, so nothing promises the app something it cannot show. */
+  inApp?: boolean;
   /** One sentence, plain. What the walk is about. */
   blurb: string;
   /** Facts strip. Keep these matched to src/lib/tours/*-walk.ts. */
@@ -94,6 +100,29 @@ const ALL_LISTINGS: TourListing[] = [
         "Under the Riverside Drive viaduct at 125th Street, 1937, on the route to the last stop. Photograph by Berenice Abbott for Changing New York. New York Public Library, via Wikimedia Commons. Public domain.",
     },
   },
+  {
+    slug: "dallas",
+    title: "Walk Dallas",
+    city: "Dallas",
+    neighborhood: "Deep Ellum to Freedman's Town",
+    path: "/tours/dallas-walk",
+    offerBrowser: true,
+    inApp: false,
+    blurb:
+      "The tour goes from Deep Ellum through downtown and the Arts District into Uptown, stopping at the building Black Dallas built for itself in 1916, the corner where a mob hanged Allen Brooks in 1910, the school and church and YMCA that survived the Arts District, the park on top of Woodall Rodgers Freeway, the last Victorian houses of Freedman's Town, and the cemetery the expressway paved over. It starts at the Knights of Pythias Temple and ends at Freedman's Memorial.",
+    facts: [
+      { label: "Stops", value: "6" },
+      { label: "On foot", value: "About 3.7 miles" },
+      { label: "Audio", value: "Being recorded" },
+      { label: "Price", value: "Free" },
+    ],
+    image: {
+      src: "/media/dallas-walk/main-akard-1908-elks-arch.jpg",
+      alt: "A night photograph of an electric-lit welcome arch spanning Main Street at Akard Street in Dallas in 1908, its curves outlined in bulbs and the words Welcome Visitors across the middle, with streetcar tracks running beneath it",
+      credit:
+        "The Elks' Court of Honor arch at Main and Akard, lit for the Elks' Grand Lodge meeting in July 1908, the second stop on the walk. Two years later a mob hanged Allen Brooks from it. Keystone View Company stereograph, Library of Congress, Prints and Photographs Division. No known restrictions on publication.",
+    },
+  },
 ];
 
 /** Only the walks that are actually announced. The switch lives in
@@ -101,5 +130,6 @@ const ALL_LISTINGS: TourListing[] = [
 export const TOUR_CATALOG: TourListing[] = ALL_LISTINGS.filter((t) => {
   if (t.slug === "harlem") return HARLEM_LIVE;
   if (t.slug === "west-harlem") return WEST_HARLEM_LIVE;
+  if (t.slug === "dallas") return DALLAS_LIVE;
   return true;
 });

@@ -23,9 +23,13 @@ import { WEST_HARLEM_MAP } from "./west-harlem-map";
 import { WALK_INTRO } from "@/components/tours/walk/WalkIntro";
 import { HARLEM_INTRO } from "@/components/tours/walk/HarlemIntro";
 import { WEST_HARLEM_INTRO } from "@/components/tours/walk/WestHarlemIntro";
+import { DALLAS_WALK } from "./dallas-walk";
+import { DALLAS_MAP } from "./dallas-map";
+import { DALLAS_INTRO } from "@/components/tours/walk/DallasIntro";
 import hydeParkGeometry from "./hyde-park-geometry.json";
 import harlemGeometry from "./harlem-geometry.json";
 import westHarlemGeometry from "./west-harlem-geometry.json";
+import dallasGeometry from "./dallas-geometry.json";
 
 export interface WalkIntroDoc {
   title: string;
@@ -96,6 +100,16 @@ export const HARLEM_LIVE = false;
 /*  locally before it is announced.                                  */
 /* ------------------------------------------------------------------ */
 export const WEST_HARLEM_LIVE = true;
+
+/* ------------------------------------------------------------------ */
+/*  Walk Dallas is the third city. Six stops from Deep Ellum to       */
+/*  Freedman's Memorial. Same switch as the others, so it can be      */
+/*  taken down without a code change to anything else. Its narration */
+/*  has not been recorded yet: /api/walk keeps it out of the app's   */
+/*  index until every stop has audio, and the site shows the written  */
+/*  stops meanwhile (see route.ts).                                   */
+/* ------------------------------------------------------------------ */
+export const DALLAS_LIVE = true;
 
 const ALL_WALKS: WalkTourBundle[] = [
   {
@@ -195,11 +209,43 @@ const ALL_WALKS: WalkTourBundle[] = [
       },
     },
   },
+  {
+    slug: "dallas",
+    path: "/tours/dallas-walk",
+    mediaDir: "/media/dallas-walk",
+    tour: DALLAS_WALK,
+    intro: DALLAS_INTRO,
+    geometry: dallasGeometry as WalkGeometry,
+    map: DALLAS_MAP,
+    page: {
+      metaTitle: "Dallas Walking Tour | Rooted Forward",
+      metaDescription:
+        "A free self-guided walking tour of central Dallas, from the Knights of Pythias Temple in Deep Ellum to Freedman's Memorial on Central Expressway. Six stops over about three and a half miles, on a lynching, a segregation ordinance, the 1937 appraisal map, two freeways, and the neighborhood that became Uptown.",
+      terrain: "mostly flat, with one easy rise into Uptown",
+      wash: {
+        src: "/media/site/usgs-dallas-1958.jpg",
+        alt: "The 1958 United States Geological Survey sheet for central Dallas",
+      },
+      related: {
+        heading: "The other walks",
+        body: "Walk Hyde Park covers the same century on Chicago's South Side, from Paul Cornell's stone to Harper Court. Walk Columbia and West Harlem does it in New York, from Columbia's gate to the Hudson.",
+        links: [
+          {
+            label: "Walk Hyde Park",
+            href: "/tours/hyde-park-walk",
+            primary: true,
+          },
+          { label: "Walk Columbia and West Harlem", href: "/tours/west-harlem-walk" },
+        ],
+      },
+    },
+  },
 ];
 
 export const WALK_TOURS: WalkTourBundle[] = ALL_WALKS.filter((t) => {
   if (t.slug === "harlem") return HARLEM_LIVE;
   if (t.slug === "west-harlem") return WEST_HARLEM_LIVE;
+  if (t.slug === "dallas") return DALLAS_LIVE;
   return true;
 });
 

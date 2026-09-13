@@ -43,6 +43,16 @@ function contentVersion(payload: unknown): string {
   return `${s.length.toString(36)}-${h.toString(36)}`;
 }
 
+/** A walk joins the app the day every stop has narration. The admin
+ *  editor already refuses a stop without audio, and the app's stop
+ *  pages are built around the recording, so a walk still being
+ *  recorded (Dallas, September 2026) is served on the site, where the
+ *  written stops stand on their own, and held back from here until
+ *  scripts/walk-tts.mjs has run for it. */
+function isNarrated(bundle: WalkTourBundle): boolean {
+  return bundle.tour.stops.every((s) => s.audioSrc.length > 0);
+}
+
 /** The catalogue every payload carries, so the app can list the walks
  *  it is not currently holding and fetch one on demand. */
 function tourIndex(bundles: WalkTourBundle[]) {
@@ -88,7 +98,7 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
  *  network would return. Async now, because the walks are read from
  *  the database on demand rather than compiled in. */
 export async function walkPayload(slug: string) {
-  const bundles = await loadWalkBundles();
+  const bundles = (await loadWalkBundles()).filter(isNarrated);
   const bundle = bundles.find((b) => b.slug === slug);
   if (!bundle) return undefined;
   return buildPayload(bundle, tourIndex(bundles));
@@ -98,7 +108,7 @@ export async function GET(request: Request) {
   const slug =
     new URL(request.url).searchParams.get("tour") ?? DEFAULT_WALK_SLUG;
 
-  const bundles = await loadWalkBundles();
+  const bundles = (await loadWalkBundles()).filter(isNarrated);
   const bundle = bundles.find((b) => b.slug === slug);
   if (!bundle) {
     return NextResponse.json(
