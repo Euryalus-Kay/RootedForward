@@ -60,6 +60,10 @@ done
 
 # the wash behind the opener, referenced by its site path
 copy_one ../public/media/site/holc-chicago-1940.jpg Resources/Media/images/holc-chicago-1940.jpg
+# the front door's feature plate, the whole 1931 map and the museum's
+# mark, so the plate is drawn on first launch with no signal
+copy_one ../public/media/look-closer/turzak-1931-card.jpg Resources/Media/images/turzak-1931-card.jpg
+copy_one ../public/media/look-closer/cmm-logo.png Resources/Media/images/cmm-logo.png
 
 # Anything left over from a walk that no longer ships. Without this the
 # bundle keeps carrying an unreleased tour's audio and plates, which is
@@ -71,6 +75,8 @@ for w in $WALKS; do
      "../public/media/$w"/thumbs/*.jpg 2>/dev/null | xargs -n1 basename
 done > "$wanted"
 echo holc-chicago-1940.jpg >> "$wanted"
+echo turzak-1931-card.jpg >> "$wanted"
+echo cmm-logo.png >> "$wanted"
 pruned=0
 for f in Resources/Media/audio/* Resources/Media/images/* Resources/Media/thumbs/*; do
   [ -e "$f" ] || continue
