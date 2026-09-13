@@ -38,38 +38,52 @@ struct FeaturePlate: View {
                 Haptics.press()
                 open()
             } label: {
-                HStack(alignment: .top, spacing: 14) {
-                    MediaImage(sitePath: feature.image, contentMode: .fill)
-                        .frame(width: 118, height: 74)
-                        .clipped()
-                        .padding(3)
-                        .background(Color.white)
-                        .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 12) {
+                    // Both marks and both names on one line, so the
+                    // collaboration is read before anything else is.
+                    HStack(spacing: 7) {
+                        Image("LogoMark")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .overlay(Circle().strokeBorder(Color.white, lineWidth: 1.5))
+                        Text("&")
+                            .font(RF.display(14, weight: 400))
+                            .foregroundStyle(.white.opacity(0.75))
+                        MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
+                            .frame(width: 20, height: 20)
+                            .clipShape(Circle())
+                            .overlay(Circle().strokeBorder(Color.white, lineWidth: 1.5))
+                        // Two lines on a narrow phone rather than an
+                        // ellipsis through the museum's name.
+                        Text("Rooted Forward & \(feature.partner.name)")
+                            .font(RF.body(12.5, weight: 600))
+                            .foregroundStyle(.white)
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.9)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.leading, 2)
+                    }
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 6) {
-                            MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
-                                .frame(width: 18, height: 18)
-                                .clipShape(Circle())
-                                .overlay(Circle().strokeBorder(Color.white, lineWidth: 1.5))
-                            Text(feature.partner.name)
-                                .font(RF.body(12, weight: 600))
+                    HStack(alignment: .center, spacing: 14) {
+                        MediaImage(sitePath: feature.image, contentMode: .fill)
+                            .frame(width: 118, height: 74)
+                            .clipped()
+                            .padding(3)
+                            .background(Color.white)
+                            .accessibilityHidden(true)
+
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(feature.title)
+                                .font(RF.display(26, weight: 600))
                                 .foregroundStyle(.white)
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
+
+                            Text(feature.line)
+                                .font(RF.body(13, weight: 500))
+                                .foregroundStyle(.white.opacity(0.9))
+                                .lineSpacing(2)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                        .padding(.bottom, 2)
-
-                        Text(feature.title)
-                            .font(RF.display(26, weight: 600))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-
-                        Text(feature.line)
-                            .font(RF.body(13, weight: 500))
-                            .foregroundStyle(.white.opacity(0.9))
-                            .lineSpacing(2)
-                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -502,14 +516,14 @@ struct LookCloserIntro: View {
 
     /// The turning phone and the button, pinned under the sheet.
     private var doorway: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 14) {
             RotatingPhone()
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Turn your phone sideways")
+                Text("Turn your phone")
                     .font(RF.body(14, weight: 600))
                     .foregroundStyle(RF.ink)
-                Text("The map only opens the long way round.")
+                Text("The map only opens sideways.")
                     .font(RF.body(12.5))
                     .foregroundStyle(RF.warmGrayDark)
             }
@@ -558,7 +572,7 @@ struct RotatingPhone: View {
                 .frame(width: 10, height: 2.5)
                 .padding(.bottom, 4)
         }
-        .frame(width: 54, height: 54)
+        .frame(width: 50, height: 50)
         .rotationEffect(.degrees(turned || reduceMotion ? -90 : 0))
         .onAppear {
             guard !reduceMotion else { return }

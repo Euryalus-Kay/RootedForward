@@ -84,7 +84,7 @@ Improved site content, analytics and backend speed.
 
 New opening animation and performance improvements.
 
-## What's New (version 2.3, build 29)
+## What's New (version 2.3, build 30)
 
 Look Closer, the 1931 map of Chicago on view at the Chicago Maritime Museum, now opens from the home screen. Turn your phone sideways to explore it.
 
