@@ -64,6 +64,9 @@ const css = [
   "#rf-rotate .desk:after{content:'';position:absolute;left:50%;bottom:-14px;width:28px;height:11px;margin-left:-14px;border:3px solid #1E1D1B;border-top:0;border-radius:0 0 4px 4px}",
   "#rf-rotate .links{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:22px}",
   "#rf-rotate .links a{position:static}",
+  // a phone on its side is short, so everything closes up and the
+  // links come into the flow instead of pinning to the bottom
+  "@media (max-height:520px){#rf-rotate{padding:14px 24px;justify-content:center}#rf-rotate .marks img{width:36px;height:36px}#rf-rotate .amp{font-size:16px}#rf-rotate h1{font-size:26px;margin-top:8px}#rf-rotate .sub{font-size:12.5px;margin-top:4px}#rf-rotate .phone{width:30px;height:50px;margin-top:12px;border-width:2.5px}#rf-rotate .desk{width:48px;height:32px;margin-top:12px}#rf-rotate .desk:after{bottom:-11px;width:20px;height:8px;margin-left:-10px}#rf-rotate .ask{font-size:14px;margin-top:14px}#rf-rotate .note{font-size:12px;margin-top:4px;max-width:44ch}#rf-rotate .links,#rf-rotate>a{position:static;margin-top:10px;display:flex;justify-content:center;gap:22px}}",
 ].join("");
 
 const phoneBlock = `${PHONE_MARK}
