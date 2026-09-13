@@ -179,6 +179,12 @@ struct LookCloserScreen: View {
                 offline
             }
 
+            // The kiosk is a 16:9 stage centered in a wider screen, so
+            // there is a clear margin of about seventy points at each
+            // side in landscape. The button sits in that margin, at the
+            // screen's own corner rather than the safe area's, which on
+            // a phone with the island starts inside the stage and put
+            // the button over the kiosk's title.
             Button {
                 dismiss()
             } label: {
@@ -191,10 +197,9 @@ struct LookCloserScreen: View {
                     .padding(.leading, 12)
                     .padding(.top, 10)
             }
+            .ignoresSafeArea()
             .accessibilityLabel("Close the map")
             .accessibilityIdentifier("feature-close")
-            // Above the page's own controls, which sit at the top left
-            // too; the page shifts its mark right when the app flag is on.
         }
         .onAppear { OrientationGate.set(.landscape) }
         .onDisappear { OrientationGate.set(.portrait) }
