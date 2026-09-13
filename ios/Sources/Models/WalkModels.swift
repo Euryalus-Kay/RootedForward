@@ -47,6 +47,11 @@ struct WalkFeature: Codable, Equatable, Identifiable {
     /// the page the feature opens, full screen and sideways
     let url: String
     let partner: WalkFeaturePartner
+    /// the paragraphs of the information sheet, the map and the
+    /// collaboration in the site's words; absent in older payloads
+    let about: [String]?
+    /// the map's credit line, printed small under the sheet
+    let credit: String?
 }
 
 struct WalkFeaturePartner: Codable, Equatable {
@@ -56,6 +61,12 @@ struct WalkFeaturePartner: Codable, Equatable {
     let url: String
     /// the partner's own ink as a hex string, "#0076B4"
     let accent: String
+    /// where to plan the in-person visit; falls back to `url`
+    let visitUrl: String?
+    /// the place, short, "1200 West 35th Street, Bridgeport"
+    let place: String?
+    /// the hours, short, "Tuesday to Sunday, 10 to 4"
+    let hours: String?
 }
 
 struct WalkTourSummary: Codable, Equatable, Identifiable {

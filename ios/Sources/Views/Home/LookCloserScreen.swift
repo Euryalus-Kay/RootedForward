@@ -15,72 +15,119 @@ import WebKit
 // landscape on the way in and shuts again on the way out.
 // ------------------------------------------------------------------
 
-/// The plate on the home screen. A strip of the whole map, the two
-/// marks, the partner's own blue on the note, and one line. Short on
-/// purpose, so the tours heading stays on the first screen under it.
+/// The plate on the home screen, in the museum's own blue so it reads
+/// as theirs and ours at once: their mark and name, the whole map on a
+/// white mat, Look Closer, one line that says it is a joint exhibit you
+/// can go and stand in front of, and two ways in, the sheet that leads
+/// to the map, and a visit there. Held to about two hundred points so the tours heading
+/// still lands on the first screen under it.
 struct FeaturePlate: View {
     let feature: WalkFeature
+    /// opens the information sheet, which is the way to the map
+    let open: () -> Void
+    @Environment(\.openURL) private var openURL
 
     private var accent: Color { Color(hexString: feature.partner.accent) }
+    private var visitURL: URL? {
+        URL(string: feature.partner.visitUrl ?? feature.partner.url)
+    }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
-            MediaImage(sitePath: feature.image, contentMode: .fill)
-                .frame(width: 96, height: 68)
-                .clipped()
-                .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
-                .accessibilityHidden(true)
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                Haptics.press()
+                open()
+            } label: {
+                HStack(alignment: .top, spacing: 14) {
+                    MediaImage(sitePath: feature.image, contentMode: .fill)
+                        .frame(width: 118, height: 74)
+                        .clipped()
+                        .padding(3)
+                        .background(Color.white)
+                        .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 5) {
-                // The partner's mark and name in the partner's own ink.
-                // This is Rooted Forward's app, so its own mark would
-                // only say what the masthead already says.
-                HStack(spacing: 6) {
-                    MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
-                        .frame(width: 18, height: 18)
-                        .clipShape(Circle())
-                        .overlay(Circle().strokeBorder(RF.ink.opacity(0.15), lineWidth: 0.5))
-                    Text(feature.partner.name)
-                        .font(RF.body(12, weight: 600))
-                        .foregroundStyle(accent)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.85)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 6) {
+                            MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
+                                .frame(width: 18, height: 18)
+                                .clipShape(Circle())
+                                .overlay(Circle().strokeBorder(Color.white, lineWidth: 1.5))
+                            Text(feature.partner.name)
+                                .font(RF.body(12, weight: 600))
+                                .foregroundStyle(.white)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.85)
+                        }
+                        .padding(.bottom, 2)
+
+                        Text(feature.title)
+                            .font(RF.display(26, weight: 600))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+
+                        Text(feature.line)
+                            .font(RF.body(13, weight: 500))
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
-                .accessibilityHidden(true)
-
-                Text(feature.title)
-                    .font(RF.display(22, weight: 600))
-                    .foregroundStyle(RF.forest)
-                    .lineLimit(1)
-
-                Text("\(feature.note). \(feature.line)")
-                    .font(RF.body(13, weight: 500))
-                    .foregroundStyle(RF.ink.opacity(0.75))
-                    .lineSpacing(2)
-                    .lineLimit(3)
-                    .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
             }
+            .buttonStyle(PressableCardStyle())
+            .accessibilityLabel("\(feature.title). \(feature.line) Opens the map, sideways.")
+            .accessibilityIdentifier("home-feature-\(feature.id)")
 
-            Spacer(minLength: 0)
+            HStack(spacing: 14) {
+                Button {
+                    Haptics.press()
+                    open()
+                } label: {
+                    HStack(spacing: 6) {
+                        Text("Explore the map")
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 11, weight: .bold))
+                    }
+                    .font(RF.body(13, weight: 700))
+                    .foregroundStyle(accent)
+                    .padding(.horizontal, 16)
+                    .frame(height: 40)
+                    .background(Color.white)
+                }
+                .buttonStyle(PressableCardStyle())
+                .accessibilityHidden(true)
 
-            Image(systemName: "chevron.right")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(RF.warmGrayDark)
-                .accessibilityHidden(true)
+                if let visitURL {
+                    Button {
+                        Haptics.tap()
+                        openURL(visitURL)
+                    } label: {
+                        HStack(spacing: 5) {
+                            Text("Plan a visit")
+                            Image(systemName: "arrow.up.right")
+                                .font(.system(size: 11, weight: .bold))
+                        }
+                        .font(RF.body(13, weight: 700))
+                        .foregroundStyle(.white)
+                        .frame(height: 40)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PressableCardStyle())
+                    .accessibilityLabel("Plan a visit to the \(feature.partner.name). Opens their website.")
+                    .accessibilityIdentifier("home-feature-visit")
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(.top, 14)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 14)
-        .plate()
-        // The partner's ink, once, along the top edge inside the frame.
-        .overlay(alignment: .top) {
-            Rectangle()
-                .fill(accent)
-                .frame(height: 3)
-                .padding(.horizontal, 1)
-                .padding(.top, 1)
-                .accessibilityHidden(true)
-        }
-        .contentShape(Rectangle())
+        .padding(16)
+        .background(Rectangle().fill(accent))
+        // A white hairline set just inside the edge, the plate frame in
+        // the museum's colors, and the same dropped shadow the paper
+        // plates carry so it sits in the page rather than on it.
+        .overlay(Rectangle().strokeBorder(Color.white.opacity(0.45), lineWidth: 1).padding(4))
+        .background(Rectangle().fill(RF.ink.opacity(0.14)).offset(x: 5, y: 5))
     }
 }
 
@@ -278,6 +325,246 @@ private struct FeatureWeb: UIViewRepresentable {
                 UIApplication.shared.open(url)
             }
             return nil
+        }
+    }
+}
+
+/// The information sheet the plate opens: the map, the collaboration
+/// and the visit, in the site's words, with the turning phone at the
+/// bottom and the one button that opens the map sideways. The map is
+/// presented over this sheet, so closing the map lands back here.
+struct LookCloserIntro: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    let feature: WalkFeature
+
+    @State private var mapOpen = false
+
+    private var accent: Color { Color(hexString: feature.partner.accent) }
+    private var visitURL: URL? {
+        URL(string: feature.partner.visitUrl ?? feature.partner.url)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: 12) {
+                        Image("LogoMark")
+                            .resizable()
+                            .frame(width: 44, height: 44)
+                        Text("&")
+                            .font(RF.display(22, weight: 400))
+                            .foregroundStyle(RF.warmGray)
+                        MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
+                            .frame(width: 44, height: 44)
+                            .clipShape(Circle())
+                            .overlay(Circle().strokeBorder(RF.ink.opacity(0.15), lineWidth: 0.5))
+                    }
+                    .accessibilityHidden(true)
+
+                    Text(feature.title)
+                        .font(RF.display(36, weight: 600))
+                        .foregroundStyle(RF.forest)
+                        .padding(.top, 16)
+                        .accessibilityAddTraits(.isHeader)
+
+                    Text("A joint exhibit by Rooted Forward and the \(feature.partner.name)")
+                        .font(RF.display(17, weight: 400))
+                        .italic()
+                        .foregroundStyle(RF.warmGrayDark)
+                        .padding(.top, 6)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    Rectangle()
+                        .fill(accent)
+                        .frame(width: 44, height: 3)
+                        .padding(.top, 16)
+                        .accessibilityHidden(true)
+
+                    MediaImage(sitePath: feature.image, contentMode: .fit)
+                        .padding(4)
+                        .background(Color.white)
+                        .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+                        .padding(.top, 20)
+                        .accessibilityLabel(feature.imageAlt)
+
+                    ForEach(Array((feature.about ?? [feature.line]).enumerated()), id: \.offset) { _, para in
+                        Text(para)
+                            .font(RF.body(15.5))
+                            .foregroundStyle(RF.ink)
+                            .lineSpacing(4)
+                            .padding(.top, 14)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    visit
+                        .padding(.top, 24)
+
+                    if let credit = feature.credit {
+                        Text(credit)
+                            .font(RF.body(12))
+                            .foregroundStyle(RF.warmGrayDark)
+                            .lineSpacing(3)
+                            .padding(.top, 16)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 20)
+                .padding(.bottom, 24)
+            }
+            .background(RF.cream)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                doorway
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(RF.ink)
+                            .frame(width: 36, height: 36)
+                            .background(Circle().fill(RF.creamDark))
+                    }
+                    .accessibilityLabel("Close")
+                    .accessibilityIdentifier("feature-intro-close")
+                }
+            }
+            .toolbarBackground(RF.cream, for: .navigationBar)
+        }
+        .fullScreenCover(isPresented: $mapOpen) {
+            LookCloserScreen(feature: feature)
+        }
+    }
+
+    /// The in-person half, framed in the museum's blue.
+    private var visit: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                MediaImage(sitePath: feature.partner.logo, contentMode: .fill)
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+                    .overlay(Circle().strokeBorder(RF.ink.opacity(0.15), lineWidth: 0.5))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("See it in person")
+                        .font(RF.display(19, weight: 600))
+                        .foregroundStyle(RF.forest)
+                    Text("On the wall at the \(feature.partner.name)")
+                        .font(RF.body(13.5, weight: 500))
+                        .foregroundStyle(RF.ink.opacity(0.75))
+                }
+            }
+            if let place = feature.partner.place {
+                Text(place)
+                    .font(RF.body(14.5))
+                    .foregroundStyle(RF.ink)
+                    .padding(.top, 6)
+            }
+            if let hours = feature.partner.hours {
+                Text(hours)
+                    .font(RF.body(14.5))
+                    .foregroundStyle(RF.ink)
+            }
+            if let visitURL {
+                Button {
+                    Haptics.tap()
+                    openURL(visitURL)
+                } label: {
+                    HStack(spacing: 6) {
+                        Text("Plan a visit")
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 11, weight: .bold))
+                    }
+                    .font(RF.body(13, weight: 700))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .frame(height: 40)
+                    .background(accent)
+                }
+                .buttonStyle(PressableCardStyle())
+                .padding(.top, 8)
+                .accessibilityLabel("Plan a visit to the \(feature.partner.name). Opens their website.")
+                .accessibilityIdentifier("feature-intro-visit")
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RF.paper)
+        .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
+        .overlay(alignment: .top) {
+            Rectangle().fill(accent).frame(height: 4).accessibilityHidden(true)
+        }
+    }
+
+    /// The turning phone and the button, pinned under the sheet.
+    private var doorway: some View {
+        HStack(spacing: 16) {
+            RotatingPhone()
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Turn your phone sideways")
+                    .font(RF.body(14, weight: 600))
+                    .foregroundStyle(RF.ink)
+                Text("The map only opens the long way round.")
+                    .font(RF.body(12.5))
+                    .foregroundStyle(RF.warmGrayDark)
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 8)
+            Button {
+                Haptics.press()
+                mapOpen = true
+            } label: {
+                Text("Open the map")
+                    .font(RF.body(14, weight: 700))
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .fixedSize()
+                    .padding(.horizontal, 18)
+                    .frame(height: 46)
+                    .background(RF.rust)
+            }
+            .buttonStyle(PressableCardStyle())
+            .accessibilityLabel("Open the map. The screen turns sideways.")
+            .accessibilityIdentifier("feature-intro-open")
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 10)
+        .background(RF.cream)
+        .overlay(alignment: .top) {
+            Rectangle().fill(RF.border).frame(height: 1)
+        }
+    }
+}
+
+/// A phone outline that turns on its side and back, the cue people
+/// know from the web. Holds still, already turned, under Reduce Motion.
+struct RotatingPhone: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var turned = false
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .strokeBorder(RF.ink, lineWidth: 2.5)
+                .frame(width: 30, height: 50)
+            Capsule()
+                .fill(RF.ink)
+                .frame(width: 10, height: 2.5)
+                .padding(.bottom, 4)
+        }
+        .frame(width: 54, height: 54)
+        .rotationEffect(.degrees(turned || reduceMotion ? -90 : 0))
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 1.1).delay(0.5).repeatForever(autoreverses: true)) {
+                turned = true
+            }
         }
     }
 }

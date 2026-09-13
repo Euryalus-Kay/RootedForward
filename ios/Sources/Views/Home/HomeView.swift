@@ -12,7 +12,7 @@ struct HomeView: View {
     @EnvironmentObject private var progress: ProgressStore
 
     @State private var tourTarget: TourTarget?
-    /// The feature plate's screen, the map opened sideways.
+    /// The feature plate's information sheet, which leads to the map.
     @State private var featureTarget: WalkFeature?
     @State private var showSettings = false
     @State private var scrolled = false
@@ -84,8 +84,8 @@ struct HomeView: View {
         .fullScreenCover(item: $tourTarget) { target in
             TourView(startAt: target.index, openPlate: target.plate, startOnIntro: target.onIntro)
         }
-        .fullScreenCover(item: $featureTarget) { feature in
-            LookCloserScreen(feature: feature)
+        .sheet(item: $featureTarget) { feature in
+            LookCloserIntro(feature: feature)
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -221,17 +221,11 @@ struct HomeView: View {
     @ViewBuilder
     private var onView: some View {
         if let feature = content.featured {
-            Button {
-                Haptics.press()
+            FeaturePlate(feature: feature) {
                 featureTarget = feature
-            } label: {
-                FeaturePlate(feature: feature)
             }
-            .buttonStyle(PressablePlateStyle())
-            .accessibilityLabel("\(feature.title). \(feature.note) at the \(feature.partner.name). Opens the map, sideways.")
-            .accessibilityIdentifier("home-feature-\(feature.id)")
             .padding(.horizontal, 24)
-            .padding(.top, 40)
+            .padding(.top, 36)
             .modifier(LaunchReveal(order: 3))
         }
     }
