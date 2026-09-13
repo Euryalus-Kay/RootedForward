@@ -255,10 +255,11 @@ export default function Home() {
                 {LOOK_CLOSER_FEATURE.note}. {EXHIBIT.line}
               </p>
               <p className="mt-5 max-w-[46ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
-                In 1931 a Boston publisher sold Chicago to visitors with a bird&rsquo;s-eye map full of
-                jokes. Look closely and the jokes have targets. The exhibit follows twelve details on the
-                map to the history behind them. It is on the museum&rsquo;s wall in Bridgeport, and the
-                same map opens on your phone here.
+                A joint exhibit by Rooted Forward and the Chicago Maritime Museum. In 1931 a Boston
+                publisher sold Chicago to visitors with a bird&rsquo;s-eye map full of jokes. Look
+                closely and the jokes have targets. The exhibit follows twelve details on the map to
+                the history behind them. See it on the museum&rsquo;s wall in Bridgeport, with a touch
+                screen beside it, and open the same map on your phone here.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <Link

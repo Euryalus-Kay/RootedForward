@@ -93,8 +93,8 @@ export const EXHIBIT = {
 export const LOOK_CLOSER_FEATURE = {
   id: "look-closer",
   title: EXHIBIT.title,
-  /** short enough for three lines on a phone plate, after the note */
-  line: "The 1931 map of Chicago and the history behind its jokes.",
+  /** the plate's one line; it has to say joint, in person and here */
+  line: "A joint exhibit with Rooted Forward. The 1931 map of Chicago, on the museum's wall in Bridgeport and open on your phone here.",
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",
@@ -104,7 +104,17 @@ export const LOOK_CLOSER_FEATURE = {
     logo: MUSEUM.logo,
     url: MUSEUM.url,
     accent: MUSEUM.blue,
+    visitUrl: MUSEUM.visitUrl,
+    place: "1200 West 35th Street, Bridgeport, on the river level of the Bridgeport Art Center",
+    hours: MUSEUM.hours,
   },
+  /** the information sheet in the app, the collaboration first */
+  about: [
+    "Rooted Forward and the Chicago Maritime Museum made this exhibit together. The map hangs on the museum's wall in Bridgeport with a touch screen beside it, and the same map, with the same twelve details, opens on your phone here.",
+    ...EXHIBIT.paragraphs,
+    EXHIBIT.tap,
+  ],
+  credit: `${MAP_CREDIT.title}. ${MAP_CREDIT.makers}. ${MAP_CREDIT.publisher}. ${MAP_CREDIT.holder}.`,
 };
 
 export const MAP_DETAILS: MapDetail[] = [
