@@ -238,7 +238,7 @@ export default function Home() {
                 photograph alone was. */}
             <div className="md:col-span-5">
               <div className="relative pb-[26%]">
-                <Link href="/look-closer" className="group block" aria-label="Open the guide, Look Closer">
+                <Link href="/look-closer/map" className="group block" aria-label="Open the guide, Look Closer">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={LOOK_CLOSER_FEATURE.image}
@@ -293,7 +293,7 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
-                  href="/look-closer"
+                  href="/look-closer/map"
                   className="inline-flex items-center rounded-sm bg-white px-7 py-4 font-body text-sm font-semibold uppercase tracking-widest transition-colors hover:bg-cream"
                   style={{ color: MUSEUM.blue }}
                 >

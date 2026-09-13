@@ -123,7 +123,8 @@ export const LOOK_CLOSER_FEATURE = {
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",
-  url: "https://rooted-forward.org/look-closer",
+  /** the kiosk itself, adapted for a phone */
+  url: "https://rooted-forward.org/look-closer/map",
   partner: {
     name: MUSEUM.name,
     logo: MUSEUM.logo,

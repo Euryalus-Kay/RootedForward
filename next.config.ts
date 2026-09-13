@@ -7,7 +7,11 @@ const nextConfig: NextConfig = {
      header exception and a wrapper document from the critical path. */
   async rewrites() {
     return {
-      beforeFiles: [{ source: "/kiosk/map", destination: "/kiosk/map-kiosk.html" }],
+      beforeFiles: [
+        { source: "/kiosk/map", destination: "/kiosk/map-kiosk.html" },
+        // the same kiosk for a phone, built by scripts/build-kiosk-phone.mjs
+        { source: "/look-closer/map", destination: "/kiosk/map-phone.html" },
+      ],
       afterFiles: [],
       fallback: [],
     };
