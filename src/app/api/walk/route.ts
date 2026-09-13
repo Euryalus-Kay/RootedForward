@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { DEFAULT_WALK_SLUG, type WalkTourBundle } from "@/lib/tours/registry";
 import { loadWalkBundles } from "@/lib/tours/store";
+import { LOOK_CLOSER_FEATURE } from "@/lib/look-closer";
 
 /* ------------------------------------------------------------------ */
 /*  GET /api/walk                 the default walk (Hyde Park)         */
@@ -77,7 +78,12 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
     // change, which could be never. Hashing the catalogue too means
     // adding a tour moves every walk's version, so the next foreground
     // pulls the new payload and the new tour appears in the list.
-    version: contentVersion({ body, tours }),
+    version: contentVersion({ body, tours, featured: LOOK_CLOSER_FEATURE }),
+    // What the app's front door shows above the walks while the map
+    // is on the museum's wall. Absent means nothing to show; the app
+    // treats the key as optional. In the version hash so a change of
+    // wording reaches installed apps the way a tour edit does.
+    featured: LOOK_CLOSER_FEATURE,
     mediaBase: MEDIA_BASE,
     tours,
     ...body,

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { PETITIONS } from "@/lib/petitions";
 import { WALK_TOURS } from "@/lib/tours/registry";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rooted-forward.org";
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://rooted-forward.org").trim();
 
 /* The sitemap lists only pages with real content behind them.
    /education (redirects to /tours), /curriculum, and the /research
@@ -23,6 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     // The Ground Keeps Moving, the interactive Hyde Park exhibit
     { url: `${BASE_URL}/tours/chicago/hyde-park`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
+    // Look Closer, the 1931 map on the Chicago Maritime Museum's wall, for a phone
+    { url: `${BASE_URL}/look-closer`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/podcasts`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/policy`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     // One page per open petition, so a bill is findable by its own name

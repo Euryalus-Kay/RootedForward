@@ -20,6 +20,7 @@
 
 import Link from "next/link";
 import { TOUR_CATALOG } from "@/lib/tours/catalog";
+import { EXHIBIT, LOOK_CLOSER_FEATURE, MAP_CREDIT, MUSEUM } from "@/lib/look-closer";
 import PageTransition from "@/components/layout/PageTransition";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
@@ -208,6 +209,81 @@ export default function Home() {
               title="Hyde Park Rooted Forward tour intro"
               tone="light"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          ON THE MUSEUM'S WALL
+          The 1931 Turzak map, on view at the Chicago Maritime Museum
+          on a panel running /kiosk/map, and open to anyone's phone at
+          /look-closer. The museum's blue is used once, on the rule,
+          so the partnership reads as theirs and ours at a glance.
+          ============================================================ */}
+      <section className="border-y border-border bg-cream-dark/40 py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
+            <div className="md:col-span-7">
+              <Link href="/look-closer" className="group block" aria-label="Open the map, Look Closer">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={LOOK_CLOSER_FEATURE.image}
+                  alt={LOOK_CLOSER_FEATURE.imageAlt}
+                  loading="lazy"
+                  className="w-full rounded-sm border border-ink/15 bg-white p-1.5 shadow-[6px_6px_0_0_rgba(26,26,26,0.08)] transition-transform group-hover:-translate-y-0.5"
+                />
+              </Link>
+              <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
+                {MAP_CREDIT.title}. {MAP_CREDIT.makers}. {MAP_CREDIT.publisher}. {MAP_CREDIT.holder}.
+              </p>
+            </div>
+            <div className="md:col-span-5">
+              <div className="h-[3px] w-11" style={{ background: MUSEUM.blue }} aria-hidden="true" />
+              <div className="mt-5 flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.svg" alt="" className="h-10 w-10 rounded-full" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={MUSEUM.logo} alt="" className="h-10 w-10 rounded-full border border-ink/15" />
+                <p className="font-display text-base italic text-ink/70">
+                  {EXHIBIT.partnership}
+                </p>
+              </div>
+              <h2 className="mt-5 font-display text-4xl leading-none tracking-tight text-forest md:text-5xl">
+                {EXHIBIT.title}
+              </h2>
+              <p className="mt-3 font-display text-lg leading-snug text-ink md:text-xl">
+                {LOOK_CLOSER_FEATURE.note}. {EXHIBIT.line}
+              </p>
+              <p className="mt-5 max-w-[46ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
+                In 1931 a Boston publisher sold Chicago to visitors with a bird&rsquo;s-eye map full of
+                jokes. Look closely and the jokes have targets. The exhibit follows twelve details on the
+                map to the history behind them. It is on the museum&rsquo;s wall in Bridgeport, and the
+                same map opens on your phone here.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-6">
+                <Link
+                  href="/look-closer"
+                  className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                >
+                  Explore the map
+                </Link>
+                <a
+                  href={MUSEUM.visitUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group font-body text-sm font-semibold uppercase tracking-widest transition-colors hover:text-forest"
+                  style={{ color: MUSEUM.blue }}
+                >
+                  Plan a visit{" "}
+                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </a>
+              </div>
+              <p className="mt-6 font-body text-sm leading-relaxed text-ink/60">
+                {MUSEUM.name}, {MUSEUM.address}. {MUSEUM.hours}
+              </p>
+            </div>
           </div>
         </div>
       </section>
