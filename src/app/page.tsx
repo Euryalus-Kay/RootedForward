@@ -20,7 +20,7 @@
 
 import Link from "next/link";
 import { TOUR_CATALOG } from "@/lib/tours/catalog";
-import { EXHIBIT, LOOK_CLOSER_FEATURE, MAP_CREDIT, MUSEUM } from "@/lib/look-closer";
+import { EXHIBIT, EXHIBIT_PHOTO, LOOK_CLOSER_FEATURE, MUSEUM, WEB_COPY } from "@/lib/look-closer";
 import PageTransition from "@/components/layout/PageTransition";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
@@ -215,73 +215,89 @@ export default function Home() {
 
       {/* ============================================================
           ON THE MUSEUM'S WALL
-          The 1931 Turzak map, on view at the Chicago Maritime Museum
-          on a panel running /kiosk/map, and open to anyone's phone at
-          /look-closer. The museum's blue is used once, on the rule,
-          so the partnership reads as theirs and ours at a glance.
+          The joint exhibit with the Chicago Maritime Museum: the 1931
+          Turzak map on their wall in Bridgeport with a touch screen
+          running /kiosk/map beside it, and the same guide open to any
+          phone at /look-closer. The block is the museum's blue so it
+          reads as theirs and ours together, the two marks sit on one
+          line above the title so the collaboration is seen before it
+          is read, and the picture is the installation itself. The
+          words are the owner's (September 13, 2026).
           ============================================================ */}
-      <section className="border-y border-border bg-cream-dark/40 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-16">
-            <div className="md:col-span-7">
-              <Link href="/look-closer" className="group block" aria-label="Open the map, Look Closer">
+      <section
+        className="relative overflow-hidden text-white"
+        style={{
+          background: `linear-gradient(135deg, #0A84C8 0%, ${MUSEUM.blue} 55%, #005A8C 100%)`,
+        }}
+      >
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+          <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-14">
+            <div className="md:col-span-5">
+              <Link href="/look-closer" className="group block" aria-label="Open the guide, Look Closer">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={LOOK_CLOSER_FEATURE.image}
-                  alt={LOOK_CLOSER_FEATURE.imageAlt}
+                  src={EXHIBIT_PHOTO.src}
+                  srcSet={`${EXHIBIT_PHOTO.small} 800w, ${EXHIBIT_PHOTO.src} 1400w`}
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  alt={EXHIBIT_PHOTO.alt}
                   loading="lazy"
-                  className="w-full rounded-sm border border-ink/15 bg-white p-1.5 shadow-[6px_6px_0_0_rgba(26,26,26,0.08)] transition-transform group-hover:-translate-y-0.5"
+                  className="w-full bg-white p-1.5 shadow-[8px_8px_0_0_rgba(0,0,0,0.18)] transition-transform group-hover:-translate-y-0.5"
                 />
               </Link>
-              <p className="mt-2 font-body text-[11px] leading-snug text-ink/60">
-                {MAP_CREDIT.title}. {MAP_CREDIT.makers}. {MAP_CREDIT.publisher}. {MAP_CREDIT.holder}.
+              <p className="mt-3 font-body text-[11px] leading-snug text-white/70">
+                {EXHIBIT_PHOTO.caption}
               </p>
             </div>
-            <div className="md:col-span-5">
-              <div className="h-[3px] w-11" style={{ background: MUSEUM.blue }} aria-hidden="true" />
-              <div className="mt-5 flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo.svg" alt="" className="h-10 w-10 rounded-full" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={MUSEUM.logo} alt="" className="h-10 w-10 rounded-full border border-ink/15" />
-                <p className="font-display text-base italic text-ink/70">
-                  {EXHIBIT.partnership}
-                </p>
+
+            <div className="md:col-span-7">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <div className="flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/logo.svg" alt="" className="h-9 w-9 rounded-full ring-2 ring-white/90" />
+                  <span className="font-display text-lg text-white/70" aria-hidden="true">
+                    &amp;
+                  </span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={MUSEUM.logo} alt="" className="h-9 w-9 rounded-full ring-2 ring-white/90" />
+                </div>
+                <p className="font-body text-sm font-semibold text-white">{WEB_COPY.lockup}</p>
+                <span className="rounded-sm border border-white/60 px-2 py-0.5 font-body text-[11px] font-semibold uppercase tracking-widest text-white/90">
+                  {LOOK_CLOSER_FEATURE.note}
+                </span>
               </div>
-              <h2 className="mt-5 font-display text-4xl leading-none tracking-tight text-forest md:text-5xl">
+
+              <h2 className="mt-6 font-display text-5xl font-semibold leading-none tracking-tight text-white md:text-6xl">
                 {EXHIBIT.title}
               </h2>
-              <p className="mt-3 font-display text-lg leading-snug text-ink md:text-xl">
-                {LOOK_CLOSER_FEATURE.note}. {EXHIBIT.line}
+              <p className="mt-5 max-w-[34ch] font-display text-xl leading-snug text-white md:text-2xl">
+                {WEB_COPY.lede}
               </p>
-              <p className="mt-5 max-w-[46ch] font-body text-base leading-relaxed text-ink/75 md:text-lg">
-                A joint exhibit by Rooted Forward and the Chicago Maritime Museum. In 1931 a Boston
-                publisher sold Chicago to visitors with a bird&rsquo;s-eye map full of jokes. Look
-                closely and the jokes have targets. The exhibit follows twelve details on the map to
-                the history behind them. See it on the museum&rsquo;s wall in Bridgeport, with a touch
-                screen beside it, and open the same map on your phone here.
+              <p className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-white/85 md:text-lg">
+                {WEB_COPY.body}
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-6">
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/look-closer"
-                  className="inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
+                  className="inline-flex items-center rounded-sm bg-white px-7 py-4 font-body text-sm font-semibold uppercase tracking-widest transition-colors hover:bg-cream"
+                  style={{ color: MUSEUM.blue }}
                 >
-                  Explore the map
+                  {WEB_COPY.explore}
                 </Link>
                 <a
                   href={MUSEUM.visitUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group font-body text-sm font-semibold uppercase tracking-widest transition-colors hover:text-forest"
-                  style={{ color: MUSEUM.blue }}
+                  className="group inline-flex items-center rounded-sm border border-white/80 px-7 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-white/10"
                 >
-                  Plan a visit{" "}
-                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  {WEB_COPY.visit}{" "}
+                  <span aria-hidden="true" className="ml-2 inline-block transition-transform group-hover:translate-x-1">
                     &rarr;
                   </span>
                 </a>
               </div>
-              <p className="mt-6 font-body text-sm leading-relaxed text-ink/60">
+
+              <p className="mt-7 font-body text-sm leading-relaxed text-white/75">
                 {MUSEUM.name}, {MUSEUM.address}. {MUSEUM.hours}
               </p>
             </div>

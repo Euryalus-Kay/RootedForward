@@ -88,13 +88,35 @@ export const EXHIBIT = {
   tap: "Tap a numbered ring to read about that detail.",
 };
 
+/** The installation itself, photographed at the museum in September
+ *  2026 by Rooted Forward: the map on the wall with the touch screen
+ *  beside it. Cropped and lightened from the owner's photograph. */
+export const EXHIBIT_PHOTO = {
+  src: "/media/look-closer/exhibit-wall.jpg",
+  small: "/media/look-closer/exhibit-wall-800.jpg",
+  alt: "The 1931 map of Chicago mounted on a wall at the Chicago Maritime Museum, with a touch screen showing the interactive guide in front of it and two people standing beside it",
+  caption: "The map and its touch screen on the museum's wall in Bridgeport, September 2026. Photograph by Rooted Forward.",
+};
+
+/** The home page's words for the exhibit, in the owner's wording
+ *  (September 13, 2026). The app's plate uses the shorter line in
+ *  LOOK_CLOSER_FEATURE instead. */
+export const WEB_COPY = {
+  lockup: "Rooted Forward & Chicago Maritime Museum",
+  lede: "Rooted Forward and the Chicago Maritime Museum have teamed up to explore the history behind a 1931 illustrated map of Chicago.",
+  body: "Our interactive guide examines the map's jokes and drawings and what they reveal about Chicago's neighborhoods, racial stereotypes, and housing discrimination. Visit the museum to see the map and use the touchscreen beside it, or explore the guide here online.",
+  explore: "Explore the guide",
+  visit: "Plan a visit",
+};
+
 /** What the site and the app put on their front doors while the map
  *  is on the museum's wall. Served in /api/walk as `featured`. */
 export const LOOK_CLOSER_FEATURE = {
   id: "look-closer",
   title: EXHIBIT.title,
-  /** the plate's one line; it has to say joint, in person and here */
-  line: "A joint exhibit with Rooted Forward. The 1931 map of Chicago, on the museum's wall in Bridgeport and open on your phone here.",
+  /** the plate's one line, under a lockup that already names both
+   *  partners; it has to say in person and here */
+  line: "The 1931 map of Chicago, on the museum's wall in Bridgeport and open on your phone here.",
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",
