@@ -48,6 +48,39 @@
     ensure();
     if (++tries > 40) clearInterval(timer);
   }, 250);
+
+  // In the app the map opens on the main screen. The attract screen
+  // is the wall's rest state, and the app has its own front door, so
+  // once the attract screen is up the kiosk's own begin is sent: the
+  // bundle begins on Enter while the screen is 'attract', and on a
+  // touch of the attract panel. Both go, a few times over a second,
+  // because the text can linger in hidden panels and cannot be read
+  // back as the screen's state.
+  function attractUp() {
+    try { return /Touch anywhere to begin/i.test((document.body && document.body.innerText) || ""); } catch (e) { return false; }
+  }
+  function begin() {
+    try {
+      document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true, cancelable: true }));
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true, cancelable: true }));
+      var all = document.body.getElementsByTagName("*");
+      for (var i = 0; i < all.length; i++) {
+        var el = all[i];
+        if (el.children.length === 0 && /Touch anywhere to begin/i.test(el.textContent || "")) {
+          (el.closest("[sc-camel-on-click]") || el).click();
+          break;
+        }
+      }
+    } catch (e) {}
+  }
+  if (inApp) {
+    var waited = 0, sent = 0;
+    var starter = setInterval(function () {
+      if (sent === 0 && !attractUp()) { if (++waited > 60) clearInterval(starter); return; }
+      begin();
+      if (++sent >= 3) clearInterval(starter);
+    }, 300);
+  }
   if (window.MutationObserver) {
     new MutationObserver(function () { ensure(); }).observe(document, { childList: true, subtree: false });
   }
