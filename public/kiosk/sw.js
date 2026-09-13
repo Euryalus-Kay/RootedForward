@@ -10,7 +10,7 @@
 /*  forever.                                                           */
 /* ------------------------------------------------------------------ */
 
-const CACHE = "rf-kiosk-v2";
+const CACHE = "rf-kiosk-v3";
 const ASSETS = ["/kiosk/map", "/kiosk/map-kiosk.html"];
 
 /* Precache with cache:"reload" rather than addAll. addAll goes through the
@@ -48,6 +48,23 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin || !url.pathname.startsWith("/kiosk/")) return;
+
+  /* The nightly update check asks for the server copy on purpose. Without
+     this door the page can never see a new build, because the matching
+     below ignores the query string and would keep handing back the cached
+     bundle forever. Falls back to the cache so a failed check is harmless. */
+  if (url.searchParams.has("rf-fresh")) {
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches
+          .match(event.request, { ignoreSearch: true })
+          // respondWith(undefined) is itself an error, so a miss with the
+          // network already down has to answer with something real.
+          .then((hit) => hit || new Response("", { status: 504 }))
+      )
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((hit) => {
