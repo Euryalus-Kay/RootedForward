@@ -93,7 +93,8 @@ export const EXHIBIT = {
 export const LOOK_CLOSER_FEATURE = {
   id: "look-closer",
   title: EXHIBIT.title,
-  line: EXHIBIT.line,
+  /** short enough for three lines on a phone plate, after the note */
+  line: "The 1931 map of Chicago and the history behind its jokes.",
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",
