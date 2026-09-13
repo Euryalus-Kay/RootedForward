@@ -6,8 +6,12 @@
 /*  opens from disk and keeps working with the network unplugged,      */
 /*  which is the point on a machine sitting in a museum.               */
 /*                                                                     */
-/*  Bump CACHE when the bundle changes, or the old copy is served      */
-/*  forever.                                                           */
+/*  Do NOT bump CACHE on every deploy. The page carries a build id and */
+/*  the nightly check compares the server against the build it is       */
+/*  actually running, then writes the new bundle into this same cache.  */
+/*  Bumping forces a reinstall, which re-precaches and quietly puts the */
+/*  new build in the cache while the wall still shows the old one.      */
+/*  Bump it only when this worker's own logic changes.                  */
 /* ------------------------------------------------------------------ */
 
 const CACHE = "rf-kiosk-v4";

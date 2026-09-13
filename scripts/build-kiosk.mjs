@@ -63,6 +63,10 @@ const BUILD = createHash("sha256")
   .update(readFileSync(src))
   .update(String(IDLE_SECONDS))
   .update(String(UPDATE_CHECK_MINUTES))
+  // This file too, so changing the injected behaviour changes the id. Without
+  // it a rewrite of the kiosk script would ship a different bundle under the
+  // old id, and the update check would decide nothing had changed.
+  .update(readFileSync(new URL(import.meta.url)))
   .digest("hex")
   .slice(0, 8);
 
@@ -240,25 +244,31 @@ const injected = `${MARKER}
         if (res.headers && res.headers.get("X-RF-From-Cache")) return "unreachable";
         return res.text().then(function (fresh) {
           if (!fresh || fresh.length < MIN_CHARS) return "bad-response";
+
+          // Compare the server's build id against the one THIS PAGE is
+          // running, not against whatever is in the cache. The cache can be
+          // refreshed underneath a long-running page by any service worker
+          // reinstall, and comparing against it would then report "unchanged"
+          // while the wall is still showing the old build.
+          var found = fresh.match(/build: "([a-f0-9]{8})"/);
+          var serverBuild = found ? found[1] : null;
+          if (!serverBuild) return "unknown-build"; // nothing safe to conclude
+          if (serverBuild === api.build) return "unchanged";
+
+          api.serverBuild = serverBuild;
           return kioskCache().then(function (c) {
             if (!c) return "no-cache";
-            return c.match(KIOSK_PATH, { ignoreSearch: true }).then(function (hit) {
-              if (!hit) return "no-cache";
-              return hit.text().then(function (current) {
-                if (current === fresh) return "unchanged";
-                var body = function () {
-                  return new Response(fresh, {
-                    headers: { "Content-Type": "text/html; charset=utf-8" }
-                  });
-                };
-                return Promise.all([
-                  c.put(KIOSK_PATH, body()),
-                  c.put("/kiosk/map-kiosk.html", body())
-                ]).then(function () {
-                  api.updates++;
-                  return "updated";
-                });
+            var body = function () {
+              return new Response(fresh, {
+                headers: { "Content-Type": "text/html; charset=utf-8" }
               });
+            };
+            return Promise.all([
+              c.put(KIOSK_PATH, body()),
+              c.put("/kiosk/map-kiosk.html", body())
+            ]).then(function () {
+              api.updates++;
+              return "updated";
             });
           });
         });
@@ -334,7 +344,8 @@ const injected = `${MARKER}
         outcome === "updated" ||
         outcome === "unchanged" ||
         outcome === "offline-copy" ||
-        outcome === "no-cache"
+        outcome === "no-cache" ||
+        outcome === "unknown-build"
       ) {
         updateOwed = false;
       }
