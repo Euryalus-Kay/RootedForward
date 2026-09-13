@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { DEFAULT_WALK_SLUG, type WalkTourBundle } from "@/lib/tours/registry";
+import { APP_HIDDEN_SLUGS, DEFAULT_WALK_SLUG, type WalkTourBundle } from "@/lib/tours/registry";
 import { loadWalkBundles } from "@/lib/tours/store";
 import { LOOK_CLOSER_FEATURE } from "@/lib/look-closer";
 
@@ -90,11 +90,18 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
   };
 }
 
+/** The walks a phone may see. The site can show a walk the app must
+ *  not, while its words are still being edited, so the index and the
+ *  lookups both read this rather than the full set. */
+async function appBundles() {
+  return (await loadWalkBundles()).filter((b) => !APP_HIDDEN_SLUGS.includes(b.slug));
+}
+
 /** exported so the iOS snapshot exporter writes the same bytes the
  *  network would return. Async now, because the walks are read from
  *  the database on demand rather than compiled in. */
 export async function walkPayload(slug: string) {
-  const bundles = await loadWalkBundles();
+  const bundles = await appBundles();
   const bundle = bundles.find((b) => b.slug === slug);
   if (!bundle) return undefined;
   return buildPayload(bundle, tourIndex(bundles));
@@ -104,7 +111,7 @@ export async function GET(request: Request) {
   const slug =
     new URL(request.url).searchParams.get("tour") ?? DEFAULT_WALK_SLUG;
 
-  const bundles = await loadWalkBundles();
+  const bundles = await appBundles();
   const bundle = bundles.find((b) => b.slug === slug);
   if (!bundle) {
     return NextResponse.json(
