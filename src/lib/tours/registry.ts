@@ -94,8 +94,14 @@ export const HARLEM_LIVE = false;
 /*  the earlier Harlem route above, which stays in the repo behind   */
 /*  its switch. This one has its own, so it can be built and served  */
 /*  locally before it is announced.                                  */
+/*                                                                     */
+/*  Off since September 13, 2026: the walk is still being written and */
+/*  the owner does not want it on the site yet. Off means no page,   */
+/*  no listing on /tours or the home page, no sitemap row, and no    */
+/*  /api/walk entry, so a phone cannot find it either. To put it     */
+/*  back: set this to true, commit, push, deploy.                    */
 /* ------------------------------------------------------------------ */
-export const WEST_HARLEM_LIVE = true;
+export const WEST_HARLEM_LIVE = false;
 
 /** Walks the site shows but the app must not, by slug. The app lists
  *  whatever /api/walk's index carries, so a walk here never reaches a

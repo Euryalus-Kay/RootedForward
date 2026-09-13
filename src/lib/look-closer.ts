@@ -103,9 +103,12 @@ export const EXHIBIT_PHOTO = {
  *  LOOK_CLOSER_FEATURE instead. */
 export const WEB_COPY = {
   lockup: "Rooted Forward & Chicago Maritime Museum",
-  lede: "Rooted Forward and the Chicago Maritime Museum have teamed up to explore the history behind a 1931 illustrated map of Chicago.",
-  body: "Our interactive guide examines the map's jokes and drawings and what they reveal about Chicago's neighborhoods, racial stereotypes, and housing discrimination. Visit the museum to see the map and use the touchscreen beside it, or explore the guide here online.",
-  explore: "Explore the guide",
+  lede: "Rooted Forward and the Chicago Maritime Museum created this exhibit to explore the history behind a 1931 illustrated map of Chicago.",
+  body: [
+    "Published as Chicago prepared for its second world\u2019s fair, the map presents a lively city of beaches, ballparks, and skyscrapers. But its jokes and drawings also include racial caricatures and references to housing restrictions that excluded Black families from certain neighborhoods. Our interactive guide explains these details and the discrimination and segregation they reflect.",
+    "Visit the museum in Bridgeport to see the map and explore it on the touchscreen beside it, or open the interactive map here on your phone.",
+  ],
+  explore: "Explore the map",
   visit: "Plan a visit",
 };
 
@@ -130,12 +133,10 @@ export const LOOK_CLOSER_FEATURE = {
     place: "1200 West 35th Street, Bridgeport, on the river level of the Bridgeport Art Center",
     hours: MUSEUM.hours,
   },
-  /** the information sheet in the app, the collaboration first */
-  about: [
-    "Rooted Forward and the Chicago Maritime Museum made this exhibit together. The map hangs on the museum's wall in Bridgeport with a touch screen beside it, and the same map, with the same twelve details, opens on your phone here.",
-    ...EXHIBIT.paragraphs,
-    EXHIBIT.tap,
-  ],
+  /** the information sheet in the app: the owner's words for the
+   *  exhibit, the kiosk's paragraph on the city behind it, and how to
+   *  use the map */
+  about: [WEB_COPY.lede, ...WEB_COPY.body, EXHIBIT.paragraphs[2], EXHIBIT.tap],
   credit: `${MAP_CREDIT.title}. ${MAP_CREDIT.makers}. ${MAP_CREDIT.publisher}. ${MAP_CREDIT.holder}.`,
 };
 

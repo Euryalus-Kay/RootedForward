@@ -37,7 +37,6 @@
   transform-origin: 0 0;
   background: #e9e1d2;
   box-shadow: 0 12px 40px rgba(30, 29, 27, 0.22);
-  will-change: transform;
 }
 .sheet img {
   position: absolute;

@@ -16,7 +16,7 @@
 // ------------------------------------------------------------------
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   EXHIBIT,
   MAP_CREDIT,
@@ -35,9 +35,25 @@ interface View {
   y: number;
 }
 
-/** how far the map may be enlarged past fitting the screen; the full
- *  image is 6400 wide, so this stays inside its pixels on a phone */
-const MAX_ZOOM = 6;
+/** how far the map may be enlarged past fitting the screen. The full
+ *  image is 6400 wide; past about this the phone would be stretching
+ *  it, and the kiosk's own limit is close to it. */
+const MAX_ZOOM = 4.5;
+
+/** past this the 2400px image is being stretched, so the 6400 loads */
+const FULL_AT = 1.2;
+
+const COARSE = "(pointer: coarse)";
+const subscribeCoarse = (cb: () => void) => {
+  const m = window.matchMedia(COARSE);
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+};
+/** a touch screen, read the React way so the server and the first
+ *  client render agree and the real answer arrives right after */
+function useCoarsePointer() {
+  return useSyncExternalStore(subscribeCoarse, () => window.matchMedia(COARSE).matches, () => false);
+}
 
 function Runs({ runs }: { runs: TextRun[] }) {
   return (
@@ -50,7 +66,12 @@ function Runs({ runs }: { runs: TextRun[] }) {
 export default function LookCloserMap({ inApp }: { inApp: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const [view, setView] = useState<View>({ k: 1, x: 0, y: 0 });
+  // k of 0 means no one has touched the map yet, and the first view is
+  // chosen from the screen: the whole sheet on a desktop, and on a phone
+  // the sheet filling the width, because the whole map at phone size is
+  // a postage stamp and the jokes on it are the point.
+  const [view, setView] = useState<View>({ k: 0, x: 0, y: 0 });
+  const coarse = useCoarsePointer();
   const [animated, setAnimated] = useState(false);
   const [active, setActive] = useState<number | null>(null);
   const [about, setAbout] = useState(false);
@@ -127,23 +148,25 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
   );
 
   // What is drawn is always the clamped view, so the first render and
-  // every resize land the sheet centered without a state update: a
-  // view of {1, 0, 0} clamps to the fitted, centered sheet.
-  const shown = clamp(view);
+  // every resize land the sheet where it belongs without a state
+  // update. Until the first touch the view is derived from the screen.
+  const shown = useMemo(() => {
+    if (view.k > 0 || !sheet.w) return clamp(view);
+    const k = coarse ? Math.min(2.2, Math.max(1, size.w / sheet.w)) : 1;
+    return clamp({ k, x: (size.w - sheet.w * k) / 2, y: (size.h - sheet.h * k) / 2 });
+  }, [view, clamp, coarse, sheet, size]);
 
   /** zoom about a stage point, keeping that point still under the finger */
   const zoomAt = useCallback(
     (factor: number, px: number, py: number, animate = false) => {
       setAnimated(animate);
-      setView((raw) => {
-        const v = clamp(raw);
-        const k = Math.min(MAX_ZOOM, Math.max(1, v.k * factor));
-        const f = k / v.k;
-        return clamp({ k, x: px - (px - v.x) * f, y: py - (py - v.y) * f });
-      });
-      if (k_isNearFull(shown.k * factor)) setWantFull(true);
+      const v = shown;
+      const k = Math.min(MAX_ZOOM, Math.max(1, v.k * factor));
+      const f = k / v.k;
+      setView(clamp({ k, x: px - (px - v.x) * f, y: py - (py - v.y) * f }));
+      if (k >= FULL_AT) setWantFull(true);
     },
-    [clamp, shown.k]
+    [clamp, shown]
   );
 
   // ---- pointers: one drags, two pinch ----
@@ -186,7 +209,7 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
         x: mid.x - (g.mid.x - g.view.x) * ff,
         y: mid.y - (g.mid.y - g.view.y) * ff,
       }));
-      if (k_isNearFull(k)) setWantFull(true);
+      if (k >= FULL_AT) setWantFull(true);
       g.moved = true;
     } else {
       const p = pts[0];
@@ -240,7 +263,7 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
       // a little smaller than that so the map around it still reads.
       const panelW = Math.min(size.w * 0.46, 400);
       const freeW = size.w - panelW;
-      const s = sheet.w / MAP_SPACE.w;
+      const s = sheet.w / MAP_SPACE.w; // base sheet, before zoom
       const dw = (d.box?.w ?? d.r * 2) * s;
       const dh = (d.box?.h ?? d.r * 2) * s;
       const k = Math.min(MAX_ZOOM, Math.max(1.2, Math.min((freeW * 0.62) / dw, (size.h * 0.62) / dh)));
@@ -265,7 +288,8 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
     return () => window.clearTimeout(t);
   }, [hint]);
 
-  const s = sheet.w / MAP_SPACE.w;
+  /** map space to the sheet's laid-out pixels at the current zoom */
+  const s = (sheet.w * shown.k) / MAP_SPACE.w;
   const current: MapDetail | null = active === null ? null : MAP_DETAILS[active];
   const panelOpen = current !== null || about;
 
@@ -285,10 +309,12 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
         <div
           className={styles.sheet}
           style={{
-            width: sheet.w,
-            height: sheet.h,
-            transform: `translate(${shown.x}px, ${shown.y}px) scale(${shown.k})`,
-            transition: animated ? "transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1)" : "none",
+            width: sheet.w * shown.k,
+            height: sheet.h * shown.k,
+            transform: `translate(${shown.x}px, ${shown.y}px)`,
+            transition: animated
+              ? "transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.45s cubic-bezier(0.2, 0.7, 0.2, 1)"
+              : "none",
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -312,7 +338,7 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
                 <button
                   type="button"
                   className={`${styles.ring} ${d.box ? styles.ringBox : ""} ${on ? styles.ringOn : ""}`}
-                  style={{ left: d.cx * s, top: d.cy * s, width: w, height: h, borderWidth: 2 / shown.k, outlineWidth: 2 / shown.k }}
+                  style={{ left: d.cx * s, top: d.cy * s, width: w, height: h }}
                   onClick={() => open(i)}
                   aria-label={`Detail ${d.number}, ${d.title}`}
                   tabIndex={-1}
@@ -323,8 +349,6 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
                   style={{
                     left: d.cx * s - w / 2 + (d.nudge?.x ?? 0) * s,
                     top: d.cy * s - h / 2 + (d.nudge?.y ?? 0) * s,
-                    transform: `scale(${1 / shown.k})`,
-                    transformOrigin: "center",
                   }}
                   onClick={() => open(i)}
                   aria-label={`Detail ${d.number}, ${d.title}`}
@@ -500,7 +524,3 @@ export default function LookCloserMap({ inApp }: { inApp: boolean }) {
   );
 }
 
-/** past this the 2400px image is being stretched, so the 6400 loads */
-function k_isNearFull(k: number) {
-  return k >= 1.5;
-}

@@ -232,18 +232,31 @@ export default function Home() {
       >
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
           <div className="grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-14">
+            {/* The map itself, and the installation photograph set over
+                its corner like a print pinned to it, so both are seen
+                and neither is large. The column stays shorter than the
+                photograph alone was. */}
             <div className="md:col-span-5">
-              <Link href="/look-closer" className="group block" aria-label="Open the guide, Look Closer">
+              <div className="relative pb-[26%]">
+                <Link href="/look-closer" className="group block" aria-label="Open the guide, Look Closer">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={LOOK_CLOSER_FEATURE.image}
+                    alt={LOOK_CLOSER_FEATURE.imageAlt}
+                    loading="lazy"
+                    className="w-full bg-white p-1.5 shadow-[8px_8px_0_0_rgba(0,0,0,0.18)] transition-transform group-hover:-translate-y-0.5"
+                  />
+                </Link>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={EXHIBIT_PHOTO.src}
-                  srcSet={`${EXHIBIT_PHOTO.small} 800w, ${EXHIBIT_PHOTO.src} 1400w`}
-                  sizes="(min-width: 768px) 40vw, 100vw"
+                  srcSet={`${EXHIBIT_PHOTO.small} 700w, ${EXHIBIT_PHOTO.src} 1200w`}
+                  sizes="(min-width: 768px) 18vw, 44vw"
                   alt={EXHIBIT_PHOTO.alt}
                   loading="lazy"
-                  className="w-full bg-white p-1.5 shadow-[8px_8px_0_0_rgba(0,0,0,0.18)] transition-transform group-hover:-translate-y-0.5"
+                  className="absolute bottom-0 right-4 w-[44%] bg-white p-1.5 shadow-[8px_8px_0_0_rgba(0,0,0,0.18)]"
                 />
-              </Link>
+              </div>
               <p className="mt-3 font-body text-[11px] leading-snug text-white/70">
                 {EXHIBIT_PHOTO.caption}
               </p>
@@ -266,15 +279,17 @@ export default function Home() {
                 </span>
               </div>
 
-              <h2 className="mt-6 font-display text-5xl font-semibold leading-none tracking-tight text-white md:text-6xl">
+              <h2 className="mt-6 font-display text-5xl font-semibold leading-none tracking-tight text-cream md:text-6xl">
                 {EXHIBIT.title}
               </h2>
-              <p className="mt-5 max-w-[34ch] font-display text-xl leading-snug text-white md:text-2xl">
+              <p className="mt-5 max-w-[34ch] font-display text-xl leading-snug text-cream md:text-2xl">
                 {WEB_COPY.lede}
               </p>
-              <p className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-white/85 md:text-lg">
-                {WEB_COPY.body}
-              </p>
+              {WEB_COPY.body.map((para) => (
+                <p key={para} className="mt-4 max-w-[58ch] font-body text-base leading-relaxed text-white/85 md:text-lg">
+                  {para}
+                </p>
+              ))}
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
