@@ -34,12 +34,12 @@
       + '<div class="desk" aria-hidden="true"></div>'
       + '<p class="ask">Please view the map on a desktop.</p>'
       + '<p class="note">The interactive map is built for a large screen. On a phone, open it in the Rooted Forward app instead.</p>'
-      + '<div class="links"><a href="/look-closer">Back to Look Closer</a><a href="/tours">Get the app</a></div>'
+      + '<div class="links"><a href="/">Back to the home page</a><a href="/tours">Get the app</a></div>'
     : HEAD
       + '<div class="phone" aria-hidden="true"></div>'
       + '<p class="ask">Turn your phone sideways to open the map.</p>'
       + '<p class="note">The map is wider than it is tall, and every joke on it is small. It only opens the long way round.</p>'
-      + (inApp ? '' : '<a href="/look-closer">Back to Look Closer</a>');
+      + (inApp ? '' : '<a href="/">Back to the home page</a>');
   function ensure() {
     try {
       if (document.getElementById("rf-rotate")) return;
