@@ -41,12 +41,19 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rooted-forward.org"),
+  /* Open to search engines since September 2026. This used to say
+     index false, which emits a noindex tag that no robots.txt rule can
+     override, so the site could not be found by name. Pages that should
+     stay out of results set their own robots metadata, and the kiosk is
+     held back by a header in vercel.json. */
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
     googleBot: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   title: "Rooted Forward | Chicago Neighborhood History and Policy",

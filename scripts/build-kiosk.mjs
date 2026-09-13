@@ -33,6 +33,7 @@
 /* ------------------------------------------------------------------ */
 
 import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 /* Four minutes. It was 20 seconds, which is fine for a demo and much too
    short for a wall panel with this much reading on it, since a visitor part
@@ -52,6 +53,19 @@ if (!src) {
 
 const MARKER = "<!-- rooted-forward-kiosk -->";
 
+/* A short fingerprint of what went into this build, so the screen on the
+   wall can say which one it is running. Taken over the source export and
+   the settings rather than the finished file, because the finished file
+   contains this value and hashing it would chase its own tail. Identical
+   inputs give an identical id, so a rebuild that changed nothing does not
+   look like a new build to the nightly update check. */
+const BUILD = createHash("sha256")
+  .update(readFileSync(src))
+  .update(String(IDLE_SECONDS))
+  .update(String(UPDATE_CHECK_MINUTES))
+  .digest("hex")
+  .slice(0, 8);
+
 const injected = `${MARKER}
 <script>
 (function () {
@@ -60,6 +74,7 @@ const injected = `${MARKER}
   // guessed at. This file is a kiosk, not a public app surface.
   var api = (window.__rfKiosk = {
     ran: true,
+    build: "${BUILD}",
     idleMs: IDLE_MS,
     resets: 0,
     armedAt: 0,
@@ -357,3 +372,4 @@ console.log(`wrote ${out}`);
 console.log(`  ${(html.length / 1024 / 1024).toFixed(2)} MB`);
 console.log(`  idle reset ${IDLE_SECONDS}s (${(IDLE_SECONDS / 60).toFixed(0)} min), fullscreen on first touch`);
 console.log(`  nightly update pull, polled every ${UPDATE_CHECK_MINUTES} min`);
+console.log(`  build ${BUILD}`);

@@ -39,6 +39,15 @@
       ]
     },
     {
+      "source": "/kiosk/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/kiosk/map-kiosk.html",
       "headers": [
         {
