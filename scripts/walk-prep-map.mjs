@@ -62,6 +62,19 @@ const TOURS = {
     counties: ["36061"],
     frame: { latMin: 40.798, latMax: 40.824, lngMin: -73.975, lngMax: -73.945 },
   },
+  // Central Dallas from the Old Red Courthouse to Freedman's Cemetery:
+  // downtown, Deep Ellum, the Arts District, Klyde Warren Park,
+  // State-Thomas and the memorial at Lemmon Avenue and Central
+  // Expressway. Wide enough on the west to hold Little Mexico's Pike
+  // Park and the Trinity levees, so the plate reads as the whole
+  // north side of downtown rather than a strip. Must match the crop
+  // frame of the 1958 USGS underlay (map-base-1958.jpg). fips 48113
+  // is Dallas County.
+  dallas: {
+    out: "src/lib/tours/dallas-geometry.json",
+    counties: ["48113"],
+    frame: { latMin: 32.774, latMax: 32.813, lngMin: -96.812, lngMax: -96.768 },
+  },
 };
 
 const tourArg = (() => {
