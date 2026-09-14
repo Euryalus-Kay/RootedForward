@@ -219,7 +219,8 @@ const phoneBlock = `${PHONE_MARK}
       // the buttons
       var about = findByText(/^About this map$/i, "button");
       if (about && about.parentElement) scaleGroup(about.parentElement, BUTTONS, "right center");
-      var plus = findByText(/^\+$/, "button");
+      // a bracket class, because a backslash would not survive this template
+      var plus = findByText(/^[+]$/, "button");
       if (plus && plus.parentElement) scaleGroup(plus.parentElement, BUTTONS, "bottom left");
     } catch (e) {}
   }
