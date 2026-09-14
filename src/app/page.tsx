@@ -238,7 +238,7 @@ export default function Home() {
                 photograph alone was. */}
             <div className="md:col-span-5">
               <div className="relative pb-[26%]">
-                <Link href="/look-closer/map" className="group block" aria-label="Open the guide, Look Closer">
+                <Link href="/look-closer/map" className="group block" aria-label="Open the map">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={LOOK_CLOSER_FEATURE.image}

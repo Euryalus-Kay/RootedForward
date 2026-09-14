@@ -79,8 +79,8 @@ const phoneBlock = `${PHONE_MARK}
   var deny = phone && !inApp;
   var CSS = ${JSON.stringify(css)};
   var HEAD = '<div class="marks"><img src="/logo.svg" alt="Rooted Forward"><span class="amp">&amp;</span><img src="/media/look-closer/cmm-logo.png" alt="Chicago Maritime Museum"></div>'
-    + '<h1>Look Closer</h1>'
-    + '<p class="sub">An Illustrated Map of Chicago, 1931, on view at the Chicago Maritime Museum</p>';
+    + '<h1>An Illustrated Map of Chicago</h1>'
+    + '<p class="sub">Charles Turzak and Henry T. Chapman, 1931, on view at the Chicago Maritime Museum</p>';
   var HTML = deny
     ? HEAD
       + '<div class="desk" aria-hidden="true"></div>'

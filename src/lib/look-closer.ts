@@ -72,7 +72,8 @@ export const MUSEUM = {
 };
 
 export const EXHIBIT = {
-  title: "Look Closer",
+  /** the map's own name; "Look Closer" is the kiosk's headline, not a title */
+  title: "An Illustrated Map of Chicago",
   /** one line under the title, on cards */
   line: "The 1931 illustrated map of Chicago on the Chicago Maritime Museum's wall, and the history behind its jokes.",
   partnership: "In partnership with the Chicago Maritime Museum",
@@ -119,7 +120,7 @@ export const LOOK_CLOSER_FEATURE = {
   title: EXHIBIT.title,
   /** the plate's one line, under a lockup that already names both
    *  partners; it has to say in person and here */
-  line: "The 1931 map of Chicago, on the museum's wall in Bridgeport and open on your phone here.",
+  line: "The 1931 map, on the museum's wall in Bridgeport and open on your phone here.",
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",

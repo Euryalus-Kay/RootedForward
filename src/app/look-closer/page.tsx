@@ -22,10 +22,10 @@ import {
 /* ------------------------------------------------------------------ */
 
 export const metadata: Metadata = {
-  title: "Look Closer | Rooted Forward",
+  title: `${EXHIBIT.title} | Rooted Forward`,
   description: WEB_COPY.lede,
   openGraph: {
-    title: "Look Closer",
+    title: EXHIBIT.title,
     description: WEB_COPY.lede,
     images: [{ url: LOOK_CLOSER_FEATURE.image, alt: LOOK_CLOSER_FEATURE.imageAlt }],
   },
