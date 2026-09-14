@@ -86,7 +86,7 @@ New opening animation and performance improvements.
 
 ## What's New (version 2.3, build 32)
 
-An Illustrated Map of Chicago, the 1931 map on view at the Chicago Maritime Museum, now opens from the home screen. Turn your phone sideways to explore it.
+Added new content and small improvements.
 
 ---
 
