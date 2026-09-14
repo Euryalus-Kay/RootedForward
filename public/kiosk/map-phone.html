@@ -85,6 +85,82 @@
       }
     } catch (e) {}
   }
+  // In the app the stage is drawn at about a third of its size, which
+  // makes the right column's list unreadable. Each pane in that column
+  // is scaled up in place, to a width that keeps its visual size, so
+  // the type grows and the pane scrolls inside its own box; the wall's
+  // Rooted Forward box in the list is hidden, because this is the
+  // Rooted Forward app; and the round buttons grow a little. The
+  // bundle re-renders on its own, so the shaping runs again and again.
+  var LIST = 1.7, DETAIL = 1.5, BUTTONS = 1.3;
+  function findByText(re, tag) {
+    var all = document.body ? document.body.getElementsByTagName(tag || "*") : [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.children.length === 0 && re.test(el.textContent || "")) return el;
+    }
+    return null;
+  }
+  function scalePane(pane, factor) {
+    if (!pane || pane.getAttribute("data-rf-scaled") === String(factor)) return;
+    var w = parseFloat(pane.style.width) || 480;
+    pane.style.setProperty("transform-origin", "top right", "important");
+    pane.style.setProperty("transform", "scale(" + factor + ")", "important");
+    pane.style.setProperty("width", Math.round(w / factor) + "px", "important");
+    pane.style.setProperty("bottom", "auto", "important");
+    pane.style.setProperty("height", Math.round(996 / factor) + "px", "important");
+    pane.style.setProperty("overflow-y", "auto", "important");
+    pane.style.setProperty("overflow-x", "hidden", "important");
+    pane.style.setProperty("-webkit-overflow-scrolling", "touch", "important");
+    pane.style.setProperty("padding", "18px 22px", "important");
+    for (var i = 0; i < pane.children.length; i++) pane.children[i].style.setProperty("flex-shrink", "0", "important");
+    pane.setAttribute("data-rf-scaled", String(factor));
+  }
+  function scaleGroup(el, factor, origin) {
+    if (!el || el.getAttribute("data-rf-scaled")) return;
+    el.style.setProperty("transform-origin", origin, "important");
+    el.style.setProperty("transform", "scale(" + factor + ")", "important");
+    el.setAttribute("data-rf-scaled", "1");
+  }
+  function adapt() {
+    try {
+      // the list: its subtitle names it
+      var sub = findByText(/Touch a number on the map/i, "div");
+      if (sub && sub.parentElement && sub.parentElement.parentElement) {
+        var list = sub.parentElement.parentElement;
+        scalePane(list, LIST);
+        // rows may wrap to two lines in the narrower pane
+        var rows = list.getElementsByTagName("button");
+        for (var r = 0; r < rows.length; r++) {
+          rows[r].style.setProperty("height", "auto", "important");
+          rows[r].style.setProperty("min-height", "54px", "important");
+          rows[r].style.setProperty("padding", "6px 10px 6px 4px", "important");
+        }
+      }
+      // the Rooted Forward box in the list
+      var rf = findByText(/In partnership with the Chicago Maritime Museum/i, "div");
+      if (rf && rf.parentElement && rf.parentElement.parentElement) {
+        rf.parentElement.parentElement.style.setProperty("display", "none", "important");
+      }
+      // the detail pane: the way back names it
+      var back = findByText(/back to the map/i, "button");
+      var column = sub && sub.parentElement && sub.parentElement.parentElement ? sub.parentElement.parentElement.parentElement : null;
+      if (back && column) {
+        var pane = back;
+        while (pane && pane.parentElement && pane.parentElement !== column) pane = pane.parentElement;
+        if (pane && pane.parentElement === column && pane !== sub.parentElement.parentElement) scalePane(pane, DETAIL);
+      }
+      // the buttons
+      var about = findByText(/^About this map$/i, "button");
+      if (about && about.parentElement) scaleGroup(about.parentElement, BUTTONS, "right center");
+      var plus = findByText(/^+$/, "button");
+      if (plus && plus.parentElement) scaleGroup(plus.parentElement, BUTTONS, "bottom left");
+    } catch (e) {}
+  }
+  if (inApp) {
+    setInterval(adapt, 400);
+  }
+
   if (inApp) {
     var waited = 0, sent = 0;
     var starter = setInterval(function () {
