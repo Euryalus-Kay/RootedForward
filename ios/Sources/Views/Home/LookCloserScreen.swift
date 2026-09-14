@@ -402,6 +402,15 @@ struct LookCloserIntro: View {
                         .padding(.top, 16)
                         .accessibilityAddTraits(.isHeader)
 
+                    // The people who drew it, under the title here too.
+                    if let byline = feature.byline {
+                        Text(byline)
+                            .font(RF.body(14, weight: 600))
+                            .foregroundStyle(RF.ink.opacity(0.7))
+                            .padding(.top, 8)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
                     Text("A joint exhibit by Rooted Forward and the \(feature.partner.name)")
                         .font(RF.display(17, weight: 400))
                         .italic()
