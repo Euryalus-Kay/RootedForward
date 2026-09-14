@@ -120,8 +120,30 @@ const phoneBlock = `${PHONE_MARK}
   // touch of the attract panel. Both go, a few times over a second,
   // because the text can linger in hidden panels and cannot be read
   // back as the screen's state.
+  // The attract text stays in the document in hidden panels, so the
+  // question is whether it is actually showing: laid out, and not
+  // faded out by any ancestor.
+  function findByText(re, tag) {
+    var all = document.body ? document.body.getElementsByTagName(tag || "*") : [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.children.length === 0 && re.test(el.textContent || "")) return el;
+    }
+    return null;
+  }
   function attractUp() {
-    try { return /Touch anywhere to begin/i.test((document.body && document.body.innerText) || ""); } catch (e) { return false; }
+    try {
+      var el = findByText(/Touch anywhere to begin/i);
+      if (!el || el.getClientRects().length === 0) return false;
+      var node = el, opacity = 1;
+      while (node && node !== document.body) {
+        var cs = getComputedStyle(node);
+        if (cs.display === "none" || cs.visibility === "hidden") return false;
+        opacity *= parseFloat(cs.opacity) || 0;
+        node = node.parentElement;
+      }
+      return opacity > 0.3;
+    } catch (e) { return false; }
   }
   function begin() {
     try {
@@ -145,14 +167,6 @@ const phoneBlock = `${PHONE_MARK}
   // Rooted Forward app; and the round buttons grow a little. The
   // bundle re-renders on its own, so the shaping runs again and again.
   var LIST = 1.7, DETAIL = 1.5, BUTTONS = 1.3;
-  function findByText(re, tag) {
-    var all = document.body ? document.body.getElementsByTagName(tag || "*") : [];
-    for (var i = 0; i < all.length; i++) {
-      var el = all[i];
-      if (el.children.length === 0 && re.test(el.textContent || "")) return el;
-    }
-    return null;
-  }
   function scalePane(pane, factor) {
     if (!pane || pane.getAttribute("data-rf-scaled") === String(factor)) return;
     var w = parseFloat(pane.style.width) || 480;
@@ -214,11 +228,12 @@ const phoneBlock = `${PHONE_MARK}
   }
 
   if (inApp) {
-    var waited = 0, sent = 0;
+    var ticks = 0, sent = 0;
     var starter = setInterval(function () {
-      if (sent === 0 && !attractUp()) { if (++waited > 60) clearInterval(starter); return; }
-      begin();
-      if (++sent >= 3) clearInterval(starter);
+      ticks++;
+      if (attractUp()) { begin(); sent++; }
+      else if (sent > 0) clearInterval(starter);
+      if (ticks > 80) clearInterval(starter);
     }, 300);
   }
   if (window.MutationObserver) {
