@@ -282,6 +282,7 @@ export default function Home() {
               <h2 className="mt-6 font-display text-5xl font-semibold leading-none tracking-tight text-cream md:text-6xl">
                 {EXHIBIT.title}
               </h2>
+              <p className="mt-3 font-body text-sm font-medium tracking-wide text-white/80">{LOOK_CLOSER_FEATURE.byline}</p>
               <p className="mt-5 max-w-[34ch] font-display text-xl leading-snug text-cream md:text-2xl">
                 {WEB_COPY.lede}
               </p>
@@ -315,6 +316,15 @@ export default function Home() {
               <p className="mt-7 font-body text-sm leading-relaxed text-white/75">
                 {MUSEUM.name}, {MUSEUM.address}. {MUSEUM.hours}
               </p>
+              <Link
+                href="/look-closer"
+                className="group mt-3 inline-block font-body text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-colors hover:text-cream"
+              >
+                Read more about the map{" "}
+                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
             </div>
           </div>
         </div>

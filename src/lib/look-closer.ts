@@ -118,9 +118,12 @@ export const WEB_COPY = {
 export const LOOK_CLOSER_FEATURE = {
   id: "look-closer",
   title: EXHIBIT.title,
+  /** the caption under the title, the people who drew the map */
+  byline: `${MAP_CREDIT.makers}, 1931`,
   /** the plate's one line, under a lockup that already names both
-   *  partners; it has to say in person and here */
-  line: "The 1931 map, on the museum's wall in Bridgeport and open on your phone here.",
+   *  partners; it has to say in person and here (owner's wording,
+   *  September 13, 2026) */
+  line: "Read more about the 1931 map, on display at the Chicago Maritime Museum or available to explore virtually here.",
   note: "Now on view",
   image: MAP_IMAGES.card,
   imageAlt: "An Illustrated Map of Chicago, 1931, by Charles Turzak and Henry T. Chapman, a bird's-eye view of the city from over Lake Michigan with north to the right",

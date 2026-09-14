@@ -59,7 +59,7 @@ struct FeaturePlate: View {
                             .font(RF.body(12.5, weight: 600))
                             .foregroundStyle(.white)
                             .lineLimit(2)
-                            .minimumScaleFactor(0.9)
+                            .minimumScaleFactor(0.85)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.leading, 2)
                     }
@@ -72,25 +72,38 @@ struct FeaturePlate: View {
                             .background(Color.white)
                             .accessibilityHidden(true)
 
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(feature.title)
-                                .font(RF.display(26, weight: 600))
+                                .font(RF.display(23, weight: 600))
                                 .foregroundStyle(.white)
-                                .lineLimit(1)
-
-                            Text(feature.line)
-                                .font(RF.body(13, weight: 500))
-                                .foregroundStyle(.white.opacity(0.9))
-                                .lineSpacing(2)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.9)
                                 .fixedSize(horizontal: false, vertical: true)
+
+                            // The people who drew it, as a caption.
+                            if let byline = feature.byline {
+                                Text(byline)
+                                    .font(RF.body(12, weight: 600))
+                                    .foregroundStyle(.white.opacity(0.8))
+                                    .lineLimit(2)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
                         }
                     }
+
+                    // The line runs the plate's full width under the
+                    // picture, so it reads in two lines, not five.
+                    Text(feature.line)
+                        .font(RF.body(13, weight: 500))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .lineSpacing(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(PressableCardStyle())
-            .accessibilityLabel("\(feature.title). \(feature.line) Opens the map, sideways.")
+            .accessibilityLabel("\(feature.title), \(feature.byline ?? ""). \(feature.line) Opens the map, sideways.")
             .accessibilityIdentifier("home-feature-\(feature.id)")
 
             HStack(spacing: 14) {
@@ -133,9 +146,10 @@ struct FeaturePlate: View {
                 }
                 Spacer(minLength: 0)
             }
-            .padding(.top, 14)
+            .padding(.top, 12)
         }
-        .padding(16)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
         .background(Rectangle().fill(accent))
         // A white hairline set just inside the edge, the plate frame in
         // the museum's colors, and the same dropped shadow the paper

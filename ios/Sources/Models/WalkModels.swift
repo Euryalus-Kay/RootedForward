@@ -37,6 +37,10 @@ struct WalkPayload: Codable, Equatable {
 struct WalkFeature: Codable, Equatable, Identifiable {
     let id: String
     let title: String
+    /// the caption under the title, the people who drew the map,
+    /// "Charles Turzak and Henry T. Chapman, 1931"; absent in older
+    /// payloads
+    let byline: String?
     /// one plain line under the title
     let line: String
     /// the short flag over the title, "Now on view"

@@ -62,6 +62,7 @@ export default function LookCloserPage() {
               <h1 className="mt-6 font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-6xl">
                 {EXHIBIT.title}
               </h1>
+              <p className="mt-3 font-body text-sm font-medium tracking-wide text-ink/70">{LOOK_CLOSER_FEATURE.byline}</p>
               <p className="mt-5 max-w-[34ch] font-display text-xl leading-snug text-ink md:text-2xl">
                 {WEB_COPY.lede}
               </p>

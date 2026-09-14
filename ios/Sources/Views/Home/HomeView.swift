@@ -168,10 +168,13 @@ struct HomeView: View {
                 .foregroundColor(RF.rust)
                 + Text("Rooted Forward educates people about racial inequality in cities across the United States, and works to address it through education, awareness, and political advocacy.")
                 .foregroundColor(RF.forest))
-                .font(RF.display(26, weight: 600))
-                .lineSpacing(5)
+                // 23 rather than 26 since the museum plate arrived, so
+                // the Self-guided tours heading still lands on the first
+                // screen under it (owner, September 13, 2026).
+                .font(RF.display(23, weight: 600))
+                .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 44)
+                .padding(.top, 36)
                 .accessibilityAddTraits(.isHeader)
                 .modifier(LaunchReveal(order: 1))
         }
@@ -225,7 +228,7 @@ struct HomeView: View {
                 featureTarget = feature
             }
             .padding(.horizontal, 24)
-            .padding(.top, 36)
+            .padding(.top, 28)
             .modifier(LaunchReveal(order: 3))
         }
     }
@@ -283,7 +286,7 @@ struct HomeView: View {
             }
         }
         .padding(.horizontal, 24)
-        .padding(.top, 52)
+        .padding(.top, 40)
     }
 
     // MARK: - Footer
