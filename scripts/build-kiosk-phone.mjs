@@ -243,5 +243,21 @@ const phoneBlock = `${PHONE_MARK}
 </script>`;
 
 html = html.slice(0, at) + phoneBlock + html.slice(scriptEnd + "</script>".length);
+
+/* In the app the map opens on the main screen, not on the wall's
+   "Touch anywhere to begin". The component has a startInExplore
+   setting, off in the wall's build and not reachable from outside;
+   the phone copy reads it as on whenever the app's ?app=1 is in the
+   address. One line of the bundle changes, at mount, and nothing
+   else; the wall's own copy is not touched. */
+const MOUNT = "if (this.props.startInExplore) this.setState({ screen: 'explore', hsOn: true });";
+if (html.split(MOUNT).length !== 2) {
+  console.error("the kiosk's mount line has moved; the app cannot skip the attract screen");
+  process.exit(1);
+}
+html = html.replace(
+  MOUNT,
+  "if (this.props.startInExplore || location.search.indexOf('app=1') >= 0) this.setState({ screen: 'explore', hsOn: true });",
+);
 writeFileSync(OUT, html);
 console.log(`${OUT}: ${(html.length / 1e6).toFixed(2)} MB, removed the wall's block (${kioskBlock.length} chars), added the phone's`);
