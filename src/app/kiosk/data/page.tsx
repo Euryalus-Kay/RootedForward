@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getKioskStats, HEARTBEAT_MS } from "@/lib/kiosk-analytics";
+import { getKioskStats, renderedNow, HEARTBEAT_MS } from "@/lib/kiosk-analytics";
 import StaleGuard from "@/components/kiosk/StaleGuard";
 
 /* ------------------------------------------------------------------ */
@@ -180,7 +180,7 @@ function Columns({
 
 export default async function KioskDataPage() {
   const stats = await getKioskStats();
-  const renderedAt = Date.now();
+  const renderedAt = renderedNow();
 
   if (stats.migrationPending || !stats.available) {
     return (

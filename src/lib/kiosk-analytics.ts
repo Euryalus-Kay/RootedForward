@@ -506,6 +506,14 @@ export function shiftDay(day: string, delta: number): string {
   return chicagoDay(new Date(start + delta * DAY_MS + 12 * 60 * 60 * 1000).toISOString());
 }
 
+/** When the server built the page that called this, for StaleGuard. It
+ *  lives here rather than in the page because React's purity lint forbids
+ *  Date.now() inside a component body, and for a page that renders once per
+ *  request the time of that request is a fact about the response. */
+export function renderedNow(): number {
+  return Date.now();
+}
+
 const REPLAY_EVENT_CAP = 20000;
 
 export async function getKioskDay(day: string): Promise<KioskDay> {

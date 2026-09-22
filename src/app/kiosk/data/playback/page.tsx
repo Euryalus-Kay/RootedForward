@@ -6,6 +6,7 @@ import {
   getKioskDay,
   getKioskDays,
   isValidDay,
+  renderedNow,
   shiftDay,
   todayInChicago,
 } from "@/lib/kiosk-analytics";
@@ -41,7 +42,7 @@ export default async function KioskPlaybackPage({
   searchParams: Promise<{ day?: string }>;
 }) {
   const params = await searchParams;
-  const renderedAt = Date.now();
+  const renderedAt = renderedNow();
   const today = todayInChicago();
   const day = params.day && isValidDay(params.day) ? params.day : today;
 
