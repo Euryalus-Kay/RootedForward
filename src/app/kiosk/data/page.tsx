@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getKioskStats, HEARTBEAT_MS } from "@/lib/kiosk-analytics";
+import StaleGuard from "@/components/kiosk/StaleGuard";
 
 /* ------------------------------------------------------------------ */
 /*  /kiosk/data                                                        */
@@ -179,10 +180,12 @@ function Columns({
 
 export default async function KioskDataPage() {
   const stats = await getKioskStats();
+  const renderedAt = Date.now();
 
   if (stats.migrationPending || !stats.available) {
     return (
       <main className="min-h-screen bg-cream px-6 py-16">
+        <StaleGuard renderedAt={renderedAt} />
         <div className="mx-auto max-w-3xl">
           <h1 className="font-display text-4xl text-forest">Kiosk data</h1>
           {stats.migrationPending ? (
@@ -216,6 +219,7 @@ export default async function KioskDataPage() {
 
   return (
     <main className="min-h-screen bg-cream px-6 py-14">
+      <StaleGuard renderedAt={renderedAt} />
       <div className="mx-auto max-w-5xl">
         {/* header */}
         <div className="flex flex-wrap items-end justify-between gap-4">

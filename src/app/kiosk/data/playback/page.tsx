@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Playback from "@/components/kiosk/Playback";
+import StaleGuard from "@/components/kiosk/StaleGuard";
 import {
   getKioskDay,
   getKioskDays,
@@ -40,6 +41,7 @@ export default async function KioskPlaybackPage({
   searchParams: Promise<{ day?: string }>;
 }) {
   const params = await searchParams;
+  const renderedAt = Date.now();
   const today = todayInChicago();
   const day = params.day && isValidDay(params.day) ? params.day : today;
 
@@ -51,6 +53,7 @@ export default async function KioskPlaybackPage({
 
   return (
     <main className="min-h-screen bg-cream px-6 py-14">
+      <StaleGuard renderedAt={renderedAt} />
       <div className="mx-auto max-w-5xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
