@@ -378,10 +378,14 @@ export default async function KioskDataPage() {
                   </li>
                 ))}
               </ul>
-            ) : (
+            ) : s.uptime.trackingSince ? (
               <p className="mt-2 font-body text-sm text-ink/60">
                 No gaps longer than {Math.round((HEARTBEAT_MS * 2.5) / 60000)}{" "}
                 minutes. The screen has not missed a check-in.
+              </p>
+            ) : (
+              <p className="mt-2 font-body text-sm text-ink/60">
+                Nothing has reported yet.
               </p>
             )}
           </div>

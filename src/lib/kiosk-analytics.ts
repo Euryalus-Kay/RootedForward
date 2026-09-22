@@ -276,10 +276,11 @@ export async function getKioskStats(): Promise<KioskStats> {
      against the whole window, or a screen installed yesterday would show a
      terrible month. */
   function uptimeOver(windowMs: number, beats: number | null): number | null {
-    if (beats === null) return null;
-    const start = firstPingAt
-      ? Math.max(now - windowMs, Date.parse(firstPingAt))
-      : now - windowMs;
+    // A screen that has never reported has no uptime figure, not a figure
+    // of zero. Zero reads as an outage. This is a screen that is not
+    // installed yet, or a table created before its first heartbeat.
+    if (beats === null || !firstPingAt) return null;
+    const start = Math.max(now - windowMs, Date.parse(firstPingAt));
     const span = now - start;
     if (span < HEARTBEAT_MS) return null;
     const expected = span / HEARTBEAT_MS;
