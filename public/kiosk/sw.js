@@ -14,8 +14,11 @@
 /*  Bump it only when this worker's own logic changes.                  */
 /* ------------------------------------------------------------------ */
 
-const CACHE = "rf-kiosk-v4";
+const CACHE = "rf-kiosk-v5";
 const ASSETS = ["/kiosk/map", "/kiosk/map-kiosk.html"];
+/* The only paths this worker is allowed to answer for. See the fetch
+   handler for why this is a list and not a prefix. */
+const EXHIBIT = new Set(ASSETS);
 
 /* Precache with cache:"reload" rather than addAll. addAll goes through the
    browser's own HTTP cache, so a returning machine could install a brand new
@@ -51,7 +54,15 @@ self.addEventListener("activate", (event) => {
    point is that it never waits on a network. */
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin || !url.pathname.startsWith("/kiosk/")) return;
+  if (url.origin !== self.location.origin) return;
+  /* An allowlist, never a prefix. The worker's scope is /kiosk/, so every
+     page under it is controlled and every request those pages make comes
+     through here, including the dashboard at /kiosk/data and its playback
+     page. Matching on the prefix cached those too, cache-first, with the
+     query string ignored, which froze the dashboard at whatever it showed
+     the first time it was opened in a browser that had ever visited the
+     exhibit. Only the two paths that are the exhibit belong in a cache. */
+  if (!EXHIBIT.has(url.pathname)) return;
 
   /* The nightly update check asks for the server copy on purpose. Without
      this door the page can never see a new build, because the matching
