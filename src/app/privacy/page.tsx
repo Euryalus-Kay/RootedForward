@@ -21,7 +21,7 @@ export const metadata: Metadata = {
    what the site and the app actually do.
    ------------------------------------------------------------------ */
 
-const LAST_UPDATED = "July 26, 2026";
+const LAST_UPDATED = "September 23, 2026";
 
 type Clause = {
   heading?: string;
@@ -98,6 +98,7 @@ const SECTIONS: Section[] = [
           "Almost none, and none of it identifies you. The application asks for no name, no email address and no account, and it records nothing about how you use the walk.",
           "The entire tour, including every stop, photograph and audio file, is contained in the application when you install it, so it operates offline. The application contains no account system, no sign-in screen, no registration, no crash-reporting library and no advertising identifier.",
           "There is one exception, and it exists because we advertise the application. The application includes Google Analytics for Firebase, which is there so we can tell whether an advertisement led to somebody installing it. When the application is first opened it sends Google a record that an install happened, along with the model of phone, the operating system version, the country and a random identifier generated for that installation. We have defined no events of our own, so which stops you open, how far you walk, what you listen to and how long you stay are not measured and are not sent. The advertising identifier is not collected. That software is not in the application, which is why the application never asks for permission to track you, and the random installation identifier is erased when you delete the application.",
+          "The application also offers two short surveys, one as you leave the opening page of a walk and one when you reach its end. Each has three questions, answered with a slider or by choosing an option, and both are optional. If you tap Skip, nothing is sent. If you tap Submit, we receive your answers, the name of the walk, the version of the application, the time you answered and a random code created on your phone for that walk. The code lets us pair the answers you gave at the start of a walk with the ones you gave at its end. It is not linked to the installation identifier described above or to anything else, and nothing we receive identifies you or your device. Like any request to our website, the answers pass through our hosting provider's ordinary server logs, described in Section 2.2, which we do not connect to them. We use the answers only in aggregate, to measure the impact of our tours. Your phone keeps a note of which surveys it has shown, so each is offered once, and removing the application removes that note and the code.",
           "Two categories of information exist while you use the application, and both remain on your device. Neither is transmitted to us or to any other party.",
         ],
         defs: [
@@ -125,7 +126,7 @@ const SECTIONS: Section[] = [
     clauses: [
       {
         paragraphs: [
-          "Because the application collects nothing, this section concerns the website only. We use the information described in Section 2 for the following purposes.",
+          "The application's install record is used only to measure our advertising, and its survey answers only to measure the impact of our tours, as Section 2.3 describes. The rest of this section concerns the website. We use the information described in Section 2 for the following purposes.",
         ],
         bullets: [
           "To create your account, authenticate you, and keep you signed in.",
@@ -155,7 +156,7 @@ const SECTIONS: Section[] = [
         defs: [
           {
             term: "Supabase",
-            text: "Database and authentication provider. Holds accounts, authentication records, comments, campaign signatures, submissions and research download records.",
+            text: "Database and authentication provider. Holds accounts, authentication records, comments, campaign signatures, submissions, research download records and the anonymous survey answers sent from the application.",
           },
           {
             term: "Vercel",
@@ -217,8 +218,12 @@ const SECTIONS: Section[] = [
             text: "Retained by our hosting provider for approximately thirty days.",
           },
           {
+            term: "Survey answers",
+            text: "Retained for as long as we report on the impact of our tours. They carry nothing that identifies you, so one person's answers cannot be found in order to be deleted.",
+          },
+          {
             term: "Application data",
-            text: "Never held by us at all. Tour progress and location remain on your device and are removed when you remove the application.",
+            text: "Tour progress and location are never held by us. They remain on your device and are removed when you remove the application.",
           },
         ],
       },
@@ -260,7 +265,7 @@ const SECTIONS: Section[] = [
         paragraphs: [
           "To exercise any right above, email contact@rooted-forward.org from the address associated with your account. We will respond within thirty days and we do not charge a fee. We may ask you to confirm your identity before acting on a request, in order to protect your account. An authorized agent may submit a request on your behalf with written proof of authorization.",
           "To delete your account, email contact@rooted-forward.org from the address on the account. Deletion is permanent and takes effect within seven days. It removes your profile, your authentication record, your comments, your submissions and your campaign signatures. It cannot be reversed, and we are unable to restore an account once it has been deleted.",
-          "The application has no account and no sign-in, so there is nothing in it to delete. Removing the application from your device removes everything it held.",
+          "The application has no account and no sign-in, so there is nothing in it to delete. Removing the application from your device removes everything it held. Survey answers you chose to send carry nothing that identifies you, so we cannot find them to delete them on request.",
         ],
       },
       {

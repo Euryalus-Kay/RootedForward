@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { APP_HIDDEN_SLUGS, DEFAULT_WALK_SLUG, type WalkTourBundle } from "@/lib/tours/registry";
 import { loadWalkBundles } from "@/lib/tours/store";
 import { LOOK_CLOSER_FEATURE } from "@/lib/look-closer";
+import { activeWalkSurvey } from "@/lib/walk-survey";
 
 /* ------------------------------------------------------------------ */
 /*  GET /api/walk                 the default walk (Hyde Park)         */
@@ -69,6 +70,7 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
     geometry: bundle.geometry,
     map: bundle.map,
   };
+  const survey = activeWalkSurvey();
   return {
     // The version covers the body AND the catalogue, and the second
     // half is the whole point. An installed app only refetches the
@@ -78,12 +80,16 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
     // change, which could be never. Hashing the catalogue too means
     // adding a tour moves every walk's version, so the next foreground
     // pulls the new payload and the new tour appears in the list.
-    version: contentVersion({ body, tours, featured: LOOK_CLOSER_FEATURE }),
+    version: contentVersion({ body, tours, featured: LOOK_CLOSER_FEATURE, survey }),
     // What the app's front door shows above the walks while the map
     // is on the museum's wall. Absent means nothing to show; the app
     // treats the key as optional. In the version hash so a change of
     // wording reaches installed apps the way a tour edit does.
     featured: LOOK_CLOSER_FEATURE,
+    // The two survey cards, before the walk and after it
+    // (src/lib/walk-survey.ts). Null while the survey is switched
+    // off. In the version hash for the same reason as the feature.
+    survey,
     mediaBase: MEDIA_BASE,
     tours,
     ...body,
