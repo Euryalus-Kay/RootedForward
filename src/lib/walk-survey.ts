@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------ */
 /*  The walk survey.                                                   */
 /*                                                                     */
-/*  Two short cards in the iPhone app. The first comes up when a       */
-/*  walker leaves the opening page for stop one, the second at the end */
-/*  of the walk, and the two scales repeat so the change between them  */
+/*  Two short cards in the iPhone app. The first comes up as a walk    */
+/*  opens, over its opening page, the second at the end of the walk,   */
+/*  and the scales repeat so the change between them                   */
 /*  can be measured. The owner asked for it in September 2026 to show  */
 /*  the tours' impact, kept under twenty seconds, sliders and multiple */
 /*  choice only, anonymous, and skippable.                             */
