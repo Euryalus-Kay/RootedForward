@@ -23,31 +23,30 @@ import WebKit
 struct VideoPlate: View {
     @EnvironmentObject private var content: ContentStore
     let video: WalkVideo
-    /// The line above the plate. Nil on the opening page, where the
-    /// film is the page and needs no label.
+    /// Printed on the film's still, so the film says what it is. Nil on
+    /// the opening page, where the film is the page and needs no label.
     var label: String? = "Watch this stop"
-    /// The line under it, saying what is further down the page. Nil on
+    /// Set under the film, saying the written stop goes further. Nil on
     /// the opening page, where there is nothing further down.
     var note: String? = "Read more in depth below"
+    /// Scrolls the page down to the written stop. The note is drawn as a
+    /// box, and a box people press has to do something.
+    var readMore: (() -> Void)? = nil
 
     @State private var open = false
 
+    // The two labels, set September 24, 2026 at the owner's choice.
+    // They say plainly that the film and the written stop are two
+    // different things: the film's label is highlighted in rust on the
+    // still, and the note is a rounded rust-edged box in forest, where
+    // they used to be two forest slabs above and below the film.
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if let label {
-                Text(label)
-                    .font(RF.display(22, weight: 600))
-                    .foregroundStyle(RF.cream)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 12)
-                    .background(RF.forest)
-                    .accessibilityAddTraits(.isHeader)
-            }
+        VStack(alignment: .leading, spacing: 0) {
             Button {
                 Haptics.press()
                 open = true
             } label: {
-                ZStack {
+                ZStack(alignment: .bottomLeading) {
                     MediaImage(sitePath: video.poster, contentMode: .fill)
                         .frame(maxWidth: .infinity)
                         .aspectRatio(16.0 / 9.0, contentMode: .fit)
@@ -59,24 +58,56 @@ struct VideoPlate: View {
                         .offset(x: 2)
                         .frame(width: 74, height: 74)
                         .background(Circle().fill(RF.rust))
+                        // Lifted a little when the still carries the label,
+                        // so the two never touch on a small phone.
+                        .offset(y: label == nil ? 0 : -8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    if let label {
+                        Text(label)
+                            .font(RF.display(19, weight: 700, maxScale: 1.15))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(RF.rust))
+                            .padding(12)
+                            .accessibilityHidden(true)
+                    }
                 }
                 .overlay(Rectangle().strokeBorder(RF.ink.opacity(0.18), lineWidth: 1))
                 .padding(10)
                 .plate()
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Play the film, \(video.title)")
+            .accessibilityLabel("\(label.map { "\($0). " } ?? "")Play the film, \(video.title)")
             .accessibilityIdentifier("stop-video")
 
             if let note {
-                Text(note)
-                    .font(RF.display(22, weight: 600))
-                    .foregroundStyle(RF.cream)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 12)
-                    .background(RF.forest)
-                    .padding(.top, 2)
-                    .fixedSize(horizontal: false, vertical: true)
+                Button {
+                    Haptics.tap()
+                    readMore?()
+                } label: {
+                    Text(note)
+                        .font(RF.display(18, weight: 700, maxScale: 1.4))
+                        .foregroundStyle(RF.forest)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(RF.rust.opacity(0.1))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(RF.rust, lineWidth: 1.5)
+                        )
+                        .contentShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(PressableCardStyle())
+                .padding(.top, 20)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("stop-read-more")
             }
         }
         .fullScreenCover(isPresented: $open) {

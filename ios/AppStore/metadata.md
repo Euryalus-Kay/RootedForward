@@ -88,7 +88,7 @@ New opening animation and performance improvements.
 
 Added new content and small improvements.
 
-## What's New (version 2.4, build 35; builds 33 and 34 were uploaded and replaced before review)
+## What's New (version 2.4, build 36; builds 33 to 35 were uploaded and replaced before review)
 
 Content and backend changes.
 

@@ -49,11 +49,17 @@ struct StopPage: View {
                     header
                         .id("top")
                     if let video = stop.video {
-                        VideoPlate(video: video)
-                            .padding(.top, 22)
+                        VideoPlate(video: video, readMore: {
+                            withAnimation(RFMotion.gated(.rfMove, reduceMotion)) {
+                                proxy.scrollTo("story", anchor: .top)
+                            }
+                        })
+                        .padding(.top, 22)
                     }
                     listenCard
-                        .padding(.top, 22)
+                        .padding(.top, stop.video == nil ? 22 : 18)
+                        // Where the rounded note under the film scrolls to.
+                        .id("story")
                     imagePlates
                     transcript
                     trailingPlates
