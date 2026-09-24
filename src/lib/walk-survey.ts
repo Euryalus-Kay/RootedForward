@@ -76,8 +76,27 @@ const LASTING_EFFECT: WalkSurveyQuestion = {
   labels: ["Not at all", "A little", "Somewhat", "Quite a bit", "A great deal"],
 };
 
+const OPPORTUNITY: WalkSurveyQuestion = {
+  id: "opportunity",
+  kind: "scale",
+  prompt: "How much does where someone lives shape their opportunities?",
+  labels: ["Not at all", "A little", "Somewhat", "Quite a bit", "A great deal"],
+};
+
+const INVOLVEMENT: WalkSurveyQuestion = {
+  id: "involvement",
+  kind: "scale",
+  prompt: "How likely are you to get involved in housing issues where you live?",
+  labels: ["Not likely", "Slightly", "Somewhat", "Likely", "Very likely"],
+};
+
+/** The four scales, the same on both cards. */
+const SCALES = [KNOWLEDGE, LASTING_EFFECT, OPPORTUNITY, INVOLVEMENT];
+
+/** The owner's words, less the line about anonymity, which the owner
+ *  asked to drop (September 24, 2026). */
 const BODY =
-  "We use this data to measure the impact of our tours and how much people know about these topics. All data collected is anonymous.";
+  "We use this data to measure the impact of our tours and how much people know about these topics.";
 
 export const WALK_SURVEY: WalkSurvey = {
   id: "impact-2026-09",
@@ -89,8 +108,7 @@ export const WALK_SURVEY: WalkSurvey = {
     body: BODY,
     submit: "Submit",
     questions: [
-      KNOWLEDGE,
-      LASTING_EFFECT,
+      ...SCALES,
       {
         id: "role",
         kind: "choice",
@@ -110,8 +128,7 @@ export const WALK_SURVEY: WalkSurvey = {
     body: BODY,
     submit: "Submit",
     questions: [
-      KNOWLEDGE,
-      LASTING_EFFECT,
+      ...SCALES,
       {
         id: "recommend",
         kind: "choice",

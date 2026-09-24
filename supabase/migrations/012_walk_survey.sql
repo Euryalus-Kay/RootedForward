@@ -8,7 +8,8 @@
 --
 -- One row per card sent. answers holds the card as it was answered,
 -- scales as 1 to 5 and choices as the option's value, for example
---   {"knowledge": 2, "lasting_effect": 4, "role": "student"}
+--   {"knowledge": 2, "lasting_effect": 4, "opportunity": 3,
+--    "involvement": 2, "role": "student"}
 --
 -- Nothing here identifies a person. No IP address, no user agent, no
 -- device identifier. respondent is a random code the phone makes for
@@ -59,6 +60,10 @@ alter table walk_survey_responses enable row level security;
 --          round(avg((post.answers->>'knowledge')::int), 2)       as knowledge_after,
 --          round(avg((pre.answers->>'lasting_effect')::int), 2)   as lasting_effect_before,
 --          round(avg((post.answers->>'lasting_effect')::int), 2)  as lasting_effect_after,
+--          round(avg((pre.answers->>'opportunity')::int), 2)      as opportunity_before,
+--          round(avg((post.answers->>'opportunity')::int), 2)     as opportunity_after,
+--          round(avg((pre.answers->>'involvement')::int), 2)      as involvement_before,
+--          round(avg((post.answers->>'involvement')::int), 2)     as involvement_after,
 --          round(100.0 * avg(((post.answers->>'knowledge')::int
 --                > (pre.answers->>'knowledge')::int)::int), 1)    as pct_knowing_more
 --     from walk_survey_responses pre
