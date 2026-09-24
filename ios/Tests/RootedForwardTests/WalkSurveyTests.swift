@@ -22,8 +22,8 @@ final class WalkSurveyTests: XCTestCase {
         for phase in [SurveyPhase.pre, .post] {
             let part = survey.part(phase)
             XCTAssertTrue(part.isDrawable, "\(phase) has a question this build cannot draw")
-            // Short by design: the owner asked for under twenty seconds.
-            XCTAssertLessThanOrEqual(part.questions.count, 4)
+            // Short by design: a card, not a questionnaire.
+            XCTAssertLessThanOrEqual(part.questions.count, 6)
         }
         // The two scales repeat, word for word, so they can be compared.
         let preScales = survey.pre.questions.filter { $0.kind == "scale" }
@@ -35,7 +35,7 @@ final class WalkSurveyTests: XCTestCase {
     func testUnknownKindIsNotDrawable() {
         let odd = WalkSurveyQuestion(id: "x", kind: "text", prompt: "?", labels: nil, options: nil)
         XCTAssertFalse(odd.isDrawable)
-        let part = WalkSurveyPart(title: "", note: "", body: "", submit: "", questions: [odd])
+        let part = WalkSurveyPart(title: "", note: nil, body: "", submit: "", questions: [odd])
         XCTAssertFalse(part.isDrawable)
     }
 

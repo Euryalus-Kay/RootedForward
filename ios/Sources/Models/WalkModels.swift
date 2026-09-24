@@ -60,8 +60,10 @@ enum SurveyPhase: String, Codable {
 
 struct WalkSurveyPart: Codable, Equatable {
     let title: String
-    /// the italic line under the title
-    let note: String
+    /// A line under the title. The site sends it empty (owner,
+    /// September 24, 2026: no caption there), and an empty or missing
+    /// note is not drawn.
+    let note: String?
     let body: String
     let submit: String
     let questions: [WalkSurveyQuestion]

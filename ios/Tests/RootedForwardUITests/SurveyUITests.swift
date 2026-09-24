@@ -62,6 +62,14 @@ final class SurveyUITests: XCTestCase {
         let lasting = scale("lasting_effect")
         lasting.coordinate(withNormalizedOffset: CGVector(dx: 0.73, dy: 0.3)).tap()
         XCTAssertEqual(lasting.value as? String, "Quite a bit")
+
+        let opportunity = scale("opportunity")
+        opportunity.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)).tap()
+        XCTAssertEqual(opportunity.value as? String, "Somewhat")
+
+        let involvement = scale("involvement")
+        involvement.coordinate(withNormalizedOffset: CGVector(dx: 0.96, dy: 0.3)).tap()
+        XCTAssertEqual(involvement.value as? String, "Very likely")
         XCTAssertFalse(submit.isEnabled)
 
         app.buttons["survey-option-student"].tap()
@@ -89,6 +97,54 @@ final class SurveyUITests: XCTestCase {
         XCTAssertTrue(skip.waitForExistence(timeout: 5))
         skip.tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
+    }
+
+    private func snap(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    /// Both cards, captured for review. On a phone of ordinary height
+    /// the whole card stands without scrolling, so Submit is on screen
+    /// the moment the card appears. The SE is shorter and scrolls.
+    func testBothCardsFitAndAreCaptured() {
+        app.terminate()
+        app.launchArguments = ["-uiTestReset", "-surveyDryRun", "-surveyAnyTime"]
+        app.launch()
+        let tall = app.windows.firstMatch.frame.height >= 800
+
+        openIntro()
+        app.buttons["intro-next"].tap()
+        let submit = app.buttons["survey-submit"]
+        XCTAssertTrue(submit.waitForExistence(timeout: 5))
+        sleep(1)
+        if tall { XCTAssertTrue(submit.isHittable, "the card before should fit without scrolling") }
+        snap("survey-pre")
+        app.buttons["survey-skip"].tap()
+        XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
+
+        // The last stop, then down to its closing plate.
+        app.buttons["tour-map"].tap()
+        XCTAssertTrue(app.buttons["map-done"].waitForExistence(timeout: 5))
+        let row = app.buttons["map-stop-16"]
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        row.tap()
+        XCTAssertTrue(app.staticTexts["stop-title-16"].waitForExistence(timeout: 8))
+        let skip = app.buttons["survey-skip"]
+        var swipes = 0
+        while !skip.exists && swipes < 14 {
+            app.swipeUp(velocity: .fast)
+            swipes += 1
+            _ = skip.waitForExistence(timeout: 1.5)
+        }
+        XCTAssertTrue(skip.waitForExistence(timeout: 4), "the card after never came up")
+        sleep(1)
+        if tall { XCTAssertTrue(submit.isHittable, "the card after should fit without scrolling") }
+        snap("survey-post")
+        skip.tap()
+        XCTAssertFalse(skip.waitForExistence(timeout: 2))
     }
 
     func testDraggingTheRuleSettlesOnAPoint() {

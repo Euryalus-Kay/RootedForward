@@ -5,7 +5,7 @@ import SwiftUI
 // plate over the dimmed page rather than a system sheet, so it reads
 // as a page of the walk and not as an interruption from the phone.
 //
-// Three questions with nothing to type. A scale is the surveyor's rule
+// Questions with nothing to type. A scale is the surveyor's rule
 // from the rest of the app, a hairline with a tick at every point,
 // taken with a tap or a drag. A choice is a row of square boxes that
 // press into the paper when picked, the way every button here does.
@@ -48,11 +48,11 @@ struct SurveyCard: View {
                 .ignoresSafeArea()
                 .accessibilityHidden(true)
 
-            // The whole card at its full measure when it fits, a tighter
-            // measure of the same card on a small phone such as the SE,
-            // and that card scrolling in place when larger text needs
-            // more room still. Submit stays on screen without scrolling
-            // on every phone at the default text size.
+            // The whole card at its full measure when it fits, then two
+            // tighter measures of the same card, so it stands whole with
+            // Submit on screen on every current phone at the default text
+            // size. The SE and the accessibility text sizes scroll it in
+            // place.
             ViewThatFits(in: .vertical) {
                 plate(.regular)
                     .padding(.horizontal, 22)
@@ -60,6 +60,9 @@ struct SurveyCard: View {
                 plate(.compact)
                     .padding(.horizontal, 22)
                     .padding(.vertical, SurveyMetrics.compact.outer)
+                plate(.dense)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, SurveyMetrics.dense.outer)
                 // Held off the screen's edges and clipped to its own box,
                 // so the card scrolls inside the dimmed page instead of
                 // sliding under the status bar. The side margin is inside
@@ -93,15 +96,12 @@ struct SurveyCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, m.bodyTop)
 
-            SurveyRule()
-                .padding(.top, m.ruleTop)
-
             ForEach(part.questions) { question in
                 questionView(question, m, scrolls: scrolls)
                     .padding(.top, m.questionTop)
             }
 
-            footer
+            footer(m)
                 .padding(.top, m.footerTop)
         }
         .padding(.horizontal, m.side)
@@ -111,20 +111,26 @@ struct SurveyCard: View {
         .allowsHitTesting(!sent)
     }
 
+    /// The title, with Skip hung over its right end rather than set
+    /// beside it, so the button's 44 point target does not push the
+    /// text below it down.
     private func header(_ m: SurveyMetrics) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(part.title)
-                    .font(RF.display(m.title, weight: 600))
-                    .foregroundStyle(RF.forest)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
-                Text(part.note)
+        VStack(alignment: .leading, spacing: 3) {
+            Text(part.title)
+                .font(RF.display(m.title, weight: 600))
+                .foregroundStyle(RF.forest)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            if let note = part.note, !note.isEmpty {
+                Text(note)
                     .font(RF.display(15, weight: 400, italic: true))
                     .foregroundStyle(RF.warmGrayDark)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Spacer(minLength: 0)
+        }
+        .padding(.trailing, 64)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .topTrailing) {
             Button {
                 Haptics.tap()
                 finish(nil)
@@ -137,8 +143,7 @@ struct SurveyCard: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            // Level with the title's first line rather than the top of
-            // its box, which sits above the cap height.
+            // Level with the title's first line.
             .offset(y: -9)
             .opacity(sent ? 0 : 1)
             .accessibilityLabel("Skip the survey")
@@ -150,7 +155,7 @@ struct SurveyCard: View {
     private func questionView(_ q: WalkSurveyQuestion, _ m: SurveyMetrics, scrolls: Bool) -> some View {
         VStack(alignment: .leading, spacing: m.promptGap) {
             Text(q.prompt)
-                .font(RF.body(15.5, weight: 600))
+                .font(RF.body(m.promptSize, weight: 600))
                 .foregroundStyle(RF.ink)
                 .lineSpacing(2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -161,6 +166,8 @@ struct SurveyCard: View {
                     prompt: q.prompt,
                     labels: labels,
                     height: m.scaleHeight,
+                    labelSize: m.labelSize,
+                    labelGap: m.labelGap,
                     draggable: !scrolls,
                     value: Binding(
                         get: { points[q.id] },
@@ -172,6 +179,7 @@ struct SurveyCard: View {
                 SurveyChoices(
                     prompt: q.prompt,
                     options: options,
+                    gap: m.choiceGap,
                     selection: Binding(
                         get: { choices[q.id] },
                         set: { choices[q.id] = $0 }
@@ -184,12 +192,12 @@ struct SurveyCard: View {
     /// Submit, and in its place once pressed a line of thanks the same
     /// height, so nothing on the card moves while it closes.
     @ViewBuilder
-    private var footer: some View {
+    private func footer(_ m: SurveyMetrics) -> some View {
         if sent {
             Text(survey.thanks)
                 .font(RF.display(19, weight: 400, italic: true))
                 .foregroundStyle(RF.forest)
-                .frame(maxWidth: .infinity, minHeight: 52)
+                .frame(maxWidth: .infinity, minHeight: 22 + m.submitPad * 2)
                 .transition(.opacity)
                 .accessibilityIdentifier("survey-thanks")
         } else {
@@ -199,7 +207,7 @@ struct SurveyCard: View {
                 Text(part.submit)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(SurveySubmitStyle(ready: complete))
+            .buttonStyle(SurveySubmitStyle(ready: complete, vertical: m.submitPad))
             .disabled(!complete)
             .animation(RFMotion.gated(.rfAppear, reduceMotion), value: complete)
             .accessibilityHint(complete ? "" : "Answer every question first")
@@ -230,21 +238,36 @@ struct SurveyMetrics {
     let bodySize: CGFloat
     let bodyLeading: CGFloat
     let bodyTop: CGFloat
-    let ruleTop: CGFloat
     let questionTop: CGFloat
+    let promptSize: CGFloat
     let promptGap: CGFloat
     let scaleHeight: CGFloat
+    let labelSize: CGFloat
+    let labelGap: CGFloat
+    let choiceGap: CGFloat
     let footerTop: CGFloat
+    /// the Submit button's padding above and below its label
+    let submitPad: CGFloat
     /// space kept above and below the card
     let outer: CGFloat
 
+    /// A Pro Max or Plus.
     static let regular = SurveyMetrics(
-        side: 20, pad: 20, title: 23, bodySize: 14.5, bodyLeading: 3, bodyTop: 12, ruleTop: 16,
-        questionTop: 18, promptGap: 10, scaleHeight: 34, footerTop: 22, outer: 12
+        side: 20, pad: 20, title: 23, bodySize: 14.5, bodyLeading: 3, bodyTop: 10,
+        questionTop: 18, promptSize: 15.5, promptGap: 10, scaleHeight: 34,
+        labelSize: 13, labelGap: 4, choiceGap: 11, footerTop: 22, submitPad: 15, outer: 12
     )
+    /// A Pro.
     static let compact = SurveyMetrics(
-        side: 18, pad: 16, title: 21, bodySize: 13.5, bodyLeading: 2, bodyTop: 8, ruleTop: 12,
-        questionTop: 13, promptGap: 7, scaleHeight: 30, footerTop: 16, outer: 6
+        side: 18, pad: 16, title: 21, bodySize: 13.5, bodyLeading: 2, bodyTop: 6,
+        questionTop: 12, promptSize: 15, promptGap: 6, scaleHeight: 30,
+        labelSize: 12.5, labelGap: 2, choiceGap: 10, footerTop: 16, submitPad: 13, outer: 6
+    )
+    /// The standard sizes, 844 to 852 points tall.
+    static let dense = SurveyMetrics(
+        side: 16, pad: 14, title: 20, bodySize: 13, bodyLeading: 1.5, bodyTop: 5,
+        questionTop: 9, promptSize: 14.5, promptGap: 4, scaleHeight: 28,
+        labelSize: 12, labelGap: 1, choiceGap: 8, footerTop: 13, submitPad: 12, outer: 4
     )
 }
 
@@ -253,6 +276,7 @@ struct SurveyMetrics {
 /// rather than as a faded version of itself.
 private struct SurveySubmitStyle: ButtonStyle {
     let ready: Bool
+    var vertical: CGFloat = 15
 
     func makeBody(configuration: Configuration) -> some View {
         let pressed = ready && configuration.isPressed
@@ -260,7 +284,7 @@ private struct SurveySubmitStyle: ButtonStyle {
             .font(RF.body(17, weight: 600))
             .foregroundStyle(ready ? Color.white : RF.warmGrayDark)
             .padding(.horizontal, 28)
-            .padding(.vertical, 15)
+            .padding(.vertical, vertical)
             .background(ready ? RF.rust : RF.creamDark)
             .overlay(Rectangle().strokeBorder(ready ? Color.clear : RF.border, lineWidth: 1))
             .background(
@@ -284,6 +308,8 @@ struct SurveyScale: View {
     let prompt: String
     let labels: [String]
     var height: CGFloat = 34
+    var labelSize: CGFloat = 13
+    var labelGap: CGFloat = 4
     /// Off inside a scrolling card, where a drag belongs to the scroll.
     var draggable: Bool = true
     @Binding var value: Int?
@@ -296,7 +322,7 @@ struct SurveyScale: View {
     private let inset: CGFloat = 14
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: labelGap) {
             GeometryReader { geo in
                 let width = max(geo.size.width - inset * 2, 1)
                 let step = width / CGFloat(count - 1)
@@ -345,7 +371,9 @@ struct SurveyScale: View {
                             .animation(RFMotion.gated(.rfPress, reduceMotion), value: v)
                     }
                 }
-                .contentShape(Rectangle())
+                // Eight points past the rule on every side, so the
+                // target is 44 points tall at the densest measure.
+                .contentShape(Rectangle().inset(by: -8))
                 // A tap answers where it lands. A sideways drag slides
                 // the knob, except inside a scrolling card, where any drag
                 // gesture on the rule would hold the scroll hostage.
@@ -372,7 +400,7 @@ struct SurveyScale: View {
                 }
                 if let v = value, v > 1, v < count {
                     Text(labels[v - 1])
-                        .font(RF.body(13, weight: 600, maxScale: 1.4))
+                        .font(RF.body(labelSize, weight: 600, maxScale: 1.4))
                         .foregroundStyle(RF.forest)
                         .lineLimit(1)
                         .transition(.opacity)
@@ -419,7 +447,7 @@ struct SurveyScale: View {
 
     private func endLabel(_ text: String, active: Bool) -> some View {
         Text(text)
-            .font(RF.body(13, weight: active ? 600 : 400, maxScale: 1.4))
+            .font(RF.body(labelSize, weight: active ? 600 : 400, maxScale: 1.4))
             .foregroundStyle(active ? RF.forest : RF.warmGrayDark)
             .lineLimit(1)
     }
@@ -433,6 +461,7 @@ struct SurveyScale: View {
 struct SurveyChoices: View {
     let prompt: String
     let options: [WalkSurveyOption]
+    var gap: CGFloat = 11
     @Binding var selection: String?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -445,9 +474,9 @@ struct SurveyChoices: View {
     }
 
     var body: some View {
-        VStack(spacing: 11) {
+        VStack(spacing: gap) {
             ForEach(rows.indices, id: \.self) { r in
-                HStack(spacing: 11) {
+                HStack(spacing: gap) {
                     ForEach(rows[r], id: \.value) { option in
                         box(option)
                     }

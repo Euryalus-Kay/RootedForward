@@ -88,7 +88,7 @@ New opening animation and performance improvements.
 
 Added new content and small improvements.
 
-## What's New (version 2.4, build 33)
+## What's New (version 2.4, build 34; build 33 was uploaded and replaced before review)
 
 Added new content and small improvements.
 
@@ -134,7 +134,7 @@ survey (Store/WalkSurvey.swift), so the label must also declare:
 | User Content, Other User Content | No | No | Analytics |
 
 What the survey sends, only when the walker taps Submit, to
-POST https://rooted-forward.org/api/walk/survey: the answers (two
+POST https://rooted-forward.org/api/walk/survey: the answers (four
 five-point scales and one multiple choice), the walk's slug, the app
 version, the time answered, and a random 24-character code made on the
 phone for that walk and survey, so the card before the walk can be
@@ -194,8 +194,8 @@ As sent with version 2.4 (set through the API by the submit script):
 > a printed credit line under the image, and the sources for each stop
 > are listed on the stop.
 >
-> Changes in this version. The walk now offers a short, optional survey
-> of three questions, answered with sliders and multiple choice. It
+> Changes in this version. The walk now offers a short, optional survey,
+> answered with sliders and multiple choice. It
 > appears once when the user leaves the opening page for the first stop
 > (open Walk Hyde Park, tap Start the tour, then Next), and once at the
 > end of the walk after at least three stops. It has a Skip button, and
