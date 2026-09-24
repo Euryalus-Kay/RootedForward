@@ -12,7 +12,7 @@ import XCTest
 final class MapRowTapDiagnostic: XCTestCase {
     func testMapListRowTapAfterScroll() {
         let app = XCUIApplication()
-        app.launchArguments = ["-uiTestReset"]
+        app.launchArguments = ["-uiTestReset", "-surveyDryRun"]
         app.launch()
 
         let card = app.buttons["home-tour-card"]
@@ -31,6 +31,7 @@ final class MapRowTapDiagnostic: XCTestCase {
         let introNext = app.buttons["intro-next"]
         if introNext.waitForExistence(timeout: 6) {
             introNext.tap()
+            app.skipSurveyIfShown()
         }
         XCTAssertTrue(app.buttons["tour-map"].waitForExistence(timeout: 8))
         app.buttons["tour-map"].tap()

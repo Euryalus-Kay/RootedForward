@@ -55,6 +55,9 @@ struct RootedForwardApp: App {
         if ProcessInfo.processInfo.arguments.contains("-uiTestReset"),
            let domain = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: domain)
+            // Survey cards waiting to be sent go with the rest of the
+            // slate, so a test run never posts a real-looking answer.
+            Task { await SurveyOutbox.shared.discardAll() }
         }
         BrandFonts.registerAll()
         // Before any view exists, because Firebase records first_open
@@ -90,6 +93,8 @@ struct RootedForwardApp: App {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 Task { await content.refresh() }
+                // Survey answers given with no signal go out here.
+                Task { await SurveyOutbox.shared.flush() }
             }
         }
     }

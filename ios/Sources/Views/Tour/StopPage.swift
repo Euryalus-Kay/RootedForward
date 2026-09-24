@@ -27,11 +27,16 @@ struct StopPage: View {
     /// index. Nil is the ordinary case.
     var scrollToPlate: String? = nil
     var onPlateShown: (() -> Void)? = nil
+    /// Fires once when the last stop's closing plate has scrolled well
+    /// into view, which is the end of the walk for the survey.
+    var onReachedEnd: (() -> Void)? = nil
 
     @State private var appeared = false
     @State private var reportedTitleHidden = false
     @State private var restingMaxY: CGFloat?
     @State private var reportedScroll = false
+    @State private var viewportHeight: CGFloat = 0
+    @State private var reportedEnd = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -67,6 +72,16 @@ struct StopPage: View {
             }
             .background(RF.cream)
             .coordinateSpace(name: "stop-scroll")
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
+                viewportHeight = height
+            }
+            .onPreferenceChange(EndPlateMinYKey.self) { minY in
+                // Clear of the pill row and the transport bar, which
+                // float over the last two hundred points of the page.
+                guard !reportedEnd, viewportHeight > 0, minY < viewportHeight - 200 else { return }
+                reportedEnd = true
+                onReachedEnd?()
+            }
             .onPreferenceChange(TitleMaxYKey.self) { maxY in
                 guard maxY != .greatestFiniteMagnitude else { return }
                 if restingMaxY == nil { restingMaxY = maxY }
@@ -349,6 +364,14 @@ struct StopPage: View {
             .padding(18)
             .frame(maxWidth: .infinity, alignment: .leading)
             .plate()
+            .background(
+                GeometryReader { geo in
+                    Color.clear.preference(
+                        key: EndPlateMinYKey.self,
+                        value: geo.frame(in: .named("stop-scroll")).minY
+                    )
+                }
+            )
             .padding(.top, 30)
         }
     }
@@ -495,6 +518,14 @@ struct AudioTimeline: View {
 
 /// Bottom edge of the stop title measured in the scroll viewport;
 /// negative or near-zero means the title has scrolled out of view.
+/// The top of the last stop's closing plate in the page's viewport.
+private struct EndPlateMinYKey: PreferenceKey {
+    static var defaultValue: CGFloat = .greatestFiniteMagnitude
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = min(value, nextValue())
+    }
+}
+
 private struct TitleMaxYKey: PreferenceKey {
     static var defaultValue: CGFloat = .greatestFiniteMagnitude
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {

@@ -47,6 +47,13 @@ final class ContentStore: ObservableObject {
         payloads[DEFAULT_SLUG]?.featured ?? payloads.values.compactMap(\.featured).first
     }
 
+    /// The walk survey the site is running, read off the default walk's
+    /// payload so switching it off on the site takes it out here too.
+    var survey: WalkSurvey? {
+        if let home = payloads[DEFAULT_SLUG] { return home.survey }
+        return payloads.values.compactMap(\.survey).first
+    }
+
     /// The walks on offer, whether or not they are loaded yet. Read off
     /// whichever payload carries the index; older ones carry none, so
     /// this falls back to what is actually in hand.
@@ -98,7 +105,7 @@ final class ContentStore: ObservableObject {
     /// Passing `-contentBase http://localhost:3000` lets a build under
     /// test read a dev server, so content changes can be checked
     /// before they are deployed.
-    static var base: String {
+    nonisolated static var base: String {
         let args = ProcessInfo.processInfo.arguments
         if let i = args.firstIndex(of: "-contentBase"), i + 1 < args.count {
             return args[i + 1]

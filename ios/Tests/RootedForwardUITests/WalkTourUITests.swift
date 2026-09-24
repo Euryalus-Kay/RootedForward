@@ -12,7 +12,7 @@ final class WalkTourUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-uiTestReset"]
+        app.launchArguments = ["-uiTestReset", "-surveyDryRun"]
         app.launch()
     }
 
@@ -40,6 +40,7 @@ final class WalkTourUITests: XCTestCase {
         let next = app.buttons["intro-next"]
         if next.waitForExistence(timeout: 6) {
             next.tap()
+            app.skipSurveyIfShown()
         }
     }
 
@@ -52,6 +53,7 @@ final class WalkTourUITests: XCTestCase {
         let next = app.buttons["intro-next"]
         XCTAssertTrue(next.waitForExistence(timeout: 8))
         next.tap()
+        app.skipSurveyIfShown()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         // Exit back to the tour screen

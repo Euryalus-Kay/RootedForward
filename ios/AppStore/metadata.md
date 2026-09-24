@@ -88,6 +88,10 @@ New opening animation and performance improvements.
 
 Added new content and small improvements.
 
+## What's New (version 2.4, build 33)
+
+Added new content and small improvements.
+
 ---
 
 ## Age rating questionnaire
@@ -116,6 +120,30 @@ Expected rating 12+.
 ## App privacy (nutrition label)
 
 Data collection answers, matching what the code actually does.
+
+CURRENT as of version 2.4 (September 24, 2026). The live label already
+declares, as Data Not Linked to You, Identifiers (Device ID) and Usage
+Data (Product Interaction) for Analytics and for Developer's
+Advertising or Marketing, which is the Firebase install measurement,
+and, as Data Linked to You for App Functionality, Contact Info and a
+User ID left over from the hidden sign-in. Version 2.4 adds the walk
+survey (Store/WalkSurvey.swift), so the label must also declare:
+
+| Type | Linked to the user | Tracking | Purpose |
+|---|---|---|---|
+| User Content, Other User Content | No | No | Analytics |
+
+What the survey sends, only when the walker taps Submit, to
+POST https://rooted-forward.org/api/walk/survey: the answers (two
+five-point scales and one multiple choice), the walk's slug, the app
+version, the time answered, and a random 24-character code made on the
+phone for that walk and survey, so the card before the walk can be
+paired with the card after it. No name, email, device identifier,
+installation id or location. Skip sends nothing. The privacy manifest
+(Resources/PrivacyInfo.xcprivacy) declares the same, and the privacy
+policy says it in section 2.3. The label is edited only in the App
+Store Connect website (App Privacy, Edit, then Publish); the App Store
+Connect API has no endpoint for it.
 
 OUT OF DATE as of the Firebase change. The app now includes Google
 Analytics for Firebase for install measurement, so the label can no
@@ -146,6 +174,41 @@ correction reaches walkers without an App Store update. It carries no
 identifier and no body.
 
 ## App Review notes (paste into the Notes field)
+
+As sent with version 2.4 (set through the API by the submit script):
+
+> Free self-guided audio walking tour app from Rooted Forward, a
+> student-run nonprofit at rooted-forward.org. This developer account is
+> authorized to publish it, which we confirm on our own domain at
+> https://rooted-forward.org/app-verification.
+>
+> All tour content ships inside the binary and works offline in airplane
+> mode. There is no sign in and no account anywhere in the app, so no
+> demo credentials are needed. Location permission is requested only
+> when the user taps Find me on the map, is when in use, and is
+> processed entirely on device. Background audio keeps the narration
+> playing with the screen locked.
+>
+> The tour text and the narration are original work by Rooted Forward
+> and are also published free on our website. Every photograph carries
+> a printed credit line under the image, and the sources for each stop
+> are listed on the stop.
+>
+> Changes in this version. The walk now offers a short, optional survey
+> of three questions, answered with sliders and multiple choice. It
+> appears once when the user leaves the opening page for the first stop
+> (open Walk Hyde Park, tap Start the tour, then Next), and once at the
+> end of the walk after at least three stops. It has a Skip button, and
+> nothing in the app depends on answering it. The answers are
+> anonymous. Only when the user taps Submit are they sent to
+> rooted-forward.org, with the walk's name, the app version and a random
+> code made for that walk so the two surveys can be paired. No name,
+> email, device identifier or location is sent. We use the answers only
+> in aggregate to measure the tours' educational impact. This is
+> described in section 2.3 of our privacy policy at
+> https://rooted-forward.org/privacy and in the app's privacy manifest.
+
+The earlier text, kept as a record:
 
 This is a fully native SwiftUI self-guided audio walking tour of
 Hyde Park, Chicago, from the nonprofit Rooted Forward

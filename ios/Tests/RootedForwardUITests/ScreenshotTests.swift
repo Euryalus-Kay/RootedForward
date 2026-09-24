@@ -12,7 +12,7 @@ final class ScreenshotTests: XCTestCase {
     override func setUp() {
         continueAfterFailure = true
         app = XCUIApplication()
-        app.launchArguments = ["-uiTestReset"]
+        app.launchArguments = ["-uiTestReset", "-surveyDryRun"]
         app.launch()
     }
 
@@ -114,6 +114,7 @@ final class ScreenshotTests: XCTestCase {
         sleep(2)
         snap("04-why-this-tour")
         introNext.tap()
+        app.skipSurveyIfShown()
 
         // 5. Stop 1
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
@@ -223,6 +224,7 @@ final class ScreenshotTests: XCTestCase {
         let introNext2 = app.buttons["intro-next"]
         if introNext2.waitForExistence(timeout: 6) {
             introNext2.tap()
+            app.skipSurveyIfShown()
         }
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(1)

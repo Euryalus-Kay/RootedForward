@@ -37,6 +37,13 @@ struct TourView: View {
     /// the practical card on the home screen.
     @State private var showDetourNotice = false
     @State private var detourNoticeShown = false
+    /// The survey card on screen, the one before stop one or the one at
+    /// the end of the walk. Nil almost all of the time.
+    @State private var surveyPrompt: SurveyPrompt?
+    /// The closing plate offers its card once per visit to the tour,
+    /// however many times it is scrolled in and out of view.
+    @State private var endReached = false
+    private let surveyLedger = SurveyLedger()
     @Environment(\.scenePhase) private var scenePhase
 
     /// A red plate to land on inside the opening stop, set when the
@@ -72,9 +79,20 @@ struct TourView: View {
         }
     }
 
-    /// Leaving the intro lands on stop one and starts everything the
-    /// tour normally starts when a page opens.
+    /// Leaving the intro lands on stop one, by way of the survey's
+    /// first card the first time the walk is begun.
     private func leaveIntro() {
+        if let survey = survey(for: .pre) {
+            Haptics.tap()
+            present(survey, .pre, then: { advanceFromIntro() })
+        } else {
+            advanceFromIntro()
+        }
+    }
+
+    /// Turning from the intro to stop one, starting everything the
+    /// tour normally starts when a page opens.
+    private func advanceFromIntro() {
         Haptics.tap()
         withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
             onIntro = false
@@ -183,7 +201,11 @@ struct TourView: View {
                                 markEngaged(stop.id)
                             },
                             scrollToPlate: i == safeIndex ? openPlate : nil,
-                            onPlateShown: { openPlate = nil }
+                            onPlateShown: { openPlate = nil },
+                            onReachedEnd: i == stops.count - 1 ? {
+                                guard i == safeIndex else { return }
+                                reachedEnd()
+                            } : nil
                         )
                         .tag(i)
                     }
@@ -235,6 +257,14 @@ struct TourView: View {
                     .transition(.opacity)
                     .zIndex(10)
             }
+
+            if let prompt = surveyPrompt {
+                SurveyCard(survey: prompt.survey, phase: prompt.phase) { answers in
+                    closeSurvey(prompt, answers: answers)
+                }
+                .transition(.opacity)
+                .zIndex(20)
+            }
         }
         .background(RF.cream.ignoresSafeArea())
         .onChange(of: index) { _, newIndex in
@@ -280,6 +310,83 @@ struct TourView: View {
                 index = tapped
                 showMap = false
             }
+        }
+    }
+
+    // MARK: - The survey
+
+    /// The card for this moment, or nil when it should not come up.
+    private func survey(for phase: SurveyPhase) -> WalkSurvey? {
+        guard let survey = content.survey, survey.part(phase).isDrawable,
+              !surveyLedger.wasOffered(phase, survey: survey.id, tour: content.slug)
+        else { return nil }
+        #if DEBUG
+        // Lets a build under test reach the closing card without
+        // walking three stops first.
+        if ProcessInfo.processInfo.arguments.contains("-surveyAnyTime") { return survey }
+        #endif
+        switch phase {
+        case .pre:
+            // Before means before. Someone already credited with a stop
+            // who pages back to the intro is past it.
+            return progress.visitedCount(in: stops) == 0 ? survey : nil
+        case .post:
+            // After means after some of the walk. Jumping to the last
+            // page from the map is not having walked it.
+            let mainline = content.tour.mainline
+            return progress.visitedCount(in: mainline) >= min(3, mainline.count) ? survey : nil
+        }
+    }
+
+    private func present(_ survey: WalkSurvey, _ phase: SurveyPhase, then: @escaping () -> Void) {
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            surveyPrompt = SurveyPrompt(survey: survey, phase: phase, then: then)
+        }
+    }
+
+    /// Answered or skipped, the card is not offered again for this walk
+    /// and survey. Answers go to the outbox, which keeps them until the
+    /// site takes them.
+    private func closeSurvey(_ prompt: SurveyPrompt, answers: [String: SurveyAnswer]?) {
+        let tour = content.slug
+        surveyLedger.markOffered(prompt.phase, survey: prompt.survey.id, tour: tour)
+        if let answers {
+            let card = SurveySubmission(
+                survey: prompt.survey.id,
+                tour: tour,
+                phase: prompt.phase,
+                respondent: surveyLedger.respondent(survey: prompt.survey.id, tour: tour),
+                answers: answers
+            )
+            Task { await SurveyOutbox.shared.add(card) }
+        }
+        withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
+            surveyPrompt = nil
+        }
+        prompt.then()
+    }
+
+    /// The last stop's closing plate came into view.
+    private func reachedEnd() {
+        guard !endReached else { return }
+        endReached = true
+        // A beat, so "End of the walk." is read before the card covers it.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+            guard safeIndex == stops.count - 1, surveyPrompt == nil, !showDetourNotice,
+                  let survey = survey(for: .post) else { return }
+            present(survey, .post, then: {})
+        }
+    }
+
+    /// Exit, with the closing card first for a walker who finished every
+    /// stop without scrolling down to the last page's closing plate.
+    private func exitTour() {
+        let mainline = content.tour.mainline
+        let finished = !mainline.isEmpty && progress.visitedCount(in: mainline) >= mainline.count
+        if finished, surveyPrompt == nil, let survey = survey(for: .post) {
+            present(survey, .post, then: { dismiss() })
+        } else {
+            dismiss()
         }
     }
 
@@ -455,7 +562,7 @@ struct TourView: View {
     private var topBarRow: some View {
         HStack(spacing: 12) {
             Button {
-                dismiss()
+                exitTour()
             } label: {
                 // No chevron: this is a modal dismissal, not a pop,
                 // so promising a back gesture would be a lie.
@@ -732,4 +839,13 @@ extension LocationService {
             start()
         }
     }
+}
+
+/// A survey card waiting on the walker, and what happens once it is
+/// answered or skipped.
+private struct SurveyPrompt: Identifiable {
+    let id = UUID()
+    let survey: WalkSurvey
+    let phase: SurveyPhase
+    let then: () -> Void
 }

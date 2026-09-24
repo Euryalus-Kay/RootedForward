@@ -27,8 +27,76 @@ struct WalkPayload: Codable, Equatable {
     /// on, today the 1931 map on the Chicago Maritime Museum's wall.
     /// Absent in older payloads and whenever the site has nothing on.
     let featured: WalkFeature?
+    /// The walk survey, a short card before the walk and another at
+    /// its end. Absent in older payloads and null while the site has
+    /// the survey switched off.
+    let survey: WalkSurvey?
 
     var id: String { slug ?? "hyde-park" }
+}
+
+/// The walk survey. Mirrors WALK_SURVEY in src/lib/walk-survey.ts, so
+/// the questions and their wording are the site's to change, and
+/// /api/walk/survey checks answers against the same questions.
+struct WalkSurvey: Codable, Equatable {
+    /// Answers carry it, and a new one asks every walker again.
+    let id: String
+    let skip: String
+    let thanks: String
+    let pre: WalkSurveyPart
+    let post: WalkSurveyPart
+
+    func part(_ phase: SurveyPhase) -> WalkSurveyPart {
+        phase == .pre ? pre : post
+    }
+}
+
+enum SurveyPhase: String, Codable {
+    /// leaving the opening page for stop one
+    case pre
+    /// the end of the walk
+    case post
+}
+
+struct WalkSurveyPart: Codable, Equatable {
+    let title: String
+    /// the italic line under the title
+    let note: String
+    let body: String
+    let submit: String
+    let questions: [WalkSurveyQuestion]
+
+    /// True when this build can draw every question on the card. A
+    /// kind added on the site later is not half-drawn; the card is
+    /// simply not offered, because the site refuses a card sent with
+    /// a question missing.
+    var isDrawable: Bool {
+        !questions.isEmpty && questions.allSatisfy(\.isDrawable)
+    }
+}
+
+struct WalkSurveyQuestion: Codable, Equatable, Identifiable {
+    let id: String
+    /// "scale" or "choice"
+    let kind: String
+    let prompt: String
+    /// scale only, one word per point, lowest first, stored as 1 to n
+    let labels: [String]?
+    /// choice only, stored as the option's value
+    let options: [WalkSurveyOption]?
+
+    var isDrawable: Bool {
+        switch kind {
+        case "scale": return (labels?.count ?? 0) >= 2
+        case "choice": return (options?.count ?? 0) >= 2
+        default: return false
+        }
+    }
+}
+
+struct WalkSurveyOption: Codable, Equatable, Hashable {
+    let value: String
+    let label: String
 }
 
 /// A thing the site wants on the app's front door besides the walks,

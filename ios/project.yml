@@ -52,6 +52,10 @@ targets:
       - path: Resources/Launch
         type: folder
         buildPhase: resources
+      # The app's privacy manifest, what its own code collects and the
+      # required-reason APIs it calls. Firebase carries its own.
+      - path: Resources/PrivacyInfo.xcprivacy
+        buildPhase: resources
       # Firebase reads this at configure time. It is git-ignored, so a
       # fresh clone builds without it and simply runs with analytics
       # off rather than failing.
@@ -61,8 +65,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: org.rootedforward.walk
         PRODUCT_NAME: RootedForward
-        MARKETING_VERSION: "2.3"
-        CURRENT_PROJECT_VERSION: 32
+        MARKETING_VERSION: "2.4"
+        CURRENT_PROJECT_VERSION: 33
         TARGETED_DEVICE_FAMILY: "1"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         CODE_SIGN_STYLE: Automatic
