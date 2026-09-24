@@ -37,10 +37,10 @@ final class WalkTourUITests: XCTestCase {
     /// skips the page, so the tap is conditional.
     private func startAndPassIntro() {
         app.buttons["home-start"].tap()
+        app.skipSurveyIfShown()
         let next = app.buttons["intro-next"]
         if next.waitForExistence(timeout: 6) {
             next.tap()
-            app.skipSurveyIfShown()
         }
     }
 
@@ -48,12 +48,12 @@ final class WalkTourUITests: XCTestCase {
         openWalk()
         let start = app.buttons["home-start"]
         start.tap()
+        app.skipSurveyIfShown()
 
         // The walk opens on "Why this tour", and Next turns to stop 1.
         let next = app.buttons["intro-next"]
         XCTAssertTrue(next.waitForExistence(timeout: 8))
         next.tap()
-        app.skipSurveyIfShown()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         // Exit back to the tour screen

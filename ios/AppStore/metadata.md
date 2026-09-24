@@ -88,9 +88,9 @@ New opening animation and performance improvements.
 
 Added new content and small improvements.
 
-## What's New (version 2.4, build 34; build 33 was uploaded and replaced before review)
+## What's New (version 2.4, build 35; builds 33 and 34 were uploaded and replaced before review)
 
-Added new content and small improvements.
+Content and backend changes.
 
 ---
 
@@ -195,10 +195,9 @@ As sent with version 2.4 (set through the API by the submit script):
 > are listed on the stop.
 >
 > Changes in this version. The walk now offers a short, optional survey,
-> answered with sliders and multiple choice. It
-> appears once when the user leaves the opening page for the first stop
-> (open Walk Hyde Park, tap Start the tour, then Next), and once at the
-> end of the walk after at least three stops. It has a Skip button, and
+> answered with sliders and multiple choice. It appears once as the user
+> begins the walk (open Walk Hyde Park and tap Start the tour), and once
+> at the end of the walk after at least three stops. It has a Skip button, and
 > nothing in the app depends on answering it. The answers are
 > anonymous. Only when the user taps Submit are they sent to
 > rooted-forward.org, with the walk's name, the app version and a random

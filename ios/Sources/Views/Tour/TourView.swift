@@ -79,20 +79,9 @@ struct TourView: View {
         }
     }
 
-    /// Leaving the intro lands on stop one, by way of the survey's
-    /// first card the first time the walk is begun.
-    private func leaveIntro() {
-        if let survey = survey(for: .pre) {
-            Haptics.tap()
-            present(survey, .pre, then: { advanceFromIntro() })
-        } else {
-            advanceFromIntro()
-        }
-    }
-
-    /// Turning from the intro to stop one, starting everything the
+    /// Leaving the intro lands on stop one and starts everything the
     /// tour normally starts when a page opens.
-    private func advanceFromIntro() {
+    private func leaveIntro() {
         Haptics.tap()
         withAnimation(RFMotion.gated(.rfAppear, reduceMotion)) {
             onIntro = false
@@ -276,7 +265,10 @@ struct TourView: View {
         }
         .onAppear {
             location.requestAndStartIfAuthorized()
-            guard !onIntro else { return }
+            guard !onIntro else {
+                offerPreSurvey()
+                return
+            }
             progress.setLastIndex(index)
             startDwell(at: safeIndex)
             offerDetourNotice()
@@ -335,6 +327,20 @@ struct TourView: View {
             // page from the map is not having walked it.
             let mainline = content.tour.mainline
             return progress.visitedCount(in: mainline) >= min(3, mainline.count) ? survey : nil
+        }
+    }
+
+    /// The card before the walk comes up as the walk opens, over its
+    /// opening page and before any of it has been read or watched, so
+    /// it measures what the walker arrived with. Answered or skipped,
+    /// it leaves the walker on the opening page, and Next goes on to
+    /// stop one as it always has.
+    private func offerPreSurvey() {
+        guard surveyPrompt == nil, survey(for: .pre) != nil else { return }
+        // A beat, so the page has arrived before the card covers it.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
+            guard onIntro, surveyPrompt == nil, let survey = survey(for: .pre) else { return }
+            present(survey, .pre, then: {})
         }
     }
 

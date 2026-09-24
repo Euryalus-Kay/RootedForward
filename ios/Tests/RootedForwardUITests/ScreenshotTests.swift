@@ -109,12 +109,12 @@ final class ScreenshotTests: XCTestCase {
 
         // 4. "Why this tour", the page in front of stop one
         app.buttons["home-start"].tap()
+        app.skipSurveyIfShown()
         let introNext = app.buttons["intro-next"]
         XCTAssertTrue(introNext.waitForExistence(timeout: 8))
         sleep(2)
         snap("04-why-this-tour")
         introNext.tap()
-        app.skipSurveyIfShown()
 
         // 5. Stop 1
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
@@ -221,10 +221,10 @@ final class ScreenshotTests: XCTestCase {
         app.buttons["home-tour-card"].tap()
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
         app.buttons["home-start"].tap()
+        app.skipSurveyIfShown()
         let introNext2 = app.buttons["intro-next"]
         if introNext2.waitForExistence(timeout: 6) {
             introNext2.tap()
-            app.skipSurveyIfShown()
         }
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
         sleep(1)

@@ -3,8 +3,8 @@ import Foundation
 // ------------------------------------------------------------------
 // The walk survey's memory and its post.
 //
-// Two short cards, one when a walker leaves the opening page for stop
-// one and one at the end of the walk (SurveyCard, TourView). Each is
+// Two short cards, one as a walk opens, over its opening page, and one
+// at the end of the walk (SurveyCard, TourView). Each is
 // offered once per walk and survey, answered or skipped, and never
 // again unless the site starts a new survey id.
 //

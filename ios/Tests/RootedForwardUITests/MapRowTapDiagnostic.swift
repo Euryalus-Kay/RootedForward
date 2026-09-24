@@ -26,12 +26,12 @@ final class MapRowTapDiagnostic: XCTestCase {
         card.tap()
         XCTAssertTrue(app.buttons["home-start"].waitForExistence(timeout: 8))
         app.buttons["home-start"].tap()
+        app.skipSurveyIfShown()
         // The walk opens on the "Why this tour" page, which carries no
         // pill row; step through it before reaching for the map.
         let introNext = app.buttons["intro-next"]
         if introNext.waitForExistence(timeout: 6) {
             introNext.tap()
-            app.skipSurveyIfShown()
         }
         XCTAssertTrue(app.buttons["tour-map"].waitForExistence(timeout: 8))
         app.buttons["tour-map"].tap()

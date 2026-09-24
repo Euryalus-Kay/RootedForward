@@ -2,9 +2,10 @@ import XCTest
 
 // ------------------------------------------------------------------
 // The walk survey's first card, end to end on a clean install: it
-// comes up when the intro is left, Submit waits for every answer, an
-// answered card turns to stop one, and the card is never offered
-// twice. Run with -surveyDryRun, so nothing is ever posted.
+// comes up as the walk opens, over the intro, Submit waits for every
+// answer, answered or skipped it leaves the walker on the intro (never
+// past it), and it is never offered twice. Run with -surveyDryRun, so
+// nothing is ever posted.
 // ------------------------------------------------------------------
 
 extension XCUIApplication {
@@ -38,16 +39,23 @@ final class SurveyUITests: XCTestCase {
         let start = app.buttons["home-start"]
         XCTAssertTrue(start.waitForExistence(timeout: 8))
         start.tap()
-        XCTAssertTrue(app.buttons["intro-next"].waitForExistence(timeout: 8))
+    }
+
+    /// The intro is on screen and its Next can be pressed, which is only
+    /// true once no card is covering it.
+    private func assertOnIntro(_ message: String) {
+        let next = app.buttons["intro-next"]
+        XCTAssertTrue(next.waitForExistence(timeout: 8), message)
+        XCTAssertFalse(app.buttons["survey-skip"].exists, message)
+        XCTAssertTrue(next.isHittable, message)
     }
 
     private func scale(_ id: String) -> XCUIElement {
         app.descendants(matching: .any).matching(identifier: "survey-scale-\(id)").firstMatch
     }
 
-    func testAnsweredCardTurnsToStopOneAndIsNotAskedAgain() {
+    func testAnsweredCardLandsOnTheIntroAndIsNotAskedAgain() {
         openIntro()
-        app.buttons["intro-next"].tap()
 
         let submit = app.buttons["survey-submit"]
         XCTAssertTrue(submit.waitForExistence(timeout: 5))
@@ -76,26 +84,30 @@ final class SurveyUITests: XCTestCase {
         XCTAssertTrue(submit.isEnabled)
         submit.tap()
 
+        // The card leaves the walker on the intro, not past it.
+        sleep(2)
+        assertOnIntro("submitting the card should land on the intro")
+        XCTAssertFalse(app.staticTexts["stop-title-1"].exists)
+        app.buttons["intro-next"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
-        XCTAssertFalse(app.buttons["survey-skip"].exists)
 
-        // Back out and begin again: the intro turns straight to stop one.
+        // Back out and begin again: no card this time.
         app.buttons["tour-exit"].tap()
         let start = app.buttons["home-start"]
         XCTAssertTrue(start.waitForExistence(timeout: 5))
         start.tap()
-        let next = app.buttons["intro-next"]
-        if next.waitForExistence(timeout: 6) { next.tap() }
-        XCTAssertFalse(app.buttons["survey-skip"].waitForExistence(timeout: 2))
-        XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
+        XCTAssertFalse(app.buttons["survey-skip"].waitForExistence(timeout: 3))
+        assertOnIntro("the walk should open on the intro with no card")
     }
 
-    func testSkipTurnsStraightToStopOne() {
+    func testSkipLandsOnTheIntro() {
         openIntro()
-        app.buttons["intro-next"].tap()
         let skip = app.buttons["survey-skip"]
         XCTAssertTrue(skip.waitForExistence(timeout: 5))
         skip.tap()
+        sleep(1)
+        assertOnIntro("Skip should land on the intro")
+        app.buttons["intro-next"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
     }
 
@@ -116,13 +128,16 @@ final class SurveyUITests: XCTestCase {
         let tall = app.windows.firstMatch.frame.height >= 800
 
         openIntro()
-        app.buttons["intro-next"].tap()
         let submit = app.buttons["survey-submit"]
         XCTAssertTrue(submit.waitForExistence(timeout: 5))
         sleep(1)
         if tall { XCTAssertTrue(submit.isHittable, "the card before should fit without scrolling") }
         snap("survey-pre")
         app.buttons["survey-skip"].tap()
+        sleep(1)
+        assertOnIntro("Skip should land on the intro")
+        snap("intro-after-card")
+        app.buttons["intro-next"].tap()
         XCTAssertTrue(app.staticTexts["stop-title-1"].waitForExistence(timeout: 8))
 
         // The last stop, then down to its closing plate.
@@ -149,7 +164,6 @@ final class SurveyUITests: XCTestCase {
 
     func testDraggingTheRuleSettlesOnAPoint() {
         openIntro()
-        app.buttons["intro-next"].tap()
         let knowledge = scale("knowledge")
         XCTAssertTrue(knowledge.waitForExistence(timeout: 5))
         let from = knowledge.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.3))
