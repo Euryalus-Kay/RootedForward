@@ -41,7 +41,9 @@ export interface WalkSurveyQuestion {
 
 export interface WalkSurveyPart {
   title: string;
-  /** the italic line under the title */
+  /** Left empty on purpose: the owner wants no caption under the title
+   *  (September 24, 2026). The key stays because app build 33 requires
+   *  it; later builds skip an empty note. */
   note: string;
   body: string;
   submit: string;
@@ -83,7 +85,7 @@ export const WALK_SURVEY: WalkSurvey = {
   thanks: "Thank you",
   pre: {
     title: "Pre-tour survey",
-    note: "Three questions, about 20 seconds",
+    note: "",
     body: BODY,
     submit: "Submit",
     questions: [
@@ -104,7 +106,7 @@ export const WALK_SURVEY: WalkSurvey = {
   },
   post: {
     title: "Post-tour survey",
-    note: "Three questions, about 20 seconds",
+    note: "",
     body: BODY,
     submit: "Submit",
     questions: [
