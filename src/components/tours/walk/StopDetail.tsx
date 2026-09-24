@@ -7,7 +7,7 @@
 // title, matted photographs, engraved frames, one quiet Directions
 // ticket. Content first, no badges, no stamps.
 // ------------------------------------------------------------------
-import type { Ref } from "react";
+import { useRef, type Ref } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { WalkStop } from "@/lib/tours/walk-types";
 import { formatWalkDistance } from "@/lib/tours/walk-utils";
@@ -206,6 +206,8 @@ export default function StopDetail({
   focusChrome = false,
 }: StopDetailProps) {
   const reduceMotion = useReducedMotion();
+  /* where "Read more in depth below" takes the reader */
+  const storyRef = useRef<HTMLDivElement>(null);
 
   // Photographs sort into two places. Anything carrying an `after`
   // index waits for its paragraph; everything else mats up top, with
@@ -283,22 +285,34 @@ export default function StopDetail({
       {/* Where a stop has a film, it opens the stop. The written and
           spoken versions of the same ground follow underneath, so
           nothing is only available by video. */}
+      {/* The two labels, owner's choice September 24, 2026: the film's
+          label highlighted in rust on the still, and a rounded rust box
+          in forest under it. Same as the app. */}
       {stop.video && (
         <div className="mt-6">
-          <h3 className="walk-title inline-block bg-forest px-5 py-3 text-2xl font-semibold text-cream">
-            Watch this stop
-          </h3>
-          <div className="mt-3 overflow-hidden rounded-[2px] border border-border">
+          <h3 className="sr-only">Watch this stop</h3>
+          <div className="overflow-hidden rounded-[2px] border border-border">
             <YouTubeEmbed
               id={stop.video.youtubeId}
               title={stop.video.title}
               poster={stop.video.poster}
               tone="light"
+              label="Watch this stop"
             />
           </div>
-          <p className="walk-title mt-4 inline-block bg-forest px-5 py-3 text-2xl font-semibold text-cream">
+          <button
+            type="button"
+            onClick={() =>
+              storyRef.current?.scrollIntoView({
+                behavior: reduceMotion ? "auto" : "smooth",
+                block: "start",
+              })
+            }
+            className="walk-title mt-5 block w-full rounded-xl border-2 border-rust bg-rust/10 px-5 py-3 text-center text-xl font-bold text-forest transition-colors hover:bg-rust/15 md:text-2xl"
+          >
             Read more in depth below
-          </p>
+          </button>
+          <div ref={storyRef} aria-hidden="true" className="scroll-mt-28" />
         </div>
       )}
 

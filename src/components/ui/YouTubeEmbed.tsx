@@ -40,6 +40,9 @@ interface YouTubeEmbedProps {
       actually presses play, and so the app and the page show the same
       frame. */
   poster?: string;
+  /** Printed on the still in rust, so the film says what it is before
+      it plays. The walking tour's stops use it for "Watch this stop". */
+  label?: string;
 }
 
 /* Minimal shape of the bits of the IFrame API this file touches. */
@@ -138,6 +141,7 @@ export default function YouTubeEmbed({
   frame = "default",
   tone = "dark",
   poster,
+  label,
 }: YouTubeEmbedProps) {
   const [playing, setPlaying] = useState(false);
   /* Set only when the API route fails, so the plain iframe takes over. */
@@ -211,7 +215,7 @@ export default function YouTubeEmbed({
         <button
           type="button"
           onClick={start}
-          aria-label={`Play ${title}`}
+          aria-label={label ? `${label}. Play ${title}` : `Play ${title}`}
           className="group absolute inset-0 h-full w-full cursor-pointer"
         >
           {/* every maxres still is 1280x720, sharp on a retina screen */}
@@ -223,7 +227,11 @@ export default function YouTubeEmbed({
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           />
           <span className="absolute inset-0 bg-ink/25 transition-colors group-hover:bg-ink/15" />
-          <span className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-rust text-white shadow-lg transition-transform duration-200 group-hover:scale-105 md:h-24 md:w-24">
+          <span
+            className={`absolute left-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-rust text-white shadow-lg transition-transform duration-200 group-hover:scale-105 md:h-24 md:w-24 ${
+              label ? "top-[45%]" : "top-1/2"
+            }`}
+          >
             <svg
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -233,6 +241,11 @@ export default function YouTubeEmbed({
               <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.28-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
             </svg>
           </span>
+          {label && (
+            <span className="walk-title absolute bottom-3 left-3 rounded-[4px] bg-rust px-3 py-1 text-base font-bold text-white sm:text-lg md:bottom-4 md:left-4 md:px-4 md:py-1.5 md:text-xl">
+              {label}
+            </span>
+          )}
         </button>
       )}
     </div>
