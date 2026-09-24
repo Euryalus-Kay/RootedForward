@@ -88,7 +88,11 @@ New opening animation and performance improvements.
 
 Added new content and small improvements.
 
-## What's New (version 2.4, build 36; builds 33 to 35 were uploaded and replaced before review)
+## What's New (version 2.4, build 35; approved and released September 24, 2026)
+
+Content and backend changes.
+
+## What's New (version 2.5, build 36)
 
 Content and backend changes.
 
