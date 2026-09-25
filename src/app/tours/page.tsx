@@ -70,7 +70,9 @@ function SignalSlashIcon() {
  *  in New York are finished", read off the catalog so the release
  *  switch in registry.ts is the only place a walk appears or does not. */
 const FINISHED = (() => {
-  const names = TOUR_CATALOG.map((t) => `${t.neighborhood} in ${t.city}`);
+  const names = TOUR_CATALOG.filter((t) => t.inApp !== false).map(
+    (t) => `${t.neighborhood} in ${t.city}`
+  );
   if (names.length === 1) return `${names[0]} is finished`;
   return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]} are finished`;
 })();
@@ -306,17 +308,30 @@ export default function ToursPage() {
                   </div>
 
                   <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-                    <AppStoreButton tone="rust" withNote={false} />
-                    {tour.offerBrowser && (
+                    {tour.inApp === false ? (
+                      /* on the site only until its narration is recorded;
+                         the app lists it the day every stop has audio */
                       <Link
                         href={tour.path}
-                        className="group font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
+                        className="inline-flex items-center rounded-sm bg-rust px-10 py-3.5 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
                       >
-                        Or take it in your browser{" "}
-                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                          &rarr;
-                        </span>
+                        Take it in your browser
                       </Link>
+                    ) : (
+                      <>
+                        <AppStoreButton tone="rust" withNote={false} />
+                        {tour.offerBrowser && (
+                          <Link
+                            href={tour.path}
+                            className="group font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
+                          >
+                            Or take it in your browser{" "}
+                            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                              &rarr;
+                            </span>
+                          </Link>
+                        )}
+                      </>
                     )}
                   </div>
 
