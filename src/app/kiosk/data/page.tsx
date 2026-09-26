@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getKioskStats, renderedNow, HEARTBEAT_MS } from "@/lib/kiosk-analytics";
+import { getKioskStats, renderedNow } from "@/lib/kiosk-analytics";
 import StaleGuard from "@/components/kiosk/StaleGuard";
 
 /* ------------------------------------------------------------------ */
@@ -11,6 +11,11 @@ import StaleGuard from "@/components/kiosk/StaleGuard";
 /*  though anyone holding the link can read it. There is nothing        */
 /*  private on it, since the underlying rows describe a screen rather   */
 /*  than any person.                                                    */
+/*                                                                     */
+/*  Numbers and labels only, by the owner's rule. What a session is,    */
+/*  how uptime is counted and why nothing here is personal all live in  */
+/*  the comments of kiosk-analytics.ts and migration 011, not on the    */
+/*  page.                                                               */
 /* ------------------------------------------------------------------ */
 
 export const dynamic = "force-dynamic";
@@ -77,15 +82,7 @@ function hourLabel(h: number): string {
 
 /* ---------------------------------- pieces ---------------------------------- */
 
-function Stat({
-  label,
-  value,
-  note,
-}: {
-  label: string;
-  value: string;
-  note?: string;
-}) {
+function Stat({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
     <div className="rounded-sm border border-border bg-cream p-5">
       <div className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-ink/50">
@@ -93,42 +90,23 @@ function Stat({
       </div>
       <div className="mt-2 font-display text-3xl leading-none text-forest">{value}</div>
       {note ? (
-        <div className="mt-1.5 font-body text-xs leading-snug text-ink/55">{note}</div>
+        <div className="mt-1.5 font-body text-xs leading-snug tabular-nums text-ink/55">{note}</div>
       ) : null}
     </div>
   );
 }
 
-function Section({
-  title,
-  sub,
-  children,
-}: {
-  title: string;
-  sub?: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-12">
       <h2 className="font-display text-2xl text-forest">{title}</h2>
-      {sub ? (
-        <p className="mt-1 max-w-[70ch] font-body text-sm leading-relaxed text-ink/60">
-          {sub}
-        </p>
-      ) : null}
       <div className="mt-5">{children}</div>
     </section>
   );
 }
 
-function Bars({
-  rows,
-  max,
-}: {
-  rows: { label: string; count: number; hint?: string }[];
-  max?: number;
-}) {
-  const top = max ?? Math.max(1, ...rows.map((r) => r.count));
+function Bars({ rows }: { rows: { label: string; count: number }[] }) {
+  const top = Math.max(1, ...rows.map((r) => r.count));
   return (
     <div className="space-y-1.5">
       {rows.map((r) => (
@@ -143,7 +121,7 @@ function Bars({
             />
           </div>
           <div className="w-16 shrink-0 text-right font-body text-sm tabular-nums text-ink/70">
-            {r.hint ?? r.count}
+            {r.count}
           </div>
         </div>
       ))}
@@ -189,21 +167,13 @@ export default async function KioskDataPage() {
         <div className="mx-auto max-w-3xl">
           <h1 className="font-display text-4xl text-forest">Kiosk data</h1>
           {stats.migrationPending ? (
-            <>
-              <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
-                The kiosk is collecting nothing yet, because the two tables it
-                writes to do not exist. The screen is not losing anything in the
-                meantime. It queues its events in its own storage and will send
-                them once the tables are there.
-              </p>
-              <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
-                Open the Supabase SQL editor and run the contents of{" "}
-                <code className="rounded-sm bg-cream-dark px-1.5 py-0.5 text-sm">
-                  supabase/migrations/011_kiosk_analytics.sql
-                </code>
-                . Then reload this page.
-              </p>
-            </>
+            <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
+              Run{" "}
+              <code className="rounded-sm bg-cream-dark px-1.5 py-0.5 text-sm">
+                supabase/migrations/011_kiosk_analytics.sql
+              </code>{" "}
+              in the Supabase SQL editor, then reload.
+            </p>
           ) : (
             <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
               Could not read the usage tables. {stats.error}
@@ -215,22 +185,14 @@ export default async function KioskDataPage() {
   }
 
   const s = stats;
-  const beatMinutes = Math.round(HEARTBEAT_MS / 60000);
+  const idleEnded = s.sessions.endReasons.find((r) => r.reason === "idle")?.count ?? 0;
 
   return (
     <main className="min-h-screen bg-cream px-6 py-14">
       <StaleGuard renderedAt={renderedAt} />
       <div className="mx-auto max-w-5xl">
-        {/* header */}
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 className="font-display text-4xl text-forest">Kiosk data</h1>
-            <p className="mt-2 max-w-[60ch] font-body text-sm leading-relaxed text-ink/60">
-              The museum map screen. A session is one visitor&rsquo;s turn, measured
-              from the first touch until the exhibit returns to its attract
-              screen. Times are Chicago time.
-            </p>
-          </div>
+          <h1 className="font-display text-4xl text-forest">Kiosk data</h1>
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="/kiosk/data/playback"
@@ -247,19 +209,16 @@ export default async function KioskDataPage() {
               <span className="font-body text-sm font-semibold text-ink">
                 {s.status.online ? "Online" : "Not reporting"}
               </span>
-              <span className="font-body text-sm text-ink/55">
-                {ago(s.status.lastSeenAgoMs)}
-              </span>
+              <span className="font-body text-sm text-ink/55">{ago(s.status.lastSeenAgoMs)}</span>
             </div>
           </div>
         </div>
 
-        {/* headline numbers */}
         <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
           <Stat
             label="Sessions today"
             value={String(s.sessions.today)}
-            note={`${s.sessions.week} in the last 7 days`}
+            note={`${s.sessions.week} in 7 days`}
           />
           <Stat
             label="Average session"
@@ -269,20 +228,16 @@ export default async function KioskDataPage() {
           <Stat
             label="Uptime, 7 days"
             value={pct(s.uptime.week)}
-            note={`${pct(s.uptime.month)} over 30 days`}
+            note={`${pct(s.uptime.month)} in 30 days`}
           />
           <Stat
             label="Sessions all time"
             value={String(s.sessions.total)}
-            note={`${s.sessions.month} in the last 30 days`}
+            note={`${s.sessions.month} in 30 days`}
           />
         </div>
 
-        {/* sessions over time */}
-        <Section
-          title="Sessions a day"
-          sub="The last thirty days. A day with no bar is a day nobody used it, or a day it was not running."
-        >
+        <Section title="Sessions a day">
           <Columns
             rows={s.sessions.perDay.map((d) => ({
               key: d.day,
@@ -292,11 +247,7 @@ export default async function KioskDataPage() {
           />
         </Section>
 
-        {/* time per session */}
-        <Section
-          title="How long people stay"
-          sub="Sessions shorter than a second are dropped as stray touches, and anything over two hours is treated as a stuck screen rather than a visitor."
-        >
+        <Section title="Time per session">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             <Stat label="Mean" value={ms(s.duration.meanMs)} />
             <Stat label="Median" value={ms(s.duration.medianMs)} />
@@ -308,47 +259,29 @@ export default async function KioskDataPage() {
           </div>
         </Section>
 
-        {/* depth */}
-        <Section
-          title="What people open"
-          sub="Which of the twelve map details visitors actually tap, counted across the last thirty days."
-        >
+        <Section title="Details opened">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
             <Stat
-              label="Details per session"
-              value={
-                s.depth.meanDetails === null ? "–" : s.depth.meanDetails.toFixed(1)
-              }
+              label="Per session"
+              value={s.depth.meanDetails === null ? "–" : s.depth.meanDetails.toFixed(1)}
             />
-            <Stat
-              label="Opened at least one"
-              value={pct(s.depth.openedSomething, 0)}
-              note="the rest looked and walked away"
-            />
+            <Stat label="Opened at least one" value={pct(s.depth.openedSomething, 0)} />
             <Stat
               label="Ended by the timer"
-              value={String(
-                s.sessions.endReasons.find((r) => r.reason === "idle")?.count ?? 0
-              )}
-              note="rather than by someone starting over"
+              value={String(idleEnded)}
+              note={`${s.sessions.month - idleEnded} started over`}
             />
           </div>
           <div className="mt-6">
             {s.depth.details.length ? (
               <Bars rows={s.depth.details} />
             ) : (
-              <p className="font-body text-sm text-ink/55">
-                No details opened yet.
-              </p>
+              <p className="font-body text-sm text-ink/55">None yet.</p>
             )}
           </div>
         </Section>
 
-        {/* when */}
-        <Section
-          title="When people visit"
-          sub="Sessions by hour of the day, Chicago time, over the last thirty days."
-        >
+        <Section title="Sessions by hour">
           <Columns
             rows={s.sessions.byHour.map((h) => ({
               key: String(h.hour),
@@ -358,71 +291,56 @@ export default async function KioskDataPage() {
           />
         </Section>
 
-        {/* uptime */}
-        <Section
-          title="Uptime"
-          sub={`The screen reports in every ${beatMinutes} minutes. Uptime is the share of those check-ins that arrived, counted from when it first reported rather than from the start of the window.`}
-        >
+        <Section title="Uptime">
           <div className="grid grid-cols-3 gap-3">
-            <Stat label="Last 24 hours" value={pct(s.uptime.day)} />
-            <Stat label="Last 7 days" value={pct(s.uptime.week)} />
-            <Stat label="Last 30 days" value={pct(s.uptime.month)} />
+            <Stat label="24 hours" value={pct(s.uptime.day)} />
+            <Stat label="7 days" value={pct(s.uptime.week)} />
+            <Stat label="30 days" value={pct(s.uptime.month)} />
           </div>
-
           <div className="mt-6 rounded-sm border border-border bg-cream p-5">
             <div className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-ink/50">
-              Gaps in the last 7 days
+              Gaps, 7 days
             </div>
             {s.uptime.outages.length ? (
               <ul className="mt-3 space-y-2">
                 {s.uptime.outages.map((o) => (
-                  <li key={o.from} className="font-body text-sm text-ink/75">
+                  <li key={o.from} className="font-body text-sm tabular-nums text-ink/75">
                     <span className="font-semibold text-rust">{longMs(o.ms)}</span>{" "}
-                    from {clock(o.from)} to {clock(o.to)}
+                    {clock(o.from)} to {clock(o.to)}
                   </li>
                 ))}
               </ul>
-            ) : s.uptime.trackingSince ? (
-              <p className="mt-2 font-body text-sm text-ink/60">
-                No gaps longer than {Math.round((HEARTBEAT_MS * 2.5) / 60000)}{" "}
-                minutes. The screen has not missed a check-in.
-              </p>
             ) : (
               <p className="mt-2 font-body text-sm text-ink/60">
-                Nothing has reported yet.
+                {s.uptime.trackingSince ? "None" : "Nothing reported yet"}
               </p>
             )}
           </div>
         </Section>
 
-        {/* reliability */}
-        <Section
-          title="The machine itself"
-          sub="Counted over the last thirty days. A boot is the page starting up, which happens on a restart or after an update is applied."
-        >
+        <Section title="Machine">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             <Stat label="Page starts" value={String(s.reliability.boots)} />
             <Stat label="Updates taken" value={String(s.reliability.updates)} />
             <Stat
-              label="Running build"
+              label="Build"
               value={s.status.build ?? "–"}
               note={`open ${longMs(s.status.pageUptimeMs)}`}
             />
             <Stat
-              label="Screens reporting"
+              label="Screens"
               value={String(s.status.devices.length)}
               note={s.status.devices.join(", ") || undefined}
             />
           </div>
-
           {s.reliability.recentUpdates.length ? (
             <div className="mt-6 rounded-sm border border-border bg-cream p-5">
               <div className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-ink/50">
-                Recent updates
+                Updates
               </div>
               <ul className="mt-3 space-y-1.5">
                 {s.reliability.recentUpdates.map((u) => (
-                  <li key={u.at} className="font-body text-sm text-ink/75">
+                  <li key={u.at} className="font-body text-sm tabular-nums text-ink/75">
                     {clock(u.at)}, {u.from ?? "unknown"} to{" "}
                     <span className="font-semibold text-forest">{u.to ?? "unknown"}</span>
                   </li>
@@ -432,12 +350,11 @@ export default async function KioskDataPage() {
           ) : null}
         </Section>
 
-        <p className="mt-14 border-t border-border pt-5 font-body text-xs leading-relaxed text-ink/50">
-          Nothing on this page describes a person. The kiosk stores no IP
-          address, no user agent and no cookie, and a visitor is never followed
-          from one session to the next. Tracking began{" "}
-          {s.uptime.trackingSince ? clock(s.uptime.trackingSince) : "when the first screen reported"}.
-        </p>
+        {s.uptime.trackingSince ? (
+          <p className="mt-14 border-t border-border pt-5 font-body text-xs tabular-nums text-ink/50">
+            Since {clock(s.uptime.trackingSince)}
+          </p>
+        ) : null}
       </div>
     </main>
   );

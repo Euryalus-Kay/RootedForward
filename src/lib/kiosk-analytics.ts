@@ -172,6 +172,30 @@ function quantile(sorted: number[], q: number): number | null {
   return next === undefined ? sorted[base] : sorted[base] + rest * (next - sorted[base]);
 }
 
+type PageResult = { data: unknown; error: { code?: string; message?: string } | null };
+
+/** PostgREST answers at most 1000 rows to any single request, whatever
+ *  .limit() asks for, and says nothing about it. Found the hard way: a
+ *  query for 20,000 events came back with exactly 1,000. This pages by
+ *  range until a short page arrives or the cap is reached. Every caller
+ *  orders on a unique column last, so pages cannot overlap or skip. */
+async function fetchAll<T>(
+  page: (from: number, to: number) => PromiseLike<PageResult>,
+  cap: number
+): Promise<{ data: T[]; error: PageResult["error"] }> {
+  const PAGE = 1000;
+  const out: T[] = [];
+  for (let from = 0; from < cap; from += PAGE) {
+    const to = Math.min(from + PAGE, cap) - 1;
+    const { data, error } = await page(from, to);
+    if (error) return { data: out, error };
+    const rows = (Array.isArray(data) ? data : []) as T[];
+    out.push(...rows);
+    if (rows.length < to - from + 1) break;
+  }
+  return { data: out, error: null };
+}
+
 async function countIn(
   supabase: SupabaseClient,
   table: string,
@@ -205,12 +229,17 @@ export async function getKioskStats(): Promise<KioskStats> {
   const monthAgo = new Date(now - 30 * DAY_MS).toISOString();
 
   /* ---- sessions in the last 30 days, the rows every figure rests on ---- */
-  const { data: sessionRows, error: sessionErr } = await supabase
-    .from("kiosk_sessions")
-    .select("started_at, ended_at, duration_ms, detail_opens, taps, details, end_reason, build, device_id")
-    .gte("started_at", monthAgo)
-    .order("started_at", { ascending: false })
-    .limit(10000);
+  const { data: sessionRows, error: sessionErr } = await fetchAll<SessionRow>(
+    (from, to) =>
+      supabase
+        .from("kiosk_sessions")
+        .select("started_at, ended_at, duration_ms, detail_opens, taps, details, end_reason, build, device_id")
+        .gte("started_at", monthAgo)
+        .order("started_at", { ascending: false })
+        .order("id", { ascending: true })
+        .range(from, to),
+    10000
+  );
 
   if (sessionErr) {
     if (isMissingTable(sessionErr)) return emptyStats({ migrationPending: true });
@@ -226,13 +255,18 @@ export async function getKioskStats(): Promise<KioskStats> {
     .order("at", { ascending: false })
     .limit(1);
 
-  const { data: beatRows } = await supabase
-    .from("kiosk_events")
-    .select("at")
-    .eq("type", "heartbeat")
-    .gte("at", weekAgo)
-    .order("at", { ascending: true })
-    .limit(12000);
+  const { data: beatRows } = await fetchAll<{ at: string }>(
+    (from, to) =>
+      supabase
+        .from("kiosk_events")
+        .select("at")
+        .eq("type", "heartbeat")
+        .gte("at", weekAgo)
+        .order("at", { ascending: true })
+        .order("id", { ascending: true })
+        .range(from, to),
+    12000
+  );
 
   const { data: firstPingRows } = await supabase
     .from("kiosk_events")
@@ -540,34 +574,44 @@ export async function getKioskDay(day: string): Promise<KioskDay> {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  const { data: events, error } = await supabase
-    .from("kiosk_events")
-    .select("id, session_id, at, seq, type, label, x, y, meta")
-    .gte("at", startIso)
-    .lt("at", endIso)
-    .order("at", { ascending: true })
-    .order("seq", { ascending: true })
-    .limit(REPLAY_EVENT_CAP);
+  const { data: events, error } = await fetchAll<KioskEvent>(
+    (from, to) =>
+      supabase
+        .from("kiosk_events")
+        .select("id, session_id, at, seq, type, label, x, y, meta")
+        .gte("at", startIso)
+        .lt("at", endIso)
+        .order("at", { ascending: true })
+        .order("seq", { ascending: true })
+        .order("id", { ascending: true })
+        .range(from, to),
+    REPLAY_EVENT_CAP
+  );
 
   if (error) {
     if (isMissingTable(error)) return { ...base, migrationPending: true };
     return { ...base, error: error.message };
   }
 
-  const { data: sessions } = await supabase
-    .from("kiosk_sessions")
-    .select("session_id, started_at, ended_at, duration_ms, detail_opens, taps, end_reason")
-    .gte("started_at", startIso)
-    .lt("started_at", endIso)
-    .order("started_at", { ascending: true })
-    .limit(2000);
+  const { data: sessions } = await fetchAll<KioskDay["sessions"][number]>(
+    (from, to) =>
+      supabase
+        .from("kiosk_sessions")
+        .select("session_id, started_at, ended_at, duration_ms, detail_opens, taps, end_reason")
+        .gte("started_at", startIso)
+        .lt("started_at", endIso)
+        .order("started_at", { ascending: true })
+        .order("id", { ascending: true })
+        .range(from, to),
+    2000
+  );
 
   return {
     ...base,
     available: true,
-    events: (events ?? []) as KioskEvent[],
-    sessions: (sessions ?? []) as KioskDay["sessions"],
-    truncated: (events?.length ?? 0) >= REPLAY_EVENT_CAP,
+    events,
+    sessions,
+    truncated: events.length >= REPLAY_EVENT_CAP,
   };
 }
 
@@ -578,12 +622,17 @@ export async function getKioskDays(limitDays = 60): Promise<{ day: string; sessi
     auth: { persistSession: false, autoRefreshToken: false },
   });
   const since = new Date(Date.now() - limitDays * DAY_MS).toISOString();
-  const { data } = await supabase
-    .from("kiosk_sessions")
-    .select("started_at")
-    .gte("started_at", since)
-    .order("started_at", { ascending: false })
-    .limit(20000);
+  const { data } = await fetchAll<{ started_at: string }>(
+    (from, to) =>
+      supabase
+        .from("kiosk_sessions")
+        .select("started_at")
+        .gte("started_at", since)
+        .order("started_at", { ascending: false })
+        .order("id", { ascending: true })
+        .range(from, to),
+    20000
+  );
   const counts = new Map<string, number>();
   for (const row of data ?? []) {
     const d = chicagoDay(row.started_at as string);
