@@ -393,14 +393,17 @@ export default function WalkExperience({
             </span>
           )}
         </span>
-        <span className="inline-flex shrink-0 items-center gap-1 font-body text-[11px] tabular-nums text-ink/70">
-          {/* narration length, not walking time */}
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-            <path d="M1.5 3.5v3h1.8L6 8.6V1.4L3.3 3.5H1.5Z" fill="currentColor" fillOpacity="0.7" />
-            <path d="M7.4 3.4a2.4 2.4 0 0 1 0 3.2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-          </svg>
-          {formatClock(stop.audioSeconds)}
-        </span>
+        {/* narration length, not walking time; a stop whose recording
+            is still to come shows no clock rather than 0:00 */}
+        {stop.audioSrc ? (
+          <span className="inline-flex shrink-0 items-center gap-1 font-body text-[11px] tabular-nums text-ink/70">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M1.5 3.5v3h1.8L6 8.6V1.4L3.3 3.5H1.5Z" fill="currentColor" fillOpacity="0.7" />
+              <path d="M7.4 3.4a2.4 2.4 0 0 1 0 3.2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+            </svg>
+            {formatClock(stop.audioSeconds)}
+          </span>
+        ) : null}
       </button>
     </li>
   );
@@ -457,7 +460,13 @@ export default function WalkExperience({
             You
           </span>
           <span className="ml-auto font-display text-[11px] italic text-ink/50">
-            Base map: USGS survey, 1929
+            {/* the sheet's year is in its file name (map-base-1929.jpg,
+                map-base-1947.jpg, map-base-1958.jpg), so the legend
+                follows the bundle instead of naming Hyde Park's sheet
+                on every city */}
+            {`Base map: USGS survey${
+              map.baseMapSrc.match(/(\d{4})/) ? `, ${map.baseMapSrc.match(/(\d{4})/)?.[1]}` : ""
+            }`}
           </span>
         </div>
       </div>

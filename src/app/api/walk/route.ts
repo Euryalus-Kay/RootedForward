@@ -45,6 +45,16 @@ function contentVersion(payload: unknown): string {
   return `${s.length.toString(36)}-${h.toString(36)}`;
 }
 
+/** A walk joins the app the day every stop has narration. The admin
+ *  editor already refuses a stop without audio, and the app's stop
+ *  pages are built around the recording, so a walk still being
+ *  recorded (Dallas, September 2026) is served on the site, where the
+ *  written stops stand on their own, and held back from here until
+ *  scripts/walk-tts.mjs has run for it. */
+function isNarrated(bundle: WalkTourBundle): boolean {
+  return bundle.tour.stops.every((s) => s.audioSrc.length > 0);
+}
+
 /** The catalogue every payload carries, so the app can list the walks
  *  it is not currently holding and fetch one on demand. */
 function tourIndex(bundles: WalkTourBundle[]) {
@@ -97,10 +107,13 @@ function buildPayload(bundle: WalkTourBundle, tours: TourIndex) {
 }
 
 /** The walks a phone may see. The site can show a walk the app must
- *  not, while its words are still being edited, so the index and the
- *  lookups both read this rather than the full set. */
+ *  not, while its words are still being edited (APP_HIDDEN_SLUGS) or
+ *  before its narration is recorded (isNarrated), so the index and
+ *  the lookups both read this rather than the full set. */
 async function appBundles() {
-  return (await loadWalkBundles()).filter((b) => !APP_HIDDEN_SLUGS.includes(b.slug));
+  return (await loadWalkBundles()).filter(
+    (b) => !APP_HIDDEN_SLUGS.includes(b.slug) && isNarrated(b)
+  );
 }
 
 /** exported so the iOS snapshot exporter writes the same bytes the

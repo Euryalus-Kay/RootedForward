@@ -39,6 +39,10 @@ const TOURS = {
     data: "src/lib/tours/west-harlem-walk.ts",
     out: "public/media/west-harlem-walk/audio",
   },
+  dallas: {
+    data: "src/lib/tours/dallas-walk.ts",
+    out: "public/media/dallas-walk/audio",
+  },
 };
 function argEarly(name, def = null) {
   const i = process.argv.indexOf(`--${name}`);
@@ -76,7 +80,7 @@ if (!key) {
 
 // A guide walking beside you, not a documentary narrator.
 // The city, so the base read does not call Harlem a Chicago neighborhood.
-const CITY = { "hyde-park": "Chicago", "jackson-park": "Chicago", harlem: "New York", "west-harlem": "New York" }[tourName];
+const CITY = { "hyde-park": "Chicago", "jackson-park": "Chicago", harlem: "New York", "west-harlem": "New York", dallas: "Dallas" }[tourName];
 const BASE_INSTRUCTIONS =
   `You are a friendly, knowledgeable local guide leading a self-paced walking tour of a ${CITY} neighborhood, speaking to one listener through their headphones. ` +
   "Warm, unhurried, conversational, like showing a friend around a place you love. Natural pauses between sentences; a slightly longer, easy breath between paragraphs. " +
@@ -130,6 +134,14 @@ const TONE_SETS = {
     4: "The most careful stop. Have the listener turn around, then name both sides plainly. Munnecke's advice is an instruction being quoted back, slow. The 1,626 families are read slowly. The two neighbors disagreeing in the Guardian get equal weight, two people arguing about how to get a better home. Read the cooperative figures like a clerk, 750 and 21 and 3,000 and 84, each number clean. The twenty percent sentence is level, no editorial. The public housing officials' words are read as their words. A small, dry beat on Eggers and Higgins drawing the gym. Warm at last for Antonia Pantoja in her living room, and for Sarah Martin, who is coming back.",
     5: "Under the elevated, so the voice can be a little brighter and closer to the street. Enjoy the stable and the milk horses and the doomed headline. Read Abbott's caption like a caption, item by item, and the list of what the valley was is flat and complete. Then a planner's evenness for the seventeen acres and the community board's plan, two proposals side by side. The court decision is read as a decision. The dollar figures in the agreement are read cleanly and the caution after them is part of the sentence, not an aside. Slow for Hilda Muentes and Luisa Henriquez, and let the last sentence about the different building sixteen blocks north sit.",
     6: "The finale, on the river, and after five stops of institutions this one belongs to residents. Open easy, glad the walk ends somewhere pleasant. The hotel and the motel are named plainly. Real pleasure that Sarah Martin and Joan Levine turn up here, connecting the walk back to the fourth stop. Gentle on the workshop photograph and the sculptures. Read the closing sentence about a decision and an answer slowly, with a beat before it, and end warm on the thanks.",
+  },
+  dallas: {
+    1: "The welcome, on a sidewalk in Deep Ellum with a freeway at the end of the street. Settled and glad the listener came, a guide who likes this building. Real pleasure in what the Temple was, the doctors upstairs and the ballroom and the Fisk singers. Level and exact for the railroad becoming a road; the dates are a record being read out. Say what the elevated freeway did plainly, no swell, and let the 2400 block sit. End easy, pointed under the freeway toward downtown.",
+    2: "The hardest stop, and the one to hold steadiest. Open with the arch and the electric lights, a city showing off. Then quiet and controlled for Allen Brooks, in order, courthouse, window, rope, this corner, the postcard. No drama added and no adjectives. The ordinance and the Klan are read the way you read a file, dates and numbers clean. Warm, briefly, for Richard Stewart at the lunch counter. The last paragraph about desegregation by arrangement is level, an observation and not a verdict, and the two markers land quietly.",
+    3: "Three survivors on one corner, so the voice is warmer here. Affection for the school and for what the YMCA was, the sleeping rooms and the proms and Ernie Banks. Read the 1937 form like a clerk, the same flat register as the Harlem forms, and let held for future business sites close its paragraph without a lift. The Arts District arrives as a plan with dates, evenhanded, since the buildings are good and the ground was not empty. Steady for the magnet school and Tasby. End easy, back down Flora Street.",
+    4: "Standing on a park that is standing on a freeway, so open with the ground itself. The 1952 proposal and the right-of-way costs are read plainly. Slow for the two hundred homes and the twenty-five years. Real respect for Little Mexico and Pike Park, which the listener cannot see from here. The park's money is read cleanly, each figure its own beat, and the sentence about who it connects is a fact, not a complaint. End with easy momentum across the frontage road.",
+    5: "The prettiest stop and the coldest form. Let the houses register first, the porches and the turned wood. Then the appraiser, flat, best negro streets and limited and down, and let the listener hear the gap between the street and the form. The expressway paragraph is Marsha Prior's own words and gets read as hers. The TIF and Uptown are a record, ninety-five to ninety-five, no editorial. We blinked is her line, so give it to her.",
+    6: "The finale, at a cemetery beside six lanes of traffic. Quiet throughout. The acre and the twenty-five dollars, then the road, then ten dollars a grave, each read plainly with a beat after. Real respect for Mamie McKnight and for the archaeologists' count; read 1,157 slowly. Warm for the sculptures and the children's poems. The closing list of dates is read with weight, one clean beat between each, and the thanks is simple.",
   },
   "jackson-park": {
     1: "This is the welcome. Bright but settled, glad the listener showed up. Let the last paragraph slow slightly as the history opens up.",

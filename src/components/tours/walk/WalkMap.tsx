@@ -611,7 +611,7 @@ export default function WalkMap({
         anyone thinking about an optional stop can see the whole path
         instead of a green line leaving the page. On a detour stop it
         is already open, so the button steps aside. */}
-    {!activeIsDetour && (
+    {!activeIsDetour && stops.some((s) => s.optional) && (
       <button
         type="button"
         onClick={() => setShowDetours((v) => !v)}

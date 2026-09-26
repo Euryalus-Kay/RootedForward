@@ -44,6 +44,13 @@ export const TOURS = {
     introExport: "WEST_HARLEM_INTRO",
     out: "docs/tour-text/west-harlem-walk.md",
   },
+  dallas: {
+    data: "src/lib/tours/dallas-walk.ts",
+    tourExport: "DALLAS_WALK",
+    intro: "src/components/tours/walk/DallasIntro.tsx",
+    introExport: "DALLAS_INTRO",
+    out: "docs/tour-text/dallas-walk.md",
+  },
 };
 
 function arg(name, def = null) {
