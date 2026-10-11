@@ -8,8 +8,8 @@
 /*                   Chicago, 1940, from                               */
 /*                   public/exhibit-data/holc-chicago.geojson, over    */
 /*                   TIGER arterials, with the lake from TIGER water.  */
-/*                   No labels. It fades into the paper at the top so  */
-/*                   the name and the mission can sit above it.        */
+/*                   No labels. It sits under a forest block that      */
+/*                   holds the name and the mission.                   */
 /*                                                                     */
 /*    route-map.svg  the Walk Hyde Park route, as a small picture      */
 /*                   beside the paragraph about the tours. One label   */
@@ -159,21 +159,12 @@ export const COVER_MAP = { widthIn: 3.8125, heightIn: 4.7 };
     }
   }
 
-  /* The fade. Solid paper down to the first stop, because the last
-     lines of the mission sit over that strip, then clear by the
-     second, so the north end of the city dissolves into the page. */
-  const FADE_SOLID = 0.13;
-  const FADE_TO = 0.4;
+  /* No fade. The cover sets this under a forest block that holds the
+     name, so the map starts at a hard edge (owner asked for more
+     color on the cover, October 2026). The block hides the top of
+     the sheet, about the first two thirds of an inch. */
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${proj.W} ${proj.H}" width="${proj.W}" height="${proj.H}">
-  <defs>
-    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="${CREAM}" stop-opacity="1"/>
-      <stop offset="${FADE_SOLID}" stop-color="${CREAM}" stop-opacity="1"/>
-      <stop offset="${((FADE_SOLID + FADE_TO) / 2).toFixed(3)}" stop-color="${CREAM}" stop-opacity="0.6"/>
-      <stop offset="${FADE_TO}" stop-color="${CREAM}" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
   <rect width="${proj.W}" height="${proj.H}" fill="${CREAM}"/>
   <g stroke="${mix(INK, CREAM, 0.2)}" stroke-width="0.4" fill="none" stroke-linecap="round">${streets}</g>
   <g fill-rule="evenodd" stroke="${CREAM}" stroke-width="0.4" stroke-linejoin="round">
@@ -183,7 +174,6 @@ export const COVER_MAP = { widthIn: 3.8125, heightIn: 4.7 };
     <g fill="${GRADE.D}">${byGrade.D}</g>
   </g>
   <g fill="${WATER}" stroke="${mix(INK_LIGHT, WATER, 0.45)}" stroke-width="0.5">${lake}</g>
-  <rect width="${proj.W}" height="${proj.H}" fill="url(#fade)"/>
 </svg>`;
   writeFileSync(join(OUT, "cover-map.svg"), svg);
   console.log("cover-map.svg  ", proj.W, "x", proj.H, "units,", drawn, "graded areas in frame",

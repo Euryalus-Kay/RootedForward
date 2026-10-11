@@ -93,6 +93,7 @@ const CREAM = "#F5F0E8";
 const FOREST = "#1B3A2D";
 const INK = "#1A1A1A";
 const RUST = "#C45D3E";
+const RUST_LIGHT = "#D4765C"; // rust on a forest ground, per the site
 const BORDER = "#DDD6C8";
 
 /* Opacity is mixed down to a solid here, so "ink at 78 percent" is one
@@ -269,10 +270,18 @@ const MARK = logo.replace(/<svg[^>]*>/, '<svg xmlns="http://www.w3.org/2000/svg"
 const MARK_RINGED = MARK.replace("</svg>", `<circle cx="200" cy="200" r="188" fill="none" stroke="${CREAM}" stroke-width="9"/></svg>`);
 
 /* ---------- pictures ---------- */
-/* The cover map carries a fade, which is transparency, so it is
-   rendered to pixels here with the cream already under it. 600 to the
-   inch, which is past what the press resolves. */
+/* The cover map, rendered to pixels at 600 to the inch, which is past
+   what the press resolves. Its top edge is hidden by the forest block
+   that holds the name. */
 const coverMeta = { widthIn: 3.8125, heightIn: 4.7 };
+/* Where the cover's forest block ends and the map begins, from the
+   top trim. The first proofs had the name on cream with the map
+   fading up into it. The owner asked for more color on the cover, and
+   of five tries (a green frame, a rust band, a rust rule and others)
+   this one held together. It also matches the banner, and the back
+   panel beside it is the same forest, so the fold between them is
+   one color for the top half. */
+const COVER_BLOCK = 4.52;
 const coverPng = join(ASSETS, "cover-map.png");
 execFileSync("rsvg-convert", ["-w", String(Math.round(coverMeta.widthIn * 600)), "-b", CREAM, "-o", coverPng, join(ASSETS, "cover-map.svg")]);
 const COVER_MAP = (await sharp(coverPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
@@ -457,15 +466,15 @@ const html = `<!doctype html>
   .cover h1 {
     margin-top: 0.27in;
     font-weight: 600; font-size: 50pt; line-height: 0.93; letter-spacing: -0.024em;
-    color: ${FOREST};
+    color: ${CREAM};
   }
   .mission {
     margin-top: 0.25in;
     font-family: "RF Serif", Georgia, serif; font-size: 12.6pt; line-height: 1.27; letter-spacing: -0.008em;
-    color: ${INK};
+    color: ${CREAM};
     text-wrap: pretty;
   }
-  .mission .who { color: ${RUST}; }
+  .mission .who { color: ${RUST_LIGHT}; }
   .covercap {
     background: ${CREAM};
     border-radius: 0.025in;
@@ -537,8 +546,10 @@ const html = `<!doctype html>
     </section>
 
     <!-- cover -->
-    <section class="panel cover" data-fit style="${box(OUT_F2 + M, FULL - M * 2, TOP, 4.05)}">
-      ${MARK}
+    <!-- starts a hair inside the back panel's forest, so no seam of paper shows at the fold -->
+    <div class="forest" style="left:${inch(OUT_F2 - 0.04)};width:${inch(FULL + BLEED + 0.04)};top:-${BLEED}in;height:${inch(COVER_BLOCK + BLEED)}"></div>
+    <section class="panel cover" data-fit style="${box(OUT_F2 + M, FULL - M * 2, TOP, H - COVER_BLOCK + 0.2)}">
+      ${MARK_RINGED}
       <h1>Rooted<br>Forward</h1>
       <p class="mission"><span class="who">${MISSION_WHO}</span> ${MISSION_WHAT}</p>
     </section>
