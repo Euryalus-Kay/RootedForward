@@ -63,6 +63,14 @@ export const QR_LINKS: Record<string, QrLink> = {
     printedOn:
       "The Ground Keeps Moving exhibition, sheet 4 of the 36x48 boards and the 33x81 retractable banners, built August 2026",
   },
+
+  /* The tri-fold brochure. Built by print/brochure/build-brochure.mjs.
+     It is about the whole organization rather than one tour, so the
+     code on its back panel opens the home page on every phone. */
+  brochure: {
+    to: SITE,
+    printedOn: "Tri-fold brochure, US Letter, back panel, built October 2026",
+  },
 };
 
 /** `/go` with no slug behaves like the banner code. */
