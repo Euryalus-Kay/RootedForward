@@ -71,6 +71,14 @@ export const QR_LINKS: Record<string, QrLink> = {
     to: SITE,
     printedOn: "Tri-fold brochure, US Letter, back panel, built October 2026",
   },
+
+  /* The poster that stands beside the outreach table. Built by
+     print/poster/build-poster.mjs. Like the brochure it is about the
+     whole organization, so it opens the home page on every phone. */
+  poster: {
+    to: SITE,
+    printedOn: "20 x 30 inch poster for the outreach table, built October 2026",
+  },
 };
 
 /** `/go` with no slug behaves like the banner code. */

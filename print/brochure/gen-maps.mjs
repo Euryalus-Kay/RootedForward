@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------ */
 /*  Maps for the tri-fold brochure.                                    */
 /*                                                                     */
-/*  Three SVGs, all drawn from data already in this repo, in the same  */
+/*  Four SVGs, all drawn from data already in this repo, in the same   */
 /*  way print/exhibit/gen-maps.mjs draws the exhibition plates.        */
 /*                                                                     */
 /*    cover-map.svg  the Home Owners' Loan Corporation grades for      */
@@ -27,6 +27,9 @@
 /*                   paper for the graded areas and a faint blush for  */
 /*                   the ones graded D, so the sheet is not flat cream */
 /*                   and the map on the cover carries through.         */
+/*                                                                     */
+/*    poster-map.svg  the grades in full color again, wide, for the    */
+/*                   20 x 30 poster in print/poster.                   */
 /*                                                                     */
 /*  All are drawn at 100 units to the inch at their printed size, so   */
 /*  a stroke of 0.35 is a quarter-point hairline on paper. Land is     */
@@ -358,4 +361,77 @@ export const WASH_MAP = { widthIn: 11.25, heightIn: 4.85 };
   writeFileSync(join(OUT, "inside-wash.svg"), svg);
   writeFileSync(join(OUT, "inside-wash.json"), JSON.stringify(WASH_MAP, null, 2) + "\n");
   console.log("inside-wash.svg", proj.W, "x", proj.H, "units,", drawn, "graded areas in frame");
+}
+
+/* ================================================================== */
+/*  4. The poster                                                      */
+/* ================================================================== */
+/* For print/poster/build-poster.mjs, a 20 x 30 inch sheet. The same
+   grades as the cover in full color, as a wide band of the city from
+   Oak Park to the lake, fading into the paper at the top. Strokes are
+   heavier than the cover's, since this is read from across a table. */
+export const POSTER_MAP = { widthIn: 20, heightIn: 9.4 };
+{
+  const proj = makeProj({ lngMin: -87.925, latMax: 41.915, ...POSTER_MAP, inPerLat: 70 });
+  const frame = proj.frame;
+  const inside = inFrame(frame, 0.01);
+
+  let streets = "";
+  for (const line of roads.arterials) {
+    for (const run of clipRuns(line, inside)) streets += `<polyline points="${polyline(run, proj)}"/>`;
+  }
+
+  const bands = new Map();
+  for (const poly of water.polys) {
+    if (!/^Lk Michigan$/.test(poly.name || "")) continue;
+    for (const ring of poly.rings) {
+      for (const [lng, lat] of ring) {
+        if (lng < frame.lngMin || lat < frame.latMin - 0.02 || lat > frame.latMax + 0.02) continue;
+        const key = Math.round(lat / 0.0012);
+        if (!bands.has(key) || lng < bands.get(key)[0]) bands.set(key, [lng, lat]);
+      }
+    }
+  }
+  const shorePts = [...bands.values()].sort((a, b) => b[1] - a[1]).map((p) => proj.pt(p));
+  const lake =
+    `<path d="M${proj.W + 5} -5 L${shorePts[0][0]} -5 ` +
+    shorePts.map(([x, y]) => `L${x} ${y}`).join(" ") +
+    ` L${shorePts[shorePts.length - 1][0]} ${proj.H + 5} L${proj.W + 5} ${proj.H + 5} Z"/>`;
+
+  const byGrade = { A: "", B: "", C: "", D: "" };
+  let drawn = 0;
+  for (const f of holc.features) {
+    const g = f.properties.grade;
+    if (!byGrade.hasOwnProperty(g)) continue;
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const poly of polys) {
+      if (!poly.some((r) => bboxTouches(r, frame))) continue;
+      byGrade[g] += `<path d="${ringPath(poly, proj)}"/>`;
+      drawn++;
+    }
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${proj.W} ${proj.H}" width="${proj.W}" height="${proj.H}">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${CREAM}" stop-opacity="1"/>
+      <stop offset="0.05" stop-color="${CREAM}" stop-opacity="1"/>
+      <stop offset="0.2" stop-color="${CREAM}" stop-opacity="0.55"/>
+      <stop offset="0.36" stop-color="${CREAM}" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="${proj.W}" height="${proj.H}" fill="${CREAM}"/>
+  <g stroke="${mix(INK, CREAM, 0.2)}" stroke-width="0.9" fill="none" stroke-linecap="round">${streets}</g>
+  <g fill-rule="evenodd" stroke="${CREAM}" stroke-width="1" stroke-linejoin="round">
+    <g fill="${GRADE.A}">${byGrade.A}</g>
+    <g fill="${GRADE.B}">${byGrade.B}</g>
+    <g fill="${GRADE.C}">${byGrade.C}</g>
+    <g fill="${GRADE.D}">${byGrade.D}</g>
+  </g>
+  <g fill="${WATER}" stroke="${mix(INK_LIGHT, WATER, 0.45)}" stroke-width="1.2">${lake}</g>
+  <rect width="${proj.W}" height="${proj.H}" fill="url(#fade)"/>
+</svg>`;
+  writeFileSync(join(OUT, "poster-map.svg"), svg);
+  writeFileSync(join(OUT, "poster-map.json"), JSON.stringify(POSTER_MAP, null, 2) + "\n");
+  console.log("poster-map.svg ", proj.W, "x", proj.H, "units,", drawn, "graded areas in frame");
 }
