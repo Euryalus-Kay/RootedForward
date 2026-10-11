@@ -1,11 +1,6 @@
 {
-  "widthIn": 7.0875,
-  "heightIn": 4.175,
-  "frame": {
-    "lngMin": -87.6172,
-    "lngMax": -87.53928126279745,
-    "latMin": 41.774378688524585,
-    "latMax": 41.8086
-  },
-  "halfMileIn": 0.8834
+  "widthIn": 2.9875,
+  "heightIn": 2.65,
+  "stops": 16,
+  "detours": 3
 }

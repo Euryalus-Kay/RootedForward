@@ -11,12 +11,16 @@
 /*                   No labels. It fades into the paper at the top so  */
 /*                   the name and the mission can sit above it.        */
 /*                                                                     */
-/*    route-map.svg  the Walk Hyde Park route. The route, the detour   */
-/*                   and every stop are read straight out of           */
-/*                   src/lib/tours/hyde-park-walk.ts, so the numbers   */
-/*                   on the brochure cannot drift from the tour. (The  */
-/*                   exhibition's route plate hard-codes them and is   */
-/*                   one renumbering behind.)                          */
+/*    route-map.svg  the Walk Hyde Park route, as a small picture      */
+/*                   beside the paragraph about the tours. No labels   */
+/*                   and no stop numbers, since the brochure is about  */
+/*                   the whole organization and this is one tour of    */
+/*                   several to come. The route, the detour and every  */
+/*                   stop are read straight out of                     */
+/*                   src/lib/tours/hyde-park-walk.ts, so the picture   */
+/*                   cannot drift from the tour. (The first proof of   */
+/*                   this brochure ran the map across two panels with  */
+/*                   a numbered key. See commit fd7a1e3.)              */
 /*                                                                     */
 /*  Both are drawn at 100 units to the inch at their printed size, so  */
 /*  a stroke of 0.35 is a quarter-point hairline on paper. Land is     */
@@ -75,7 +79,6 @@ function makeProj({ lngMin, latMax, widthIn, heightIn, inPerLat }) {
   ];
   return { pt, W: +(widthIn * 100).toFixed(2), H: +(heightIn * 100).toFixed(2), frame: { lngMin, lngMax, latMin, latMax }, inPerLat, inPerLng };
 }
-const frame0 = (proj) => proj.frame;
 const inFrame = (f, m) => ([lng, lat]) =>
   lng >= f.lngMin - m && lng <= f.lngMax + m && lat >= f.latMin - m && lat <= f.latMax + m;
 const polyline = (points, proj) => points.map((p) => proj.pt(p).join(",")).join(" ");
@@ -181,15 +184,9 @@ export const COVER_MAP = { widthIn: 3.8125, heightIn: 4.7 };
 /* ================================================================== */
 /*  2. The route                                                       */
 /* ================================================================== */
-export const ROUTE_MAP = { widthIn: 7.0875, heightIn: 4.175 };
+export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 2.65 };
 {
-  /* The frame is chosen for the fold. The brochure creases 3.3375in
-     from this map's left edge, and at this scale and offset that is
-     longitude -87.5805, on the lakefront east of stops 1 and 2, where
-     it crosses parkland and shore and no stop, route or label. */
-  const proj = makeProj({ lngMin: -87.6172, latMax: 41.8086, ...ROUTE_MAP, inPerLat: 122 });
-  const FOLD_IN = 3.3375;
-  const foldLng = frame0(proj).lngMin + FOLD_IN / proj.inPerLng;
+  const proj = makeProj({ lngMin: -87.6164, latMax: 41.8048, ...ROUTE_MAP, inPerLat: 98 });
   const frame = proj.frame;
   const inside = inFrame(frame, 0.004);
 
@@ -208,10 +205,14 @@ export const ROUTE_MAP = { widthIn: 7.0875, heightIn: 4.175 };
   for (const m of src.matchAll(stopRe)) {
     stops.push({ number: +m[1], title: m[2], lat: +m[3], lng: +m[4], optional: Boolean(m[5]) });
   }
-  if (stops.length !== 16 || stops.some((s, i) => s.number !== i + 1)) {
-    throw new Error(`expected stops 1 to 16 in order, read ${stops.map((s) => s.number).join(",")}`);
+  if (stops.length < 10 || stops.some((s, i) => s.number !== i + 1)) {
+    throw new Error(`expected the stops in order, read ${stops.map((s) => s.number).join(",")}`);
   }
   if (route.length < 10 || detour.length < 10) throw new Error("route geometry looks wrong");
+  for (const s of stops) {
+    const [x, y] = proj.pt([s.lng, s.lat]);
+    if (x < 12 || x > proj.W - 12 || y < 12 || y > proj.H - 12) throw new Error(`stop ${s.number} falls outside the picture`);
+  }
 
   let locals = "";
   for (const line of roads.locals) {
@@ -235,45 +236,6 @@ export const ROUTE_MAP = { widthIn: 7.0875, heightIn: 4.175 };
     if (rings.length) lake += `<path d="${ringPath(rings, proj)}"/>`;
   }
 
-  /* the Illinois Central embankment, along its alignment */
-  const rail = [
-    [41.8100,-87.5905],[41.8082,-87.5902],[41.8030,-87.5893],[41.7995,-87.5878],[41.7960,-87.5872],
-    [41.7930,-87.5869],[41.7900,-87.5867],[41.7870,-87.5866],[41.7838,-87.5872],
-    [41.7800,-87.5893],[41.7762,-87.5915],[41.7738,-87.5929],
-  ].map(([lat, lng]) => [lng, lat]);
-  let ticks = "";
-  for (let i = 0; i < rail.length - 1; i++) {
-    const [x0, y0] = proj.pt(rail[i]);
-    const [x1, y1] = proj.pt(rail[i + 1]);
-    const seg = Math.hypot(x1 - x0, y1 - y0);
-    const n = Math.floor(seg / 5.2);
-    for (let j = 1; j <= n; j++) {
-      const t = j / (n + 1);
-      const x = x0 + (x1 - x0) * t, y = y0 + (y1 - y0) * t;
-      const dx = (y1 - y0) / seg, dy = -(x1 - x0) / seg;
-      ticks += `<line x1="${(x - dx * 1.5).toFixed(2)}" y1="${(y - dy * 1.5).toFixed(2)}" x2="${(x + dx * 1.5).toFixed(2)}" y2="${(y + dy * 1.5).toFixed(2)}"/>`;
-    }
-  }
-
-  /* Four stops sit closer together on the ground than two markers can
-     at this scale, so each is moved a few hundredths of an inch off
-     its true spot, away from its neighbour. Units are 1/100 inch. */
-  const NUDGE = { 1: [2.5, -4.6], 2: [2.5, 4.6], 3: [5.4, 3.2], 16: [-5.4, -3.2] };
-  const R = 7.4;
-  let stopMarks = "";
-  for (const s of stops) {
-    const [px, py] = proj.pt([s.lng, s.lat]);
-    const [nx, ny] = NUDGE[s.number] || [0, 0];
-    const x = +(px + nx).toFixed(2), y = +(py + ny).toFixed(2);
-    const two = s.number > 9;
-    const text = `<text x="${x}" y="${(y + 3.05).toFixed(2)}" text-anchor="middle" font-size="${two ? 8.2 : 8.8}" font-weight="700" ${two ? 'letter-spacing="-0.3"' : ""} class="num"`;
-    if (s.optional) {
-      stopMarks += `<circle cx="${x}" cy="${y}" r="${R - 0.55}" fill="${CREAM}" stroke="${RUST}" stroke-width="1.1"/>${text} fill="${RUST}">${s.number}</text>`;
-    } else {
-      stopMarks += `<circle cx="${x}" cy="${y}" r="${R}" fill="${RUST}" stroke="${CREAM}" stroke-width="0.7"/>${text} fill="#FFFFFF">${s.number}</text>`;
-    }
-  }
-
   /* The spur is walked out and back along some of the same streets.
      Drawn as one polyline those legs lay their dashes over each other
      and read as a solid line, so each leg is drawn once. */
@@ -288,63 +250,26 @@ export const ROUTE_MAP = { widthIn: 7.0875, heightIn: 4.175 };
     detourLegs += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}"/>`;
   }
 
-  const foldX = FOLD_IN * 100;
-  for (const st of stops) {
-    const [px] = proj.pt([st.lng, st.lat]);
-    const x = px + (NUDGE[st.number]?.[0] ?? 0);
-    if (Math.abs(x - foldX) < R + 10) throw new Error(`stop ${st.number} is ${((x - foldX) / 100).toFixed(2)}in from the fold`);
+  /* Dots, not numbers. Filled for the main line, open for a detour. */
+  let dots = "";
+  for (const s of stops) {
+    const [x, y] = proj.pt([s.lng, s.lat]);
+    dots += s.optional
+      ? `<circle cx="${x}" cy="${y}" r="2.9" fill="${CREAM}" stroke="${RUST}" stroke-width="0.95"/>`
+      : `<circle cx="${x}" cy="${y}" r="3.3" fill="${RUST}" stroke="${CREAM}" stroke-width="0.6"/>`;
   }
-  for (const [lng] of [...route, ...detour]) {
-    if (lng > foldLng - 0.0008) throw new Error("the route reaches the fold");
-  }
-
-  const LBL = mix(INK, CREAM, 0.62);
-  const label = (lng, lat, txt, size, opts = "") => {
-    const [x, y] = proj.pt([lng, lat]);
-    return `<text class="lbl" x="${x}" y="${y}" font-size="${size}" ${opts}>${txt}</text>`;
-  };
-  const vlabel = (lng, lat, txt, size, opts = "") => {
-    const [x, y] = proj.pt([lng, lat]);
-    return `<text class="lbl" transform="translate(${x} ${y}) rotate(-90)" font-size="${size}" text-anchor="middle" ${opts}>${txt}</text>`;
-  };
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${proj.W} ${proj.H}" width="${proj.W}" height="${proj.H}">
-  <style>
-    .lbl { font-family: "RF Narrow", "Archivo Narrow", "Arial Narrow", sans-serif; fill: ${LBL}; letter-spacing: 0.14em; font-weight: 500; }
-    .num { font-family: "RF Sans", "DM Sans", Helvetica, Arial, sans-serif; }
-  </style>
   <rect width="${proj.W}" height="${proj.H}" fill="${CREAM}"/>
   <g fill="${CREAM_DARK}">${parkFill}</g>
-  <g stroke="${mix(INK, CREAM, 0.13)}" stroke-width="0.32" fill="none" stroke-linecap="round">${locals}</g>
-  <g stroke="${mix(INK, CREAM, 0.3)}" stroke-width="0.55" fill="none" stroke-linecap="round">${arterials}</g>
-  <g fill="${WATER}" stroke="${mix(INK_LIGHT, WATER, 0.45)}" stroke-width="0.5">${lake}</g>
-
-  <polyline points="${polyline(rail, proj)}" fill="none" stroke="${mix(INK, CREAM, 0.5)}" stroke-width="0.8"/>
-  <g stroke="${mix(INK, CREAM, 0.5)}" stroke-width="0.5">${ticks}</g>
-
-  ${label(-87.6005, 41.8052, "KENWOOD", 7.6)}
-  ${label(-87.5961, 41.7973, "HYDE PARK", 9.6, 'font-weight="700" letter-spacing="0.2em" fill="' + mix(INK, CREAM, 0.8) + '"')}
-  ${label(-87.5958, 41.7782, "WOODLAWN", 7.6)}
-  ${label(-87.6150, 41.7986, "WASHINGTON", 7.6)}
-  ${label(-87.6150, 41.79782, "PARK", 7.6)}
-  ${label(-87.5793, 41.7812, "JACKSON PARK", 7.6)}
-  ${label(-87.5998, 41.78617, "MIDWAY PLAISANCE", 6.6)}
-  ${label(-87.5997, 41.7909, "UNIVERSITY OF CHICAGO", 6.6)}
-  ${label(-87.6044, 41.79972, "E 53RD ST", 6.4)}
-  ${label(-87.6002, 41.78082, "E 63RD ST", 6.4)}
-  ${vlabel(-87.6074, 41.7905, "COTTAGE GROVE AVE", 6.4)}
-  ${vlabel(-87.5869, 41.7806, "STONY ISLAND AVE", 6.4)}
-
-  <g fill="none" stroke="${RUST}" stroke-width="1.35" stroke-dasharray="3.6 2.8" stroke-linecap="round">${detourLegs}</g>
-  <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
-  ${stopMarks}
+  <g stroke="${mix(INK, CREAM, 0.12)}" stroke-width="0.28" fill="none" stroke-linecap="round">${locals}</g>
+  <g stroke="${mix(INK, CREAM, 0.28)}" stroke-width="0.45" fill="none" stroke-linecap="round">${arterials}</g>
+  <g fill="${WATER}" stroke="${mix(INK_LIGHT, WATER, 0.45)}" stroke-width="0.4">${lake}</g>
+  <g fill="none" stroke="${RUST}" stroke-width="1" stroke-dasharray="2.6 2.1" stroke-linecap="round">${detourLegs}</g>
+  <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+  ${dots}
 </svg>`;
   writeFileSync(join(OUT, "route-map.svg"), svg);
-  writeFileSync(join(OUT, "stops.json"), JSON.stringify(stops.map(({ number, title, optional }) => ({ number, title, optional })), null, 2) + "\n");
-
-  /* where the brochure's fold and its lake text land, for the layout */
-  const halfMileIn = (0.5 / 69.05) * proj.inPerLat;
-  writeFileSync(join(OUT, "route-map.json"), JSON.stringify({ ...ROUTE_MAP, frame, halfMileIn: +halfMileIn.toFixed(4) }, null, 2) + "\n");
-  console.log("route-map.svg  ", proj.W, "x", proj.H, "units,", stops.length, "stops,",
-    stops.filter((s) => s.optional).map((s) => s.number).join(" ") + " optional,", "half mile =", halfMileIn.toFixed(3) + "in");
+  writeFileSync(join(OUT, "route-map.json"), JSON.stringify({ ...ROUTE_MAP, stops: stops.length, detours: stops.filter((s) => s.optional).length }, null, 2) + "\n");
+  console.log("route-map.svg  ", proj.W, "x", proj.H, "units,", stops.length, "stops,", stops.filter((s) => s.optional).length, "of them detours");
 }
