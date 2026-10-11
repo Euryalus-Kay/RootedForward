@@ -12,7 +12,7 @@
 /*                   the name and the mission can sit above it.        */
 /*                                                                     */
 /*    route-map.svg  the Walk Hyde Park route, as a small picture      */
-/*                   beside the paragraph about the tours. No labels   */
+/*                   beside the paragraph about the tours. One label   */
 /*                   and no stop numbers, since the brochure is about  */
 /*                   the whole organization and this is one tour of    */
 /*                   several to come. The route, the detour and every  */
@@ -256,6 +256,11 @@ export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 2.65 };
     detourLegs += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}"/>`;
   }
 
+  /* The one label, so the picture says where it is (owner, October
+     2026). It sits in the blocks north of 55th Street, between the
+     spur and the leg down Lake Park, in the site's plat-label face. */
+  const hp = proj.pt([-87.5961, 41.7971]);
+
   /* Dots, not numbers. Filled for the main line, open for a detour. */
   let dots = "";
   for (const s of stops) {
@@ -274,6 +279,8 @@ export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 2.65 };
   <g fill="none" stroke="${RUST}" stroke-width="1" stroke-dasharray="2.6 2.1" stroke-linecap="round">${detourLegs}</g>
   <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
   ${dots}
+  <text x="${hp[0]}" y="${hp[1]}" font-family="RF Narrow, Archivo Narrow, Arial Narrow, sans-serif" font-size="7.8" font-weight="700" letter-spacing="0.15em"
+    fill="${mix(INK, CREAM, 0.78)}" stroke="${CREAM}" stroke-width="2.2" stroke-linejoin="round" paint-order="stroke">HYDE PARK</text>
 </svg>`;
   writeFileSync(join(OUT, "route-map.svg"), svg);
   writeFileSync(join(OUT, "route-map.json"), JSON.stringify({ ...ROUTE_MAP, stops: stops.length, detours: stops.filter((s) => s.optional).length }, null, 2) + "\n");

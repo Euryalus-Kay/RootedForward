@@ -113,6 +113,7 @@ const ON_FOREST_SOFT = mix(CREAM, FOREST, 0.62);
 const b64 = (p) => readFileSync(join(SITE, p)).toString("base64");
 const SERIF = b64("print/fonts/source-serif-4-latin-var.woff2");
 const SANS = b64("print/fonts/dm-sans-latin-var.woff2");
+const NARROW = b64("print/fonts/archivo-narrow-latin-var.woff2");
 
 /* ------------------------------------------------------------------ */
 /*  Copy. `said` checks that a sentence is still on the site.          */
@@ -147,19 +148,25 @@ const MISSION_WHO = said("about", "A student-run nonprofit started in Chicago.")
 said("about", "racial inequality in cities across the United States, and works to address it through");
 const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
 
+/* The first two of the About page's four paragraphs. The one on the
+   survey of 140 people is left on the site, since the owner called
+   that number "not super important" here. The last, on students in
+   three cities doing the work, is said by the line and the six
+   portraits below, which he asked to be larger and to carry each
+   person's school (October 2026). */
 const STORY = [
   said("about", "Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next."),
   said("about", "He went looking for why, and found redlining, restrictive covenants, and the urban renewal campaigns that cleared and rearranged these blocks on purpose."),
-  said("about", "He ran a survey at the Obama Presidential Center and talked with more than 140 people about what they had lived through and what they had been taught. The gap was far wider than he expected, including among lifelong Chicagoans and especially among young people."),
-  said("about", "So he built this. Students in three cities do the archival work and run the outreach now, and what comes out of it gets published free."),
 ];
 
 /* Owner's wording (October 2026). No status beside each city, and no
-   "research in progress". We are active in all three. The survey count
-   stays in the story above and is not pulled out into a box.
+   "research in progress". We are active in all three. The line stands
+   on its own, and the portraits get their own heading under it, since
+   as a caption for six faces it did not fit.
    Non-breaking spaces keep "New York" and "Washington, DC" whole when
    the line turns. */
 const ACTIVE = "We are active in Chicago, New York, and Washington, DC.";
+const TEAM_TITLE = "Leadership team";
 
 /* Heroicons outline, the set the home page draws from. The first
    three are the home page's own. The cap, the building and the box
@@ -299,19 +306,20 @@ const PLAZA = await photo("public/media/hyde-park-walk/opc-opening-2026.jpg", 64
 const EXHIBIT = await photo("public/media/look-closer/exhibit-wall.jpg", 160, COLS[2]);
 
 /* The roster, in the order the team page shows it. Real people only,
-   which is that file's own rule. Each portrait carries the name and
-   the city under it, the way the team page does, since a face with
-   nothing under it tells a reader nothing (owner, October 2026). The
-   names go stale when the roster changes, so rebuild before a
+   which is that file's own rule. Each portrait carries the name, then
+   city and school on the team page's own compact line, since a face
+   with nothing under it tells a reader nothing (owner, October 2026).
+   The names go stale when the roster changes, so rebuild before a
    reprint. */
 const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",\n    name: "([^"]+)",[\s\S]*?\n    photo: "(\/media\/team\/[a-z-]+\.jpg)",/g)].map((m) => {
   const order = m[0].match(/\n    order: (\d+),/);
   const city = m[0].match(/\n    city: "([^"]+)",/);
-  if (!city) throw new Error(`${m[2]} has no city in team-constants.ts, and the brochure prints one under every portrait`);
-  return { slug: m[1], name: m[2], city: city[1], photo: m[3], order: order ? +order[1] : 99 };
+  const school = m[0].match(/\n    school: "([^"]+)",/);
+  if (!city || !school) throw new Error(`${m[2]} is missing a city or a school in team-constants.ts, and the brochure prints both under every portrait`);
+  return { slug: m[1], name: m[2], city: city[1], school: school[1], photo: m[3], order: order ? +order[1] : 99 };
 }).sort((a, b) => a.order - b.order);
 if (members.length !== 6) throw new Error(`the brochure lays out six portraits, the roster has ${members.length} with a photo`);
-const FACE_IN = 0.56;
+const FACE_IN = 0.62;
 for (const m of members) {
   const buf = await sharp(join(SITE, "public", m.photo)).resize(Math.round(FACE_IN * 600), Math.round(FACE_IN * 600)).jpeg({ quality: 92, chromaSubsampling: "4:4:4" }).toBuffer();
   m.src = `data:image/jpeg;base64,${buf.toString("base64")}`;
@@ -323,14 +331,6 @@ for (const m of members) {
 
 const inch = (n) => `${+n.toFixed(4)}in`;
 
-/* Given name over family name, for every portrait. Two of the six are
-   too long for one line in a third of the panel, and a mix of one-line
-   and two-line names leaves the cities under them at different
-   heights. The family name never breaks, hyphen or not. */
-const stacked = (name) => {
-  const cut = name.indexOf(" ");
-  return cut < 0 ? name : `${name.slice(0, cut)}<br><i>${name.slice(cut + 1)}</i>`;
-};
 const box = (left, width, top = TOP, bottom = BOTTOM) =>
   `left:${inch(left)};width:${inch(width)};top:${inch(top)};height:${inch(H - top - bottom)}`;
 
@@ -356,6 +356,7 @@ const html = `<!doctype html>
 <style>
   @font-face { font-family: "RF Serif"; src: url(data:font/woff2;base64,${SERIF}) format("woff2"); font-weight: 200 900; }
   @font-face { font-family: "RF Sans"; src: url(data:font/woff2;base64,${SANS}) format("woff2"); font-weight: 100 1000; }
+  @font-face { font-family: "RF Narrow"; src: url(data:font/woff2;base64,${NARROW}) format("woff2"); font-weight: 400 700; }
 
   @page { size: ${W + BLEED * 2}in ${H + BLEED * 2}in; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -398,22 +399,23 @@ const html = `<!doctype html>
   .active {
     border-top: 0.6pt solid ${BORDER};
     padding-top: 0.17in;
-    font-family: "RF Serif", Georgia, serif; font-size: 13.5pt; line-height: 1.18; letter-spacing: -0.008em;
+    font-family: "RF Serif", Georgia, serif; font-size: 14.5pt; line-height: 1.17; letter-spacing: -0.01em;
     color: ${FOREST};
     text-wrap: balance;
   }
+  .team-title { margin-top: 0.21in; font-size: 11.5pt; color: ${INK}; }
   .team {
-    margin-top: 0.19in;
-    display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 0.06in; row-gap: 0.15in;
+    margin-top: 0.14in;
+    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.13in;
   }
   .team img { display: block; width: ${FACE_IN}in; height: ${FACE_IN}in; border-radius: 50%; outline: 0.6pt solid ${BORDER}; }
   .team b {
-    display: block; margin-top: 0.065in;
-    font-family: "RF Serif", Georgia, serif; font-weight: 400; font-size: 8.3pt; line-height: 1.14; letter-spacing: -0.004em;
-    color: ${INK};
+    display: block; margin-top: 0.07in;
+    font-family: "RF Serif", Georgia, serif; font-weight: 400; font-size: 9.4pt; line-height: 1.14; letter-spacing: -0.004em;
+    color: ${INK}; white-space: nowrap;
   }
-  .team b i { font-style: normal; white-space: nowrap; }
-  .team span { display: block; margin-top: 0.018in; font-size: 6.6pt; line-height: 1.3; color: ${BODY}; }
+  .team span { display: block; font-size: 6.5pt; line-height: 1.32; color: ${BODY}; text-wrap: balance; }
+  .team b + span { margin-top: 0.02in; }
 
   /* ---- back ---- */
   .forest { background: ${FOREST}; }
@@ -511,7 +513,8 @@ const html = `<!doctype html>
       <div class="story">${STORY.map((p) => `<p>${p}</p>`).join("")}</div>
       <div class="grow"></div>
       <p class="active">${ACTIVE}</p>
-      <div class="team">${members.map((m) => `<figure><img alt="" src="${m.src}"><b>${stacked(m.name)}</b><span>${m.city}</span></figure>`).join("")}</div>
+      <h3 class="team-title">${TEAM_TITLE}</h3>
+      <div class="team">${members.map((m) => `<figure><img alt="" src="${m.src}"><b>${m.name}</b><span>${m.city}</span><span>${m.school}</span></figure>`).join("")}</div>
     </section>
 
     <!-- back -->
