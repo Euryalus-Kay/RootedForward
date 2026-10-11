@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------ */
 /*  Maps for the tri-fold brochure.                                    */
 /*                                                                     */
-/*  Two SVGs, both drawn from data already in this repo, in the same   */
+/*  Three SVGs, all drawn from data already in this repo, in the same  */
 /*  way print/exhibit/gen-maps.mjs draws the exhibition plates.        */
 /*                                                                     */
 /*    cover-map.svg  the Home Owners' Loan Corporation grades for      */
@@ -22,7 +22,13 @@
 /*                   this brochure ran the map across two panels with  */
 /*                   a numbered key. See commit fd7a1e3.)              */
 /*                                                                     */
-/*  Both are drawn at 100 units to the inch at their printed size, so  */
+/*    inside-wash.svg  the same grades again, pale, as a watermark      */
+/*                   under the lower half of the inside. One tone of   */
+/*                   paper for the graded areas and a faint blush for  */
+/*                   the ones graded D, so the sheet is not flat cream */
+/*                   and the map on the cover carries through.         */
+/*                                                                     */
+/*  All are drawn at 100 units to the inch at their printed size, so   */
 /*  a stroke of 0.35 is a quarter-point hairline on paper. Land is     */
 /*  the brochure's own cream, which means the maps have no edge of     */
 /*  their own and sit in the page instead of on it.                    */
@@ -272,4 +278,77 @@ export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 2.65 };
   writeFileSync(join(OUT, "route-map.svg"), svg);
   writeFileSync(join(OUT, "route-map.json"), JSON.stringify({ ...ROUTE_MAP, stops: stops.length, detours: stops.filter((s) => s.optional).length }, null, 2) + "\n");
   console.log("route-map.svg  ", proj.W, "x", proj.H, "units,", stops.length, "stops,", stops.filter((s) => s.optional).length, "of them detours");
+}
+
+/* ================================================================== */
+/*  3. The wash under the inside                                       */
+/* ================================================================== */
+export const WASH_MAP = { widthIn: 11.25, heightIn: 4.85 };
+{
+  /* A wide band of the city itself, Oak Park to the lake and Chicago
+     Avenue to 47th Street, where nearly every block was graded, so
+     all three panels get the same amount of texture. Wide rather than
+     tall, since it runs across the lower half of the sheet. */
+  const proj = makeProj({ lngMin: -87.875, latMax: 41.906, ...WASH_MAP, inPerLat: 46 });
+  const frame = proj.frame;
+  const inside = inFrame(frame, 0.01);
+
+  let streets = "";
+  for (const line of roads.arterials) {
+    for (const run of clipRuns(line, inside)) streets += `<polyline points="${polyline(run, proj)}"/>`;
+  }
+
+  const bands = new Map();
+  for (const poly of water.polys) {
+    if (!/^Lk Michigan$/.test(poly.name || "")) continue;
+    for (const ring of poly.rings) {
+      for (const [lng, lat] of ring) {
+        if (lng < frame.lngMin || lat < frame.latMin - 0.02 || lat > frame.latMax + 0.02) continue;
+        const key = Math.round(lat / 0.0012);
+        if (!bands.has(key) || lng < bands.get(key)[0]) bands.set(key, [lng, lat]);
+      }
+    }
+  }
+  const shorePts = [...bands.values()].sort((a, b) => b[1] - a[1]).map((p) => proj.pt(p));
+  const lake =
+    `<path d="M${proj.W + 5} -5 L${shorePts[0][0]} -5 ` +
+    shorePts.map(([x, y]) => `L${x} ${y}`).join(" ") +
+    ` L${shorePts[shorePts.length - 1][0]} ${proj.H + 5} L${proj.W + 5} ${proj.H + 5} Z"/>`;
+
+  let graded = "", hazardous = "", drawn = 0;
+  for (const f of holc.features) {
+    const g = f.properties.grade;
+    if (!"ABCD".includes(g)) continue;
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const poly of polys) {
+      if (!poly.some((r) => bboxTouches(r, frame))) continue;
+      if (g === "D") hazardous += `<path d="${ringPath(poly, proj)}"/>`;
+      else graded += `<path d="${ringPath(poly, proj)}"/>`;
+      drawn++;
+    }
+  }
+
+  /* Solid paper at the top, where the picture credits sit, and full
+     strength by the second row of type. */
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${proj.W} ${proj.H}" width="${proj.W}" height="${proj.H}">
+  <defs>
+    <linearGradient id="rise" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${CREAM}" stop-opacity="1"/>
+      <stop offset="0.06" stop-color="${CREAM}" stop-opacity="1"/>
+      <stop offset="0.3" stop-color="${CREAM}" stop-opacity="0.45"/>
+      <stop offset="0.58" stop-color="${CREAM}" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="${proj.W}" height="${proj.H}" fill="${CREAM}"/>
+  <g stroke="${mix(INK, CREAM, 0.07)}" stroke-width="0.4" fill="none" stroke-linecap="round">${streets}</g>
+  <g fill-rule="evenodd" stroke="${CREAM}" stroke-width="0.5" stroke-linejoin="round">
+    <g fill="${CREAM_DARK}">${graded}</g>
+    <g fill="${mix(GRADE.D, CREAM, 0.11)}">${hazardous}</g>
+  </g>
+  <g fill="${mix(WATER, CREAM, 0.42)}">${lake}</g>
+  <rect width="${proj.W}" height="${proj.H}" fill="url(#rise)"/>
+</svg>`;
+  writeFileSync(join(OUT, "inside-wash.svg"), svg);
+  writeFileSync(join(OUT, "inside-wash.json"), JSON.stringify(WASH_MAP, null, 2) + "\n");
+  console.log("inside-wash.svg", proj.W, "x", proj.H, "units,", drawn, "graded areas in frame");
 }

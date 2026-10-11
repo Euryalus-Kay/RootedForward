@@ -162,7 +162,7 @@ const STORY = [
 const ACTIVE = "We are active in Chicago, New York, and Washington, DC.";
 
 /* Heroicons outline, the set the home page draws from. The first
-   three are the home page's own. The cap, the building and the pin
+   three are the home page's own. The cap, the building and the box
    are the same family, for the things the home page does not list. */
 const ICONS = {
   map: "M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z",
@@ -170,7 +170,7 @@ const ICONS = {
   scale: "M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z",
   school: "M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5",
   museum: "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z",
-  pin: "M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z",
+  archive: "m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z",
 };
 
 /* What the brochure promises about the tour has to be true. */
@@ -182,28 +182,35 @@ said("museum", "a 1931 illustrated map of Chicago");
 said("museum", "Chicago Maritime Museum");
 said("museum", "Now on view");
 
-/* Six things, two to a panel, read across. The ones with a `said`
-   are the About page's own sentences. The podcast is on the site but
-   not here, at the owner's request (October 2026).
+/* Six things, two to a panel, read across. Rewritten on the owner's
+   notes (October 2026), who found the first wording flat. What is his
+   and not on the site yet:
 
-   Three facts are the owner's and are not on the site yet (October
-   2026): that Rogers Park is next, that we present to schools, and
-   that we have presented at Hyde Park Academy. He also said it was
-   fine to write as though the expansion were already done. These say
-   what is true today instead, since the app shows one tour to anybody
-   who checks. */
+     - We partner with museums, among them the Glessner House, the
+       "Japanese legacy center" and the Maritime Museum. The second
+       is printed as the Japanese American Service Committee's Legacy
+       Center, which is the Chicago archive that goes by that name.
+       He was asked to confirm it.
+     - Outreach happens at farmers' markets.
+     - Petition signatures are submitted as public comment.
+     - We present at schools, and Hyde Park Academy is one.
+     - The work is in many places across the three cities. Nothing
+       here says what is "out now" or "next", since that wording goes
+       stale the day the next tour ships.
+
+   The podcast is on the site but not here, at his request. */
 const WORK = [
   [
-    ["map", said("about", "Self-guided walking tours"), `${said("about", "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.")} Walk Hyde Park is out now.`],
-    ["school", "School presentations", "We present what we find to schools. We have presented at Hyde Park Academy."],
+    ["map", said("about", "Self-guided walking tours"), said("about", "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.")],
+    ["school", "School visits", "We visit schools and present our research to students. Hyde Park Academy is one of them."],
   ],
   [
-    ["clipboard", said("about", "Community outreach"), said("about", "We set up where people already are, like the Obama Presidential Center and neighborhood markets, and we survey and interview residents about their own block.")],
-    ["scale", said("about", "Policy advocacy"), said("about", "We run petitions on Chicago bills that are already introduced and stuck in a committee, then hand the signatures to that committee.")],
+    ["clipboard", said("about", "Community outreach"), "We meet people where they already are, at farmers’ markets and at the Obama Presidential Center, and we survey and interview residents about their own block."],
+    ["scale", said("about", "Policy advocacy"), "We run petitions on bills that are already introduced and stuck in a committee, then submit the signatures as public comment."],
   ],
   [
-    ["museum", "A museum exhibit", "With the Chicago Maritime Museum, we made an exhibit on the history behind a 1931 illustrated map of Chicago. It is on view at the museum in Bridgeport."],
-    ["pin", "New neighborhoods and cities", "Rogers Park is next. Our students in New York and Washington, DC are building tours of their own cities."],
+    ["museum", "Museum partnerships", "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum, where our exhibit on a 1931 illustrated map of Chicago is on view."],
+    ["archive", "Archival research", "Our students work in neighborhoods across Chicago, New York, and Washington, DC, and do the archival research behind everything we publish."],
   ],
 ];
 
@@ -257,6 +264,14 @@ const coverMeta = { widthIn: 3.8125, heightIn: 4.7 };
 const coverPng = join(ASSETS, "cover-map.png");
 execFileSync("rsvg-convert", ["-w", String(Math.round(coverMeta.widthIn * 600)), "-b", CREAM, "-o", coverPng, join(ASSETS, "cover-map.svg")]);
 const COVER_MAP = (await sharp(coverPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
+
+/* The wash under the lower half of the inside. It fades, so like the
+   cover map it goes in as pixels with the cream already under it. */
+const washMeta = JSON.parse(readFileSync(join(ASSETS, "inside-wash.json"), "utf8"));
+if (Math.abs(washMeta.widthIn - (W + BLEED * 2)) > 0.002) throw new Error("inside-wash.svg is not the width of the sheet. Rerun gen-maps.mjs.");
+const washPng = join(ASSETS, "inside-wash.png");
+execFileSync("rsvg-convert", ["-w", String(Math.round(washMeta.widthIn * 300)), "-b", CREAM, "-o", washPng, join(ASSETS, "inside-wash.svg")]);
+const WASH = (await sharp(washPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
 
 /* The route, drawn to sit in the first column's picture box. */
 const routeMeta = JSON.parse(readFileSync(join(ASSETS, "route-map.json"), "utf8"));
@@ -452,6 +467,7 @@ const html = `<!doctype html>
 
   /* ================= inside ================= */
 
+  .wash { display: block; }
   .lead-title { font-size: 26pt; }
   .frame { border: 0.6pt solid ${BORDER}; border-radius: 0.03in; overflow: hidden; background: ${CREAM}; }
   .pic, .pic img, .pic svg { display: block; width: 100%; height: 100%; }
@@ -528,6 +544,8 @@ const html = `<!doctype html>
 <!-- ============================ INSIDE ============================= -->
 <div class="sheet" id="inside">
   <div class="trim">
+    <img class="wash" alt="" src="data:image/png;base64,${WASH}"
+      style="left:-${BLEED}in;width:${inch(washMeta.widthIn)};top:${inch(H + BLEED - washMeta.heightIn)};height:${inch(washMeta.heightIn)}">
     <h2 class="lead-title" style="left:${inch(M)};top:${inch(TOP)}">Ways we help</h2>
 ${COLS.map(column).join("\n")}
 
