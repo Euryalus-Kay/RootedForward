@@ -131,13 +131,12 @@ const STORY = [
   said("about", "He ran a survey at the Obama Presidential Center and talked with more than 140 people about what they had lived through and what they had been taught. The gap was far wider than he expected, including among lifelong Chicagoans and especially among young people."),
   said("about", "So he built this. Students in three cities do the archival work and run the outreach now, and what comes out of it gets published free."),
 ];
-const STAT = said("about", "Residents surveyed at the Obama Presidential Center about what they knew of this history.");
-
-const PLACES = [
-  ["Chicago", said("about", "Starting location"), true],
-  ["New York", said("about", "Research in progress"), false],
-  ["Washington, DC", said("about", "Research in progress"), false],
-];
+/* Owner's wording (October 2026). No status beside each city, and no
+   "research in progress". We are active in all three. The survey count
+   stays in the story above and is not pulled out into a box. */
+/* Non-breaking spaces keep "New York" and "Washington, DC" whole when
+   the line turns. */
+const ACTIVE = "We are active in Chicago, New\u00a0York, and Washington,\u00a0DC.";
 
 /* Heroicons outline, the same four the home page draws. */
 const ICONS = {
@@ -311,28 +310,13 @@ const html = `<!doctype html>
 
   /* ---- flap ---- */
   .story { margin-top: 0.2in; display: flex; flex-direction: column; gap: 0.105in; }
-  .stat {
-    margin-top: 0.28in;
-    border: 1.3pt solid ${mix(INK, CREAM, 0.15)};
-    border-radius: 0.025in;
-    padding: 0.17in 0.19in;
-    display: grid; grid-template-columns: auto 1fr; column-gap: 0.2in; align-items: center;
+  .active {
+    border-top: 0.6pt solid ${BORDER};
+    padding-top: 0.17in;
+    font-family: "RF Serif", Georgia, serif; font-size: 16pt; line-height: 1.16; letter-spacing: -0.012em;
+    color: ${FOREST};
+    text-wrap: balance;
   }
-  .stat .num { font-family: "RF Serif", Georgia, serif; font-size: 38pt; line-height: 0.9; letter-spacing: -0.015em; color: ${RUST}; }
-  .stat p { font-size: 8.3pt; line-height: 1.42; }
-  .places h3 { font-size: 15pt; color: ${FOREST}; }
-  .places ul { list-style: none; margin-top: 0.11in; border-top: 0.6pt solid ${BORDER}; }
-  .places li {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 0.075in 0 0.07in;
-    border-bottom: 0.6pt solid ${BORDER};
-  }
-  .places .city { font-family: "RF Serif", Georgia, serif; font-size: 11.5pt; color: ${INK}; }
-  .places .status {
-    font-size: 5.9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.17em;
-    color: ${mix(INK, CREAM, 0.56)};
-  }
-  .places .status.live { color: ${RUST_DARK}; }
 
   /* ---- back ---- */
   .forest { background: ${FOREST}; }
@@ -463,15 +447,8 @@ const html = `<!doctype html>
     <section class="panel flap" data-fit style="${box(M, TUCK - M * 2)}">
       <h2>How it started</h2>
       <div class="story">${STORY.map((p) => `<p>${p}</p>`).join("")}</div>
-      <div class="stat">
-        <div class="num">140+</div>
-        <p>${STAT}</p>
-      </div>
       <div class="grow"></div>
-      <div class="places">
-        <h3>Where we work</h3>
-        <ul>${PLACES.map(([city, status, live]) => `<li><span class="city">${city}</span><span class="status${live ? " live" : ""}">${status}</span></li>`).join("")}</ul>
-      </div>
+      <p class="active">${ACTIVE}</p>
     </section>
 
     <!-- back -->

@@ -45,28 +45,13 @@
 
   /* ---- flap ---- */
   .story { margin-top: 0.2in; display: flex; flex-direction: column; gap: 0.105in; }
-  .stat {
-    margin-top: 0.28in;
-    border: 1.3pt solid #d4d0c9;
-    border-radius: 0.025in;
-    padding: 0.17in 0.19in;
-    display: grid; grid-template-columns: auto 1fr; column-gap: 0.2in; align-items: center;
+  .active {
+    border-top: 0.6pt solid #DDD6C8;
+    padding-top: 0.17in;
+    font-family: "RF Serif", Georgia, serif; font-size: 16pt; line-height: 1.16; letter-spacing: -0.012em;
+    color: #1B3A2D;
+    text-wrap: balance;
   }
-  .stat .num { font-family: "RF Serif", Georgia, serif; font-size: 38pt; line-height: 0.9; letter-spacing: -0.015em; color: #C45D3E; }
-  .stat p { font-size: 8.3pt; line-height: 1.42; }
-  .places h3 { font-size: 15pt; color: #1B3A2D; }
-  .places ul { list-style: none; margin-top: 0.11in; border-top: 0.6pt solid #DDD6C8; }
-  .places li {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 0.075in 0 0.07in;
-    border-bottom: 0.6pt solid #DDD6C8;
-  }
-  .places .city { font-family: "RF Serif", Georgia, serif; font-size: 11.5pt; color: #1A1A1A; }
-  .places .status {
-    font-size: 5.9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.17em;
-    color: #7a7875;
-  }
-  .places .status.live { color: #A8462A; }
 
   /* ---- back ---- */
   .forest { background: #1B3A2D; }
@@ -197,15 +182,8 @@
     <section class="panel flap" data-fit style="left:0.35in;width:2.925in;top:0.5in;height:7.58in">
       <h2>How it started</h2>
       <div class="story"><p>Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next.</p><p>He went looking for why, and found redlining, restrictive covenants, and the urban renewal campaigns that cleared and rearranged these blocks on purpose.</p><p>He ran a survey at the Obama Presidential Center and talked with more than 140 people about what they had lived through and what they had been taught. The gap was far wider than he expected, including among lifelong Chicagoans and especially among young people.</p><p>So he built this. Students in three cities do the archival work and run the outreach now, and what comes out of it gets published free.</p></div>
-      <div class="stat">
-        <div class="num">140+</div>
-        <p>Residents surveyed at the Obama Presidential Center about what they knew of this history.</p>
-      </div>
       <div class="grow"></div>
-      <div class="places">
-        <h3>Where we work</h3>
-        <ul><li><span class="city">Chicago</span><span class="status live">Starting location</span></li><li><span class="city">New York</span><span class="status">Research in progress</span></li><li><span class="city">Washington, DC</span><span class="status">Research in progress</span></li></ul>
-      </div>
+      <p class="active">We are active in Chicago, New York, and Washington, DC.</p>
     </section>
 
     <!-- back -->
