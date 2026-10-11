@@ -2,9 +2,10 @@
 /*  Rooted Forward poster for the outreach table, 20 x 30 inches.      */
 /*                                                                     */
 /*  It stands on an easel beside the table and gets photographed, so   */
-/*  it says very little. The name, the mission, the six things we do   */
-/*  as six short labels, and a code to scan. The same map as the       */
-/*  brochure's cover carries the lower half.                           */
+/*  it says very little, in type large enough to read from across the  */
+/*  table. The name, the mission, five short labels for what we do,    */
+/*  and a code to scan with the words "Scan to learn more". The same   */
+/*  map as the brochure's cover runs behind the lower half.            */
 /*                                                                     */
 /*  Sized for a Walgreens same-day print. Their satin poster comes in  */
 /*  24 x 36 and their rigid board print in 20 x 30, and both are 2:3,  */
@@ -15,7 +16,9 @@
 /*                                                                     */
 /*  The mission is the brochure's wording ("raises awareness of"),     */
 /*  which the owner chose over the site's "educates people about" in   */
-/*  October 2026. The labels are the brochure's six, shortened.        */
+/*  October 2026. The labels are the brochure's, shortened, without    */
+/*  museum partnerships, which he asked to leave off this piece. The   */
+/*  line about where we are active is his wording for the poster.      */
 /*                                                                     */
 /*  The QR code encodes rooted-forward.org/go/poster, our own          */
 /*  redirect, so the poster can be re-pointed without reprinting       */
@@ -46,8 +49,8 @@ const OUT = join(SITE, "print");
 const W = 20;
 const H = 30;
 const PAD = 1.3; // side margin, and more than a lab will trim
-const TOP = 1.2;
-const FOOT = 4.4; // the forest band at the bottom
+const TOP = 1.1;
+const FOOT = 5.1; // the forest band at the bottom
 const PPI = 200; // 4000 x 6000 pixels, enough for either print size
 
 /* ---------- palette (site tokens) ---------- */
@@ -73,10 +76,11 @@ const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in ci
 /* Checked against the brochure, so the two printed pieces cannot
    disagree about what the organization is. */
 const brochure = readFileSync(join(SITE, "print/brochure/build-brochure.mjs"), "utf8");
-for (const line of [MISSION_WHAT, "We are active in Chicago, New"]) {
-  if (!brochure.includes(line)) throw new Error(`The brochure no longer says: ${line}`);
-}
-const ACTIVE = "We are active in Chicago, New York, and Washington, DC.";
+if (!brochure.includes(MISSION_WHAT)) throw new Error(`The brochure no longer says: ${MISSION_WHAT}`);
+/* Owner's wording for the poster (October 2026). Not three cities and
+   a full stop, but major cities, with the three as examples. */
+const ACTIVE = "We are active in major U.S. cities, including Chicago, New\u00a0York, and Washington,\u00a0DC.";
+const SCAN = "Scan to learn more";
 
 /* Heroicons outline, as on the home page and the brochure. */
 const ICONS = {
@@ -87,13 +91,14 @@ const ICONS = {
   museum: "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z",
   archive: "m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z",
 };
-/* The brochure's six, in its order, each cut to two words. */
+/* Five of the brochure's six, each cut to two words. Ordered so the
+   three short ones fill the first row and the two long ones the
+   second. */
 const WORK = [
   ["map", "Walking tours"],
-  ["clipboard", "Community outreach"],
-  ["museum", "Museum partnerships"],
   ["school", "School visits"],
   ["scale", "Policy advocacy"],
+  ["clipboard", "Community outreach"],
   ["archive", "Archival research"],
 ];
 for (const [, label] of WORK) {
@@ -107,7 +112,7 @@ const qrSvg = await QRCode.toString(QR_URL, { type: "svg", errorCorrectionLevel:
 const qrViewBox = qrSvg.match(/viewBox="([^"]+)"/)[1];
 const qrInner = qrSvg.replace(/<\?xml[^>]*\?>/, "").replace(/<svg[^>]*>/, "").replace(/<\/svg>/, "").replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
 const qrModules = Number(qrViewBox.split(" ")[2]);
-const QR_IN = 2.75;
+const QR_IN = 3.1;
 
 /* ---------- the mark and the map ---------- */
 const logo = readFileSync(join(SITE, "public/logo.svg"), "utf8");
@@ -141,30 +146,30 @@ const html = `<!doctype html>
   .map { left: 0; top: ${MAP_TOP}in; width: ${W}in; height: ${mapMeta.heightIn}in; display: block; }
 
   .top { left: ${PAD}in; right: ${PAD}in; top: ${TOP}in; }
-  .mark { width: 1.45in; height: 1.45in; display: block; }
+  .mark { width: 1.3in; height: 1.3in; display: block; }
   h1 {
-    margin-top: 0.5in;
+    margin-top: 0.42in;
     font-family: "RF Serif", Georgia, serif; font-weight: 600; font-size: 3.6in; line-height: 0.92; letter-spacing: -0.026em;
     color: ${FOREST};
   }
   .mission {
-    margin-top: 0.6in; max-width: 16.8in;
-    font-family: "RF Serif", Georgia, serif; font-size: 0.66in; line-height: 1.25; letter-spacing: -0.01em;
+    margin-top: 0.55in; max-width: 17.2in;
+    font-family: "RF Serif", Georgia, serif; font-size: 0.8in; line-height: 1.21; letter-spacing: -0.01em;
     color: ${INK}; text-wrap: balance;
   }
   .mission .who { color: ${RUST}; }
   .work {
-    margin-top: 0.72in;
+    margin-top: 0.7in;
     list-style: none;
-    display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-between; row-gap: 0.32in;
+    display: flex; flex-wrap: wrap; column-gap: 0.95in; row-gap: 0.3in;
   }
-  .work li { display: flex; align-items: center; gap: 0.26in; font-family: "RF Serif", Georgia, serif; font-size: 0.47in; letter-spacing: -0.006em; color: ${INK}; white-space: nowrap; }
+  .work li { display: flex; align-items: center; gap: 0.28in; font-family: "RF Serif", Georgia, serif; font-size: 0.6in; letter-spacing: -0.006em; color: ${INK}; white-space: nowrap; }
   .ico {
-    flex: none; width: 0.92in; height: 0.92in; border-radius: 50%;
+    flex: none; width: 1.08in; height: 1.08in; border-radius: 50%;
     border: 1.6pt solid ${mix(RUST, CREAM, 0.5)}; background: ${CREAM};
     display: flex; align-items: center; justify-content: center;
   }
-  .ico svg { width: 0.52in; height: 0.52in; display: block; }
+  .ico svg { width: 0.62in; height: 0.62in; display: block; }
 
   .foot { left: 0; top: ${H - FOOT}in; width: ${W}in; height: ${FOOT}in; background: ${FOREST}; }
   .tile {
@@ -174,9 +179,10 @@ const html = `<!doctype html>
   }
   .tile svg { width: 100%; height: 100%; display: block; }
   .tile path, .tile rect { shape-rendering: crispEdges; }
-  .go { left: ${PAD + QR_IN + 0.5 + 0.8}in; right: ${PAD}in; top: ${H - FOOT}in; height: ${FOOT}in; display: flex; flex-direction: column; justify-content: center; }
-  .url { font-family: "RF Serif", Georgia, serif; font-size: 1.06in; line-height: 1; letter-spacing: -0.016em; color: ${CREAM}; white-space: nowrap; }
-  .active { margin-top: 0.34in; font-size: 0.4in; line-height: 1.35; color: ${ON_FOREST}; max-width: 11in; }
+  .go { left: ${PAD + QR_IN + 0.5 + 0.7}in; right: ${PAD}in; top: ${H - FOOT}in; height: ${FOOT}in; display: flex; flex-direction: column; justify-content: center; }
+  .scan { font-family: "RF Serif", Georgia, serif; font-size: 1.12in; line-height: 1; letter-spacing: -0.018em; color: ${CREAM}; white-space: nowrap; }
+  .url { margin-top: 0.3in; font-size: 0.62in; font-weight: 500; line-height: 1; letter-spacing: -0.005em; color: ${CREAM}; white-space: nowrap; }
+  .active { margin-top: 0.42in; font-size: 0.43in; line-height: 1.32; color: ${ON_FOREST}; max-width: 12in; text-wrap: balance; }
 </style>
 <body>
 <div class="sheet" id="sheet">
@@ -190,6 +196,7 @@ const html = `<!doctype html>
   <div class="foot"></div>
   <div class="tile" id="qr"><svg viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg></div>
   <div class="go">
+    <div class="scan">${SCAN}</div>
     <div class="url">rooted-forward.org</div>
     <p class="active">${ACTIVE}</p>
   </div>

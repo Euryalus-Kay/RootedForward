@@ -370,9 +370,9 @@ export const WASH_MAP = { widthIn: 11.25, heightIn: 4.85 };
    grades as the cover in full color, as a wide band of the city from
    Oak Park to the lake, fading into the paper at the top. Strokes are
    heavier than the cover's, since this is read from across a table. */
-export const POSTER_MAP = { widthIn: 20, heightIn: 9.4 };
+export const POSTER_MAP = { widthIn: 20, heightIn: 7.5 };
 {
-  const proj = makeProj({ lngMin: -87.925, latMax: 41.915, ...POSTER_MAP, inPerLat: 70 });
+  const proj = makeProj({ lngMin: -87.925, latMax: 41.9, ...POSTER_MAP, inPerLat: 70 });
   const frame = proj.frame;
   const inside = inFrame(frame, 0.01);
 
@@ -415,9 +415,9 @@ export const POSTER_MAP = { widthIn: 20, heightIn: 9.4 };
   <defs>
     <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="${CREAM}" stop-opacity="1"/>
-      <stop offset="0.05" stop-color="${CREAM}" stop-opacity="1"/>
-      <stop offset="0.2" stop-color="${CREAM}" stop-opacity="0.55"/>
-      <stop offset="0.36" stop-color="${CREAM}" stop-opacity="0"/>
+      <stop offset="0.07" stop-color="${CREAM}" stop-opacity="1"/>
+      <stop offset="0.22" stop-color="${CREAM}" stop-opacity="0.55"/>
+      <stop offset="0.4" stop-color="${CREAM}" stop-opacity="0"/>
     </linearGradient>
   </defs>
   <rect width="${proj.W}" height="${proj.H}" fill="${CREAM}"/>
