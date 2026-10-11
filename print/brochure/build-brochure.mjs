@@ -157,6 +157,11 @@ const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in ci
 const STORY = [
   said("about", "Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next."),
   said("about", "He went looking for why, and found redlining, restrictive covenants, and the urban renewal campaigns that cleared and rearranged these blocks on purpose."),
+  /* The owner's, and not on the site yet (October 2026). The account
+     should not stop at Chicago or at three cities. He worked with
+     students across the country who had noticed the same patterns in
+     large American cities. */
+  "Students in other large American cities had seen the same patterns where they live, and joined him.",
 ];
 
 /* Owner's wording (October 2026). No status beside each city, and no
@@ -319,7 +324,7 @@ const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",\n    name: "
   return { slug: m[1], name: m[2], city: city[1], school: school[1], photo: m[3], order: order ? +order[1] : 99 };
 }).sort((a, b) => a.order - b.order);
 if (members.length !== 6) throw new Error(`the brochure lays out six portraits, the roster has ${members.length} with a photo`);
-const FACE_IN = 0.62;
+const FACE_IN = 0.56;
 for (const m of members) {
   const buf = await sharp(join(SITE, "public", m.photo)).resize(Math.round(FACE_IN * 600), Math.round(FACE_IN * 600)).jpeg({ quality: 92, chromaSubsampling: "4:4:4" }).toBuffer();
   m.src = `data:image/jpeg;base64,${buf.toString("base64")}`;
@@ -395,18 +400,19 @@ const html = `<!doctype html>
   /* ================= outside ================= */
 
   /* ---- flap ---- */
-  .story { margin-top: 0.2in; display: flex; flex-direction: column; gap: 0.105in; }
+  .story { margin-top: 0.17in; display: flex; flex-direction: column; gap: 0.09in; }
+  .story p { line-height: 1.46; }
   .active {
     border-top: 0.6pt solid ${BORDER};
-    padding-top: 0.17in;
+    padding-top: 0.15in;
     font-family: "RF Serif", Georgia, serif; font-size: 14.5pt; line-height: 1.17; letter-spacing: -0.01em;
     color: ${FOREST};
     text-wrap: balance;
   }
-  .team-title { margin-top: 0.21in; font-size: 11.5pt; color: ${INK}; }
+  .team-title { margin-top: 0.18in; font-size: 11.5pt; color: ${INK}; }
   .team {
     margin-top: 0.14in;
-    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.13in;
+    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.1in;
   }
   .team img { display: block; width: ${FACE_IN}in; height: ${FACE_IN}in; border-radius: 50%; outline: 0.6pt solid ${BORDER}; }
   .team b {
