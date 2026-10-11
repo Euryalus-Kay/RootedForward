@@ -138,7 +138,14 @@ function said(where, text) {
 }
 
 const MISSION_WHO = said("about", "A student-run nonprofit started in Chicago.");
-const MISSION_WHAT = said("about", "Rooted Forward educates people about racial inequality in cities across the United States, and works to address it through education, awareness, and political advocacy.");
+/* Owner's change for this piece (October 2026). The site's sentence
+   opens "educates people about", and he found that it talks down to
+   the reader, so here it is "raises awareness of". "Awareness" then
+   comes out of the list at the end, where it would be said twice. The
+   site still carries the older wording, so this line is not checked
+   against it. */
+said("about", "racial inequality in cities across the United States, and works to address it through");
+const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
 
 const STORY = [
   said("about", "Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next."),
@@ -210,7 +217,14 @@ const CAPTIONS = [
 ];
 
 const HELP_HEAD = said("about", "We could use your help");
-const HELP_BODY = said("about", "If you can dig through an archive, run a survey table at a market, or edit audio, there is work here for you. You do not need experience to start.");
+/* The ask, in the owner's terms (October 2026). Partners who can put
+   this in front of more people, an offer to supply them with our
+   materials, and people for the archival research. The last sentence
+   is the About page's. */
+const HELP_BODY = [
+  "We want to partner with people and organizations who can help us bring this message to more people. If you or your organization would like our materials, we are happy to supply them.",
+  `We are also looking for people to help with archival research. ${said("about", "You do not need experience to start.")}`,
+];
 
 /* ---------- QR ---------- */
 const QR_URL = "https://rooted-forward.org/go/brochure";
@@ -374,6 +388,7 @@ const html = `<!doctype html>
   .back h2 { color: ${CREAM}; }
   .back p { color: ${ON_FOREST}; }
   .back .lead { margin-top: 0.17in; }
+  .back .more { margin-top: 0.105in; }
   .tile {
     width: ${QR_IN + 0.26}in; height: ${QR_IN + 0.26}in;
     background: ${CREAM};
@@ -470,7 +485,7 @@ const html = `<!doctype html>
     <!-- back -->
     <section class="panel back" data-fit style="${box(OUT_F1 + M, FULL - M * 2)}">
       <h2>${HELP_HEAD}</h2>
-      <p class="lead">${HELP_BODY}</p>
+      ${HELP_BODY.map((para, i) => `<p class="${i ? "more" : "lead"}">${para}</p>`).join("\n      ")}
       <div class="grow"></div>
       <div class="tile" id="qr"><svg viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg></div>
       <div class="url">rooted-forward.org</div>
