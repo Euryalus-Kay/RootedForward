@@ -160,7 +160,6 @@ const STORY = [
    Non-breaking spaces keep "New York" and "Washington, DC" whole when
    the line turns. */
 const ACTIVE = "We are active in Chicago, New York, and Washington, DC.";
-const TEAM_CAPTION = "The students who run Rooted Forward.";
 
 /* Heroicons outline, the set the home page draws from. The first
    three are the home page's own. The cap, the building and the pin
@@ -285,19 +284,22 @@ const PLAZA = await photo("public/media/hyde-park-walk/opc-opening-2026.jpg", 64
 const EXHIBIT = await photo("public/media/look-closer/exhibit-wall.jpg", 160, COLS[2]);
 
 /* The roster, in the order the team page shows it. Real people only,
-   which is that file's own rule. Faces without names here, since the
-   names and schools are on the site and a printed sheet cannot be
-   corrected when the roster changes. */
-const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",[\s\S]*?\n    photo: "(\/media\/team\/[a-z-]+\.jpg)",/g)].map((m) => {
+   which is that file's own rule. Each portrait carries the name and
+   the city under it, the way the team page does, since a face with
+   nothing under it tells a reader nothing (owner, October 2026). The
+   names go stale when the roster changes, so rebuild before a
+   reprint. */
+const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",\n    name: "([^"]+)",[\s\S]*?\n    photo: "(\/media\/team\/[a-z-]+\.jpg)",/g)].map((m) => {
   const order = m[0].match(/\n    order: (\d+),/);
-  return { slug: m[1], photo: m[2], order: order ? +order[1] : 99 };
+  const city = m[0].match(/\n    city: "([^"]+)",/);
+  if (!city) throw new Error(`${m[2]} has no city in team-constants.ts, and the brochure prints one under every portrait`);
+  return { slug: m[1], name: m[2], city: city[1], photo: m[3], order: order ? +order[1] : 99 };
 }).sort((a, b) => a.order - b.order);
 if (members.length !== 6) throw new Error(`the brochure lays out six portraits, the roster has ${members.length} with a photo`);
-const FACE_IN = 0.7;
-const FACES = [];
+const FACE_IN = 0.56;
 for (const m of members) {
   const buf = await sharp(join(SITE, "public", m.photo)).resize(Math.round(FACE_IN * 600), Math.round(FACE_IN * 600)).jpeg({ quality: 92, chromaSubsampling: "4:4:4" }).toBuffer();
-  FACES.push(`data:image/jpeg;base64,${buf.toString("base64")}`);
+  m.src = `data:image/jpeg;base64,${buf.toString("base64")}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -305,6 +307,15 @@ for (const m of members) {
 /* ------------------------------------------------------------------ */
 
 const inch = (n) => `${+n.toFixed(4)}in`;
+
+/* Given name over family name, for every portrait. Two of the six are
+   too long for one line in a third of the panel, and a mix of one-line
+   and two-line names leaves the cities under them at different
+   heights. The family name never breaks, hyphen or not. */
+const stacked = (name) => {
+  const cut = name.indexOf(" ");
+  return cut < 0 ? name : `${name.slice(0, cut)}<br><i>${name.slice(cut + 1)}</i>`;
+};
 const box = (left, width, top = TOP, bottom = BOTTOM) =>
   `left:${inch(left)};width:${inch(width)};top:${inch(top)};height:${inch(H - top - bottom)}`;
 
@@ -372,16 +383,22 @@ const html = `<!doctype html>
   .active {
     border-top: 0.6pt solid ${BORDER};
     padding-top: 0.17in;
-    font-family: "RF Serif", Georgia, serif; font-size: 16pt; line-height: 1.16; letter-spacing: -0.012em;
+    font-family: "RF Serif", Georgia, serif; font-size: 13.5pt; line-height: 1.18; letter-spacing: -0.008em;
     color: ${FOREST};
     text-wrap: balance;
   }
   .team {
-    margin-top: 0.21in;
-    display: grid; grid-template-columns: repeat(3, ${FACE_IN}in); justify-content: space-between; row-gap: 0.17in;
+    margin-top: 0.19in;
+    display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 0.06in; row-gap: 0.15in;
   }
   .team img { display: block; width: ${FACE_IN}in; height: ${FACE_IN}in; border-radius: 50%; outline: 0.6pt solid ${BORDER}; }
-  .flap .credit { margin-top: 0.11in; }
+  .team b {
+    display: block; margin-top: 0.065in;
+    font-family: "RF Serif", Georgia, serif; font-weight: 400; font-size: 8.3pt; line-height: 1.14; letter-spacing: -0.004em;
+    color: ${INK};
+  }
+  .team b i { font-style: normal; white-space: nowrap; }
+  .team span { display: block; margin-top: 0.018in; font-size: 6.6pt; line-height: 1.3; color: ${BODY}; }
 
   /* ---- back ---- */
   .forest { background: ${FOREST}; }
@@ -478,8 +495,7 @@ const html = `<!doctype html>
       <div class="story">${STORY.map((p) => `<p>${p}</p>`).join("")}</div>
       <div class="grow"></div>
       <p class="active">${ACTIVE}</p>
-      <div class="team">${FACES.map((src) => `<img alt="" src="${src}">`).join("")}</div>
-      <p class="credit">${TEAM_CAPTION}</p>
+      <div class="team">${members.map((m) => `<figure><img alt="" src="${m.src}"><b>${stacked(m.name)}</b><span>${m.city}</span></figure>`).join("")}</div>
     </section>
 
     <!-- back -->
