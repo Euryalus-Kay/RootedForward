@@ -156,6 +156,16 @@ const MISSION_WHO = said("about", "A student-run nonprofit started in Chicago.")
 said("about", "racial inequality in cities across the United States, and works to address it through");
 const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
 
+/* The line on the cover's map. The owner asked whether it was needed
+   at all, and for it to say something about race and the map if it
+   stayed (October 2026). It stays, since without it the cover is a
+   picture nobody is told how to read, and since the map's data asks
+   for its source to be named. The two facts are the tour's own
+   sentences on redlining, and the build stops if those change. */
+said("tour", "grading neighborhoods for lending risk according to race");
+said("tour", "Most of the Black Belt received red grades.");
+const COVER_CAPTION = "A federal map of Chicago from 1940 that graded neighborhoods for lending risk according to race. Most of the Black Belt was shaded red. Map data from Mapping Inequality, University of Richmond.";
+
 /* How it started, in the owner's third wording (October 2026). The
    first was the About page's two paragraphs on Zain Zaidi, by name.
    He then asked for what Zain learned and why he started this, and
@@ -653,7 +663,7 @@ const html = `<!doctype html>
       <p class="mission"><span class="who">${MISSION_WHO}</span> ${MISSION_WHAT}</p>
     </section>
     <div class="covercap" style="left:${inch(OUT_F2 + M)};width:2.2in;bottom:0.32in">
-      <p class="credit">The Home Owners’ Loan Corporation’s grades for Chicago, 1940. The neighborhoods shaded red were the ones banks were told to stay out of. Map data from Mapping Inequality, University of Richmond.</p>
+      <p class="credit">${COVER_CAPTION}</p>
     </div>
 
     <div class="guides"><b></b><i style="left:${inch(OUT_F1)}"></i><i style="left:${inch(OUT_F2)}"></i></div>
