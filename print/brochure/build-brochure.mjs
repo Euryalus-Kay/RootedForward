@@ -5,7 +5,8 @@
 /*  and at neighborhood markets next to the banner. It is about the    */
 /*  whole organization, not one tour. Who we are on the front, how it  */
 /*  started and who runs it on the first panel a reader opens, the     */
-/*  six things we do on the inside, and how to reach us on the back.   */
+/*  five things we do on the inside with the code for the tours in     */
+/*  the middle, and how to learn more and help on the back.            */
 /*                                                                     */
 /*  The first proof gave two inside panels to a map of Walk Hyde Park  */
 /*  with a numbered key. The owner asked for a more general piece      */
@@ -36,7 +37,8 @@
 /*                                                                     */
 /*  The QR code encodes rooted-forward.org/go/brochure, our own        */
 /*  redirect, so a printed brochure can be re-pointed for as long as   */
-/*  the domain is ours (src/lib/qr-links.ts).                          */
+/*  the domain is ours (src/lib/qr-links.ts). It sits inside, under    */
+/*  the tours, and opens the tours page.                               */
 /*                                                                     */
 /*    npm install --no-save qrcode jsqr                                */
 /*    node print/brochure/gen-maps.mjs                                 */
@@ -77,7 +79,8 @@ const TOP = 0.5;
 const BOTTOM = 0.42;
 
 /* The inside is three columns, one to a panel. A picture, its credit,
-   then two of the six things we do. */
+   then two rows. The middle column is the tours. The route map, the
+   paragraph on the tours, and the code that opens them. */
 const COLS = [
   { left: M, width: FULL - M * 2 },
   { left: IN_F1 + M, width: FULL - M * 2 },
@@ -107,7 +110,6 @@ function mix(a, b, t) {
 const BODY = mix(INK, CREAM, 0.8);
 const CREDIT = mix(INK, CREAM, 0.64);
 const ON_FOREST = mix(CREAM, FOREST, 0.82);
-const ON_FOREST_SOFT = mix(CREAM, FOREST, 0.62);
 
 /* ---------- fonts ---------- */
 /* The site's own files, kept in print/fonts. See build-banner.mjs. */
@@ -157,7 +159,13 @@ const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in ci
    person's school (October 2026). */
 const STORY = [
   said("about", "Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next."),
-  said("about", "He went looking for why, and found redlining, restrictive covenants, and the urban renewal campaigns that cleared and rearranged these blocks on purpose."),
+  /* The owner's rewrite of the About page's second paragraph for this
+     piece (October 2026). He wanted it to say what Zain learned, that
+     discriminatory urban development was carried out through named
+     practices, and then in one short sentence why he started this, to
+     share that knowledge and change policy. The site still carries
+     the older sentence, so this one is not checked against it. */
+  "Looking for why, Zain learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. He wanted to share that knowledge with others and drive policy change.",
   /* The owner's, and not on the site yet (October 2026). The account
      should not stop at Chicago or at three cities. He worked with
      students across the country who had noticed the same patterns in
@@ -191,49 +199,72 @@ if (!/APP_STORE_URL: string \| null =\s*"https:\/\/apps\.apple\.com/.test(source
   throw new Error("The app is no longer marked live in src/lib/app-store.ts. The brochure says the tour is out.");
 }
 said("tour", 'title: "Walk Hyde Park"');
-said("museum", "a 1931 illustrated map of Chicago");
 said("museum", "Chicago Maritime Museum");
-said("museum", "Now on view");
 
-/* Six things, two to a panel, read across. Rewritten on the owner's
-   notes (October 2026), who found the first wording flat. What is his
-   and not on the site yet:
+/* Five things and the code for the tours, two rows to a panel.
+   Rewritten twice on the owner's notes (October 2026). What is his
+   and not on the site:
 
      - We partner with museums, among them the Glessner House, the
        "Japanese legacy center" and the Maritime Museum. The second
        is printed as the Japanese American Service Committee's Legacy
        Center, which is the Chicago archive that goes by that name.
-       He was asked to confirm it.
-     - Outreach happens at farmers' markets.
+       He was asked to confirm it. He then took off the clause about
+       the 1931 illustrated map ("no need for that").
+     - Outreach, in his words, is outreach and education in the
+       community, showing people this history and our work and
+       promoting the free tours, with events at farmers' markets and
+       community events. The earlier line named the Obama Presidential
+       Center and the survey, and he asked for it to be general.
      - Petition signatures are submitted as public comment.
-     - We present at schools, and Hyde Park Academy is one.
-     - The work is in many places across the three cities. Nothing
-       here says what is "out now" or "next", since that wording goes
-       stale the day the next tour ships.
+     - We present at schools, and Hyde Park Academy is one. He found
+       "Hyde Park Academy is one of them" as its own sentence off, so
+       the school sits inside the one sentence now.
+     - Nothing here says what is "out now" or "next", since that
+       wording goes stale the day the next tour ships.
+
+   Archival research was the sixth and came off the inside. The back
+   panel still asks for help with it. Its place went to school visits,
+   and the tours moved to the middle column over the code that opens
+   them, which he asked to have inside rather than on the back.
 
    The podcast is on the site but not here, at his request. */
 const WORK = [
   [
-    ["map", said("about", "Self-guided walking tours"), said("about", "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.")],
-    ["school", "School visits", "We visit schools and present our research to students. Hyde Park Academy is one of them."],
-  ],
-  [
-    ["clipboard", said("about", "Community outreach"), "We meet people where they already are, at farmers’ markets and at the Obama Presidential Center, and we survey and interview residents about their own block."],
+    ["clipboard", said("about", "Community outreach"), "We do outreach and education in the community, showing people this history and our work and promoting our free tours. We have held events at farmers’ markets and community events."],
     ["scale", said("about", "Policy advocacy"), "We run petitions on bills that are already introduced and stuck in a committee, then submit the signatures as public comment."],
   ],
   [
-    ["museum", "Museum partnerships", "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum, where our exhibit on a 1931 illustrated map of Chicago is on view."],
-    ["archive", "Archival research", "Our students work in neighborhoods across Chicago, New York, and Washington, DC, and do the archival research behind everything we publish."],
+    ["map", said("about", "Self-guided walking tours"), said("about", "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.")],
+    "scan",
+  ],
+  [
+    ["museum", "Museum partnerships", "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum."],
+    ["school", "School visits", "We visit schools, including Hyde Park Academy, and present our research to students."],
   ],
 ];
+
+/* The box under the tours. What the code opens, and the same address
+   in type for a reader who will not scan. */
+const SCAN_HEAD = "Scan for the tours";
+const SCAN_URL = "rooted-forward.org/tours";
 
 /* Under each picture, what is pictured and whose it is. */
 said("tour", "June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.");
 const CAPTIONS = [
-  "The route of Walk Hyde Park, the first tour in the app.",
   "The plaza of the Obama Presidential Center on opening day, June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.",
+  "The route of Walk Hyde Park, the first tour in the app.",
   said("museum", "The map and its touch screen on the museum's wall in Bridgeport, September 2026. Photograph by Rooted Forward."),
 ];
+
+/* The back panel, on the owner's notes (October 2026). It used to be
+   headed "We could use your help" with the code under it. He asked
+   for it to be about learning more, with a line on that first and the
+   ask for help after it, no code, and no source line at the foot. */
+const LEARN_HEAD = "Learn more about Rooted Forward";
+/* The two things the home page itself offers a visitor first. */
+said("about", "Self-guided walking tours");
+const LEARN_BODY = "Take a tour or sign one of our petitions on our website, or write to us.";
 
 const HELP_HEAD = said("about", "We could use your help");
 /* The ask, in the owner's terms (October 2026). Partners who can put
@@ -260,7 +291,7 @@ const qrInner = qrSvg
   .replace(/<\/svg>/, "")
   .replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
 const qrModules = Number(qrViewBox.split(" ")[2]);
-const QR_IN = 1.3;
+const QR_IN = 1.0;
 
 /* ---------- the mark ---------- */
 /* public/logo.svg exactly as drawn. On the forest panel it gets the
@@ -294,9 +325,10 @@ const washPng = join(ASSETS, "inside-wash.png");
 execFileSync("rsvg-convert", ["-w", String(Math.round(washMeta.widthIn * 300)), "-b", CREAM, "-o", washPng, join(ASSETS, "inside-wash.svg")]);
 const WASH = (await sharp(washPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
 
-/* The route, drawn to sit in the first column's picture box. */
+/* The route, drawn to sit in the middle column's picture box, which
+   is the same size as the first column's that it was drawn for. */
 const routeMeta = JSON.parse(readFileSync(join(ASSETS, "route-map.json"), "utf8"));
-if (Math.abs(routeMeta.widthIn - COLS[0].width) > 0.002 || Math.abs(routeMeta.heightIn - PIC_H) > 0.002) {
+if (Math.abs(routeMeta.widthIn - COLS[1].width) > 0.002 || Math.abs(routeMeta.heightIn - PIC_H) > 0.002) {
   throw new Error("route-map.svg was drawn for a different picture box. Rerun gen-maps.mjs.");
 }
 const ROUTE_MAP = readFileSync(join(ASSETS, "route-map.svg"), "utf8").replace(/ width="[\d.]+" height="[\d.]+"/, "");
@@ -315,7 +347,7 @@ async function photo(file, top, col) {
   return `data:image/jpeg;base64,${buf.toString("base64")}`;
 }
 /* The plaza and the lower half of the tower, where the people are. */
-const PLAZA = await photo("public/media/hyde-park-walk/opc-opening-2026.jpg", 640, COLS[1]);
+const PLAZA = await photo("public/media/hyde-park-walk/opc-opening-2026.jpg", 640, COLS[0]);
 /* The two people, the touch screen and the map behind them. */
 const EXHIBIT = await photo("public/media/look-closer/exhibit-wall.jpg", 160, COLS[2]);
 
@@ -333,7 +365,7 @@ const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",\n    name: "
   return { slug: m[1], name: m[2], city: city[1], school: school[1], photo: m[3], order: order ? +order[1] : 99 };
 }).sort((a, b) => a.order - b.order);
 if (members.length !== 6) throw new Error(`the brochure lays out six portraits, the roster has ${members.length} with a photo`);
-const FACE_IN = 0.56;
+const FACE_IN = 0.53;
 for (const m of members) {
   const buf = await sharp(join(SITE, "public", m.photo)).resize(Math.round(FACE_IN * 600), Math.round(FACE_IN * 600)).jpeg({ quality: 92, chromaSubsampling: "4:4:4" }).toBuffer();
   m.src = `data:image/jpeg;base64,${buf.toString("base64")}`;
@@ -352,15 +384,20 @@ const icon = (name) =>
   `<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="${RUST}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[name]}"/></svg></span>`;
 
 const PICS = [
-  `<div class="pic map">${ROUTE_MAP}</div>`,
   `<div class="pic"><img alt="" src="${PLAZA}"></div>`,
+  `<div class="pic map">${ROUTE_MAP}</div>`,
   `<div class="pic"><img alt="" src="${EXHIBIT}"></div>`,
 ];
+/* A row is one of the things we do, or the box with the code. */
+const row = (r) =>
+  r === "scan"
+    ? `<div class="row scan"><div class="scanbox"><div class="tile" id="qr"><svg viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg></div><div class="scantext"><h3>${SCAN_HEAD}</h3><p>${SCAN_URL}</p></div></div></div>`
+    : `<div class="row">${icon(r[0])}<div><h3>${r[1]}</h3><p>${r[2]}</p></div></div>`;
 const column = (col, i) => `
     <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">${PICS[i]}</div>
     <p class="credit" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(CAP_TOP)}">${CAPTIONS[i]}</p>
     <section class="panel rows" data-fit style="${box(col.left, col.width, ROWS_TOP)}">
-      ${WORK[i].map(([ic, title, line]) => `<div class="row">${icon(ic)}<div><h3>${title}</h3><p>${line}</p></div></div>`).join("\n      ")}
+      ${WORK[i].map(row).join("\n      ")}
     </section>`;
 
 const html = `<!doctype html>
@@ -413,15 +450,15 @@ const html = `<!doctype html>
   .story p { line-height: 1.46; }
   .active {
     border-top: 0.6pt solid ${BORDER};
-    padding-top: 0.15in;
+    padding-top: 0.14in;
     font-family: "RF Serif", Georgia, serif; font-size: 14.5pt; line-height: 1.17; letter-spacing: -0.01em;
     color: ${FOREST};
     text-wrap: balance;
   }
-  .team-title { margin-top: 0.18in; font-size: 11.5pt; color: ${INK}; }
+  .team-title { margin-top: 0.15in; font-size: 11.5pt; color: ${INK}; }
   .team {
-    margin-top: 0.14in;
-    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.1in;
+    margin-top: 0.12in;
+    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.075in;
   }
   .team img { display: block; width: ${FACE_IN}in; height: ${FACE_IN}in; border-radius: 50%; outline: 0.6pt solid ${BORDER}; }
   .team b {
@@ -437,28 +474,26 @@ const html = `<!doctype html>
   .back h2 { color: ${CREAM}; }
   .back p { color: ${ON_FOREST}; }
   .back .lead { margin-top: 0.17in; }
-  .back .more { margin-top: 0.105in; }
-  .tile {
-    width: ${QR_IN + 0.26}in; height: ${QR_IN + 0.26}in;
-    background: ${CREAM};
-    border-radius: 0.03in;
-    padding: 0.13in;
-  }
-  .tile svg { width: 100%; height: 100%; display: block; }
-  .tile path, .tile rect { shape-rendering: crispEdges; }
   .url {
-    margin-top: 0.2in;
-    font-family: "RF Serif", Georgia, serif; font-size: 18pt; line-height: 1; letter-spacing: -0.012em;
+    margin-top: 0.26in;
+    font-family: "RF Serif", Georgia, serif; font-size: 20pt; line-height: 1; letter-spacing: -0.012em;
     color: ${CREAM};
   }
   .mail { margin-top: 0.09in; font-size: 8.8pt; color: ${ON_FOREST}; }
-  .lockup { display: flex; align-items: center; gap: 0.1in; }
-  .lockup .mark { width: 0.34in; height: 0.34in; display: block; }
+  .back .help {
+    border-top: 0.6pt solid ${mix(CREAM, FOREST, 0.3)};
+    padding-top: 0.2in;
+    font-size: 14.5pt; color: ${CREAM};
+  }
+  .back .more { margin-top: 0.105in; }
+  /* Larger than it was while a source line sat under it. The owner
+     asked for the line to go and the name to grow into the room. */
+  .lockup { display: flex; align-items: center; gap: 0.14in; }
+  .lockup .mark { width: 0.52in; height: 0.52in; display: block; }
   .lockup span {
-    font-family: "RF Serif", Georgia, serif; font-weight: 600; font-size: 14pt; letter-spacing: -0.02em;
+    font-family: "RF Serif", Georgia, serif; font-weight: 600; font-size: 21pt; letter-spacing: -0.02em;
     color: ${CREAM};
   }
-  .back .credit { margin-top: 0.15in; color: ${ON_FOREST_SOFT}; }
 
   /* ---- cover ---- */
   .covermap { display: block; }
@@ -506,6 +541,26 @@ const html = `<!doctype html>
   .ico svg { width: 0.25in; height: 0.25in; display: block; }
   .row p { margin-top: 0.055in; }
 
+  /* The code for the tours, in the one dark box on this side. */
+  .row.scan { display: block; }
+  .scanbox {
+    background: ${FOREST};
+    border-radius: 0.04in;
+    padding: 0.15in;
+    display: flex; align-items: center; gap: 0.19in;
+  }
+  .tile {
+    flex: none;
+    width: ${QR_IN + 0.2}in; height: ${QR_IN + 0.2}in;
+    background: ${CREAM};
+    border-radius: 0.03in;
+    padding: 0.1in;
+  }
+  .tile svg { width: 100%; height: 100%; display: block; }
+  .tile path, .tile rect { shape-rendering: crispEdges; }
+  .scantext h3 { font-size: 16pt; line-height: 1.08; letter-spacing: -0.012em; color: ${CREAM}; text-wrap: balance; }
+  .scantext p { margin-top: 0.1in; font-size: 7.3pt; line-height: 1.3; color: ${ON_FOREST}; white-space: nowrap; }
+
   /* ---- proof only ---- */
   .guides { display: none; }
   body.proof .guides { display: block; pointer-events: none; }
@@ -534,15 +589,15 @@ const html = `<!doctype html>
 
     <!-- back -->
     <section class="panel back" data-fit style="${box(OUT_F1 + M, FULL - M * 2)}">
-      <h2>${HELP_HEAD}</h2>
-      ${HELP_BODY.map((para, i) => `<p class="${i ? "more" : "lead"}">${para}</p>`).join("\n      ")}
-      <div class="grow"></div>
-      <div class="tile" id="qr"><svg viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg></div>
+      <h2>${LEARN_HEAD}</h2>
+      <p class="lead">${LEARN_BODY}</p>
       <div class="url">rooted-forward.org</div>
       <div class="mail">contact@rooted-forward.org</div>
       <div class="grow"></div>
+      <h3 class="help">${HELP_HEAD}</h3>
+      ${HELP_BODY.map((para) => `<p class="more">${para}</p>`).join("\n      ")}
+      <div class="grow"></div>
       <div class="lockup">${MARK_RINGED}<span>Rooted Forward</span></div>
-      <p class="credit">Cover map drawn from Home Owners’ Loan Corporation records, 1940, by way of Mapping Inequality, University of Richmond. Streets and shoreline on both maps from U.S. Census TIGER/Line.</p>
     </section>
 
     <!-- cover -->
@@ -554,7 +609,7 @@ const html = `<!doctype html>
       <p class="mission"><span class="who">${MISSION_WHO}</span> ${MISSION_WHAT}</p>
     </section>
     <div class="covercap" style="left:${inch(OUT_F2 + M)};width:2.2in;bottom:0.32in">
-      <p class="credit">The Home Owners’ Loan Corporation’s grades for Chicago, 1940. The neighborhoods shaded red were the ones banks were told to stay out of.</p>
+      <p class="credit">The Home Owners’ Loan Corporation’s grades for Chicago, 1940. The neighborhoods shaded red were the ones banks were told to stay out of. Map data from Mapping Inequality, University of Richmond.</p>
     </div>
 
     <div class="guides"><b></b><i style="left:${inch(OUT_F1)}"></i><i style="left:${inch(OUT_F2)}"></i></div>
@@ -667,7 +722,7 @@ await page.evaluate(() => document.body.classList.remove("proof"));
 /* ---------- prove the code scans ---------- */
 const qrBox = await page.evaluate(() => {
   const q = document.querySelector("#qr").getBoundingClientRect();
-  const s = document.querySelector("#outside").getBoundingClientRect();
+  const s = document.querySelector("#inside").getBoundingClientRect();
   return { x: q.x - s.x, y: q.y - s.y, w: q.width, h: q.height };
 });
 await browser.close();
@@ -679,7 +734,7 @@ async function readQr(pngPath, crop) {
   return jsQR(new Uint8ClampedArray(data), info.width, info.height)?.data;
 }
 const s = DPI / 96;
-const seen = await readQr(join(PROOF, "outside.png"), {
+const seen = await readQr(join(PROOF, "inside.png"), {
   left: Math.round(qrBox.x * s), top: Math.round(qrBox.y * s),
   width: Math.round(qrBox.w * s), height: Math.round(qrBox.h * s),
 });
@@ -713,7 +768,7 @@ const trimSize = outline(TRIM_PDF);
 
 /* ---------- read the code back off the real print file ---------- */
 const probe = join(PROOF, ".qr-probe");
-execFileSync("pdftoppm", ["-png", "-r", "200", "-f", "1", "-l", "1", "-singlefile", TRIM_PDF, probe]);
+execFileSync("pdftoppm", ["-png", "-r", "200", "-f", "2", "-l", "2", "-singlefile", TRIM_PDF, probe]);
 const fromPdf = await readQr(`${probe}.png`);
 unlinkSync(`${probe}.png`);
 if (fromPdf !== QR_URL) throw new Error(`The outlined PDF's QR reads ${fromPdf ?? "nothing"}. Do not print this.`);

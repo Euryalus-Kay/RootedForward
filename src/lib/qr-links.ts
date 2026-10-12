@@ -65,11 +65,13 @@ export const QR_LINKS: Record<string, QrLink> = {
   },
 
   /* The tri-fold brochure. Built by print/brochure/build-brochure.mjs.
-     It is about the whole organization rather than one tour, so the
-     code on its back panel opens the home page on every phone. */
+     The code sits inside, in the box under the paragraph on the
+     tours, and says "Scan for the tours", so it opens the tours page
+     on every phone. It was on the back panel and opened the home page
+     until the owner moved it (October 2026), before any were printed. */
   brochure: {
-    to: SITE,
-    printedOn: "Tri-fold brochure, US Letter, back panel, built October 2026",
+    to: TOURS,
+    printedOn: "Tri-fold brochure, US Letter, inside middle panel, built October 2026",
   },
 
   /* The poster that stands beside the outreach table. Built by
