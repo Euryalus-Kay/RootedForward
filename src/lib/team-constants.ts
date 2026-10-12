@@ -130,15 +130,19 @@ export const TEAM_MEMBERS: TeamMember[] = [
     photo: "/media/team/javonte-white.jpg",
   },
   {
-    slug: "ahmed-agha",
-    name: "Ahmed Agha",
+    /* Took Ahmed Agha's seat in October 2026 (owner). Greenhill School is
+       the independent school at 4141 Spring Valley Road in Addison, in
+       Dallas County. The owner gave it as "Green Hill in Texas", and the
+       card says Dallas the way Sabina's says New York for a school in
+       Bay Ridge. No bio yet on purpose. The owner is still writing it,
+       and no bio means no Read bio button. */
+    slug: "sammar-agha",
+    name: "Sammar Agha",
     sortKey: "Agha",
     order: 2,
-    city: "Washington, DC",
-    school: "Georgetown University",
-    bio:
-      "Ahmed grew up in Dallas and is now an undergraduate at Georgetown University. He conducts medical research and plans to pursue a career in medicine. His research includes a study on how a patient's insurance affects the outcomes of simultaneous pancreas and kidney transplants. In Washington, DC, he researches how urban development has shaped racial inequality across the city, helping Rooted Forward better understand the communities it works with. In his free time, Ahmed enjoys cooking, especially experimenting with new recipes.",
-    photo: "/media/team/ahmed-agha.jpg",
+    city: "Dallas",
+    school: "Greenhill School",
+    photo: "/media/team/sammar-agha.jpg",
   },
   {
     slug: "sabina-aliyev",

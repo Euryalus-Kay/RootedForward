@@ -53,16 +53,20 @@ ENVIRONMENT = [
         "headroom": 0.11,
     },
     {
-        "src": "ahmed-src.png",
-        "slug": "ahmed-agha",
-        "hair_top": 0.215,
-        "face_cx": 0.47,
-        "headroom": 0.10,
-        # Framed tight enough that a full-width square put his head across
-        # four fifths of the circle. The margin is a hotel lobby rather than
-        # a studio wall, so it needs the heavy blur to pass.
-        "widen": 0.24,
-        "widen_blur": 2.6,
+        # Took Ahmed Agha's seat on the roster in October 2026. A studio
+        # portrait in front of a printed backdrop (a flag and a wall of
+        # law books), so it is busy to the edge like his was and gets the
+        # same heavy blur on the widened margin.
+        "src": "sammar-src.jpg",
+        "slug": "sammar-agha",
+        "hair_top": 0.051,
+        "face_cx": 0.54,
+        "headroom": 0.11,
+        # A little margin only. At the full width of the file her hair
+        # touched the top of the circle, and any wider and her head read
+        # smaller than the five beside it.
+        "widen": 0.06,
+        "widen_blur": 2.4,
     },
     {
         "src": "sabina-src.jpg",
