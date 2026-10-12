@@ -134,14 +134,16 @@ export const TEAM_MEMBERS: TeamMember[] = [
        the independent school at 4141 Spring Valley Road in Addison, in
        Dallas County. The owner gave it as "Green Hill in Texas", and the
        card says Dallas the way Sabina's says New York for a school in
-       Bay Ridge. No bio yet on purpose. The owner is still writing it,
-       and no bio means no Read bio button. */
+       Bay Ridge. The bio is one line, her name and her school, at the
+       owner's request so the card has its Read bio button. He is still
+       writing the full paragraph. Replace this line with it. */
     slug: "sammar-agha",
     name: "Sammar Agha",
     sortKey: "Agha",
     order: 2,
     city: "Dallas",
     school: "Greenhill School",
+    bio: "Sammar attends Greenhill School in Addison, Texas.",
     photo: "/media/team/sammar-agha.jpg",
   },
   {
