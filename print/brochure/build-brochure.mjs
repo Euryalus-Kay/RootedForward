@@ -5,8 +5,9 @@
 /*  and at neighborhood markets next to the banner. It is about the    */
 /*  whole organization, not one tour. Who we are on the front, how it  */
 /*  started and who runs it on the first panel a reader opens, the     */
-/*  five things we do on the inside with the code for the tours in     */
-/*  the middle, and how to learn more and help on the back.            */
+/*  five things we do on the inside with the code for the tour app as  */
+/*  a header over the middle panel, and how to learn more and help on  */
+/*  the back.                                                          */
 /*                                                                     */
 /*  The first proof gave two inside panels to a map of Walk Hyde Park  */
 /*  with a numbered key. The owner asked for a more general piece      */
@@ -80,8 +81,9 @@ const TOP = 0.5;
 const BOTTOM = 0.42;
 
 /* The inside is three columns, one to a panel. A picture, its credit,
-   then two rows. The middle column is the tours. The route map, the
-   paragraph on the tours, and the code that opens them. */
+   then two rows. The middle column is the tours. The box with the
+   code for the app sits where the other two have a picture, then the
+   paragraph on the tours, then the route map in the lower row. */
 const COLS = [
   { left: M, width: FULL - M * 2 },
   { left: IN_F1 + M, width: FULL - M * 2 },
@@ -91,6 +93,8 @@ const PIC_TOP = 1.14;
 const PIC_H = 2.65;
 const CAP_TOP = PIC_TOP + PIC_H + 0.06;
 const ROWS_TOP = 4.2;
+/* The route map's height in the lower row of the middle column. */
+const MAP_H = 1.38;
 
 /* ---------- palette (site tokens) ---------- */
 const CREAM = "#F5F0E8";
@@ -152,26 +156,20 @@ const MISSION_WHO = said("about", "A student-run nonprofit started in Chicago.")
 said("about", "racial inequality in cities across the United States, and works to address it through");
 const MISSION_WHAT = "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
 
-/* The first two of the About page's four paragraphs. The one on the
-   survey of 140 people is left on the site, since the owner called
-   that number "not super important" here. The last, on students in
-   three cities doing the work, is said by the line and the six
-   portraits below, which he asked to be larger and to carry each
-   person's school (October 2026). */
+/* How it started, in the owner's third wording (October 2026). The
+   first was the About page's two paragraphs on Zain Zaidi, by name.
+   He then asked for what Zain learned and why he started this, and
+   then for the whole thing to be general and "not Zain focused", in
+   the form "Rooted Forward was founded after identifying". So it is
+   in the organization's voice and names nobody. The facts are the
+   same ones. It began in Chicago with the city changing from one
+   block to the next, the answer was redlining, covenants and urban
+   renewal, and students in other large cities joined. None of this
+   wording is on the site, so none of it is checked against it. */
 const STORY = [
-  said("about", "Rooted Forward was started by Zain Zaidi, a student who lives on the Near South Side and goes to school in Hyde Park. Going between the two every day, he kept running into the bubble around the University of Chicago, and how completely the city changed from one block to the next."),
-  /* The owner's rewrite of the About page's second paragraph for this
-     piece (October 2026). He wanted it to say what Zain learned, that
-     discriminatory urban development was carried out through named
-     practices, and then in one short sentence why he started this, to
-     share that knowledge and change policy. The site still carries
-     the older sentence, so this one is not checked against it. */
-  "Looking for why, Zain learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. He wanted to share that knowledge with others and drive policy change.",
-  /* The owner's, and not on the site yet (October 2026). The account
-     should not stop at Chicago or at three cities. He worked with
-     students across the country who had noticed the same patterns in
-     large American cities. */
-  "Students in other large American cities had seen the same patterns where they live, and joined him.",
+  "We founded Rooted Forward in Chicago after noticing how completely the city changes from one block to the next.",
+  "Looking for why, we learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. We wanted to share that knowledge with others and drive policy change.",
+  "Students in other large American cities had seen the same patterns where they live, and joined us.",
 ];
 
 /* Owner's wording (October 2026). No status beside each city, and no
@@ -218,16 +216,20 @@ said("museum", "Chicago Maritime Museum");
        community events. The earlier line named the Obama Presidential
        Center and the survey, and he asked for it to be general.
      - Petition signatures are submitted as public comment.
-     - We present at schools, and Hyde Park Academy is one. He found
-       "Hyde Park Academy is one of them" as its own sentence off, so
-       the school sits inside the one sentence now.
+     - We give presentations and workshops at schools. Hyde Park
+       Academy was named here twice, first as its own sentence and
+       then inside the one, and he took it out both times.
+     - The tours paragraph was the About page's sentence. He called it
+       bad and asked for one that just explains what the tours are.
      - Nothing here says what is "out now" or "next", since that
        wording goes stale the day the next tour ships.
 
    Archival research was the sixth and came off the inside. The back
    panel still asks for help with it. Its place went to school visits,
-   and the tours moved to the middle column over the code that opens
-   them, which he asked to have inside rather than on the back.
+   and the tours moved to the middle column. The code for the app
+   started in the lower row there. He found it low and asked for it
+   as a big header, so it sits at the top of the column now and the
+   route map took the lower row.
 
    The podcast is on the site but not here, at his request. */
 const WORK = [
@@ -236,27 +238,31 @@ const WORK = [
     ["scale", said("about", "Policy advocacy"), "We run petitions on bills that are already introduced and stuck in a committee, then submit the signatures as public comment."],
   ],
   [
-    ["map", said("about", "Self-guided walking tours"), said("about", "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.")],
-    "scan",
+    ["map", said("about", "Self-guided walking tours"), "Our tours are free and run on our iPhone app. You walk a neighborhood at your own pace, and at each stop the app tells you what happened there. You can also take a tour from home."],
+    "route",
   ],
   [
     ["museum", "Museum partnerships", "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum."],
-    ["school", "School visits", "We visit schools, including Hyde Park Academy, and present our research to students."],
+    ["school", "School visits", "We give presentations and lead workshops at schools, showing students our research and the history behind it."],
   ],
 ];
 
-/* The box under the tours. What the code opens, and the same address
-   in type for a reader who will not scan. */
-const SCAN_HEAD = "Scan for the tours";
-const SCAN_URL = "rooted-forward.org/tours";
+/* The box at the top of the middle column. The heading is the owner's
+   ("scan for virtual tour app"). Under it, what phone the app is for,
+   since the code is no use on any other, and the address in type for
+   a reader who will not scan. */
+const SCAN_HEAD = "Scan for the virtual tour app";
+const SCAN_NOTE = "Free on iPhone";
+const SCAN_URL = "rooted-forward.org<wbr>/tours";
 
 /* Under each picture, what is pictured and whose it is. */
 said("tour", "June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.");
 const CAPTIONS = [
   "The plaza of the Obama Presidential Center on opening day, June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.",
-  "The route of Walk Hyde Park, the first tour in the app.",
+  null, // the middle column opens with the box for the app, not a picture
   said("museum", "The map and its touch screen on the museum's wall in Bridgeport, September 2026. Photograph by Rooted Forward."),
 ];
+const ROUTE_CAPTION = "The route of Walk Hyde Park, the first tour in the app.";
 
 /* The back panel, on the owner's notes (October 2026). It used to be
    headed "We could use your help" with the code under it. He asked
@@ -307,7 +313,7 @@ async function makeQr(slug, id, sheet, pageNo, sizeIn) {
     .replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
   return { slug, url, id, sheet, pageNo, sizeIn, viewBox, inner, modules: Number(viewBox.split(" ")[2]) };
 }
-const QR_TOURS = await makeQr("brochure-tours", "qr-tours", "inside", 2, 1.0);
+const QR_TOURS = await makeQr("brochure-tours", "qr-tours", "inside", 2, 1.2);
 const QR_SITE = await makeQr("brochure", "qr-site", "outside", 1, 1.2);
 const CODES = [QR_TOURS, QR_SITE];
 /* The code on its cream tile, with a quiet zone of a tenth of an inch. */
@@ -346,10 +352,10 @@ const washPng = join(ASSETS, "inside-wash.png");
 execFileSync("rsvg-convert", ["-w", String(Math.round(washMeta.widthIn * 300)), "-b", CREAM, "-o", washPng, join(ASSETS, "inside-wash.svg")]);
 const WASH = (await sharp(washPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
 
-/* The route, drawn to sit in the middle column's picture box, which
-   is the same size as the first column's that it was drawn for. */
+/* The route, drawn wide and short for the lower row of the middle
+   column. */
 const routeMeta = JSON.parse(readFileSync(join(ASSETS, "route-map.json"), "utf8"));
-if (Math.abs(routeMeta.widthIn - COLS[1].width) > 0.002 || Math.abs(routeMeta.heightIn - PIC_H) > 0.002) {
+if (Math.abs(routeMeta.widthIn - COLS[1].width) > 0.002 || Math.abs(routeMeta.heightIn - MAP_H) > 0.002) {
   throw new Error("route-map.svg was drawn for a different picture box. Rerun gen-maps.mjs.");
 }
 const ROUTE_MAP = readFileSync(join(ASSETS, "route-map.svg"), "utf8").replace(/ width="[\d.]+" height="[\d.]+"/, "");
@@ -386,7 +392,7 @@ const members = [...sources.team.matchAll(/\n    slug: "([a-z-]+)",\n    name: "
   return { slug: m[1], name: m[2], city: city[1], school: school[1], photo: m[3], order: order ? +order[1] : 99 };
 }).sort((a, b) => a.order - b.order);
 if (members.length !== 6) throw new Error(`the brochure lays out six portraits, the roster has ${members.length} with a photo`);
-const FACE_IN = 0.53;
+const FACE_IN = 0.56;
 for (const m of members) {
   const buf = await sharp(join(SITE, "public", m.photo)).resize(Math.round(FACE_IN * 600), Math.round(FACE_IN * 600)).jpeg({ quality: 92, chromaSubsampling: "4:4:4" }).toBuffer();
   m.src = `data:image/jpeg;base64,${buf.toString("base64")}`;
@@ -404,19 +410,27 @@ const box = (left, width, top = TOP, bottom = BOTTOM) =>
 const icon = (name) =>
   `<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="${RUST}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[name]}"/></svg></span>`;
 
-const PICS = [
-  `<div class="pic"><img alt="" src="${PLAZA}"></div>`,
-  `<div class="pic map">${ROUTE_MAP}</div>`,
-  `<div class="pic"><img alt="" src="${EXHIBIT}"></div>`,
+/* What sits at the top of each column. A photograph and its credit on
+   either side, and between them the box with the code for the app. */
+const picture = (col, img, caption) => `
+    <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}"><div class="pic"><img alt="" src="${img}"></div></div>
+    <p class="credit" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(CAP_TOP)}">${caption}</p>`;
+const scanHead = (col) => `
+    <div class="scanhead" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">
+      <h3>${SCAN_HEAD}</h3>
+      <div class="scanrow">${tile(QR_TOURS)}<div class="scantext"><p class="note">${SCAN_NOTE}</p><p class="addr">${SCAN_URL}</p></div></div>
+    </div>`;
+const TOPS = [
+  (col) => picture(col, PLAZA, CAPTIONS[0]),
+  scanHead,
+  (col) => picture(col, EXHIBIT, CAPTIONS[2]),
 ];
-/* A row is one of the things we do, or the box with the code. */
+/* A row is one of the things we do, or the route map. */
 const row = (r) =>
-  r === "scan"
-    ? `<div class="row scan"><div class="scanbox">${tile(QR_TOURS)}<div class="scantext"><h3>${SCAN_HEAD}</h3><p>${SCAN_URL}</p></div></div></div>`
+  r === "route"
+    ? `<div class="row maprow"><div><div class="frame" style="height:${inch(MAP_H)}"><div class="pic map">${ROUTE_MAP}</div></div><p class="credit">${ROUTE_CAPTION}</p></div></div>`
     : `<div class="row">${icon(r[0])}<div><h3>${r[1]}</h3><p>${r[2]}</p></div></div>`;
-const column = (col, i) => `
-    <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">${PICS[i]}</div>
-    <p class="credit" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(CAP_TOP)}">${CAPTIONS[i]}</p>
+const column = (col, i) => `${TOPS[i](col)}
     <section class="panel rows" data-fit style="${box(col.left, col.width, ROWS_TOP)}">
       ${WORK[i].map(row).join("\n      ")}
     </section>`;
@@ -471,15 +485,15 @@ const html = `<!doctype html>
   .story p { line-height: 1.46; }
   .active {
     border-top: 0.6pt solid ${BORDER};
-    padding-top: 0.14in;
+    padding-top: 0.15in;
     font-family: "RF Serif", Georgia, serif; font-size: 14.5pt; line-height: 1.17; letter-spacing: -0.01em;
     color: ${FOREST};
     text-wrap: balance;
   }
-  .team-title { margin-top: 0.15in; font-size: 11.5pt; color: ${INK}; }
+  .team-title { margin-top: 0.18in; font-size: 11.5pt; color: ${INK}; }
   .team {
-    margin-top: 0.12in;
-    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.075in;
+    margin-top: 0.14in;
+    display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 0.14in; row-gap: 0.1in;
   }
   .team img { display: block; width: ${FACE_IN}in; height: ${FACE_IN}in; border-radius: 50%; outline: 0.6pt solid ${BORDER}; }
   .team b {
@@ -563,14 +577,17 @@ const html = `<!doctype html>
   .ico svg { width: 0.25in; height: 0.25in; display: block; }
   .row p { margin-top: 0.055in; }
 
-  /* The code for the tours, in the one dark box on this side. */
-  .row.scan { display: block; }
-  .scanbox {
+  /* The code for the app, in the one dark box on this side. It takes
+     the picture slot of the middle column, so it reads as the header
+     of the tours. */
+  .scanhead {
     background: ${FOREST};
     border-radius: 0.04in;
-    padding: 0.15in;
-    display: flex; align-items: center; gap: 0.19in;
+    padding: 0.22in 0.2in 0.2in;
+    display: flex; flex-direction: column; justify-content: space-between;
   }
+  .scanhead h3 { font-size: 23pt; line-height: 1.05; letter-spacing: -0.018em; color: ${CREAM}; text-wrap: balance; }
+  .scanrow { display: flex; align-items: flex-end; gap: 0.18in; }
   .tile {
     flex: none;
     background: ${CREAM};
@@ -579,8 +596,13 @@ const html = `<!doctype html>
   }
   .tile svg { width: 100%; height: 100%; display: block; }
   .tile path, .tile rect { shape-rendering: crispEdges; }
-  .scantext h3 { font-size: 16pt; line-height: 1.08; letter-spacing: -0.012em; color: ${CREAM}; text-wrap: balance; }
-  .scantext p { margin-top: 0.1in; font-size: 7.3pt; line-height: 1.3; color: ${ON_FOREST}; white-space: nowrap; }
+  .scantext .note { font-family: "RF Serif", Georgia, serif; font-size: 12.5pt; line-height: 1.12; letter-spacing: -0.008em; color: ${CREAM}; }
+  .scantext .addr { margin-top: 0.07in; font-size: 7.3pt; line-height: 1.35; color: ${ON_FOREST}; }
+
+  /* The route map in the lower row of the middle column. */
+  .row.maprow { display: block; }
+  .maprow .frame { position: relative; }
+  .maprow .credit { margin-top: 0.06in; }
 
   /* ---- proof only ---- */
   .guides { display: none; }
@@ -681,6 +703,10 @@ const fit = await page.evaluate(() => {
     const box = el.getBoundingClientRect();
     let bottom = 0, right = 0;
     for (const child of el.querySelectorAll("*")) {
+      /* A drawing is measured by its own box. The streets in the route
+         map run past its edge and are cut off by the frame, and their
+         full extent would read as a spill. */
+      if (child.ownerSVGElement) continue;
       const r = child.getBoundingClientRect();
       if (r.width === 0 || r.height === 0) continue;
       bottom = Math.max(bottom, r.bottom);
