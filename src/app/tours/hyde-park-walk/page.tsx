@@ -19,7 +19,12 @@ import { getWalkTour } from "@/lib/tours/registry";
 /*  app, and this player moved down here so that anyone without an     */
 /*  iPhone can still take the walk. The App Store listing promises     */
 /*  the narration is free on the site, so keep this route reachable.   */
-/*  It is linked from /tours and from the app-download block there.    */
+/*                                                                     */
+/*  Nothing on the site links here any more, and it is out of the      */
+/*  sitemap (owner, October 2026, "we only do the app"). The page is   */
+/*  still up only because of that sentence in the live App Store       */
+/*  description (ios/AppStore/metadata.md). Take the sentence out in   */
+/*  the next app version before taking this page down.                 */
 /*                                                                     */
 /*  The page body is shared with Walk Harlem. Everything specific to   */
 /*  this city lives in the registry bundle.                            */

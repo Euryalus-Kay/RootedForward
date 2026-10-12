@@ -3,9 +3,9 @@
 /*                                                                     */
 /*  Rebuilt July 2026. This page no longer hosts a tour of its own.    */
 /*  It explains what the tours are, lists the routes that are          */
-/*  finished, and sends people to the iPhone app. The in-browser       */
-/*  Hyde Park player moved to /tours/hyde-park-walk and stays linked    */
-/*  as the fallback for anyone without an iPhone.                      */
+/*  finished, and sends people to the iPhone app. The tours are in the  */
+/*  app only (owner, October 2026), so this page no longer links the   */
+/*  browser player at /tours/hyde-park-walk.                           */
 /*                                                                     */
 /*  Two things are deliberately kept in one place each, so the page    */
 /*  is cheap to update later.                                          */
@@ -305,19 +305,8 @@ export default function ToursPage() {
                     ))}
                   </div>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+                  <div className="mt-8">
                     <AppStoreButton tone="rust" withNote={false} />
-                    {tour.offerBrowser && (
-                      <Link
-                        href={tour.path}
-                        className="group font-body text-sm font-semibold uppercase tracking-widest text-forest transition-colors hover:text-rust"
-                      >
-                        Or take it in your browser{" "}
-                        <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                          &rarr;
-                        </span>
-                      </Link>
-                    )}
                   </div>
 
                 </div>

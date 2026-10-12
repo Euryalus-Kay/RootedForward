@@ -169,7 +169,7 @@ const ALL_WALKS: WalkTourBundle[] = [
         links: [
           {
             label: "Walk Hyde Park",
-            href: "/tours/hyde-park-walk",
+            href: "/tours",
             primary: true,
           },
           { label: "Read the Chicago exhibit", href: "/tours/chicago/hyde-park" },
@@ -200,7 +200,7 @@ const ALL_WALKS: WalkTourBundle[] = [
         links: [
           {
             label: "Walk Hyde Park",
-            href: "/tours/hyde-park-walk",
+            href: "/tours",
             primary: true,
           },
           { label: "Read the Chicago exhibit", href: "/tours/chicago/hyde-park" },

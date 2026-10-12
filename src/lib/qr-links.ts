@@ -28,10 +28,10 @@
 
 export const SITE = "https://rooted-forward.org";
 
-/** Where non-iPhone scanners land. The App Store link is useless on an
- *  Android phone or a laptop, and a dead end at a market table is worse
- *  than a slower path, so those scans get the page that explains the
- *  tours and links the in-browser version. */
+/** The page that explains the tours and carries the App Store button.
+ *  It used to link an in-browser version for phones that are not
+ *  iPhones. The owner took that off in October 2026, since the tours
+ *  are in the app only. */
 const TOURS = `${SITE}/tours`;
 
 export type QrLink = {
@@ -56,20 +56,29 @@ export const QR_LINKS: Record<string, QrLink> = {
 
   /* The Ground Keeps Moving exhibition panels. Sheet 4 of both the
      36x48 board series and the retractable banner series carries this
-     code next to the route map, inviting visitors to walk the tour,
-     so it lands on the Hyde Park walk itself rather than the hub. */
+     code next to the route map, inviting visitors to walk the tour.
+     It opened the browser player at /tours/hyde-park-walk until
+     October 2026, when the owner made the tours app only. It opens
+     the tours page and its App Store button now. */
   exhibit: {
-    to: `${SITE}/tours/hyde-park-walk`,
+    to: TOURS,
     printedOn:
       "The Ground Keeps Moving exhibition, sheet 4 of the 36x48 boards and the 33x81 retractable banners, built August 2026",
   },
 
   /* The tri-fold brochure. Built by print/brochure/build-brochure.mjs.
-     The code sits inside, in the box under the paragraph on the
-     tours, and says "Scan for the tours", so it opens the tours page
-     on every phone. It was on the back panel and opened the home page
-     until the owner moved it (October 2026), before any were printed. */
+     It carries two codes (owner, October 2026). This one is on the
+     back panel under "Learn more about Rooted Forward" and opens the
+     home page on every phone. */
   brochure: {
+    to: SITE,
+    printedOn: "Tri-fold brochure, US Letter, back panel, built October 2026",
+  },
+
+  /* The brochure's other code. It sits inside, in the box under the
+     paragraph on the tours, and says "Scan for the tours", so it opens
+     the tours page. */
+  "brochure-tours": {
     to: TOURS,
     printedOn: "Tri-fold brochure, US Letter, inside middle panel, built October 2026",
   },

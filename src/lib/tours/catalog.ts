@@ -8,6 +8,11 @@
 /*  finished and the tour is in the app, not while it is being         */
 /*  written. Cities being researched are named in the "next" note on   */
 /*  the page instead, without a route attached.                        */
+/*                                                                     */
+/*  The tours are in the app only (owner, October 2026). A listing     */
+/*  used to carry the path of the walk's browser player and a switch   */
+/*  for offering it beside the App Store button. Both came off, so     */
+/*  nothing on /tours links a browser version.                         */
 /* ------------------------------------------------------------------ */
 
 import { HARLEM_LIVE, WEST_HARLEM_LIVE } from "./registry";
@@ -17,11 +22,6 @@ export interface TourListing {
   title: string;
   city: string;
   neighborhood: string;
-  /** the in-browser player, which the App Store listing promises is free */
-  path: string;
-  /** whether the tours page offers the browser player beside the app
-   *  button. Off for a walk we would rather people took on a phone. */
-  offerBrowser?: boolean;
   /** One sentence, plain. What the walk is about. */
   blurb: string;
   /** Facts strip. Keep these matched to src/lib/tours/*-walk.ts. */
@@ -35,8 +35,6 @@ const ALL_LISTINGS: TourListing[] = [
     title: "Walk Hyde Park",
     city: "Chicago",
     neighborhood: "Hyde Park",
-    path: "/tours/hyde-park-walk",
-    offerBrowser: true,
     blurb:
       "The tour goes through the Chicago neighborhood of Hyde Park, stopping at sites that reflect its deep racial history and the inequality that still shapes the neighborhood today. It starts at Paul Cornell's stone by 53rd Street and ends at Harper Court.",
     facts: [
@@ -57,7 +55,6 @@ const ALL_LISTINGS: TourListing[] = [
     title: "Walk Harlem",
     city: "New York",
     neighborhood: "Central Harlem",
-    path: "/tours/harlem-walk",
     blurb:
       "The tour goes through Central Harlem, stopping at the blocks where Black New Yorkers bought and leased property and at the buildings where a century of covenants, appraisals, and clearance plans took the value back out. It starts at the Hotel Theresa on 125th Street and ends at 145th Street and Lenox Avenue.",
     facts: [
@@ -78,7 +75,6 @@ const ALL_LISTINGS: TourListing[] = [
     title: "Walk Columbia and West Harlem",
     city: "New York",
     neighborhood: "West Harlem",
-    path: "/tours/west-harlem-walk",
     blurb:
       "The tour goes through Morningside Heights and the West Harlem blocks below it, stopping at the places where Columbia University, Riverside Church and the city decided what would happen to the ground around them, and where the people living beside them answered. It starts at Columbia's gate on Broadway, goes around the campus and down to Morningside Park, and ends on the Hudson at West Harlem Piers.",
     facts: [

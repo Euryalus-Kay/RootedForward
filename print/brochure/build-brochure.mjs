@@ -35,10 +35,11 @@
 /*  src/lib/team-constants.ts, the plaza is a CC0 photograph the tour  */
 /*  already uses, and the museum photograph is ours. No stock.         */
 /*                                                                     */
-/*  The QR code encodes rooted-forward.org/go/brochure, our own        */
-/*  redirect, so a printed brochure can be re-pointed for as long as   */
-/*  the domain is ours (src/lib/qr-links.ts). It sits inside, under    */
-/*  the tours, and opens the tours page.                               */
+/*  There are two QR codes. Each encodes a /go address on our own      */
+/*  domain, so a printed brochure can be re-pointed for as long as     */
+/*  the domain is ours (src/lib/qr-links.ts). /go/brochure-tours sits  */
+/*  inside under the tours and opens the tours page. /go/brochure is   */
+/*  on the back and opens the home page.                               */
 /*                                                                     */
 /*    npm install --no-save qrcode jsqr                                */
 /*    node print/brochure/gen-maps.mjs                                 */
@@ -260,7 +261,9 @@ const CAPTIONS = [
 /* The back panel, on the owner's notes (October 2026). It used to be
    headed "We could use your help" with the code under it. He asked
    for it to be about learning more, with a line on that first and the
-   ask for help after it, no code, and no source line at the foot. */
+   ask for help after it, and no source line at the foot. The code
+   came off for one proof when he moved it inside, and he then asked
+   for one here as well, opening the website. */
 const LEARN_HEAD = "Learn more about Rooted Forward";
 /* The two things the home page itself offers a visitor first. */
 said("about", "Self-guided walking tours");
@@ -277,21 +280,39 @@ const HELP_BODY = [
 ];
 
 /* ---------- QR ---------- */
-const QR_URL = "https://rooted-forward.org/go/brochure";
-const qrSvg = await QRCode.toString(QR_URL, {
-  type: "svg",
-  errorCorrectionLevel: "Q",
-  margin: 0,
-  color: { dark: FOREST, light: "#0000" },
-});
-const qrViewBox = qrSvg.match(/viewBox="([^"]+)"/)[1];
-const qrInner = qrSvg
-  .replace(/<\?xml[^>]*\?>/, "")
-  .replace(/<svg[^>]*>/, "")
-  .replace(/<\/svg>/, "")
-  .replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
-const qrModules = Number(qrViewBox.split(" ")[2]);
-const QR_IN = 1.0;
+/* Two codes (owner, October 2026). One inside, under the tours, that
+   opens the tours page. One on the back, under "Learn more", that
+   opens the home page. Each encodes its own /go address, so either
+   can be re-pointed after printing without touching the other. The
+   build stops if a slug has no row in src/lib/qr-links.ts, since a
+   printed code with no redirect behind it falls back to the tours
+   page whatever it says beside it. */
+const qrLinks = readFileSync(join(SITE, "src/lib/qr-links.ts"), "utf8");
+async function makeQr(slug, id, sheet, pageNo, sizeIn) {
+  if (!new RegExp(`\\n  "?${slug}"?: \\{`).test(qrLinks)) {
+    throw new Error(`/go/${slug} has no row in src/lib/qr-links.ts. Add it before printing a code for it.`);
+  }
+  const url = `https://rooted-forward.org/go/${slug}`;
+  const svg = await QRCode.toString(url, {
+    type: "svg",
+    errorCorrectionLevel: "Q",
+    margin: 0,
+    color: { dark: FOREST, light: "#0000" },
+  });
+  const viewBox = svg.match(/viewBox="([^"]+)"/)[1];
+  const inner = svg
+    .replace(/<\?xml[^>]*\?>/, "")
+    .replace(/<svg[^>]*>/, "")
+    .replace(/<\/svg>/, "")
+    .replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
+  return { slug, url, id, sheet, pageNo, sizeIn, viewBox, inner, modules: Number(viewBox.split(" ")[2]) };
+}
+const QR_TOURS = await makeQr("brochure-tours", "qr-tours", "inside", 2, 1.0);
+const QR_SITE = await makeQr("brochure", "qr-site", "outside", 1, 1.2);
+const CODES = [QR_TOURS, QR_SITE];
+/* The code on its cream tile, with a quiet zone of a tenth of an inch. */
+const tile = (q) =>
+  `<div class="tile" id="${q.id}" style="width:${q.sizeIn + 0.2}in;height:${q.sizeIn + 0.2}in"><svg viewBox="${q.viewBox}" xmlns="http://www.w3.org/2000/svg">${q.inner}</svg></div>`;
 
 /* ---------- the mark ---------- */
 /* public/logo.svg exactly as drawn. On the forest panel it gets the
@@ -391,7 +412,7 @@ const PICS = [
 /* A row is one of the things we do, or the box with the code. */
 const row = (r) =>
   r === "scan"
-    ? `<div class="row scan"><div class="scanbox"><div class="tile" id="qr"><svg viewBox="${qrViewBox}" xmlns="http://www.w3.org/2000/svg">${qrInner}</svg></div><div class="scantext"><h3>${SCAN_HEAD}</h3><p>${SCAN_URL}</p></div></div></div>`
+    ? `<div class="row scan"><div class="scanbox">${tile(QR_TOURS)}<div class="scantext"><h3>${SCAN_HEAD}</h3><p>${SCAN_URL}</p></div></div></div>`
     : `<div class="row">${icon(r[0])}<div><h3>${r[1]}</h3><p>${r[2]}</p></div></div>`;
 const column = (col, i) => `
     <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">${PICS[i]}</div>
@@ -474,8 +495,9 @@ const html = `<!doctype html>
   .back h2 { color: ${CREAM}; }
   .back p { color: ${ON_FOREST}; }
   .back .lead { margin-top: 0.17in; }
+  .back .tile { margin-top: 0.24in; }
   .url {
-    margin-top: 0.26in;
+    margin-top: 0.2in;
     font-family: "RF Serif", Georgia, serif; font-size: 20pt; line-height: 1; letter-spacing: -0.012em;
     color: ${CREAM};
   }
@@ -551,7 +573,6 @@ const html = `<!doctype html>
   }
   .tile {
     flex: none;
-    width: ${QR_IN + 0.2}in; height: ${QR_IN + 0.2}in;
     background: ${CREAM};
     border-radius: 0.03in;
     padding: 0.1in;
@@ -591,6 +612,7 @@ const html = `<!doctype html>
     <section class="panel back" data-fit style="${box(OUT_F1 + M, FULL - M * 2)}">
       <h2>${LEARN_HEAD}</h2>
       <p class="lead">${LEARN_BODY}</p>
+      ${tile(QR_SITE)}
       <div class="url">rooted-forward.org</div>
       <div class="mail">contact@rooted-forward.org</div>
       <div class="grow"></div>
@@ -719,12 +741,12 @@ for (const proof of [false, true]) {
 }
 await page.evaluate(() => document.body.classList.remove("proof"));
 
-/* ---------- prove the code scans ---------- */
-const qrBox = await page.evaluate(() => {
-  const q = document.querySelector("#qr").getBoundingClientRect();
-  const s = document.querySelector("#inside").getBoundingClientRect();
+/* ---------- prove the codes scan ---------- */
+const qrBoxes = await page.evaluate((codes) => codes.map((c) => {
+  const q = document.querySelector(`#${c.id}`).getBoundingClientRect();
+  const s = document.querySelector(`#${c.sheet}`).getBoundingClientRect();
   return { x: q.x - s.x, y: q.y - s.y, w: q.width, h: q.height };
-});
+}), CODES.map(({ id, sheet }) => ({ id, sheet })));
 await browser.close();
 
 async function readQr(pngPath, crop) {
@@ -734,11 +756,14 @@ async function readQr(pngPath, crop) {
   return jsQR(new Uint8ClampedArray(data), info.width, info.height)?.data;
 }
 const s = DPI / 96;
-const seen = await readQr(join(PROOF, "inside.png"), {
-  left: Math.round(qrBox.x * s), top: Math.round(qrBox.y * s),
-  width: Math.round(qrBox.w * s), height: Math.round(qrBox.h * s),
-});
-if (seen !== QR_URL) throw new Error(`The rendered QR reads ${seen ?? "nothing"}, expected ${QR_URL}. Do not print this.`);
+for (const [i, code] of CODES.entries()) {
+  const b = qrBoxes[i];
+  const seen = await readQr(join(PROOF, `${code.sheet}.png`), {
+    left: Math.round(b.x * s), top: Math.round(b.y * s),
+    width: Math.round(b.w * s), height: Math.round(b.h * s),
+  });
+  if (seen !== code.url) throw new Error(`The rendered ${code.sheet} QR reads ${seen ?? "nothing"}, expected ${code.url}. Do not print this.`);
+}
 
 /* ---------- outline the type ---------- */
 /* Chrome writes variable fonts as Type3, which a print shop's
@@ -766,14 +791,17 @@ function outline(pdfPath) {
 const bleedSize = outline(BLEED_PDF);
 const trimSize = outline(TRIM_PDF);
 
-/* ---------- read the code back off the real print file ---------- */
-const probe = join(PROOF, ".qr-probe");
-execFileSync("pdftoppm", ["-png", "-r", "200", "-f", "2", "-l", "2", "-singlefile", TRIM_PDF, probe]);
-const fromPdf = await readQr(`${probe}.png`);
-unlinkSync(`${probe}.png`);
-if (fromPdf !== QR_URL) throw new Error(`The outlined PDF's QR reads ${fromPdf ?? "nothing"}. Do not print this.`);
+/* ---------- read the codes back off the real print file ---------- */
+/* One code to a side, so each page is read whole. */
+for (const code of CODES) {
+  const probe = join(PROOF, ".qr-probe");
+  execFileSync("pdftoppm", ["-png", "-r", "200", "-f", String(code.pageNo), "-l", String(code.pageNo), "-singlefile", TRIM_PDF, probe]);
+  const fromPdf = await readQr(`${probe}.png`);
+  unlinkSync(`${probe}.png`);
+  if (fromPdf !== code.url) throw new Error(`The outlined PDF's ${code.sheet} QR reads ${fromPdf ?? "nothing"}, expected ${code.url}. Do not print this.`);
+  console.log("QR              ", code.url, `(${code.sheet}, ${code.modules} modules, ${(code.sizeIn / code.modules * 25.4).toFixed(2)}mm each, scans from the print file)`);
+}
 
-console.log("QR              ", QR_URL, `(${qrModules} modules, ${(QR_IN / qrModules * 25.4).toFixed(2)}mm each, scans from the print file)`);
 console.log("type            ", "outlined, no fonts in either file");
 console.log("wrote           ", `print/rooted-forward-brochure-trifold-bleed.pdf  ${bleedSize.join(" x ")} in`);
 console.log("                ", `print/rooted-forward-brochure-trifold.pdf        ${trimSize.join(" x ")} in`);
