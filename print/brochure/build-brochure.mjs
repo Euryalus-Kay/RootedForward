@@ -5,9 +5,9 @@
 /*  and at neighborhood markets next to the banner. It is about the    */
 /*  whole organization, not one tour. Who we are on the front, how it  */
 /*  started and who runs it on the first panel a reader opens, the     */
-/*  five things we do on the inside with the code for the tour app as  */
-/*  a header over the middle panel, and how to learn more and help on  */
-/*  the back.                                                          */
+/*  five things we do on the inside with the code for the tour app     */
+/*  under the tours in the middle panel, and how to learn more and     */
+/*  help on the back.                                                  */
 /*                                                                     */
 /*  The first proof gave two inside panels to a map of Walk Hyde Park  */
 /*  with a numbered key. The owner asked for a more general piece      */
@@ -81,9 +81,8 @@ const TOP = 0.5;
 const BOTTOM = 0.42;
 
 /* The inside is three columns, one to a panel. A picture, its credit,
-   then two rows. The middle column is the tours. The box with the
-   code for the app sits where the other two have a picture, then the
-   paragraph on the tours, then the route map in the lower row. */
+   then two rows. The middle column is the tours. The route map, the
+   paragraph on the tours, and the box with the code for the app. */
 const COLS = [
   { left: M, width: FULL - M * 2 },
   { left: IN_F1 + M, width: FULL - M * 2 },
@@ -93,8 +92,6 @@ const PIC_TOP = 1.14;
 const PIC_H = 2.65;
 const CAP_TOP = PIC_TOP + PIC_H + 0.06;
 const ROWS_TOP = 4.2;
-/* The route map's height in the lower row of the middle column. */
-const MAP_H = 1.38;
 
 /* ---------- palette (site tokens) ---------- */
 const CREAM = "#F5F0E8";
@@ -174,21 +171,23 @@ const COVER_CAPTION = "A federal map of Chicago from 1940 that graded neighborho
    in the organization's voice and names nobody. The facts are the
    same ones. It began in Chicago with the city changing from one
    block to the next, the answer was redlining, covenants and urban
-   renewal, and students in other large cities joined. None of this
-   wording is on the site, so none of it is checked against it. */
+   renewal, and students in other cities joined. The last line is
+   his October 12 wording, that they have joined us in sharing the
+   history of their own areas, and the heading is "About Rooted
+   Forward" at his suggestion the same day. None of this wording is
+   on the site, so none of it is checked against it. */
 const STORY = [
   "We founded Rooted Forward in Chicago after noticing how completely the city changes from one block to the next.",
   "Looking for why, we learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. We wanted to share that knowledge with others and drive policy change.",
-  "Students in other large American cities had seen the same patterns where they live, and joined us.",
+  "Students in other cities had seen the same patterns where they live, and have joined us in sharing the history of their own neighborhoods.",
 ];
 
-/* Owner's wording (October 2026). No status beside each city, and no
-   "research in progress". We are active in all three. The line stands
-   on its own, and the portraits get their own heading under it, since
-   as a caption for six faces it did not fit.
-   Non-breaking spaces keep "New York" and "Washington, DC" whole when
-   the line turns. */
-const ACTIVE = "We are active in Chicago, New York, and Washington, DC.";
+/* Owner's wording (October 12, 2026). It named Chicago, New York and
+   Washington, DC until he said not to limit it to three cities, and
+   gave this line. It stands on its own, and the portraits get their
+   own heading under it, since as a caption for six faces it did not
+   fit. */
+const ACTIVE = "We are active in Chicago and other large American cities.";
 const TEAM_TITLE = "Leadership team";
 
 /* Heroicons outline, the set the home page draws from. The first
@@ -230,16 +229,19 @@ said("museum", "Chicago Maritime Museum");
        Academy was named here twice, first as its own sentence and
        then inside the one, and he took it out both times.
      - The tours paragraph was the About page's sentence. He called it
-       bad and asked for one that just explains what the tours are.
+       bad and asked for one that just explains what the tours are,
+       then (October 12) for it to say we create free self-guided
+       tours of different neighborhoods to show their history.
      - Nothing here says what is "out now" or "next", since that
        wording goes stale the day the next tour ships.
 
    Archival research was the sixth and came off the inside. The back
    panel still asks for help with it. Its place went to school visits,
-   and the tours moved to the middle column. The code for the app
-   started in the lower row there. He found it low and asked for it
-   as a big header, so it sits at the top of the column now and the
-   route map took the lower row.
+   and the tours moved to the middle column with the code for the
+   app in the lower row. He found it low and asked for it as a big
+   header, then said he had meant only a little higher and asked for
+   the old format back (October 12). So the box is in the lower row
+   again, with less room above it than the other rows have.
 
    The podcast is on the site but not here, at his request. */
 const WORK = [
@@ -248,8 +250,8 @@ const WORK = [
     ["scale", said("about", "Policy advocacy"), "We run petitions on bills that are already introduced and stuck in a committee, then submit the signatures as public comment."],
   ],
   [
-    ["map", said("about", "Self-guided walking tours"), "Our tours are free and run on our iPhone app. You walk a neighborhood at your own pace, and at each stop the app tells you what happened there. You can also take a tour from home."],
-    "route",
+    ["map", said("about", "Self-guided walking tours"), "We create free self-guided tours of different neighborhoods to show their history. They run on our iPhone app. You walk at your own pace, and at each stop the app tells you what happened there. You can also take one from home."],
+    "scan",
   ],
   [
     ["museum", "Museum partnerships", "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum."],
@@ -257,33 +259,33 @@ const WORK = [
   ],
 ];
 
-/* The box at the top of the middle column. The heading is the owner's
-   ("scan for virtual tour app"). Under it, what phone the app is for,
-   since the code is no use on any other, and the address in type for
-   a reader who will not scan. */
+/* The box under the tours. The heading is the owner's ("scan for
+   virtual tour app"), and the address is in type for a reader who
+   will not scan. The paragraph above it already says the app is for
+   iPhone. */
 const SCAN_HEAD = "Scan for the virtual tour app";
-const SCAN_NOTE = "Free on iPhone";
-const SCAN_URL = "rooted-forward.org<wbr>/tours";
+const SCAN_URL = "rooted-forward.org/tours";
 
 /* Under each picture, what is pictured and whose it is. */
 said("tour", "June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.");
 const CAPTIONS = [
   "The plaza of the Obama Presidential Center on opening day, June 19, 2026. Photograph by AlphaBeta135, via Wikimedia Commons. CC0.",
-  null, // the middle column opens with the box for the app, not a picture
+  "The route of Walk Hyde Park, the first tour in the app.",
   said("museum", "The map and its touch screen on the museum's wall in Bridgeport, September 2026. Photograph by Rooted Forward."),
 ];
-const ROUTE_CAPTION = "The route of Walk Hyde Park, the first tour in the app.";
 
 /* The back panel, on the owner's notes (October 2026). It used to be
    headed "We could use your help" with the code under it. He asked
    for it to be about learning more, with a line on that first and the
    ask for help after it, and no source line at the foot. The code
    came off for one proof when he moved it inside, and he then asked
-   for one here as well, opening the website. */
+   for one here as well, opening the website. The email sat under the
+   address until October 12, when he asked for it after the ask for
+   help instead, since that is what it answers. */
 const LEARN_HEAD = "Learn more about Rooted Forward";
 /* The two things the home page itself offers a visitor first. */
 said("about", "Self-guided walking tours");
-const LEARN_BODY = "Take a tour or sign one of our petitions on our website, or write to us.";
+const LEARN_BODY = "Take a tour or sign one of our petitions on our website.";
 
 const HELP_HEAD = said("about", "We could use your help");
 /* The ask, in the owner's terms (October 2026). Partners who can put
@@ -323,7 +325,7 @@ async function makeQr(slug, id, sheet, pageNo, sizeIn) {
     .replace(/<rect[^>]*fill="#0000"[^>]*\/>/, "");
   return { slug, url, id, sheet, pageNo, sizeIn, viewBox, inner, modules: Number(viewBox.split(" ")[2]) };
 }
-const QR_TOURS = await makeQr("brochure-tours", "qr-tours", "inside", 2, 1.2);
+const QR_TOURS = await makeQr("brochure-tours", "qr-tours", "inside", 2, 1.0);
 const QR_SITE = await makeQr("brochure", "qr-site", "outside", 1, 1.2);
 const CODES = [QR_TOURS, QR_SITE];
 /* The code on its cream tile, with a quiet zone of a tenth of an inch. */
@@ -362,10 +364,10 @@ const washPng = join(ASSETS, "inside-wash.png");
 execFileSync("rsvg-convert", ["-w", String(Math.round(washMeta.widthIn * 300)), "-b", CREAM, "-o", washPng, join(ASSETS, "inside-wash.svg")]);
 const WASH = (await sharp(washPng).flatten({ background: CREAM }).png({ compressionLevel: 9 }).toBuffer()).toString("base64");
 
-/* The route, drawn wide and short for the lower row of the middle
-   column. */
+/* The route, drawn to sit in the middle column's picture box, which
+   is the same size as the first column's that it was drawn for. */
 const routeMeta = JSON.parse(readFileSync(join(ASSETS, "route-map.json"), "utf8"));
-if (Math.abs(routeMeta.widthIn - COLS[1].width) > 0.002 || Math.abs(routeMeta.heightIn - MAP_H) > 0.002) {
+if (Math.abs(routeMeta.widthIn - COLS[1].width) > 0.002 || Math.abs(routeMeta.heightIn - PIC_H) > 0.002) {
   throw new Error("route-map.svg was drawn for a different picture box. Rerun gen-maps.mjs.");
 }
 const ROUTE_MAP = readFileSync(join(ASSETS, "route-map.svg"), "utf8").replace(/ width="[\d.]+" height="[\d.]+"/, "");
@@ -420,27 +422,21 @@ const box = (left, width, top = TOP, bottom = BOTTOM) =>
 const icon = (name) =>
   `<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="${RUST}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[name]}"/></svg></span>`;
 
-/* What sits at the top of each column. A photograph and its credit on
-   either side, and between them the box with the code for the app. */
-const picture = (col, img, caption) => `
-    <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}"><div class="pic"><img alt="" src="${img}"></div></div>
-    <p class="credit" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(CAP_TOP)}">${caption}</p>`;
-const scanHead = (col) => `
-    <div class="scanhead" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">
-      <h3>${SCAN_HEAD}</h3>
-      <div class="scanrow">${tile(QR_TOURS)}<div class="scantext"><p class="note">${SCAN_NOTE}</p><p class="addr">${SCAN_URL}</p></div></div>
-    </div>`;
-const TOPS = [
-  (col) => picture(col, PLAZA, CAPTIONS[0]),
-  scanHead,
-  (col) => picture(col, EXHIBIT, CAPTIONS[2]),
+/* What sits at the top of each column. A photograph on either side
+   and the route map between them, each with its credit under it. */
+const PICS = [
+  `<div class="pic"><img alt="" src="${PLAZA}"></div>`,
+  `<div class="pic map">${ROUTE_MAP}</div>`,
+  `<div class="pic"><img alt="" src="${EXHIBIT}"></div>`,
 ];
-/* A row is one of the things we do, or the route map. */
+/* A row is one of the things we do, or the box with the code. */
 const row = (r) =>
-  r === "route"
-    ? `<div class="row maprow"><div><div class="frame" style="height:${inch(MAP_H)}"><div class="pic map">${ROUTE_MAP}</div></div><p class="credit">${ROUTE_CAPTION}</p></div></div>`
+  r === "scan"
+    ? `<div class="row scan"><div class="scanbox">${tile(QR_TOURS)}<div class="scantext"><h3>${SCAN_HEAD}</h3><p>${SCAN_URL}</p></div></div></div>`
     : `<div class="row">${icon(r[0])}<div><h3>${r[1]}</h3><p>${r[2]}</p></div></div>`;
-const column = (col, i) => `${TOPS[i](col)}
+const column = (col, i) => `
+    <div class="frame" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(PIC_TOP)};height:${inch(PIC_H)}">${PICS[i]}</div>
+    <p class="credit" style="left:${inch(col.left)};width:${inch(col.width)};top:${inch(CAP_TOP)}">${CAPTIONS[i]}</p>
     <section class="panel rows" data-fit style="${box(col.left, col.width, ROWS_TOP)}">
       ${WORK[i].map(row).join("\n      ")}
     </section>`;
@@ -525,7 +521,8 @@ const html = `<!doctype html>
     font-family: "RF Serif", Georgia, serif; font-size: 20pt; line-height: 1; letter-spacing: -0.012em;
     color: ${CREAM};
   }
-  .mail { margin-top: 0.09in; font-size: 8.8pt; color: ${ON_FOREST}; }
+  /* The email, under the ask for help, as the way to answer it. */
+  .back .mail { margin-top: 0.17in; font-family: "RF Serif", Georgia, serif; font-size: 11.5pt; letter-spacing: -0.008em; color: ${CREAM}; }
   .back .help {
     border-top: 0.6pt solid ${mix(CREAM, FOREST, 0.3)};
     padding-top: 0.2in;
@@ -587,17 +584,20 @@ const html = `<!doctype html>
   .ico svg { width: 0.25in; height: 0.25in; display: block; }
   .row p { margin-top: 0.055in; }
 
-  /* The code for the app, in the one dark box on this side. It takes
-     the picture slot of the middle column, so it reads as the header
-     of the tours. */
-  .scanhead {
+  /* The code for the app, in the one dark box on this side. The box
+     sits 0.18in higher in its row than the other rows' type, since the
+     owner found it a little low (October 2026). The lift is a margin
+     on the box and not less padding on the row, because a row's
+     padding counts in its flex base size, and unequal padding would
+     move this column's row split below the other two columns'. */
+  .row.scan { display: block; }
+  .scanbox {
+    margin-top: -0.18in;
     background: ${FOREST};
     border-radius: 0.04in;
-    padding: 0.22in 0.2in 0.2in;
-    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 0.15in;
+    display: flex; align-items: center; gap: 0.19in;
   }
-  .scanhead h3 { font-size: 23pt; line-height: 1.05; letter-spacing: -0.018em; color: ${CREAM}; text-wrap: balance; }
-  .scanrow { display: flex; align-items: flex-end; gap: 0.18in; }
   .tile {
     flex: none;
     background: ${CREAM};
@@ -606,13 +606,8 @@ const html = `<!doctype html>
   }
   .tile svg { width: 100%; height: 100%; display: block; }
   .tile path, .tile rect { shape-rendering: crispEdges; }
-  .scantext .note { font-family: "RF Serif", Georgia, serif; font-size: 12.5pt; line-height: 1.12; letter-spacing: -0.008em; color: ${CREAM}; }
-  .scantext .addr { margin-top: 0.07in; font-size: 7.3pt; line-height: 1.35; color: ${ON_FOREST}; }
-
-  /* The route map in the lower row of the middle column. */
-  .row.maprow { display: block; }
-  .maprow .frame { position: relative; }
-  .maprow .credit { margin-top: 0.06in; }
+  .scantext h3 { font-size: 16pt; line-height: 1.08; letter-spacing: -0.012em; color: ${CREAM}; text-wrap: balance; }
+  .scantext p { margin-top: 0.1in; font-size: 7.3pt; line-height: 1.3; color: ${ON_FOREST}; white-space: nowrap; }
 
   /* ---- proof only ---- */
   .guides { display: none; }
@@ -632,7 +627,7 @@ const html = `<!doctype html>
 
     <!-- flap, the first thing seen when the cover opens -->
     <section class="panel flap" data-fit style="${box(M, TUCK - M * 2)}">
-      <h2>How it started</h2>
+      <h2>About Rooted Forward</h2>
       <div class="story">${STORY.map((p) => `<p>${p}</p>`).join("")}</div>
       <div class="grow"></div>
       <p class="active">${ACTIVE}</p>
@@ -646,10 +641,10 @@ const html = `<!doctype html>
       <p class="lead">${LEARN_BODY}</p>
       ${tile(QR_SITE)}
       <div class="url">rooted-forward.org</div>
-      <div class="mail">contact@rooted-forward.org</div>
       <div class="grow"></div>
       <h3 class="help">${HELP_HEAD}</h3>
       ${HELP_BODY.map((para) => `<p class="more">${para}</p>`).join("\n      ")}
+      <p class="mail">contact@rooted-forward.org</p>
       <div class="grow"></div>
       <div class="lockup">${MARK_RINGED}<span>Rooted Forward</span></div>
     </section>

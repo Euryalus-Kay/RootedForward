@@ -183,14 +183,9 @@ export const COVER_MAP = { widthIn: 3.8125, heightIn: 4.7 };
 /* ================================================================== */
 /*  2. The route                                                       */
 /* ================================================================== */
-/* A wide, short picture since October 2026. It sat in the tall picture
-   box at the top of a column until the owner asked for the code for
-   the tours to go there, as a header. The map moved under the
-   paragraph on the tours, into the lower row of the middle column, so
-   it is drawn at about half the scale with the lake to its right. */
-export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 1.38 };
+export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 2.65 };
 {
-  const proj = makeProj({ lngMin: -87.636, latMax: 41.80455, ...ROUTE_MAP, inPerLat: 52 });
+  const proj = makeProj({ lngMin: -87.6164, latMax: 41.8048, ...ROUTE_MAP, inPerLat: 98 });
   const frame = proj.frame;
   const inside = inFrame(frame, 0.004);
 
@@ -264,8 +259,8 @@ export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 1.38 };
   for (const s of stops) {
     const [x, y] = proj.pt([s.lng, s.lat]);
     dots += s.optional
-      ? `<circle cx="${x}" cy="${y}" r="2.3" fill="${CREAM}" stroke="${RUST}" stroke-width="0.85"/>`
-      : `<circle cx="${x}" cy="${y}" r="2.6" fill="${RUST}" stroke="${CREAM}" stroke-width="0.5"/>`;
+      ? `<circle cx="${x}" cy="${y}" r="2.9" fill="${CREAM}" stroke="${RUST}" stroke-width="0.95"/>`
+      : `<circle cx="${x}" cy="${y}" r="3.3" fill="${RUST}" stroke="${CREAM}" stroke-width="0.6"/>`;
   }
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${proj.W} ${proj.H}" width="${proj.W}" height="${proj.H}">
@@ -274,10 +269,10 @@ export const ROUTE_MAP = { widthIn: 2.9875, heightIn: 1.38 };
   <g stroke="${mix(INK, CREAM, 0.12)}" stroke-width="0.28" fill="none" stroke-linecap="round">${locals}</g>
   <g stroke="${mix(INK, CREAM, 0.28)}" stroke-width="0.45" fill="none" stroke-linecap="round">${arterials}</g>
   <g fill="${WATER}" stroke="${mix(INK_LIGHT, WATER, 0.45)}" stroke-width="0.4">${lake}</g>
-  <g fill="none" stroke="${RUST}" stroke-width="0.9" stroke-dasharray="2.2 1.8" stroke-linecap="round">${detourLegs}</g>
-  <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="none" stroke="${RUST}" stroke-width="1" stroke-dasharray="2.6 2.1" stroke-linecap="round">${detourLegs}</g>
+  <polyline points="${polyline(route, proj)}" fill="none" stroke="${RUST}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
   ${dots}
-  <text x="${hp[0]}" y="${hp[1]}" font-family="RF Narrow, Archivo Narrow, Arial Narrow, sans-serif" font-size="7" font-weight="700" letter-spacing="0.15em"
+  <text x="${hp[0]}" y="${hp[1]}" font-family="RF Narrow, Archivo Narrow, Arial Narrow, sans-serif" font-size="7.8" font-weight="700" letter-spacing="0.15em"
     fill="${mix(INK, CREAM, 0.78)}" stroke="${CREAM}" stroke-width="2.2" stroke-linejoin="round" paint-order="stroke">HYDE PARK</text>
 </svg>`;
   writeFileSync(join(OUT, "route-map.svg"), svg);
