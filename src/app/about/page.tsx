@@ -59,11 +59,16 @@ const WORK = [
     line: "We set up where people already are, like the Obama Presidential Center and neighborhood markets, and we survey and interview residents about their own block.",
     link: { label: "Help run one", href: "/get-involved" },
   },
+  /* The podcast is hidden from the site for now (owner request, October 2026).
+     Uncomment this row to put it back; the page is preserved as
+     src/app/podcasts/page.hidden.tsx. */
+  /*
   {
     title: "The podcast",
     line: "We record long conversations with people who have lived through what we research, and those conversations decide what we work on next.",
     link: { label: "Listen", href: "/podcasts" },
   },
+  */
   {
     title: "Policy advocacy",
     line: "We run petitions on Chicago bills that are already introduced and stuck in a committee, then hand the signatures to that committee.",

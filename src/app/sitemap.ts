@@ -20,7 +20,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/tours/chicago/hyde-park`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
     // Look Closer, the 1931 map on the Chicago Maritime Museum's wall, for a phone
     { url: `${BASE_URL}/look-closer`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/podcasts`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/policy`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     // One page per open petition, so a bill is findable by its own name
     ...PETITIONS.filter((p) => p.status === "open").map((p) => ({

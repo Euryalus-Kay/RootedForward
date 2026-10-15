@@ -11,6 +11,11 @@ import { cn } from "@/lib/utils";
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+/* The podcast is hidden from the site for now (owner request, October
+   2026). While this is true the search neither lists episodes nor
+   mentions them. */
+const PODCASTS_HIDDEN = true;
+
 interface SearchResult {
   id: string;
   type: "stop" | "city" | "podcast";
@@ -184,7 +189,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         });
 
         // Podcasts — also check guests array client-side
-        const podcastData = podcastsRes.data ?? [];
+        const podcastData = PODCASTS_HIDDEN ? [] : podcastsRes.data ?? [];
         podcastData.forEach((pod) => {
           const guestMatch =
             pod.guests?.some((g: string) =>
@@ -403,7 +408,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Search stops, cities, podcasts..."
+                placeholder={PODCASTS_HIDDEN ? "Search stops and cities..." : "Search stops, cities, podcasts..."}
                 autoComplete="off"
                 className="flex-1 bg-transparent font-body text-sm text-ink placeholder:text-warm-gray-light focus:outline-none"
               />
@@ -511,7 +516,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <div className="py-10 text-center">
                   <Search className="mx-auto h-8 w-8 text-warm-gray-light" />
                   <p className="mt-3 font-body text-sm text-warm-gray">
-                    Search across tour stops, cities, and podcasts
+                    {PODCASTS_HIDDEN
+                      ? "Search across tour stops and cities"
+                      : "Search across tour stops, cities, and podcasts"}
                   </p>
                   <div className="mt-4 flex items-center justify-center gap-2">
                     <span className="rounded-md border border-border bg-cream-dark px-2 py-0.5 font-body text-[10px] font-medium text-warm-gray">

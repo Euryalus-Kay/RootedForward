@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Team", href: "/about/team" },
   { label: "Tours", href: "/tours" },
-  { label: "Podcast", href: "/podcasts" },
   { label: "Policy", href: "/policy" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },
@@ -31,7 +30,7 @@ export default function Footer() {
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream/75">
             A student-run Chicago nonprofit. Walking tours, an online
-            exhibit, a podcast, and housing policy work.
+            exhibit, and housing policy work.
           </p>
           <p className="mt-6 text-xs text-cream/70">
             &copy; {new Date().getFullYear()} Rooted Forward. All rights reserved.

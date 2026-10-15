@@ -58,11 +58,11 @@ export const metadata: Metadata = {
   },
   title: "Rooted Forward | Chicago Neighborhood History and Policy",
   description:
-    "Rooted Forward is a student-run Chicago nonprofit. Walking tours of Hyde Park, an online exhibit built from the original documents, a podcast, and housing policy tools.",
+    "Rooted Forward is a student-run Chicago nonprofit. Walking tours of Hyde Park, an online exhibit built from the original documents, and housing policy tools.",
   openGraph: {
     title: "Rooted Forward",
     description:
-      "A student-run Chicago nonprofit. Walking tours, an online exhibit, a podcast, and housing policy work.",
+      "A student-run Chicago nonprofit. Walking tours, an online exhibit, and housing policy work.",
     url: "https://rooted-forward.org",
     siteName: "Rooted Forward",
     images: [

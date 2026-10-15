@@ -6,9 +6,9 @@
 /*  explainer blocks was called over-complicated. Do not add sections  */
 /*  back to this page without being asked.                             */
 /*                                                                     */
-/*  The two tabs (volunteer, podcast guest) live in the form itself,   */
-/*  src/components/forms/JoinForm.tsx. The podcast page links to       */
-/*  /get-involved#podcast, which opens on the podcast tab.             */
+/*  The form is src/components/forms/JoinForm.tsx. Its podcast-guest    */
+/*  tab is hidden with the rest of the podcast for now (owner request, */
+/*  October 2026); the tab and the #podcast hash handling stay in it.  */
 /* ------------------------------------------------------------------ */
 
 import type { Metadata } from "next";
@@ -18,7 +18,7 @@ import JoinForm from "@/components/forms/JoinForm";
 export const metadata: Metadata = {
   title: "Get Involved | Rooted Forward",
   description:
-    "Volunteer with Rooted Forward or come on the podcast. Put your name down and a student will write back. No experience needed.",
+    "Volunteer with Rooted Forward. Put your name down and a student will write back. No experience needed.",
 };
 
 export default function GetInvolvedPage() {

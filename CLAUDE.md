@@ -134,6 +134,17 @@ them is a rename, not a rewrite.
   link and the home-page Education pillar (`src/app/page.tsx`) point
   straight at `/tours`.
 - Both routes were dropped from `src/app/sitemap.ts`.
+- **Podcast (October 2026).** `/podcasts` serves a 404 (`notFound()` in
+  `src/app/podcasts/page.tsx`); the real page is `page.hidden.tsx` and
+  its skeleton `loading.hidden.tsx` beside it. Every public mention came
+  off too: the Navbar and Footer links, the footer blurb and the site
+  description in `src/app/layout.tsx`, the podcast rows on the home and
+  About pages (commented out in place), the sentence on
+  `/app-verification`, the "Be a podcast guest" tab in `JoinForm.tsx`
+  (the tab row is not drawn with one tab), the search results and
+  placeholder in `SearchModal.tsx` (`PODCASTS_HIDDEN`), and the sitemap
+  row. `/admin/podcasts`, `/api/podcasts` and the table are untouched.
+  The stub file lists the restore steps.
 
 To restore either one: delete the stub `page.tsx`, rename
 `page.hidden.tsx` back to `page.tsx`, re-add the nav/home links and the

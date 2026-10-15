@@ -26,9 +26,12 @@ const LABEL = "mb-1.5 block font-body text-sm font-medium text-ink";
 
 type Tab = "volunteer" | "podcast";
 
+/* The podcast-guest tab is hidden with the rest of the podcast for now
+   (owner request, October 2026). Put its row back to restore it; with one
+   tab the tab bar is not drawn at all. */
 const TABS: { key: Tab; label: string }[] = [
   { key: "volunteer", label: "Volunteer" },
-  { key: "podcast", label: "Be a podcast guest" },
+  // { key: "podcast", label: "Be a podcast guest" },
 ];
 
 export default function JoinForm() {
@@ -45,7 +48,7 @@ export default function JoinForm() {
   /* The podcast page links to /get-involved#podcast. */
   useEffect(() => {
     const apply = () => {
-      if (window.location.hash === "#podcast") setTab("podcast");
+      if (window.location.hash === "#podcast" && TABS.some((t) => t.key === "podcast")) setTab("podcast");
     };
     apply();
     window.addEventListener("hashchange", apply);
@@ -97,7 +100,8 @@ export default function JoinForm() {
 
   return (
     <div>
-      {/* Tabs */}
+      {/* Tabs, only when there is more than one */}
+      {TABS.length > 1 && (
       <div className="flex gap-2" role="tablist">
         {TABS.map((t) => (
           <button
@@ -116,10 +120,11 @@ export default function JoinForm() {
           </button>
         ))}
       </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
-        className="rounded-sm rounded-tl-none border border-border bg-cream p-6 md:p-8"
+        className={`rounded-sm border border-border bg-cream p-6 md:p-8 ${TABS.length > 1 ? "rounded-tl-none" : ""}`}
       >
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>

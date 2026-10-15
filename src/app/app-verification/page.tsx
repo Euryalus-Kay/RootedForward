@@ -67,8 +67,8 @@ export default function AppVerificationPage() {
             <div className="mt-6 flex max-w-[62ch] flex-col gap-5 font-body text-base leading-relaxed text-ink/80 md:text-lg md:leading-relaxed">
               <p>
                 Rooted Forward is a student-run nonprofit based in Chicago. We
-                research and publish free walking tours, an online exhibit, a
-                podcast, and housing policy work. Rooted Forward was started by
+                research and publish free walking tours, an online exhibit, and
+                housing policy work. Rooted Forward was started by
                 Zain Zaidi, who is named on our{" "}
                 <a
                   href="/about"

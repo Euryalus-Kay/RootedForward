@@ -4,8 +4,9 @@
 /*  Rebuilt July 2026 around one rule from the owner. A visitor who    */
 /*  reads only the name and the paragraph under it should already      */
 /*  know what this organization does. Everything after that is the     */
-/*  four things we actually do, in the order they matter, one short    */
-/*  row each. No explaining, no build-up.                              */
+/*  things we actually do, in the order they matter, one short row    */
+/*  each. No explaining, no build-up. The podcast row is hidden for   */
+/*  now (owner request, October 2026) and stays in the file.           */
 /*                                                                     */
 /*  Voice rules learned the hard way (owner feedback, July 2026):      */
 /*  no aphorism headlines, no balanced-pair sentences ("we teach X,    */
@@ -48,6 +49,9 @@ function ClipboardIcon() {
   );
 }
 
+/* The microphone belongs to the podcast row, hidden for now (see the
+   note on WORK below). */
+/*
 function MicrophoneIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={ICON_CLS}>
@@ -55,6 +59,7 @@ function MicrophoneIcon() {
     </svg>
   );
 }
+*/
 
 function ScaleIcon() {
   return (
@@ -65,7 +70,7 @@ function ScaleIcon() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  The four things we do. Order is deliberate. Tours carry the most   */
+/*  The things we do. Order is deliberate. Tours carry the most        */
 /*  people, policy is the newest.                                      */
 /* ------------------------------------------------------------------ */
 
@@ -96,6 +101,10 @@ const WORK: WorkItem[] = [
     ],
     links: [{ label: "Help us run one", href: "/get-involved" }],
   },
+  /* The podcast is hidden from the site for now (owner request, October 2026).
+     Uncomment this row to put it back; the page is preserved as
+     src/app/podcasts/page.hidden.tsx. */
+  /*
   {
     title: "The podcast",
     icon: MicrophoneIcon,
@@ -105,6 +114,7 @@ const WORK: WorkItem[] = [
     ],
     links: [{ label: "Listen", href: "/podcasts" }],
   },
+  */
   {
     title: "Policy advocacy",
     icon: ScaleIcon,
