@@ -11,10 +11,11 @@
 /*  cream from the left. He renamed the page "Our story" the same day; */
 /*  the address stays /about.                                          */
 /*                                                                     */
-/*  The words are the ones he signed off in the tri-fold brochure on   */
-/*  October 12, 2026. "Raises awareness", not "educates"; the story in */
-/*  the organization's voice; the five things we do. The roster lives  */
-/*  on /about/team.                                                    */
+/*  The mission and the five things we do are the wording he signed   */
+/*  off in the tri-fold brochure on October 12, 2026 ("raises          */
+/*  awareness", not "educates"). The four paragraphs of the story are  */
+/*  his own, sent on October 18 and kept word for word, survey count   */
+/*  and all. The roster lives on /about/team.                          */
 /*                                                                     */
 /*  The picture behind the opening is a generated image the owner      */
 /*  supplied of the six people on the roster. It is only ever a faded  */
@@ -42,10 +43,12 @@ export const metadata: Metadata = {
   description: `${MISSION_WHO} ${MISSION_WHAT}`,
 };
 
+/* The story is the owner's, sent October 18, 2026, word for word. */
 const STORY = [
-  "We founded Rooted Forward in Chicago after noticing how completely the city changes from one block to the next.",
-  "Looking for why, we learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. We wanted to share that knowledge with others and drive policy change.",
-  "Students in other cities had seen the same patterns where they live, and have joined us in sharing the history of their own neighborhoods.",
+  "Zain Zaidi founded Rooted Forward after becoming interested in the divisions between Chicago\u2019s neighborhoods. Living on the Near South Side and going to school in Hyde Park, he often noticed how much changed within a few blocks, especially around the University of Chicago. He began researching how those differences developed, learning about the redlining, restrictive covenants, and urban renewal projects that had shaped the neighborhoods he knew.",
+  "Rooted Forward brings students together to research this history and share it with their communities. Early outreach included surveys and conversations with more than 140 people at the Obama Presidential Center, which revealed how unfamiliar much of this history was, even to lifelong Chicagoans. Today, students in three cities contribute research, develop free educational resources, and lead community outreach.",
+  "The organization shares its research through lectures at schools, walking tours, and work with museums and cultural institutions, including the Chicago Maritime Museum, Glessner House Museum, and the Japanese American Service Committee\u2019s Legacy Center. At the Chicago Maritime Museum, Rooted Forward created an exhibit around a 1931 illustrated map of Chicago, with an interactive guide explaining the racial discrimination and housing restrictions reflected in its drawings. Its free app also allows people to take a self-guided walking tour of Hyde Park, learning about the neighborhood\u2019s history at the places where it happened.",
+  "Alongside this educational work, Rooted Forward helps residents get involved in local policy. The team explains proposed housing legislation, gathers petition signatures, and advocates for bills that have stalled in committee. This work connects the history of segregation and disinvestment with efforts to address their effects today.",
 ];
 
 const WORK = [
