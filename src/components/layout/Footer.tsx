@@ -9,7 +9,7 @@ import Link from "next/link";
 /* ------------------------------------------------------------------ */
 
 const NAV_LINKS = [
-  { label: "About", href: "/about" },
+  { label: "Our story", href: "/about" },
   { label: "Team", href: "/about/team" },
   { label: "Tours", href: "/tours" },
   { label: "Policy", href: "/policy" },

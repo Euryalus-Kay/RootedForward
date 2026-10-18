@@ -1,328 +1,173 @@
 /* ------------------------------------------------------------------ */
-/*  /about                                                             */
+/*  /about, titled "Our story"                                         */
 /*                                                                     */
-/*  Rebuilt from nothing, July 2026. The old page tried to be a        */
-/*  mission statement, a program list, and a staff directory at once,  */
-/*  and the staff directory was mostly an apology for being empty.     */
-/*  There is no people section here at all now. The roster lives on    */
-/*  /about/team, which is its own tab in the navbar, and this page     */
-/*  points at it from the closing band.                                */
+/*  Rebuilt October 18, 2026. The owner found the July page cluttered  */
+/*  and did not want the box with the survey count, the team section   */
+/*  or the ask on it. He pointed at mommysgifttome.org/our-story for   */
+/*  the shape (a title, a one-paragraph lede, a story block with a     */
+/*  large headline and a short rule, a paler section with a centered   */
+/*  title and cards), and at the Initiatives page for the opening,     */
+/*  where the picture runs the full width behind the words, veiled in  */
+/*  cream from the left. He renamed the page "Our story" the same day; */
+/*  the address stays /about.                                          */
 /*                                                                     */
-/*  Order, owner's call. Mission, how it started, what we do, where we */
-/*  work. The founder's account sits directly under the mission        */
-/*  because it is the reason the mission exists.                       */
+/*  The words are the ones he signed off in the tri-fold brochure on   */
+/*  October 12, 2026. "Raises awareness", not "educates"; the story in */
+/*  the organization's voice; the five things we do. The roster lives  */
+/*  on /about/team.                                                    */
 /*                                                                     */
-/*  The mission is the owner's own sentence, set in two colors at his  */
-/*  request. Rust for who we are, ink for what we do. It says cities   */
-/*  across the United States, not Chicago, because members now work    */
-/*  in New York and Washington, DC and Chicago is only where we        */
-/*  started. Keep that scope if you touch this copy.                   */
+/*  The picture behind the opening is a generated image the owner      */
+/*  supplied of the six people on the roster. It is only ever a faded  */
+/*  background and is never captioned as a photograph. Do not mirror   */
+/*  it; the mark and the lettering on the shirts read backwards.       */
 /*                                                                     */
-/*  No SurveyRule on this page. The owner asked for every one of them  */
-/*  to come off /about (July 2026); the divider is still in use        */
-/*  elsewhere on the site.                                             */
-/*                                                                     */
-/*  Voice rules (owner, July 2026): no aphorism headlines, no          */
-/*  balanced-pair sentences, no numbered rows, no rhetorical triads.   */
-/*  Say the concrete thing. Site-wide, no em-dashes and no colons      */
-/*  inside sentences or headings, and the owner has asked specifically */
-/*  that this page carry no dash punctuation at all.                   */
-/*                                                                     */
-/*  There are still no photographs of our own work. The one picture    */
-/*  on this page is the actual document the founder's story is about,  */
-/*  which is public domain (see public/media/hyde-park/credits.json).  */
+/*  House rules that hold here: no small tracked labels over headings  */
+/*  (he asked for those to come off the site in July 2026), no         */
+/*  SurveyRule on this page, no dash punctuation anywhere in the copy, */
+/*  no aphorism headlines, pairs, triads or numbered rows.             */
 /* ------------------------------------------------------------------ */
 
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageTransition from "@/components/layout/PageTransition";
+import Reveal from "@/components/about/Reveal";
+import styles from "@/components/about/motion.module.css";
+
+const MISSION_WHO = "A student-run nonprofit started in Chicago.";
+const MISSION_WHAT =
+  "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
 
 export const metadata: Metadata = {
-  title: "About | Rooted Forward",
-  description:
-    "A student-run nonprofit started in Chicago. Rooted Forward educates people about racial inequality in cities across the United States, and works to address it through education, awareness, and political advocacy.",
+  title: "Our story | Rooted Forward",
+  description: `${MISSION_WHO} ${MISSION_WHAT}`,
 };
 
-/* ------------------------------------------------------------------ */
-/*  What we do. The long version of each of these is on the home       */
-/*  page, so here it is one sentence and a door.                       */
-/* ------------------------------------------------------------------ */
+const STORY = [
+  "We founded Rooted Forward in Chicago after noticing how completely the city changes from one block to the next.",
+  "Looking for why, we learned how discriminatory urban development was carried out through practices like redlining, restrictive covenants, and urban renewal. We wanted to share that knowledge with others and drive policy change.",
+  "Students in other cities had seen the same patterns where they live, and have joined us in sharing the history of their own neighborhoods.",
+];
 
 const WORK = [
   {
     title: "Self-guided walking tours",
-    line: "Students research one neighborhood at a time and build a tour out of what they find. It lives on the Rooted Forward app, free to walk or to read at home.",
-    link: { label: "See the tours", href: "/tours" },
+    line: "We create free self-guided tours of different neighborhoods to show their history. They run on our iPhone app. You walk at your own pace, and at each stop the app tells you what happened there. You can also take one from home.",
+    link: { label: "Get the app", href: "/tours" },
   },
   {
     title: "Community outreach",
-    line: "We set up where people already are, like the Obama Presidential Center and neighborhood markets, and we survey and interview residents about their own block.",
+    line: "We do outreach and education in the community, showing people this history and our work and promoting our free tours. We have held events at farmers’ markets and community events.",
     link: { label: "Help run one", href: "/get-involved" },
   },
-  /* The podcast is hidden from the site for now (owner request, October 2026).
-     Uncomment this row to put it back; the page is preserved as
-     src/app/podcasts/page.hidden.tsx. */
-  /*
   {
-    title: "The podcast",
-    line: "We record long conversations with people who have lived through what we research, and those conversations decide what we work on next.",
-    link: { label: "Listen", href: "/podcasts" },
+    title: "School visits",
+    line: "We give presentations and lead workshops at schools, showing students our research and the history behind it.",
+    link: { label: "Invite us", href: "/contact" },
   },
-  */
+  {
+    title: "Museum partnerships",
+    line: "We partner with museums, among them the Glessner House, the Japanese American Service Committee’s Legacy Center, and the Chicago Maritime Museum.",
+    link: { label: "See the exhibit", href: "/look-closer" },
+  },
   {
     title: "Policy advocacy",
-    line: "We run petitions on Chicago bills that are already introduced and stuck in a committee, then hand the signatures to that committee.",
+    line: "We run petitions on bills that are already introduced and stuck in a committee, then submit the signatures as public comment.",
     link: { label: "Sign a petition", href: "/policy" },
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Where we work. City and status, nothing else (owner, July 2026).   */
-/*  `live` drives the box treatment, so a city going live is one flag  */
-/*  and a new status string.                                           */
-/* ------------------------------------------------------------------ */
-
-const LOCATIONS = [
-  { city: "Chicago", status: "Starting location", live: true },
-  { city: "New York", status: "Research in progress", live: false },
-  { city: "Washington, DC", status: "Research in progress", live: false },
-];
+const RULE = "mt-5 h-1 w-16 rounded-full bg-rust";
 
 export default function AboutPage() {
   return (
     <PageTransition>
       {/* ============================================================
-          MISSION
-          The whole pitch. Nothing above it, nothing beside it.
+          THE OPENING
+          The picture full width behind the title and the lede, veiled
+          in cream from the left so the words sit on plain ground, and
+          fading out along the bottom. The founder stands at the right
+          of the picture, where it shows through.
           ============================================================ */}
-      <section className="border-b border-border bg-cream pb-16 pt-20 md:pb-20 md:pt-28">
-        <div className="mx-auto max-w-5xl px-6">
-          {/* Two colors in one statement, owner's call. The rust sentence
-              says who we are, the ink sentence says what we do. Rust on
-              cream is 3.7:1, which clears AA at this size and would not at
-              body size, so this treatment stays on the headline only.
-              44px rather than a scale step, so it stays clearly larger
-              than the 36px section headings without running to seven
-              lines the way text-5xl did. */}
-          <h1 className="max-w-[42ch] font-display text-2xl leading-[1.2] tracking-tight sm:text-3xl md:text-[2.75rem]">
-            <span className="block text-rust">
-              A student-run nonprofit started in Chicago.
-            </span>
-            <span className="mt-2 block text-ink">
-              Rooted Forward educates people about racial inequality in cities
-              across the United States, and works to address it through
-              education, awareness, and political advocacy.
-            </span>
-          </h1>
+      <section className="relative overflow-hidden border-b border-border">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/media/site/team-banner.jpg"
+          srcSet="/media/site/team-banner-900.jpg 900w, /media/site/team-banner.jpg 1536w"
+          sizes="100vw"
+          width={1536}
+          height={1024}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_12%] opacity-80 saturate-[0.85]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/[0.95] to-cream/85 md:via-cream/90 md:to-cream/45" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cream to-transparent" />
 
-          {/* One caption, nothing else. The redlining paragraph and the
-              forest reach block that used to sit here both came off at
-              the owner's request (July 2026). The mission statement is
-              the section. */}
-          <p className="mt-7 max-w-[56ch] font-body text-lg leading-relaxed text-ink/65">
-            We are currently based in Chicago, New York, and Washington, DC.
+        <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-16 md:pb-24 md:pt-24">
+          <h1 className={`font-display text-6xl font-semibold leading-[0.95] tracking-tight text-forest sm:text-7xl md:text-8xl ${styles.rise}`}>
+            Our story
+          </h1>
+          <p
+            className={`mt-7 max-w-[34ch] font-display text-xl leading-[1.25] tracking-tight text-ink sm:text-2xl md:text-3xl ${styles.rise}`}
+            style={{ animationDelay: "160ms" }}
+          >
+            <span className="text-rust">{MISSION_WHO}</span> {MISSION_WHAT}
           </p>
         </div>
       </section>
 
       {/* ============================================================
           HOW IT STARTED
-          Directly under the mission, owner's call. The founder's
-          account, plus the one number the whole organization came
-          out of.
           ============================================================ */}
-      <section className="bg-cream-dark/35 py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
-            How it started
-          </h2>
-
-          <div className="mt-10 grid grid-cols-1 gap-y-12 md:grid-cols-12 md:gap-x-16">
-            <div className="md:col-span-7">
-              <div className="flex max-w-[58ch] flex-col gap-5 font-body text-base leading-relaxed text-ink/80 md:text-lg md:leading-relaxed">
-                <p>
-                  Rooted Forward was started by Zain Zaidi, a student who lives
-                  on the Near South Side and goes to school in Hyde Park. Going
-                  between the two every day, he kept running into the bubble
-                  around the University of Chicago, and how completely the city
-                  changed from one block to the next.
-                </p>
-                <p>
-                  He went looking for why, and found redlining, restrictive
-                  covenants, and the urban renewal campaigns that cleared and
-                  rearranged these blocks on purpose. The pattern he had been
-                  walking through every day was drawn on a map decades before
-                  he was born.
-                </p>
-                <p>
-                  The next thing he wanted to know was how much of this the
-                  neighborhood already knew. He ran a survey at the Obama
-                  Presidential Center and talked with more than 140 people
-                  about what they had lived through and what they had been
-                  taught. The gap was far wider than he expected, including
-                  among lifelong Chicagoans and especially among young people.
-                </p>
-                <p>
-                  So he built this. Students in three cities do the archival
-                  work and run the outreach now, and what comes out of it gets
-                  published free.
-                </p>
-                <p>
-                  The policy side comes from his seat on Chicago&rsquo;s
-                  Mayor&rsquo;s Youth Commission. Sitting in those rooms is
-                  where he saw how much a single ordinance can move, and how
-                  few people outside City Hall are ever there when one is
-                  decided. Rooted Forward works on that in small steps, on
-                  bills that are already written and already stalled.
-                </p>
-              </div>
-            </div>
-
-            <div className="md:col-span-5">
-              {/* The number the organization came out of. */}
-              <div className="rounded-sm border-2 border-ink/15 bg-cream p-7">
-                <p className="font-display text-6xl leading-none text-rust">
-                  140+
-                </p>
-                <p className="mt-4 font-body text-base leading-relaxed text-ink/75">
-                  Residents surveyed at the Obama Presidential Center about
-                  what they knew of this history.
-                </p>
-              </div>
-
-              {/* The document the second paragraph is about. */}
-              <figure className="mt-8">
-                <img
-                  src="/media/site/holc-chicago-1940.jpg"
-                  alt="The 1940 Home Owners' Loan Corporation Residential Security Map of Chicago, with neighborhoods graded A through D in green, blue, yellow, and red"
-                  loading="lazy"
-                  className="w-full rounded-sm border border-border object-cover"
-                />
-                <figcaption className="mt-2 font-body text-[11px] leading-snug text-ink/60">
-                  Residential Security Map of Chicago. Home Owners&rsquo; Loan
-                  Corporation, 1940. CC0. The neighborhoods shaded red were the
-                  ones banks were told to stay out of.
-                </figcaption>
-              </figure>
-            </div>
+      <section className="bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal>
+            <h2 className="max-w-[20ch] font-display text-4xl font-semibold leading-tight tracking-tight text-forest md:text-5xl">
+              How it started
+            </h2>
+            <div className={RULE} />
+          </Reveal>
+          <div className="mt-8 flex max-w-3xl flex-col gap-5 font-body text-lg leading-relaxed text-ink/80">
+            {STORY.map((p, i) => (
+              <Reveal key={p} delay={i * 90}>
+                <p>{p}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ============================================================
           WHAT WE DO
-          Four blocks, one sentence each. The home page carries the
-          long version, so this one stays scannable.
+          Five cards on the paler ground, three then two.
           ============================================================ */}
-      <section className="border-t border-border bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
-            What we do
-          </h2>
-
-          <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 md:grid-cols-2">
-            {WORK.map((item) => (
-              <div key={item.title} className="border-t-2 border-ink/15 pt-6">
-                <h3 className="max-w-[18ch] font-display text-2xl leading-tight text-ink">
-                  {item.title}
-                </h3>
-                <p className="mt-3 max-w-[46ch] font-body text-base leading-relaxed text-ink/70">
-                  {item.line}
-                </p>
-                <Link
-                  href={item.link.href}
-                  className="group mt-5 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
-                >
-                  {item.link.label}{" "}
-                  <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          WHERE WE WORK
-          Three boxes, city and status, nothing else. Chicago is live
-          and the other two are not, and the box treatment carries that
-          difference so the copy does not have to explain it.
-          ============================================================ */}
-      <section className="border-t border-border bg-cream py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-3xl leading-tight text-forest md:text-4xl">
-            Where we work
-          </h2>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {LOCATIONS.map((place) => (
-              <div
-                key={place.city}
-                className={
-                  place.live
-                    ? "rounded-sm border-2 border-forest/30 bg-cream p-7"
-                    : "rounded-sm border border-border bg-cream-dark/30 p-7"
-                }
-              >
-                <h3 className="font-display text-2xl leading-tight text-ink">
-                  {place.city}
-                </h3>
-                <p
-                  className={`mt-2 font-body text-xs font-semibold uppercase tracking-[0.2em] ${
-                    place.live ? "text-rust" : "text-ink/45"
-                  }`}
-                >
-                  {place.status}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          THE TWO DOORS OUT. Meet the team, or join it. The team column
-          came off in July 2026 while /about/team did not exist, and
-          went back on when the rebuilt page shipped.
-          ============================================================ */}
-      <section className="bg-forest py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            <div>
-              <h2 className="font-display text-3xl text-cream md:text-4xl">
-                Who runs it
-              </h2>
-              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                Students in Chicago, New York, and Washington, DC.
-              </p>
-              <Link
-                href="/about/team"
-                className="mt-7 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-              >
-                Meet the team
-              </Link>
+      <section className="bg-cream-dark/40 py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal>
+            <div className="flex flex-col items-center text-center">
+              <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight text-forest md:text-5xl">What we do</h2>
+              <div className={RULE} />
             </div>
-            <div>
-              <h2 className="font-display text-3xl text-cream md:text-4xl">
-                We could use your help
-              </h2>
-              <p className="mt-4 max-w-[46ch] font-body text-base leading-relaxed text-cream/75 md:text-lg">
-                If you can dig through an archive, run a survey table at a
-                market, or edit audio, there is work here for you. You do not
-                need experience to start.
-              </p>
-              <Link
-                href="/get-involved"
-                className="group mt-7 inline-block font-body text-sm font-semibold uppercase tracking-widest text-rust-light transition-colors hover:text-cream"
-              >
-                Get involved{" "}
-                <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
-            </div>
+          </Reveal>
+          <div className="mt-12 flex flex-wrap justify-center gap-5">
+            {WORK.map((item, i) => (
+              <Reveal key={item.title} delay={i * 70} className="w-full md:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]">
+                <div className="flex h-full flex-col rounded-2xl border border-border bg-cream p-7 md:p-8">
+                  <h3 className="font-display text-2xl leading-tight text-ink">{item.title}</h3>
+                  <p className="mt-3 font-body text-base leading-relaxed text-ink/70">{item.line}</p>
+                  <Link
+                    href={item.link.href}
+                    className="group mt-auto inline-block pt-6 font-body text-sm font-semibold uppercase tracking-widest text-rust transition-colors hover:text-rust-dark"
+                  >
+                    {item.link.label}{" "}
+                    <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
+                      &rarr;
+                    </span>
+                  </Link>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
