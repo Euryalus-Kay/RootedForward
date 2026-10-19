@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 /**
@@ -42,6 +43,19 @@ export async function createClient() {
       },
     }
   );
+}
+
+/**
+ * A client with no cookies and no session, for public reads that RLS
+ * already allows the anon role to make. Reading cookies forces a page
+ * to render on every request, which is what made /about/team show the
+ * loading screen; with this client such a page can be built ahead and
+ * refreshed on a revalidate timer instead.
+ */
+export function createPublicClient() {
+  return createSupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
 export async function createAdminClient() {

@@ -11,7 +11,9 @@ import { PARTNERS, PHOTOS } from "@/lib/initiatives";
 /*  /initiatives over it. The owner prefers no fade at the top or      */
 /*  bottom edge. He saw this photo paired with the JASC one (fading    */
 /*  in turn, pinned over its corner, side by side) and chose it alone. */
-/*  Below lg the photograph sits whole above the words with no veil.   */
+/*  Below lg the photograph lies behind the words under a cream wash   */
+/*  (owner, October 18, 2026), the way the /initiatives header carries */
+/*  its photo, instead of sitting above them.                          */
 /* ------------------------------------------------------------------ */
 
 export default function InitiativesBand() {
@@ -19,7 +21,7 @@ export default function InitiativesBand() {
 
   return (
     <section className="relative overflow-hidden bg-cream">
-      <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:h-auto lg:w-[62%]">
+      <div className="absolute inset-0 lg:left-auto lg:w-[62%]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={podium.src}
@@ -27,15 +29,19 @@ export default function InitiativesBand() {
           sizes="(min-width: 1024px) 62vw, 100vw"
           alt={podium.alt}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover object-[60%_25%] lg:object-[100%_40%]"
+          className="absolute inset-0 h-full w-full object-cover object-[45%_25%] sm:object-[60%_30%] lg:object-[100%_40%]"
         />
+        {/* below lg, a wash over the whole photo so the words read on it;
+            on a phone the crop keeps him at the right, clear of the slide */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/88 to-cream/50 lg:hidden" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-cream to-transparent lg:hidden" />
         {/* The fade clears by about halfway across, so the speaker's face
             is not veiled; between lg and xl the photo is narrower, so it
             clears sooner. */}
         <div className="absolute inset-0 hidden bg-gradient-to-r from-cream via-cream/45 via-15% to-transparent to-30% lg:block xl:via-25% xl:to-60%" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 pb-4 pt-10 lg:py-32">
+      <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:py-32">
         <div className="lg:max-w-[26rem]">
           <h2 className="font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-7xl">
             Initiatives

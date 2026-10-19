@@ -32,7 +32,13 @@ import {
   isRealName,
   type TeamMember,
 } from "@/lib/team-constants";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+import { createPublicClient, isSupabaseConfigured } from "@/lib/supabase/server";
+
+/* Built ahead and refreshed every five minutes, so a visit is instant
+   (it used to read cookies and render on every request, behind the
+   loading screen) and an edit at /admin/about/board still reaches the
+   page within minutes. */
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Meet the team | Rooted Forward",
@@ -56,7 +62,7 @@ async function loadRoster(): Promise<TeamMember[]> {
   if (!isSupabaseConfigured()) return TEAM_MEMBERS;
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("board_members")
       .select(
