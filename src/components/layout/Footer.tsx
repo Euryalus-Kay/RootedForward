@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: "Our story", href: "/about" },
   { label: "Team", href: "/about/team" },
   { label: "Tours", href: "/tours" },
+  { label: "Initiatives", href: "/initiatives" },
   { label: "Policy", href: "/policy" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Contact", href: "/contact" },

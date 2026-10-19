@@ -52,26 +52,32 @@ interface AppStoreButtonProps {
   tone?: Tone;
   /** Show the small line under the button explaining the pending state. */
   withNote?: boolean;
+  /** "sm" for tight spots like a card footer. */
+  size?: "md" | "sm";
   className?: string;
 }
 
 export default function AppStoreButton({
   tone = "rust",
   withNote = true,
+  size = "md",
   className = "",
 }: AppStoreButtonProps) {
   const styles = TONES[tone];
-  const shell =
-    "inline-flex items-center gap-3 rounded-sm px-7 py-4 text-left transition-colors";
+  const sm = size === "sm";
+  const shell = `inline-flex items-center rounded-sm text-left transition-colors ${
+    sm ? "gap-2.5 px-5 py-2.5" : "gap-3 px-7 py-4"
+  }`;
 
   const label = (
     <>
-      <AppleGlyph className="h-6 w-6 shrink-0" />
-      <span className="flex flex-col leading-tight">
-        <span className="font-body text-[11px] uppercase tracking-[0.18em] opacity-80">
+      <AppleGlyph className={`${sm ? "h-5 w-5" : "h-6 w-6"} shrink-0`} />
+      {/* nowrap, so a narrow column never breaks "Download on the" */}
+      <span className="flex flex-col whitespace-nowrap leading-tight">
+        <span className={`font-body uppercase opacity-80 ${sm ? "text-[10px] tracking-[0.16em]" : "text-[11px] tracking-[0.18em]"}`}>
           {APP_STORE_URL ? "Download on the" : "Coming soon to the"}
         </span>
-        <span className="font-display text-xl">App Store</span>
+        <span className={`font-display ${sm ? "text-lg" : "text-xl"}`}>App Store</span>
       </span>
     </>
   );

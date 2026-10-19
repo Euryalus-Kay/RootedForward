@@ -24,6 +24,7 @@
 /* ------------------------------------------------------------------ */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = {
@@ -90,12 +91,12 @@ export default function AppVerificationPage() {
               <p>
                 The walking tour inside the app is the same tour published free
                 on this website, which anyone can read at{" "}
-                <a
+                <Link
                   href="/tours"
                   className="text-rust underline decoration-rust/40 underline-offset-2 transition-colors hover:decoration-rust"
                 >
                   rooted-forward.org/tours
-                </a>
+                </Link>
                 . Every photograph in the app carries its credit under the
                 picture, and the sources for each stop are listed on the stop.
               </p>

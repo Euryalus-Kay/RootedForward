@@ -13,6 +13,7 @@ import type { User as SupabaseUser } from "@supabase/supabase-js";
    enough destinations that every one can sit at the top level. */
 const NAV_LINKS = [
   { label: "Tours", href: "/tours" },
+  { label: "Initiatives", href: "/initiatives" },
   { label: "Policy", href: "/policy" },
   { label: "Our story", href: "/about" },
   { label: "Team", href: "/about/team" },
