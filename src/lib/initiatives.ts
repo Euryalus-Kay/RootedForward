@@ -9,14 +9,6 @@
 // public/media/initiatives were re-encoded without EXIF, so no phone
 // location data ships with them.
 //
-// jasc-crowd.jpg is a version of the event photograph the owner had
-// edited with an AI tool. He sent two such versions and asked that only
-// one be used, so the two versions never sit side by side. On
-// /initiatives this one version appears twice, faded behind the header
-// and as the strip in the JASC box, both at his request. Its small
-// banner lettering is garbled by the edit; keep it at sizes where that
-// does not read.
-//
 // The partner marks in public/media/partners are each organization's
 // own, taken from their websites on October 18, 2026, and shown at the
 // owner's request to name the partnerships.
@@ -109,6 +101,12 @@ export const PHOTOS = {
     alt: EXHIBIT_PHOTO.alt,
     focus: "50% 30%",
   },
+  maritimePodium: {
+    src: `${DIR}/maritime-podium.jpg`,
+    small: `${DIR}/maritime-podium-800.jpg`,
+    alt: "Zain Zaidi of Rooted Forward speaking at a Chicago Maritime Museum podium, gesturing toward a projected slide",
+    focus: "60% 40%",
+  },
   maritimeVisitors: {
     src: `${DIR}/maritime-visitors.jpg`,
     small: `${DIR}/maritime-visitors-700.jpg`,
@@ -173,10 +171,13 @@ export const FEATURED: Initiative[] = [
     ],
     layout: "museum",
     /* The founder beside the touch screen is the tall cell (the spare
-       bench at its right is what crops away), the visitors a square. */
+       bench at its right is what crops away), the founder at the
+       museum's podium runs across the top right, and the visitors and
+       the seal share the row under it. */
     cells: [
       { ...PHOTOS.mapWall, focus: "12% 50%" },
-      { ...PHOTOS.maritimeVisitors, focus: "50% 40%" },
+      PHOTOS.maritimePodium,
+      { ...PHOTOS.maritimeVisitors, focus: "42% 40%" },
       { logo: "/media/partners/chicago-maritime-museum.png", alt: MUSEUM.name, background: MUSEUM.blue },
     ],
     links: [

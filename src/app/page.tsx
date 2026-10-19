@@ -27,7 +27,7 @@ import MuseumExhibit from "@/components/home/MuseumExhibit";
 import PageTransition from "@/components/layout/PageTransition";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { HYDE_PARK_INTRO_VIDEO } from "@/lib/video";
-import { PARTNERS, PHOTOS } from "@/lib/initiatives";
+import InitiativesBand from "@/components/home/InitiativesBand";
 
 /* ------------------------------------------------------------------ */
 /*  Line icons. Same heroicons-outline vocabulary the policy page      */
@@ -235,63 +235,9 @@ export default function Home() {
 
       {/* ============================================================
           INITIATIVES
-          Above "Ways we help", straight after the museum block (owner,
-          October 18, 2026). Our own photograph of visitors at the JASC
-          panels, full height, faded into the cream from the left only
-          (the way the banner fades the 1940 map), with the door to
-          /initiatives over it. The owner prefers it with no fade at the
-          top or bottom edge; both were tried and came off. Below lg the photograph
-          sits whole above the words with no veil, since at tablet width
-          the words landed on the faded panel and the fog ate the
-          people's legs. It is a different JASC photo from the two in the
-          outreach row above, so the same scene does not show twice.
+          The band lives in src/components/home/InitiativesBand.tsx.
           ============================================================ */}
-      <section className="relative overflow-hidden bg-cream">
-        <div className="relative aspect-[4/3] sm:aspect-[2/1] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:h-auto lg:w-[62%]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={PHOTOS.jascGroup.src}
-            srcSet={`${PHOTOS.jascGroup.small} 800w, ${PHOTOS.jascGroup.src} 1600w`}
-            sizes="(min-width: 1024px) 62vw, 100vw"
-            alt={PHOTOS.jascGroup.alt}
-            loading="lazy"
-            className="h-full w-full object-cover object-[60%_75%] lg:object-[85%_45%]"
-          />
-          <div className="absolute inset-0 hidden bg-gradient-to-r from-cream via-cream/45 to-transparent lg:block" />
-        </div>
-
-        <div className="relative mx-auto max-w-6xl px-6 pb-4 pt-10 lg:py-32">
-          <div className="lg:max-w-[26rem]">
-            <h2 className="font-display text-5xl font-semibold leading-none tracking-tight text-forest md:text-7xl">
-              Initiatives
-            </h2>
-            <p className="mt-6 max-w-[34ch] text-balance font-display text-xl leading-snug text-ink md:text-2xl">
-              Exhibits and programs we run with museums and community
-              organizations.
-            </p>
-            {/* The partners' own marks, the same tiles /initiatives uses,
-                under the same label. */}
-            <p className="mt-8 font-display text-lg leading-tight text-forest">Partners</p>
-            <ul className="mt-3 grid max-w-[26rem] grid-cols-3 gap-2">
-              {PARTNERS.map((partner) => (
-                <li
-                  key={partner.name}
-                  className="flex h-20 items-center justify-center rounded-md border border-border bg-white px-3"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={partner.logo} alt={partner.name} className={`w-auto max-w-full object-contain ${partner.bandClass}`} />
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/initiatives"
-              className="mt-9 inline-flex items-center rounded-sm bg-rust px-8 py-4 font-body text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-rust-dark"
-            >
-              See our initiatives
-            </Link>
-          </div>
-        </div>
-      </section>
+      <InitiativesBand />
 
       {/* ============================================================
           WAYS WE HELP

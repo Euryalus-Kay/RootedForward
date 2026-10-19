@@ -7,9 +7,9 @@
 /*  The two exhibits get a collage; the rest get one picture each.     */
 /*                                                                     */
 /*  Second pass the same day, on his notes. Partner marks on white     */
-/*  tiles instead of names, the museum's collage cut to two photos     */
-/*  and its mark, the JASC panels marked as ongoing, and the status    */
-/*  pills (which read as generated) replaced with a plain status line  */
+/*  tiles instead of names, the museum's collage cut to photos and     */
+/*  its mark, the JASC panels marked as ongoing, and the status    */
+/*  pills replaced with a plain status line                            */
 /*  under each title, the way a museum wall label runs and the way     */
 /*  /about marks its cities. Then a round of screenshot review: the    */
 /*  boxes split side by side only from lg, since at md the columns     */

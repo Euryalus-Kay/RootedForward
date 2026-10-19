@@ -3,23 +3,24 @@ import type { CollageCell } from "@/lib/initiatives";
 /* ------------------------------------------------------------------ */
 /*  The photo collage in an initiative box.                            */
 /*                                                                     */
-/*  "museum" is one tall photograph with two squares stacked beside    */
-/*  it, the lower of which can hold the partner's mark on its own      */
-/*  color (owner, October 18, 2026). "stack" is one large photograph   */
+/*  "museum" is one tall photograph with a wide one beside it and two  */
+/*  smaller cells under that, the last of which can hold the partner's */
+/*  mark on its own color (owner, October 18, 2026). "stack" is one large photograph   */
 /*  over a row of two, a wide strip and a small square beside it.      */
 /*  Cells crop with object-cover and each photo carries its own focus  */
 /*  point so the people stay in frame.                                 */
 /*                                                                     */
 /*  Below lg the box stacks, so cells take aspect ratios there instead */
-/*  of sharing a fixed height. On a phone the museum layout puts the   */
-/*  tall photo full width at its own 4:5 with the two squares under.   */
+/*  of sharing a fixed height. On a phone the museum layout runs the   */
+/*  tall photo at its own 4:5, the wide one at 4:3, then two squares.  */
 /* ------------------------------------------------------------------ */
 
 const LAYOUTS = {
   museum: {
-    grid: "grid-cols-2 md:grid-rows-2 md:h-[600px] lg:h-full lg:min-h-[600px]",
+    grid: "grid-cols-2 md:grid-cols-[1fr_0.58fr_0.42fr] md:grid-rows-[1.1fr_1fr] md:h-[640px] lg:h-full lg:min-h-[640px]",
     cells: [
       "col-span-2 aspect-[4/5] md:col-span-1 md:row-span-2 md:aspect-auto",
+      "col-span-2 aspect-[4/3] md:aspect-auto",
       "aspect-square md:aspect-auto",
       "aspect-square md:aspect-auto",
     ],
@@ -55,7 +56,7 @@ export default function Collage({
                 src={cell.logo}
                 alt={cell.alt}
                 loading="lazy"
-                className="aspect-square w-[54%] max-w-[190px] rounded-full"
+                className="aspect-square w-[64%] max-w-[190px] rounded-full"
               />
             </div>
           );
