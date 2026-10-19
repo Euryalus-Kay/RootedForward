@@ -121,12 +121,6 @@ export const PHOTOS = {
     alt: "Zain Zaidi of Rooted Forward and a man in a gray vest smiling beside the Japanese Americans in Hyde Park panels at the Japanese American Service Committee in Chicago",
     focus: "58% 40%",
   },
-  jascExplaining: {
-    src: `${DIR}/jasc-explaining.jpg`,
-    small: `${DIR}/jasc-explaining-800.jpg`,
-    alt: "A smiling man in a gray vest with his arm out toward Zain Zaidi of Rooted Forward, who is looking at the panel A Japantown at 43rd and Ellis",
-    focus: "62% 50%",
-  },
   jascCrowd: {
     src: `${DIR}/jasc-crowd.jpg`,
     small: `${DIR}/jasc-crowd-800.jpg`,
