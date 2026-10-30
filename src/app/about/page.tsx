@@ -34,9 +34,9 @@ import PageTransition from "@/components/layout/PageTransition";
 import Reveal from "@/components/about/Reveal";
 import styles from "@/components/about/motion.module.css";
 
-const MISSION_WHO = "A student-run nonprofit started in Chicago.";
+const MISSION_WHO = "Rooted Forward is a student-run nonprofit founded in Chicago.";
 const MISSION_WHAT =
-  "Rooted Forward raises awareness of racial inequality in cities across the United States, and works to address it through education and political advocacy.";
+  "We educate people about how inequitable urban development has shaped racial inequality in American cities and address its lasting effects through community programs and policy advocacy.";
 
 export const metadata: Metadata = {
   title: "Our story | Rooted Forward",

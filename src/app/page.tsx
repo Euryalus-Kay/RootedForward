@@ -168,12 +168,12 @@ export default function Home() {
               note is on the /about headline. */}
           <p className="mt-8 max-w-[40ch] font-display text-2xl leading-[1.25] tracking-tight sm:text-3xl md:max-w-[42ch] md:text-[2.5rem]">
             <span className="text-rust">
-              A student-run nonprofit started in Chicago.
+              Rooted Forward is a student-run nonprofit founded in Chicago.
             </span>{" "}
             <span className="text-ink">
-              Rooted Forward educates people about racial inequality in cities
-              across the United States, and works to address it through
-              education, awareness, and political advocacy.
+              We educate people about how inequitable urban development has
+              shaped racial inequality in American cities and address its
+              lasting effects through community programs and policy advocacy.
             </span>
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
