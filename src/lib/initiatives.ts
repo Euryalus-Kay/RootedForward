@@ -191,7 +191,7 @@ export const FEATURED: Initiative[] = [
     partner: "At the Japanese American Service Committee",
     status: "Ongoing exhibit",
     body: [
-      "We made two panels on the Japanese Americans who lived and worked in Hyde Park. One follows the neighborhood from Paul Cornell’s railroad suburb of 1853 to Japan’s Phoenix Pavilion at the 1893 world’s fair. The other maps the Japantown at 43rd and Ellis, 155 addresses between 1943 and 1961.",
+      "We created an exhibit on the Japanese Americans who lived and worked in Hyde Park, tracing the neighborhood's history from the 1800s through the mid-twentieth century.",
     ],
     layout: "stack",
     /* Bottom-anchored, so the two men keep their feet in frame. */
